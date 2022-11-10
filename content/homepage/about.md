@@ -1,30 +1,31 @@
 ---
-title: 'Who We Are'
+title: '我们是谁？'
 weight: 1
 background: ''
-button: 'About Us'
+button: '关于我们小组'
 buttonLink: 'about'
 ---
 
-### Consultants
-
-Linux Foundation APAC, TODO Group, OpenInfra Foundation
-
-
-
-### Summit Chair
-
-Zhiqiang Yu, Open Source Evangelist
-
-Nadia Jiang, COO at SegmentFault, Co-founder of Answer.dev
-
-
-### Executive Team
-
-OSPO SIG, LF APAC
-
-
-
-### Preparatory Team Members
-
-Jiansheng Li, Jie Liu, Le Ma, Zhiqiang Yu, Nadia Jiang, Jinghe Ma, Jie Hu, Wenbin Zhao, Guofeng Zhang, Horace Li, Richard Bian, Zhenhua Sun, Xiang Li, Wei Meng, Ailin Yang, Yiyang Zhang
+王厚： 总策划；
+卫Sir： 北京站分享者CPO，及多场分享者；
+ZhiQiang： Meetup 北京 主持人；
+振华： 图书推荐人、个人赞助者，内容分享者、主持人；
+郭雪： 赞助者，内容分享者；
+姜宁： 内容分享者，推广者；
+淮晋阳： 个人赞助者，推广大使；
+刘寿永： 商业赞助者；
+梁辰晔： 个人赞助者；
+Joey： 个人赞助者；
+翀： 个人赞助者，活动支持者；
+适兕： 记录者，内容分享者；
+Tony、Joanna、何莹： 艺术摄影支持；
+庄表伟： 阅读者，活跃者、好书推荐、内容分享者；
+大妈/Zoom.Quiet : 活跃读者作者译者~专注吐糟37+年…；
+龚仪、Frank、李杨、杜玉河： 内容分享者；
+chaojie： 个人赞助者；
+马红伟：场地赞助；
+耿航：协助编辑文档；
+Amber：场地赞助，个人主持，活动策划；
+郭郭： 场地赞助、活动支持；
+王伟： 图书推荐者；
+陆雨宵： 场地赞助、活动支持；
