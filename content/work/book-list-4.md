@@ -6,7 +6,7 @@ weight: 1
 heroHeading: '开源之书单：四'
 heroSubHeading: ''
 heroBackground: 'https://source.unsplash.com/random/?book'
-thumbnail: 'work/work1-thumbnail.jpg'
+thumbnail: 'https://source.unsplash.com/random/?book'
 images: ['/images/book-lists/open-source-book-list-4.jpg']
 ---
 
