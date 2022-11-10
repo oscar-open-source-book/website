@@ -5,8 +5,8 @@ draft: false
 weight: 1
 heroHeading: '开源之书单：一'
 heroSubHeading: ''
-heroBackground: 'work/work1.jpg'
-thumbnail: 'work/work1-thumbnail.jpg'
+heroBackground: 'https://source.unsplash.com/random/?book'
+thumbnail: 'https://source.unsplash.com/random/?book'
 images: ['/images/book-lists/open-source-book-list-1.jpg']
 ---
 
