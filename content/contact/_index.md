@@ -1,6 +1,6 @@
 ---
-title: 'Contact'
+title: '欢迎加入我们'
 date: 2018-02-22T17:01:34+07:00
 ---
 
-If you are interested in community collaboration and sponsoring us, you can contact us.
+如果你想通过读书的方式理解开源，不妨加入我们，组队学习。

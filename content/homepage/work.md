@@ -1,9 +1,8 @@
 ---
-title: 'Localization and Globalization'
+title: '「共读书单」'
 weight: 1
-background: 'images/gotc-ospo-meetup.png'
-button: 'Our Work'
+background: 'https://source.unsplash.com/random/?book'
+button: '了解更多'
 buttonLink: 'work'
 ---
 
-China is special, whereas open source is global. We must perceive rationally, both to understand and implement according to the local situation, but also to integrate and influence the world.
