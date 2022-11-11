@@ -1,10 +1,10 @@
 ---
-title: 'About'
+title: '关于「OSCAR·开源之书·共读」'
 date: 2018-12-06T09:29:16+10:00
 layout: 'about'
-heroHeading: 'About Us'
-heroSubHeading: "Established in 1985, we're a team of advisors that puts your business first."
-heroBackground: 'https://source.unsplash.com/sO-JmQj95ec/1600x1000'
+heroHeading: '关于「OSCAR·开源之书·共读」'
+heroSubHeading: "我们开始于2019年1月，一个不断吸引对开源感兴趣的学习共同体。"
+heroBackground: 'images/we-are-what-we-read.jpg'
 ---
 
 <div>
