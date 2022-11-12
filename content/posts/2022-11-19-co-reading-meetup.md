@@ -1,9 +1,10 @@
 ---
 title: "2022 11 19 Co Reading Meetup"
 date: 2022-11-09T11:54:12+08:00
+heroBackground: 'https://source.unsplash.com/random/?library'
 ---
 
-## 2022.11.19 「OSCAR· 开源之书·共读」·分享·北京站
+# 2022.11.19 「OSCAR· 开源之书·共读」·分享·北京站
 
 ### 特别感谢赞助（个人或组织）：
 
