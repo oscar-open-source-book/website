@@ -1,6 +1,7 @@
 ---
 title: '走进组织'
 date: 2018-11-18T12:33:46+10:00
+description: "企业内的知识流动也在面临着巨大的挑战，从开源项目办公室的崛起，我们知道：开源文化走进企业是刚需。"
 icon: 'services/service-icon-6.png'
 draft: false
 featured: true
