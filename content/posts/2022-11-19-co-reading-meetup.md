@@ -77,7 +77,6 @@ https://opensourceway.community/posts/history-of-open-source/summary/
 
 * 请参考「开源之道」所倡导的方式谈话、行事、社交，以及进行相关事务的处理。
 
- 
 * 现场🚫录像/录音 （如有需要，请和当事人做沟通）
 
 *  ✅拍照（鼓励）
@@ -85,7 +84,7 @@ https://opensourceway.community/posts/history-of-open-source/summary/
  
 #### 主持人：
 
-Zhi Qiang
+**Zhi Qiang**
 
 #### 报名方式：(接龙写上你的微信id即可)
 
@@ -112,6 +111,12 @@ Zhi Qiang
 * Ben
 * 姜宁
 * 马乐
+* Sunny
+* Fiona 段少婷
+* Kate Shao
+* 陈冀康
+* 周鹏飞
+* 卫sir
 
 
 
