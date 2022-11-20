@@ -5,7 +5,7 @@ icon: "services/icons8-project-management-80.png"
 featured: true
 draft: false
 weight: 10
-heroHeading: '「OSCAR·开源之书·共读」 文章与新闻'
+heroHeading: '「OSCAR·开源之书·共读」 项目介绍'
 heroSubHeading: ''
 heroBackground: 'services/service1.jpg'
 description: '走进组织/机构/公司/单位，书单定制，内容定制，让更多人了解开源背后机理的阅读计划。'
@@ -50,4 +50,21 @@ description: '走进组织/机构/公司/单位，书单定制，内容定制，
 * step 6: 开坛宣讲，引出更多问题；
 * step 7: 总结经验，后续交流；
 
-# 
+## 有意分享的书友
+
+报名链接：[走进企业之讲师招募](https://github.com/oscar-open-source-book/website/discussions/4)
+
+已报名讲师：
+
+* [适兕]() 
+*  
+
+## 企业报名与沟通
+
+**温馨提示：每月一期，排满一年12月份，就要往后顺延了。**
+
+有两个选项，企业如果是愿意全程公开，那么请在GitHub仓库的讨论区建立一个[帖子](https://github.com/oscar-open-source-book/website/discussions/new)，进行all open 的模式。
+
+企业如果觉得不够方便，可以联系「OSCAR·开源之书·共读」的项目发起人：适兕来进行面对面的约见。
+
+* 
