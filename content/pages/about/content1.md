@@ -6,8 +6,8 @@ background: 'https://source.unsplash.com/zglUlG8k47I/1600x500'
 align: right
 ---
 
-*  Learning by Contributing ,
-*  Learning by Reading！
-*  Leadership by Sharing！
-*  Capital by Sponsor.
-*  Learning as Belonging～ 
++ Learning by Contributing ,
++ Learning by Reading！
++ Leadership by Sharing！
++ Capital by Sponsor.
++ Learning as Belonging～ 
