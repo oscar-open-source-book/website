@@ -12,3 +12,7 @@ heroBackground: 'services/service2.jpg'
 ---
 
 能够在各种技术大会上相遇本身就是缘分，为什么借此机会组织一场关于阅读与开源的会议了呢？
+
+## Dev Together 2022
+
+请移步：[Dev Together 2022 读书分论坛](/posts/reading-in-dev-together-2022/)
