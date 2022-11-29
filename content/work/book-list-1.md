@@ -15,6 +15,16 @@ description: '经典书籍，不容错过。'
 ## 订阅经济：创造可持续增长的未来
 ## 开放与共享：开源创新的经济学思考
 ## 新造王者：开发者是如何征服世界的
+
+豆瓣链接：[《The New Kingmakers：How Developers Conquered the World》](https://book.douban.com/subject/21484430/)
+
+「开源之道」·适兕的书评：[得开发者得天下 ———— 开发者是如何征服世界的](https://opensourceway.community/posts/paper_or_book_reading/the_new_kingmaker_review/)
+
+### 「OSCAR·开源之书·共读」书友推荐
+
+> 想要知道为何开源在过去的几十年逐渐的受到重视的深层次原因，这本书会告诉你：开发者的自动选择：开发者才是开源决胜天下的重要力量，换句话说：开源是开发者用脚投票的结果。
+> > ———— 适兕，作者，「开源之道」主创
+
 ## 匠人
 ## 黑客：计算机革命的英雄们
 ## 大教堂与集市
