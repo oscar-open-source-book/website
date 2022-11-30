@@ -18,7 +18,7 @@ GitHub 地址： [https://github.com/oscar-open-source-book/booklet-2022](https:
 
 ## 开源文集
 
-（更多详细内容，敬请期待！）
+[开源文集项目](/posts/open-source-way-collection/)
 
 ## 「开源之书」读者心目中的Top 10
 
