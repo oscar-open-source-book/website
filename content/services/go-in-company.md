@@ -33,3 +33,5 @@ heroBackground: 'services/service2.jpg'
 每月一期，以拥抱开源企业为优选，尤其是参与开发者较多的公司，或者是赞助者指定的单位机构。
 
 当然也可以根据实际的情形进行协商。
+
+更多详情，请移步：[甄选「开源之书」走进企业](/posts/reading-go-into-enterprise/)
