@@ -13,7 +13,7 @@ heroBackground: 'https://source.unsplash.com/random/?thanks'
 
 
 
-## 感谢我们活动的场地支持！
+## 感谢我们历次线下活动的场地支持单位！
 
 * 10HUG
 * 工业4.0俱乐部
@@ -32,6 +32,10 @@ heroBackground: 'https://source.unsplash.com/random/?thanks'
 * 开源社
 * 微软中国
 
+## 更多需要赞助的项目
 
+以下项目正在寻求赞助合作，详情请联系[亲力亲为者](/contact/)。
 
-![](https://source.unsplash.com/random/?welcome)
+* [「OSCAR·开源之书·共读书单」小册子项目](https://github.com/oscar-open-source-book/booklet-2022)
+* [甄选「开源之书」走进企业](/posts/reading-go-into-enterprise/)
+* [开源文集系列](/posts/open-source-way-collection/)
