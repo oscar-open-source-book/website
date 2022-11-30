@@ -1,10 +1,10 @@
 ---
 title: "开源文集项目介绍"
 date: 2022-11-30T11:19:03+08:00
-icon: "services/service-icon-1.png"
+icon: "services/icons8-magazine-80.png"
 featured: true
 draft: false
-weight: 100
+weight: 3
 heroHeading: '「OSCAR·开源之书·共读」 文章与新闻'
 heroSubHeading: ''
 heroBackground: 'services/service1.jpg'
