@@ -8,6 +8,6 @@ heroSubHeading: ''
 heroBackground: 'https://source.unsplash.com/1600x400/?book'
 thumbnail: '/images/book-lists/open-source-book-list-7.jpg'
 images: ['/images/book-lists/open-source-book-list-7.jpg']
-description: '经典书籍，不容错过。'
+description: '开源，一种虽然可以轻松获得，但并不简单的人类财富。'
 ---
 
