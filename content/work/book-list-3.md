@@ -11,6 +11,15 @@ images: ['/images/book-lists/open-source-book-list-3.jpg']
 description: '人类学与社会学视角下的开源共同体，平等、互惠。'
 ---
 
+## 《叛逆代码：Linux 和开源的革命》
+
+豆瓣链接：[《Rebel Code：Linux and the Open Source Revolution》](https://book.douban.com/subject/1395563/)
+
+### 「OSCAR·开源之书·共读」书友推荐
+
+> 一个耀眼的明星般的开源项目会被众多光环所笼罩，但是追溯它成为明星之前的细节才是我们应该去做的，Rebel Code 显然做到了，没有例外，成功的开源项目都是无数的劳动和智慧凝集。
+> >  ———— 适兕，作者，「开源之道」主创
+
 ## 《码出自由》
 
 豆瓣链接：[https://book.douban.com/subject/11227455/](https://book.douban.com/subject/11227455/)

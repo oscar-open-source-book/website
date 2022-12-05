@@ -8,7 +8,7 @@ heroSubHeading: ''
 heroBackground: 'https://source.unsplash.com/1600x400/?book'
 thumbnail: '/images/book-lists/open-source-book-list-6.jpg'
 images: ['/images/book-lists/open-source-book-list-6.jpg']
-description: '经典书籍，不容错过。'
+description: '秩序与自由，交换与经济，欲望与劳作，人类需要一种平衡的力量。'
 ---
 
 
