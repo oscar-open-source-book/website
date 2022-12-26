@@ -11,6 +11,15 @@ images: ['/images/book-lists/open-source-book-list-2.jpg']
 description: '打开新世界，需要不同的视界。'
 ---
 
+## 《Linux 红帽旋风：RedHat 创始人自传》
+
+豆瓣链接：[《Under the Radar: How Red Hat Changed the Software Business --
+and Took Microsoft by Surprise》](https://book.douban.com/subject/1043643/)
+
+### 「OSCAR·开源之书·共读」书友推荐
+
+> 开源之史在于过去时空下的每一个细节，每一个小的事件，才能推导出后面的成功，这个过程不能相反的去做，因为成功往往会掩饰很多过往的细节。想要了解RedHat所代表的商业持续发展，这本早期的历史无法错过。为什么是 RedHat，是开源商业世界的一个命题，悲观主义者们认为 RedHat 是软件另外一种秩序下无法超越的丰碑，那么对于思考者而言，RedHat 为何不能继续发扬它的精神和经营理念？这个世界的尽头在何方？还能不能变得更好？
+> >  ———— 适兕，作者，「开源之道」主创
 
 ## 《只是为了好玩:Linux之父林纳斯自传》
 
