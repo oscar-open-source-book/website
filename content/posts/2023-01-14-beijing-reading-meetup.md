@@ -110,13 +110,13 @@ HESHU（自带相机）
 
 # 现场照片留念示例
 
-![](images/meetup/2023-01-14-speaker.jpeg)
+![](/images/meetup/2023-01-14-speaker.jpeg)
 
 # 幻灯及更多照片
 
 点击图片浏览
 
-[![](images/meetup/2023-01-14-dialog.jpeg)](https://1drv.ms/u/s!Arg2k_5HJFrbgecSwHCzossLJgaKkw?e=yZlTF3)
+[![](/images/meetup/2023-01-14-dialog.jpeg)](https://1drv.ms/u/s!Arg2k_5HJFrbgecSwHCzossLJgaKkw?e=yZlTF3)
 
 # 意犹未尽的话题和参与者感言
 
