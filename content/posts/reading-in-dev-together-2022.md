@@ -1,5 +1,5 @@
 ---
-title: "Dev Together 2022 读书分论坛"
+title: "Dev.Together 2022 中国开发者生态峰会·读书分论坛"
 date: 2022-11-28T15:47:33+08:00
 icon: "services/icons8-reading-67.png"
 featured: true
@@ -8,14 +8,18 @@ weight: 100
 heroHeading: '「OSCAR·开源之书·共读」 文章与新闻'
 heroSubHeading: ''
 heroBackground: 'services/service1.jpg'
-description: 'Dev Together 2022峰会上的读书分论坛，关于开发者、共同体以及他们的关系经验分享和累积。'
+description: 'Dev.Together 2022 中国开发者生态峰会上的读书分论坛，关于开发者、共同体以及他们的关系经验分享和累积。'
 author: '适兕'
 ---
-# 关于 Dev Together
+# Dev.Together 2022 中国开发者生态峰会确认
+
+万众期待的 Dev.Together 2022 终于重新启动！2023-3-25（周六）第二届中国开发者生态峰会将在北京 · 丽亭华苑酒店举办。[1]
+
+# 关于 Dev.Together
 
 Dev Together 中国开发者生态峰会是由 SegmentFault 思否发起的，面向 to D Marketing、开发者运营、开发者关系从业者的交流活动。我们希望打破日常工作中来自不同厂商背景给大家带来的交流屏障，在一个中立的平台上，彼此交流学习、开放分享，畅聊走过的路、踩过的坑，携手 Dev Together！
 
-![](../../images/dev-togehter-2022.png)
+![](../../images/books-dev-together-2023.png)
 
 # 关于读书分论坛
 
@@ -47,6 +51,11 @@ Dev Together 中国开发者生态峰会是由 SegmentFault 思否发起的，�
 
 请参考「开源之道」所倡导的方式谈话、行事、社交，以及进行相关事务的处理。
 
+## 报名方式
+
+请密切关注公众号：**开发者生态** 以及「OSCAR·开源之书·共读」小组消息。
+
 ## 协助/记录：
 
 * 适兕
+
