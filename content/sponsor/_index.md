@@ -1,5 +1,5 @@
 ---
-title: '无限感恩！彼此成就！'
+title: 'Capital by Sponsor！'
 date: 2018-02-22T17:01:34+07:00
 heroBackground: ''
 ---
@@ -32,6 +32,7 @@ heroBackground: ''
 * 开源社
 * 微软中国
 * CSDN
+* 字节跳动开源委员会
 
 ## 更多需要赞助的项目
 
