@@ -55,6 +55,13 @@ Dev Together 中国开发者生态峰会是由 SegmentFault 思否发起的，�
 
 请密切关注公众号：**开发者生态** 以及「OSCAR·开源之书·共读」小组消息。
 
+根据最近大会发布的策略[3]，我们看到思否不再有免费票提供，所有参会者均需购票：
+
+* 人民币 ¥299元 参会通票，包含伴手礼+自助餐
+* 人民币 ¥1024 参会通票，包含伴手礼+自助餐+晚宴
+
+另外，思否特别为「OSCAR·开源之书·共读」的 Contributor 赠送部分门票，如果您在我们首页的亲力亲为者名单中，则可直接获得门票参与本次的读书分享活动；否则的话，需要自行购票，购票地址：[https://www.bagevent.com/event/8326103](https://www.bagevent.com/event/8326103)。
+
 ## 协助/记录：
 
 * 适兕
@@ -63,3 +70,4 @@ Dev Together 中国开发者生态峰会是由 SegmentFault 思否发起的，�
 
 1. https://mp.weixin.qq.com/s/aplBeSjlThadnTeIYtyLOg ，最后访问时间：2023.2.11
 2. https://osbook.club/ ，最后访问时间：2023.2.11
+3. https://mp.weixin.qq.com/s/mYYZ29Mlkk_HPgnkTyRxcw ，最后访问时间：2023.3.9
