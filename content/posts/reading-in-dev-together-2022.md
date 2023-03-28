@@ -72,7 +72,7 @@ Dev Together 中国开发者生态峰会是由 SegmentFault 思否发起的，�
 
 ## 活动精彩瞬间
 
-![[](https://1drv.ms/f/s!Arg2k_5HJFrbgekD22hxG-ZC57q4og?e=ZjD6Q9)](../../images/meetup/2023-03-25-gungun.jpg)
+[![](../../images/meetup/2023-03-25-gungun.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgekD22hxG-ZC57q4og?e=ZjD6Q9)
 
 点击图片浏览更多
 
