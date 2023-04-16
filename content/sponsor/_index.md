@@ -33,6 +33,8 @@ heroBackground: ''
 * 微软中国
 * CSDN
 * 字节跳动开源委员会
+* OceanBase 公司
+* Dev·Together大会（思否主办）
 
 ## 更多需要赞助的项目
 
