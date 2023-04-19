@@ -115,6 +115,9 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 ## 幻灯及更多照片
 
+### 《毫无意义的工作》slide：[https://github.com/alili/bullshit_jobs](https://github.com/alili/bullshit_jobs)
+  在线预览:[https://bullshit-jobs-alili.vercel.app/1](https://bullshit-jobs-alili.vercel.app/1)
+
 点击图片浏览
 
 [![](/images/meetup/2023-04-15-all.jpeg)](https://1drv.ms/f/s!Arg2k_5HJFrbgepeKH-gvmwj0WtZTw?e=aC0LIe)
