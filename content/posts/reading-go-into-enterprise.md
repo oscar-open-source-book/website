@@ -98,6 +98,18 @@ description: '走进组织/机构/公司/单位，书单定制，内容定制，
 |微众开源办公室|TBD||完成初步对接，进一步正在商讨中
 |虚位以待|TBD||正在商讨中
 
+## 适兕在活动中分享过的书籍及slides
+
+1. [《异军突起：Linux和开源革命》](https://1drv.ms/p/s!Arg2k_5HJFrbgeZkIjr9hHTVnrXzrg)
+2. [《码出自由：如何考察开源的文化](https://1drv.ms/p/s!Arg2k_5HJFrbgeZpIjr9hHTVnrXzrg)
+3. 《匠人》分享  [开源的核心：为了把事情做好而做好](https://1drv.ms/p/s!Arg2k_5HJFrbgek-Ijr9hHTVnrXzrg)
+4. [《开源之迷》作者谈开源之迷](https://1drv.ms/p/s!Arg2k_5HJFrbgegPIjr9hHTVnrXzrg)
+5. [开源与《技术的本质》](https://1drv.ms/p/s!Arg2k_5HJFrbgdUVIjr9hHTVnrXzrg)
+6. [开源许可：软件自由和知识财产法](https://1drv.ms/p/s!Arg2k_5HJFrbgeJcIjr9hHTVnrXzrg)
+7. 《无需法律的秩序》[开源共同体的秩序起源](https://1drv.ms/p/s!Arg2k_5HJFrbgeBYIjr9hHTVnrXzrg)
+8. 《拥抱开源》 [文化是如此重要](https://1drv.ms/p/s!Arg2k_5HJFrbgeVWIjr9hHTVnrXzrg)
+9. [《开源之路 2.0》](https://1drv.ms/p/s!Arg2k_5HJFrbgddyIjr9hHTVnrXzrg)
+
 ## 事项记录
 
 | 时间|地点|发生了什么|
