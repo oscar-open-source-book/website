@@ -90,7 +90,7 @@ description: '走进组织/机构/公司/单位，书单定制，内容定制，
 |阿里巴巴开源办公室|2023.5.x||完成初步对接，进一步正在商讨中
 |中国信通院云大所开源与安全部|2023.6.x| |完成初步对接，进一步正在商讨中
 |ZTE 开源项目办公室| 2023.10~12 |选择图书：《财富故事》《The Business and Economics of Linux and Open Source》《Open （Source）for Business》|书单已经介绍完毕，正在商讨日期、
-|蚂蚁集团开源委员会|TBD||完成初步对接，进一步正在商讨中
+|蚂蚁集团开源办公室|TBD||完成初步对接，进一步正在商讨中
 |华为 开源项目办公室|2023.7.29||书单已经介绍完毕，正在商讨日期、选择书籍中
 |开放原子开源基金会|TBD||书单已经介绍完毕，正在商讨日期、选择书籍中
 |百度开源办公室|2023.6.7～9||书单已经介绍完毕，正在商讨日期、选择书籍中
@@ -104,11 +104,12 @@ description: '走进组织/机构/公司/单位，书单定制，内容定制，
 2. [《码出自由：如何考察开源的文化](https://1drv.ms/p/s!Arg2k_5HJFrbgeZpIjr9hHTVnrXzrg)
 3. 《匠人》分享  [开源的核心：为了把事情做好而做好](https://1drv.ms/p/s!Arg2k_5HJFrbgek-Ijr9hHTVnrXzrg)
 4. [《开源之迷》作者谈开源之迷](https://1drv.ms/p/s!Arg2k_5HJFrbgegPIjr9hHTVnrXzrg)
-5. [开源与《技术的本质》](https://1drv.ms/p/s!Arg2k_5HJFrbgdUVIjr9hHTVnrXzrg)
-6. [开源许可：软件自由和知识财产法](https://1drv.ms/p/s!Arg2k_5HJFrbgeJcIjr9hHTVnrXzrg)
-7. 《无需法律的秩序》[开源共同体的秩序起源](https://1drv.ms/p/s!Arg2k_5HJFrbgeBYIjr9hHTVnrXzrg)
-8. 《拥抱开源》 [文化是如此重要](https://1drv.ms/p/s!Arg2k_5HJFrbgeVWIjr9hHTVnrXzrg)
-9. [《开源之路 2.0》](https://1drv.ms/p/s!Arg2k_5HJFrbgddyIjr9hHTVnrXzrg)
+5. 适兕谈写作 [《适兕眼中的开源世界》](https://1drv.ms/p/s!Arg2k_5HJFrbgeFrIjr9hHTVnrXzrg)
+6. [开源与《技术的本质》](https://1drv.ms/p/s!Arg2k_5HJFrbgdUVIjr9hHTVnrXzrg)
+7. [开源许可：软件自由和知识财产法](https://1drv.ms/p/s!Arg2k_5HJFrbgeJcIjr9hHTVnrXzrg)
+8. 《无需法律的秩序》[开源共同体的秩序起源](https://1drv.ms/p/s!Arg2k_5HJFrbgeBYIjr9hHTVnrXzrg)
+9. 《拥抱开源》 [文化是如此重要](https://1drv.ms/p/s!Arg2k_5HJFrbgeVWIjr9hHTVnrXzrg)
+10. [《开源之路 2.0》](https://1drv.ms/p/s!Arg2k_5HJFrbgddyIjr9hHTVnrXzrg)
 
 ## 事项记录
 
