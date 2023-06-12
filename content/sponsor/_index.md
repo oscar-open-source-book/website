@@ -11,7 +11,7 @@ heroBackground: ''
 
 ## 感谢企业/组织/机构的赞助
 
-
+需要您的支持！
 
 ## 感谢我们历次线下活动的场地支持单位！
 
@@ -35,6 +35,7 @@ heroBackground: ''
 * 字节跳动开源委员会
 * OceanBase 公司
 * Dev·Together大会（思否主办）
+* vivo 互联网/OSPO
 
 ## 更多需要赞助的项目
 
