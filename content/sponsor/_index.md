@@ -37,6 +37,7 @@ heroBackground: ''
 * Dev·Together大会（思否主办）
 * vivo 互联网/OSPO
 * RedHat 中国 融科+芳草地
+* 薪享宏福
 
 ## 更多需要赞助的项目
 
