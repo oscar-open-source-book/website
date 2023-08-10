@@ -112,10 +112,11 @@ description: '走进组织/机构/公司/单位，书单定制，内容定制，
 11. 《开源的成功之路》：[开源到底改变了什么？](https://1drv.ms/p/s!Arg2k_5HJFrbge11Ijr9hHTVnrXzrg)
 12. 《The rise of open source Licensing》：[秩序、信任与商业](https://1drv.ms/p/s!Arg2k_5HJFrbge1hIjr9hHTVnrXzrg)
 13. [《发现开源系列图书》创作者言](https://1drv.ms/p/s!Arg2k_5HJFrbgfAmIjr9hHTVnrXzrg)
-14. The Daemon, the GNU and the Penguin》：[自由和开源软件的史前史](https://1drv.ms/p/s!Arg2k_5HJFrbgfFL64lBlZN9aFV8Sg?e=ZVM5yw)
+14. 《The Daemon, the GNU and the Penguin》：[自由和开源软件的史前史](https://1drv.ms/p/s!Arg2k_5HJFrbgfFL64lBlZN9aFV8Sg?e=ZVM5yw)
 15. [《揭开软件许可的神秘面纱》](https://1drv.ms/p/s!Arg2k_5HJFrbgfF_Ijr9hHTVnrXzrg)
 16. [《商业开源》](https://1drv.ms/p/s!Arg2k_5HJFrbgfIsIjr9hHTVnrXzrg)
 17. [《Linux和开源的商业与经济》](https://1drv.ms/p/s!Arg2k_5HJFrbgfFjaEDKmJi5WcjvCA)
+18. [《音乐是怎样成为免费午餐的：一个行业的终结，世代的交替，盗版的零号病人》](https://1drv.ms/p/s!Arg2k_5HJFrbgfIvIjr9hHTVnrXzrg)
 
 ## 事项记录
 
