@@ -157,13 +157,13 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 ![](/images/meetup/2023-08-26-zhiqiang.jpg)
 
-图为主持人为大家分享运营者要去关注亲力亲为者！
+图为主持人为大家彼此介绍！
 
 ## 幻灯及更多照片
 
 点击图片浏览
 
-[![](/images/meetup/2023-08-26-all.jpg)]()
+![](/images/meetup/2023-08-26-all.jpg)
 
 ## 参与者感言
 
