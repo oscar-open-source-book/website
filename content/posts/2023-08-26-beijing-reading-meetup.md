@@ -163,7 +163,7 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 点击图片浏览
 
-![](/images/meetup/2023-08-26-all.jpg)
+[![](/images/meetup/2023-08-26-all.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgfFlwdBB1CPzPz1_EA?e=TIVWNz)
 
 ## 参与者感言
 
