@@ -7,7 +7,7 @@ draft: false
 weight: 99
 heroHeading: '《互惠经济学》'
 heroSubHeading: ''
-heroBackground: 'services/meetup/2023-09-23-door.jpg'
+heroBackground: 'images/meetup/2023-09-23-door.jpg'
 description: '关于线下活动北京站，2023.09.23 详细情况：地点、题目、时间、参与人员。'
 ---
 
