@@ -120,6 +120,11 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 适兕
 
+# 拍照支持：
+
+* 柳丽英
+* 陈阳
+
 # 合影留念和艺术加工：
 
 ## 现场书友精彩瞬间
