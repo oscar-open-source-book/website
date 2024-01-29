@@ -1,6 +1,6 @@
 ---
 title: "2024.01.27 「OSCAR· 开源之书·重读」·分享·北京站"
-date: 2024-01-29T15:21:02+08:00
+date: 2024-01-28T15:21:02+08:00
 icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: false
@@ -113,3 +113,7 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 [![](/images/meetup/2024-01-27-all.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgfo8vhnmvRaspGgbPw?e=9gqCQ7)
 
+## 参与书友感概
+
+> Linus 并不是大家所理解的刻板的暴君形象，而是对社会、人生、追求有着清晰认知的，读着他的这些语录，以及对照他的行为，真正做到了言行一致的高手。
+>   ———— 「开源之道」·适兕
