@@ -5,7 +5,7 @@ icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: false
 weight: 90
-heroHeading: '2024年新的开始'
+heroHeading: '文化的重要作用'
 heroSubHeading: ''
 heroBackground: 'images/meetup/2024-03-23-books.png'
 description: '关于重读线下活动北京站，2024.03.23 详细情况：地点、题目、时间、参与人员。'
@@ -126,7 +126,7 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 点击图片打开OneDrive目录。获取全部照片及幻灯分享。
 
-[![](/images/meetup/2024-02-24-speaker-emily-1.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgf4uaw_PWpWLg4gi6w?e=Wudbx4)
+[![](/images/meetup/2024-03-23-speaker-emily-1.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgf4uaw_PWpWLg4gi6w?e=Wudbx4)
 
 ## 参与书友感概
 
