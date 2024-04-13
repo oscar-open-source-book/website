@@ -24,3 +24,5 @@ description: ''
 * 《Unravelling the Myth around Open Source Licences: An Analysis from a Dutch and European Law Perspective》，by Lucie Guibault (Author), Ot van Daalen (Author)，T.M.C. Asser Press; First Edition (March 23, 2006)，
 * 《所有权的终结：数字时代的财产保护》，[美] 亚伦·普赞诺斯基 / [美] 杰森·舒尔茨，北京大学出版社，2022-3
 * [开源经济学12讲:第四期：开源软件的商业模式](https://opensourceway.community/posts/open-source-economic/12-lectures-of-open-source/)
+* 《为什么伟大不能被计划：对创意、创新和创造的自由探索》， [美] 肯尼斯·斯坦利 / [美] 乔尔·雷曼， 中译出版社，2023-4
+* 《恩斯特·迈尔讲进化》，恩斯特·迈尔，浙江教育出版社，2023-2
