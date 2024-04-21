@@ -20,7 +20,7 @@ description: '关于重读线下活动北京站，2024.04.20 详细情况：地�
 
 * 图书礼品赞助： 
 
-![](images/meetup/2024-04-20-book-gift-1.png)
+![](images/meetup/2024-04-20-book-gift-1.jpg)
 
 
 # 联合支持小组：
@@ -112,15 +112,15 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 ## 现场书友精彩瞬间
 
-![](/images/meetup/2024-04-20-all.jpg)
+![](/images/meetup/2024-04-20-speaker.jpg)
 
 ## 幻灯及更多照片
 
 点击图片打开OneDrive目录。获取全部照片及幻灯分享。
 
-[![](/images/meetup/2024-04-20-speaker.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgoBPKF87frVYaoByRQ?e=I4K884)
+[![](/images/meetup/2024-04-20-all.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgoBPKF87frVYaoByRQ?e=I4K884)
 
 ## 参与书友感概
 
-> 文化是可以习得的，但是比我们想象中要艰难的多。
+>  合作是需要习得的技能，不是谁天生都能学会合作。读书会也好，公司也罢，开源Community，都是需要合作的～ 然而毁灭它却很容易。
 >   ———— 「开源之道」·适兕
