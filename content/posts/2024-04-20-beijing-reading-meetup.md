@@ -5,7 +5,7 @@ icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: false
 weight: 50
-heroHeading: '文化的重要作用'
+heroHeading: '开源，不做历史的终结者'
 heroSubHeading: ''
 heroBackground: 'images/meetup/2024-03-23-books.png'
 description: '关于重读线下活动北京站，2024.04.20 详细情况：地点、题目、时间、参与人员。'
@@ -18,9 +18,9 @@ description: '关于重读线下活动北京站，2024.04.20 详细情况：地�
  
 * 咖啡/小食赞助：振华
 
-* 图书礼品赞助： 
+* 图书礼品赞助： 振华-开源之道
 
-![](images/meetup/2024-04-20-book-gift-1.jpg)
+![](/images/meetup/2024-04-20-book-gift-1.jpg)
 
 
 # 联合支持小组：
