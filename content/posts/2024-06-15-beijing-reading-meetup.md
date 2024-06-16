@@ -5,9 +5,9 @@ icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: false
 weight: 50
-heroHeading: '开源，不做历史的终结者'
+heroHeading: '产业视角看开源'
 heroSubHeading: ''
-heroBackground: 'images/meetup/2024-03-23-books.png'
+heroBackground: 'images/culture-history-trilogy.jpg'
 description: '关于重读线下活动北京站，2024.06.15 详细情况：地点、题目、时间、参与人员。'
 ---
 
