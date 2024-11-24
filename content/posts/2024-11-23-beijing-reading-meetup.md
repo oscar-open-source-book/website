@@ -114,7 +114,7 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 ## 幻灯及更多照片
 
-点击图片打开OneDrive目录。获取全部照片及《网络的财富》中文预览版。
+点击图片打开OneDrive目录。获取全部照片及本次分享的Slides。
 
 [![](/images/meetup/2024-11-23-all-attend-0.jpg)](https://1drv.ms/b/c/db5a2447fe9336b8/ESoHU9uNTiFOrCdlKCQ2itABQsJd7bVQZz5OqssRDmO7iw?e=gj2qMX)
 
