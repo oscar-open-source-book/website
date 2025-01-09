@@ -126,7 +126,9 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 ## 现场书友精彩瞬间（slideshow）
 
-<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113795611494240&bvid=BV1Y7rBYgEec&cid=27771342826&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+点击图片跳转到bilibili 站点。
+
+[![](/images/20250104-welcome.jpg)](https://www.bilibili.com/video/BV1Y7rBYgEec/?share_source=copy_web&vd_source=b4377f881b59b99fbe1c31ab6a06fbee)
 
 ## 幻灯及更多照片
 
