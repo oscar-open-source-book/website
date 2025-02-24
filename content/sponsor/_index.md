@@ -30,7 +30,7 @@ heroBackground: ''
 * AWS 中国
 * 第四范式
 * 开源社
-* 微软中国
+* 微软中国 ++
 * CSDN
 * 字节跳动开源委员会
 * OceanBase 公司
