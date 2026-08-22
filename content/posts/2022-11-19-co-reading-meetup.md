@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "2022.11.19 「OSCAR· 开源之书·共读」·分享·北京站"
 date: 2022-11-09T11:54:12+08:00
 icon: "services/icons8-reading-67.png"
