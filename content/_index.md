@@ -20,13 +20,13 @@ sections:
     id: 书单
     content:
       title: "书单"
-      text: "从《大教堂与集市》到《智能简史》，按 7 个分类排列。"
+      text: "82 本开源经典著作，共读、共识、共进。"
       filters:
         folders:
           - books
       count: 6
     design:
-      view: grid
+      view: article-grid
       columns: 3
   - block: collection
     id: 共读
@@ -38,7 +38,7 @@ sections:
           - events
       count: 4
     design:
-      view: list
+      view: date-title-summary
       columns: 1
   - block: collection
     id: 推荐
@@ -50,6 +50,6 @@ sections:
           - posts
       count: 3
     design:
-      view: list
-      columns: 1
+      view: article-grid
+      columns: 3
 ---
