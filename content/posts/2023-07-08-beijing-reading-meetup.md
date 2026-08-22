@@ -3,7 +3,7 @@ title: "2023.07.08 「OSCAR· 开源之书·共读」·分享·北京站"
 date: 2023-07-07T15:21:02+08:00
 icon: "services/meetup/icons8-river-50.png"
 featured: true
-draft: false
+draft: true
 weight: 99
 heroHeading: '《upstream》《working in public》'
 heroSubHeading: ''

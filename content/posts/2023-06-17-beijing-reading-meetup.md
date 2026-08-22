@@ -3,7 +3,7 @@ title: "2023.06.17 「OSCAR· 开源之书·共读」·分享·北京站"
 date: 2023-06-18T15:21:02+08:00
 icon: "services/meetup/icons8-google-groups-80.png"
 featured: true
-draft: false
+draft: true
 weight: 100
 heroHeading: '《coding freedom》《two bits》《working in public》'
 heroSubHeading: ''
