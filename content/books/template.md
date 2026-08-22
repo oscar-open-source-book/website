@@ -1,6 +1,5 @@
 ---
 title: "书名"
-cover: ".jpg"
 category: "其他"
 type: book
 draft: true
