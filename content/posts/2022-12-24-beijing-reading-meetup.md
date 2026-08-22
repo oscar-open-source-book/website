@@ -3,7 +3,7 @@ title: "2022.12.24 「OSCAR· 开源之书·共读」·分享·北京站"
 date: 2022-12-25T11:21:43+08:00
 icon: "services/meetup/icons8-google-groups-80.png"
 featured: true
-draft: false
+draft: true
 weight: 30
 heroHeading: '2022.12.24 「OSCAR· 开源之书·共读」·分享·北京站'
 heroSubHeading: ''

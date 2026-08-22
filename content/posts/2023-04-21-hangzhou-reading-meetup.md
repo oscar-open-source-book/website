@@ -3,7 +3,7 @@ title: "2023.04.22 「OSCAR· 开源之书·共读」·分享·杭州站"
 date: 2023-04-24T15:21:02+08:00
 icon: "services/meetup/icons8-google-groups-80.png"
 featured: true
-draft: false
+draft: true
 weight: 100
 heroHeading: '《rebel code》和《非暴力沟通》'
 heroSubHeading: ''
