@@ -2,13 +2,20 @@
 title: "开源之书 · 共读"
 type: landing
 sections:
-  - block: hero
+  - block: markdown
     content:
       title: "开源之书 · 共读"
-      text: "「OSCAR·开源之书·共读」——82 本开源经典著作，22 场线下 meetup，持续生长的开源思想地图。<br>共读、共识、共进。"
+      text: |
+        # 共读 · 共识 · 共进
+
+        「OSCAR·开源之书·共读」——82 本开源经典著作，26 场线下 meetup，持续生长的开源思想地图。
+
+        「开源之道」致力于开源相关思想、知识和价值的探究。
+
+        「开源之书·共读」是其中的思想实践——用共读的方式，建立一张持续生长的开源思想地图。
     design:
-      spacing:
-        padding: ['5rem', 0, '5rem', 0]
+      background:
+        color: "#1B3B6B"
   - block: collection
     id: 书单
     content:
@@ -25,7 +32,7 @@ sections:
     id: 共读
     content:
       title: "共读 Meetup"
-      text: "2022 至今，22 场线下共读。"
+      text: "2022 至今，26 场线下共读。"
       filters:
         folders:
           - events
@@ -45,10 +52,4 @@ sections:
     design:
       view: list
       columns: 1
-  - block: markdown
-    content:
-      title: "关于"
-      text: |
-        「开源之道」致力于开源相关思想、知识和价值的探究。
-        「开源之书·共读」是其中的思想实践——用共读的方式，建立一张持续生长的开源思想地图。
 ---
