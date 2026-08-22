@@ -1,6 +1,6 @@
 ---
 title: "2025.04.19 「OSCAR· 开源之书」·分享·北京站"
-date: 2025-04-·9T15:21:02+08:00
+date: 2025-04-19T15:21:02+08:00
 icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: true
