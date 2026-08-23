@@ -1,6 +1,6 @@
 ---
 image:
-  filename: "posts/open-source-way-collection.jpg"
+  filename: "posts/open-source-way-collection.png"
 title: "开源文集项目介绍"
 date: 2022-11-30T11:19:03+08:00
 icon: "services/icons8-magazine-80.png"

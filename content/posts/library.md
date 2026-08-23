@@ -1,6 +1,6 @@
 ---
 image:
-  filename: "posts/library.jpg"
+  filename: "posts/library.png"
 title: "「OSCAR·开源之书·共读」 图书馆"
 date: 2022-11-18T16:13:47+08:00
 icon: "services/icons8-book-shelf-80.png"

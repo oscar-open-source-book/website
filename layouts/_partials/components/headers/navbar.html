@@ -1,32 +1,26 @@
-{{- $root := . -}}
 {{- $main := site.Menus.main -}}
-{{- $brand := "" -}}
-{{- $brand_url := "/" -}}
-{{- $logo_path := "" -}}
-{{- $logo := false -}}
-{{- $header_bg := site.Params.header.background -}}
-
 {{- if $main -}}
-<nav class="navbar px-3 flex justify-start">
-  {{- $brand_url = site.Params.header.brand_url | default "/" -}}
-  {{- $logo_path = site.Params.header.logo | default "" -}}
-  {{- if $logo_path -}}{{ $logo = true }}{{ end -}}
-  <div class="order-0 h-full">
+<nav class="navbar px-4 flex justify-between items-center">
+  {{- $brand_url := site.Params.header.brand_url | default "/" -}}
+  {{- $logo_path := site.Params.header.logo | default "" -}}
+
+  <input id="nav-toggle" type="checkbox" class="hidden">
+
+  <div class="flex items-center order-0">
+    <label for="nav-toggle" class="cursor-pointer flex items-center lg:hidden text-[var(--hb-color-header-fg)] mr-2">
+      <svg class="h-6 fill-current block" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0V0z"/></svg>
+    </label>
     <a class="navbar-brand" href="{{ $brand_url }}" title="{{ site.Title }}">
-      {{- if $logo -}}
+      {{- if $logo_path -}}
         {{- $logo_res := resources.Get (printf "media/%s" $logo_path) -}}
-        <img fetchpriority="high" decoding="async" width="299" height="36" src="{{ $logo_res.RelPermalink }}" alt="{{ site.Title }}">
+        <img fetchpriority="high" decoding="async" width="200" height="24" src="{{ $logo_res.RelPermalink }}" alt="{{ site.Title }}">
+      {{- else -}}
+        {{ site.Title }}
       {{- end -}}
-      {{ site.Title }}
     </a>
   </div>
-  <input id="nav-toggle" type="checkbox" class="hidden">
-  <label for="nav-toggle" class="order-3 cursor-pointer flex items-center lg:hidden text-[var(--hb-color-header-fg)] lg:order-1">
-    <svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0V0z"/></svg>
-    <svg id="hide-button" class="h-6 fill-current hidden" viewBox="0 0 20 20"><polygon points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2" transform="rotate(45 10 10)"/></svg>
-  </label>
-  <ul id="nav-menu" class="navbar-nav order-3 hidden lg:flex w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 justify-start">
-    {{- $currentPage := . -}}
+
+  <ul id="nav-menu" class="navbar-nav order-1 hidden lg:flex items-center w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 xl:space-x-8 justify-center pb-0">
     {{- range $main -}}
     {{- if .HasChildren -}}
     <li class="nav-item nav-dropdown group relative">
@@ -47,15 +41,9 @@
     </li>
     {{- end -}}
     {{- end -}}
-    {{- if site.Params.hugoblox.header.cta.enable -}}
-    <li class="mt-4 inline-block lg:hidden">
-      <a class="btn inline-block text-primary-500 hover:bg-primary-50 active:scale-95 px-4 py-1.5" href="{{ site.Params.hugoblox.header.cta.link | default "#" }}">
-        {{ site.Params.hugoblox.header.cta.text | default "Get Started" }}
-      </a>
-    </li>
-    {{- end -}}
   </ul>
-  <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
+
+  <div class="flex items-center order-2">
     {{- $show_search := site.Params.hugoblox.header.search | default false -}}
     {{- if $show_search -}}
     <button

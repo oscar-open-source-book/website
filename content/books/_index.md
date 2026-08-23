@@ -2,6 +2,7 @@
 title: "书单"
 cascade:
   type: book
+  editable: true
 ---
 
 ## 「OSCAR·开源之书·共读书单」
