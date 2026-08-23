@@ -1,4 +1,5 @@
 ---
+date: 2023-02-18
 image:
   filename: "events/2023-02-18-beijing-reading-meetup.png"
 title: "「OSCAR·开源之书·共读」 文章与新闻"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 **特别提示：新冠病毒并未远去，请注意防护，并保持社交距离**
 

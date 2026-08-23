@@ -1,4 +1,5 @@
 ---
+date: 2024-03-23
 image:
   filename: "events/2024-03-23-beijing-reading-meetup.png"
 title: "文化的重要作用"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 # 特别感谢赞助（个人或组织）：
 
