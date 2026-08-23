@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "posts/fallback-meetup.jpg"
 title: "2025.03.22 「OSCAR· 开源之书」·分享·北京站"
 date: 2025-03-22T15:21:02+08:00
 icon: "services/meetup/icons8-community-50.png"

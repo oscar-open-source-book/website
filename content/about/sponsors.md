@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "about/fallback.jpg"
 title: "赞助商与致谢"
 date: 2018-02-22T17:01:34+07:00
 heroBackground: ''
