@@ -1,6 +1,6 @@
 ---
 title: "公共事物的治理之道：集体行动制度的演进"
-date: "2022-12-07"
+date: 2021-06-14
 originalTitle: "Governing the Commons: The Evolution of Institutions for Collective Action"
 author: "埃莉诺·奥斯特罗姆（Elinor Ostrom），公共经济学研究和公共选择学派的创始人之一，美国印第安纳大学政治学教授，美国国家科学院院士和美国艺术与科学院院士"
 image:

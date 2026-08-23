@@ -1,6 +1,6 @@
 ---
 title: "开源法则"
-date: "2021-10-31"
+date: 2019-04-19
 author: "何宝宏博士,互联网技术领域知名专家，中国信息通信研究院云计算与大数据研究所所长。微信公众号：何所思"
 image:
   filename: "books/kaiyuan-faze.jpg"

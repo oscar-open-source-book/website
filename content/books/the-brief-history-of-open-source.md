@@ -1,6 +1,6 @@
 ---
 title: "开源之史"
-date: "2022-02-23"
+date: 2025-10-08
 author: "「发现开源三部曲」（[《开源之迷》](https://opensourceway.community/posts/book-of-open-source/the"
 image:
   filename: "books/the-history-of-os-poster.jpg"

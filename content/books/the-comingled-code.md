@@ -1,6 +1,6 @@
 ---
 title: "混杂代码：开源及其经济发展"
-date: "2019-06-11"
+date: 2025-01-05
 originalTitle: "The Comingled Code： open source and Economic development"
 author: "Josh Lerner 是哈佛商学院雅各布-H.希夫（Jacob H. Schiff）教授，哈佛商学院投资银行教授，同时兼任金融和创业部门的职务。他著有《破碎梦"
 image:

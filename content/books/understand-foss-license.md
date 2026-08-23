@@ -1,6 +1,6 @@
 ---
 title: "理解开源和自由软件许可"
-date: "2021-01-10"
+date: 2023-04-06
 originalTitle: "Understanding Open Source and Free Software Licensing"
 author: "Andrew M. St. Laurent 是一位经验丰富的律师，对知识产权，尤其是软件许可，有着浓厚的兴趣。"
 image:

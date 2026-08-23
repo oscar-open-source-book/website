@@ -1,6 +1,6 @@
 ---
 title: "以人为本：共同体如何提升公司业务、品牌和团队"
-date: "2021-07-29"
+date: 2026-10-30
 originalTitle: "People Powered:How communities can supercharge your business, brand, and teams"
 author: "Jono Bacon 是卓越的演说家、作家。他目前创建了自己的工作室，为众多企业做咨询和顾问。Jono Bacon 在开源和community 界有着广泛的知名"
 image:

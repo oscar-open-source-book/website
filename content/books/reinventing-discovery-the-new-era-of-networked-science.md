@@ -1,6 +1,6 @@
 ---
 title: "重塑发现：网络化科学的新时代"
-date: "2023-02-27"
+date: 2020-02-23
 originalTitle: "Reinventing Discovery：The New Era of Networked Science"
 author: "迈克尔•尼尔森（Michael Nielsen），澳大利亚量子计算科学家。研究领域从量子计算、开放科学到人工神经网络和深度学习。曾供职于洛斯阿拉莫斯国家实验室（"
 image:
