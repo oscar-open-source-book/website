@@ -1,6 +1,6 @@
 ---
 image:
-  filename: "posts/reading-and-talking.jpg"
+  filename: "posts/reading-and-talking.png"
 title: "Reading and Talking"
 date: 2024-04-12T21:52:28+08:00
 icon: "services/service-icon-1.png"

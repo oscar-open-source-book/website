@@ -1,6 +1,6 @@
 ---
 image:
-  filename: "posts/reading-in-dev-together-2022.jpg"
+  filename: "posts/reading-in-dev-together-2022.png"
 title: "Dev.Together 2022 中国开发者生态峰会·读书分论坛"
 date: 2022-11-28T15:47:33+08:00
 icon: "services/icons8-reading-67.png"
