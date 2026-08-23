@@ -17,7 +17,7 @@ sections:
       background:
         color: "#1B3B6B"
         image:
-          filename: "images/bg-2023-02-18-all.jpeg"
+          filename: "images/meetup-bg-strip.jpg"
           position: center
           size: cover
           parallax: false
