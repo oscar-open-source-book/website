@@ -1,6 +1,6 @@
 ---
 title: "开源文化在中国"
-date: "2021-05-09"
+date: 2021-06-21
 author: "范小青，文学博士，中央民族大学新闻与传播学院副教授，硕士研究生导师，新媒体研究中心主任。本科、硕士毕业于武汉大学，博士毕业于北京大学。2019年入选国家民委中青"
 image:
   filename: "books/open-source-culture-in-china.png"

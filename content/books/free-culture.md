@@ -1,6 +1,6 @@
 ---
 title: "自由文化：创意产业的未来"
-date: "2022-01-03"
+date: 2025-08-15
 originalTitle: "FREE CULTURE：How big meida uses technology and the law to lock down culture and control creativity"
 author: "劳伦斯·莱斯格，现任斯坦福大学法学院教授，是斯坦福大学网络与社会研究中心创始人，全球最负盛名的网络法律专家，被《纽约客》誉为“互联网时代最重要知识产权思想家”，"
 image:

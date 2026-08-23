@@ -1,6 +1,6 @@
 ---
 title: "知识社群：将个体知识融汇成集体智慧"
-date: "2019-03-07"
+date: 2021-07-03
 originalTitle: "Cultivating Communities of Practice: A Guide to Managing Knowledge"
 author: "埃蒂纳·温格是一位独立咨询师。研究学者。作家和演讲者。他是“实践社团”研究的先锋，目前已经成为该领域内全球公认的思想领袖。他在理论方面做出了众多的成就，在实践中"
 image:

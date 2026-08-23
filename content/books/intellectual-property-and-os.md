@@ -1,6 +1,6 @@
 ---
 title: "知识财产和开源：保护代码/法典的实践指导"
-date: "2019-07-11"
+date: 2024-08-31
 originalTitle: "Intellectual Property and Open Source:A Practical Guide to Protecting Code"
 author: "Van Lindberg 是一名软件工程师和执业律师。不过，他认为自己最常做的是“翻译”工作 —— 从“律师”到“工程师”，或者是从“工程师”到“律师”。他喜欢"
 image:

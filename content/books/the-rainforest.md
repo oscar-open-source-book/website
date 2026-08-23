@@ -1,6 +1,6 @@
 ---
 title: "硅谷生态圈：创新的雨林法则"
-date: "2023-04-13"
+date: 2019-07-07
 originalTitle: "The Rainforest：The Secret to Building the Next Silicon Valley"
 author: "Victor W. Hwang 和 Greg Horowitt 是总部位于硅谷的风险投资家和企业家。他们是 T2 Venture Capital 的联合创始人和"
 image:
