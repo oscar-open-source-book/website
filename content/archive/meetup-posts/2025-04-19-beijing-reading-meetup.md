@@ -1,28 +1,31 @@
 ---
+type: event
 image:
   filename: "posts/fallback-meetup.jpg"
-title: "2025.03.22 「OSCAR· 开源之书」·分享·北京站"
-date: 2025-03-22T15:21:02+08:00
+title: "2025.04.19 「OSCAR· 开源之书」·分享·北京站"
+date: 2025-04-19T15:21:02+08:00
 icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: true
 weight: 50
-heroHeading: '「OSCAR· 开源之书·共读」小组 2025 3月 Meetup'
+heroHeading: '「OSCAR· 开源之书·共读」小组 2025 4月 Meetup'
 heroSubHeading: ''
-heroBackground: 'images/books-for-exchange.jpg'
-description: ' NVIDIA 之道与技术如何塑造组织 '
+heroBackground: ''
+description: ' 企业内推动开源文化以及中国古代的“士”之精神 '
 ---
 
 
 # 特别感谢赞助（个人或组织）：
  
-* 活动场地赞助：鼎好DH3
+* 活动场地赞助：余凡娟（Rebecca）
+
 * 
-* 咖啡/小食赞助：王厚
+* 咖啡/小食赞助：王厚、余凡娟（Rebecca）
 
-* 书籍赞助： 振华
-* 礼品赞助：GitCode 
+* 书籍赞助： 
 
+*    机械工业出版社以清
+*    上海开源信息技术协会（人民日报出版社出版）
 
 # 联合支持小组：
 
@@ -31,12 +34,12 @@ description: ' NVIDIA 之道与技术如何塑造组织 '
 
 # 本期看点：
 
-**NVIDIA 之道与技术如何塑造组织**
+**企业内推动开源文化以及中国古代的“士”之精神**
 
 
 # 时间：
 
-2025年03月22日 周六 
+2025年04月19日 周六 
 
 ## 下午读书交流分享活动
 
@@ -45,7 +48,7 @@ description: ' NVIDIA 之道与技术如何塑造组织 '
 
 # 地点: 
 
-中关村•鼎好DH3-A座22层 [公众号](https://mp.weixin.qq.com/s/H0KqFwhvNeb3qV4KOE-e5w)
+北京市海淀区北四环西路58号理想国际大厦18层
 
 
 # 「OSCAR·开源之书·共读」概要：
@@ -61,9 +64,9 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
  
 
 - 13:00～～14:00   实时读书
-- 14:00 ～～ 14:10  鼎好DH3 赞助host warmly welcome
-- 15:01 ～ 16:00   《NIVDIA之道》
-- 16:01～ 17:00   《技术如何重塑组织：开源为何被视为未来》
+- 14:00 ～～ 14:10  Rebecca 赞助host warmly welcome
+- 15:01 ～ 16:00   《Fostering Open Source Culture》
+- 16:01～ 17:00   《士的精神内核与今日之开源》
 - 17:00 ～ 17:30 合影留念，Social
 
 
@@ -88,16 +91,19 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 * 适兕
 * 振华
-* 袁怿
-* 夜雪芳华
-* Roger
 * 遇惠君
-* 陆雨霄
 * 迷糊
-* 刑鹏
-* 刘洋
-* 董必杰
-* 随机路人甲、乙
+* 闫可为
+* 朱其罡
+* Bright Li
+* 姜宁
+* 遇惠君
+* Elaine
+* 孙建新Eric
+* Peter 叶毓睿
+* 郭雪
+* 杨东杰
+* Rebecca
 
 
 # 协助/记录：
@@ -106,4 +112,4 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 ## 现场书友合影留念（点击图片下载演示文稿）
 
-[![](/images/meetup/2025-03-22-all.jpg)](https://1drv.ms/p/c/db5a2447fe9336b8/EXdJKlDHTsRKlVO2MlN7m5oBlWa4KWhrmyRBIgZYnTF0ng)
+[![](/images/meetup/2025-04-19-meetup-all.jpg)](https://1drv.ms/b/c/db5a2447fe9336b8/EVeI9QpzP2FFleuFJlHZ60oBUy3U_qn8tPNYmSM3LVdkrw?e=IBrtzo)

@@ -1,4 +1,5 @@
 ---
+type: event
 image:
   filename: "posts/fallback-meetup.jpg"
 title: "2023.08.26 「OSCAR· 开源之书·共读」·分享·北京站"
