@@ -1,24 +1,28 @@
 ---
+type: event
 image:
   filename: "posts/fallback-meetup.jpg"
-title: "2025.02.22 「OSCAR· 开源之书」·分享·北京站"
-date: 2025-02-22T15:21:02+08:00
+title: "2025.03.22 「OSCAR· 开源之书」·分享·北京站"
+date: 2025-03-22T15:21:02+08:00
 icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: true
 weight: 50
-heroHeading: '「OSCAR· 开源之书·共读」小组 2025 2月 Meetup'
+heroHeading: '「OSCAR· 开源之书·共读」小组 2025 3月 Meetup'
 heroSubHeading: ''
 heroBackground: 'images/books-for-exchange.jpg'
-description: 'DeepSeek 带来的读书习惯探讨～ '
+description: ' NVIDIA 之道与技术如何塑造组织 '
 ---
 
 
 # 特别感谢赞助（个人或组织）：
  
-* 咖啡/小食赞助：王厚、Fine、Dongjie
+* 活动场地赞助：鼎好DH3
+* 
+* 咖啡/小食赞助：王厚
 
-* 书籍赞助： 王厚
+* 书籍赞助： 振华
+* 礼品赞助：GitCode 
 
 
 # 联合支持小组：
@@ -28,12 +32,12 @@ description: 'DeepSeek 带来的读书习惯探讨～ '
 
 # 本期看点：
 
-**推理大模型带来的阅读体验改进**
+**NVIDIA 之道与技术如何塑造组织**
 
 
 # 时间：
 
-2025年02月22日 周六 
+2025年03月22日 周六 
 
 ## 下午读书交流分享活动
 
@@ -42,10 +46,8 @@ description: 'DeepSeek 带来的读书习惯探讨～ '
 
 # 地点: 
 
-国家图书馆后院内——品诺咖啡
+中关村•鼎好DH3-A座22层 [公众号](https://mp.weixin.qq.com/s/H0KqFwhvNeb3qV4KOE-e5w)
 
-
-![](/images/meetup/pinnuo-coffee.jpg)
 
 # 「OSCAR·开源之书·共读」概要：
  
@@ -59,10 +61,12 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 # 活动内容&议程：
  
 
-- 13:00～15：00 实时读书
-- 15:01 ～ 16:00   近期读书心得体会
-- 《[话题讨论]<think>思维链的输出对读书爱好者的影响》
-- 17:31～18:00 合影留念，social
+- 13:00～～14:00   实时读书
+- 14:00 ～～ 14:10  鼎好DH3 赞助host warmly welcome
+- 15:01 ～ 16:00   《NIVDIA之道》
+- 16:01～ 17:00   《技术如何重塑组织：开源为何被视为未来》
+- 17:00 ～ 17:30 合影留念，Social
+
 
 # 参与须知：
 
@@ -84,14 +88,23 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 ## 参与者
 
 * 适兕
-* Fine
-* Dongjie
-* 欣欣
+* 振华
+* 袁怿
+* 夜雪芳华
+* Roger
+* 遇惠君
+* 陆雨霄
+* 迷糊
+* 刑鹏
+* 刘洋
+* 董必杰
+* 随机路人甲、乙
+
 
 # 协助/记录：
 
 适兕
 
-## 现场书友合影留念
+## 现场书友合影留念（点击图片下载演示文稿）
 
-![](/images/meetup/2025-02-22-all.jpg)
+[![](/images/meetup/2025-03-22-all.jpg)](https://1drv.ms/p/c/db5a2447fe9336b8/EXdJKlDHTsRKlVO2MlN7m5oBlWa4KWhrmyRBIgZYnTF0ng)

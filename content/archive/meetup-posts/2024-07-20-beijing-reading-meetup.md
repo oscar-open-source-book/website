@@ -1,16 +1,17 @@
 ---
+type: event
 image:
-  filename: "posts/fallback-meetup.jpg"
-title: "2024.03.23 「OSCAR· 开源之书·重读」·分享·北京站"
-date: 2024-03-23T15:21:02+08:00
+  filename: "posts/2024-07-20-beijing-reading-meetup.jpg"
+title: "2024.07.20 「OSCAR· 开源之书·重读」·分享·北京站"
+date: 2024-07-14T15:21:02+08:00
 icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: true
-weight: 90
-heroHeading: '文化的重要作用'
+weight: 50
+heroHeading: '乌卡时代(VUCA ) 之复杂性的应对'
 heroSubHeading: ''
-heroBackground: 'images/meetup/2024-03-23-books.png'
-description: '关于重读线下活动北京站，2024.03.23 详细情况：地点、题目、时间、参与人员。'
+heroBackground: 'images/culture-history-trilogy.jpg'
+description: '关于重读线下活动北京站，2024.07.20 详细情况：地点、题目、时间、参与人员。'
 ---
 
 
@@ -18,28 +19,25 @@ description: '关于重读线下活动北京站，2024.03.23 详细情况：地�
 
 * 场地赞助：  中关村创业大街
  
-* 咖啡/小食赞助：振华
+* 咖啡/小食赞助：「开源之道」·适兕
 
-* 图书礼品赞助： 
+* 图书礼品赞助： 振华-开源之道
 
-![](images/meetup/2024-03-23-book-gift-1.png)
+![](/images/meetup/2024-07-20-book-gift.jpg)
 
-![](images/meetup/2024-03-23-book-gift-2.png)
 
 # 联合支持小组：
 
-
-* KCC 北京
 * [「开源之法与经济」](https://opensourceway.community/posts/os-license-and-copyleft/build-os-licensing-workgroup/)
 
 # 本期看点：
 
-**文化的重要作用**
+**乌卡时代(VUCA ) 之复杂性的应对**
 
 
 # 时间：
 
-2024年2月24日 14:00 ～～ 18:00
+2024年7月20日 14:00 ～～ 18:00
 
  
 # 地点: 
@@ -56,14 +54,13 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 也可浏览网站： [https://osbook.club](https://osbook.club)
 
 
-
 # 活动内容&议程：
  
 - 14:00 之前， 参与成员自我介绍（临时微信群接龙）
 - 14:00～14:05  Social，寒暄
 - 14:06～14:15  根据微信群的介绍，开始肉身和网络id 对号入座
-- 14:16～16：59 《跨国合作和文化》，CY
-- 17:00～ 18:00  《开放式组织》，Hailing
+- 14:16～16：59  《复杂：诞生于秩序与混沌边缘的科学》阅读与感悟
+- 17:00～ 18:00  《Cynefin 管理决策框架 所面对的复杂环境》
 - 18：00 ～ 18:10 合影留念，Social
  
 
@@ -73,8 +70,7 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
  
 [「OSCAR·开源之书·共读书单」](https://osbook.club/work/) 中的所有书籍。
 
-
-![](images/meetup/2024-03-23-book-open-org.png)
+![](/images/complexity-the-emerging-science.png)
 
 # 行为准则：
  
@@ -91,7 +87,7 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
  
 # 主持人：
 
-* 武晓慧
+* 德福
 
 ## 报名方式（在此写上网络ID即可）：
 
@@ -100,17 +96,11 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 1. 适兕
 2. 淮晋阳
 3. 遇惠君
-4. 陈阳
-5. 赵海玲
-6. 梁尧
-7. 微扰
-8. 德福
-9. 柳丽英
-10. 陈茂林
-11. 保莹
-12. 武晓慧
-13. 沈杨
-14. 杨东杰
+4. 杨东杰
+5. 保莹
+6. mihu
+7. 夜雪芳华
+8. 我有魔发
 
 
 # 协助/记录：
@@ -122,15 +112,17 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 ## 现场书友精彩瞬间
 
-![](/images/meetup/2024-03-23-all.jpg)
+![](/images/meetup/2024-07-20-speaker.jpg)
 
 ## 幻灯及更多照片
 
 点击图片打开OneDrive目录。获取全部照片及幻灯分享。
 
-[![](/images/meetup/2024-03-23-speaker-emily-1.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgf4uaw_PWpWLg4gi6w?e=Wudbx4)
+[![](/images/meetup/2024-07-20-all.jpg)](https://1drv.ms/p/s!Arg2k_5HJFrbgoJJIjr9hHTVnrXzrg)
 
 ## 参与书友感概
 
-> 文化是可以习得的，但是比我们想象中要艰难的多。
->   ———— 「开源之道」·适兕
+> 参与「开源之书·共读」线下活动，仿若从俗世来到了理想的精神世界！在这里可以毫无顾忌的畅谈自己的想法和读书感悟。
+>    ———— 匿名参与者
+
+

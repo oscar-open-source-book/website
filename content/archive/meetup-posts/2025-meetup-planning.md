@@ -1,4 +1,5 @@
 ---
+type: event
 image:
   filename: "posts/2025-meetup-planning.jpg"
 title: "「OSCAR·开源之书·共读」 2025年分享书友及议题信息"

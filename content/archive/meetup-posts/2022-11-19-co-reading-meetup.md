@@ -1,4 +1,5 @@
 ---
+type: event
 image:
   filename: "posts/2022-11-19-co-reading-meetup.jpg"
 draft: true
