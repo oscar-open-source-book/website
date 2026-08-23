@@ -1,5 +1,6 @@
 ---
 title: "黑客伦理与信息时代精神"
+date: "2020-07-17"
 originalTitle: "The Hacker Ethic and the Spirit of the Information Age"
 author: "派卡・海曼（Pekka Himanen）：一个技术神童，20岁在芬兰赫尔辛基大学获得哲学博士学位。他正在从事技术发展社会意义的研究，这使他与学术界、艺术界、政府"
 image:

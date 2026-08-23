@@ -1,5 +1,6 @@
 ---
 title: "代码2.0:网络空间中的法律"
+date: "2023-01-06"
 originalTitle: "Code: And Other Laws of Cyberspace, Version 2.0"
 author: "劳伦斯·莱斯格，现任斯坦福大学法学院教授，是斯坦福大网络与社会研究中心创始人，全球是最负盛名的网络法律专家，被《商业周刊》称为“互联网时代的守护神”。"
 image:

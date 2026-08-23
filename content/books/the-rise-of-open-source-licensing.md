@@ -1,5 +1,6 @@
 ---
 title: "开源许可的崛起：软件产业界采用知识财产权的挑战"
+date: "2020-04-21"
 originalTitle: "The Rise of Open Source Licensing:A Challenge to the Use of Intellectual Property in the Soft ware Industry"
 author: "Mikko Välimäki 在赫尔辛基理工大学教授技术法。他曾就开放源代码许可问题为大家提供咨询。"
 image:

@@ -1,5 +1,6 @@
 ---
 title: "开源项目的计划管理：如何指导共同体驱动的开源项目"
+date: "2022-05-21"
 originalTitle: "Program Management for Open Source Projects: How to Guide Your Community-Driven, Open Source Project"
 author: "Ben Cotton 是红帽公司的 Fedora 项目经理。十多年来，他一直为 Fedora 项目和其他开源项目做出贡献。Ben 的职业生涯横跨公共和私营部门的"
 image:

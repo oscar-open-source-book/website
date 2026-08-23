@@ -1,5 +1,6 @@
 ---
 title: "企鹅与利维坦：合作如何战胜私利"
+date: "2022-05-17"
 originalTitle: "The Penguin and the Leviathan：The Triumph of Cooperation Over Self-Interest"
 author: "尤查•本科勒（Yochai Benkler）"
 image:

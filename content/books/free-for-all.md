@@ -1,5 +1,6 @@
 ---
 title: "全民自由：Linux和自由软件运动如何抵抗科技巨头"
+date: "2023-10-02"
 originalTitle: "Free For All: How Linux and the Free Software Movement Undercut the High Tech Titans"
 author: "Peter Wayner，一位美国作家，以其有关技术的书籍以及在纽约时报、InfoWorld 和连线杂志等主流出版物上的写作而闻名。"
 image:

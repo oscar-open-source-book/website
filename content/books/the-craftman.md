@@ -1,5 +1,6 @@
 ---
 title: "匠人"
+date: "2020-07-23"
 originalTitle: "The Craftsman"
 author: "理查德•桑内特（Richard Sennett），当代著名社会学家和思想家，曾任纽约大学、伦敦政治经济学院教授，目前担任剑桥大学社会学系杰出访问教授，因其在社会"
 image:
