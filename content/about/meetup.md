@@ -11,6 +11,8 @@ weight: 1
 heroHeading: '线下共读'
 heroSubHeading: '面对面的见面交流读书心得仍然是最佳选择。'
 heroBackground: 'services/service1.jpg'
+
+editable: true
 ---
 
 ## 常年招募书友分享

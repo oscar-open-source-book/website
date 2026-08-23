@@ -12,6 +12,8 @@ heroSubHeading: ''
 heroBackground: 'services/service1.jpg'
 description: 'Dev.Together 2022 中国开发者生态峰会上的读书分论坛，关于开发者、共同体以及他们的关系经验分享和累积。'
 author: '适兕'
+
+editable: true
 ---
 # Dev.Together 2022 中国开发者生态峰会确认
 

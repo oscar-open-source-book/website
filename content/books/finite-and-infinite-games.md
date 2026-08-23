@@ -9,6 +9,8 @@ category: "其他"
 type: book
 weight: 43
 recommender: "适兕，作者，「开源之道」主创。"
+
+editable: true
 ---
 
 ## 推荐理由

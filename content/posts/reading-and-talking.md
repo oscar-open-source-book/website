@@ -11,6 +11,8 @@ heroHeading: '「OSCAR·开源之书·共读」 ·拓展记录'
 heroSubHeading: ''
 heroBackground: 'services/service1.jpg'
 description: ''
+
+editable: true
 ---
 
 ## 2024.4.12

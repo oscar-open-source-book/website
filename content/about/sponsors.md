@@ -6,6 +6,8 @@ title: "赞助"
 subtitle: "「OSCAR·开源之书·共读」赞助信息"
 type: about
 weight: 30
+
+editable: true
 ---
 
 # 赞助「OSCAR·开源之书·共读」

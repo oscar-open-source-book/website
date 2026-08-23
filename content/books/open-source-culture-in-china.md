@@ -8,6 +8,8 @@ category: "文化类"
 type: book
 weight: 53
 recommender: "[周鹏飞](https://github.com/feynmanzhou)，微软 Azure 产品经理，CNCF 大使，开源项目贡献者，「OSCAR·开源之书·共读」活动志愿者。"
+
+editable: true
 ---
 
 ## 推荐理由

@@ -11,6 +11,8 @@ weight: 6
 heroHeading: '会议活动'
 heroSubHeading: ''
 heroBackground: 'services/service2.jpg'
+
+editable: true
 ---
 
 能够在各种技术大会上相遇本身就是缘分，为什么借此机会组织一场关于阅读与开源的会议了呢？

@@ -7,6 +7,8 @@ image:
 category: "法律类"
 type: book
 weight: 59
+
+editable: true
 ---
 
 ## 推荐理由

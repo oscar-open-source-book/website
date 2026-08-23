@@ -11,6 +11,8 @@ heroHeading: '「OSCAR·开源之书·共读」线下分享交流主张'
 heroSubHeading: ''
 heroBackground: 'services/service1.jpg'
 description: '线下分享交流主张'
+
+editable: true
 ---
 
 ## 缘由

@@ -2,6 +2,8 @@
 image:
   filename: "about/fallback.jpg"
 title: "关于「OSCAR·开源之书·共读」"
+
+editable: true
 ---
 
 ### about-content1

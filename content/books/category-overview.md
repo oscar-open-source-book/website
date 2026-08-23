@@ -11,6 +11,8 @@ tags:
   - 分类
   - 开源之书
 weight: 5
+
+editable: true
 ---
 
 # 书单分类总览
