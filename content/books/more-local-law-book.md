@@ -2,6 +2,7 @@
 image:
   filename: "books/open-source-revolution.jpg"
 title: ""
+date: "2023-11-16"
 cover: ""
 category: "其他"
 type: book

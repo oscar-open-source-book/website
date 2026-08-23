@@ -1,5 +1,6 @@
 ---
 title: "网络的财富：社会生产如何改变市场和自由"
+date: "2023-07-11"
 originalTitle: "The Wealth of Networks：How Social Production Transforms Markets and Freedom"
 author: "尤查•本科勒（Yochai Benkler）"
 image:

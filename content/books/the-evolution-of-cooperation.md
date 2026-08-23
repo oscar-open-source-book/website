@@ -1,5 +1,6 @@
 ---
 title: "合作的进化"
+date: "2023-12-19"
 originalTitle: "The evolution of cooperation"
 author: "罗伯特·艾克斯罗德(Robert Axelrod)，密歇根大学政治学与公共政策教授，美国科学院院士，著名的政治科学家、行为分析学家及博弈论专家。除本书外，还著有"
 image:

@@ -1,5 +1,6 @@
 ---
 title: "超级合作者"
+date: "2022-04-24"
 originalTitle: "Super Cooperators: Altruism, Evolution, and Why We Need Each Other to Succeed"
 author: "[美]马丁•诺瓦克 (Martin A. Nowak)，哈佛大学数学与生物学教授，进化动力学中心（PED）主任，与著名生物学家理查德•道金斯和爱德华•威尔逊齐名"
 image:

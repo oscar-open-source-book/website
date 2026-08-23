@@ -38,23 +38,23 @@ sections:
     id: 共读
     content:
       title: "共读 Meetup"
-      text: "2022 至今，26 场线下共读。"
+      text: "2022–2026，26 场线下共读。"
       filters:
         folders:
           - events
-      count: 4
+      count: 6
     design:
-      view: date-title-summary
-      columns: 1
+      view: article-grid
+      columns: 3
   - block: collection
-    id: 推荐
+    id: 文章
     content:
-      title: "每日推荐"
-      text: "每周精选一本书或一篇论文，与制度分析框架对话。"
+      title: "文章"
+      text: "从图书馆、开源文集、走组织、Reading and Talking 到开发者峰会——社区六年来的思考与行动记录。"
       filters:
         folders:
           - posts
-      count: 3
+      count: 6
     design:
       view: article-grid
       columns: 3

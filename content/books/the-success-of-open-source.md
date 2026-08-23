@@ -1,5 +1,6 @@
 ---
 title: "开源的成功之路"
+date: "2020-03-16"
 originalTitle: "The Success of Open Source"
 author: "[Steven Weber](https://www.ischool.berkeley.edu/people/steven-weber) ，研究领域涉及技术市场"
 image:

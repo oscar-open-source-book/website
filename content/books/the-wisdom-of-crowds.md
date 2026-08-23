@@ -1,5 +1,6 @@
 ---
 title: "群体的智慧：如何做出最聪明的决策"
+date: "2023-07-16"
 originalTitle: "The Wisdom of Crowds: Why the Many Are Smarter Than the Few & How Collective Wisdom Shapes Business,Economies, Societies & Nations"
 author: "詹姆斯•索罗维基（James Surowiecki），《纽约客》杂志特约撰稿人。他的文章见诸很多出版物，包括《纽约时报》《华尔街日报》《艺术论坛报》《连线》杂志"
 image:

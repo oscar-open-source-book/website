@@ -1,5 +1,6 @@
 ---
 title: "开源许可：软件自由和知识财产法"
+date: "2019-07-29"
 originalTitle: "Open Source Licensing: Software Freedom and Intellectual Property Law"
 author: "LAWRENCE ROSEN 是一名难得的拥有律师和计算机双学科背景的资深人士，他也是非常活跃的开源人士，在Apache软件基金会、开放源代码促进会（OSI）、"
 image:

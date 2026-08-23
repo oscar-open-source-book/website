@@ -2,6 +2,7 @@
 image:
   filename: "books/open-source-revolution.jpg"
 title: "书名"
+date: "2020-08-23"
 category: "其他"
 type: book
 draft: true
