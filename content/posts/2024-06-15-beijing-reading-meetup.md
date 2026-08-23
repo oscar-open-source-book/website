@@ -1,6 +1,6 @@
 ---
 image:
-  filename: "posts/fallback-meetup.jpg"
+  filename: "posts/2024-06-15-beijing-reading-meetup.jpg"
 title: "2024.06.15 「OSCAR· 开源之书·重读」·分享·北京站"
 date: 2024-06-14T15:21:02+08:00
 icon: "services/meetup/icons8-community-50.png"
