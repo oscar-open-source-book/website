@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "events/2024-10-26-beijing-reading-meetup.png"
 title: "网络的财富中文预览版"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"

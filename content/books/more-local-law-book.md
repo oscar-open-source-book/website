@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "books/open-source-revolution.jpg"
 title: ""
 cover: ""
 category: "其他"

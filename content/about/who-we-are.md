@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "about/fallback.jpg"
 title: "关于「OSCAR·开源之书·共读」"
 ---
 
