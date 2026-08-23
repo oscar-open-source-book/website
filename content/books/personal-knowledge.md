@@ -8,6 +8,8 @@ image:
 category: "社会类"
 type: book
 weight: 61
+
+editable: true
 ---
 
 ## 推荐理由

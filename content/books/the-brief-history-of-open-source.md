@@ -7,6 +7,8 @@ image:
 category: "其他"
 type: book
 weight: 72
+
+editable: true
 ---
 
 ## 推荐理由

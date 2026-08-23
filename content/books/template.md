@@ -6,6 +6,8 @@ category: "其他"
 type: book
 draft: true
 weight: 9999
+
+editable: true
 ---
 
 ## 推荐理由

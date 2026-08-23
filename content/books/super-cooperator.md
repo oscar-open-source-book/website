@@ -9,6 +9,8 @@ category: "经济类"
 type: book
 weight: 68
 recommender: "杨振涛 @vivo互联网"
+
+editable: true
 ---
 
 ## 推荐理由

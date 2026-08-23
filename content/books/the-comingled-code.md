@@ -8,6 +8,8 @@ image:
 category: "经济类"
 type: book
 weight: 75
+
+editable: true
 ---
 
 ## 推荐理由

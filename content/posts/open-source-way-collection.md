@@ -11,6 +11,8 @@ heroHeading: '「OSCAR·开源之书·共读」 文章与新闻'
 heroSubHeading: ''
 heroBackground: 'services/service1.jpg'
 description: '开源由多人共同完成，书籍也概莫能外，经典往往都是合集，我们也不妨花点时间来尝试一番。'
+
+editable: true
 ---
 ## 背景介绍
 

@@ -4,6 +4,8 @@ image:
 title: '欢迎加入我们'
 date: 2018-02-22T17:01:34+07:00
 heroBackground: 'https://source.unsplash.com/random/?library'
+
+editable: true
 ---
 
 ## 群组
