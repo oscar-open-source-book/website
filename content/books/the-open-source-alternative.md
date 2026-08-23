@@ -1,5 +1,6 @@
 ---
 title: "另类开源：理解风险与把握机会"
+date: "2021-05-15"
 originalTitle: "The Open Source Alternative:Understanding Risks and Leveraging Opportunities"
 author: "Heather Meeker 是O’Melveny & Myers’ Silicon Valley office in the Mergers and Acqu"
 image:

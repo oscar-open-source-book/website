@@ -1,5 +1,6 @@
 ---
 title: "软件悖论:商业软件的崛起与陨落"
+date: "2021-02-14"
 originalTitle: "The Software Paradox: The Rise and Fall of the Commercial Software Market"
 author: "Stephen O’Grady 是知名专注于开发者行业的分析公司RedMonk 的联合创始人，在RedMonk， Stephen 和诸如 IBM、DELL、VM"
 image:

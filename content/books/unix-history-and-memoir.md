@@ -1,5 +1,6 @@
 ---
 title: "UNIX传奇:历史与回忆"
+date: "2022-10-17"
 originalTitle: "UNIX: A History and a Memoir"
 author: "布莱恩·W.克尼汉（Brian W. Kernighan）是《C程序设计语言》和《UNIX编程环境》等10多部计算机著作的合著者。他曾在贝尔实验室计算科学研究中"
 image:

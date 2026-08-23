@@ -1,5 +1,6 @@
 ---
 title: "商业开源：开源软件许可实用指南"
+date: "2022-07-11"
 originalTitle: "Open (Source) for Business：A Practical Guide to Open Source Software Licensing"
 author: "Heather Meeker 是O’Melveny & Myers’ Silicon Valley office in the Mergers and Acqu"
 image:

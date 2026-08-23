@@ -1,5 +1,6 @@
 ---
 title: "共同利益经济学"
+date: "2023-08-26"
 originalTitle: "Economics for the Common Good"
 author: "让·梯若尔（Jean Tirole）教授是法国让-雅克·拉丰基金会/图卢兹经济学院（TSE）董事会名誉主席、图卢兹高等研究院（IAST）主席、产业经济研究所（I"
 image:

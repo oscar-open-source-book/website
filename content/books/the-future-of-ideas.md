@@ -1,5 +1,6 @@
 ---
 title: "思想的未来:网络时代公共知识领域的警世喻言"
+date: "2023-04-04"
 originalTitle: "The Future of Ideas:The fate of the commons in a connected world"
 author: "Lawrence Lessig，现任斯坦福大学法学院教授，是斯坦福大学网络与社会研究中心创始人，全球最负盛名的网络法律专家，被《纽约客》誉为“互联网时代最重要知"
 image:

@@ -1,5 +1,6 @@
 ---
 title: "拥抱开源"
+date: "2023-07-09"
 originalTitle: "How Open Source Ate Software:Understand the Open Source Movement and So Much More"
 author: "Gordon Haff 是在红帽担任技术布道师，他常常在各种技术场合下做演讲，当然也是很多线上媒体（Enterprisers Projec 、Opensourc"
 image:
