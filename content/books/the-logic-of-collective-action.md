@@ -1,6 +1,6 @@
 ---
 title: "集体行动的逻辑：公共物品与集团理论"
-date: "2020-11-27"
+date: 2025-12-08
 originalTitle: "The Logic of Collective Action: Public Goods and the Theory of Groups"
 author: "曼瑟·奥尔森（Mancur Olson），当代最有影响力的经济学家之一，美国马里兰大学经济学教授，公共选择理论的主要奠基者。主要著作包括：《战时短缺经济学》（1"
 image:

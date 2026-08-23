@@ -1,6 +1,6 @@
 ---
 title: "开源之路"
-date: "2019-06-28"
+date: 2026-11-25
 originalTitle: "The Open Source Way"
 author: "这本书亦是用开源的方式来完成的。作者来自RedHat 开源项目办公室团队的成员以及各个开源项目共同体的领袖。"
 image:

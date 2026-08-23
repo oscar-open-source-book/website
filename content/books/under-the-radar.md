@@ -1,6 +1,6 @@
 ---
 title: "Linux 红帽旋风"
-date: "2022-01-21"
+date: 2020-02-18
 originalTitle: "Under the Radar: How Red Hat Changed the Software Business -- and Took Microsoft by Surprise "
 author: "罗伯特・杨（Robert Young）"
 image:

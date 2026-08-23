@@ -1,6 +1,6 @@
 ---
 title: "上游思维 : 在问题发生前解決的根治之道"
-date: "2019-01-14"
+date: 2024-02-01
 originalTitle: "Upstream: The Quest to Solve Problems Before They Happen"
 author: "丹·希思（Dan Heath）是《纽约时报》《华尔街日报》畅销书作家，曾任哈佛商学院研究员，现任杜克大学高级研究员。创新媒体教育公司思睿（Thinkwell）创"
 image:

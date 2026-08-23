@@ -1,6 +1,6 @@
 ---
 title: "Linux和开源的商业与经济"
-date: "2020-06-25"
+date: 2025-04-17
 originalTitle: "The Business and Economics of Linux and Open Source"
 author: "MARTIN FINK 是 Hewlett-Packard 的 Linux 系统部门的总经理，他在该部门领导 Linux 开发活动已超过三年（写作本书时）。他负"
 image:

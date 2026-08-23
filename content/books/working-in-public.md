@@ -1,6 +1,6 @@
 ---
 title: "在所有人看得见的地方工作：开源软件的开发与维护"
-date: "2023-02-17"
+date: 2020-10-28
 originalTitle: "Working in Public：The Making and Maintenance of Open Source Software"
 author: "Nadia Eghbal，是一位非同寻常的作家和研究者，她尝试探索互联网如何使得个体创作者成为可能。从2015年到2019年，她将研究聚焦在了开源软件的开发上，"
 image:

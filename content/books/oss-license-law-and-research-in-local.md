@@ -1,6 +1,6 @@
 ---
 title: "开放源码软件及许可证法律问题和对策研究"
-date: "2023-10-31"
+date: 2020-10-15
 author: "杨林村(时任科学技术部知识产权事务中心副主任) 等编著，具体介绍不详。可以从前言的只言片语中了解一二："
 image:
   filename: "books/oss-license-and-law-research.jpg"

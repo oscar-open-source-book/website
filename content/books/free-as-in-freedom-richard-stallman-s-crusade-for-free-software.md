@@ -1,6 +1,6 @@
 ---
 title: "若为自由故:自由软件之父理查德·斯托曼传"
-date: "2019-08-17"
+date: 2019-12-23
 originalTitle: "Free as in Freedom: Richard Stallman's Crusade for Free Software"
 author: "Sam Williams：美国纽约的一位自由作家。他主要关注高科技文化，特别是软件开发文化，以及很多的Web站点。从1988年到2001年，他为Upside T"
 image:

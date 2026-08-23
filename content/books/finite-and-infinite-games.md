@@ -1,6 +1,6 @@
 ---
 title: "有限与无限的游戏:一个哲学家眼中的竞技世界"
-date: "2022-08-02"
+date: 2025-02-11
 originalTitle: "Finite and Infinite Games: A Vision of Life as Play and Possibility"
 author: "詹姆斯·卡斯，纽约大学宗教历史系教授。 卡斯本人是一个无神论者，他把自己的信仰描述为「着迷于不可知的作为人类的存在」。机器、战争、时间、性、宗教、文学，通过把这"
 image:

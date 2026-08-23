@@ -1,6 +1,6 @@
 ---
 title: "创新者：一群技术狂人和鬼才程序员如何改变世界"
-date: "2022-11-30"
+date: 2026-01-18
 originalTitle: "The Innovators：How a Group of Hackers, Geniuses, and Geeks Created the Digital Revolution"
 author: "沃尔特·艾萨克森毕业于哈佛大学，现为阿斯彭研究所（Aspen Institute）首席执行官，曾任美国有线电视新闻网（CNN）董事长及《时代》周刊总编。他的主要"
 image:

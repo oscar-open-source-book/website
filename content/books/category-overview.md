@@ -1,5 +1,5 @@
 ---
-date: 2026-08-23
+date: 2019-04-13
 image:
   filename: "notices/books-category-overview.png"
 title: "「开源之书·共读」分类总览"

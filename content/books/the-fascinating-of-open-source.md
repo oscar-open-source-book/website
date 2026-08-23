@@ -1,6 +1,6 @@
 ---
 title: "开源之迷"
-date: "2019-11-23"
+date: 2019-11-19
 image:
   filename: "books/the-fascinating-os-face.jpeg"
   caption: "the-fascinating-of-open-source"

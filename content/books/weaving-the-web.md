@@ -1,6 +1,6 @@
 ---
 title: "编织万维网:万维之父谈万维网的原初设计与最终命运"
-date: "2022-01-21"
+date: 2026-02-16
 originalTitle: "Weaving the Web: The Original Design and Ultimate Destiny of the World Wide Web"
 author: "Tim Berners Lee ，科学家，万维网发明者。"
 image:
