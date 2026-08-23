@@ -4,7 +4,7 @@ image:
   filename: "events/2025-01-04-beijing-reading-meetup-and-6th-Anniversary-Celebration.jpg"
 title: "「OSCAR· 开源之书·共读」小组 2024年终活动暨成立6周年庆"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
-event_date: "2023-01-01"
+event_date: "2025-01-04"
 location: "北京"
 type: event
 summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"

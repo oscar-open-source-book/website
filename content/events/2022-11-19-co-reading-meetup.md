@@ -4,7 +4,7 @@ image:
   filename: "events/2022-11-19-co-reading-meetup.jpg"
 title: "2022.11.19 「OSCAR· 开源之书·共读」·分享·北京站"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
-event_date: "2023-01-01"
+event_date: "2022-11-19"
 location: "未知"
 type: event
 summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
