@@ -16,6 +16,12 @@ sections:
     design:
       background:
         color: "#1B3B6B"
+        image:
+          filename: "images/bg-2023-02-18-all.jpeg"
+          position: center
+          size: cover
+          parallax: false
+        text_color_light: true
   - block: collection
     id: 书单
     content:
