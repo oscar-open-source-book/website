@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "posts/_index.jpg"
 title: "稿件文章"
 date: 2022-11-14T10:47:07+08:00
 icon: "services/service-icon-1.png"

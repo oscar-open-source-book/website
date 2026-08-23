@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "about/meetup.jpg"
 title: '线下共读'
 date: 2018-11-18T12:33:46+10:00
 description: "面对面的见面交流读书心得仍然是最佳选择。"
