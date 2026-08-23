@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "events/2024-03-23-beijing-reading-meetup.png"
 title: "文化的重要作用"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"

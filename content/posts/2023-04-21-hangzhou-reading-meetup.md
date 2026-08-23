@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "posts/fallback-meetup.jpg"
 title: "2023.04.22 「OSCAR· 开源之书·共读」·分享·杭州站"
 date: 2023-04-24T15:21:02+08:00
 icon: "services/meetup/icons8-google-groups-80.png"

@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "about/fallback.jpg"
 title: "我们的价值观"
 ---
 
