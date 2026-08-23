@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "events/2023-01-14-beijing-reading-meetup.png"
 title: "2023.01.14 「OSCAR· 开源之书·共读」·分享·北京站"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"

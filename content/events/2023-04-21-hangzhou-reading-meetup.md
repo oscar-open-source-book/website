@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "events/2023-04-21-hangzhou-reading-meetup.png"
 title: "《rebel code》和《非暴力沟通》"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"
