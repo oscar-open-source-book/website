@@ -1,7 +1,7 @@
 ---
 date: 2024-07-20
 image:
-  filename: "events/2024-07-20-beijing-reading-meetup.png"
+  filename: "events/2024-07-20-beijing-reading-meetup.jpg"
 title: "乌卡时代(VUCA ) 之复杂性的应对"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"

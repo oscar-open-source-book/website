@@ -1,7 +1,7 @@
 ---
 date: 2024-06-15
 image:
-  filename: "events/2024-06-15-beijing-reading-meetup.png"
+  filename: "events/2024-06-15-beijing-reading-meetup.jpg"
 title: "产业视角看开源"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"

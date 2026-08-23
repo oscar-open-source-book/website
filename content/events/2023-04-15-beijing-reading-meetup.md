@@ -1,7 +1,7 @@
 ---
 date: 2023-04-15
 image:
-  filename: "events/2023-04-15-beijing-reading-meetup.png"
+  filename: "events/2023-04-15-beijing-reading-meetup.jpeg"
 title: "《毫无意义的工作》与《开源之史》"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"
