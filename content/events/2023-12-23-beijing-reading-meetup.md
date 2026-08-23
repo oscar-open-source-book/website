@@ -1,7 +1,7 @@
 ---
 date: 2023-12-23
 image:
-  filename: "events/2023-12-23-beijing-reading-meetup.png"
+  filename: "events/2023-12-23-beijing-reading-meetup.jpg"
 title: "2023年终聚会"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"
