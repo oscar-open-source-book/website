@@ -2,7 +2,9 @@
 title: "维基经济学：大规模协作如何改变一切"
 originalTitle: "Wikinomics:How Mass Collaboration Changes Everything"
 author: "唐·泰普斯科特：全球著名的新经济学家和商业策略大师，被誉为“数字经济之父”。他于1992年创办了新范式（New Paradigm）智库，研究突破性技术在生产率、"
-cover: "wikinomics.jpg"
+image:
+  filename: "books/wikinomics.jpg"
+  caption: "wikinomics-how-mass-collaboration-changes-everything"
 category: "其他"
 type: book
 weight: 34

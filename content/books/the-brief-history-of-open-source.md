@@ -1,7 +1,9 @@
 ---
 title: "开源之史"
 author: "「发现开源三部曲」（[《开源之迷》](https://opensourceway.community/posts/book-of-open-source/the"
-cover: "the-history-of-os-poster.jpg"
+image:
+  filename: "books/the-history-of-os-poster.jpg"
+  caption: "the-brief-history-of-open-source"
 category: "其他"
 type: book
 weight: 72

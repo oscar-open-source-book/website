@@ -2,7 +2,9 @@
 title: "自由企业：释放员工,收获卓越"
 originalTitle: "Freedom,inc"
 author: "布莱恩·M.卡内（Brian M.Carney），Ravada网络公司企业通讯高级副总裁。2004—2014年担任《华尔街日报》编辑委员会成员，2004—200"
-cover: "freedom-inc.jpg"
+image:
+  filename: "books/freedom-inc.jpg"
+  caption: "free-enterprise"
 category: "管理类"
 type: book
 weight: 45

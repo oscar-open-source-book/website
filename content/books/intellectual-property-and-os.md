@@ -2,7 +2,9 @@
 title: "知识财产和开源：保护代码/法典的实践指导"
 originalTitle: "Intellectual Property and Open Source:A Practical Guide to Protecting Code"
 author: "Van Lindberg 是一名软件工程师和执业律师。不过，他认为自己最常做的是“翻译”工作 —— 从“律师”到“工程师”，或者是从“工程师”到“律师”。他喜欢"
-cover: "intellectual-property-and-open-source.jpg"
+image:
+  filename: "books/intellectual-property-and-open-source.jpg"
+  caption: "intellectual-property-and-os"
 category: "法律类"
 type: book
 weight: 47

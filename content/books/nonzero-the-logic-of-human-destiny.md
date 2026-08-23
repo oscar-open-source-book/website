@@ -2,7 +2,9 @@
 title: "非零和博弈——人类命运的逻辑"
 originalTitle: "Nonzero: The Logic of Human Destiny"
 author: "[美]罗伯特•赖特，美国前总统克林顿智囊，全球百位最具影响力思想家之一。《新共和》高级编辑，《大西洋月刊》《纽约客》《时代》等杂志的撰稿人，曾供职于《科学》杂志"
-cover: "non-zero-game.jpg"
+image:
+  filename: "books/non-zero-game.jpg"
+  caption: "nonzero-the-logic-of-human-destiny"
 category: "其他"
 type: book
 weight: 21

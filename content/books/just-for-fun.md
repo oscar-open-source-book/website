@@ -2,7 +2,9 @@
 title: "只是为了好玩:Linux之父林纳斯自传"
 originalTitle: "Just for Fun: The Story of an Accidental Revolutionary"
 author: "林纳斯•托瓦兹 当今世界最著名的程序员、黑客，开源操作系统Linux之父。生于芬兰，毕业于赫尔辛基大学，1997年～2003年任职于美国加州硅谷的全美达公司，现"
-cover: "just-for-fun.jpg"
+image:
+  filename: "books/just-for-fun.jpg"
+  caption: "just-for-fun"
 category: "其他"
 type: book
 weight: 19

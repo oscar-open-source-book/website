@@ -2,7 +2,9 @@
 title: "自由和开源软件洞察论文集"
 originalTitle: "Perspectives on Free and Open Source Software"
 author: "* Audris Mockus：现任美国田纳西大学电气工程与计算机科学系 Harlan D.Mills 首席教授。他于卡耐基梅隆大学获得硕士、博士学位，毕业后曾"
-cover: "perspectives-on-foss-mit.jpg"
+image:
+  filename: "books/perspectives-on-foss-mit.jpg"
+  caption: "perspectives-on-foss"
 category: "入门类"
 type: book
 weight: 62

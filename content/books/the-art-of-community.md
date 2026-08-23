@@ -2,7 +2,9 @@
 title: "共同体的艺术：打造参与的新纪元"
 originalTitle: "The art of community : Building the new age of participation"
 author: "Jono Bacon 是卓越的演说家、作家。他目前创建了自己的工作室，为众多企业做咨询和顾问。Jono Bacon 在开源和community 界有着广泛的知名"
-cover: "the-art-of-community.jpg"
+image:
+  filename: "books/the-art-of-community.jpg"
+  caption: "the-art-of-community"
 category: "社会类"
 type: book
 weight: 70

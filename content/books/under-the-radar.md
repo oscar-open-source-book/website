@@ -2,7 +2,9 @@
 title: "Linux 红帽旋风"
 originalTitle: "Under the Radar: How Red Hat Changed the Software Business -- and Took Microsoft by Surprise "
 author: "罗伯特・杨（Robert Young）"
-cover: "under-the-radar.jpg"
+image:
+  filename: "books/under-the-radar.jpg"
+  caption: "under-the-radar"
 category: "文化类"
 type: book
 weight: 87

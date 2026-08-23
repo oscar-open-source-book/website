@@ -2,7 +2,9 @@
 title: "开源的成功之路"
 originalTitle: "The Success of Open Source"
 author: "[Steven Weber](https://www.ischool.berkeley.edu/people/steven-weber) ，研究领域涉及技术市场"
-cover: "the-success-of-open-source.jpg"
+image:
+  filename: "books/the-success-of-open-source.jpg"
+  caption: "the-success-of-open-source"
 category: "其他"
 type: book
 weight: 85

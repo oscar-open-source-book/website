@@ -2,7 +2,9 @@
 title: "编织万维网:万维之父谈万维网的原初设计与最终命运"
 originalTitle: "Weaving the Web: The Original Design and Ultimate Destiny of the World Wide Web"
 author: "Tim Berners Lee ，科学家，万维网发明者。"
-cover: "weaving-the-web.jpg"
+image:
+  filename: "books/weaving-the-web.jpg"
+  caption: "weaving-the-web"
 category: "文化类"
 type: book
 weight: 90

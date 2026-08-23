@@ -2,7 +2,9 @@
 title: "代码2.0:网络空间中的法律"
 originalTitle: "Code: And Other Laws of Cyberspace, Version 2.0"
 author: "劳伦斯·莱斯格，现任斯坦福大学法学院教授，是斯坦福大网络与社会研究中心创始人，全球是最负盛名的网络法律专家，被《商业周刊》称为“互联网时代的守护神”。"
-cover: "code-2-law-in-cyberspace.jpg"
+image:
+  filename: "books/code-2-law-in-cyberspace.jpg"
+  caption: "code-version-2"
 category: "法律类"
 type: book
 weight: 38

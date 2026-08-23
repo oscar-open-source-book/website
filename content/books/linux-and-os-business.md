@@ -2,7 +2,9 @@
 title: "Linux和开源的商业与经济"
 originalTitle: "The Business and Economics of Linux and Open Source"
 author: "MARTIN FINK 是 Hewlett-Packard 的 Linux 系统部门的总经理，他在该部门领导 Linux 开发活动已超过三年（写作本书时）。他负"
-cover: "the-business-and-economics-of-linux-and-open-source.jpg"
+image:
+  filename: "books/the-business-and-economics-of-linux-and-open-source.jpg"
+  caption: "linux-and-os-business"
 category: "法律类"
 type: book
 weight: 49

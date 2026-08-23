@@ -1,7 +1,9 @@
 ---
 title: "开源法则"
 author: "何宝宏博士,互联网技术领域知名专家，中国信息通信研究院云计算与大数据研究所所长。微信公众号：何所思"
-cover: "kaiyuan-faze.jpg"
+image:
+  filename: "books/kaiyuan-faze.jpg"
+  caption: "kaiyuan-faze"
 category: "入门类"
 type: book
 weight: 48

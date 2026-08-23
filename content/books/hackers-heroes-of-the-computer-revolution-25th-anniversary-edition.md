@@ -2,7 +2,9 @@
 title: "黑客：计算机革命的英雄"
 originalTitle: "Hackers: Heroes of the Computer Revolution"
 author: "Steven Levy，《连线》杂志的特约撰稿人和资深作者。以前是《新闻周刊》（Newsweek）的首席技术作者和高级编辑。被誉为“数字时代最顶尖的史学家”之一"
-cover: "the-hacker.jpg"
+image:
+  filename: "books/the-hacker.jpg"
+  caption: "hackers-heroes-of-the-computer-revolution-25th-anniversary-edition"
 category: "其他"
 type: book
 weight: 18
