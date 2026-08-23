@@ -1,7 +1,7 @@
 ---
 date: 2023-02-18
 image:
-  filename: "events/2023-02-18-beijing-reading-meetup.png"
+  filename: "events/2023-02-18-beijing-reading-meetup.jpeg"
 title: "「OSCAR·开源之书·共读」 文章与新闻"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-01-01"
