@@ -2,7 +2,9 @@
 title: "拥抱开源"
 originalTitle: "How Open Source Ate Software:Understand the Open Source Movement and So Much More"
 author: "Gordon Haff 是在红帽担任技术布道师，他常常在各种技术场合下做演讲，当然也是很多线上媒体（Enterprisers Projec 、Opensourc"
-cover: "how-os-ate-software-zh.jpg"
+image:
+  filename: "books/how-os-ate-software-zh.jpg"
+  caption: "open-source-ate-software"
 category: "入门类"
 type: book
 weight: 52

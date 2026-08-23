@@ -2,7 +2,9 @@
 title: "重塑发现：网络化科学的新时代"
 originalTitle: "Reinventing Discovery：The New Era of Networked Science"
 author: "迈克尔•尼尔森（Michael Nielsen），澳大利亚量子计算科学家。研究领域从量子计算、开放科学到人工神经网络和深度学习。曾供职于洛斯阿拉莫斯国家实验室（"
-cover: "reinventing-discovery.jpg"
+image:
+  filename: "books/reinventing-discovery.jpg"
+  caption: "reinventing-discovery-the-new-era-of-networked-science"
 category: "其他"
 type: book
 weight: 23

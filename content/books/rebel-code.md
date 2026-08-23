@@ -2,7 +2,9 @@
 title: "叛逆代码：Linux 和开源的革命"
 originalTitle: "Rebel Code：Linux and the Open Source Revolution"
 author: "Glyn Moody， Glyn 的写作生涯始于1994年，从互联网开始，在第二年也撰写一些自由软件的文章，1997年，他为《连线》杂志撰文介绍关于自由软件和 "
-cover: "rebel-code.jpg"
+image:
+  filename: "books/rebel-code.jpg"
+  caption: "rebel-code"
 category: "文化类"
 type: book
 weight: 66

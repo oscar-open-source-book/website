@@ -2,7 +2,9 @@
 title: "增长的文化：现代经济的起源"
 originalTitle: "A Culture of Growth: The Origins of the Modern Economy"
 author: "乔尔‧莫基尔（Joel Mokyr），西北大学罗伯特 H.斯托茨人文科学教授和经济学与历史学教授，特拉维夫大学埃坦·柏格拉斯经济学院教授，曾任美国经济史协会会长"
-cover: "a-culture-of-growth.jpg"
+image:
+  filename: "books/a-culture-of-growth.jpg"
+  caption: "a-culture-of-growth-the-origins-of-the-modern-economy"
 category: "其他"
 type: book
 weight: 10

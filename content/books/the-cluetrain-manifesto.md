@@ -2,7 +2,9 @@
 title: "线车宣言：传统商业的终结"
 originalTitle: "The Cluetrain Manifesto： The End of Business as Usual"
 author: "【美】里克·莱文，互联网前沿观察者，赛斯·埃利斯巧克力公司（Seth Ellis Chocolatier）创始人，曾供职于SUN微系统公司Java软件部门。"
-cover: "the-cluetrain-manifest.jpg"
+image:
+  filename: "books/the-cluetrain-manifest.jpg"
+  caption: "the-cluetrain-manifesto"
 category: "经济类"
 type: book
 weight: 73

@@ -2,7 +2,9 @@
 title: "数字乌托邦：从反主流文化到赛博文化"
 originalTitle: "From Counterculture to Cyberculture：Stewart Brand, the Whole Earth Network, and the Rise of Digital Utopianism"
 author: "弗雷德·特纳（Fred Turner），美国斯坦福大学传播系副教授，斯坦福大学“科学、技术和社会”项目总监。弗雷德还具有十年的新闻记者经验。著有《数字乌托邦：从"
-cover: "from-counterculture-to-cyberculture.jpg"
+image:
+  filename: "books/from-counterculture-to-cyberculture.jpg"
+  caption: "from-counterculture-to-cyberculture"
 category: "其他"
 type: book
 weight: 16

@@ -1,7 +1,9 @@
 ---
 title: "挑战知识产权：自由软件运动的经济学研究"
 author: "周翼，男，1964年12月生，籍贯浙江省宁波市。复旦大学经济学博士。复旦大学经济学系副教授。曾考入1985-1986年中美联合举办的经济学研究生项目(福特班)第"
-cover: "challenging-ip.jpg"
+image:
+  filename: "books/challenging-ip.jpg"
+  caption: "challenging-intellectual-property-right"
 category: "法律类"
 type: book
 weight: 36

@@ -2,7 +2,9 @@
 title: "独自打保龄:美国社区的衰落与复兴"
 originalTitle: "Bowling Alone:The Collapse and Revival of American Community"
 author: "罗伯特·D. 帕特南（Robert D. Putnam），当代西方著名政治学家，现任哈佛大学国际事务研究中心主任，肯尼迪政府学院公共政策马尔林讲座教授。他的主要"
-cover: "bowling-along.jpg"
+image:
+  filename: "books/bowling-along.jpg"
+  caption: "bowling-alone"
 category: "其他"
 type: book
 weight: 11

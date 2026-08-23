@@ -2,7 +2,9 @@
 title: "开源之路"
 originalTitle: "The Open Source Way"
 author: "这本书亦是用开源的方式来完成的。作者来自RedHat 开源项目办公室团队的成员以及各个开源项目共同体的领袖。"
-cover: "the-open-source-way.png"
+image:
+  filename: "books/the-open-source-way.png"
+  caption: "the-open-source-way"
 category: "实践类"
 type: book
 weight: 80

@@ -2,7 +2,9 @@
 title: "开源软件文集：开源革命之声"
 originalTitle: "Open Sources: Voices from the Open Source Revolution"
 author: "开源世界的创始人和领袖们，不用一一介绍，光是看名字就如雷贯耳：Eric S.Raymond、Richard Stallman、Michael Tiemann、L"
-cover: "open-source-revolution.jpg"
+image:
+  filename: "books/open-source-revolution.jpg"
+  caption: "open-source-revolution"
 category: "入门类"
 type: book
 weight: 56

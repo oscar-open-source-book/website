@@ -2,7 +2,9 @@
 title: "开放式组织：面向未来的组织管理新范式"
 originalTitle: "The Open Organization: Igniting Passion and Performance"
 author: "吉姆•怀特赫斯特（Jim Whitehurst），目前世界上最资深的开放源代码提供商美国红帽公司（两次登上《福布斯》杂志“全球最具创新力企业”榜单）（前）CEO"
-cover: "the-open-organization.jpg"
+image:
+  filename: "books/the-open-organization.jpg"
+  caption: "the-open-organization"
 category: "其他"
 type: book
 weight: 30

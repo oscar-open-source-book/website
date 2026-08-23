@@ -1,6 +1,8 @@
 ---
 title: "开源之迷"
-cover: "the-fascinating-os-face.jpeg"
+image:
+  filename: "books/the-fascinating-os-face.jpeg"
+  caption: "the-fascinating-of-open-source"
 category: "入门类"
 type: book
 author: "适兕"
