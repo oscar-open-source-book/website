@@ -1,4 +1,5 @@
 ---
+date: 2022-12-24
 image:
   filename: "events/2022-12-24-beijing-reading-meetup.jpg"
 title: "2022.12.24 「OSCAR· 开源之书·共读」·分享·北京站"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 **特别提示：奥密克戎大流行，请注意防护，并保持社交距离！**
 

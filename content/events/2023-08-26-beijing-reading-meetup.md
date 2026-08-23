@@ -1,4 +1,5 @@
 ---
+date: 2023-08-26
 image:
   filename: "events/2023-08-26-beijing-reading-meetup.jpg"
 title: "《商业开源》"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 # 特别感谢赞助（个人或组织）：
 

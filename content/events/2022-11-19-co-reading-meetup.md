@@ -1,4 +1,5 @@
 ---
+date: 2022-11-19
 image:
   filename: "events/2022-11-19-co-reading-meetup.jpg"
 title: "2022.11.19 「OSCAR· 开源之书·共读」·分享·北京站"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 # 
 
