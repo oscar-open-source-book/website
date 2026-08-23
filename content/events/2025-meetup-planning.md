@@ -1,4 +1,5 @@
 ---
+date: 2025-01-01
 image:
   filename: "events/2025-meetup-planning.png"
 title: "「OSCAR·开源之书·共读」 线下分享交流主张"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 |月份            |城市|ID        	|分享议题	     |内容概要
 |:-------------:|:-------------:|--------------|:-------------:|:---------|

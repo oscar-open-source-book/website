@@ -1,4 +1,5 @@
 ---
+date: 2025-01-04
 image:
   filename: "events/2025-01-04-beijing-reading-meetup-and-6th-Anniversary-Celebration.png"
 title: "「OSCAR· 开源之书·共读」小组 2024年终活动暨成立6周年庆"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 # 特别感谢赞助（个人或组织）：
 

@@ -1,4 +1,5 @@
 ---
+date: 2023-04-21
 image:
   filename: "events/2023-04-21-hangzhou-reading-meetup.png"
 title: "《rebel code》和《非暴力沟通》"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 # 特别感谢赞助（个人或组织）：
 

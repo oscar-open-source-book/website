@@ -1,4 +1,5 @@
 ---
+date: 2023-06-10
 image:
   filename: "events/2023-06-10-shenzheng-reading-meetup.png"
 title: "《开源的成功之路》"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 # 本次活动和 LFAPAC 译道师 共同举办
 

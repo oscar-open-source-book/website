@@ -1,4 +1,5 @@
 ---
+date: 2025-03-22
 image:
   filename: "events/2025-03-22-beijing-reading-meetup.png"
 title: "「OSCAR· 开源之书·共读」小组 2025 3月 Meetup"
@@ -13,7 +14,6 @@ tags:
   - OSCAR
 ---
 
-> 📌 以下内容从原 `hugo-hero-theme` 页面迁移而来，frontmatter 已转换。
 
 # 特别感谢赞助（个人或组织）：
  
