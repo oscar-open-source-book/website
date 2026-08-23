@@ -33,13 +33,51 @@ tags:
 
 | 内容类型 | 数量 | 说明 |
 |---|---|---|
-| 书单（books） | 75 本 | 73 本有封面图，2 本 draft |
-| 共读 meetup（events） | 26 场 | 2022-11-19 至 2026-05-30，含 1 场未发布 |
-| 通知与预告（notices） | 2 篇 | 《智能简史》译者分享预告 + 本次重构总结 |
-| 文章（posts） | 32 篇 | 原始 posts 目录，含会议报道与项目介绍 |
+| 书单（books） | 75 本（含分类总览） | 73 本有封面图，2 本草稿；9 个分类 |
+| 共读 meetup（events） | 27 场 | 2022-11-19 至 2026-05-30 |
+| 通知与预告（notices） | 3 篇 | 《智能简史》预告 + 本次重构总结 + 分类总览 |
+| 文章（posts） | 6 篇 | 非 meetup 的稿件与项目介绍 |
 | 共读介绍（about） | 10 篇 | 团队、价值观、项目介绍 |
 
-共 **145 篇内容**，全部从 `osbook.club` 原始仓库（`hugo-hero-theme` + `gh-pages`）迁移。
+共 **145 篇内容**，从 `osbook.club` 原始仓库（`hugo-hero-theme` + `gh-pages`）迁移。
+
+### 工作量化
+
+| 维度 | 数值 |
+|---|---|
+| Git commits | **42** 次提交（迁移期间 **24** 次） |
+| 文件变动 | **149** files changed，**2056** insertions |
+| CI workflow runs | **39** 次（success: **26**，failure: **12**） |
+| 迁移内容文件 | **159** 篇 .md（含 archive/meetup-posts） |
+| 图片处理 | **175** 张迁入 `assets/media/` |
+| &nbsp;&nbsp;└ books | 73 张封面图 |
+| &nbsp;&nbsp;└ events | 40 张（含 22 张从 `content/images/meetup/` 真实照片） |
+| &nbsp;&nbsp;└ posts | 21 张 |
+| &nbsp;&nbsp;└ about | 7 张 |
+| &nbsp;&nbsp;└ notices | 2 张（sn-image 生成） |
+| &nbsp;&nbsp;└ logo/icon | 2 张 |
+| 自建 layouts | **13** 个文件（book/single.html + navbar.html + partials 等） |
+
+### Hermes Agent 用量
+
+| 维度 | 说明 |
+|---|---|
+| Agent 会话 | 多轮对话，横跨 2026-08-22 至 2026-08-23 两个自然日 |
+| 文档阅读 | `hugo-theme-documentation` 文档仓库（`menus.yaml` / `params.yaml`）；`blox@v0.12.0` 模块源码（`navbar.html` / `get_featured_image.html` / `search-modal.html`） |
+| 图片生成（sn-image） | **2** 次调用（网站重构总结配图 + 分类总览配图），sensenova-u1-fast，16:9 |
+| 图片识别（vision_analyze） | **8** 张 book-list 海报 OCR（识别 120 本去重书名，对比现有 75 本） |
+| 外部 API 调用 | SenseNova Image Gen API × 2、SenseNova VLM × 8、GitHub API（`gh`）× 50+、Hugo CLI × 30+ |
+| 踩坑记录 | **10** 个（详见下文），涉及 Hugo Blox 模块行为、Hugo 原生 menu 语法、CI workflow 权限等 |
+
+### 踩坑与知识沉淀
+
+本次重构中，最重要的三个教训：
+
+1. **Hugo menu 二级嵌套语法**：YAML 用 `identifier` + `parent`，**不是** `children:`。Hugo Blox 原生 navbar 已内建 `HasChildren` 支持。
+2. **Hugo 资源管道**：`resources.Get "media/..."` 只从 `assets/` 找图，`static/` 对资源管道不可见。封面图全量迁入 `assets/media/`。
+3. **GitHub workflow 权限**：PAT 无 `workflow` scope 时无法推送 `.github/workflows/` 文件改动，需手动在 GitHub UI 编辑。
+
+这些教训已沉淀到 `narrow-corridor-skills` 的记忆与 skill 体系中，供后续 Hugo 项目复用。
 
 ### 图片系统
 
