@@ -4,7 +4,7 @@ image:
   filename: "events/2023-08-26-beijing-reading-meetup.jpg"
 title: "《商业开源》"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
-event_date: "2023-01-01"
+event_date: "2023-08-26"
 location: "北京"
 type: event
 summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
