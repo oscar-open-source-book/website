@@ -1,16 +1,17 @@
 ---
+type: event
 image:
-  filename: "posts/fallback-meetup.jpg"
-title: "2024.04.20 「OSCAR· 开源之书·重读」·分享·北京站"
-date: 2024-04-20T15:21:02+08:00
+  filename: "posts/2024-10-26-beijing-reading-meetup.jpg"
+title: "2024.10.26 「OSCAR· 开源之书·重读」·分享·北京站"
+date: 2024-10-14T15:21:02+08:00
 icon: "services/meetup/icons8-community-50.png"
 featured: true
 draft: true
 weight: 50
-heroHeading: '开源，不做历史的终结者'
+heroHeading: '网络的财富中文预览版'
 heroSubHeading: ''
-heroBackground: 'images/meetup/2024-03-23-books.png'
-description: '关于重读线下活动北京站，2024.04.20 详细情况：地点、题目、时间、参与人员。'
+heroBackground: 'images/culture-history-trilogy.jpg'
+description: '关于重读线下活动北京站，2024.10.26/ 详细情况：地点、题目、时间、参与人员。'
 ---
 
 
@@ -18,11 +19,7 @@ description: '关于重读线下活动北京站，2024.04.20 详细情况：地�
 
 * 场地赞助：  中关村创业大街
  
-* 咖啡/小食赞助：振华
-
-* 图书礼品赞助： 振华-开源之道
-
-![](/images/meetup/2024-04-20-book-gift-1.jpg)
+* 咖啡/小食赞助：振华-开源之道
 
 
 # 联合支持小组：
@@ -31,12 +28,12 @@ description: '关于重读线下活动北京站，2024.04.20 详细情况：地�
 
 # 本期看点：
 
-**开源，不做历史的终结者**
+**开源与创新**
 
 
 # 时间：
 
-2024年4月20日 14:00 ～～ 18:00
+2024年10月26日 周六 14:00 ～～ 18:00
 
  
 # 地点: 
@@ -53,14 +50,13 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 也可浏览网站： [https://osbook.club](https://osbook.club)
 
 
-
 # 活动内容&议程：
  
 - 14:00 之前， 参与成员自我介绍（临时微信群接龙）
 - 14:00～14:05  Social，寒暄
 - 14:06～14:15  根据微信群的介绍，开始肉身和网络id 对号入座
-- 14:16～16：59  2023人工智能时代重读《黑客伦理与信息时代精神》，Alphatu
-- 17:00～ 18:00  《Prtecting The Virtual Commons： 自组织开源社区和创新知识产权制度》，「开源之道」·适兕
+- 14:16～16：59 《the wealth of network》中文版试读
+- 17:00～ 18:00  『开源的范畴是如此之大』相关文献阅读推荐与分享
 - 18：00 ～ 18:10 合影留念，Social
  
 
@@ -70,6 +66,7 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
  
 [「OSCAR·开源之书·共读书单」](https://osbook.club/work/) 中的所有书籍。
 
+![](/images/the-wealth-of-network.png)
 
 # 行为准则：
  
@@ -86,23 +83,17 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
  
 # 主持人：
 
-* 淮晋阳
+* 「开源之道」·适兕
 
 ## 报名方式（在此写上网络ID即可）：
 
 欢迎大家邀请对开源和读书感兴趣的朋友前来体验～ 
 
 1. 适兕
-2. 淮晋阳
-3. 遇惠君
-4. 柳丽英
-5. 武晓慧
-6. 🐯
-7. Richard Lin
-8. 温馨
-9. 迷糊
-10. 姜宁
-11. Gua yong an
+2. 温馨
+3. 迷糊
+4. dongjie
+
 
 
 # 协助/记录：
@@ -114,19 +105,12 @@ https://shimo.im/docs/lkqUDDblhE0VKXee
 
 ## 现场书友精彩瞬间
 
-![](/images/meetup/2024-04-20-speaker.jpg)
+![](/images/meetup/2024-10-26-speaker.jpg)
 
 ## 幻灯及更多照片
 
-点击图片打开OneDrive目录。获取全部照片及幻灯分享。
+点击图片打开OneDrive目录。获取全部照片及《网络的财富》中文预览版。
 
-[![](/images/meetup/2024-04-20-all.jpg)](https://1drv.ms/f/s!Arg2k_5HJFrbgoBPKF87frVYaoByRQ?e=I4K884)
+[![](/images/meetup/2024-10-26-all.jpg)](https://1drv.ms/b/s!Arg2k_5HJFrbgogbZw5CVeK2BoRNNQ?e=KIvTDY)
 
-## 参与书友感概
-
->  合作是需要习得的技能，不是谁天生就会合作。读书会也好，公司也罢，开源Community，都是需要合作的～ 然而毁灭它却很容易。
->   ———— 「开源之道」·适兕
-
-> 昨天结束后回程骑车路上想了几点有关自己参加开源开源读书会的目的：畅言无忌，寻同辨异，另类欢聚。
->   ———— 淮晋阳-红帽培训部
 

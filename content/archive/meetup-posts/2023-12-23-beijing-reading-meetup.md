@@ -1,4 +1,5 @@
 ---
+type: event
 image:
   filename: "posts/2023-12-23-beijing-reading-meetup.jpg"
 title: "2023.12.23 「OSCAR· 开源之书·共读」·分享·北京站"
