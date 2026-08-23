@@ -8,6 +8,8 @@ image:
 category: "历史类"
 type: book
 weight: 89
+
+editable: true
 ---
 
 ## 推荐理由

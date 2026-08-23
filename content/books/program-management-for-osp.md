@@ -8,6 +8,8 @@ image:
 category: "实践类"
 type: book
 weight: 64
+
+editable: true
 ---
 
 ## 推荐理由

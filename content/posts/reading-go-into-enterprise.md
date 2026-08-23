@@ -11,6 +11,8 @@ heroHeading: '「OSCAR·开源之书·共读」 项目介绍'
 heroSubHeading: ''
 heroBackground: 'services/service1.jpg'
 description: '走进组织/机构/公司/单位，书单定制，内容定制，让更多人了解开源背后机理的阅读计划。'
+
+editable: true
 ---
 
 # 

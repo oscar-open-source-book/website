@@ -9,6 +9,8 @@ category: "其他"
 type: book
 weight: 42
 recommender: "大妈/Zoom.Quiet : 活跃读者作者译者~专注吐糟37+年..."
+
+editable: true
 ---
 
 ## 推荐理由

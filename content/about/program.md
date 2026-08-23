@@ -10,6 +10,8 @@ draft: false
 heroHeading: '发起项目'
 heroSubHeading: '作为一个以推进开源为目的的小组，发起项目是非常重要的。'
 heroBackground: 'services/service2.jpg'
+
+editable: true
 ---
 
 ## 「OSCAR·开源之书·共读书单」小册子项目

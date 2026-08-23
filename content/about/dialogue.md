@@ -11,6 +11,8 @@ weight: 2
 heroHeading: '「开源之书」·对话'
 heroSubHeading: '我们坚信对话是寻求解决问题的良好途径'
 heroBackground: 'services/dialogue-book.jpg'
+
+editable: true
 ---
 
 # 对话

@@ -11,6 +11,8 @@ heroHeading: ''
 heroSubHeading: ''
 heroBackground: 'services/library.jpg'
 description: '纸质书仍然是人类最伟大的发明，对于读书人来说就是仪典，可以说没有纸质书，一切皆虚幻。'
+
+editable: true
 ---
 
 

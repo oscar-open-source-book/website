@@ -7,6 +7,8 @@ category: "入门类"
 type: book
 author: "适兕"
 weight: 77
+
+editable: true
 ---
 
 ## 推荐理由
