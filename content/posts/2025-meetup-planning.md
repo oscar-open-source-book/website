@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "posts/2025-meetup-planning.jpg"
 title: "「OSCAR·开源之书·共读」 2025年分享书友及议题信息"
 date: 2025-03-29T19:49:08+08:00
 icon: "services/service-icon-1.png"

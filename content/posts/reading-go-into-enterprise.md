@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "posts/reading-go-into-enterprise.jpg"
 title: "「开源之书」走进组织项目规划"
 date: 2022-11-16T12:17:40+08:00
 icon: "services/icons8-project-management-80.png"

@@ -1,4 +1,6 @@
 ---
+image:
+  filename: "posts/2023-04-15-beijing-reading-meetup.jpg"
 title: "2023.04.15 「OSCAR· 开源之书·共读」·分享·北京站"
 date: 2023-04-15T08:20:34+08:00
 icon: "services/service-icon-1.png"
