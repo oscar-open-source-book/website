@@ -2,7 +2,9 @@
 title: "生产开放源代码软件:如何成功构建一个自由/开源软件项目"
 originalTitle: "Producing Open Source Software：How to Run a Successful Free Software Project"
 author: "Karl Fogel 因为这本被引用最多的书而驰名于开源界。但是他参与过的开源项目可都是大名鼎鼎的：Launchpad、Subversion、GNU EMACS"
-cover: "producing-oss.jpg"
+image:
+  filename: "books/producing-oss.jpg"
+  caption: "producing-foss"
 category: "其他"
 type: book
 weight: 63

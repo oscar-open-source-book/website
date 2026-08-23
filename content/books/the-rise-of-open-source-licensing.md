@@ -2,7 +2,9 @@
 title: "开源许可的崛起：软件产业界采用知识财产权的挑战"
 originalTitle: "The Rise of Open Source Licensing:A Challenge to the Use of Intellectual Property in the Soft ware Industry"
 author: "Mikko Välimäki 在赫尔辛基理工大学教授技术法。他曾就开放源代码许可问题为大家提供咨询。"
-cover: "the-rise-of-open-source-licensing.png"
+image:
+  filename: "books/the-rise-of-open-source-licensing.png"
+  caption: "the-rise-of-open-source-licensing"
 category: "法律类"
 type: book
 weight: 83

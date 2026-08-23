@@ -1,7 +1,9 @@
 ---
 title: "开放与共享---开源创新的经济学思考"
 author: "王宇，丹麦奥胡斯大学经济学博士，现为南京大学商学院讲师。研究方向为博弈论、创新经济学以及信息产业的竞争策略等。"
-cover: "open-and-share.jpg"
+image:
+  filename: "books/open-and-share.jpg"
+  caption: "open-and-share"
 category: "管理类"
 type: book
 weight: 51

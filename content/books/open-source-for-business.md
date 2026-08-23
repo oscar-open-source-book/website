@@ -2,7 +2,9 @@
 title: "商业开源：开源软件许可实用指南"
 originalTitle: "Open (Source) for Business：A Practical Guide to Open Source Software Licensing"
 author: "Heather Meeker 是O’Melveny & Myers’ Silicon Valley office in the Mergers and Acqu"
-cover: "open-source-for-business-chinese.jpg"
+image:
+  filename: "books/open-source-for-business-chinese.jpg"
+  caption: "open-source-for-business"
 category: "法律类"
 type: book
 weight: 54

@@ -2,7 +2,9 @@
 title: "恶魔、角马与企鹅：自由和开放软件如何改变世界"
 originalTitle: "The Daemon, the Gnu, and the Penguin"
 author: "Peter Salus 博士是“A Quarter Century of UNIX”一书的作者，Salus 博士也曾担任 USENIX 协会的执行董事。"
-cover: "the-daemon-gnu-penguin.jpg"
+image:
+  filename: "books/the-daemon-gnu-penguin.jpg"
+  caption: "demo-gnu-penguin"
 category: "历史类"
 type: book
 weight: 41

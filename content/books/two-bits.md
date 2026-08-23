@@ -2,7 +2,9 @@
 title: "两个比特: 自由软件的文化意义"
 originalTitle: "Two Bits：The Cultural Significance of Free Software"
 author: "Christopher M. Kelty 是莱斯大学人类学助理教授。"
-cover: "two-bits.jpg"
+image:
+  filename: "books/two-bits.jpg"
+  caption: "two-bits"
 category: "文化类"
 type: book
 weight: 86

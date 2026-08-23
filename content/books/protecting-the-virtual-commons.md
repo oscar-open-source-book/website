@@ -2,7 +2,9 @@
 title: "保护虚拟公域--自组织开放源代码和自由软件社区与创新知识产权制度"
 originalTitle: "Protecting the Virtual Commons - Self-Organizing Open Source and Free Software Communities and Innovative Intellectual Property Regimes"
 author: "* Author: R. van Wendel de Joode, Technische Universiteit Delft, The Netherlands"
-cover: "protecting-the-virtual-commons.jpg"
+image:
+  filename: "books/protecting-the-virtual-commons.jpg"
+  caption: "protecting-the-virtual-commons"
 category: "其他"
 type: book
 weight: 65

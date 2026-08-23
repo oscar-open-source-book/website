@@ -2,7 +2,9 @@
 title: "理解开源和自由软件许可"
 originalTitle: "Understanding Open Source and Free Software Licensing"
 author: "Andrew M. St. Laurent 是一位经验丰富的律师，对知识产权，尤其是软件许可，有着浓厚的兴趣。"
-cover: "understand-foss-licensing.jpg"
+image:
+  filename: "books/understand-foss-licensing.jpg"
+  caption: "understand-foss-license"
 category: "法律类"
 type: book
 weight: 88

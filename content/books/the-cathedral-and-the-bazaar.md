@@ -2,7 +2,9 @@
 title: "大教堂与集市"
 originalTitle: "The Cathedral & the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary"
 author: "Eric S. Raymond是开源运动和黑客文化的元老级人物，他是INTERCAL编程语言的主要创作者之一，是Fetchmail程序的作者，并为EMACS编辑"
-cover: "the-cathedral-and-the-bazaar.jpg"
+image:
+  filename: "books/the-cathedral-and-the-bazaar.jpg"
+  caption: "the-cathedral-and-the-bazaar"
 category: "其他"
 type: book
 weight: 25

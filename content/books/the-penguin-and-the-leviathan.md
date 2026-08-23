@@ -2,7 +2,9 @@
 title: "企鹅与利维坦：合作如何战胜私利"
 originalTitle: "The Penguin and the Leviathan：The Triumph of Cooperation Over Self-Interest"
 author: "尤查•本科勒（Yochai Benkler）"
-cover: "the-penguin-and-the-Leviathan.jpg"
+image:
+  filename: "books/the-penguin-and-the-Leviathan.jpg"
+  caption: "the-penguin-and-the-leviathan"
 category: "经济类"
 type: book
 weight: 81

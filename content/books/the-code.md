@@ -2,7 +2,9 @@
 title: "码出自由"
 originalTitle: "Coding Freedom: The Ethics and Aesthetics of Hacking"
 author: "E. Gabriella Coleman  是哈佛大学人类学系的正教授，也是伯克曼互联网与社会中心的教员。作为一名人类学家，她的学术研究涵盖了Hacker的政治"
-cover: "coding-freedom.jpg"
+image:
+  filename: "books/coding-freedom.jpg"
+  caption: "the-code"
 category: "文化类"
 type: book
 weight: 74

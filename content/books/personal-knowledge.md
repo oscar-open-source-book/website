@@ -2,7 +2,9 @@
 title: "个人知识：朝向后批判哲学"
 originalTitle: "Personal Knowledge: Towards a Post-Critical Philosophy"
 author: "迈克尔·波兰尼(1891—1976)是一位英籍犹太裔物理化学家和哲学家，其在科学哲学方面的建树，尤其对集体主义社会的分析和批判，引起西方思想界的重视，是20世纪"
-cover: "personal-knowledge-cn.jpg"
+image:
+  filename: "books/personal-knowledge-cn.jpg"
+  caption: "personal-knowledge"
 category: "社会类"
 type: book
 weight: 61

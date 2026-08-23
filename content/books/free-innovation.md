@@ -2,7 +2,9 @@
 title: "大众创新:自由创新如何推动商业未来"
 originalTitle: "Free Innovation"
 author: "美）埃里克·冯·希佩尔（Eric von Hippel），国际著名经济学家、创新学者，“用户创新”理论创始人，麻省理工学院斯隆管理学院创新管理教授。他的研究成果"
-cover: "free-innovation.jpg"
+image:
+  filename: "books/free-innovation.jpg"
+  caption: "free-innovation"
 category: "其他"
 type: book
 weight: 14

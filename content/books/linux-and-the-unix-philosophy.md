@@ -2,7 +2,9 @@
 title: "Linux/Unix设计思想"
 originalTitle: "Linux and the Unix Philosophy"
 author: "Mike Gancarz 是佐治亚州亚特兰大的一名编程顾问。作为 Unix 应用程序设计方面的专家，Mike 二十多年来一直是 Unix 方法的倡导者。作为 X"
-cover: "linux-philosophy.jpg"
+image:
+  filename: "books/linux-philosophy.jpg"
+  caption: "linux-and-the-unix-philosophy"
 category: "其他"
 type: book
 weight: 20

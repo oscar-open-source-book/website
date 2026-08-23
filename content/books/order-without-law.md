@@ -2,7 +2,9 @@
 title: "无需法律的秩序:相邻者如何解决纠纷"
 originalTitle: "Order without Law:How Neighbors Settle Disputes"
 author: "罗伯特·C.埃里克森（Robert C.Ellickson），美国当代杰出的财产和城市法学者，耶鲁大学法学院沃尔特·梅耶财产和城市法讲席教授（2015年荣休）。"
-cover: "order-without-law.jpg"
+image:
+  filename: "books/order-without-law.jpg"
+  caption: "order-without-law"
 category: "法律类"
 type: book
 weight: 57

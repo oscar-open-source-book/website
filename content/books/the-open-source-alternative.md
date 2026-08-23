@@ -2,7 +2,9 @@
 title: "另类开源：理解风险与把握机会"
 originalTitle: "The Open Source Alternative:Understanding Risks and Leveraging Opportunities"
 author: "Heather Meeker 是O’Melveny & Myers’ Silicon Valley office in the Mergers and Acqu"
-cover: "the-open-source-alternative.jpg"
+image:
+  filename: "books/the-open-source-alternative.jpg"
+  caption: "the-open-source-alternative"
 category: "法律类"
 type: book
 weight: 79

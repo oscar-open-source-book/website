@@ -2,7 +2,9 @@
 title: "开发者是如何征服世界的"
 originalTitle: "The New Kingmakers:How Developers Conquered the World"
 author: "Stephen O’Grady 是知名专注于开发者行业的分析公司RedMonk 的联合创始人，在RedMonk， Stephen 和诸如 IBM、DELL、VM"
-cover: "the-new-kingmakers.jpg"
+image:
+  filename: "books/the-new-kingmakers.jpg"
+  caption: "the-new-kingmakers-how-developers-conquered-the-world"
 category: "其他"
 type: book
 weight: 29

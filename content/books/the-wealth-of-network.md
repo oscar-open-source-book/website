@@ -2,7 +2,9 @@
 title: "网络的财富：社会生产如何改变市场和自由"
 originalTitle: "The Wealth of Networks：How Social Production Transforms Markets and Freedom"
 author: "尤查•本科勒（Yochai Benkler）"
-cover: "the-wealth-of-networks.jpg"
+image:
+  filename: "books/the-wealth-of-networks.jpg"
+  caption: "the-wealth-of-network"
 category: "经济类"
 type: book
 weight: 84

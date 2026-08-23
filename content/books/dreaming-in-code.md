@@ -2,7 +2,9 @@
 title: "梦断代码"
 originalTitle: "Dreaming In Code"
 author: "Scott Rosenberg：作家，编辑，1981年毕业于哈佛大学，1995年与他人共同创办了Salon网站，此后担任其首席技术编辑达数年之久，并负责技术工作"
-cover: "dream-in-code.jpg"
+image:
+  filename: "books/dream-in-code.jpg"
+  caption: "dreaming-in-code"
 category: "其他"
 type: book
 weight: 42
