@@ -1,12 +1,10 @@
 ---
 date: 2025-01-01
 image:
-  filename: "events/2025-meetup-planning.png"
+  filename: "notices/meetup-planning-2025.png"
 title: "「OSCAR·开源之书·共读」 线下分享交流主张"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
-event_date: "2023-01-01"
-location: "未知"
-type: event
+type: notice
 summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
 tags:
   - 共读
