@@ -1,0 +1,49 @@
+{{ define "main" }}
+<section class="mx-auto max-w-screen-xl px-4 py-8">
+  <h1 class="text-3xl font-bold mb-2">{{ .Title }}</h1>
+  <div class="prose prose-slate dark:prose-invert mb-8">
+    {{ .Content }}
+  </div>
+
+  {{ if .Pages }}
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {{ range .Pages }}
+    <div class="group rounded-xl overflow-hidden border border-white/10 dark:border-white/20 bg-white/5 dark:bg-white/5 hover:border-amber-700/40 transition-all">
+      {{ if .Params.image }}
+      {{ $cover := .Params.image }}
+      {{ $filename := $cover.filename | default "" }}
+      {{ if $filename }}
+      {{ $resource := resources.GetMatch (printf "media/%s" $filename) }}
+      {{ if $resource }}
+      <div class="aspect-[3/4] overflow-hidden bg-gray-900/50">
+        <img
+          src="{{ $resource.RelPermalink }}"
+          alt="{{ .Title | plainify }}"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+        />
+      </div>
+      {{ end }}
+      {{ end }}
+      {{ end }}
+      <div class="p-4">
+        <h3 class="font-semibold text-base mb-1">{{ .Title }}</h3>
+        {{ if .Params.date }}
+        <p class="text-xs text-gray-400 mb-2">{{ .Params.date | time.Format "2006-01-02" }}</p>
+        {{ end }}
+        {{ .Summary }}
+        <a href="{{ .RelPermalink }}" class="inline-block mt-3 text-sm text-amber-600 hover:text-amber-500 underline underline-offset-2">View</a>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ else }}
+  <div class="text-center py-16 text-gray-500 dark:text-gray-400">
+    <p class="text-lg">暂无海报。</p>
+    <p class="text-sm mt-2">Posters will appear here.</p>
+  </div>
+  {{ end }}
+
+  {{ partial "page_edit_button" . }}
+</section>
+{{ end }}
