@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-07-08"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "共读《Upstream》《Working in Public》，本期看点：开源的阴暗面为何集中在亲力亲为者身上，GitHub 能否解决道德绑架。"
 tags:
   - 共读
   - 线下

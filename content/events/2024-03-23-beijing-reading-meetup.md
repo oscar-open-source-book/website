@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2024-03-23"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "主题：文化的重要作用，中关村创业大街赞助，讨论文化在开源协作中的角色与影响。"
 tags:
   - 共读
   - 线下

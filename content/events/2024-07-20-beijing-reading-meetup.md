@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2024-07-20"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "主题：乌卡时代（VUCA）之复杂性的应对，中关村创业大街赞助，探讨复杂环境下的开源治理与协作模式。"
 tags:
   - 共读
   - 线下

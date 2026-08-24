@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-06-17"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "共读《Coding Freedom》《Two Bits》《Working in Public》，Red Hat 中国赞助，从法律、技术与实践三重视角审视开源。"
 tags:
   - 共读
   - 线下
