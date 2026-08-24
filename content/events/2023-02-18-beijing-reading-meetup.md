@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-02-18"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "围绕开源新闻与行业观察展开讨论，从最新动态切入，反思开源运动的走向与争议。"
 tags:
   - 共读
   - 线下

@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2025-04-19"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "2025 年 4 月 Meetup，余凡娟（Rebecca）提供场地，联合 KCC 北京，在小型沙龙氛围中深入共读。"
 tags:
   - 共读
   - 线下
