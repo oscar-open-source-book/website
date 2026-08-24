@@ -1,7 +1,7 @@
 ---
 date: 2026-08-16
 image:
-  filename: "posts/fallback-meetup.jpg"
+  filename: "notices/2026-08-16-smart-book-share-in-xintiun.jpg"
 title: "《智能简史》译者分享交流会预告"
 subtitle: "中信书店·三里屯店"
 location: "中信书店·三里屯店（北京市东城区东三环北路嘉禾中心A座B1）"

@@ -227,3 +227,22 @@ osbook.opensourceway.blog/
 ---
 
 *本文同时存档于 `open-source-way-wiki/raw/articles/website-rebuild-summary/`。*
+
+---
+
+## 2026-08-24 后续更新
+
+| 项目 | 内容 |
+|---|---|
+| **贡献者页面** | `/about/contributors/`，64 位亲力亲为者，67 kudos，sn-image 配图 |
+| **版权信息** | `© 2019–2026 [开源之道](https://opensourceway.blog/) · 开源之书` |
+| **导航二级菜单** | 关于 → 赞助 + 贡献者 |
+| **首页轮播** | 6 张 meetup 合影（2023-01 ~ 2024-06），静态堆叠 + 缩略图导航（Alpine x-data 被 Hugo `safeHTML` 剥离，改纯 HTML） |
+| **封面图补全** | 《智能简史》预告封面 `the-brief-history-human-intellgency.jpg`；2026-05-30 北京站合影 `51.jpg` |
+| **Git 提交** | 累计 **52** commits（迁移期间 **24**，后续更新 **28**） |
+
+### 踩坑补充
+
+- **Alpine.js x-data 被剥离**：Hugo Blox `markdown` block 对 `content.text` 走 `RenderString → safeHTML`，`x-data` 指令被剥离。自建 `blox/` 目录不被 `resolve-block-param` 识别。最终方案：轮播 HTML 直接写在 `layouts/index.html` 原生 template 中，或退化为纯静态堆叠 + 缩略图导航。
+- **`type: landing` 不是 layout type**：`sections` frontmatter 中 `type: landing` 是 Hugo Blox 的内容类型字段，不是 Hugo 的 layout type。自建 `layouts/landing/landing.html` 无效，需改用 `layouts/index.html`。
+- **图片从 Hugo 资源管道到静态路径**：Hugo 资源管道处理的图片（`image.filename` → `resources.Get`）发布到 `/media/`；但轮播缩略图导航中的大图直接链接需要静态路径。方案：同步一份到 `static/media/images/meetup/`（Hugo 原生静态发布）。*

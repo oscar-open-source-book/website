@@ -1,7 +1,7 @@
 ---
 date: 2026-05-30
 image:
-  filename: "events/2025-01-04-beijing-reading-meetup-and-6th-Anniversary-Celebration.jpg"
+  filename: "events/2026-05-30-beijing-reading-meetup.jpg"
 title: "「OSCAR·开源之书·共读」线下分享交流·北京站· 2026-05-30"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
 location: "北京·朝阳区·CSDN 中国开发者网络"
