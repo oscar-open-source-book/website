@@ -1,83 +1,65 @@
 {{- define "main" -}}
 
 <div class="hero-section"
-     style="background-color:#1B3B6B; padding:3rem 1rem;">
-  <div class="flex flex-col items-center max-w-prose mx-auto gap-3 justify-center px-6 text-center">
-    <div class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">「开源之书 · 共读」</div>
-    <div class="prose prose-slate lg:prose-xl dark:prose-invert max-w-prose">
-      <h1>共读 · 共识 · 共进</h1>
-      <p>「OSCAR·开源之书·共读」——82 本开源经典著作，26 场线下 meetup，持续生长的开源思想地图。</p>
-      <p>「开源之道」致力于开源相关思想、知识和价值的探究。</p>
-      <p>「开源之书·共读」是其中的思想实践——用共读的方式，建立一张持续生长的开源思想地图。</p>
-    </div>
-  </div>
-</div>
-
-<div class="hero-section"
-     style="background-color:#0F172A; padding:2rem 1rem;"
-     x-data="homeCarousel()"
-     @keydown.arrowleft.window="idx = (idx - 1 + images.length) % images.length"
-     @keydown.arrowright.window="idx = (idx + 1) % images.length">
-  <div class="max-w-5xl mx-auto px-4 flex flex-col items-center gap-4">
+     style="background-color:#0F172A; padding:2rem 1rem;">
+  <div id="oscar-carousel" class="max-w-5xl mx-auto px-4 flex flex-col items-center gap-4">
     <div class="relative w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 group">
-      <template x-for="(img, i) in images" :key="i">
-        <img :src="img.src" x-show="idx === i"
-             x-transition:enter="transition ease-out duration-500"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100"
-             x-transition:leave="transition ease-in duration-300"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             class="absolute inset-0 w-full h-full object-cover"
-             :alt="img.alt"
-             loading="lazy" />
-      </template>
-      <button @click="idx = (idx - 1 + images.length) % images.length"
-              class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm transition opacity-0 group-hover:opacity-100"
-              aria-label="prev">
+      <img src="/media/images/meetup/2023-01-14-meeting.jpeg" alt="meetup 2023-01" class="carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-idx="0" />
+      <img src="/media/images/meetup/2023-04-15-meeting.jpeg" alt="meetup 2023-04" class="carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-idx="1" style="display:none;" />
+      <img src="/media/images/meetup/2023-07-08-meeting.jpeg" alt="meetup 2023-07" class="carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-idx="2" style="display:none;" />
+      <img src="/media/images/meetup/2023-09-23-meeting.jpg" alt="meetup 2023-09" class="carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-idx="3" style="display:none;" />
+      <img src="/media/images/meetup/2023-12-23-meeting.jpg" alt="meetup 2023-12" class="carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-idx="4" style="display:none;" />
+      <img src="/media/images/meetup/2024-06-15-meeting.jpg" alt="meetup 2024-06" class="carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-idx="5" style="display:none;" />
+      <img src="/media/images/meetup/2025-01-04-meeting.jpg" alt="meetup 2025-01" class="carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-idx="6" style="display:none;" />
+      <img src="/media/images/meetup/2026-05-30-meeting.jpg" alt="meetup 2026-05" class="carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-idx="7" style="display:none;" />
+      <button onclick="oscarCarousel.prev()" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm transition opacity-0 group-hover:opacity-100" aria-label="prev">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
       </button>
-      <button @click="idx = (idx + 1) % images.length"
-              class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm transition opacity-0 group-hover:opacity-100"
-              aria-label="next">
+      <button onclick="oscarCarousel.next()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm transition opacity-0 group-hover:opacity-100" aria-label="next">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
-      <div class="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded backdrop-blur-sm"
-           x-text="idx + 1 + ' / ' + images.length"></div>
+      <div id="oscar-page-count" class="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded backdrop-blur-sm">1 / 8</div>
     </div>
-    <div class="flex gap-2 mt-2 flex-wrap justify-center">
-      <template x-for="(img, i) in images" :key="'t'+i">
-        <button @click="idx = i"
-                class="w-16 h-12 rounded-lg overflow-hidden border-2 transition cursor-pointer hover:scale-105"
-                :class="idx === i ? 'border-amber-400 ring-2 ring-amber-400/40' : 'border-transparent hover:border-white/30'"
-                :style="'background-image:url(' + img.src + '); background-size:cover; background-position:center;'"
-                :aria-label="img.date"></button>
-      </template>
+    <div id="oscar-thumbnails" class="flex gap-2 mt-2 flex-wrap justify-center">
+      <button onclick="oscarCarousel.go(0)" class="w-16 h-12 rounded-lg overflow-hidden border-2 border-amber-400 ring-2 ring-amber-400/40 transition cursor-pointer" style="background-image:url('/media/images/meetup/2023-01-14-meeting.jpeg'); background-size:cover; background-position:center;" aria-label="2023-01"></button>
+      <button onclick="oscarCarousel.go(1)" class="w-16 h-12 rounded-lg overflow-hidden border-2 border-transparent hover:border-white/30 hover:scale-105 transition cursor-pointer" style="background-image:url('/media/images/meetup/2023-04-15-meeting.jpeg'); background-size:cover; background-position:center;" aria-label="2023-04"></button>
+      <button onclick="oscarCarousel.go(2)" class="w-16 h-12 rounded-lg overflow-hidden border-2 border-transparent hover:border-white/30 hover:scale-105 transition cursor-pointer" style="background-image:url('/media/images/meetup/2023-07-08-meeting.jpeg'); background-size:cover; background-position:center;" aria-label="2023-07"></button>
+      <button onclick="oscarCarousel.go(3)" class="w-16 h-12 rounded-lg overflow-hidden border-2 border-transparent hover:border-white/30 hover:scale-105 transition cursor-pointer" style="background-image:url('/media/images/meetup/2023-09-23-meeting.jpg'); background-size:cover; background-position:center;" aria-label="2023-09"></button>
+      <button onclick="oscarCarousel.go(4)" class="w-16 h-12 rounded-lg overflow-hidden border-2 border-transparent hover:border-white/30 hover:scale-105 transition cursor-pointer" style="background-image:url('/media/images/meetup/2023-12-23-meeting.jpg'); background-size:cover; background-position:center;" aria-label="2023-12"></button>
+      <button onclick="oscarCarousel.go(5)" class="w-16 h-12 rounded-lg overflow-hidden border-2 border-transparent hover:border-white/30 hover:scale-105 transition cursor-pointer" style="background-image:url('/media/images/meetup/2024-06-15-meeting.jpg'); background-size:cover; background-position:center;" aria-label="2024-06"></button>
+      <button onclick="oscarCarousel.go(6)" class="w-16 h-12 rounded-lg overflow-hidden border-2 border-transparent hover:border-white/30 hover:scale-105 transition cursor-pointer" style="background-image:url('/media/images/meetup/2025-01-04-meeting.jpg'); background-size:cover; background-position:center;" aria-label="2025-01"></button>
+      <button onclick="oscarCarousel.go(7)" class="w-16 h-12 rounded-lg overflow-hidden border-2 border-transparent hover:border-white/30 hover:scale-105 transition cursor-pointer" style="background-image:url('/media/images/meetup/2026-05-30-meeting.jpg'); background-size:cover; background-position:center;" aria-label="2026-05"></button>
     </div>
     <div class="grid grid-cols-8 gap-1 mt-1 text-center text-xs text-gray-400 max-w-4xl">
-      <template x-for="(img, i) in images" :key="'d'+i">
-        <span x-text="img.date"></span>
-      </template>
+      <span>2023-01</span><span>2023-04</span><span>2023-07</span><span>2023-09</span><span>2023-12</span><span>2024-06</span><span>2025-01</span><span>2026-05</span>
     </div>
   </div>
 </div>
 
 <script>
-  function homeCarousel() {
-    return {
-      idx: 0,
-      images: [
-        { src: "/media/images/meetup/2023-01-14-meeting.jpeg", date: "2023-01", alt: "meetup 2023-01" },
-        { src: "/media/images/meetup/2023-04-15-meeting.jpeg", date: "2023-04", alt: "meetup 2023-04" },
-        { src: "/media/images/meetup/2023-07-08-meeting.jpeg", date: "2023-07", alt: "meetup 2023-07" },
-        { src: "/media/images/meetup/2023-09-23-meeting.jpg", date: "2023-09", alt: "meetup 2023-09" },
-        { src: "/media/images/meetup/2023-12-23-meeting.jpg", date: "2023-12", alt: "meetup 2023-12" },
-        { src: "/media/images/meetup/2024-06-15-meeting.jpg", date: "2024-06", alt: "meetup 2024-06" },
-        { src: "/media/images/meetup/2025-01-04-meeting.jpg", date: "2025-01", alt: "meetup 2025-01" },
-        { src: "/media/images/meetup/2026-05-30-meeting.jpg", date: "2026-05", alt: "meetup 2026-05" }
-      ]
-    }
-  }
+var oscarCarousel = {
+  idx: 0, total: 8,
+  init: function() {
+    this.slides = document.querySelectorAll('#oscar-carousel .carousel-slide');
+    this.thumbs = document.querySelectorAll('#oscar-thumbnails button');
+    this.pageCount = document.getElementById('oscar-page-count');
+    this.total = this.slides.length;
+    this.render();
+  },
+  render: function() {
+    var self = this;
+    this.slides.forEach(function(s, i) { s.style.display = (i === self.idx) ? 'block' : 'none'; });
+    this.thumbs.forEach(function(t, i) {
+      t.className = 'w-16 h-12 rounded-lg overflow-hidden border-2 transition cursor-pointer ' +
+        (i === self.idx ? 'border-amber-400 ring-2 ring-amber-400/40' : 'border-transparent hover:border-white/30 hover:scale-105');
+    });
+    this.pageCount.textContent = (self.idx + 1) + ' / ' + self.total;
+  },
+  go: function(i) { this.idx = i; this.render(); },
+  next: function() { this.idx = (this.idx + 1) % this.total; this.render(); },
+  prev: function() { this.idx = (this.idx - 1 + this.total) % this.total; this.render(); }
+};
+document.addEventListener('DOMContentLoaded', function() { oscarCarousel.init(); });
 </script>
 
 {{ partial "landing_page" . }}
