@@ -8,7 +8,7 @@ venue: "华东师范大学（闵行）传播学院"
 image:
   filename: "posters/kuosi-2028-09-06-poster.png"
   caption: "OSCAR·开源之书·共读 Meetup 海报 — 2026-09-06"
-type: poster
+type: page
 weight: 10
 ---
 
