@@ -1,6 +1,7 @@
 ---
 title: "掌握自身叙事，先掌握智能的进化叙事"
-date: 2026-09-06
+date: 2026-08-24
+eventDate: 2026-09-06
 author: "「开源之道」·适兕"
 event: "OSCAR·开源之书·共读 Meetup · Shanghai"
 venue: "华东师范大学（闵行）传播学院"
