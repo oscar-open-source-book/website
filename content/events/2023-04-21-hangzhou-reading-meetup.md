@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-04-21"
 location: "杭州"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "首次走出北京，杭州站共读《Rebel Code》与《非暴力沟通》，字节跳动赞助，探讨开源文化中的反叛精神与沟通艺术。"
 tags:
   - 共读
   - 线下

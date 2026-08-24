@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-06-10"
 location: "深圳"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "深圳站共读《开源的成功之路》，与 LFAPAC 译道师联合举办，vivo 互联网/OSPO 赞助，探索开源商业化的可能路径。"
 tags:
   - 共读
   - 线下

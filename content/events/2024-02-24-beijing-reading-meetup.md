@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2024-02-24"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "春节后第一场共读，中关村创业大街赞助，联合「开源之法与经济」，继续探索开源制度的经济基础。"
 tags:
   - 共读
   - 线下

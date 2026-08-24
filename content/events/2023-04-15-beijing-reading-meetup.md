@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2023-04-15"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "共读《毫无意义的工作》与《开源之史》，OceanBase 公司赞助场地，联合「开源之法」小组讨论工作的意义与开源的历史脉络。"
 tags:
   - 共读
   - 线下

@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2022-12-24"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "圣诞季线下共读分享会，延续首聚话题，成员围坐讨论开源经典，在节日氛围中交流阅读心得。"
 tags:
   - 共读
   - 线下

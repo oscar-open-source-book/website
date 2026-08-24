@@ -7,7 +7,7 @@ subtitle: "「OSCAR·开源之书·共读」线下分享"
 event_date: "2025-02-22"
 location: "北京"
 type: event
-summary: "「OSCAR·开源之书·共读」线下共读分享会，围绕开源主题的经典著作展开讨论。"
+summary: "2025 年 2 月 Meetup，联合 KCC 北京，王厚、Fine、Dongjie 赞助咖啡小食，成员围坐分享新一年的阅读计划。"
 tags:
   - 共读
   - 线下
