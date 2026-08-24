@@ -1,6 +1,8 @@
 ---
 title: "海报"
+type: page
+layout: poster
 cascade:
-  type: poster
+  type: page
   editable: true
 ---
