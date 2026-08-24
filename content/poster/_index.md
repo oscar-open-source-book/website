@@ -2,6 +2,7 @@
 title: "海报"
 cascade:
   type: page
+  layout: section
   editable: true
 ---
 
