@@ -27,9 +27,9 @@ sections:
       view: article-grid
       columns: 3
   - block: collection
-    id: 文章
+    id: 特点
     content:
-      title: "文章"
+      title: "特点"
       text: "从图书馆、开源文集、走组织、Reading and Talking 到开发者峰会——社区六年来的思考与行动记录。"
       filters:
         folders:

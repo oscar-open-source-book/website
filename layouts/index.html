@@ -3,7 +3,7 @@
 <div class="hero-section"
      style="background-color:#1B3B6B; padding:3rem 1rem;">
   <div class="flex flex-col items-center max-w-prose mx-auto gap-3 justify-center px-6 text-center">
-    <div class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">开源之书 · 共读</div>
+    <div class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">「开源之书 · 共读」</div>
     <div class="prose prose-slate lg:prose-xl dark:prose-invert max-w-prose">
       <h1>共读 · 共识 · 共进</h1>
       <p>「OSCAR·开源之书·共读」——82 本开源经典著作，26 场线下 meetup，持续生长的开源思想地图。</p>
@@ -14,8 +14,10 @@
 </div>
 
 <div class="hero-section"
-     style="background-color:#0F172A; padding:2.5rem 1rem;"
-     x-data="homeCarousel()">
+     style="background-color:#0F172A; padding:2rem 1rem;"
+     x-data="homeCarousel()"
+     @keydown.arrowleft.window="idx = (idx - 1 + images.length) % images.length"
+     @keydown.arrowright.window="idx = (idx + 1) % images.length">
   <div class="max-w-5xl mx-auto px-4 flex flex-col items-center gap-4">
     <div class="relative w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 group">
       <template x-for="(img, i) in images" :key="i">
@@ -27,7 +29,8 @@
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
              class="absolute inset-0 w-full h-full object-cover"
-             :alt="img.alt" />
+             :alt="img.alt"
+             loading="lazy" />
       </template>
       <button @click="idx = (idx - 1 + images.length) % images.length"
               class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm transition opacity-0 group-hover:opacity-100"
@@ -42,7 +45,7 @@
       <div class="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded backdrop-blur-sm"
            x-text="idx + 1 + ' / ' + images.length"></div>
     </div>
-    <div class="flex gap-2 mt-2">
+    <div class="flex gap-2 mt-2 flex-wrap justify-center">
       <template x-for="(img, i) in images" :key="'t'+i">
         <button @click="idx = i"
                 class="w-16 h-12 rounded-lg overflow-hidden border-2 transition cursor-pointer hover:scale-105"
@@ -51,7 +54,7 @@
                 :aria-label="img.date"></button>
       </template>
     </div>
-    <div class="grid grid-cols-6 gap-1 mt-1 text-center text-xs text-gray-400">
+    <div class="grid grid-cols-8 gap-1 mt-1 text-center text-xs text-gray-400 max-w-4xl">
       <template x-for="(img, i) in images" :key="'d'+i">
         <span x-text="img.date"></span>
       </template>
@@ -64,12 +67,14 @@
     return {
       idx: 0,
       images: [
-        { src: "/media/images/meetup/2023-01-14-dialog.jpeg", date: "2023-01-14", alt: "meetup 2023-01" },
-        { src: "/media/images/meetup/2023-04-15-all.jpeg", date: "2023-04-15", alt: "meetup 2023-04" },
-        { src: "/media/images/meetup/2023-07-08-all.jpeg", date: "2023-07-08", alt: "meetup 2023-07" },
-        { src: "/media/images/meetup/2023-09-23-all.jpg", date: "2023-09-23", alt: "meetup 2023-09" },
-        { src: "/media/images/meetup/2023-12-23-all.jpg", date: "2023-12-23", alt: "meetup 2023-12" },
-        { src: "/media/images/meetup/2024-06-15-all.jpg", date: "2024-06-15", alt: "meetup 2024-06" }
+        { src: "/media/images/meetup/2023-01-14-meeting.jpeg", date: "2023-01", alt: "meetup 2023-01" },
+        { src: "/media/images/meetup/2023-04-15-meeting.jpeg", date: "2023-04", alt: "meetup 2023-04" },
+        { src: "/media/images/meetup/2023-07-08-meeting.jpeg", date: "2023-07", alt: "meetup 2023-07" },
+        { src: "/media/images/meetup/2023-09-23-meeting.jpg", date: "2023-09", alt: "meetup 2023-09" },
+        { src: "/media/images/meetup/2023-12-23-meeting.jpg", date: "2023-12", alt: "meetup 2023-12" },
+        { src: "/media/images/meetup/2024-06-15-meeting.jpg", date: "2024-06", alt: "meetup 2024-06" },
+        { src: "/media/images/meetup/2025-01-04-meeting.jpg", date: "2025-01", alt: "meetup 2025-01" },
+        { src: "/media/images/meetup/2026-05-30-meeting.jpg", date: "2026-05", alt: "meetup 2026-05" }
       ]
     }
   }
