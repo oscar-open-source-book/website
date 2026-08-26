@@ -9,23 +9,22 @@
       <p class="text-xs text-gray-400 mt-0.5">{{ $total }} slides · {{ .Date.Format "2006-01" }}</p>
     </div>
     <div class="flex gap-2">
-      <button onclick="toggleFullscreen()" class="px-3 py-1 rounded-lg border border-amber-600/40 text-sm text-amber-300 hover:bg-amber-600/10 hover:text-amber-400" id="btn-fullscreen">⛶ 全屏</button>
+      <button onclick="toggleFullscreen()" class="px-3 py-1 rounded-lg border border-amber-600/40 text-sm text-amber-300 hover:bg-amber-600/10 hover:text-amber-400">⛶ 全屏</button>
       <a href="/slides/" class="text-xs px-3 py-1 rounded-lg border border-white/20 text-gray-400 hover:text-amber-400">← 列表</a>
     </div>
   </div>
 
-  <!-- Thumbnail strip -->
+  <!-- Thumbnail strip (CSS transform scale, no iframe scale hack) -->
   <div class="mb-4 pb-3 border-b border-white/10">
     <p class="text-xs text-gray-500 mb-2">缩略导航</p>
     <div id="thumb-strip" class="flex gap-2 overflow-x-auto pb-2">
       {{ range seq $total }}
       <div onclick="goTo({{ . }})"
-           class="thumb-item flex-shrink-0 cursor-pointer group"
+           class="thumb-item flex-shrink-0 cursor-pointer"
            data-page="{{ . }}">
-        <div class="w-32 h-18 border border-white/15 rounded-md overflow-hidden transition-all duration-200 group-hover:border-amber-600">
+        <div class="w-40 h-24 overflow-hidden rounded-md border border-white/10 hover:border-amber-600 transition-colors">
           <iframe src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
-                  class="w-full h-full border-0 scale-[0.3125] origin-top-left"
-                  style="width:320px;height:180px;"
+                  class="thumb-iframe"
                   scrolling="no">
           </iframe>
         </div>
@@ -50,8 +49,7 @@
           data-slide="{{ . }}"
           src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
           class="slide-iframe"
-          {{ if ne . 1 }}style="display:none"{{ end }}
-          scrolling="yes">
+          {{ if ne . 1 }}style="display:none"{{ end }}>
   </iframe>
   {{ end }}
 
@@ -74,28 +72,37 @@
   aspect-ratio:16/9;
   height:560px;
 }
-/* Fullscreen mode */
-html:fullscreen .slide-iframe,
-.slide-iframe:-webkit-full-screen,
-.slide-iframe:fullscreen{
-  max-width:none !important;
+/* Thumbnail: scale via CSS transform, no fixed dimensions inside iframe */
+.thumb-iframe{
+  width:1600px;
+  height:900px;
+  border:none;
+  transform: scale(0.1);
+  transform-origin: top left;
+  position:absolute;
+  top:0;
+  left:0;
+}
+/* Fullscreen: hide controls, show only slide */
+.fullscreen-mode #deck-nav,
+.fullscreen-mode #thumb-strip-wrap,
+.fullscreen-mode .slide-controls,
+.fullscreen-mode .nav-header{
+  display:none !important;
+}
+.fullscreen-mode .slide-iframe{
+  max-width:170vh !important;
   height:95vh !important;
   aspect-ratio:16/9 !important;
-  max-width:170vh !important;
+  margin:0 auto !important;
 }
 @media (max-width:768px){
   .slide-iframe{height:380px}
 }
-#deck-nav button{
-  transition: all 0.2s;
-}
-#deck-nav button.border-amber-600{
-  background: rgba(217, 119, 6, 0.15);
-}
 </style>
 
 <script>
-let cur = 1, total = {{ $total }}, fs = null;
+let cur = 1, total = {{ $total }}, fullMode = false;
 
 function syncHighlight(){
   document.querySelectorAll('#deck-nav button').forEach(el => {
@@ -115,12 +122,7 @@ function show(n) {
     el.style.display = el.dataset.slide == cur ? 'block' : 'none';
   });
   syncHighlight();
-  document.getElementById('page-indicator').textContent = cur + ' / ' + total;
   localStorage.setItem('slide-{{ $deckId }}', cur);
-  // Sync fullscreen if active
-  if (fs) {
-    fs.style.display = fs.dataset.slide == cur ? 'block' : 'none';
-  }
 }
 
 function goTo(n) { show(n); }
@@ -128,24 +130,18 @@ function prev() { if (cur > 1) show(cur - 1); }
 function next() { if (cur < total) show(cur + 1); }
 
 function toggleFullscreen() {
-  const iframe = document.querySelector('.slide-iframe[style*="block"]') || document.querySelector('.slide-iframe');
-  if (!fs) {
-    fs = iframe;
-    iframe.requestFullscreen().then(() => {
-      document.getElementById('btn-fullscreen').textContent = '✕ 退出';
-    }).catch(e => {});
-  } else {
-    document.exitFullscreen();
-    fs = null;
-    document.getElementById('btn-fullscreen').textContent = '⛶ 全屏';
-  }
+  const sect = document.querySelector('section');
+  fullMode = !fullMode;
+  sect.classList.toggle('fullscreen-mode', fullMode);
+  document.querySelector('button[onclick="toggleFullscreen()"]').textContent = fullMode ? '✕ 退出全屏' : '⛶ 全屏';
 }
 
 document.addEventListener('keydown', e => {
   if (e.key == 'ArrowLeft') prev();
   else if (e.key == 'ArrowRight') next();
   else if (e.key == 'f' || e.key == 'F') toggleFullscreen();
-  else if (e.key == 'Escape') {} // handled natively
+  else if (e.key == 'Home') goTo(1);
+  else if (e.key == 'End') goTo(total);
 });
 
 show(localStorage.getItem('slide-{{ $deckId }}') ? parseInt(localStorage.getItem('slide-{{ $deckId }}')) : 1);
