@@ -1,0 +1,141 @@
+{{ define "main" }}
+<section class="mx-auto max-w-screen-xl px-4 py-8">
+  {{ $slidesPath := .Params.slides_src }}
+  {{ if not $slidesPath }}
+    <p class="text-gray-400">未配置 slides 源文件路径。</p>
+  {{ else }}
+    {{ $slidesContent := readFile $slidesPath | default "" }}
+    {{ $slides := split $slidesContent "---" }}
+    {{ $total := len $slides }}
+
+    {{ if ne $slidesContent "" }}
+      <div class="mb-4 flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-amber-100">{{ .Title }}</h1>
+          <p class="text-sm text-gray-400 mt-1">{{ $total }} slides · {{ .Date.Format "2006-01" }}</p>
+        </div>
+        <div class="flex gap-2">
+          <a href="/slides/" class="text-xs px-3 py-1 rounded-lg border border-white/20 text-gray-400 hover:text-amber-400">← 返回列表</a>
+          <a href="{{ $slidesPath }}" target="_blank" class="text-xs px-3 py-1 rounded-lg border border-amber-700/40 text-amber-500 hover:bg-amber-900/20">原始 Markdown</a>
+        </div>
+      </div>
+
+      <div id="slide-deck" class="bg-gray-900/60 rounded-xl border border-white/10 overflow-hidden">
+        {{ $deck := "" }}
+        {{ range $idx, $slide in $slides }}
+          {{ $clean := trim $slide "\n" }}
+          {{ $deck = printf "%s\n%s" $deck $clean }}
+          {{ if ne (add $idx 1) $total }}
+            {{ $deck = printf "%s\n---\n" $deck }}
+          {{ end }}
+        {{ end }}
+        {{ $deck | safeHTML }}
+      </div>
+    {{ else }}
+      <p class="text-gray-400">文件为空或无法读取。</p>
+    {{ end }}
+  {{ end }}
+</section>
+
+<style>
+/* Slide deck CSS: each slide is a page-sized block, --- splits pages */
+#slide-deck{
+  aspect-ratio: 16/9;
+  font-family: 'IBM Plex Serif', 'Noto Serif SC', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #E8E4DC;
+  padding: 2rem 3rem;
+}
+#slide-deck > h1{
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #F5D49B;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(245,212,155,0.3);
+  padding-bottom: 0.3rem;
+}
+#slide-deck h2{
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #B4A078;
+  margin: 0.8rem 0 0.4rem;
+}
+#slide-deck h3{
+  font-size: 1rem;
+  color: #D4C9A8;
+  margin: 0.5rem 0 0.3rem;
+}
+#slide-deck > hr{
+  border: none;
+  border-top: 2px dashed rgba(180,160,120,0.4);
+  margin: 2rem 0;
+}
+#slide-deck p{
+  margin: 0.3rem 0;
+}
+#slide-deck ul, #slide-deck ol{
+  margin: 0.2rem 0 0.2rem 1.5rem;
+  padding: 0;
+}
+#slide-deck li{
+  margin: 0.15rem 0;
+  font-size: 0.95rem;
+}
+#slide-deck blockquote{
+  border-left: 3px solid #B4A078;
+  padding-left: 1rem;
+  color: #C4B896;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+#slide-deck strong{
+  color: #F5D49B;
+  font-weight: 600;
+}
+#slide-deck em{
+  color: #D4C9A8;
+}
+#slide-deck code{
+  background: rgba(245,212,155,0.1);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+#slide-deck pre{
+  background: rgba(0,0,0,0.4);
+  padding: 0.5rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 0.85em;
+}
+#slide-deck img{
+  max-width: 100%;
+  border-radius: 4px;
+  margin: 0.3rem 0;
+}
+#slide-deck table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85em;
+}
+#slide-deck th, #slide-deck td{
+  border: 1px solid rgba(180,160,120,0.3);
+  padding: 0.3rem 0.5rem;
+}
+#slide-deck th{
+  background: rgba(180,160,120,0.1);
+  color: #F5D49B;
+}
+#slide-deck hr[style="page-break-after: always;"]{
+  border: none;
+  border-top: 2px dashed rgba(180,160,120,0.4);
+  margin: 2rem 0;
+}
+#slide-deck .page-break{
+  border: none;
+  border-top: 2px dashed rgba(180,160,120,0.4);
+  margin: 2rem 0;
+}
+</style>
+{{ end }}
