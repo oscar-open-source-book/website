@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>许可采用率数据看板</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-dark: #0a0e1a;
+  --bg-panel: rgba(13, 20, 40, 0.82);
+  --bg-card: rgba(20, 30, 55, 0.78);
+  --text-main: #e8eef8;
+  --text-dim: #8aa0bf;
+  --border-glow: rgba(33, 150, 243, 0.35);
+  --border-cyan: rgba(0, 188, 212, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 { font-family: 'Inter', sans-serif; }
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+#bg .bg-photo {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1600px;
+  height: 900px;
+  object-fit: cover;
+  opacity: 0.45;
+}
+
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,14,26,0.55) 0%, rgba(10,14,26,0.85) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 36px 48px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 22px;
+  position: relative;
+}
+
+.header::before,
+.header::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 180px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.header::before { left: 80px; }
+.header::after { right: 80px; }
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #e8f4ff 0%, #2196F3 50%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(33, 150, 243, 0.3);
+  margin-bottom: 10px;
+}
+
+.header .subtitle {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  max-width: 1100px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.main-area {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  min-height: 0;
+}
+
+.left-col {
+  width: 560px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  padding: 18px 20px;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), transparent);
+}
+
+.panel-header {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-header::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.chart-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(33, 150, 243, 0.25);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.15), transparent 70%);
+}
+
+.kpi-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.kpi-value {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(33,150,243,0.5);
+  line-height: 1;
+}
+
+.kpi-card.accent .kpi-value {
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(0,188,212,0.5);
+}
+
+.kpi-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+
+.insight-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 188, 212, 0.2);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.insight-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.insight-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.insight-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.insight-desc {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-label .dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 6px var(--primary);
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="/slides/2023-06-the-rise-of-open-source-licensing/images/page_004_dashboard.jpg" alt="">
+    <div class="bg-overlay"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <h1>许可采用率数据看板</h1>
+      <p class="subtitle">数据清晰地展示了开源许可版图的此消彼长，宽松协议在企业场景中占据主导，Copyleft协议在系统级基础设施中保持重要地位，而新兴的商业模式驱动型许可正在模糊传统开源边界。</p>
+    </div>
+
+    <div class="main-area">
+      <div class="left-col">
+        <div class="panel" style="flex:1;display:flex;flex-direction:column;">
+          <div class="panel-header"><span>许可证占比分布 · GitHub 2023</span></div>
+          <div class="chart-wrap">
+            <div id="chart_1" style="width:500px;height:380px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div>
+          <div class="section-label"><span class="dot"></span><span>核心指标 KPI</span></div>
+          <div class="kpi-grid">
+            <div class="kpi-card accent">
+              <div class="kpi-label">MIT</div>
+              <div class="kpi-value">50%+</div>
+              <div class="kpi-sub">持续领跑</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Apache 2.0</div>
+              <div class="kpi-value">~18%</div>
+              <div class="kpi-sub">年增长 +3%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">GPL</div>
+              <div class="kpi-value">~15%</div>
+              <div class="kpi-sub">较2010年 -10pp</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">BSD</div>
+              <div class="kpi-value">~6%</div>
+              <div class="kpi-sub">保持稳定</div>
+            </div>
+            <div class="kpi-card accent">
+              <div class="kpi-label">无许可证</div>
+              <div class="kpi-value">~20%</div>
+              <div class="kpi-sub">合规盲区</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">其他协议</div>
+              <div class="kpi-value">~9%</div>
+              <div class="kpi-sub">含AGPL/SSPL等</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:1;display:flex;flex-direction:column;min-height:0;">
+          <div class="section-label"><span class="dot"></span><span>关键洞察</span></div>
+          <div class="insights-grid">
+            <div class="insight-card">
+              <div class="insight-num">01</div>
+              <div class="insight-title">MIT持续领跑</div>
+              <div class="insight-desc">GitHub统计显示MIT约占所有开源项目许可证选择的50%以上。</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-num">02</div>
+              <div class="insight-title">Apache 2.0稳步增长</div>
+              <div class="insight-desc">在企业级项目中增速最快，专利条款是关键吸引力。</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-num">03</div>
+              <div class="insight-title">GPL份额下降</div>
+              <div class="insight-desc">强Copyleft限制使新项目更倾向宽松协议，占比从2010年峰值回落。</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-num">04</div>
+              <div class="insight-title">无许可证增加</div>
+              <div class="insight-desc">约20%新项目未明确声明许可证，合规风险不容忽视。</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-num">05</div>
+              <div class="insight-title">SSPL等新型协议</div>
+              <div class="insight-desc">MongoDB等公司推出来源特定许可，试图规避开源标签争议。</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-num">06</div>
+              <div class="insight-title">双重许可模式</div>
+              <div class="insight-desc">GPL加商业许可并行，已成为成熟开源项目的标准商业模式。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { show: false },
+    legend: {
+      bottom: 0,
+      left: 'center',
+      itemWidth: 10,
+      itemHeight: 10,
+      textStyle: {
+        color: '#8aa0bf',
+        fontFamily: 'Roboto Mono',
+        fontSize: 11
+      },
+      data: ['MIT','无许可证','Apache 2.0','GPL','其他协议','BSD']
+    },
+    series: [{
+      type: 'pie',
+      radius: ['38%', '62%'],
+      center: ['50%', '44%'],
+      avoidLabelOverlap: true,
+      itemStyle: {
+        borderColor: 'rgba(10,14,26,0.9)',
+        borderWidth: 2
+      },
+      label: {
+        color: '#e8eef8',
+        fontFamily: 'Roboto Mono',
+        fontSize: 11,
+        formatter: '{b}\n{d}%',
+        lineHeight: 14
+      },
+      labelLine: {
+        length: 10,
+        length2: 12,
+        lineStyle: { color: 'rgba(33,150,243,0.5)' }
+      },
+      data: [
+        { value: 45, name: 'MIT', itemStyle: { color: '#2196F3', shadowBlur: 15, shadowColor: 'rgba(33,150,243,0.5)' } },
+        { value: 20, name: '无许可证', itemStyle: { color: '#374785' } },
+        { value: 18, name: 'Apache 2.0', itemStyle: { color: '#00BCD4', shadowBlur: 10, shadowColor: 'rgba(0,188,212,0.4)' } },
+        { value: 10, name: 'GPL', itemStyle: { color: '#42A5F5' } },
+        { value: 4, name: '其他协议', itemStyle: { color: '#26C6DA' } },
+        { value: 3, name: 'BSD', itemStyle: { color: '#5C6BC0' } }
+      ]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

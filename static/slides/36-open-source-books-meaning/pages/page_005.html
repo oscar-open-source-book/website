@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>书单数据画像</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="../assets/echarts.min.js"></script>
+<style>
+:root{
+  --navy:#0D2137;
+  --red:#E53935;
+  --cream:#F5F2EB;
+  --paper:#FBFAF6;
+  --line:#D9D2C4;
+  --ink:#1a1a1a;
+  --muted:#5a5548;
+  --gold:#B08D57;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#eae5da;font-family:'Source Sans 3','Noto Sans SC',sans-serif;color:var(--ink);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 56px 36px 56px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* background decoration */
+#bg{background:
+  radial-gradient(circle at 92% 8%, rgba(229,57,53,0.06) 0 60px, transparent 62%),
+  radial-gradient(circle at 8% 96%, rgba(13,33,55,0.06) 0 90px, transparent 92%),
+  var(--cream);
+}
+
+/* masthead */
+.masthead{display:flex;align-items:flex-end;justify-content:space-between;border-top:3px solid var(--navy);border-bottom:1px solid var(--navy);padding:10px 0 8px 0;margin-bottom:14px;}
+.masthead .brand{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:800;font-size:14px;letter-spacing:4px;color:var(--navy);}
+.masthead .meta{display:flex;gap:18px;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.masthead .meta span::before{content:"● ";color:var(--red);font-size:8px;vertical-align:middle;}
+
+/* header block */
+.header{display:grid;grid-template-columns:1.35fr 1fr;gap:36px;margin-bottom:16px;}
+.title-block .kicker{font-size:11px;letter-spacing:5px;color:var(--red);font-weight:700;margin-bottom:8px;text-transform:uppercase;}
+.title-block h1{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:800;font-size:52px;line-height:1;color:var(--navy);letter-spacing:1px;}
+.title-block h1 .accent{color:var(--red);}
+.title-block .subrule{width:60px;height:3px;background:var(--red);margin:12px 0 12px 0;}
+.title-block .lede{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:14px;line-height:1.7;color:var(--muted);font-weight:400;}
+.title-block .lede b{color:var(--navy);font-weight:700;}
+
+.stat-panel{border:1px solid var(--line);background:var(--paper);padding:14px 18px;display:flex;flex-direction:column;gap:8px;position:relative;}
+.stat-panel::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:var(--navy);}
+.stat-panel .sp-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:13px;color:var(--navy);font-weight:700;letter-spacing:2px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+.stat-panel .sp-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--muted);}
+.stat-panel .sp-row span:first-child{color:var(--navy);font-weight:600;}
+.stat-panel .sp-row span:last-child{font-weight:600;}
+.stat-panel .sp-tag{margin-top:6px;display:inline-block;background:var(--navy);color:var(--cream);font-size:10px;letter-spacing:2px;padding:3px 10px;align-self:flex-start;font-weight:700;}
+
+/* core area */
+.core{display:grid;grid-template-columns:380px 1fr;gap:24px;margin-bottom:16px;flex:1;}
+
+/* KPI stack */
+.kpi-stack{display:flex;flex-direction:column;gap:10px;}
+.kpi{background:var(--paper);border:1px solid var(--line);padding:14px 18px;position:relative;overflow:hidden;flex:1;display:flex;flex-direction:column;justify-content:center;}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red);}
+.kpi .kpi-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;}
+.kpi .num{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:800;font-size:46px;line-height:1;color:var(--navy);}
+.kpi .num .unit{font-size:18px;color:var(--red);font-weight:700;margin-left:4px;}
+.kpi .label{font-size:11px;letter-spacing:3px;color:var(--muted);font-weight:600;text-transform:uppercase;}
+.kpi .desc{font-size:12px;color:var(--muted);line-height:1.55;margin-top:6px;border-top:1px dashed var(--line);padding-top:6px;}
+.kpi .desc b{color:var(--navy);}
+
+/* charts area */
+.charts-area{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.chart-card{background:var(--paper);border:1px solid var(--line);padding:12px 14px 10px 14px;display:flex;flex-direction:column;}
+.chart-card .cc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;padding-bottom:6px;border-bottom:1px solid var(--line);}
+.chart-card .cc-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:14px;color:var(--navy);font-weight:700;letter-spacing:1px;}
+.chart-card .cc-tag{font-size:9px;letter-spacing:2px;color:var(--red);font-weight:700;border:1px solid var(--red);padding:2px 8px;}
+.chart-card .cc-sub{font-size:11px;color:var(--muted);margin-bottom:4px;}
+.chart-card .cc-chart{flex:1;min-height:0;}
+.chart-card .cc-foot{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding-top:6px;border-top:1px dashed var(--line);margin-top:4px;}
+.chart-card .cc-foot b{color:var(--navy);}
+
+/* aux data points - embedded in gap area */
+.aux-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.aux{background:var(--paper);border:1px solid var(--line);padding:8px 14px;display:flex;align-items:center;gap:12px;}
+.aux .aux-num{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:800;font-size:26px;color:var(--red);line-height:1;}
+.aux .aux-text{font-size:11px;color:var(--muted);line-height:1.4;}
+.aux .aux-text b{color:var(--navy);font-weight:700;display:block;font-size:12px;margin-bottom:2px;}
+.aux .aux-bar{flex:1;height:4px;background:var(--line);position:relative;border-radius:2px;}
+.aux .aux-bar i{position:absolute;left:0;top:0;height:100%;background:var(--navy);border-radius:2px;}
+
+/* feature cards */
+.features{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.fcard{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--navy);padding:12px 12px 12px 12px;display:flex;flex-direction:column;position:relative;}
+.fcard .fnum{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:800;font-size:22px;color:var(--red);line-height:1;margin-bottom:6px;}
+.fcard .ftitle{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:700;font-size:13px;color:var(--navy);line-height:1.3;margin-bottom:6px;}
+.fcard .ftxt{font-size:10.5px;color:var(--muted);line-height:1.6;}
+.fcard .ftxt b{color:var(--navy);font-weight:600;}
+.fcard::after{content:"";position:absolute;right:8px;top:8px;width:6px;height:6px;background:var(--red);border-radius:50%;}
+
+.footer-bar{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:8px;border-top:1px solid var(--line);font-size:10px;color:var(--muted);letter-spacing:2px;}
+.footer-bar .fl{color:var(--navy);font-weight:700;}
+.footer-bar .fr{color:var(--red);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="masthead">
+  <div class="brand">DATA · PORTRAIT · EDITORIAL</div>
+  <div class="meta">
+    <span>ISSUE № 036</span>
+    <span>OPEN-SOURCE SERIES</span>
+    <span>2024 / DATA EDITION</span>
+  </div>
+</div>
+
+<div class="header">
+  <div class="title-block">
+    <div class="kicker">— 数据画像 / Book Portfolio Analysis</div>
+    <h1>书单<span class="accent">数据画像</span></h1>
+    <div class="subrule"></div>
+    <div class="lede">
+      这组书目呈现出<b>非常均衡的分布特征</b>——经典书籍与前沿著作各占其半，<b>理论深度与实践指导并重</b>，入门友好性与专家挑战性共存，确保每一位阅读者都能在其中<b>找到属于自己的价值</b>。
+    </div>
+  </div>
+  <div class="stat-panel">
+    <div class="sp-title">— 数据集概要 / DATASET OVERVIEW</div>
+    <div class="sp-row"><span>样本领域</span><span>开源领域代表作</span></div>
+    <div class="sp-row"><span>样本规模</span><span>36 本 · 精选</span></div>
+    <div class="sp-row"><span>分析维度</span><span>6 项核心特征</span></div>
+    <div class="sp-row"><span>数据来源</span><span>编辑团队整理</span></div>
+    <div class="sp-tag">EDITORIAL REPORT</div>
+  </div>
+</div>
+
+<div class="core">
+
+  <div class="kpi-stack">
+    <div class="kpi">
+      <div class="kpi-head">
+        <div class="num">36<span class="unit">本</span></div>
+        <div class="label">总书目数量</div>
+      </div>
+      <div class="desc">精选<b>开源领域代表作</b>，覆盖操作系统、数据库、分布式系统、网络与编程语言等核心方向。</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-head">
+        <div class="num">8<span class="unit">+ 种</span></div>
+        <div class="label">涉及编程语言</div>
+      </div>
+      <div class="desc">涵盖 <b>C / C++ / Go / Python / Rust</b> 等主流语言生态，兼顾系统与脚本编程场景。</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-head">
+        <div class="num">3<span class="unit">级</span></div>
+        <div class="label">推荐难度分级</div>
+      </div>
+      <div class="desc">从 <b>入门 → 进阶 → 精通</b> 三段递进，路径清晰，便于读者按自身水平逐级深入。</div>
+    </div>
+  </div>
+
+  <div class="charts-area">
+    <div class="chart-card">
+      <div class="cc-head">
+        <div class="cc-title">经典与前沿 · 占比分布</div>
+        <div class="cc-tag">FIG.01</div>
+      </div>
+      <div class="cc-sub">经典著作约 55%（出版超 10 年的奠基之作）｜前沿著作约 45%（近 10 年发布）</div>
+      <div class="cc-chart"><div id="chart_1" style="width:100%;height:220px;"></div></div>
+      <div class="cc-foot"><span>奠基 · Foundational</span><b>55%</b></div>
+    </div>
+    <div class="chart-card">
+      <div class="cc-head">
+        <div class="cc-title">配套实践资源 · 覆盖率</div>
+        <div class="cc-tag">FIG.02</div>
+      </div>
+      <div class="cc-sub">约 70% 书目配有可运行代码示例或实验项目，强调学练结合。</div>
+      <div class="cc-chart"><div id="chart_2" style="width:100%;height:220px;"></div></div>
+      <div class="cc-foot"><span>含代码示例或实验项目</span><b>70%</b></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="aux-row">
+  <div class="aux">
+    <div class="aux-num">60<span style="font-size:16px;">%</span></div>
+    <div class="aux-text"><b>原版 + 译本共占比</b>中英文双语覆盖广泛</div>
+    <div class="aux-bar"><i style="width:60%;"></i></div>
+  </div>
+  <div class="aux">
+    <div class="aux-num">3<span style="font-size:16px;">端</span></div>
+    <div class="aux-text"><b>跨平台兼容</b>Linux / Windows / macOS 全场景</div>
+    <div class="aux-bar"><i style="width:100%;background:var(--red);"></i></div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="fcard">
+    <div class="fnum">01</div>
+    <div class="ftitle">经典与前沿兼备</div>
+    <div class="ftxt">既有出版超过<b>二十年</b>的不朽经典，也有<b>近年发布</b>的最新实践指南。</div>
+  </div>
+  <div class="fcard">
+    <div class="fnum">02</div>
+    <div class="ftitle">中英文双语覆盖</div>
+    <div class="ftxt">兼顾<b>国际权威原版</b>与国内优质译本，满足不同阅读偏好与语言习惯。</div>
+  </div>
+  <div class="fcard">
+    <div class="fnum">03</div>
+    <div class="ftitle">难度梯度清晰</div>
+    <div class="ftxt">从<b>零基础入门</b>到<b>专家级深造</b>，每本书标注适合读者水平。</div>
+  </div>
+  <div class="fcard">
+    <div class="fnum">04</div>
+    <div class="ftitle">实践导向突出</div>
+    <div class="ftxt">大部分书籍配有<b>可运行代码</b>与动手实验，强调<b>学练结合</b>而非纸上谈兵。</div>
+  </div>
+  <div class="fcard">
+    <div class="fnum">05</div>
+    <div class="ftitle">跨平台兼容理念</div>
+    <div class="ftxt">Linux、Windows、macOS 等<b>多平台场景</b>均有涉及，不局限于单一生态。</div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <div class="fl">— 书单数据画像 / BOOKLIST DATA PORTRAIT</div>
+  <div class="fr">◆ 三十六本 · 开源经典 · 编辑精选</div>
+</div>
+
+</div>
+</div>
+
+<script>
+(function(){
+  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    color:['#0D2137','#E53935'],
+    tooltip:{trigger:'item'},
+    legend:{show:false},
+    series:[{
+      type:'pie',
+      radius:['48%','75%'],
+      center:['50%','55%'],
+      avoidLabelOverlap:true,
+      label:{show:true,formatter:'{b}\n{d}%',fontSize:11,color:'#0D2137',fontWeight:600,fontFamily:'Source Sans 3'},
+      labelLine:{length:6,length2:8,lineStyle:{color:'#0D2137'}},
+      data:[
+        {value:55,name:'经典著作'},
+        {value:45,name:'前沿著作'}
+      ]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+<script>
+(function(){
+  var chart = echarts.init(document.getElementById('chart_2'), null, {renderer:'svg'});
+  chart.setOption({
+    color:['#0D2137','#E53935'],
+    tooltip:{trigger:'item'},
+    legend:{show:false},
+    series:[{
+      type:'pie',
+      radius:['48%','75%'],
+      center:['50%','55%'],
+      avoidLabelOverlap:true,
+      label:{show:true,formatter:'{b}\n{d}%',fontSize:11,color:'#0D2137',fontWeight:600,fontFamily:'Source Sans 3'},
+      labelLine:{length:6,length2:8,lineStyle:{color:'#0D2137'}},
+      data:[
+        {value:70,name:'含实践资源'},
+        {value:30,name:'纯理论'}
+      ]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>

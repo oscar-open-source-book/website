@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>高效阅读四步法</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F2EB;
+  --primary: #0D2137;
+  --accent: #E53935;
+  --text-main: #1A1A1A;
+  --text-muted: #5B6472;
+  --line: #C9C2B4;
+  --paper: #FFFFFF;
+  --serif: 'Playfair Display', 'Noto Serif SC', serif;
+  --sans: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--sans);color:var(--text-main);background:#E8E2D3;overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;background:var(--bg);}
+#bg::before{content:"";position:absolute;left:0;top:0;bottom:0;width:12px;background:var(--accent);}
+#bg::after{content:"";position:absolute;right:0;top:0;bottom:0;width:3px;background:var(--primary);opacity:.35;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;display:flex;flex-direction:column;}
+
+/* Header */
+.editorial-bar{display:flex;align-items:center;justify-content:space-between;margin-left:14px;margin-right:6px;}
+.editorial-tag{font-family:var(--serif);font-style:italic;font-size:14px;letter-spacing:2px;color:var(--accent);font-weight:700;}
+.editorial-meta{font-size:12px;letter-spacing:3px;color:var(--primary);font-weight:600;}
+.divider-line{margin:14px 14px 0 14px;height:2px;background:var(--primary);}
+.divider-line-sub{margin:6px 14px 0 14px;height:1px;background:var(--line);}
+
+.title-block{margin:18px 14px 8px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;}
+.title-main{font-family:var(--serif);font-weight:900;font-size:68px;line-height:1;color:var(--primary);letter-spacing:1px;}
+.title-main .accent-word{color:var(--accent);}
+.title-en{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--text-muted);letter-spacing:1px;padding-bottom:8px;line-height:1.4;}
+
+.subtitle{margin:14px 14px 0 14px;font-size:16px;line-height:1.7;color:var(--text-muted);max-width:1100px;font-weight:400;}
+.subtitle .hl{color:var(--primary);font-weight:600;}
+
+/* Steps area */
+.steps-area{position:relative;margin:22px 14px 0 14px;height:360px;}
+.steps-svg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+.steps-row{position:relative;display:flex;justify-content:space-between;gap:14px;height:100%;z-index:2;}
+.step{width:295px;background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--primary);padding:16px 18px 16px 18px;display:flex;flex-direction:column;position:relative;box-shadow:0 2px 8px rgba(13,33,55,.06);}
+.step-1{margin-top:180px;}
+.step-2{margin-top:120px;}
+.step-3{margin-top:60px;}
+.step-4{margin-top:0px;}
+.step-circle{width:52px;height:52px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:900;font-size:24px;margin-bottom:10px;position:relative;z-index:3;box-shadow:0 0 0 6px var(--bg), 0 0 0 7px var(--primary);}
+.step-4 .step-circle{background:var(--accent);box-shadow:0 0 0 6px var(--bg), 0 0 0 7px var(--accent);}
+.step-round{font-size:11px;letter-spacing:3px;color:var(--accent);font-weight:700;margin-bottom:4px;}
+.step-title{font-family:var(--serif);font-weight:900;font-size:22px;color:var(--primary);line-height:1.2;margin-bottom:8px;}
+.step-divider{width:28px;height:2px;background:var(--accent);margin-bottom:8px;}
+.step-desc{font-size:12.5px;line-height:1.65;color:var(--text-main);font-weight:400;}
+.step-tag{position:absolute;top:-11px;right:14px;background:var(--bg);border:1px solid var(--line);padding:2px 8px;font-size:10px;letter-spacing:2px;color:var(--primary);font-weight:700;}
+
+/* Bottom area */
+.bottom-area{margin:20px 14px 0 14px;display:flex;gap:16px;align-items:stretch;}
+.kpi-card{flex:1;background:var(--paper);border:1px solid var(--line);padding:18px 22px;display:flex;flex-direction:column;position:relative;border-left:4px solid var(--primary);}
+.kpi-card:nth-child(2){border-left-color:var(--accent);}
+.kpi-label{font-size:11px;letter-spacing:3px;color:var(--text-muted);font-weight:600;margin-bottom:6px;}
+.kpi-value{font-family:var(--serif);font-weight:900;font-size:36px;color:var(--primary);line-height:1;}
+.kpi-card:nth-child(2) .kpi-value{color:var(--accent);}
+.kpi-value .unit{font-size:18px;font-weight:400;font-style:italic;margin-left:4px;color:var(--text-muted);}
+.kpi-note{font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);}
+.summary-card{flex:1.6;background:var(--primary);color:#fff;padding:18px 22px;display:flex;flex-direction:column;justify-content:center;position:relative;border-left:4px solid var(--accent);}
+.summary-quote{position:absolute;left:14px;top:6px;font-family:var(--serif);font-style:italic;font-size:36px;color:var(--accent);opacity:.5;line-height:1;}
+.summary-text{font-family:var(--serif);font-weight:400;font-size:16px;line-height:1.6;color:#fff;padding-left:18px;}
+.summary-text .hl{color:var(--accent);font-weight:700;}
+.summary-en{font-family:var(--serif);font-style:italic;font-size:11px;color:rgba(255,255,255,.5);margin-top:8px;padding-left:18px;letter-spacing:1px;}
+
+/* Footer */
+.footer{margin:14px 14px 0 14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:10px;}
+.footer-left{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text-muted);letter-spacing:1px;}
+.footer-right{font-size:11px;letter-spacing:3px;color:var(--primary);font-weight:700;}
+.footer-num{font-family:var(--serif);font-weight:900;font-size:20px;color:var(--accent);}
+
+/* Corner decorations */
+.corner-tl{position:absolute;left:40px;top:30px;width:8px;height:8px;background:var(--accent);z-index:5;}
+.corner-tr{position:absolute;right:40px;top:30px;width:8px;height:8px;background:var(--primary);z-index:5;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+<div class="corner-tl"></div>
+<div class="corner-tr"></div>
+
+<div class="editorial-bar">
+  <span class="editorial-tag">Editorial · Reading Method</span>
+  <span class="editorial-meta">VOL. 04 / 高效学习系列</span>
+</div>
+<div class="divider-line"></div>
+<div class="divider-line-sub"></div>
+
+<div class="title-block">
+  <div class="title-main">高效阅读<span class="accent-word">四步法</span></div>
+  <div class="title-en">The Four-Pass<br/>Reading Framework</div>
+</div>
+
+<p class="subtitle">将阅读过程拆解为四个<span class="hl">递进阶梯</span>，从全局认知到深度精读，从动手实践到知识输出，让阅读从<span class="hl">被动接收</span>变为<span class="hl">主动建构</span>。</p>
+
+<div class="steps-area">
+<svg class="steps-svg" viewBox="0 0 1480 360" preserveAspectRatio="none">
+  <line x1="200" y1="205" x2="490" y2="145" stroke="#E53935" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="570" y1="145" x2="860" y2="85" stroke="#E53935" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="940" y1="85" x2="1230" y2="25" stroke="#E53935" stroke-width="2" stroke-dasharray="6,4"/>
+  <circle cx="200" cy="205" r="5" fill="#E53935"/>
+  <circle cx="490" cy="145" r="5" fill="#E53935"/>
+  <circle cx="570" cy="145" r="5" fill="#E53935"/>
+  <circle cx="860" cy="85" r="5" fill="#E53935"/>
+  <circle cx="940" cy="85" r="5" fill="#E53935"/>
+  <circle cx="1230" cy="25" r="5" fill="#E53935"/>
+</svg>
+<div class="steps-row">
+
+<div class="step step-1">
+  <span class="step-tag">STAGE 01</span>
+  <div class="step-circle"><span>1</span></div>
+  <div class="step-round">第 一 遍</div>
+  <div class="step-title">浏览与定位</div>
+  <div class="step-divider"></div>
+  <p class="step-desc">通读目录与序言，建立全书的知识地图，标注与自身需求相关的章节优先级，快速判断投入时间。</p>
+</div>
+
+<div class="step step-2">
+  <span class="step-tag">STAGE 02</span>
+  <div class="step-circle"><span>2</span></div>
+  <div class="step-round">第 二 遍</div>
+  <div class="step-title">精读与笔记</div>
+  <div class="step-divider"></div>
+  <p class="step-desc">逐章节深入阅读，用费曼笔记法提炼核心概念，用自己的语言重新表述关键思想，形成个人知识骨架。</p>
+</div>
+
+<div class="step step-3">
+  <span class="step-tag">STAGE 03</span>
+  <div class="step-circle"><span>3</span></div>
+  <div class="step-round">第 三 遍</div>
+  <div class="step-title">实践与验证</div>
+  <div class="step-divider"></div>
+  <p class="step-desc">将书中的代码、算法、架构方案亲手实现，在真实项目中验证理论的正确性与适用性，完成从知到行的跨越。</p>
+</div>
+
+<div class="step step-4">
+  <span class="step-tag">STAGE 04</span>
+  <div class="step-circle"><span>4</span></div>
+  <div class="step-round">第 四 遍</div>
+  <div class="step-title">输出与分享</div>
+  <div class="step-divider"></div>
+  <p class="step-desc">撰写读书笔记、在技术社区发表文章、或向同事做分享讲解，将知识转化为影响力，完成学习的闭环。</p>
+</div>
+
+</div>
+</div>
+
+<div class="bottom-area">
+<div class="kpi-card">
+  <div class="kpi-label">建议阅读遍数</div>
+  <div class="kpi-value">4<span class="unit">遍</span></div>
+  <div class="kpi-note">浏览 → 精读 → 实践 → 输出</div>
+</div>
+<div class="kpi-card">
+  <div class="kpi-label">单本建议时长</div>
+  <div class="kpi-value">4-8<span class="unit">周</span></div>
+  <div class="kpi-note">配合项目实践效果更佳</div>
+</div>
+<div class="summary-card">
+  <span class="summary-quote">"</span>
+  <p class="summary-text">每一遍都有<span class="hl">明确的目标和交付物</span>，让阅读从被动接收变为<span class="hl">主动建构</span>。</p>
+  <p class="summary-en">Every pass has a clear goal and deliverable.</p>
+</div>
+</div>
+
+<div class="footer">
+  <span class="footer-left">Reading as active construction, not passive reception.</span>
+  <span class="footer-right">PAGE <span class="footer-num">04</span> &nbsp;/&nbsp; 高效学习框架</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

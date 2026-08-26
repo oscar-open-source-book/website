@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>自组织与涌现的力量</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --navy-soft:#1a3450;
+  --gold:#C9A063;
+  --gold-soft:#e2c693;
+  --gold-faint:#f1e4c8;
+  --cream:#F7F2E9;
+  --cream-deep:#EFE7D5;
+  --ink:#0D2137;
+  --muted:#6b7a8f;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Source Sans 3','Noto Sans SC','PingFang SC',sans-serif;
+  font-weight:400;
+  letter-spacing:0.01em;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(180deg,#FBF7EE 0%,#F5EEDF 100%);
+}
+#bg::before{
+  content:"";
+  position:absolute;top:0;left:0;width:6px;height:100%;
+  background:var(--navy);
+}
+#bg::after{
+  content:"";
+  position:absolute;top:50px;left:96px;width:26px;height:2px;
+  background:var(--gold);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;box-sizing:border-box;
+  display:flex;flex-direction:column;}
+
+/* HEADER */
+.page-meta{display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;letter-spacing:0.32em;color:var(--muted);font-weight:500;
+  padding-left:26px;}
+.page-meta .left{display:flex;align-items:center;gap:14px;}
+.page-meta .dot{width:5px;height:5px;background:var(--gold);border-radius:50%;display:inline-block;}
+
+.head-wrap{margin-top:24px;padding-left:26px;position:relative;}
+.eyebrow{font-family:'Source Sans 3',sans-serif;font-size:12px;letter-spacing:0.42em;
+  color:var(--gold);font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+.h1{
+  font-family:'Playfair Display','Noto Serif SC','Songti SC',serif;
+  font-weight:800;font-size:56px;line-height:1.05;color:var(--navy);
+  letter-spacing:0.005em;
+}
+.h1 .accent{color:var(--gold);}
+.h1 .en{font-family:'Playfair Display',serif;font-weight:600;font-style:italic;
+  font-size:26px;color:var(--gold);margin-left:14px;letter-spacing:0.04em;}
+
+.rule-row{display:flex;align-items:center;gap:14px;margin-top:18px;padding-left:26px;}
+.rule-row .line{flex:0 0 120px;height:1px;background:var(--gold);}
+.rule-row .tick{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--gold);letter-spacing:0.2em;}
+.rule-row .rule-full{flex:1;height:1px;background:var(--gold-faint);}
+
+.narrative{
+  margin-top:16px;padding-left:26px;
+  max-width:880px;
+  font-size:15px;line-height:1.75;color:#2a3a52;
+  font-weight:400;letter-spacing:0.02em;
+}
+.narrative em{font-style:normal;color:var(--navy);font-weight:600;
+  background:linear-gradient(180deg,transparent 60%,var(--gold-faint) 60%);}
+
+/* MAIN GRID */
+.main{margin-top:22px;display:flex;gap:36px;flex:1;min-height:0;}
+
+/* LEFT QUADRANTS */
+.quad-panel{width:720px;position:relative;
+  background:var(--cream);
+  border:1px solid var(--gold-faint);
+}
+.quad-panel .corner{position:absolute;width:14px;height:14px;border:1.5px solid var(--gold);}
+.quad-panel .corner.tl{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.quad-panel .corner.tr{top:-1px;right:-1px;border-left:none;border-bottom:none;}
+.quad-panel .corner.bl{bottom:-1px;left:-1px;border-right:none;border-top:none;}
+.quad-panel .corner.br{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+
+.quad-grid{position:absolute;inset:0;display:grid;
+  grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
+.qcell{position:relative;padding:22px 24px;display:flex;flex-direction:column;gap:8px;}
+.qcell:nth-child(1){border-right:1px solid var(--gold-faint);border-bottom:1px solid var(--gold-faint);}
+.qcell:nth-child(2){border-bottom:1px solid var(--gold-faint);}
+.qcell:nth-child(3){border-right:1px solid var(--gold-faint);}
+
+/* central cross in gold */
+.cross-h,.cross-v{position:absolute;background:var(--gold);z-index:2;pointer-events:none;}
+.cross-h{left:0;right:0;top:50%;height:1px;transform:translateY(-0.5px);}
+.cross-v{top:0;bottom:0;left:50%;width:1px;transform:translateX(-0.5px);}
+.cross-center{position:absolute;left:50%;top:50%;width:10px;height:10px;
+  transform:translate(-50%,-50%);background:var(--cream);
+  border:1.5px solid var(--gold);border-radius:50%;z-index:3;}
+
+.q-num{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  font-size:28px;color:var(--gold);letter-spacing:0.02em;line-height:1;}
+.q-head{display:flex;align-items:baseline;gap:10px;margin-top:2px;}
+.q-title{font-family:'Noto Serif SC','Songti SC',serif;font-weight:700;
+  font-size:20px;color:var(--navy);letter-spacing:0.02em;}
+.q-en{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;
+  color:var(--gold);letter-spacing:0.08em;}
+.q-desc{font-size:13.5px;line-height:1.7;color:#2a3a52;font-weight:400;
+  margin-top:6px;letter-spacing:0.015em;}
+.q-tag{margin-top:10px;display:inline-flex;align-items:center;gap:8px;
+  align-self:flex-start;
+  padding:5px 12px;
+  border:1px solid var(--gold);
+  background:var(--cream);
+  font-size:11.5px;color:var(--navy);font-weight:600;letter-spacing:0.08em;}
+.q-tag .tg-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;}
+.q-tag .tg-num{color:var(--gold);font-family:'Playfair Display',serif;font-style:italic;font-size:15px;font-weight:700;margin-right:2px;}
+
+/* RIGHT IMAGE */
+.right-panel{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0;}
+.fig-frame{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;}
+.fig-frame img{width:100%;height:100%;object-fit:contain;display:block;}
+.fig-caption{
+  font-family:'Source Sans 3','Noto Sans SC',sans-serif;
+  font-size:12px;line-height:1.6;color:var(--muted);
+  letter-spacing:0.05em;
+  padding:10px 14px;border-left:2px solid var(--gold);
+  background:var(--cream-deep);
+}
+.fig-caption b{color:var(--navy);font-weight:600;letter-spacing:0.02em;}
+.fig-caption .sep{color:var(--gold);margin:0 6px;}
+
+/* FOOTER */
+.foot{
+  margin-top:18px;padding-left:26px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;letter-spacing:0.28em;color:var(--muted);font-weight:500;
+}
+.foot .kpi-row{display:flex;align-items:center;gap:22px;}
+.foot .kpi{display:flex;align-items:baseline;gap:8px;}
+.foot .kpi .k{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  font-size:20px;color:var(--gold);letter-spacing:0.02em;}
+.foot .kpi .v{font-size:11px;color:var(--navy);letter-spacing:0.14em;font-weight:500;}
+.foot .lvl{display:flex;align-items:center;gap:8px;color:var(--navy);}
+.foot .lvl .lvl-tag{padding:3px 10px;border:1px solid var(--gold);
+  font-size:10.5px;letter-spacing:0.2em;color:var(--navy);font-weight:600;}
+.foot .lvl .arr{color:var(--gold);font-family:'Playfair Display',serif;font-style:italic;font-size:14px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+  <div class="page-meta">
+    <div class="left"><span class="dot"></span><span>CHAPTER · 06</span><span>EMERGENCE</span></div>
+    <div>P P &nbsp;·&nbsp; 06 &nbsp;/&nbsp; 12</div>
+  </div>
+
+  <div class="head-wrap">
+    <div class="eyebrow"><span>The Power of Self-Organization &amp; Emergence</span></div>
+    <div class="h1">
+      <span>自组织与涌现的<span class="accent">力量</span></span>
+      <span class="en">Self-Organization &amp; Emergence</span>
+    </div>
+  </div>
+
+  <div class="rule-row">
+    <div class="line"></div>
+    <div class="tick"><span>— No Blueprint Required —</span></div>
+    <div class="rule-full"></div>
+  </div>
+
+  <p class="narrative">
+    涌现最迷人的地方在于——<em>不需要设计师,也不需要蓝图</em>,只需每个单元遵循简单规则、与邻域交互,宏观上便能出现令人惊讶的秩序。自然界与人类社会的复杂行为,大多正是这样长出来的。
+  </p>
+
+  <div class="main">
+
+    <div class="quad-panel">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="cross-h"></div>
+      <div class="cross-v"></div>
+      <div class="cross-center"></div>
+
+      <div class="quad-grid">
+
+        <div class="qcell">
+          <div class="q-num">I.</div>
+          <div class="q-head">
+            <div class="q-title">蚁群与鸟群</div>
+            <div class="q-en">Swarm &amp; Flock</div>
+          </div>
+          <div class="q-desc">无指挥官,群体仅凭简单邻域规则,便能完成觅食、迁徙与避障的协同动作。</div>
+          <div class="q-tag"><span class="tg-dot"></span><span>邻域交互 · 无中心控制</span></div>
+        </div>
+
+        <div class="qcell">
+          <div class="q-num">II.</div>
+          <div class="q-head">
+            <div class="q-title">细胞自动机</div>
+            <div class="q-en">Cellular Automata</div>
+          </div>
+          <div class="q-desc">康威生命游戏仅凭几条离散规则,即可演化出滑翔机、震荡子乃至自复制结构。</div>
+          <div class="q-tag"><span class="tg-dot"></span><span class="tg-num">4</span><span>条规则 → 无限演化</span></div>
+        </div>
+
+        <div class="qcell">
+          <div class="q-num">III.</div>
+          <div class="q-head">
+            <div class="q-title">市场经济</div>
+            <div class="q-en">Market Economy</div>
+          </div>
+          <div class="q-desc">无数独立决策者通过价格信号自组织协调供需,无需中央计划即可完成资源配置。</div>
+          <div class="q-tag"><span class="tg-dot"></span><span>价格信号 · 分布式协同</span></div>
+        </div>
+
+        <div class="qcell">
+          <div class="q-num">IV.</div>
+          <div class="q-head">
+            <div class="q-title">神经网络</div>
+            <div class="q-en">Neural Networks</div>
+          </div>
+          <div class="q-desc">大脑千亿神经元的局部放电与连接,涌现出意识、记忆与创造性思维。</div>
+          <div class="q-tag"><span class="tg-dot"></span><span class="tg-num">~860</span><span>亿神经元</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="fig-frame">
+        <img src="/slides/complexity-the-emerging-science-by-kuosi/images/page_006_emergence_grid.jpg" alt="四种涌现范式并列:生物群体、计算规则、经济系统、神经网络">
+      </div>
+      <div class="fig-caption">
+        <b>图 06 · 四种涌现范式并列</b><span class="sep">/</span>生物群体、计算规则、经济系统、神经网络 —— 底层规则简单,宏观秩序自生。
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <div class="kpi-row">
+      <div class="kpi"><span class="k">4</span><span class="v">CONWAY · RULES</span></div>
+      <div class="kpi"><span class="k">860<span style="font-size:13px;font-style:normal;">B</span></span><span class="v">NEURONS · 大脑神经元</span></div>
+    </div>
+    <div class="lvl">
+      <span class="lvl-tag">LOCAL</span>
+      <span class="arr">→</span>
+      <span class="lvl-tag">GLOBAL</span>
+      <span style="margin-left:6px;">涌现层级:局部 → 全局</span>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>在边缘上创造</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0D2137;
+  --primary-deep: #071627;
+  --gold: #C9A063;
+  --gold-light: #E4C890;
+  --cream: #F7F2E9;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  color: var(--cream);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+#bg .bg-photo {
+  width: 1600px;
+  height: 900px;
+  object-fit: cover;
+  display: block;
+}
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(7,22,39,0.88) 0%,
+    rgba(13,33,55,0.72) 18%,
+    rgba(13,33,55,0.42) 40%,
+    rgba(13,33,55,0.38) 55%,
+    rgba(13,33,55,0.55) 72%,
+    rgba(7,22,39,0.90) 100%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 80px 40px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Top decorative gold mark */
+.top-mark {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 4px;
+  margin-bottom: 14px;
+}
+.top-mark .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(201,160,99,0.7);
+}
+.top-mark .line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.top-mark .label {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--gold-light);
+  text-transform: uppercase;
+}
+
+.main-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 108px;
+  line-height: 1.05;
+  letter-spacing: 12px;
+  color: var(--cream);
+  text-align: center;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+}
+.main-title .accent {
+  color: var(--gold-light);
+}
+.subtitle {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 8px;
+  color: var(--gold);
+  margin-top: 22px;
+  text-align: center;
+}
+
+/* Quote section */
+.quote-block {
+  max-width: 1180px;
+  text-align: center;
+  margin-top: 36px;
+  padding: 20px 40px;
+  position: relative;
+}
+.quote-block .open-quote,
+.quote-block .close-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px;
+  color: var(--gold);
+  opacity: 0.6;
+  line-height: 1;
+}
+.quote-text {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 2;
+  color: var(--cream);
+  letter-spacing: 2px;
+}
+.quote-text .highlight {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+/* Gold divider */
+.divider-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 22px;
+  width: 100%;
+  max-width: 1440px;
+}
+.divider-row .d-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), rgba(201,160,99,0.4));
+}
+.divider-row .d-line.right {
+  background: linear-gradient(90deg, rgba(201,160,99,0.4), var(--gold), transparent);
+}
+.divider-row .d-diamond {
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+/* Bottom section */
+.bottom-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 340px;
+  gap: 48px;
+  width: 100%;
+  max-width: 1440px;
+  margin-top: 18px;
+}
+.bottom-col h4 {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.point-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--cream);
+}
+.point-item .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  color: var(--gold);
+  font-weight: 600;
+  min-width: 24px;
+  padding-top: 1px;
+}
+.point-item .pt-label {
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-right: 4px;
+}
+.point-item .pt-text {
+  font-weight: 300;
+  color: var(--cream);
+  opacity: 0.92;
+}
+
+.points-mid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Attribution */
+.attrib-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-left: 1px solid rgba(201,160,99,0.35);
+  padding-left: 24px;
+}
+.attrib-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.attrib-item .a-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  font-weight: 500;
+}
+.attrib-item .a-value {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 17px;
+  color: var(--cream);
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* Decorative side ornaments */
+.side-ornament {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+.side-ornament.left {
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.side-ornament.right {
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.side-ornament .orn-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.6;
+}
+.side-ornament .orn-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+
+/* Footer bar */
+.footer-bar {
+  position: absolute;
+  bottom: 14px;
+  left: 80px;
+  right: 80px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(247,242,233,0.4);
+}
+
+/* Subtle vignette */
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(7,22,39,0.5) 100%);
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="/slides/complexity-the-emerging-science-by-kuosi/images/page_010_closing_visual.jpg" alt="金色节点光斑在深蓝底上从边缘汇聚成抽象复杂网络，象征社群联结">
+    <div class="bg-overlay"></div>
+  </div>
+  <div class="vignette"></div>
+
+  <div class="side-ornament left">
+    <div class="orn-line"></div>
+    <div class="orn-dot"></div>
+    <div class="orn-dot" style="width:6px;height:6px;opacity:0.9;"></div>
+    <div class="orn-dot"></div>
+    <div class="orn-line"></div>
+  </div>
+  <div class="side-ornament right">
+    <div class="orn-line"></div>
+    <div class="orn-dot"></div>
+    <div class="orn-dot" style="width:6px;height:6px;opacity:0.9;"></div>
+    <div class="orn-dot"></div>
+    <div class="orn-line"></div>
+  </div>
+
+  <div id="ct">
+    <div class="top-mark">
+      <div class="line"></div>
+      <div class="dot"></div>
+      <div class="label"><span>Coda · 尾声</span></div>
+      <div class="dot"></div>
+      <div class="line"></div>
+    </div>
+
+    <div class="main-title"><span>在边缘上创造</span></div>
+    <div class="subtitle"><span>感谢聆听 · 开源之道 · 适兕</span></div>
+
+    <div class="quote-block">
+      <div class="open-quote"><span>"</span></div>
+      <div class="quote-text">
+        <span>在秩序与混沌的边缘，最有趣的事情正在发生——无论是自然界的<span class="highlight">生命演化</span>，还是人类共建的<span class="highlight">开源世界</span>。愿我们都能成为那个在边缘上创造的人。</span>
+      </div>
+      <div class="close-quote"><span>"</span></div>
+    </div>
+
+    <div class="divider-row">
+      <div class="d-line"></div>
+      <div class="d-diamond"></div>
+      <div class="d-line right"></div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="bottom-col">
+        <h4><span>一句话总结</span></h4>
+        <div class="points-list">
+          <div class="point-item">
+            <div class="num"><span>01</span></div>
+            <div><span class="pt-text">复杂性不是问题，而是理解世界与构建开源未来的钥匙。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-col">
+        <h4><span>互动话题</span></h4>
+        <div class="points-list">
+          <div class="point-item">
+            <div class="num"><span>02</span></div>
+            <div><span class="pt-text">你所在的开源项目中，最打动你的涌现现象是什么？</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-col">
+        <h4><span>延伸阅读</span></h4>
+        <div class="points-list">
+          <div class="point-item">
+            <div class="num"><span>03</span></div>
+            <div><span class="pt-text">欢迎加入开源之夏阅读社群，继续共读下一本经典。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="attrib-list">
+        <div class="attrib-item">
+          <span class="a-label">分享人</span>
+          <span class="a-value">适兕</span>
+        </div>
+        <div class="attrib-item">
+          <span class="a-label">社　群</span>
+          <span class="a-value">开源之道</span>
+        </div>
+        <div class="attrib-item">
+          <span class="a-label">关 键 词</span>
+          <span class="a-value">复杂性 · 涌现 · 开源</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span><span>OPEN SOURCE · COMPLEXITY · EMERGENCE</span></span>
+    <span><span>2025 · 开源之夏</span></span>
+  </div>
+</div>
+</body>
+</html>

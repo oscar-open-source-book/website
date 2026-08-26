@@ -1,0 +1,177 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第三章：开源之道的选择</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --gold:#C9A227;
+  --cream:#F7F3EB;
+  --ink:#1B2A3D;
+  --serif:'Playfair Display','Noto Serif SC',serif;
+  --sans:'Inter','Noto Sans SC',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:var(--sans);color:var(--navy);background:var(--cream);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;background:var(--cream);}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 64px 44px 64px;box-sizing:border-box;}
+
+/* 顶部细金线 */
+.top-rule{position:absolute;top:22px;left:64px;right:64px;height:1px;background:var(--gold);opacity:.55;z-index:1;}
+
+.page{width:1472px;height:796px;position:relative;display:flex;flex-direction:column;}
+
+/* —— 页眉 —— */
+.header{display:grid;grid-template-columns:1fr auto;align-items:flex-start;gap:40px;padding-bottom:20px;border-bottom:1px solid rgba(13,33,55,.22);}
+.chap-left{display:flex;align-items:flex-start;gap:26px;}
+.chap-num{font-family:var(--serif);font-weight:900;font-size:128px;line-height:.82;color:var(--gold);letter-spacing:-4px;}
+.chap-title-wrap{display:flex;flex-direction:column;gap:12px;padding-top:14px;border-left:2px solid var(--gold);padding-left:26px;min-width:440px;}
+.chap-label{font-family:var(--sans);font-size:11px;letter-spacing:8px;color:var(--navy);opacity:.72;font-weight:500;}
+.chap-title{font-family:'Noto Serif SC',var(--serif);font-weight:700;font-size:40px;line-height:1.15;color:var(--navy);letter-spacing:1px;}
+.chap-sub{font-family:'Noto Serif SC',serif;font-style:italic;font-weight:400;font-size:18px;line-height:1.5;color:var(--navy);opacity:.78;}
+
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-top:14px;}
+.rule-gold{width:70px;height:2px;background:var(--gold);}
+.h-meta{font-family:'Noto Serif SC',serif;font-style:italic;font-size:13px;color:var(--navy);opacity:.75;}
+
+/* —— 主体 —— */
+.body{flex:1;display:grid;grid-template-columns:680px 760px;gap:32px;padding-top:24px;align-items:start;}
+
+/* 左栏 */
+.left-col{display:flex;flex-direction:column;gap:20px;}
+.lead-mark{display:flex;align-items:center;gap:12px;}
+.lead-mark .dash{width:42px;height:2px;background:var(--gold);}
+.lead-mark .tag{font-family:var(--sans);font-size:10px;letter-spacing:5px;color:var(--navy);opacity:.75;font-weight:600;}
+
+.narrative{font-family:'Noto Sans SC','Noto Serif SC',sans-serif;font-size:13.5px;line-height:1.85;color:var(--ink);font-weight:400;text-align:justify;}
+.narrative .dc{font-family:'Noto Serif SC',serif;font-size:40px;font-weight:900;color:var(--gold);float:left;line-height:.95;padding:6px 10px 0 0;}
+
+.cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:2px;}
+.card{background:#FFFFFF;border:1px solid rgba(13,33,55,.12);padding:16px 14px 14px 14px;display:flex;flex-direction:column;gap:9px;position:relative;min-height:172px;}
+.card-topbar{position:absolute;top:0;left:0;width:100%;height:3px;background:var(--gold);}
+.card-num{font-family:var(--serif);font-weight:900;font-size:28px;color:var(--gold);line-height:1;}
+.card-tag{font-family:var(--sans);font-size:9.5px;letter-spacing:3px;color:var(--navy);opacity:.6;font-weight:600;}
+.card-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:15.5px;line-height:1.4;color:var(--navy);}
+.card-text{font-family:'Noto Sans SC',sans-serif;font-size:11.5px;line-height:1.7;color:var(--ink);opacity:.88;}
+
+/* 右栏 */
+.right-col{display:flex;flex-direction:column;align-items:center;}
+.img-frame{width:760px;height:422px;position:relative;overflow:hidden;background:var(--navy);border:1px solid rgba(13,33,55,.18);}
+.img-frame img{width:100%;height:100%;object-fit:cover;display:block;}
+.img-glow{position:absolute;inset:0;box-shadow:inset 0 0 60px rgba(201,162,39,.15);pointer-events:none;}
+.img-caption-wrap{width:760px;display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(13,33,55,.18);}
+.img-caption{font-family:'Noto Serif SC',serif;font-style:italic;font-size:16px;color:var(--navy);letter-spacing:1px;}
+.img-credit{font-family:var(--sans);font-size:10px;letter-spacing:4px;color:var(--navy);opacity:.65;font-weight:600;}
+
+/* 图侧引文 */
+.side-quote{margin-top:18px;font-family:'Noto Serif SC',serif;font-style:italic;font-size:13px;line-height:1.7;color:var(--navy);opacity:.72;max-width:600px;text-align:center;}
+.side-quote .qm{font-family:var(--serif);font-size:28px;color:var(--gold);font-style:italic;line-height:0;position:relative;top:6px;margin:0 4px;}
+
+/* —— 页脚 —— */
+.footer{margin-top:18px;padding-top:16px;border-top:1px solid rgba(13,33,55,.22);display:flex;justify-content:space-between;align-items:center;gap:20px;}
+.footer-left{display:flex;align-items:center;gap:14px;}
+.footer-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block;flex-shrink:0;}
+.footer-text{font-family:'Noto Sans SC',sans-serif;font-size:12.5px;color:var(--navy);letter-spacing:1.5px;font-weight:400;}
+.footer-text .key{color:var(--gold);font-weight:700;}
+.footer-text .sep{color:var(--gold);margin:0 10px;font-weight:700;}
+.footer-right{font-family:'Noto Serif SC',serif;font-style:italic;font-size:13px;color:var(--navy);opacity:.72;}
+
+/* 角落装饰 */
+.corner-tr{position:absolute;top:40px;right:64px;font-family:var(--serif);font-style:italic;font-size:12px;color:var(--navy);opacity:.5;letter-spacing:2px;z-index:1;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="top-rule"></div>
+  <div id="ct">
+    <div class="corner-tr"><span>第 三 章</span></div>
+    <div class="page">
+
+      <div class="header">
+        <div class="chap-left">
+          <div class="chap-num"><span>03</span></div>
+          <div class="chap-title-wrap">
+            <div class="chap-label"><span>第 三 章  ·  过 渡</span></div>
+            <div class="chap-title"><span>开源之道的选择</span></div>
+            <div class="chap-sub"><span>批判之后：我们如何重夺互联网的未来</span></div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="h-meta"><span>走 向 行 动</span></div>
+          <div class="rule-gold"></div>
+          <div class="h-meta"><span>全 书 · 第 三 编</span></div>
+        </div>
+      </div>
+
+      <div class="body">
+        <div class="left-col">
+          <div class="lead-mark">
+            <span class="dash"></span>
+            <span class="tag"><span>本 章 引 言</span></span>
+          </div>
+          <div class="narrative">
+            <span class="dc">前</span>两章分别完成了对理想图景的描述与对现实困境的诊断，当视线从问题本身转向出路之时，第三章正式将论述的重心交付给行动。开源社群作为最早实践共同生产范式的群体，不仅具备重新想象协作组织形式的能力，更承担着在平台时代重新定义开放协作新形态的历史责任——这一任务早已超越纯粹的技术议题，直指政治经济学的深层重构。
+          </div>
+
+          <div class="cards">
+            <div class="card">
+              <span class="card-topbar"></span>
+              <div class="card-num"><span>01</span></div>
+              <div class="card-tag"><span>本 章 关 键</span></div>
+              <div class="card-title"><span>从理论到行动</span></div>
+              <div class="card-text"><span>批判平台资本主义只是第一步，本章聚焦开源社群可采取的具体策略与制度创新。</span></div>
+            </div>
+            <div class="card">
+              <span class="card-topbar"></span>
+              <div class="card-num"><span>02</span></div>
+              <div class="card-tag"><span>本 章 关 键</span></div>
+              <div class="card-title"><span>开源运动的当代使命</span></div>
+              <div class="card-text"><span>在商业收编浪潮中维护社区治理原则、公共物品属性与自由软件精神。</span></div>
+            </div>
+            <div class="card">
+              <span class="card-topbar"></span>
+              <div class="card-num"><span>03</span></div>
+              <div class="card-tag"><span>本 章 关 键</span></div>
+              <div class="card-title"><span>跨学科对话的必要性</span></div>
+              <div class="card-text"><span>法律、经济学、技术、社会学多领域协同，方能应对平台治理的复杂挑战。</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-col">
+          <div class="img-frame">
+            <img src="/slides/2024-08-the-wealth-of-network-lost-future/images/page_009_forward_section.jpg" alt="被打开的巨大拱形门扉，温暖金色光线倾泻而出，人形剪影走向光明">
+            <div class="img-glow"></div>
+          </div>
+          <div class="img-caption-wrap">
+            <div class="img-caption"><span>从批判走向行动</span></div>
+            <div class="img-credit"><span>图 03 · 前 行</span></div>
+          </div>
+          <div class="side-quote">
+            <span><span class="qm">"</span>光从门内倾泻而出，脚步便不再犹豫。<span class="qm">"</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="footer-left">
+          <span class="footer-dot"></span>
+          <div class="footer-text">
+            <span>章节定位 <span class="sep">|</span> 角色：<span class="key">布道者与实践者</span> <span class="sep">·</span> 框架：<span class="key">治理</span> <span class="sep">·</span> <span class="key">制度</span> <span class="sep">·</span> <span class="key">文化</span></span>
+          </div>
+        </div>
+        <div class="footer-right"><span>第 三 章 · 开 源 之 道 的 选 择</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

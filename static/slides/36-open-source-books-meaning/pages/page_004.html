@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>书单覆盖的核心领域</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --navy-soft: #1a3350;
+  --wine: #E53935;
+  --wine-deep: #b72d2a;
+  --cream: #F5F2EB;
+  --cream-dark: #E8E1D2;
+  --ink: #1a1a1a;
+  --muted: #5c5c5c;
+  --line: #d4cfc4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(140deg, #F5F2EB 0%, #ECE5D6 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 60px 38px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2.5px solid var(--navy);
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+}
+
+.title-block .eyebrow {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--wine);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.title-block h1 {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 50px;
+  color: var(--navy);
+  line-height: 1.05;
+  letter-spacing: 1px;
+}
+
+.title-block .h1-accent {
+  color: var(--wine);
+  font-style: italic;
+}
+
+.subtitle {
+  max-width: 680px;
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.75;
+  text-align: right;
+  border-left: 3px solid var(--wine);
+  padding-left: 14px;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  gap: 30px;
+  margin-bottom: 18px;
+  min-height: 0;
+}
+
+.left-col {
+  width: 730px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.card {
+  background: var(--cream);
+  border: 1.5px solid var(--navy);
+  padding: 9px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  flex: 1;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  right: -1.5px;
+  top: -1.5px;
+  width: 24px;
+  height: 24px;
+  background: var(--wine);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+
+.card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--wine);
+  min-width: 44px;
+  line-height: 1;
+  border-right: 1px solid var(--line);
+  padding-right: 12px;
+}
+
+.card-tag {
+  background: var(--wine);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  padding: 4px 10px;
+  font-weight: 600;
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  min-width: 56px;
+  text-align: center;
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-title {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 16.5px;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+
+.card-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.image-frame {
+  background: var(--navy);
+  padding: 12px 12px 10px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.image-frame .corner-tl {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 28px;
+  height: 28px;
+  border-top: 3px solid var(--wine);
+  border-left: 3px solid var(--wine);
+}
+
+.image-frame .corner-br {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 28px;
+  height: 28px;
+  border-bottom: 3px solid var(--wine);
+  border-right: 3px solid var(--wine);
+}
+
+.image-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-caption {
+  font-family: 'Noto Serif SC', serif;
+  font-style: italic;
+  font-size: 13.5px;
+  color: #E8E1D2;
+  text-align: center;
+  padding: 8px 0 6px 0;
+  border-top: 1px solid var(--wine);
+  margin-top: 8px;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  color: var(--wine);
+  font-weight: 600;
+  padding: 0 2px;
+}
+
+.side-stats {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.stat-box {
+  flex: 1;
+  border: 1.5px solid var(--navy);
+  padding: 8px 12px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--wine);
+  line-height: 1;
+}
+
+.stat-text {
+  font-size: 11px;
+  color: var(--navy);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.kpi-row {
+  border-top: 2.5px solid var(--navy);
+  padding-top: 14px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.kpi {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+}
+
+.kpi:first-child { padding-left: 0; }
+.kpi:last-child { padding-right: 0; }
+
+.kpi-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  font-weight: 900;
+  color: var(--wine);
+  line-height: 1;
+}
+
+.kpi-text {
+  flex: 1;
+}
+
+.kpi-label {
+  font-size: 10.5px;
+  letter-spacing: 3px;
+  color: var(--wine);
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.kpi-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.kpi-div {
+  width: 1px;
+  background: var(--line);
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="eyebrow">CORE DOMAINS · 核心领域图谱</div>
+        <h1>书单覆盖的<span class="h1-accent">核心领域</span></h1>
+      </div>
+      <div class="subtitle">
+        三十六本书围绕软件工程完整价值链精心编排——从底层到架构、从编码到协作，构成一张立体知识图谱，既为初学者铺设阶梯，也为资深工程师校准坐标。
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="card">
+          <div class="card-num">01</div>
+          <div class="card-tag">OS</div>
+          <div class="card-body">
+            <div class="card-title">操作系统与内核</div>
+            <div class="card-desc">Linux 内核设计与实现、操作系统概念等，深入系统底层运作机理</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">02</div>
+          <div class="card-tag">LANG</div>
+          <div class="card-body">
+            <div class="card-title">编程语言与范式</div>
+            <div class="card-desc">涵盖 C、C++、Python、Go 等主流语言的权威著作以及函数式编程思维</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">03</div>
+          <div class="card-tag">NET</div>
+          <div class="card-body">
+            <div class="card-title">网络与分布式</div>
+            <div class="card-desc">从 TCP/IP 详解到分布式系统原理，构建通信与大规模系统的理论框架</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">04</div>
+          <div class="card-tag">ARCH</div>
+          <div class="card-body">
+            <div class="card-title">软件架构与设计</div>
+            <div class="card-desc">设计模式、架构模式、领域驱动设计等经典，培养系统性工程思维</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">05</div>
+          <div class="card-tag">OSS</div>
+          <div class="card-body">
+            <div class="card-title">开源文化与实践</div>
+            <div class="card-desc">开源社区治理、版本管理、协作流程等软技能，完善开发者职业素养</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="image-frame">
+          <span class="corner-tl"></span>
+          <span class="corner-br"></span>
+          <img src="/slides/36-open-source-books-meaning/images/page_004_category_grid.jpg" alt="藏蓝色多层递进式几何架构插画，五个层级用红色细线连接，抽象隐喻结构化的知识体系">
+          <div class="image-caption">五层知识图谱，层层递进构建完整工程能力</div>
+          <div class="meta-row">
+            <span>FIG. 04 / KNOWLEDGE ARCHITECTURE</span>
+            <span>1.79 : 1</span>
+          </div>
+        </div>
+        <div class="side-stats">
+          <div class="stat-box">
+            <div class="stat-num">5</div>
+            <div class="stat-text">层级递进<br>从底层到架构</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">36</div>
+            <div class="stat-text">精选书目<br>全域覆盖</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">100<span style="font-size:14px;">%</span></div>
+            <div class="stat-text">价值链<br>完整闭环</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-num">5</div>
+        <div class="kpi-text">
+          <div class="kpi-label">CORE DOMAINS</div>
+          <div class="kpi-desc">核心领域数——覆盖操作系统、编程语言、网络、软件架构、开源文化</div>
+        </div>
+      </div>
+      <div class="kpi-div"></div>
+      <div class="kpi">
+        <div class="kpi-num">3</div>
+        <div class="kpi-text">
+          <div class="kpi-label">DIFFICULTY TIERS</div>
+          <div class="kpi-desc">推荐优先级按入门 / 进阶 / 精通三级难度梯度设计，清晰勾勒成长路径</div>
+        </div>
+      </div>
+      <div class="kpi-div"></div>
+      <div class="kpi">
+        <div class="kpi-num">36</div>
+        <div class="kpi-text">
+          <div class="kpi-label">CURATED BOOKS</div>
+          <div class="kpi-desc">从底层到架构、从编码到协作，构成一张立体知识图谱</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

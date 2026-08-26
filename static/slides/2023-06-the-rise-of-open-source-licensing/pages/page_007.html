@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源经济市场数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --gray:#B0BEC5;
+  --bg-dark:#0B1424;
+  --bg-card:#0F1B2F;
+  --bg-card2:#112238;
+  --border:rgba(33,150,243,0.28);
+  --text-main:#E8F1FA;
+  --text-dim:#8FA4B8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Roboto Mono',monospace;
+  color:var(--text-main);
+  background:var(--bg-dark);
+}
+h1,h2,h3,.title,.subtitle{font-family:'Inter',sans-serif;}
+a{color:inherit;text-decoration:none;}
+li{list-style:none;}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:linear-gradient(135deg,#061224 0%,#0B1A30 45%,#0A1830 100%);
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 56px 40px 56px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+.bg-deco{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(720px 420px at 92% 8%, rgba(33,150,243,0.18) 0%, rgba(33,150,243,0) 65%),
+    radial-gradient(560px 420px at 4% 96%, rgba(0,188,212,0.16) 0%, rgba(0,188,212,0) 70%);
+}
+.grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse at center, #000 55%, transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse at center, #000 55%, transparent 100%);
+}
+
+/* Header */
+.header{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-mark{
+  width:6px;height:54px;border-radius:3px;
+  background:linear-gradient(180deg,#2196F3,#00BCD4);
+  box-shadow:0 0 18px rgba(33,150,243,0.7);
+}
+.title{
+  font-size:42px;font-weight:800;
+  background:linear-gradient(90deg,#EAF6FF 0%,#2196F3 60%,#00BCD4 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:2px;
+}
+.title-sub-en{
+  font-family:'Inter',sans-serif;
+  font-size:13px;color:var(--text-dim);
+  letter-spacing:6px;font-weight:500;
+  margin-left:auto;
+}
+.subtitle{
+  font-family:'Inter',sans-serif;
+  font-size:15px;font-weight:400;line-height:1.7;
+  color:var(--gray);
+  max-width:1280px;
+  padding-left:24px;
+}
+.subtitle .hl{color:#9DD5FF;font-weight:600;}
+
+/* Middle */
+.middle{
+  display:flex;gap:24px;
+  flex:1;
+  min-height:0;
+}
+.kpi-panel{
+  width:55%;display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr 1fr;
+  gap:14px;
+}
+.kpi-card{
+  position:relative;
+  background:linear-gradient(135deg,#0F1B2F 0%,#0D1728 100%);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px 18px;
+  overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:0;
+}
+.kpi-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,#2196F3,#00BCD4);
+}
+.kpi-card::after{
+  content:"";position:absolute;right:-30px;top:-30px;
+  width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(33,150,243,0.22),transparent 70%);
+}
+.kpi-label{
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;font-weight:600;
+  color:var(--gray);
+  letter-spacing:1.5px;
+  position:relative;z-index:1;
+}
+.kpi-value{
+  font-family:'Roboto Mono',monospace;
+  font-size:26px;font-weight:700;
+  color:#FFFFFF;
+  line-height:1.1;
+  margin-top:6px;
+  position:relative;z-index:1;
+}
+.kpi-value .unit{font-size:14px;color:var(--cyan);font-weight:500;margin-left:4px;}
+.kpi-foot{
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;color:var(--text-dim);
+  margin-top:6px;
+  display:flex;align-items:center;gap:6px;
+  position:relative;z-index:1;
+}
+.kpi-foot .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 8px rgba(0,188,212,0.8);
+}
+.kpi-card.cn{border-color:rgba(0,188,212,0.45);}
+.kpi-card.cn .kpi-value{color:#9DD5FF;}
+.kpi-card.cn::before{background:linear-gradient(180deg,#00BCD4,#2196F3);}
+
+/* Image panel */
+.img-panel{
+  width:45%;
+  background:linear-gradient(135deg,#0F1B2F 0%,#0A1830 100%);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  display:flex;flex-direction:column;gap:8px;
+  overflow:hidden;
+  position:relative;
+}
+.img-panel-head{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Inter',sans-serif;
+  font-size:12px;color:var(--gray);
+  letter-spacing:2px;font-weight:600;
+}
+.img-panel-head .badge{
+  padding:2px 8px;border-radius:10px;
+  background:rgba(33,150,243,0.18);
+  color:#9DD5FF;
+  font-size:10.5px;
+  letter-spacing:1px;
+}
+.img-wrap{
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  min-height:0;
+  border-radius:10px;
+  overflow:hidden;
+  background:#06101F;
+}
+.img-wrap img{
+  display:block;
+  max-width:100%;max-height:100%;
+  width:600px;height:335px;
+  object-fit:contain;
+}
+.img-caption{
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;color:var(--text-main);
+  text-align:center;
+  padding:6px 0 2px 0;
+  letter-spacing:1px;
+}
+.img-caption .arr{color:var(--cyan);margin:0 4px;}
+
+/* Bottom summary band */
+.summary{
+  margin-top:18px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.10) 0%, rgba(0,188,212,0.10) 100%);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px 18px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.summary-head{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:700;color:#FFFFFF;
+  letter-spacing:2px;
+}
+.summary-head .line{
+  flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(33,150,243,0.5),transparent);
+}
+.summary-head .tag{
+  font-size:10.5px;color:var(--cyan);
+  letter-spacing:2px;
+  padding:2px 8px;border:1px solid rgba(0,188,212,0.4);
+  border-radius:10px;
+  font-family:'Roboto Mono',monospace;
+}
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px 18px;
+}
+.summary-item{
+  display:flex;align-items:flex-start;gap:8px;
+  font-family:'Roboto Mono',monospace;
+  font-size:11.5px;line-height:1.5;
+  color:var(--gray);
+}
+.summary-item .num{
+  flex-shrink:0;
+  width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(135deg,#2196F3,#00BCD4);
+  color:#06101F;
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:11px;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:1px;
+}
+.summary-item .txt{flex:1;}
+.summary-item .txt b{color:#FFFFFF;font-weight:700;}
+.summary-item .txt .em{color:var(--cyan);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-deco"></div>
+    <div class="grid-lines"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title-mark"></div>
+        <div class="title">开源经济市场数据</div>
+        <div class="title-sub-en">OPEN SOURCE ECONOMY · MARKET DATA</div>
+      </div>
+      <div class="subtitle">
+        <span>开源经济已成为全球科技产业的<span class="hl">核心引擎</span>之一，从市场规模到人才需求均呈现<span class="hl">强劲增长态势</span>，中国市场的崛起尤为瞩目。</span>
+      </div>
+    </div>
+
+    <div class="middle">
+      <div class="kpi-panel">
+
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-label"><span>全球市场规模</span></div>
+            <div class="kpi-value"><span>2447</span><span class="unit">亿美元</span></div>
+          </div>
+          <div class="kpi-foot"><span class="dot"></span><span>2025 年预测</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-label"><span>年复合增长率</span></div>
+            <div class="kpi-value"><span>22</span><span class="unit">%</span></div>
+          </div>
+          <div class="kpi-foot"><span class="dot"></span><span>2020 — 2025</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-label"><span>年度融资额</span></div>
+            <div class="kpi-value"><span>400</span><span class="unit">亿美元+</span></div>
+          </div>
+          <div class="kpi-foot"><span class="dot"></span><span>2022 年开源相关</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-label"><span>就业增长率</span></div>
+            <div class="kpi-value"><span>25</span><span class="unit">%</span></div>
+          </div>
+          <div class="kpi-foot"><span class="dot"></span><span>同比增长</span></div>
+        </div>
+
+        <div class="kpi-card cn">
+          <div>
+            <div class="kpi-label"><span>中国贡献者排名</span></div>
+            <div class="kpi-value"><span>全球 第 2</span></div>
+          </div>
+          <div class="kpi-foot"><span class="dot"></span><span>仅次于美国</span></div>
+        </div>
+
+        <div class="kpi-card cn">
+          <div>
+            <div class="kpi-label"><span>中国增长率</span></div>
+            <div class="kpi-value"><span>30</span><span class="unit">% 以上</span></div>
+          </div>
+          <div class="kpi-foot"><span class="dot"></span><span>全球第一增速</span></div>
+        </div>
+
+      </div>
+
+      <div class="img-panel">
+        <div class="img-panel-head">
+          <span class="badge"><span>CHART</span></span>
+          <span><span>开源经济 · 上行曲线</span></span>
+        </div>
+        <div class="img-wrap">
+          <img src="/slides/2023-06-the-rise-of-open-source-licensing/images/page_007_market_chart.jpg" alt="开源经济上行曲线全球增长态势">
+        </div>
+        <div class="img-caption"><span>开源经济上行曲线</span><span class="arr">·</span><span>全球增长态势</span></div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="summary-head">
+        <span>数据摘要</span>
+        <span class="tag">INSIGHTS</span>
+        <span class="line"></span>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="num"><span>1</span></div>
+          <div class="txt">全球开源软件市场预计 <b>2025 年达 2447 亿美元</b>，年复合增长率约 <span class="em">22%</span>。</div>
+        </div>
+        <div class="summary-item">
+          <div class="num"><span>2</span></div>
+          <div class="txt"><b>2022 年开源相关投资超 400 亿美元</b>，Kubernetes 贡献者获巨额融资。</div>
+        </div>
+        <div class="summary-item">
+          <div class="num"><span>3</span></div>
+          <div class="txt">开源相关职位<b>同比增长 25%</b>，<span class="em">云原生和 AI</span>方向需求最旺盛。</div>
+        </div>
+        <div class="summary-item">
+          <div class="num"><span>4</span></div>
+          <div class="txt">头部科技企业开源投入占研发预算 <span class="em">15-25%</span>，持续攀升。</div>
+        </div>
+        <div class="summary-item">
+          <div class="num"><span>5</span></div>
+          <div class="txt">Linux 基金会旗下项目超 <b>400 个</b>，2022 年营收增长 <span class="em">30%</span>，生态繁荣指数高企。</div>
+        </div>
+        <div class="summary-item">
+          <div class="num"><span>6</span></div>
+          <div class="txt">中国贡献者数量跃居<b>全球第二</b>，年增长率超 <span class="em">30%</span>，增速全球第一。</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

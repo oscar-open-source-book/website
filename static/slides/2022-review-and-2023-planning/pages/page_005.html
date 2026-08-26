@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>重点书目解读</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --gray: #B0BEC5;
+  --bg-dark: #0A1628;
+  --bg-card: #0F1F3A;
+  --bg-card-border: #1A2E4A;
+  --text-main: #E8F0F8;
+  --text-dim: #8AA0B8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 50%, #0E2040 0%, #070F1E 70%, #040810 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: var(--text-main);
+  position: relative;
+  display: inline-block;
+}
+
+.header h1::before,
+.header h1::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary));
+}
+
+.header h1::before { right: calc(100% + 20px); background: linear-gradient(90deg, var(--primary), transparent); }
+.header h1::after { left: calc(100% + 20px); }
+
+.header .subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--gray);
+  margin-top: 14px;
+  letter-spacing: 2px;
+}
+
+/* Quadrant Grid */
+.quad-container {
+  flex: 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  padding: 16px;
+}
+
+/* Central cross decoration */
+.cross-h {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  right: 8px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.15) 20%, rgba(33,150,243,0.5) 45%, rgba(0,188,212,0.8) 50%, rgba(33,150,243,0.5) 55%, rgba(33,150,243,0.15) 80%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.cross-v {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, rgba(33,150,243,0.15) 20%, rgba(33,150,243,0.5) 45%, rgba(0,188,212,0.8) 50%, rgba(33,150,243,0.5) 55%, rgba(33,150,243,0.15) 80%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.cross-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.cross-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00BCD4 0%, #2196F3 40%, transparent 70%);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.cross-glow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #00BCD4;
+  box-shadow: 0 0 12px #00BCD4, 0 0 24px rgba(0,188,212,0.5);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+
+/* Card */
+.quad-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(15,31,58,0.9) 0%, rgba(10,22,40,0.95) 100%);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.quad-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+  border-radius: 3px 0 0 3px;
+}
+
+.quad-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.quad-icon {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 12px;
+  background: rgba(0,188,212,0.05);
+  position: relative;
+  z-index: 1;
+}
+
+.quad-icon svg {
+  width: 34px;
+  height: 34px;
+  stroke: var(--cyan);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.quad-content {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.quad-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.quad-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.quad-book {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--gray);
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
+}
+
+.quad-divider {
+  width: 36px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+  margin-bottom: 14px;
+  opacity: 0.7;
+}
+
+.quad-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gray);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+.quad-quote {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-left: 2px solid var(--cyan);
+  background: rgba(0,188,212,0.05);
+  border-radius: 0 6px 6px 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-main);
+  line-height: 1.5;
+  letter-spacing: 0.3px;
+}
+
+/* Corner numbers */
+.quad-num {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 200;
+  color: rgba(33,150,243,0.15);
+  letter-spacing: 2px;
+  z-index: 0;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  padding: 14px 0 0;
+  border-top: 1px solid rgba(176,190,197,0.1);
+}
+
+.footer-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--gray);
+  letter-spacing: 2px;
+}
+
+.footer-text .accent {
+  color: var(--cyan);
+  font-weight: 400;
+}
+
+/* Ambient particles */
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particles span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.3;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="particles">
+    <span style="top:12%;left:8%;animation:float 6s infinite"></span>
+    <span style="top:85%;left:15%;animation:float 8s infinite 1s"></span>
+    <span style="top:20%;left:92%;animation:float 7s infinite 2s"></span>
+    <span style="top:78%;left:88%;animation:float 9s infinite 0.5s"></span>
+    <span style="top:45%;left:4%;animation:float 5s infinite 3s"></span>
+    <span style="top:52%;left:96%;animation:float 7s infinite 1.5s"></span>
+    <span style="top:5%;left:50%;animation:float 6s infinite 2.5s"></span>
+    <span style="top:95%;left:50%;animation:float 8s infinite 4s"></span>
+  </div>
+
+  <div id="ct">
+    <div class="header">
+      <h1><span>重点书目解读</span></h1>
+      <div class="subtitle"><span>每一本经典都蕴含着跨越时代的智慧</span></div>
+    </div>
+
+    <div class="quad-container">
+      <div class="cross-h"></div>
+      <div class="cross-v"></div>
+      <div class="cross-glow"></div>
+
+      <!-- Top Left: Linus's Law -->
+      <div class="quad-card">
+        <div class="quad-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/>
+            <path d="M2 7l10 5 10-5"/>
+            <path d="M12 12v10"/>
+            <circle cx="12" cy="5.5" r="0.8" fill="#00BCD4" stroke="none"/>
+          </svg>
+        </div>
+        <div class="quad-content">
+          <span class="quad-tag"><span>01 / OPEN SOURCE</span></span>
+          <div class="quad-title"><span>Linus 定律</span></div>
+          <div class="quad-book"><span>Given enough eyeballs, all bugs are shallow</span></div>
+          <div class="quad-divider"></div>
+          <div class="quad-desc"><span>充分多的眼盯之下，没有 bug 能隐藏——开源协作的底层逻辑，众包的智慧胜过个体的精雕细琢。</span></div>
+          <div class="quad-quote"><span>"足够多的眼球下，一切问题皆是肤浅"</span></div>
+          <div class="quad-num">01</div>
+        </div>
+      </div>
+
+      <!-- Top Right: Clean Code -->
+      <div class="quad-card">
+        <div class="quad-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2v8"/>
+            <path d="M5 9c0-3 3-5 7-5s7 2 7 5c0 2-1 3-2 4-1 1-1 2-1 3 0 1-1 2-3 2s-3-1-3-3"/>
+            <path d="M9 22h6"/>
+            <path d="M10 19h4"/>
+          </svg>
+        </div>
+        <div class="quad-content">
+          <span class="quad-tag"><span>02 / CRAFTSMANSHIP</span></span>
+          <div class="quad-title"><span>整洁代码哲学</span></div>
+          <div class="quad-book"><span>Code is read more often than it is written</span></div>
+          <div class="quad-divider"></div>
+          <div class="quad-desc"><span>好的代码是写给人看的——命名、函数、注释各有其法，代码即文档，简洁即力量。</span></div>
+          <div class="quad-quote"><span>"代码是写给人看的，只是顺便让机器执行"</span></div>
+          <div class="quad-num">02</div>
+        </div>
+      </div>
+
+      <!-- Bottom Left: CAP Theorem -->
+      <div class="quad-card">
+        <div class="quad-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2v6"/>
+            <path d="M12 22v-6"/>
+            <path d="M2 12h6"/>
+            <path d="M16 12h6"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M4.5 4.5l4 4"/>
+            <path d="M19.5 19.5l-4-4"/>
+            <path d="M19.5 4.5l-4 4"/>
+            <path d="M4.5 19.5l4-4"/>
+          </svg>
+        </div>
+        <div class="quad-content">
+          <span class="quad-tag"><span>03 / DISTRIBUTED SYSTEM</span></span>
+          <div class="quad-title"><span>分布式三定理</span></div>
+          <div class="quad-book"><span>Consistency · Availability · Partition Tolerance</span></div>
+          <div class="quad-divider"></div>
+          <div class="quad-desc"><span>CAP 权衡贯穿所有系统设计决策——一致性与可用性必须取舍，没有免费的午餐，只有合适的妥协。</span></div>
+          <div class="quad-quote"><span>"三者不可兼得，选择即架构"</span></div>
+          <div class="quad-num">03</div>
+        </div>
+      </div>
+
+      <!-- Bottom Right: Brooks' Law -->
+      <div class="quad-card">
+        <div class="quad-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 19V5a1 1 0 0 1 1-1h10l5 5v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/>
+            <path d="M14 4v5h5"/>
+            <path d="M8 13l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="quad-content">
+          <span class="quad-tag"><span>04 / PROJECT MANAGEMENT</span></span>
+          <div class="quad-title"><span>Brooks 定律</span></div>
+          <div class="quad-book"><span>Adding manpower to a late project makes it later</span></div>
+          <div class="quad-divider"></div>
+          <div class="quad-desc"><span>向延期项目增加人手只会让项目更加延期——沟通成本非线性增长，这是管理本质的悖论。</span></div>
+          <div class="quad-quote"><span>"向延期的项目加人只会让它更延期"</span></div>
+          <div class="quad-num">04</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text"><span>从协作 · 到 · 代码 · 到 · 架构 · 到 · 管理 &nbsp;&nbsp;|&nbsp;&nbsp; <span class="accent">这四条洞察至今仍是工程师的必修课</span></span></div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0px); opacity: 0.3; }
+  50% { transform: translateY(-12px); opacity: 0.6; }
+}
+</style>
+</body>
+</html>

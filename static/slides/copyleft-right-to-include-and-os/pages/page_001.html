@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之道</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root {
+  --navy: #0D2137;
+  --red: #C0392B;
+  --cream: #F5F1E8;
+  --cream-dark: #EDE6D3;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Noto Sans SC', sans-serif; background:#fff; }
+.wrapper { width:1600px; height:900px; position:relative; overflow:hidden; margin:0 auto; background:var(--cream); }
+#bg { position:absolute; inset:0; z-index:0; background:var(--cream); }
+#ct { position:absolute; inset:0; z-index:1; padding:45px; box-sizing:border-box; }
+
+/* decorative corner marks */
+.corner-tl { position:absolute; left:45px; top:28px; width:22px; height:22px; border-top:1.5px solid var(--red); border-left:1.5px solid var(--red); }
+.corner-tr { position:absolute; right:45px; top:28px; width:22px; height:22px; border-top:1.5px solid var(--red); border-right:1.5px solid var(--red); }
+.page-mark { position:absolute; right:45px; top:32px; font-family:'Playfair Display', serif; font-size:10px; letter-spacing:3px; color:var(--navy); opacity:0.55; transform:translateY(-3px); }
+
+/* divider */
+.v-divider { position:absolute; left:525px; top:80px; bottom:100px; width:1px; background:var(--navy); opacity:0.12; }
+
+/* left column */
+.left-col { position:absolute; left:60px; top:80px; width:440px; height:740px; display:flex; flex-direction:column; }
+.masthead { font-family:'Playfair Display', serif; font-weight:700; font-size:13px; letter-spacing:7px; color:var(--navy); opacity:0.5; }
+.iss-meta { font-family:'Noto Sans SC', sans-serif; font-size:10px; letter-spacing:4px; color:var(--navy); opacity:0.4; margin-top:6px; }
+.red-bar { width:56px; height:2px; background:var(--red); margin-top:24px; margin-bottom:34px; }
+
+.main-title { font-family:'Noto Serif SC', serif; font-weight:900; font-size:130px; line-height:0.95; color:var(--navy); letter-spacing:6px; }
+.main-title-en { font-family:'Playfair Display', serif; font-style:italic; font-weight:400; font-size:26px; color:var(--navy); opacity:0.6; margin-top:18px; letter-spacing:1.5px; }
+.title-accent { width:80px; height:1px; background:var(--red); margin-top:22px; margin-bottom:18px; }
+
+.subtitle-block { margin-top:14px; }
+.sub-label { font-family:'Playfair Display', serif; font-size:10px; letter-spacing:5px; color:var(--red); font-weight:700; margin-bottom:10px; }
+.sub-text { font-size:13px; line-height:1.85; color:var(--navy); font-weight:400; letter-spacing:0.5px; }
+.sub-text-sm { font-size:11px; line-height:1.75; color:var(--navy); opacity:0.55; font-weight:300; margin-top:12px; letter-spacing:0.3px; }
+
+/* right column */
+.right-col { position:absolute; left:555px; top:80px; width:1000px; height:740px; display:flex; flex-direction:column; }
+
+.info-points { display:flex; flex-direction:column; }
+.info-item { display:flex; align-items:flex-start; gap:18px; padding-bottom:12px; margin-bottom:12px; border-bottom:1px solid rgba(13,33,55,0.12); }
+.info-item:last-child { border-bottom:none; margin-bottom:0; }
+.info-num { font-family:'Playfair Display', serif; font-size:34px; font-weight:900; color:var(--red); line-height:0.9; width:54px; flex-shrink:0; }
+.info-body { flex:1; padding-top:2px; }
+.info-tag { font-family:'Playfair Display', serif; font-size:10px; letter-spacing:4px; color:var(--navy); opacity:0.5; font-weight:700; margin-bottom:4px; }
+.info-title { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:4px; letter-spacing:1px; }
+.info-desc { font-size:12px; color:var(--navy); opacity:0.72; line-height:1.55; font-weight:300; letter-spacing:0.3px; }
+
+/* hero image section */
+.hero-section { position:relative; margin-top:18px; }
+.hero-frame-top { position:absolute; left:0; top:-7px; width:90px; height:2px; background:var(--red); }
+.hero-frame-btm { position:absolute; right:0; bottom:-7px; width:90px; height:2px; background:var(--navy); opacity:0.4; }
+.hero-img { width:880px; height:490px; display:block; }
+.hero-caption { position:absolute; left:0; bottom:-22px; font-family:'Playfair Display', serif; font-style:italic; font-size:11px; letter-spacing:1.5px; color:var(--navy); opacity:0.55; }
+.hero-plate { position:absolute; right:0; bottom:-22px; font-size:10px; letter-spacing:4px; color:var(--red); font-weight:700; }
+
+/* badges */
+.badges { position:absolute; left:60px; right:60px; bottom:38px; display:flex; gap:18px; align-items:stretch; }
+.badge { display:flex; align-items:center; gap:14px; padding:12px 24px; border:1px solid var(--navy); background:var(--cream); flex:1; }
+.badge-primary { border-color:var(--red); }
+.badge-num { font-family:'Playfair Display', serif; font-size:34px; font-weight:900; color:var(--red); line-height:1; }
+.badge-sep { width:1px; height:30px; background:var(--navy); opacity:0.25; }
+.badge-info { display:flex; flex-direction:column; gap:2px; }
+.badge-label { font-size:9px; letter-spacing:3px; color:var(--navy); opacity:0.55; font-weight:500; }
+.badge-text { font-size:12px; font-weight:500; color:var(--navy); letter-spacing:0.5px; }
+.badge-text em { font-style:normal; color:var(--red); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="corner-tl"></div>
+    <div class="corner-tr"></div>
+    <div class="page-mark"><span>ISSUE № 01 · OPEN SOURCE</span></div>
+
+    <div class="v-divider"></div>
+
+    <div class="left-col">
+      <div class="masthead"><span>THE OPEN SOURCE REVIEW</span></div>
+      <div class="iss-meta"><span>创刊号 · 阅读分享特辑</span></div>
+      <div class="red-bar"></div>
+
+      <div class="main-title">
+        <span>开源</span><br>
+        <span>之道</span>
+      </div>
+      <div class="main-title-en"><span>The Way of Open Source</span></div>
+      <div class="title-accent"></div>
+
+      <div class="subtitle-block">
+        <div class="sub-label"><span>SUBTITLE</span></div>
+        <div class="sub-text">
+          <span>Copyleft · Right to Include · Open Source</span><br>
+          <span>布道与阅读分享</span>
+        </div>
+        <div class="sub-text-sm">
+          <span>围绕开源核心思想的阅读分享提纲，串联 Copyleft 授权哲学、包容性社区建设以及开放操作系统三大主题，呈现开源运动的精神底色与实践路径。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="info-points">
+        <div class="info-item">
+          <div class="info-num"><span>01</span></div>
+          <div class="info-body">
+            <div class="info-tag"><span>SPIRIT · 思想脉络</span></div>
+            <div class="info-title"><span>开源精神</span></div>
+            <div class="info-desc"><span>从自由软件运动到全球开源生态的思想脉络</span></div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-num"><span>02</span></div>
+          <div class="info-body">
+            <div class="info-tag"><span>DIMENSIONS · 三维架构</span></div>
+            <div class="info-title"><span>三个维度</span></div>
+            <div class="info-desc"><span>Copyleft 授权哲学 · 包容性原则 · 操作系统实践</span></div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-num"><span>03</span></div>
+          <div class="info-body">
+            <div class="info-tag"><span>READING · 经典回望</span></div>
+            <div class="info-title"><span>阅读分享</span></div>
+            <div class="info-desc"><span>以经典书目和案例回顾开源思想传承</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-section">
+        <div class="hero-frame-top"></div>
+        <div class="hero-frame-btm"></div>
+        <img class="hero-img" src="/slides/copyleft-right-to-include-and-os/images/page_001_hero.jpg" alt="开源之道主视觉插画">
+        <div class="hero-caption"><span>Fig.01 — Flowing Code Particles · Woven Rings · Community & Knowledge Sharing</span></div>
+        <div class="hero-plate"><span>PLATE 01 / 03</span></div>
+      </div>
+    </div>
+
+    <div class="badges">
+      <div class="badge badge-primary">
+        <div class="badge-num"><span>03</span></div>
+        <div class="badge-sep"></div>
+        <div class="badge-info">
+          <div class="badge-label"><span>主题维度 · THEME</span></div>
+          <div class="badge-text"><span><em>Copyleft</em> / <em>Include</em> / <em>OS</em></span></div>
+        </div>
+      </div>
+      <div class="badge">
+        <div class="badge-num"><span>06</span></div>
+        <div class="badge-sep"></div>
+        <div class="badge-info">
+          <div class="badge-label"><span>核心议题 · TOPICS</span></div>
+          <div class="badge-text"><span>授权 · 包容 · 协作 · 治理 · 布道 · 阅读</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

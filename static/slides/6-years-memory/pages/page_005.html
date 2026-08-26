@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>六年数据一览</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --navy-light: #1B3A5B;
+  --red: #E53935;
+  --red-soft: #FFCDD2;
+  --bg: #F5F5F5;
+  --card-bg: #FFFFFF;
+  --text-main: #0D2137;
+  --text-sub: #4A5568;
+  --text-muted: #8A94A6;
+  --divider: #E0E4E8;
+  --serif: 'Playfair Display', 'Noto Serif SC', serif;
+  --sans: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--sans);
+  color: var(--text-main);
+  background: #FFFFFF;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+#bg { position: absolute; inset: 0; z-index: 0; }
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px 44px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Header ===== */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 22px;
+  border-bottom: 2px solid var(--navy);
+  position: relative;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 120px;
+  height: 2px;
+  background: var(--red);
+}
+.header-left { display: flex; flex-direction: column; gap: 10px; }
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  color: var(--red);
+  text-transform: uppercase;
+}
+.page-title {
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 56px;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: 2px;
+}
+.page-title .dot { color: var(--red); }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+.loop-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--navy);
+  border-radius: 20px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.loop-pill .arrow { color: var(--red); font-weight: 700; }
+.loop-pill.accent {
+  background: var(--navy);
+  color: #FFFFFF;
+}
+.loop-pill.accent .arrow { color: var(--red); }
+
+/* ===== KPI Row ===== */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 26px;
+}
+.kpi-card {
+  background: var(--card-bg);
+  border: 1px solid var(--divider);
+  border-top: 3px solid var(--navy);
+  padding: 22px 22px 20px 22px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 188px;
+  transition: none;
+}
+.kpi-card.accent-card { border-top: 3px solid var(--red); }
+.kpi-card .card-index {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+.kpi-card .card-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.kpi-card .card-label-cn {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-top: 2px;
+  letter-spacing: 2px;
+}
+.kpi-card .card-num {
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--navy);
+  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.kpi-card.accent-card .card-num { color: var(--red); }
+.kpi-card .card-num .plus { font-size: 36px; font-weight: 700; }
+.kpi-card .card-num .unit { font-size: 24px; font-weight: 600; font-family: var(--sans); color: var(--navy-light); margin-left: 4px; }
+.kpi-card.accent-card .card-num .unit { color: var(--red); }
+.kpi-card .card-desc {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--divider);
+}
+
+/* ===== Bottom Section ===== */
+.bottom {
+  display: grid;
+  grid-template-columns: 780px 1fr;
+  gap: 24px;
+  margin-top: 22px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Chart Panel */
+.chart-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--divider);
+  padding: 16px 20px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.chart-panel-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.chart-panel-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+.chart-panel-title .cn {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 10px;
+  letter-spacing: 2px;
+}
+.chart-panel-meta {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+.chart-panel-meta .red-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  margin: 0 4px 0 8px;
+  vertical-align: middle;
+}
+#chart_1 { width: 740px; height: 270px; }
+.chart-legend {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding-top: 4px;
+  border-top: 1px solid var(--divider);
+  margin-top: 4px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-sub);
+}
+.legend-swatch {
+  width: 14px; height: 8px;
+  background: var(--navy);
+  display: inline-block;
+}
+.legend-swatch.peak { background: var(--red); }
+
+/* Community Panel */
+.community-panel {
+  background: var(--navy);
+  color: #FFFFFF;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.community-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 6px; height: 100%;
+  background: var(--red);
+}
+.community-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.community-header .icon-bar {
+  width: 4px; height: 20px; background: var(--red);
+}
+.community-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.community-subtitle {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 3px;
+  margin-top: 2px;
+  margin-left: 14px;
+}
+.community-lede {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.75;
+  margin-top: 14px;
+  margin-left: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.community-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+  margin-left: 14px;
+}
+.cstat {
+  text-align: left;
+  padding: 10px 8px 10px 12px;
+  border-left: 2px solid var(--red);
+}
+.cstat-num {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1;
+}
+.cstat-num .s { font-size: 14px; font-weight: 600; }
+.cstat-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 2px;
+  margin-top: 6px;
+}
+.community-quote {
+  margin-top: 14px;
+  margin-left: 14px;
+  margin-right: 14px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.06);
+  border-left: 2px solid var(--red);
+}
+.community-quote-text {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 600;
+  font-style: italic;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.6;
+}
+.community-quote-text .hl { color: var(--red); font-style: normal; }
+.community-tag {
+  margin-top: 12px;
+  margin-left: 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.c-tag {
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7);
+  border-radius: 2px;
+}
+.c-tag.hot {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* Footer strip */
+.footer-strip {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--divider);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+.footer-strip .fs-left { display: flex; align-items: center; gap: 12px; }
+.footer-strip .fs-bar { width: 30px; height: 2px; background: var(--navy); }
+.footer-strip .fs-red { width: 8px; height: 8px; background: var(--red); display: inline-block; }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="eyebrow"><span>SIX YEARS · IN NUMBERS</span></div>
+    <div class="page-title"><span>六年数据一览<span class="dot">.</span></span></div>
+  </div>
+  <div class="header-right">
+    <span class="loop-pill"><span>读</span></span>
+    <span class="loop-pill"><span>记</span></span>
+    <span class="loop-pill"><span>写</span></span>
+    <span class="loop-pill"><span>讲</span></span>
+    <span class="loop-pill accent"><span>贡献</span> <span class="arrow">→</span> <span>闭环</span></span>
+  </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+
+  <div class="kpi-card">
+    <div class="card-index"><span>01</span></div>
+    <div>
+      <div class="card-label"><span>READING</span></div>
+      <div class="card-label-cn"><span>阅读书籍</span></div>
+    </div>
+    <div>
+      <div class="card-num"><span>60</span><span class="plus">+</span></div>
+    </div>
+    <div class="card-desc"><span>六年累计完成并做笔记的开源主题书籍，涵盖技术实践与架构思维。</span></div>
+  </div>
+
+  <div class="kpi-card accent-card">
+    <div class="card-index"><span>02</span></div>
+    <div>
+      <div class="card-label"><span>NOTES</span></div>
+      <div class="card-label-cn"><span>笔记页数</span></div>
+    </div>
+    <div>
+      <div class="card-num"><span>数千</span><span class="unit">页</span></div>
+    </div>
+    <div class="card-desc"><span>手写与电子版笔记合计，持续沉淀，构建个人开源知识库。</span></div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="card-index"><span>03</span></div>
+    <div>
+      <div class="card-label"><span>DOMAINS</span></div>
+      <div class="card-label-cn"><span>覆盖领域</span></div>
+    </div>
+    <div>
+      <div class="card-num"><span>5</span><span class="plus">+</span></div>
+    </div>
+    <div class="card-desc"><span>分布式、云原生、数据库、治理、文化与工具链，纵深覆盖。</span></div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="card-index"><span>04</span></div>
+    <div>
+      <div class="card-label"><span>OUTPUT</span></div>
+      <div class="card-label-cn"><span>输出形式</span></div>
+    </div>
+    <div>
+      <div class="card-num"><span>4</span><span class="unit">种</span></div>
+    </div>
+    <div class="card-desc"><span>博客、演讲、工作坊、读书会，多形式经验分享与布道。</span></div>
+  </div>
+
+</div>
+
+<!-- Bottom Section -->
+<div class="bottom">
+
+  <div class="chart-panel">
+    <div class="chart-panel-header">
+      <div class="chart-panel-title"><span>Reading Volume Trend</span><span class="cn">阅读量年度趋势</span></div>
+      <div class="chart-panel-meta"><span>单位：本 / 年</span><span class="red-dot"></span><span>成长拐点 2022</span></div>
+    </div>
+    <div id="chart_1" style="width:740px;height:270px;"></div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-swatch"></span><span>年度阅读量</span></div>
+      <div class="legend-item"><span class="legend-swatch peak"></span><span>2022 成长拐点</span></div>
+      <div class="legend-item" style="margin-left:auto;"><span>资料来源：个人阅读记录</span></div>
+    </div>
+  </div>
+
+  <div class="community-panel">
+    <div class="community-header">
+      <span class="icon-bar"></span>
+      <span class="community-title">社区参与</span>
+    </div>
+    <div class="community-subtitle"><span>COMMUNITY ENGAGEMENT</span></div>
+
+    <div class="community-lede"><span>持续参与多个主流开源社区，从<span style="color:var(--red);font-weight:700;">贡献者</span>逐步成长为<span style="color:var(--red);font-weight:700;">布道者</span>——代码之外，以文章、演讲与工作坊影响更多人。</span></div>
+
+    <div class="community-stats">
+      <div class="cstat">
+        <div class="cstat-num"><span>10</span><span class="s">+</span></div>
+        <div class="cstat-label"><span>参与社区</span></div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-num"><span>30</span><span class="s">+</span></div>
+        <div class="cstat-label"><span>公开演讲</span></div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-num"><span>100</span><span class="s">+</span></div>
+        <div class="cstat-label"><span>技术文章</span></div>
+      </div>
+    </div>
+
+    <div class="community-quote">
+      <div class="community-quote-text"><span>"读进去，写出来，讲出去——<span class="hl">让知识流动</span>，才是阅读的真正闭环。"</span></div>
+    </div>
+
+    <div class="community-tag">
+      <span class="c-tag">Kubernetes</span>
+      <span class="c-tag">Docker</span>
+      <span class="c-tag">Apache</span>
+      <span class="c-tag hot">Gopher</span>
+      <span class="c-tag">CNCF</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer-strip">
+  <div class="fs-left">
+    <span class="fs-bar"></span>
+    <span>读 · 记 · 写 · 讲 · 贡献</span>
+    <span style="color:var(--text-muted);">|</span>
+    <span style="color:var(--red);font-weight:700;">成长闭环</span>
+  </div>
+  <div>
+    <span class="fs-red"></span>
+    <span style="margin-left:6px;">SIX YEARS · DATA OVERVIEW</span>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const chart = echarts.init(document.getElementById('chart_1'), null, {renderer: 'svg'});
+  chart.setOption({
+    backgroundColor: 'transparent',
+    grid: { left: 44, right: 24, top: 30, bottom: 30 },
+    tooltip: { show: false },
+    xAxis: {
+      type: 'category',
+      data: ['2019', '2020', '2021', '2022', '2023', '2024'],
+      axisLine: { lineStyle: { color: '#E0E4E8' } },
+      axisTick: { show: false },
+      axisLabel: {
+        color: '#4A5568',
+        fontSize: 12,
+        fontFamily: 'Source Sans 3, Noto Sans SC, sans-serif',
+        fontWeight: 600
+      }
+    },
+    yAxis: {
+      type: 'value',
+      max: 22,
+      splitLine: { lineStyle: { color: '#F0F0F0', type: 'dashed' } },
+      axisLabel: {
+        color: '#8A94A6',
+        fontSize: 11,
+        fontFamily: 'Source Sans 3, sans-serif'
+      }
+    },
+    series: [
+      {
+        name: '年度阅读量',
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 7,
+        lineStyle: { color: '#0D2137', width: 2.5 },
+        itemStyle: { color: '#0D2137', borderColor: '#FFFFFF', borderWidth: 2 },
+        areaStyle: {
+          color: {
+            type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: 'rgba(13,33,55,0.28)' },
+              { offset: 1, color: 'rgba(13,33,55,0.02)' }
+            ]
+          }
+        },
+        data: [
+          { value: 6 },
+          { value: 8 },
+          { value: 11 },
+          {
+            value: 17,
+            itemStyle: { color: '#E53935', borderColor: '#FFFFFF', borderWidth: 3 },
+            symbolSize: 14,
+            label: {
+              show: true,
+              position: 'top',
+              distance: 12,
+              formatter: '成长拐点 2022',
+              color: '#E53935',
+              fontSize: 11,
+              fontWeight: 700,
+              fontFamily: 'Noto Sans SC, sans-serif'
+            }
+          },
+          { value: 14 },
+          { value: 18 }
+        ]
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+
+</body>
+</html>

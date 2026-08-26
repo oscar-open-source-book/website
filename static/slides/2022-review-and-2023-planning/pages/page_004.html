@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>最爱书单推荐</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --gray:#B0BEC5;
+  --bg-dark:#0d1117;
+  --card-bg:#161b22;
+  --card-border:#1f2937;
+  --divider:#2196F3;
+  --text-main:#e6edf3;
+  --text-sub:#B0BEC5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Roboto Mono',monospace;color:var(--text-main);background:var(--bg-dark);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg-dark);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 72px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* bg decorative */
+#bg{
+  background:
+    radial-gradient(1200px 600px at 15% 10%, rgba(33,150,243,0.10) 0%, transparent 60%),
+    radial-gradient(1000px 500px at 90% 90%, rgba(0,188,212,0.08) 0%, transparent 60%);
+}
+#bg::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* header */
+.header{margin-bottom:28px;position:relative;}
+.header-title{
+  font-family:'Inter',sans-serif;font-weight:800;font-size:46px;letter-spacing:1px;
+  color:var(--text-main);
+  display:flex;align-items:center;gap:18px;
+}
+.header-title::before{
+  content:"";display:inline-block;width:6px;height:42px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:3px;
+}
+.header-title .dot{
+  display:inline-block;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);margin-left:6px;
+  box-shadow:0 0 14px var(--accent);
+}
+.header-sub{
+  font-family:'Roboto Mono',monospace;font-weight:400;font-size:15px;
+  color:var(--gray);margin-top:12px;padding-left:24px;line-height:1.6;
+}
+
+/* books grid */
+.books{
+  flex:1;display:grid;grid-template-columns:1fr 1fr;
+  gap:22px 28px;align-content:center;
+}
+.col{display:flex;flex-direction:column;gap:18px;}
+
+.book-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:14px;padding:22px 26px;position:relative;
+  overflow:hidden;
+  box-shadow:0 4px 18px rgba(0,0,0,0.3);
+}
+.book-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+}
+.book-card::after{
+  content:"";position:absolute;right:-40px;top:-40px;width:120px;height:120px;
+  border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.12),transparent 70%);
+}
+.book-num{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:13px;
+  color:var(--accent);letter-spacing:2px;margin-bottom:6px;
+}
+.book-title{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:23px;
+  color:var(--text-main);margin-bottom:10px;line-height:1.3;
+}
+.book-meta{
+  display:flex;flex-wrap:wrap;gap:10px 16px;margin-bottom:12px;
+}
+.book-meta .author{
+  font-family:'Roboto Mono',monospace;font-size:12px;color:var(--primary);
+  font-weight:500;display:flex;align-items:center;gap:6px;
+}
+.book-meta .author::before{
+  content:"";display:inline-block;width:14px;height:1px;background:var(--primary);
+}
+.book-meta .pub{
+  font-family:'Roboto Mono',monospace;font-size:11px;color:var(--gray);
+}
+.divider{
+  height:1px;background:linear-gradient(90deg,var(--primary),transparent);
+  margin-bottom:12px;opacity:0.5;
+}
+.book-value{
+  font-family:'Roboto Mono',monospace;font-size:12.5px;color:var(--gray);
+  line-height:1.7;font-weight:300;
+}
+.book-value .tag{
+  color:var(--accent);font-weight:500;
+}
+
+/* footer */
+.footer{
+  margin-top:24px;padding:16px 24px;
+  background:linear-gradient(90deg,rgba(33,150,243,0.08),rgba(0,188,212,0.06));
+  border:1px solid rgba(33,150,243,0.2);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+}
+.footer .icon{
+  font-family:'Inter',sans-serif;font-weight:700;color:var(--accent);font-size:18px;
+}
+.footer .text{
+  font-family:'Inter',sans-serif;font-weight:600;font-size:17px;
+  color:var(--text-main);letter-spacing:1px;
+}
+.footer .text .hl{color:var(--accent);}
+
+/* corner deco */
+.corner-tl{position:absolute;top:18px;left:24px;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:2px;opacity:0.6;}
+.corner-tr{position:absolute;top:18px;right:24px;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:2px;opacity:0.6;display:flex;align-items:center;gap:8px;}
+.corner-tr .pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="corner-tl"><span>BOOKS / RECOMMENDATION</span></div>
+    <div class="corner-tr"><span class="pulse"></span><span>2024 · TECH READING</span></div>
+
+    <div class="header">
+      <div class="header-title"><span>最爱书单推荐</span><span class="dot"></span></div>
+      <div class="header-sub"><span>四本精选好书，带你从入门到进阶，掌握数据驱动的思维与实践能力</span></div>
+    </div>
+
+    <div class="books">
+      <div class="col">
+        <div class="book-card">
+          <div class="book-num"><span>BOOK · 01</span></div>
+          <div class="book-title"><span>《Python数据分析》</span></div>
+          <div class="book-meta">
+            <span class="author"><span>Wes McKinney</span></span>
+            <span class="pub"><span>2023年 · 机械工业出版社</span></span>
+          </div>
+          <div class="divider"></div>
+          <div class="book-value"><span>从零搭建<span class="tag">数据思维</span>，系统掌握<span class="tag">pandas</span>、<span class="tag">numpy</span>到可视化全链路</span></div>
+        </div>
+        <div class="book-card">
+          <div class="book-num"><span>BOOK · 02</span></div>
+          <div class="book-title"><span>《SQL必知必会》</span></div>
+          <div class="book-meta">
+            <span class="author"><span>Ben Forta</span></span>
+            <span class="pub"><span>2019年 · 人民邮电出版社</span></span>
+          </div>
+          <div class="divider"></div>
+          <div class="book-value"><span>用极简语言讲透<span class="tag">SQL核心语法</span>，数据库操作的<span class="tag">速成利器</span></span></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="book-card">
+          <div class="book-num"><span>BOOK · 03</span></div>
+          <div class="book-title"><span>《数据科学实战》</span></div>
+          <div class="book-meta">
+            <span class="author"><span>刘知远 等</span></span>
+            <span class="pub"><span>2022年 · 人民邮电出版社</span></span>
+          </div>
+          <div class="divider"></div>
+          <div class="book-value"><span>从<span class="tag">数据清洗</span>到<span class="tag">机器学习建模</span>，工程化落地数据科学项目</span></div>
+        </div>
+        <div class="book-card">
+          <div class="book-num"><span>BOOK · 04</span></div>
+          <div class="book-title"><span>《R语言数据分析》</span></div>
+          <div class="book-meta">
+            <span class="author"><span>李航</span></span>
+            <span class="pub"><span>2020年 · 清华大学出版社</span></span>
+          </div>
+          <div class="divider"></div>
+          <div class="book-value"><span><span class="tag">统计学</span>+<span class="tag">数据可视化</span>双轮驱动，科研与工程两栖的R语言指南</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="icon">»</span>
+      <span class="text">读好书，是<span class="hl">最高性价比</span>的自我投资</span>
+      <span class="icon">«</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

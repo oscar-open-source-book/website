@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>复杂性科学的关键数字</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0D2137;
+  --bg:#F7F2E9;
+  --gold:#C9A063;
+  --gold-light:#E0C99A;
+  --ink:#1A1A1A;
+  --muted:#6B6B6B;
+  --font-serif:'Playfair Display','Noto Serif SC',serif;
+  --font-sans:'Source Sans 3','Noto Sans SC',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font-sans);color:var(--primary);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 60px 36px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* background decorations */
+.bg-deco{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.bg-deco .corner-tl{position:absolute;top:0;left:0;width:180px;height:180px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);}
+.bg-deco .corner-br{position:absolute;bottom:0;right:0;width:180px;height:180px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);}
+.bg-deco .vline{position:absolute;top:60px;bottom:60px;width:1px;background:var(--gold-light);opacity:.5;}
+.bg-deco .dot{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--gold);}
+
+/* header */
+.masthead{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--gold-light);margin-bottom:18px;font-size:13px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;font-weight:400;}
+.masthead .left{display:flex;gap:20px;align-items:center;}
+.masthead .left .brand{color:var(--primary);font-weight:600;font-family:var(--font-serif);font-size:15px;letter-spacing:1px;text-transform:none;}
+.masthead .right{font-style:italic;font-family:var(--font-serif);text-transform:none;letter-spacing:0;color:var(--muted);font-size:12px;}
+
+h1.main-title{font-family:var(--font-serif);font-weight:900;font-size:76px;line-height:1.02;color:var(--primary);letter-spacing:-1px;margin-top:4px;}
+h1.main-title .accent{color:var(--gold);font-style:italic;font-weight:400;}
+.title-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;}
+.title-meta{font-family:var(--font-serif);font-style:italic;font-size:15px;color:var(--muted);text-align:right;line-height:1.6;padding-bottom:14px;}
+.title-meta .num{font-size:22px;color:var(--primary);font-style:normal;font-weight:700;letter-spacing:2px;}
+
+.lead{font-family:var(--font-serif);font-size:17px;line-height:1.7;color:var(--primary);max-width:1380px;font-weight:400;letter-spacing:0.5px;}
+.lead .drop{font-family:var(--font-serif);font-size:52px;float:left;line-height:1;padding-right:10px;padding-top:6px;color:var(--gold);font-weight:700;}
+.lead em{color:var(--gold);font-style:italic;font-weight:700;}
+
+/* main grid */
+.main-grid{display:grid;grid-template-columns:340px 1fr;gap:36px;margin-top:24px;flex:1;min-height:0;}
+
+/* left KPI column */
+.kpi-col{display:flex;flex-direction:column;border-top:1px solid var(--gold-light);border-bottom:1px solid var(--gold-light);}
+.kpi-col .col-label{font-family:var(--font-serif);font-style:italic;font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:10px 0 6px 0;border-bottom:1px solid var(--gold-light);}
+.kpi-item{display:flex;align-items:baseline;gap:16px;padding:13px 0;border-bottom:1px solid var(--gold-light);position:relative;}
+.kpi-item:last-child{border-bottom:none;}
+.kpi-item::before{content:'';position:absolute;left:-8px;top:50%;width:3px;height:24px;background:var(--gold);transform:translateY(-50%);}
+.kpi-num{font-family:var(--font-serif);font-weight:900;font-size:44px;color:var(--primary);line-height:1;letter-spacing:-1px;flex-shrink:0;min-width:110px;}
+.kpi-num.gold{color:var(--gold);}
+.kpi-num.italic{font-style:italic;font-weight:400;}
+.kpi-text{flex:1;}
+.kpi-label{font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--primary);letter-spacing:0.5px;}
+.kpi-sub{font-family:var(--font-serif);font-style:italic;font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4;}
+
+/* right cards */
+.cards-wrap{display:flex;flex-direction:column;}
+.cards-head{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;border-bottom:1px solid var(--gold-light);margin-bottom:12px;}
+.cards-head .t{font-family:var(--font-serif);font-weight:700;font-size:16px;color:var(--primary);letter-spacing:1px;}
+.cards-head .e{font-family:var(--font-serif);font-style:italic;font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;flex:1;min-height:0;}
+.card{position:relative;padding:14px 16px 12px 16px;border-top:1px solid var(--gold-light);display:flex;flex-direction:column;}
+.card .card-num{position:absolute;top:8px;right:10px;font-family:var(--font-serif);font-style:italic;font-size:11px;color:var(--gold);letter-spacing:2px;}
+.card .eyebrow{font-family:var(--font-serif);font-style:italic;font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;}
+.card .card-title{font-family:var(--font-serif);font-weight:700;font-size:20px;color:var(--primary);margin-bottom:8px;line-height:1.2;}
+.card .card-body{font-family:var(--font-sans);font-size:12.5px;line-height:1.65;color:var(--primary);font-weight:400;}
+.card .card-body .hl{color:var(--gold);font-weight:700;}
+.card.full{grid-column:1 / -1;}
+.card .divider-dot{display:inline-block;width:5px;height:5px;background:var(--gold);border-radius:50%;margin:0 6px 2px 6px;vertical-align:middle;}
+
+/* footer */
+.footer{margin-top:18px;padding-top:14px;border-top:2px solid var(--primary);display:flex;justify-content:space-between;align-items:center;}
+.footer .quote{font-family:var(--font-serif);font-style:italic;font-size:16px;color:var(--primary);letter-spacing:0.5px;}
+.footer .quote .g{color:var(--gold);font-weight:700;}
+.footer .pages{font-family:var(--font-serif);font-size:12px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+
+/* geometric accents */
+.geo-diamond{display:inline-block;width:6px;height:6px;background:var(--gold);transform:rotate(45deg);margin:0 8px;vertical-align:middle;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="bg-deco">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="dot" style="top:42px;right:42px;"></div>
+    <div class="dot" style="bottom:42px;left:42px;"></div>
+  </div>
+  <div id="ct">
+
+    <div class="masthead">
+      <div class="left">
+        <span class="brand">Complexity Quarterly</span>
+        <span>Vol. XII · Issue 01</span>
+      </div>
+      <div class="right">Feature — 跨页特写 · Special Spread</div>
+    </div>
+
+    <div class="title-row">
+      <h1 class="main-title">复杂性科学的<span class="accent">关键数字</span></h1>
+      <div class="title-meta">
+        <div class="num">No. 24</div>
+        <div>非线性 · 涌现 · 自组织<br>Non-linearity · Emergence · Self-organization</div>
+      </div>
+    </div>
+
+    <p class="lead">
+      <span class="drop">复</span>杂性科学之所以具有跨学科影响力，是因为它把看似<em>无关的现象</em>统一在同一套语言之下——从蝴蝶振翅到蚁群优化，从人工生命的自复制结构到城市经济的演化轨迹，背后都是<em>非线性</em>与<em>涌现</em>的同一逻辑。以下五个数字，勾勒出这门学科的精神坐标。
+    </p>
+
+    <div class="main-grid">
+
+      <div class="kpi-col">
+        <div class="col-label">Key Figures · 关键数字</div>
+
+        <div class="kpi-item">
+          <div class="kpi-num">1984</div>
+          <div class="kpi-text">
+            <div class="kpi-label">SFI 创立年份</div>
+            <div class="kpi-sub">Santa Fe Institute founded</div>
+          </div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-num italic">1D</div>
+          <div class="kpi-text">
+            <div class="kpi-label">Langton 规则维度</div>
+            <div class="kpi-sub">Cellular automaton rule</div>
+          </div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-num">3</div>
+          <div class="kpi-text">
+            <div class="kpi-label">Lorenz 模型变量</div>
+            <div class="kpi-sub">微分方程组 / ODE system</div>
+          </div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-num gold">20+</div>
+          <div class="kpi-text">
+            <div class="kpi-label">关键人物数</div>
+            <div class="kpi-sub">Nobel & Turing laureates</div>
+          </div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-num gold">5+</div>
+          <div class="kpi-text">
+            <div class="kpi-label">跨学科覆盖领域</div>
+            <div class="kpi-sub">Interdisciplinary domains</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-wrap">
+        <div class="cards-head">
+          <div class="t">五个思想锚点 <span class="geo-diamond"></span></div>
+          <div class="e">Five Anchors of Thought</div>
+        </div>
+
+        <div class="cards-grid">
+
+          <div class="card">
+            <div class="card-num">01</div>
+            <div class="eyebrow">Santa Fe</div>
+            <div class="card-title">圣塔菲研究所</div>
+            <div class="card-body">
+              <span class="hl">1984 年</span>由 <span class="hl">George Cowan</span> 发起，坐落于新墨西哥州沙漠之中，是复杂性科学的<span class="hl">发源地</span>与思想温床，持续孵化跨学科前沿研究。
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-num">02</div>
+            <div class="eyebrow">AI-Life</div>
+            <div class="card-title">核心人物密度</div>
+            <div class="card-body">
+              普里高津、霍兰、朗顿、凯恩斯等多位<span class="hl">图灵奖</span>与<span class="hl">诺贝尔奖</span>得主在此交汇，形成罕见的思想密度场，催生人工生命与新经济科学。
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-num">03</div>
+            <div class="eyebrow">AI-Life</div>
+            <div class="card-title">人工生命实验</div>
+            <div class="card-body">
+              Langton 用一条<span class="hl">一维细胞自动机</span>规则，跑出无限复杂的<span class="hl">自复制</span>结构——最简规则孕育最大复杂度，是涌现思想的经典证明。
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-num">04</div>
+            <div class="eyebrow">Ant-Opt</div>
+            <div class="card-title">蚁群优化</div>
+            <div class="card-body">
+              Dorigo 从蚂蚁<span class="hl">信息素</span>机制中提炼出启发式搜索算法，广泛应用于<span class="hl">路由优化</span>、调度与组合优化，成为群体智能的工程典范。
+            </div>
+          </div>
+
+          <div class="card full">
+            <div class="card-num">05</div>
+            <div class="eyebrow">Chaos</div>
+            <div class="card-title">混沌蝴蝶效应</div>
+            <div class="card-body">
+              Lorenz 发现气象模型对<span class="hl">初始条件</span>的极端敏感——"巴西一只蝴蝶扇动翅膀，可能在德克萨斯引发龙卷风"，这一洞察为<span class="hl">混沌理论</span>奠定了基石，也重塑了人类对确定性与预测的想象。
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="quote">从一只<span class="g">蝴蝶</span>到一群<span class="g">蚂蚁</span>——非线性与涌现，是同一套语言。</div>
+      <div class="pages">Page 24 — 25 · Complexity Quarterly</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

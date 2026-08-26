@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源许可的崛起</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Roboto+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --dark: #0a1628;
+  --darker: #050d1a;
+  --title-font: 'Inter', 'PingFang SC', sans-serif;
+  --body-font: 'Roboto Mono', 'Menlo', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1600px;
+  height: 900px;
+  font-family: var(--body-font);
+  color: #e0e8f0;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--darker);
+}
+
+#bg .bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7) saturate(1.1);
+}
+
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5,13,26,0.85) 0%, rgba(10,22,40,0.55) 35%, rgba(10,22,40,0.65) 65%, rgba(5,13,26,0.92) 100%);
+}
+
+#bg .glow-left {
+  position: absolute;
+  left: -200px;
+  top: 200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(33,150,243,0.25) 0%, transparent 60%);
+  filter: blur(40px);
+}
+
+#bg .glow-right {
+  position: absolute;
+  right: -150px;
+  bottom: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,188,212,0.22) 0%, transparent 60%);
+  filter: blur(40px);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
+  box-sizing: border-box;
+}
+
+/* Top-left data */
+.top-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--body-font);
+  font-size: 12px;
+  color: var(--neutral);
+  letter-spacing: 0.08em;
+}
+
+.top-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meta-item .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent), 0 0 20px rgba(0,188,212,0.5);
+}
+
+.meta-item.blue .dot {
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary), 0 0 20px rgba(33,150,243,0.5);
+}
+
+.meta-item .label {
+  color: var(--neutral);
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.meta-item .value {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* Center title */
+.title-block {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -58%);
+  text-align: center;
+  width: 1200px;
+}
+
+.title-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--body-font);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding: 6px 18px;
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 20px;
+  background: rgba(0,188,212,0.08);
+}
+
+.title-tag::before,
+.title-tag::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.main-title {
+  font-family: var(--title-font);
+  font-weight: 900;
+  font-size: 108px;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-shadow:
+    0 0 40px rgba(33,150,243,0.5),
+    0 0 80px rgba(33,150,243,0.25),
+    0 2px 4px rgba(0,0,0,0.6);
+  margin-bottom: 12px;
+}
+
+.main-title .accent-char {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-underline {
+  display: block;
+  width: 160px;
+  height: 3px;
+  margin: 18px auto 22px;
+  background: linear-gradient(90deg, transparent 0%, var(--primary) 30%, var(--accent) 70%, transparent 100%);
+  box-shadow: 0 0 12px rgba(33,150,243,0.6);
+}
+
+.subtitle {
+  font-family: var(--body-font);
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--neutral);
+  line-height: 1.6;
+}
+
+.subtitle .highlight {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.subtitle .dim {
+  color: #7f8c9a;
+}
+
+/* Bottom-left highlights */
+.highlights {
+  position: absolute;
+  left: 72px;
+  bottom: 56px;
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hi-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 14px;
+  background: rgba(10,22,40,0.65);
+  border-left: 2px solid var(--primary);
+  backdrop-filter: blur(6px);
+  border-radius: 0 6px 6px 0;
+}
+
+.hi-item:nth-child(2) { border-left-color: var(--accent); }
+.hi-item:nth-child(3) { border-left-color: #42A5F5; }
+
+.hi-num {
+  font-family: var(--title-font);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--primary);
+  line-height: 1;
+  min-width: 32px;
+  text-shadow: 0 0 10px rgba(33,150,243,0.4);
+}
+
+.hi-item:nth-child(2) .hi-num { color: var(--accent); text-shadow: 0 0 10px rgba(0,188,212,0.4); }
+.hi-item:nth-child(3) .hi-num { color: #42A5F5; text-shadow: 0 0 10px rgba(66,165,245,0.4); }
+
+.hi-text { flex: 1; }
+
+.hi-text .hi-title {
+  font-family: var(--title-font);
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+
+.hi-text .hi-desc {
+  font-family: var(--body-font);
+  font-size: 11px;
+  color: var(--neutral);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Bottom-right narrative */
+.narrative {
+  position: absolute;
+  right: 72px;
+  bottom: 56px;
+  width: 460px;
+  padding: 18px 22px;
+  background: rgba(10,22,40,0.7);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  position: absolute;
+}
+
+.narrative::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  margin-bottom: 12px;
+  box-shadow: 0 0 8px rgba(33,150,243,0.5);
+}
+
+.narrative-text {
+  font-family: var(--body-font);
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: var(--neutral);
+  font-weight: 300;
+}
+
+.narrative-text .em {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.narrative-text .em2 {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Decorative corners */
+.corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: rgba(33,150,243,0.5);
+  z-index: 2;
+}
+
+.corner-tl { top: 36px; left: 36px; border-top: 1px solid; border-left: 1px solid; }
+.corner-tr { top: 36px; right: 36px; border-top: 1px solid; border-right: 1px solid; }
+.corner-bl { bottom: 36px; left: 36px; border-bottom: 1px solid; border-left: 1px solid; }
+.corner-br { bottom: 36px; right: 36px; border-bottom: 1px solid; border-right: 1px solid; }
+
+/* Top-right corner label */
+.top-right {
+  position: absolute;
+  top: 56px;
+  right: 72px;
+  text-align: right;
+  font-family: var(--body-font);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--neutral);
+  text-transform: uppercase;
+}
+
+.top-right .code {
+  color: var(--accent);
+  font-weight: 500;
+  margin-top: 4px;
+  font-size: 9px;
+}
+
+/* Vertical text on right edge */
+.side-text {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: center;
+  font-family: var(--body-font);
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  color: rgba(176,190,197,0.4);
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+/* Bottom center badge */
+.bottom-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--body-font);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: rgba(176,190,197,0.5);
+  text-transform: uppercase;
+}
+
+.bottom-badge .divider {
+  width: 30px;
+  height: 1px;
+  background: rgba(176,190,197,0.3);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="/slides/2023-06-the-rise-of-open-source-licensing/images/page_001_hero.jpg" alt="霓虹光效的开源 logo 与代码流交织的抽象数字景观">
+    <div class="bg-overlay"></div>
+    <div class="glow-left"></div>
+    <div class="glow-right"></div>
+  </div>
+  <div id="ct">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="top-meta">
+      <div class="meta-item blue">
+        <span class="dot"></span>
+        <span class="label">专题期数</span>
+        <span class="value">第24期 · 2023年6月</span>
+      </div>
+      <div class="meta-item">
+        <span class="dot"></span>
+        <span class="label">涵盖协议</span>
+        <span class="value">15+ 种主流开源许可证类型</span>
+      </div>
+    </div>
+
+    <div class="top-right">
+      <div>OPEN SOURCE DOJO / VOL.24</div>
+      <div class="code">&lt;LICENSE_EPOCH /&gt; — 001</div>
+    </div>
+
+    <div class="title-block">
+      <div class="title-tag">SPECIAL ISSUE · 06 / 2023</div>
+      <h1 class="main-title">开源<span class="accent-char">许可</span>的崛起</h1>
+      <span class="title-underline"></span>
+      <p class="subtitle">
+        <span class="highlight">开源之道</span> 2023-06 特刊
+        <span class="dim">·</span>
+        许可协议如何重塑软件世界
+      </p>
+    </div>
+
+    <div class="highlights">
+      <div class="hi-item">
+        <span class="hi-num">01</span>
+        <div class="hi-text">
+          <div class="hi-title">专题定位</div>
+          <div class="hi-desc">聚焦开源许可协议的演进脉络与企业采纳趋势</div>
+        </div>
+      </div>
+      <div class="hi-item">
+        <span class="hi-num">02</span>
+        <div class="hi-text">
+          <div class="hi-title">数据驱动</div>
+          <div class="hi-desc">汇集近年全球开源许可采用率、投资规模等关键指标</div>
+        </div>
+      </div>
+      <div class="hi-item">
+        <span class="hi-num">03</span>
+        <div class="hi-text">
+          <div class="hi-title">案例纵览</div>
+          <div class="hi-desc">覆盖 MIT、GPL、Apache 等主流协议的兴衰与应用场景对比</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <p class="narrative-text">
+        本专题收录于<span class="em">《开源之道》2023年6月刊</span>，系统梳理了开源许可协议从<span class="em2">社区自发</span>到<span class="em2">商业主流</span>的完整历程，为开发者、法务与企业决策者提供全景视角。
+      </p>
+    </div>
+
+    <div class="side-text">THE RISE OF OPEN SOURCE LICENSING — 2023</div>
+
+    <div class="bottom-badge">
+      <span class="divider"></span>
+      <span>OPEN SOURCE DOJO · 2023 SUMMER</span>
+      <span class="divider"></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

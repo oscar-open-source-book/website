@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>协作经济的数据图景</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --navy-soft: #14304f;
+  --gold: #C9A227;
+  --gold-soft: #e0bd4e;
+  --cream: #F7F3EB;
+  --cream-dark: #EFE7D3;
+  --text-dark: #1a1a1a;
+  --text-mute: #5b5b5b;
+  --serif: 'Playfair Display', 'Noto Serif SC', serif;
+  --sans: 'Inter', 'Noto Sans SC', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--cream);
+  font-family: var(--sans);
+  color: var(--text-dark);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, #FBF8F0 0%, #F3EDDA 50%, #F1E9D0 100%);
+}
+#bg::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 8px;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy) 70%, var(--gold) 70%, var(--gold) 100%);
+}
+#bg::after {
+  content: "";
+  position: absolute;
+  left: 60px; right: 60px; bottom: 30px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.5;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 42px 60px 40px 60px;
+  display: flex;
+  flex-direction: column;
+}
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.eyebrow .dash {
+  display: inline-block;
+  width: 36px;
+  height: 2px;
+  background: var(--gold);
+}
+.eyebrow .right {
+  margin-left: auto;
+  color: var(--navy);
+  font-weight: 500;
+  letter-spacing: 3px;
+}
+h1 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--navy);
+  line-height: 1.15;
+  letter-spacing: 1px;
+}
+.subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--navy-soft);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+.header-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+.header-rule .line {
+  flex: 1;
+  height: 1px;
+  background: var(--navy);
+  opacity: 0.35;
+}
+.header-rule .dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+.header-rule .tag {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 14px;
+  height: 350px;
+  margin-bottom: 16px;
+}
+.kpi {
+  position: relative;
+  background: var(--navy);
+  padding: 18px 22px 16px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow: 0 2px 0 var(--gold) inset;
+}
+.kpi::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--gold);
+}
+.kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kpi-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.kpi-num-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 2px;
+}
+.kpi-num {
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 54px;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.kpi-unit {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--gold-soft);
+}
+.kpi-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  margin-top: 6px;
+  line-height: 1.3;
+}
+.kpi-desc {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.5;
+  font-weight: 300;
+  margin-top: 6px;
+}
+.kpi-corner {
+  position: absolute;
+  top: 14px; right: 16px;
+  font-family: var(--serif);
+  font-size: 13px;
+  color: rgba(201,162,39,0.55);
+  font-weight: 600;
+}
+
+/* Extension Section */
+.extension {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  height: 130px;
+  margin-bottom: 12px;
+}
+.ext-card {
+  background: #fff;
+  border: 1px solid var(--cream-dark);
+  border-left: 3px solid var(--gold);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+.ext-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.ext-num {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--navy);
+  line-height: 1;
+}
+.ext-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--navy);
+  letter-spacing: 0.5px;
+}
+.ext-desc {
+  font-size: 11.5px;
+  color: var(--text-mute);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.ext-tag {
+  position: absolute;
+  top: 10px; right: 14px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 6px;
+}
+.footer .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.4;
+}
+.footer .text {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--navy);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+.footer .text strong {
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 800;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="eyebrow">
+        <span class="dash"></span>
+        <span>DATA / 数据图景</span>
+        <span class="right">VOL. 2004 — 2024 · 二十年</span>
+      </div>
+      <h1>协作经济的数据图景</h1>
+      <div class="subtitle">用数据说话，协作经济二十年从理论走向规模化现实。</div>
+      <div class="header-rule">
+        <span class="line"></span>
+        <span class="dot"></span>
+        <span class="tag">SIX METRICS · 六项核心指标</span>
+        <span class="dot"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+
+      <div class="kpi">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">WIKIPEDIA · 维基百科</span>
+          </div>
+          <div class="kpi-num-wrap">
+            <span class="kpi-num">650</span>
+            <span class="kpi-unit">万+</span>
+          </div>
+          <div class="kpi-title">英文条目总数</div>
+        </div>
+        <div class="kpi-desc">2024 年数据。维基百科以众包编辑模式成为人类最大知识库，维基百科已成为本克勒理论最具标志性的案例。</div>
+        <span class="kpi-corner">№ 01</span>
+      </div>
+
+      <div class="kpi">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">LINUX KERNEL · 内核贡献</span>
+          </div>
+          <div class="kpi-num-wrap">
+            <span class="kpi-num">2000</span>
+            <span class="kpi-unit">+</span>
+          </div>
+          <div class="kpi-title">Linux 内核贡献者</div>
+        </div>
+        <div class="kpi-desc">2024 年数据，远超 2006 年同期的数百人规模；全球协作驱动操作系统内核演进的教科书案例。</div>
+        <span class="kpi-corner">№ 02</span>
+      </div>
+
+      <div class="kpi">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">CREATIVE COMMONS · 知识共享</span>
+          </div>
+          <div class="kpi-num-wrap">
+            <span class="kpi-num">14</span>
+            <span class="kpi-unit">亿+</span>
+          </div>
+          <div class="kpi-title">CC 协议采用网页</div>
+        </div>
+        <div class="kpi-desc">全球授权内容。CC 协议构建了横跨语言与国界的开放文化资源体系。</div>
+        <span class="kpi-corner">№ 03</span>
+      </div>
+
+      <div class="kpi">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">GITHUB · 开发者协作</span>
+          </div>
+          <div class="kpi-num-wrap">
+            <span class="kpi-num">1</span>
+            <span class="kpi-unit">亿+</span>
+          </div>
+          <div class="kpi-title">GitHub 用户数</div>
+        </div>
+        <div class="kpi-desc">2024 年活跃开发者与用户；开源协作从精英社群扩展为全球性基础设施。</div>
+        <span class="kpi-corner">№ 04</span>
+      </div>
+
+      <div class="kpi">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">KICKSTARTER · 众筹平台</span>
+          </div>
+          <div class="kpi-num-wrap">
+            <span class="kpi-num">200</span>
+            <span class="kpi-unit">亿美元+</span>
+          </div>
+          <div class="kpi-title">Kickstarter 累计众筹</div>
+        </div>
+        <div class="kpi-desc">2009 年至今。从理论模型走向真实资本市场的规模化协作。</div>
+        <span class="kpi-corner">№ 05</span>
+      </div>
+
+      <div class="kpi">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">OPEN SOURCE · 开源渗透</span>
+          </div>
+          <div class="kpi-num-wrap">
+            <span class="kpi-num">90</span>
+            <span class="kpi-unit">%+</span>
+          </div>
+          <div class="kpi-title">云原生应用依赖开源组件</div>
+        </div>
+        <div class="kpi-desc">全球数据。开源已不再是边缘选择，而是现代软件产业的默认底座。</div>
+        <span class="kpi-corner">№ 06</span>
+      </div>
+
+    </div>
+
+    <div class="extension">
+
+      <div class="ext-card">
+        <span class="ext-tag">01</span>
+        <div class="ext-head">
+          <span class="ext-num">90%+</span>
+          <span class="ext-title">开源软件渗透</span>
+        </div>
+        <div class="ext-desc">全球超过 90% 的云原生应用依赖开源组件；Linux 内核贡献者从 2006 年数百人增长到逾两千。</div>
+      </div>
+
+      <div class="ext-card">
+        <span class="ext-tag">02</span>
+        <div class="ext-head">
+          <span class="ext-num">14亿+</span>
+          <span class="ext-title">知识共享运动</span>
+        </div>
+        <div class="ext-desc">CC 协议被超 14 亿网页采用，形成全球开放文化资源体系，重塑了知识生产的授权与流通方式。</div>
+      </div>
+
+      <div class="ext-card">
+        <span class="ext-tag">03</span>
+        <div class="ext-head">
+          <span class="ext-num">50%+</span>
+          <span class="ext-title">P2P 文化遗产</span>
+        </div>
+        <div class="ext-desc">BitTorrent 协议至今仍在传输超 50% 的合法大文件，是共同生产基础设施的活化石。</div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span class="rule"></span>
+      <span class="text">这些数字是<strong>本克勒理论</strong>预言的最有力证据 —— 协作，已从修辞变成现实。</span>
+      <span class="rule"></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

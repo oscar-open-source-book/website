@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源布道与阅读分享</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --navy:#0D2137;
+  --gold:#B08D57;
+  --gold-light:#d4b383;
+  --paper:#F7F4EF;
+  --paper-dark:#EDE8DD;
+  --text-main:#1a1a1a;
+  --text-soft:#4a4a4a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1600px;height:900px;overflow:hidden;font-family:'Noto Sans SC',sans-serif;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--paper);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:0;display:grid;grid-template-columns:1fr 640px;grid-template-rows:1fr;height:900px;}
+
+/* === Background decorative layer === */
+#bg .grain{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 40% at 15% 10%, rgba(176,141,87,0.06), transparent 60%),
+  radial-gradient(ellipse 50% 50% at 85% 95%, rgba(13,33,55,0.05), transparent 60%);
+}
+#bg .corner-tl{position:absolute;top:0;left:0;width:180px;height:180px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);opacity:0.5;}
+#bg .corner-br{position:absolute;bottom:0;right:0;width:180px;height:180px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);opacity:0.5;}
+#bg .vrule{position:absolute;top:60px;bottom:60px;left:60px;width:1px;background:var(--gold);opacity:0.3;}
+
+/* === LEFT PANEL === */
+.left-panel{position:relative;padding:52px 50px 50px 80px;display:flex;flex-direction:column;justify-content:space-between;}
+.top-meta{display:flex;flex-direction:column;gap:8px;}
+.eyebrow{font-family:'Noto Serif SC',serif;font-size:13px;letter-spacing:8px;color:var(--gold);font-weight:500;}
+.eyebrow-line{display:flex;align-items:center;gap:14px;}
+.eyebrow-line .ln{flex:0 0 60px;height:1px;background:var(--gold);}
+.issue-tag{font-family:'Noto Serif SC',serif;font-size:12px;letter-spacing:4px;color:var(--navy);font-weight:400;opacity:0.7;}
+.issue-row{display:flex;align-items:center;gap:16px;margin-top:2px;}
+.issue-row .dot{width:5px;height:5px;background:var(--gold);border-radius:50%;display:inline-block;}
+
+.title-block{display:flex;flex-direction:column;gap:14px;margin-top:10px;}
+.title-en{font-family:'Noto Serif SC',serif;font-size:14px;letter-spacing:6px;color:var(--gold);font-style:italic;font-weight:400;}
+.main-title{font-family:'Noto Serif SC',serif;font-size:110px;font-weight:900;color:var(--navy);line-height:1.02;letter-spacing:2px;}
+.main-title .accent{color:var(--gold);}
+.subtitle-zh{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:500;color:var(--text-soft);letter-spacing:4px;margin-top:6px;}
+.title-underline{display:flex;align-items:center;gap:18px;margin-top:12px;}
+.title-underline .ln-long{flex:0 0 120px;height:2px;background:var(--gold);}
+.title-underline .ln-short{flex:0 0 40px;height:1px;background:var(--gold);opacity:0.6;}
+.title-underline .text{font-family:'Noto Sans SC',sans-serif;font-size:12px;letter-spacing:4px;color:var(--gold);font-weight:500;}
+
+/* three info blocks */
+.info-blocks{display:flex;flex-direction:column;gap:14px;margin-top:6px;}
+.info-item{display:flex;align-items:flex-start;gap:18px;padding:10px 0;border-top:1px solid rgba(176,141,87,0.35);}
+.info-item:last-child{border-bottom:1px solid rgba(176,141,87,0.35);}
+.info-label{flex:0 0 220px;display:flex;flex-direction:column;gap:4px;}
+.info-label .tag{font-family:'Noto Sans SC',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);font-weight:700;background:rgba(176,141,87,0.1);padding:3px 8px;display:inline-block;width:fit-content;border:1px solid var(--gold);}
+.info-label .serif{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;color:var(--navy);letter-spacing:2px;}
+.info-body{flex:1;font-size:13px;line-height:1.7;color:var(--text-soft);font-weight:300;}
+
+/* bottom summary */
+.summary-row{margin-top:16px;padding-top:14px;border-top:1px solid var(--gold);display:flex;flex-direction:column;gap:8px;}
+.summary-text{font-size:12px;line-height:1.7;color:var(--text-soft);font-weight:300;letter-spacing:0.5px;}
+.summary-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+.footer-mark{font-family:'Noto Serif SC',serif;font-size:11px;letter-spacing:6px;color:var(--gold);font-weight:500;}
+.footer-pages{font-family:'Noto Serif SC',serif;font-size:11px;letter-spacing:4px;color:var(--navy);opacity:0.6;}
+
+/* === RIGHT PANEL === */
+.right-panel{position:relative;background:var(--navy);padding:52px 50px 50px 50px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;}
+.right-panel::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:
+  radial-gradient(circle at 30% 20%, rgba(176,141,87,0.08), transparent 50%),
+  radial-gradient(circle at 80% 90%, rgba(176,141,87,0.06), transparent 50%);
+pointer-events:none;}
+.right-inner{position:relative;z-index:1;display:flex;flex-direction:column;height:100%;justify-content:space-between;}
+
+.r-eyebrow{font-family:'Noto Serif SC',serif;font-size:11px;letter-spacing:6px;color:var(--gold);font-weight:500;display:flex;align-items:center;gap:12px;}
+.r-eyebrow .ln{flex:0 0 40px;height:1px;background:var(--gold);opacity:0.6;}
+
+.r-book-block{margin-top:18px;}
+.r-book-label{font-family:'Noto Serif SC',serif;font-size:11px;letter-spacing:5px;color:var(--gold);font-style:italic;font-weight:400;}
+.r-book-title{font-family:'Noto Serif SC',serif;font-size:30px;font-weight:700;color:var(--gold-light);letter-spacing:2px;line-height:1.3;margin-top:8px;}
+.r-book-title .en{display:block;font-size:13px;letter-spacing:4px;color:var(--gold);font-weight:400;font-style:italic;margin-top:8px;line-height:1.6;}
+.r-divider{display:flex;align-items:center;gap:10px;margin:20px 0;}
+.r-divider .ln{flex:1;height:1px;background:var(--gold);opacity:0.4;}
+.r-divider .diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);}
+
+.r-quote{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:500;color:var(--gold-light);line-height:1.8;letter-spacing:2px;font-style:italic;text-align:center;padding:16px 10px;border-top:1px solid rgba(176,141,87,0.3);border-bottom:1px solid rgba(176,141,87,0.3);}
+.r-quote .em{color:var(--gold);}
+
+.r-cards{display:flex;flex-direction:column;gap:12px;margin-top:16px;}
+.r-card{background:rgba(176,141,87,0.08);border:1px solid rgba(176,141,87,0.35);padding:14px 18px;display:flex;align-items:center;gap:14px;}
+.r-card .icon{flex:0 0 36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC',serif;font-size:14px;color:var(--gold);font-weight:700;}
+.r-card .info{display:flex;flex-direction:column;gap:3px;}
+.r-card .clabel{font-size:9px;letter-spacing:3px;color:var(--gold);font-weight:500;}
+.r-card .ctext{font-family:'Noto Serif SC',serif;font-size:14px;color:var(--gold-light);font-weight:500;letter-spacing:1.5px;}
+
+.r-geo{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid rgba(176,141,87,0.3);}
+.r-geo .gtext{font-family:'Noto Serif SC',serif;font-size:10px;letter-spacing:4px;color:var(--gold);font-weight:500;opacity:0.8;}
+.r-geo .gmark{display:flex;align-items:center;gap:6px;}
+.r-geo .gmark .d{width:5px;height:5px;background:var(--gold);border-radius:50%;}
+.r-geo .gmark .square{width:5px;height:5px;background:var(--gold);opacity:0.6;}
+.r-geo .gmark .triangle{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid var(--gold);}
+
+/* right side vertical decorative text */
+.r-vtext{position:absolute;right:20px;top:52px;bottom:50px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;z-index:2;}
+.r-vtext .vt{font-family:'Noto Serif SC',serif;font-size:10px;letter-spacing:6px;color:var(--gold);opacity:0.4;writing-mode:vertical-rl;font-weight:500;}
+.r-vtext .vt-line{width:1px;flex:1;background:rgba(176,141,87,0.3);margin:10px 0;}
+
+/* decorative number */
+.deco-num{position:absolute;right:80px;top:40px;font-family:'Noto Serif SC',serif;font-size:180px;font-weight:900;color:rgba(176,141,87,0.07);line-height:1;letter-spacing:-5px;z-index:0;pointer-events:none;}
+
+/* left bottom geometric */
+.left-bottom-deco{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+.deco-shapes{display:flex;align-items:center;gap:8px;}
+.deco-shapes .d{width:6px;height:6px;background:var(--gold);border-radius:50%;}
+.deco-shapes .sq{width:6px;height:6px;background:var(--navy);opacity:0.6;}
+.deco-shapes .ln{width:30px;height:1px;background:var(--gold);opacity:0.5;}
+.left-bottom-deco .stamp{font-family:'Noto Serif SC',serif;font-size:10px;letter-spacing:4px;color:var(--navy);opacity:0.5;font-weight:500;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grain"></div>
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="vrule"></div>
+  </div>
+
+  <div id="ct">
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="top-meta">
+        <div class="eyebrow-line">
+          <span class="ln"></span>
+          <span class="eyebrow">OPEN SOURCE · READING NOTES</span>
+          <span class="ln"></span>
+        </div>
+        <div class="issue-row">
+          <span class="dot"></span>
+          <span class="issue-tag">阅 读 札 记 · 第 一 辑</span>
+        </div>
+      </div>
+
+      <div class="title-block">
+        <span class="title-en">A JOURNAL OF OPEN SOURCE &amp; AUTONOMY</span>
+        <h1 class="main-title">开源布道<br><span class="accent">与阅读分享</span></h1>
+        <div class="subtitle-zh">autonomy · open-source · work &nbsp; 阅读札记与思考</div>
+        <div class="title-underline">
+          <span class="ln-long"></span>
+          <span class="text">NO.01 — 2024</span>
+          <span class="ln-short"></span>
+        </div>
+      </div>
+
+      <div class="info-blocks">
+        <div class="info-item">
+          <div class="info-label">
+            <span class="tag">PART 01</span>
+            <span class="serif">以阅读为入口</span>
+          </div>
+          <div class="info-body">从一本书出发，串联对自主权、开源协作与工作方式的系统性反思</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <span class="tag">PART 02</span>
+            <span class="serif">面向开源社区</span>
+          </div>
+          <div class="info-body">面向开源之道的同行者，分享可读、可思、可行动的收获与启示</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <span class="tag">PART 03</span>
+            <span class="serif">适兕 · 开源之道</span>
+          </div>
+          <div class="info-body">以个人视角梳理书中要点，结合社区实践，形成可讨论的观点集</div>
+        </div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-text">这是一次关于自主权、开源与工作关系的深度阅读分享。我们将回到问题的本质：开源为何值得投入？它如何重塑我们对自由、协作与职业的理解？愿这份札记能唤起更多人对开源文化的认同与参与。</div>
+        <div class="summary-footer">
+          <span class="footer-mark">— 编 辑 札 记 —</span>
+          <span class="footer-pages">ISSUE 01 / 2024</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="deco-num">01</div>
+
+      <div class="r-vtext">
+        <span class="vt">阅 读 · 思 考 · 分 享</span>
+        <span class="vt-line"></span>
+        <span class="vt">A U T O N O M Y</span>
+      </div>
+
+      <div class="right-inner">
+        <div>
+          <div class="r-eyebrow">
+            <span class="ln"></span>
+            <span>THE READING JOURNAL</span>
+            <span class="ln"></span>
+          </div>
+
+          <div class="r-book-block">
+            <span class="r-book-label">本期主题书目</span>
+            <h2 class="r-book-title">
+              自主权、开源与工作
+              <span class="en">AUTONOMY, OPEN SOURCE AND WORK</span>
+            </h2>
+          </div>
+
+          <div class="r-divider">
+            <span class="ln"></span>
+            <span class="diamond"></span>
+            <span class="ln"></span>
+          </div>
+
+          <div class="r-quote">
+            &ldquo;<span class="em">回到问题的本质</span>，<br>
+            重新审视开源的价值与意义&rdquo;
+          </div>
+        </div>
+
+        <div>
+          <div class="r-cards">
+            <div class="r-card">
+              <div class="icon">主</div>
+              <div class="info">
+                <span class="clabel">SHARING THEME</span>
+                <span class="ctext">分享主题：自主权 · 开源 · 工作</span>
+              </div>
+            </div>
+            <div class="r-card">
+              <div class="icon">形</div>
+              <div class="info">
+                <span class="clabel">SHARING FORMAT</span>
+                <span class="ctext">分享形式：阅读札记 + 观点碰撞</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="r-geo">
+            <span class="gtext">EST. 2024</span>
+            <span class="gmark">
+              <span class="d"></span>
+              <span class="square"></span>
+              <span class="triangle"></span>
+            </span>
+            <span class="gtext">N O. 0 1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

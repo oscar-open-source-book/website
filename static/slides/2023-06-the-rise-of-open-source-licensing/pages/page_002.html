@@ -1,0 +1,124 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源许可的演进史</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --dark:#0A1628;
+  --dark2:#0F2040;
+  --glow:rgba(0,188,212,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Roboto Mono',monospace;color:#E8F0F8;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:#0A1628;}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .bg-photo{position:absolute;inset:0;width:1600px;height:900px;object-fit:cover;object-position:center;}
+#bg .bg-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,22,40,0.55) 0%,rgba(10,22,40,0.35) 45%,rgba(10,22,40,0.75) 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:60px 80px;display:flex;flex-direction:column;}
+
+.top-band{display:flex;justify-content:space-between;align-items:center;padding-top:8px;}
+.chapter-tag{font-family:'Roboto Mono',monospace;font-size:13px;letter-spacing:4px;color:var(--accent);display:flex;align-items:center;gap:12px;}
+.chapter-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);}
+.chapter-tag .bar{width:54px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);}
+.top-right{font-size:12px;color:var(--neutral);letter-spacing:3px;font-family:'Roboto Mono',monospace;}
+
+.title-block{text-align:center;margin-top:38px;}
+.title-block h1{font-family:'Inter',sans-serif;font-weight:900;font-size:88px;letter-spacing:6px;color:#EAF4FF;text-shadow:0 0 30px rgba(33,150,243,0.45),0 0 60px rgba(0,188,212,0.18);}
+.title-block .accent-line{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:22px;}
+.title-block .accent-line .seg{width:80px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.title-block .accent-line .diamond{width:10px;height:10px;transform:rotate(45deg);background:var(--accent);box-shadow:0 0 14px var(--accent);}
+.title-block .subtitle{font-family:'Inter',sans-serif;font-weight:400;font-size:22px;color:var(--neutral);letter-spacing:4px;margin-top:20px;}
+
+.stats-row{display:flex;justify-content:center;gap:60px;margin-top:34px;}
+.stat-card{display:flex;flex-direction:column;align-items:center;padding:14px 28px;border:1px solid rgba(33,150,243,0.3);background:rgba(15,32,64,0.55);border-radius:6px;backdrop-filter:blur(4px);}
+.stat-card .stat-year{font-family:'Inter',sans-serif;font-weight:800;font-size:30px;color:var(--primary);}
+.stat-card .stat-label{font-size:12px;color:var(--neutral);letter-spacing:2px;margin-top:6px;}
+
+.timeline{margin-top:36px;display:flex;justify-content:space-between;align-items:stretch;padding:0 40px;gap:24px;}
+.node{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;padding:18px 12px 14px 12px;border-radius:8px;background:rgba(10,22,40,0.55);border:1px solid rgba(176,190,197,0.15);backdrop-filter:blur(3px);}
+.node .ring{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;color:#0A1628;background:var(--primary);box-shadow:0 0 0 4px rgba(33,150,243,0.25),0 0 22px rgba(33,150,243,0.6);margin-top:-52px;position:relative;z-index:2;}
+.node.active{border:1px solid var(--accent);background:rgba(0,188,212,0.12);box-shadow:0 0 28px rgba(0,188,212,0.35),inset 0 0 20px rgba(0,188,212,0.15);}
+.node.active .ring{background:var(--accent);color:#003D4A;box-shadow:0 0 0 5px rgba(0,188,212,0.3),0 0 32px rgba(0,188,212,0.85),0 0 60px rgba(0,188,212,0.4);}
+.node.active .ring::after{content:'';position:absolute;inset:-12px;border:1px solid var(--accent);border-radius:50%;opacity:0.5;animation:pulse 2s infinite;}
+@keyframes pulse{0%{transform:scale(1);opacity:0.55;}100%{transform:scale(1.35);opacity:0;}}
+.node .era{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:3px;margin-top:16px;}
+.node h3{font-family:'Inter',sans-serif;font-weight:700;font-size:19px;color:#EAF4FF;margin-top:8px;text-align:center;}
+.node p{font-size:12.5px;color:var(--neutral);line-height:1.7;margin-top:10px;text-align:center;}
+.node.active .era{color:var(--accent);}
+.node .stage-label{position:absolute;top:8px;right:12px;font-size:10px;color:var(--neutral);letter-spacing:2px;}
+
+.footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:8px;}
+.closing{font-family:'Inter',sans-serif;font-weight:400;font-size:15px;color:#CFE0EC;letter-spacing:1px;line-height:1.7;max-width:1180px;padding:14px 22px;border-left:3px solid var(--accent);background:rgba(0,188,212,0.06);border-radius:0 6px 6px 0;}
+.closing .k{color:var(--accent);font-weight:600;}
+.side-mark{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--neutral);letter-spacing:3px;text-align:right;line-height:1.8;}
+.side-mark .big{font-family:'Inter',sans-serif;font-size:34px;font-weight:800;color:var(--primary);letter-spacing:2px;display:block;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="/slides/2023-06-the-rise-of-open-source-licensing/images/page_002_timeline_bg.jpg" alt="发光的水平时间轴背景">
+    <div class="bg-overlay"></div>
+  </div>
+  <div id="ct">
+    <div class="top-band">
+      <div class="chapter-tag"><span class="dot"></span><span>CHAPTER · 02</span><span class="bar"></span></div>
+      <div class="top-right">SECTION HEADER / 章节过渡</div>
+    </div>
+
+    <div class="title-block">
+      <h1>开源许可的演进史</h1>
+      <div class="accent-line"><span class="seg"></span><span class="diamond"></span><span class="seg"></span></div>
+      <div class="subtitle">从Copyleft到宽松许可：三十年间的范式转变</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-year">1989</div>
+        <div class="stat-label">首个 GNU GPL 版本发布 · Richard Stallman</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-year">1998</div>
+        <div class="stat-label">OSI 开放源代码促进会成立</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="node">
+        <div class="stage-label">STAGE 01</div>
+        <div class="ring">01</div>
+        <div class="era">1980s — 1990s</div>
+        <h3>理想主义的觉醒</h3>
+        <p>从 GNU GPL 到开源运动正式命名，自由软件理念奠基，Copyleft 范式确立软件共享的伦理框架。</p>
+      </div>
+      <div class="node">
+        <div class="stage-label">STAGE 02</div>
+        <div class="ring">02</div>
+        <div class="era">2000s</div>
+        <h3>企业的拥抱</h3>
+        <p>企业开始拥抱开源，MIT 与 BSD 许可广泛传播，宽松条款降低了商业化与集成的门槛。</p>
+      </div>
+      <div class="node active">
+        <div class="stage-label">STAGE 03 · 当前章节</div>
+        <div class="ring">03</div>
+        <div class="era">2010s</div>
+        <h3>商业友好的崛起</h3>
+        <p>Apache 2.0 成为企业首选，商业友好协议崛起，许可生态走向多元化与共生格局。</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="closing">开源许可的发展<span class="k">并非线性过程</span>，而是经历了从<span class="k">理想主义的版权反转</span>，到<span class="k">务实的企业兼容</span>，再到如今<span class="k">多元化共生</span>的复杂演进。</div>
+      <div class="side-mark"><span class="big">1989 → 2010+</span>THIRTY YEARS OF PARADIGM SHIFT</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

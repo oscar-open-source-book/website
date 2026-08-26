@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2023目标书单</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#0B1220;
+  --bg-card:#141E2E;
+  --bg-card-hover:#1A2740;
+  --border:#1E2D44;
+  --text-main:#E8EEF7;
+  --text-sub:#B0BEC5;
+  --tag-bg:#1A2740;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Roboto Mono',monospace;color:var(--text-main);}
+h1,h2,h3{font-family:'Inter',sans-serif;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:#0B1220;}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(1200px 700px at 15% 10%,rgba(33,150,243,0.10),transparent 60%),radial-gradient(900px 600px at 90% 95%,rgba(0,188,212,0.08),transparent 60%),#0B1220;}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;}
+
+.header{display:flex;flex-direction:column;gap:8px;}
+.title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;}
+.main-title{font-family:'Inter',sans-serif;font-weight:800;font-size:44px;color:var(--text-main);letter-spacing:-0.5px;line-height:1.1;}
+.main-title .accent{color:var(--accent);}
+.title-badge{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--primary);border:1px solid rgba(33,150,243,0.4);padding:6px 14px;border-radius:20px;background:rgba(33,150,243,0.08);white-space:nowrap;}
+.subtitle{font-size:13px;color:var(--neutral);line-height:1.7;max-width:1280px;font-family:'Roboto Mono',monospace;}
+.subtitle .hl{color:var(--accent);font-weight:500;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+.kpi-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;position:relative;overflow:hidden;}
+.kpi-card.total{background:linear-gradient(135deg,rgba(33,150,243,0.18),rgba(0,188,212,0.10));border-color:rgba(33,150,243,0.35);}
+.kpi-label{font-size:11px;color:var(--neutral);font-family:'Inter',sans-serif;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;}
+.kpi-value{font-family:'Inter',sans-serif;font-weight:800;font-size:26px;color:var(--text-main);margin-top:2px;line-height:1.1;}
+.kpi-value .unit{font-size:12px;font-weight:500;color:var(--neutral);margin-left:4px;}
+.kpi-card.total .kpi-value{color:var(--primary);}
+.kpi-bar{margin-top:8px;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.kpi-bar-fill{height:100%;border-radius:2px;}
+.kpi-bar-fill.c1{width:100%;background:var(--primary);}
+.kpi-bar-fill.c2{width:25%;background:var(--primary);}
+.kpi-bar-fill.c3{width:25%;background:#00BCD4;}
+.kpi-bar-fill.c4{width:25%;background:#AB47BC;}
+.kpi-bar-fill.c5{width:25%;background:#66BB6A;}
+.kpi-sub{font-size:10px;color:var(--neutral);margin-top:4px;font-family:'Inter',sans-serif;}
+
+.cards-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:16px;}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;transition:none;}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--primary),var(--accent));opacity:0.85;}
+
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.card-title-wrap{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;}
+.card-title{font-family:'Inter',sans-serif;font-weight:700;font-size:17px;color:var(--text-main);line-height:1.25;}
+.card-author{font-size:10px;color:var(--accent);font-family:'Inter',sans-serif;font-weight:500;}
+.progress-ring{width:58px;height:58px;flex-shrink:0;position:relative;}
+.progress-ring svg{transform:rotate(-90deg);}
+.progress-ring .ring-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:5;}
+.progress-ring .ring-fg{fill:none;stroke-width:5;stroke-linecap:round;}
+.progress-ring .ring-text{font-family:'Inter',sans-serif;font-weight:700;font-size:12px;fill:var(--text-main);}
+
+.card-desc{font-size:11px;color:var(--neutral);line-height:1.6;flex:1;font-family:'Roboto Mono',monospace;}
+
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:8px;border-top:1px dashed var(--border);}
+.tag-group{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{font-size:10px;font-family:'Inter',sans-serif;font-weight:500;padding:3px 9px;border-radius:4px;letter-spacing:0.3px;}
+.tag-ai{background:rgba(33,150,243,0.15);color:#64B5F6;border:1px solid rgba(33,150,243,0.3);}
+.tag-cloud{background:rgba(0,188,212,0.15);color:#4DD0E1;border:1px solid rgba(0,188,212,0.3);}
+.tag-system{background:rgba(171,71,188,0.15);color:#CE93D8;border:1px solid rgba(171,71,188,0.3);}
+.tag-community{background:rgba(102,187,106,0.15);color:#A5D6A7;border:1px solid rgba(102,187,106,0.3);}
+
+.priority{font-size:10px;font-family:'Inter',sans-serif;font-weight:600;display:flex;align-items:center;gap:4px;}
+.priority .dot{width:6px;height:6px;border-radius:50%;display:inline-block;}
+.priority-high{color:#FF8A65;}
+.priority-high .dot{background:#FF8A65;box-shadow:0 0 6px #FF8A65;}
+.priority-mid{color:#FFD54F;}
+.priority-mid .dot{background:#FFD54F;box-shadow:0 0 6px #FFD54F;}
+
+.footer-strip{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--neutral);font-family:'Inter',sans-serif;letter-spacing:0.5px;padding-top:4px;}
+.footer-left{display:flex;align-items:center;gap:14px;}
+.footer-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--primary);}
+.legend-row{display:flex;align-items:center;gap:14px;}
+.legend-item{display:flex;align-items:center;gap:5px;}
+.legend-swatch{width:8px;height:8px;border-radius:2px;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="title-row">
+    <div class="main-title">2023<span class="accent">目标书单</span></div>
+    <div class="title-badge">ANNUAL READING PLAN · 16 BOOKS</div>
+  </div>
+  <div class="subtitle">2023的目标书单既包含<span class="hl">AI与云原生的前沿之作</span>，也不忘回归<span class="hl">UNIX经典的底层修炼</span>——在追新与守正之间保持平衡，确保技术视野的广度与根基的深度同步增长。</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi-card total">
+    <div class="kpi-label">年度目标</div>
+    <div class="kpi-value">16<span class="unit">本</span></div>
+    <div class="kpi-bar"><div class="kpi-bar-fill c1"></div></div>
+    <div class="kpi-sub">全分类总计</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">AI / ML</div>
+    <div class="kpi-value">4<span class="unit">本</span></div>
+    <div class="kpi-bar"><div class="kpi-bar-fill c2"></div></div>
+    <div class="kpi-sub">25%</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">云原生</div>
+    <div class="kpi-value">4<span class="unit">本</span></div>
+    <div class="kpi-bar"><div class="kpi-bar-fill c3"></div></div>
+    <div class="kpi-sub">25%</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">底层系统</div>
+    <div class="kpi-value">4<span class="unit">本</span></div>
+    <div class="kpi-bar"><div class="kpi-bar-fill c4"></div></div>
+    <div class="kpi-sub">25%</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">社区治理</div>
+    <div class="kpi-value">4<span class="unit">本</span></div>
+    <div class="kpi-bar"><div class="kpi-bar-fill c5"></div></div>
+    <div class="kpi-sub">25%</div>
+  </div>
+</div>
+
+<div class="cards-grid">
+
+  <!-- Card 1 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title-wrap">
+        <div class="card-title">深度学习</div>
+        <div class="card-author">Ian Goodfellow 著</div>
+      </div>
+      <div class="progress-ring">
+        <svg width="58" height="58" viewBox="0 0 58 58">
+          <circle class="ring-bg" cx="29" cy="29" r="24"></circle>
+          <circle class="ring-fg" cx="29" cy="29" r="24" stroke="#2196F3" stroke-dasharray="150.8 150.8" stroke-dashoffset="0"></circle>
+          <text class="ring-text" x="29" y="33" text-anchor="middle">65%</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card-desc">AI领域教科书，系统建立神经网络理论基础。</div>
+    <div class="card-foot">
+      <div class="tag-group">
+        <span class="tag tag-ai">AI / ML</span>
+      </div>
+      <span class="priority priority-high"><span class="dot"></span>优先级 高</span>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title-wrap">
+        <div class="card-title">Kubernetes权威指南</div>
+        <div class="card-author">Lokanath Bhattacharya 著</div>
+      </div>
+      <div class="progress-ring">
+        <svg width="58" height="58" viewBox="0 0 58 58">
+          <circle class="ring-bg" cx="29" cy="29" r="24"></circle>
+          <circle class="ring-fg" cx="29" cy="29" r="24" stroke="#00BCD4" stroke-dasharray="67.8 150.8" stroke-dashoffset="0"></circle>
+          <text class="ring-text" x="29" y="33" text-anchor="middle">45%</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card-desc">容器编排实践的权威参考手册。</div>
+    <div class="card-foot">
+      <div class="tag-group">
+        <span class="tag tag-cloud">云原生</span>
+      </div>
+      <span class="priority priority-high"><span class="dot"></span>优先级 高</span>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title-wrap">
+        <div class="card-title">大型分布式网站架构</div>
+        <div class="card-author">许式伟 著</div>
+      </div>
+      <div class="progress-ring">
+        <svg width="58" height="58" viewBox="0 0 58 58">
+          <circle class="ring-bg" cx="29" cy="29" r="24"></circle>
+          <circle class="ring-fg" cx="29" cy="29" r="24" stroke="#CE93D8" stroke-dasharray="120.6 150.8" stroke-dashoffset="0"></circle>
+          <text class="ring-text" x="29" y="33" text-anchor="middle">80%</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card-desc">从实战角度拆解高并发系统的架构设计之道。</div>
+    <div class="card-foot">
+      <div class="tag-group">
+        <span class="tag tag-system">底层系统</span>
+      </div>
+      <span class="priority priority-high"><span class="dot"></span>优先级 高</span>
+    </div>
+  </div>
+
+  <!-- Card 4 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title-wrap">
+        <div class="card-title">开源社区构建</div>
+        <div class="card-author">Karl Fogel 著</div>
+      </div>
+      <div class="progress-ring">
+        <svg width="58" height="58" viewBox="0 0 58 58">
+          <circle class="ring-bg" cx="29" cy="29" r="24"></circle>
+          <circle class="ring-fg" cx="29" cy="29" r="24" stroke="#A5D6A7" stroke-dasharray="45.2 150.8" stroke-dashoffset="0"></circle>
+          <text class="ring-text" x="29" y="33" text-anchor="middle">30%</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card-desc">深入理解开源社区运营与项目治理的精髓。</div>
+    <div class="card-foot">
+      <div class="tag-group">
+        <span class="tag tag-community">社区治理</span>
+      </div>
+      <span class="priority priority-mid"><span class="dot"></span>优先级 中</span>
+    </div>
+  </div>
+
+  <!-- Card 5 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title-wrap">
+        <div class="card-title">机器学习系统</div>
+        <div class="card-author">Matei Zaharia 著</div>
+      </div>
+      <div class="progress-ring">
+        <svg width="58" height="58" viewBox="0 0 58 58">
+          <circle class="ring-bg" cx="29" cy="29" r="24"></circle>
+          <circle class="ring-fg" cx="29" cy="29" r="24" stroke="#64B5F6" stroke-dasharray="83.0 150.8" stroke-dashoffset="0"></circle>
+          <text class="ring-text" x="29" y="33" text-anchor="middle">55%</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card-desc">MMLSpark 与 MLinfra 的前沿技术全景图。</div>
+    <div class="card-foot">
+      <div class="tag-group">
+        <span class="tag tag-ai">AI / ML</span>
+      </div>
+      <span class="priority priority-mid"><span class="dot"></span>优先级 中</span>
+    </div>
+  </div>
+
+  <!-- Card 6 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title-wrap">
+        <div class="card-title">UNIX环境高级编程</div>
+        <div class="card-author">W. Richard Stevens 著</div>
+      </div>
+      <div class="progress-ring">
+        <svg width="58" height="58" viewBox="0 0 58 58">
+          <circle class="ring-bg" cx="29" cy="29" r="24"></circle>
+          <circle class="ring-fg" cx="29" cy="29" r="24" stroke="#CE93D8" stroke-dasharray="112.3 150.8" stroke-dashoffset="0"></circle>
+          <text class="ring-text" x="29" y="33" text-anchor="middle">70%</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card-desc">回溯源头的经典，夯实底层编程功底。</div>
+    <div class="card-foot">
+      <div class="tag-group">
+        <span class="tag tag-system">底层系统</span>
+      </div>
+      <span class="priority priority-high"><span class="dot"></span>优先级 高</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-strip">
+  <div class="footer-left">
+    <span class="footer-dot"></span>
+    <span>ANNUAL READING · 追新与守正</span>
+  </div>
+  <div class="legend-row">
+    <span class="legend-item"><span class="legend-swatch" style="background:#64B5F6"></span>AI / ML</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#4DD0E1"></span>云原生</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#CE93D8"></span>底层系统</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#A5D6A7"></span>社区治理</span>
+  </div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

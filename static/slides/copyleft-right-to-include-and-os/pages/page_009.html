@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源布道实践指南</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+:root{
+  --navy:#0D2137;
+  --cream:#F5F1E8;
+  --red:#C0392B;
+  --ink:#1a1a1a;
+  --muted:#5a5a5a;
+  --gold:#8a6d2b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{background:var(--cream);color:var(--ink);font-family:'Source Sans 3','PingFang SC','Microsoft YaHei',sans-serif;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:46px 60px 40px 60px;box-sizing:border-box;}
+
+/* header */
+.head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--navy);padding-bottom:14px;}
+.title-block .kicker{font-size:12px;letter-spacing:6px;color:var(--red);font-weight:700;margin-bottom:8px;}
+.title-block h1{font-family:'Playfair Display','Noto Serif SC',serif;font-size:52px;font-weight:900;color:var(--navy);line-height:1.05;letter-spacing:1px;}
+.title-block h1 .accent{color:var(--red);font-style:italic;}
+.head-meta{font-size:11px;letter-spacing:3px;color:var(--muted);text-align:right;line-height:1.8;}
+.head-meta .num{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);display:block;}
+
+/* main grid */
+.main{display:grid;grid-template-columns:1fr 660px;gap:40px;margin-top:22px;height:700px;}
+.left-col{display:flex;flex-direction:column;}
+.right-col{display:flex;flex-direction:column;}
+
+/* steps */
+.steps-head{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);font-weight:700;margin-bottom:14px;display:flex;align-items:baseline;gap:10px;}
+.steps-head .num{font-size:14px;color:var(--red);letter-spacing:3px;}
+.steps-head::after{content:"";flex:1;height:1px;background:var(--navy);opacity:0.3;margin-left:8px;}
+
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{display:grid;grid-template-columns:48px 36px 1fr;align-items:center;gap:14px;padding:11px 0;border-bottom:1px dashed rgba(13,33,55,0.2);}
+.step:last-child{border-bottom:none;}
+.step-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--navy);font-weight:700;text-align:right;line-height:1;}
+.step-icon{width:36px;height:36px;border:1.5px solid var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--cream);}
+.step-icon svg{width:18px;height:18px;}
+.step-body .step-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:17px;color:var(--navy);font-weight:700;margin-bottom:3px;}
+.step-body .step-desc{font-size:11.5px;color:var(--muted);line-height:1.5;}
+.step.key .step-num{color:var(--red);}
+.step.key .step-icon{background:var(--red);border-color:var(--red);}
+.step.key .step-icon svg path,
+.step.key .step-icon svg circle,
+.step.key .step-icon svg line,
+.step.key .step-icon svg rect,
+.step.key .step-icon svg polyline{stroke:#fff;}
+.step.key .step-icon svg{stroke:#fff;}
+.step.key .step-title{color:var(--red);}
+
+/* image area */
+.img-area{position:relative;width:660px;height:390px;overflow:hidden;background:var(--navy);border:1px solid var(--navy);}
+.img-area img{width:660px;height:390px;object-fit:cover;display:block;}
+.img-caption{position:absolute;left:0;right:0;bottom:0;padding:14px 18px;background:linear-gradient(0deg,rgba(13,33,55,0.92) 0%,rgba(13,33,55,0) 100%);color:var(--cream);font-family:'Playfair Display','Noto Serif SC',serif;font-size:14px;letter-spacing:1px;}
+.img-caption .tag{color:var(--red);font-size:10px;letter-spacing:4px;display:block;margin-bottom:4px;font-family:'Source Sans 3',sans-serif;font-weight:700;}
+
+/* quote */
+.quote-box{margin-top:20px;padding:18px 22px;background:var(--navy);color:var(--cream);position:relative;}
+.quote-box::before{content:"\201C";position:absolute;top:-6px;left:14px;font-family:'Playfair Display',serif;font-size:56px;color:var(--red);line-height:1;}
+.quote-box p{font-family:'Playfair Display','Noto Serif SC',serif;font-size:15px;line-height:1.6;padding-left:32px;font-weight:400;}
+.quote-box p .hl{color:var(--red);font-weight:700;}
+
+/* data bar */
+.databar{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--navy);border-bottom:1px solid var(--navy);padding:14px 0 12px 0;}
+.db-cell{padding:0 18px;border-right:1px solid rgba(13,33,55,0.2);display:flex;flex-direction:column;justify-content:center;}
+.db-cell:last-child{border-right:none;}
+.db-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--navy);line-height:1;display:flex;align-items:baseline;gap:4px;}
+.db-num .plus{color:var(--red);font-size:24px;}
+.db-num .unit{font-size:14px;color:var(--muted);font-family:'Source Sans 3',sans-serif;font-weight:600;margin-left:2px;}
+.db-label{font-size:12px;color:var(--muted);margin-top:6px;letter-spacing:0.5px;}
+.db-tag{font-size:9px;letter-spacing:3px;color:var(--red);font-weight:700;margin-bottom:4px;}
+
+/* footer */
+.footer{margin-top:12px;display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:3px;color:var(--muted);}
+.footer .brand{color:var(--navy);font-family:'Playfair Display',serif;font-size:12px;letter-spacing:2px;font-weight:700;}
+
+/* decorative */
+.corner-mark{position:absolute;top:46px;right:60px;width:40px;height:40px;border:1px solid var(--navy);}
+.corner-mark::before{content:"";position:absolute;top:4px;left:4px;right:4px;bottom:4px;border:1px solid var(--red);}
+
+.ornament{font-family:'Playfair Display',serif;color:var(--red);font-size:11px;letter-spacing:4px;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="head">
+  <div class="title-block">
+    <div class="kicker">OPEN SOURCE · EVANGELISM · PRACTICE</div>
+    <h1>开源<span class="accent">布道</span>实践指南</h1>
+  </div>
+  <div class="head-meta">
+    <span class="num">No.09</span>
+    开源协作手册<br>
+    第 Ⅸ 章 · 实践篇
+  </div>
+</div>
+<div class="corner-mark"></div>
+
+<div class="main">
+  <!-- LEFT -->
+  <div class="left-col">
+    <div class="steps-head"><span class="num">FIVE STEPS</span><span>五步实践路径</span></div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0D2137" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="9" r="3"/><circle cx="17" cy="9" r="3"/>
+            <path d="M3 20c0-3 2.5-5 5-5s5 2 5 5"/><path d="M12 20c0-3 2.5-5 5-5s5 2 5 5"/>
+          </svg>
+        </div>
+        <div class="step-body">
+          <div class="step-title">社区参与</div>
+          <div class="step-desc">从 Issue 讨论、PR 提交到代码审查，深度参与是布道的<span style="color:var(--red);font-weight:700;">第一步</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0D2137" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="14"/><path d="M8 18l2-3 2 2 3-4 3 5"/>
+            <line x1="7" y1="8" x2="13" y2="8"/><line x1="7" y1="11" x2="17" y2="11"/>
+          </svg>
+        </div>
+        <div class="step-body">
+          <div class="step-title">内容创作</div>
+          <div class="step-desc">撰写技术文章、录制分享视频，将开源经验转化为可传播的内容</div>
+        </div>
+      </div>
+
+      <div class="step key">
+        <div class="step-num">03</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0D2137" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z"/>
+            <circle cx="12" cy="11" r="3"/>
+          </svg>
+        </div>
+        <div class="step-body">
+          <div class="step-title">线下活动</div>
+          <div class="step-desc">组织或参与 Meetup、黑客松、开源嘉年华等面对面交流活动，是<span style="color:var(--red);font-weight:700;">关键节点</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0D2137" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 9l10-5 10 5-10 5L2 9z"/><path d="M7 11v5c0 1 2.7 3 5 3s5-2 5-3v-5"/>
+          </svg>
+        </div>
+        <div class="step-body">
+          <div class="step-title">教育赋能</div>
+          <div class="step-desc">在高校、培训机构推广开源课程，培养新一代开源贡献者</div>
+        </div>
+      </div>
+
+      <div class="step key">
+        <div class="step-num">05</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0D2137" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/>
+            <path d="M12 3c2.5 3 4 6 4 9s-1.5 6-4 9c-2.5-3-4-6-4-9s1.5-6 4-9z"/>
+          </svg>
+        </div>
+        <div class="step-body">
+          <div class="step-title">包容推广</div>
+          <div class="step-desc">主动引导边缘群体加入社区，践行 <span style="color:var(--red);font-weight:700;">Right to Include</span> 理念</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-col">
+    <div class="img-area">
+      <img src="/slides/copyleft-right-to-include-and-os/images/page_009_evangelism_viz.jpg" alt="开源社区协作与传播的抽象网络意象图">
+      <div class="img-caption">
+        <span class="tag">VISUAL ESSAY</span>
+        连接 · 辐射 · 共建 —— 开源布道的传播网络
+      </div>
+    </div>
+
+    <div class="quote-box">
+      <p>开源布道不是<span class="hl">单向输出</span>，而是<span class="hl">双向共建</span>——每一个微小的贡献，都在扩大开源思想的传播半径。</p>
+    </div>
+  </div>
+</div>
+
+<div class="databar">
+  <div class="db-cell">
+    <div class="db-tag">GLOBAL · CONFERENCES</div>
+    <div class="db-num">500<span class="plus">+</span><span class="unit">场/年</span></div>
+    <div class="db-label">全球开源会议每年举办</div>
+  </div>
+  <div class="db-cell">
+    <div class="db-tag">MEETUP · CITIES</div>
+    <div class="db-num">300<span class="plus">+</span><span class="unit">城市</span></div>
+    <div class="db-label">Meetup 活跃城市覆盖中国大陆</div>
+  </div>
+  <div class="db-cell">
+    <div class="db-tag">EDUCATION · COURSES</div>
+    <div class="db-num">200<span class="plus">+</span><span class="unit">高校</span></div>
+    <div class="db-label">国内高校开设开源课程</div>
+  </div>
+</div>
+
+<div class="footer">
+  <span class="brand">— OPEN SOURCE HANDBOOK —</span>
+  <span>CHAPTER Ⅸ · EVANGELISM IN PRACTICE · PAGE 09</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

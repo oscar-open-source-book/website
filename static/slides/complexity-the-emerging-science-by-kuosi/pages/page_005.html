@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>PART 02 · 核心思想</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --navy-deep:#081729;
+  --navy-mid:#14304F;
+  --gold:#C9A063;
+  --gold-soft:#B08A50;
+  --gold-glow:#E3C184;
+  --cream:#F7F2E9;
+  --cream-soft:#E7DFD0;
+  --rule:rgba(201,160,99,0.45);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Source Sans 3','Noto Sans SC',sans-serif;
+  color:var(--cream);
+  background:var(--navy);
+  letter-spacing:0.02em;
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;margin:0 auto;
+  background:
+    radial-gradient(1200px 700px at 82% 22%, rgba(201,160,99,0.10), transparent 60%),
+    radial-gradient(900px 600px at 12% 92%, rgba(20,48,79,0.9), transparent 65%),
+    linear-gradient(160deg,#0A1B2E 0%, #0D2137 45%, #08162A 100%);
+}
+#bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+#bg .grain{
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(0deg, rgba(247,242,233,0.012) 0px, rgba(247,242,233,0.012) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode:overlay;
+}
+#bg .vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 1200px 800px at 50% 50%, transparent 55%, rgba(0,0,0,0.45) 100%);
+}
+#bg .frame-line{
+  position:absolute;top:24px;left:24px;right:24px;bottom:24px;
+  border:1px solid rgba(201,160,99,0.18);
+  pointer-events:none;
+}
+#bg .corner{
+  position:absolute;width:28px;height:28px;
+  border-color:var(--gold);border-style:solid;
+}
+#bg .corner.tl{top:18px;left:18px;border-width:1px 0 0 1px;}
+#bg .corner.tr{top:18px;right:18px;border-width:1px 1px 0 0;}
+#bg .corner.bl{bottom:18px;left:18px;border-width:0 0 1px 1px;}
+#bg .corner.br{bottom:18px;right:18px;border-width:0 1px 1px 0;}
+#ct{position:absolute;inset:0;z-index:1;padding:60px 60px 50px 60px;box-sizing:border-box;}
+
+/* ---- header band ---- */
+.hdr{
+  position:absolute;top:54px;left:60px;right:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;letter-spacing:0.34em;color:rgba(247,242,233,0.62);
+  text-transform:uppercase;
+}
+.hdr .brand{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;letter-spacing:0.18em;color:var(--gold-soft);text-transform:none;}
+.hdr .rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rule),transparent);margin:0 22px;}
+
+/* ---- title block (left) ---- */
+.title-block{
+  position:absolute;left:60px;top:104px;width:560px;
+}
+.eyebrow{
+  font-family:'Source Sans 3',sans-serif;
+  font-size:11px;letter-spacing:0.42em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:18px;
+  display:flex;align-items:center;gap:14px;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold-glow);}
+.eyebrow .bar{width:46px;height:1px;background:var(--gold);}
+.part-num{
+  font-family:'Playfair Display',serif;
+  font-weight:700;font-style:italic;
+  font-size:96px;line-height:0.95;
+  color:var(--cream);
+  letter-spacing:0.01em;
+}
+.part-num .sep{color:var(--gold);font-style:normal;font-weight:400;margin:0 14px;}
+.part-num .two{color:var(--gold);}
+.cn-title{
+  font-family:'Noto Serif SC','Playfair Display',serif;
+  font-weight:700;
+  font-size:44px;line-height:1.15;
+  color:var(--cream);
+  margin-top:18px;letter-spacing:0.06em;
+}
+.cn-title .accent{color:var(--gold);}
+.sub{
+  font-family:'Noto Serif SC',serif;
+  font-weight:400;
+  font-size:15.5px;line-height:1.85;
+  color:var(--cream-soft);
+  margin-top:22px;letter-spacing:0.10em;
+  max-width:520px;
+}
+.sub .gold{color:var(--gold);}
+.subtitle-rule{
+  width:64px;height:2px;background:var(--gold);margin-top:26px;
+}
+
+/* ---- image block (right) ---- */
+.visual{
+  position:absolute;right:60px;top:104px;width:880px;height:492px;
+  display:flex;flex-direction:column;
+}
+.visual .frame{
+  position:relative;width:880px;height:492px;
+  border:1px solid rgba(201,160,99,0.5);
+  background:
+    radial-gradient(600px 380px at 50% 55%, rgba(201,160,99,0.10), transparent 70%),
+    linear-gradient(180deg, rgba(8,22,42,0.6), rgba(4,12,24,0.85));
+  overflow:hidden;
+}
+.visual .frame::before{
+  content:"";position:absolute;inset:8px;
+  border:1px solid rgba(201,160,99,0.18);
+  pointer-events:none;
+}
+.visual img{
+  position:absolute;left:50%;top:50%;
+  width:820px;height:458px;
+  transform:translate(-50%,-50%);
+  object-fit:contain;
+  display:block;
+  filter:brightness(1.02) contrast(1.05) saturate(1.05);
+}
+.visual .caption{
+  margin-top:12px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:10.5px;letter-spacing:0.30em;
+  color:rgba(247,242,233,0.55);text-transform:uppercase;
+}
+.visual .caption .fig-no{color:var(--gold);letter-spacing:0.22em;}
+.visual .caption .line{flex:1;height:1px;background:rgba(201,160,99,0.25);margin:0 18px;}
+
+/* ---- concept modules ---- */
+.modules{
+  position:absolute;left:60px;right:60px;top:620px;height:180px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+}
+.mod{
+  position:relative;
+  padding:18px 18px 18px 20px;
+  background:linear-gradient(160deg, rgba(20,48,79,0.55), rgba(8,22,42,0.35));
+  border:1px solid rgba(201,160,99,0.32);
+  display:flex;flex-direction:column;
+}
+.mod .idx{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:13px;color:var(--gold);letter-spacing:0.18em;
+  margin-bottom:8px;
+}
+.mod .name{
+  font-family:'Noto Serif SC',serif;font-weight:600;
+  font-size:17.5px;color:var(--cream);
+  letter-spacing:0.06em;margin-bottom:10px;
+  line-height:1.3;
+}
+.mod .desc{
+  font-family:'Noto Sans SC',sans-serif;font-weight:300;
+  font-size:11.5px;line-height:1.65;
+  color:var(--cream-soft);letter-spacing:0.04em;
+}
+.mod .tick{
+  position:absolute;top:0;right:0;width:2px;height:100%;background:var(--gold);
+  opacity:0.55;
+}
+
+/* ---- tags bottom ---- */
+.tags{
+  position:absolute;left:60px;right:60px;bottom:48px;height:58px;
+  display:flex;align-items:center;gap:0;
+}
+.tag{
+  flex:1;display:flex;align-items:center;gap:16px;
+  padding:0 24px;
+  border-left:1px solid rgba(201,160,99,0.4);
+  height:58px;
+}
+.tag:first-child{border-left:1px solid var(--gold);}
+.tag .lbl{
+  font-family:'Source Sans 3',sans-serif;
+  font-size:9.5px;letter-spacing:0.36em;color:rgba(247,242,233,0.55);
+  text-transform:uppercase;line-height:1.3;
+}
+.tag .val{
+  font-family:'Noto Serif SC',serif;font-weight:600;
+  font-size:16px;color:var(--gold);letter-spacing:0.10em;
+}
+.tag .glyph{margin-left:auto;width:18px;height:18px;position:relative;}
+.tag .glyph::before,.tag .glyph::after{
+  content:"";position:absolute;left:50%;top:50%;
+  background:var(--gold);
+}
+.tag .glyph::before{width:1px;height:18px;transform:translate(-50%,-50%);}
+.tag .glyph::after{width:18px;height:1px;transform:translate(-50%,-50%);}
+
+/* ---- narrative strip ---- */
+.narrative{
+  position:absolute;left:60px;right:60px;top:560px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif SC','Playfair Display',serif;font-style:italic;
+  font-size:13.5px;letter-spacing:0.10em;
+  color:rgba(247,242,233,0.70);
+  text-align:center;
+}
+.narrative .g{color:var(--gold);font-style:normal;margin:0 10px;font-family:'Playfair Display',serif;}
+
+/* ---- footer ---- */
+.foot{
+  position:absolute;left:60px;right:60px;bottom:18px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:10px;letter-spacing:0.32em;color:rgba(247,242,233,0.45);
+  text-transform:uppercase;
+}
+.foot .mid{color:var(--gold-soft);letter-spacing:0.20em;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="frame-line"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+  </div>
+  <div id="ct">
+
+    <div class="hdr">
+      <span class="brand"><span>Proun </span>Cultural · Complex Systems Reader</span>
+      <span class="rule"></span>
+      <span>章 节 过 渡 · Chapter Interlude</span>
+    </div>
+
+    <div class="title-block">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        <span><span>Part Two</span></span>
+        <span class="bar"></span>
+        <span><span>02 / 04</span></span>
+      </div>
+      <div class="part-num"><span>PART</span><span class="sep">·</span><span class="two">02</span></div>
+      <div class="cn-title"><span>核</span>心思想 <span class="accent">·</span> <span>Centered Ideas</span></div>
+      <div class="subtitle-rule"></div>
+      <div class="sub">
+        <span class="gold">自组织 · 涌现 · 边缘秩序 · 适应度景观</span><br>
+        Self-Organization · Emergence · Edge of Chaos · Fitness Landscape
+      </div>
+    </div>
+
+    <div class="visual">
+      <div class="frame">
+        <img src="/slides/complexity-the-emerging-science-by-kuosi/images/page_005_section_visual.jpg" alt="适应度景观三维轮廓示意图：金色线条绘制的崎岖多维空间，中央悬浮一颗发光节点代表临界点">
+      </div>
+      <div class="caption">
+        <span class="fig-no"><span>Fig. 02</span></span>
+        <span class="line"></span>
+        <span><span>Fitness Landscape · 临界点 · Edge of Phase Transition</span></span>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span>最有趣的行为不发生在死板的秩序中，也不发生在纯粹的混沌中，</span>
+      <span class="g">—</span>
+      <span>而发生在两者之间的<span style="color:#E3C184;font-style:normal;font-weight:600;">边缘地带</span>。</span>
+    </div>
+
+    <div class="modules">
+      <div class="mod">
+        <span class="tick"></span>
+        <div class="idx"><span>I.</span></div>
+        <div class="name"><span>自组织与涌现</span></div>
+        <div class="desc"><span>简单规则在大规模交互中如何长出令人惊叹的秩序与生命感。</span></div>
+      </div>
+      <div class="mod">
+        <span class="tick"></span>
+        <div class="idx"><span>II.</span></div>
+        <div class="name"><span>混沌的边缘</span></div>
+        <div class="desc"><span>系统最优性能往往出现在秩序与混沌之间的狭窄地带。</span></div>
+      </div>
+      <div class="mod">
+        <span class="tick"></span>
+        <div class="idx"><span>III.</span></div>
+        <div class="name"><span>适应度景观</span></div>
+        <div class="desc"><span>进化与学习在崎岖多维空间中的搜索过程决定了系统的进化能力。</span></div>
+      </div>
+      <div class="mod">
+        <span class="tick"></span>
+        <div class="idx"><span>IV.</span></div>
+        <div class="name"><span>适应性与学习</span></div>
+        <div class="desc"><span>复杂系统的核心不是结构，而是随环境变化持续调整的能力。</span></div>
+      </div>
+    </div>
+
+    <div class="tags">
+      <div class="tag">
+        <span class="glyph"></span>
+        <div>
+          <div class="lbl"><span>Key Concept</span></div>
+          <div class="val"><span>边缘秩序</span></div>
+        </div>
+      </div>
+      <div class="tag">
+        <span class="glyph"></span>
+        <div>
+          <div class="lbl"><span>Core Mechanism</span></div>
+          <div class="val"><span>适应性</span></div>
+        </div>
+      </div>
+      <div class="tag">
+        <span class="glyph"></span>
+        <div>
+          <div class="lbl"><span>Spatial Metaphor</span></div>
+          <div class="val"><span>适应度景观</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span><span>PRoun · Cultural</span></span>
+      <span class="mid"><span>Complex Systems · A Reader</span></span>
+      <span><span>Chapter 02 / 04</span></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

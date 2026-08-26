@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2022阅读概览</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --text-main: #B0BEC5;
+  --bg-dark: #0D1117;
+  --bg-card: #161B22;
+  --bg-card-hover: #1C232C;
+  --border: #21262D;
+  --blue-deep: #1565C0;
+  --blue-light: #64B5F6;
+  --cyan-deep: #00838F;
+  --cyan-light: #4DD0E1;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 30%, rgba(33,150,243,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 80%, rgba(0,188,212,0.06) 0%, transparent 45%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 42px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header h1 .accent-bar {
+  display: inline-block;
+  width: 6px;
+  height: 38px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+  border-radius: 3px;
+}
+
+.header .subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  color: var(--text-main);
+  margin-top: 10px;
+  margin-left: 22px;
+  line-height: 1.6;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 32px;
+  flex: 1;
+  min-height: 0;
+}
+
+.kpi-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kpi-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+.kpi-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+}
+
+.kpi-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1.1;
+  min-width: 130px;
+  text-align: right;
+}
+
+.kpi-num .unit {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cyan);
+  margin-left: 4px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.kpi-label .sub {
+  color: var(--cyan-light);
+  font-size: 10px;
+  display: block;
+  margin-top: 3px;
+  opacity: 0.7;
+}
+
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+}
+
+.cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.card-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-tag .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.card-tag .dot.blue { background: var(--primary); box-shadow: 0 0 8px var(--primary); }
+.card-tag .dot.cyan { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.card-tag .dot.mixed { background: var(--cyan-light); box-shadow: 0 0 8px var(--cyan-light); }
+
+.card-text {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.card-text strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.card-text .hi-cyan {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.chart-area {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 0;
+  gap: 12px;
+}
+
+.chart-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chart-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.chart-subtitle {
+  font-size: 10.5px;
+  color: var(--text-main);
+  opacity: 0.7;
+}
+
+#chart_1 {
+  width: 340px;
+  height: 260px;
+}
+
+.footer {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-main);
+  opacity: 0.85;
+  letter-spacing: 0.5px;
+  padding: 10px 20px;
+  border-top: 1px solid var(--border);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
+
+.footer .highlight {
+  color: var(--primary);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <h1><span class="accent-bar"></span><span>2022 阅读概览</span></h1>
+      <p class="subtitle">用数字描绘2022年的阅读轮廓——从阅读数量到时间分配，从输出形式到主题覆盖，展现一位开源践行者对持续学习的自律与热忱。</p>
+    </div>
+
+    <div class="main-grid">
+      <div class="kpi-col">
+        <div class="kpi-item">
+          <div class="kpi-num"><span>14</span><span class="unit">本</span></div>
+          <div class="kpi-label">全年精读书籍<span class="sub">技术类深度阅读</span></div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-num"><span>12000</span><span class="unit">+页</span></div>
+          <div class="kpi-label">累计阅读页数<span class="sub">日均约33页</span></div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-num"><span>32</span><span class="unit">篇</span></div>
+          <div class="kpi-label">读书笔记数<span class="sub">每本平均2.3篇</span></div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-num"><span>11</span><span class="unit">篇</span></div>
+          <div class="kpi-label">社区书评数<span class="sub">开源之道公众号</span></div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-num"><span>5</span><span class="unit">h/周</span></div>
+          <div class="kpi-label">周均阅读时长<span class="sub">通勤与睡前时段</span></div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="cards-row">
+          <div class="card">
+            <div class="card-tag"><span class="dot blue"></span><span>阅读总量</span></div>
+            <div class="card-text">全年完成 <strong>14 本</strong>技术类书籍精读，累计阅读超过 <span class="hi-cyan">12000 页</span>，保持稳定的阅读节奏。</div>
+          </div>
+          <div class="card">
+            <div class="card-tag"><span class="dot cyan"></span><span>输出形式</span></div>
+            <div class="card-text">撰写读书笔记 <strong>32 篇</strong>，在开源之道公众号发表深度书评 <span class="hi-cyan">11 篇</span>，以输出驱动输入。</div>
+          </div>
+          <div class="card">
+            <div class="card-tag"><span class="dot mixed"></span><span>时间投入</span></div>
+            <div class="card-text">平均每周阅读时长约 <strong>5 小时</strong>，通勤与睡前为主要阅读时段，碎片时间高效利用。</div>
+          </div>
+        </div>
+
+        <div class="chart-area">
+          <div class="chart-title-wrap">
+            <div class="chart-title">主题分布</div>
+            <div class="chart-subtitle">四类主题占比 · 覆盖开源与工程全链路</div>
+          </div>
+          <div id="chart_1" style="width:340px;height:260px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      以数字见证阅读的力量——<span class="highlight">14 本书 · 12000+ 页 · 32 篇笔记</span>，量化一个人的成长轨迹。
+    </div>
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>
+(function(){
+  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { show: false },
+    legend: {
+      orient: 'vertical',
+      right: 4,
+      top: 'center',
+      itemWidth: 10,
+      itemHeight: 10,
+      itemGap: 12,
+      textStyle: {
+        color: '#B0BEC5',
+        fontFamily: 'Roboto Mono, monospace',
+        fontSize: 11
+      },
+      formatter: function(name){
+        var map = {'开源方法论':'28%','系统架构':'21%','编程实践':'19%','软技能':'32%'};
+        return name + '  ' + map[name];
+      },
+      data: ['软技能','开源方法论','系统架构','编程实践']
+    },
+    series: [{
+      name: '主题分布',
+      type: 'pie',
+      radius: ['42%','65%'],
+      center: ['32%','50%'],
+      avoidLabelOverlap: true,
+      label: {
+        show: true,
+        position: 'center',
+        formatter: '{a|14}\n{b|本}',
+        rich: {
+          a: { fontSize: 24, fontWeight: 800, color: '#2196F3', fontFamily: 'Inter, sans-serif', lineHeight: 28 },
+          b: { fontSize: 10, color: '#B0BEC5', fontFamily: 'Roboto Mono, monospace', lineHeight: 16 }
+        }
+      },
+      labelLine: { show: false },
+      itemStyle: {
+        borderColor: '#161B22',
+        borderWidth: 2
+      },
+      data: [
+        { value: 32, name: '软技能', itemStyle: { color: '#00BCD4' } },
+        { value: 28, name: '开源方法论', itemStyle: { color: '#2196F3' } },
+        { value: 21, name: '系统架构', itemStyle: { color: '#1565C0' } },
+        { value: 19, name: '编程实践', itemStyle: { color: '#4DD0E1' } }
+      ]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>

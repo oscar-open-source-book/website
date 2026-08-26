@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>从阅读到实践</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg-color: #F7F4EF;
+  --navy: #0D2137;
+  --gold: #B08D57;
+  --gold-light: #D4B88A;
+  --text-main: #1a1a1a;
+  --text-sub: #5a5a5a;
+  --card-bg: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-color);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-color);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg-color);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: var(--navy);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 6px;
+  background: var(--gold);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 60px 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--gold);
+  margin-bottom: 28px;
+}
+
+.header-left .eyebrow {
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.header-left h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 62px;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: 2px;
+  line-height: 1.05;
+}
+
+.header-left h1 .accent {
+  color: var(--gold);
+}
+
+.header-right {
+  text-align: right;
+  max-width: 460px;
+  padding-bottom: 8px;
+}
+
+.header-right .intro-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.header-right .intro-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-sub);
+  font-weight: 400;
+}
+
+/* ── Flow Section ── */
+.flow-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 22px;
+}
+
+.flow-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.step-card {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1px solid #e5e0d6;
+  border-top: 3px solid var(--navy);
+  padding: 22px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 340px;
+}
+
+.step-card .badge-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.step-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.35;
+}
+
+.step-gold-line {
+  width: 40px;
+  height: 2px;
+  background: var(--gold);
+  margin: 4px 0 12px 0;
+}
+
+.step-desc {
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--text-sub);
+  font-weight: 400;
+}
+
+.step-tags {
+  margin-top: auto;
+  padding-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.step-tag {
+  font-size: 10.5px;
+  padding: 3px 9px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* Arrows between steps */
+.arrow {
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.arrow-line {
+  width: 100%;
+  height: 1px;
+  background: var(--gold);
+  position: relative;
+}
+
+.arrow-line::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid var(--gold);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+/* ── Timeline ── */
+.timeline-wrap {
+  margin-top: 6px;
+  padding: 14px 20px;
+  background: rgba(13, 33, 55, 0.04);
+  border-left: 3px solid var(--gold);
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.timeline-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, var(--gold-light), var(--navy));
+  z-index: 0;
+}
+
+.timeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  background: var(--bg-color);
+  padding: 0 8px;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 2px solid var(--gold);
+  margin-bottom: 6px;
+}
+
+.timeline-dot.glow {
+  background: var(--gold);
+}
+
+.timeline-label {
+  font-size: 11px;
+  color: var(--navy);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.timeline-phase {
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+/* ── Bottom: KPI Cards ── */
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gold);
+}
+
+.footer-note {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.footer-note .fn-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.footer-note .fn-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.kpi-cards {
+  display: flex;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.kpi-card {
+  background: var(--navy);
+  color: #fff;
+  padding: 14px 20px;
+  min-width: 180px;
+  position: relative;
+  border-bottom: 3px solid var(--gold);
+}
+
+.kpi-card .kpi-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.1;
+}
+
+.kpi-card .kpi-label {
+  font-size: 11px;
+  color: #fff;
+  margin-top: 4px;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.kpi-card .kpi-note {
+  font-size: 10.5px;
+  color: var(--gold-light);
+  margin-top: 8px;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+
+.kpi-card .kpi-corner {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10px;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow">CHAPTER · 04 / 06</div>
+        <h1>从<span class="accent">阅读</span>到<span class="accent">实践</span></h1>
+      </div>
+      <div class="header-right">
+        <div class="intro-label">EDITOR'S NOTE</div>
+        <div class="intro-text">
+          阅读的终点是行动——作者不只是停留在理念层面，而是给出了一条从选项目、做小贡献、建立声誉到回馈社区的可操作路径，让整页成为一份"如何让开源成为你工作方式的一部分"的行动指南。
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow Section -->
+    <div class="flow-section">
+      <div class="flow-row">
+
+        <div class="step-card">
+          <div class="badge-row">
+            <div class="badge"><span>01</span></div>
+            <div class="step-title">参与而非观望</div>
+          </div>
+          <div class="step-gold-line"></div>
+          <div class="step-desc">阅读带来的认知改变，最终要落到行动上。选择一个你真正感兴趣的项目开始贡献——兴趣是最好的驱动力，它会在你遇到挫败时拉你一把。</div>
+          <div class="step-tags">
+            <span class="step-tag">选项目</span>
+            <span class="step-tag">第一次提交</span>
+          </div>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div></div>
+
+        <div class="step-card">
+          <div class="badge-row">
+            <div class="badge"><span>02</span></div>
+            <div class="step-title">从小处着手</div>
+          </div>
+          <div class="step-gold-line"></div>
+          <div class="step-desc">不必从核心代码开始。文档修正、Bug 复现、Issue 讨论——这些同样是被社区认可的贡献形式。小步快跑，积累信心与上下文。</div>
+          <div class="step-tags">
+            <span class="step-tag">文档</span>
+            <span class="step-tag">Bug 复现</span>
+            <span class="step-tag">Issue</span>
+          </div>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div></div>
+
+        <div class="step-card">
+          <div class="badge-row">
+            <div class="badge"><span>03</span></div>
+            <div class="step-title">建立个人品牌</div>
+          </div>
+          <div class="step-gold-line"></div>
+          <div class="step-desc">在开源中的每一次贡献，都是个人声誉的积累。GitHub Profile 就是你的数字名片——提交记录、PR 评论、Issue 回复，共同构成你的职业叙事。</div>
+          <div class="step-tags">
+            <span class="step-tag">GitHub</span>
+            <span class="step-tag">个人声誉</span>
+          </div>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div></div>
+
+        <div class="step-card">
+          <div class="badge-row">
+            <div class="badge"><span>04</span></div>
+            <div class="step-title">回馈社区</div>
+          </div>
+          <div class="step-gold-line"></div>
+          <div class="step-desc">当你成为有经验的老手，请花时间指导新人。Code Review、解答疑问、分享经验——这是开源文化得以延续的关键环节，也是你贡献的闭环。</div>
+          <div class="step-tags">
+            <span class="step-tag">导师</span>
+            <span class="step-tag">文化延续</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline-wrap">
+        <div class="timeline">
+          <div class="timeline-track"></div>
+          <div class="timeline-node">
+            <div class="timeline-dot"></div>
+            <div class="timeline-label">参与</div>
+            <div class="timeline-phase">DAY 1</div>
+          </div>
+          <div class="timeline-node">
+            <div class="timeline-dot glow"></div>
+            <div class="timeline-label">贡献</div>
+            <div class="timeline-phase">MONTH 1–3</div>
+          </div>
+          <div class="timeline-node">
+            <div class="timeline-dot glow"></div>
+            <div class="timeline-label">品牌</div>
+            <div class="timeline-phase">MONTH 3–12</div>
+          </div>
+          <div class="timeline-node">
+            <div class="timeline-dot glow"></div>
+            <div class="timeline-label">回馈</div>
+            <div class="timeline-phase">YEAR 1+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: KPI Cards -->
+    <div class="bottom-row">
+      <div class="footer-note">
+        <div class="fn-label">A CALL TO ACTION</div>
+        <div class="fn-text">"行动不是阅读的终点，而是阅读的目的。"</div>
+      </div>
+      <div class="kpi-cards">
+        <div class="kpi-card">
+          <div class="kpi-corner">01</div>
+          <div class="kpi-num">4</div>
+          <div class="kpi-label">行动步骤</div>
+          <div class="kpi-note">参与 → 贡献 → 品牌 → 回馈</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-corner">02</div>
+          <div class="kpi-num">20<span style="font-size:18px;">+</span></div>
+          <div class="kpi-label">推荐起步项目</div>
+          <div class="kpi-note">适合新人的开源友好项目清单</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

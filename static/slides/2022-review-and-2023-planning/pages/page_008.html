@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>规划思路与方向</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-muted: #B0BEC5;
+  --text-main: #E3F2FD;
+  --bg-dark: #0A1628;
+  --bg-panel: #101F36;
+  --bg-panel-border: #1E3A5F;
+  --glow: rgba(33, 150, 243, 0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #06101F;
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 30%, #0F2340 0%, #081428 55%, #040B18 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 85%, rgba(33,150,243,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(0,188,212,0.07) 0%, transparent 40%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 顶部标题区 ===== */
+.header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  letter-spacing: 6px;
+  color: var(--text-main);
+  background: linear-gradient(135deg, #E3F2FD 0%, #2196F3 50%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  margin-bottom: 8px;
+}
+
+.header .title-underline {
+  width: 120px;
+  height: 3px;
+  margin: 10px auto 14px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  border-radius: 2px;
+}
+
+.header .subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 1000px;
+  margin: 0 auto;
+  letter-spacing: 0.5px;
+}
+
+.header .subtitle .hl {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+/* ===== 装饰线条 ===== */
+.divider-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 16px 0 20px;
+  justify-content: center;
+}
+
+.divider-row .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+.divider-row .line {
+  flex: 1;
+  max-width: 380px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--bg-panel-border), transparent);
+}
+
+/* ===== 卡片网格 ===== */
+.cards-wrapper {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* 卡片间连接线（虚线） */
+.connection-line {
+  position: absolute;
+  top: 70px;
+  left: 10%;
+  right: 10%;
+  height: 0;
+  border-top: 1px dashed rgba(33, 150, 243, 0.3);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.connection-line::before,
+.connection-line::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--glow);
+}
+
+.connection-line::before { left: 25%; }
+.connection-line::after { left: 75%; }
+
+.card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(16, 31, 54, 0.85) 0%, rgba(10, 22, 40, 0.9) 100%);
+  border: 1px solid var(--bg-panel-border);
+  border-radius: 12px;
+  padding: 28px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0.8;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(33, 150, 243, 0.12), inset 0 0 30px rgba(33, 150, 243, 0.04);
+  pointer-events: none;
+}
+
+.card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 0%, rgba(33, 150, 243, 0.08) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.card-index {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-icon {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  padding: 3px 10px;
+  border: 1px solid rgba(0, 188, 212, 0.3);
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.85;
+  letter-spacing: 0.3px;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.card-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-keys span {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9px;
+  color: var(--primary);
+  padding: 3px 8px;
+  background: rgba(33, 150, 243, 0.08);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 底部收束语 ===== */
+.footnote {
+  margin-top: 18px;
+  text-align: center;
+  position: relative;
+}
+
+.footnote::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
+}
+
+.footnote-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: var(--text-main);
+}
+
+.footnote-line .sep {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.footnote-line .tag-ai { color: #64B5F6; }
+.footnote-line .tag-cloud { color: var(--primary); }
+.footnote-line .tag-open { color: var(--accent); }
+.footnote-line .tag-cross { color: #80DEEA; }
+
+/* ===== 四角装饰 ===== */
+.corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.corner-tl { top: 24px; left: 24px; border-top: 2px solid var(--primary); border-left: 2px solid var(--primary); }
+.corner-tr { top: 24px; right: 24px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+.corner-bl { bottom: 24px; left: 24px; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+.corner-br { bottom: 24px; right: 24px; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
+
+/* 背景网格 */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33, 150, 243, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-bg"></div>
+  </div>
+  <div id="ct">
+    <span class="corner corner-tl"></span>
+    <span class="corner corner-tr"></span>
+    <span class="corner corner-bl"></span>
+    <span class="corner corner-br"></span>
+
+    <!-- 顶部标题区 -->
+    <div class="header">
+      <h1>规划思路与方向</h1>
+      <div class="title-underline"></div>
+      <p class="subtitle">
+        2023 年阅读规划围绕 <span class="hl">四个核心方向</span> 展开 ——
+        以 <span class="hl">AI 和云原生</span> 为技术前沿，
+        以 <span class="hl">开源治理</span> 为生态视角，
+        以 <span class="hl">跨界能力</span> 为成长边界，
+        四位一体构建新一年的学习坐标系
+      </p>
+    </div>
+
+    <div class="divider-row">
+      <div class="line"></div>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <div class="line"></div>
+    </div>
+
+    <!-- 四列卡片 -->
+    <div class="cards-wrapper">
+      <div class="connection-line"></div>
+
+      <!-- 卡片1：AI与LLM -->
+      <div class="card">
+        <div class="card-glow"></div>
+        <div class="card-index">DIRECTION / 01</div>
+        <svg class="card-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 神经网络图标 -->
+          <circle cx="16" cy="22" r="5" stroke="#2196F3" stroke-width="1.8"/>
+          <circle cx="16" cy="42" r="5" stroke="#2196F3" stroke-width="1.8"/>
+          <circle cx="16" cy="62" r="5" stroke="#2196F3" stroke-width="1.8"/>
+          <circle cx="40" cy="32" r="5" stroke="#00BCD4" stroke-width="1.8"/>
+          <circle cx="40" cy="52" r="5" stroke="#00BCD4" stroke-width="1.8"/>
+          <circle cx="64" cy="42" r="6" stroke="#2196F3" stroke-width="2" fill="rgba(33,150,243,0.15)"/>
+          <line x1="21" y1="22" x2="35" y2="32" stroke="#2196F3" stroke-width="1" opacity="0.6"/>
+          <line x1="21" y1="22" x2="35" y2="52" stroke="#2196F3" stroke-width="1" opacity="0.6"/>
+          <line x1="21" y1="42" x2="35" y2="32" stroke="#2196F3" stroke-width="1" opacity="0.6"/>
+          <line x1="21" y1="42" x2="35" y2="52" stroke="#2196F3" stroke-width="1" opacity="0.6"/>
+          <line x1="21" y1="62" x2="35" y2="32" stroke="#2196F3" stroke-width="1" opacity="0.6"/>
+          <line x1="21" y1="62" x2="35" y2="52" stroke="#2196F3" stroke-width="1" opacity="0.6"/>
+          <line x1="45" y1="32" x2="58" y2="42" stroke="#00BCD4" stroke-width="1" opacity="0.6"/>
+          <line x1="45" y1="52" x2="58" y2="42" stroke="#00BCD4" stroke-width="1" opacity="0.6"/>
+        </svg>
+        <div class="card-title"><span>AI 与 LLM 专题</span></div>
+        <div class="card-tag"><span>ARTIFICIAL INTELLIGENCE</span></div>
+        <p class="card-desc"><span>系统阅读 Transformer 架构、大语言模型训练与部署相关的前沿著作，紧跟生成式 AI 浪潮</span></p>
+        <div class="card-keys">
+          <span>Transformer</span>
+          <span>大模型训练</span>
+          <span>推理部署</span>
+          <span>RAG</span>
+        </div>
+      </div>
+
+      <!-- 卡片2：云原生 -->
+      <div class="card">
+        <div class="card-glow"></div>
+        <div class="card-index">DIRECTION / 02</div>
+        <svg class="card-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 云原生图标 -->
+          <path d="M22 48 C14 48 10 42 14 36 C14 30 20 26 26 28 C28 22 36 20 42 24 C48 20 58 24 58 32 C66 32 70 38 66 44 C66 48 62 50 58 50 Z"
+                stroke="#2196F3" stroke-width="1.8" stroke-linejoin="round"/>
+          <rect x="28" y="52" width="6" height="6" rx="1" stroke="#00BCD4" stroke-width="1.5"/>
+          <rect x="38" y="52" width="6" height="6" rx="1" stroke="#00BCD4" stroke-width="1.5"/>
+          <rect x="48" y="52" width="6" height="6" rx="1" stroke="#00BCD4" stroke-width="1.5"/>
+          <rect x="24" y="62" width="6" height="6" rx="1" stroke="#2196F3" stroke-width="1.5"/>
+          <rect x="34" y="62" width="6" height="6" rx="1" stroke="#2196F3" stroke-width="1.5"/>
+          <rect x="44" y="62" width="6" height="6" rx="1" stroke="#2196F3" stroke-width="1.5"/>
+          <rect x="54" y="62" width="6" height="6" rx="1" stroke="#2196F3" stroke-width="1.5"/>
+        </svg>
+        <div class="card-title"><span>云原生进阶</span></div>
+        <div class="card-tag"><span>CLOUD NATIVE</span></div>
+        <p class="card-desc"><span>深入 Kubernetes 源码、服务网格与 Serverless 架构的最新实践，夯实基础设施能力</span></p>
+        <div class="card-keys">
+          <span>K8s 源码</span>
+          <span>Service Mesh</span>
+          <span>Serverless</span>
+          <span>eBPF</span>
+        </div>
+      </div>
+
+      <!-- 卡片3：开源治理 -->
+      <div class="card">
+        <div class="card-glow"></div>
+        <div class="card-index">DIRECTION / 03</div>
+        <svg class="card-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 齿轮图标 -->
+          <circle cx="40" cy="40" r="12" stroke="#2196F3" stroke-width="1.8"/>
+          <circle cx="40" cy="40" r="4" fill="#2196F3" opacity="0.4"/>
+          <path d="M40 20 L40 26 M40 54 L40 60 M20 40 L26 40 M54 40 L60 40 M26 26 L30 30 M50 50 L54 54 M54 26 L50 30 M30 50 L26 54"
+                stroke="#2196F3" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="60" cy="20" r="7" stroke="#00BCD4" stroke-width="1.5"/>
+          <circle cx="60" cy="20" r="2" fill="#00BCD4" opacity="0.6"/>
+          <circle cx="18" cy="60" r="7" stroke="#00BCD4" stroke-width="1.5"/>
+          <circle cx="18" cy="60" r="2" fill="#00BCD4" opacity="0.6"/>
+          <line x1="35" y1="28" x2="52" y2="22" stroke="#00BCD4" stroke-width="1" opacity="0.5" stroke-dasharray="2 2"/>
+          <line x1="35" y1="52" x2="22" y2="56" stroke="#00BCD4" stroke-width="1" opacity="0.5" stroke-dasharray="2 2"/>
+        </svg>
+        <div class="card-title"><span>开源治理</span></div>
+        <div class="card-tag"><span>OPEN SOURCE GOVERNANCE</span></div>
+        <p class="card-desc"><span>研究 CNCF、Apache 等基金会治理模式，提升社区运营与项目孵化能力</span></p>
+        <div class="card-keys">
+          <span>CNCF</span>
+          <span>Apache</span>
+          <span>社区运营</span>
+          <span>治理模式</span>
+        </div>
+      </div>
+
+      <!-- 卡片4：跨界融合 -->
+      <div class="card">
+        <div class="card-glow"></div>
+        <div class="card-index">DIRECTION / 04</div>
+        <svg class="card-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 交叉箭头/融合图标 -->
+          <circle cx="40" cy="40" r="20" stroke="#2196F3" stroke-width="1.8"/>
+          <path d="M28 28 L40 28 M34 24 L40 28 L34 32" stroke="#00BCD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M52 52 L40 52 M46 48 L40 52 L46 56" stroke="#00BCD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="40" y1="20" x2="40" y2="60" stroke="#2196F3" stroke-width="1" opacity="0.4" stroke-dasharray="3 3"/>
+          <line x1="20" y1="40" x2="60" y2="40" stroke="#2196F3" stroke-width="1" opacity="0.4" stroke-dasharray="3 3"/>
+          <circle cx="40" cy="40" r="3" fill="#00BCD4"/>
+        </svg>
+        <div class="card-title"><span>跨界融合</span></div>
+        <div class="card-tag"><span>CROSS-DISCIPLINE</span></div>
+        <p class="card-desc"><span>涉猎设计思维、产品管理与沟通艺术，突破单一技术栈，成为 T 型人才</span></p>
+        <div class="card-keys">
+          <span>设计思维</span>
+          <span>产品管理</span>
+          <span>沟通艺术</span>
+          <span>T 型人才</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部收束语 -->
+    <div class="footnote">
+      <div class="footnote-line">
+        <span class="tag-ai">以 AI 为前沿</span>
+        <span class="sep">·</span>
+        <span class="tag-cloud">以云原生为基座</span>
+        <span class="sep">·</span>
+        <span class="tag-open">以开源为生态</span>
+        <span class="sep">·</span>
+        <span class="tag-cross">以跨界为边界</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

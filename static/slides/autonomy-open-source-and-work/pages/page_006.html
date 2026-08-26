@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>协作的力量与边界</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --bg:#F7F4EF;
+  --navy:#0D2137;
+  --navy-light:#1a3550;
+  --gold:#B08D57;
+  --gold-light:#c9a97a;
+  --text-main:#2a2a2a;
+  --text-muted:#6b6b6b;
+  --line:#e4ded2;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--text-main);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 900px 600px at 85% 10%, rgba(176,141,87,0.08), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 10% 90%, rgba(13,33,55,0.06), transparent 60%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 36px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Top header */
+.head{margin-bottom:20px;}
+.kicker{font-size:13px;letter-spacing:6px;color:var(--gold);font-weight:500;margin-bottom:10px;}
+.title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:48px;color:var(--navy);letter-spacing:2px;line-height:1.1;}
+.title .accent{color:var(--gold);}
+.divider{display:flex;align-items:center;gap:14px;margin:14px 0 14px 0;}
+.divider .line{flex:0 0 80px;height:1px;background:var(--gold);}
+.divider .dot{width:6px;height:6px;background:var(--gold);border-radius:50%;}
+.divider .line-full{flex:1;height:1px;background:var(--line);}
+.intro{font-size:14px;line-height:1.9;color:var(--text-muted);max-width:1100px;font-weight:300;}
+.intro b{color:var(--navy);font-weight:500;}
+
+/* Main split */
+.main{flex:1;display:flex;gap:32px;margin-top:8px;min-height:0;}
+
+/* Left cards */
+.left{width:760px;display:flex;flex-direction:column;gap:12px;}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 12px;flex:1;}
+.card{background:#fff;border:1px solid var(--line);padding:14px 16px 14px 20px;position:relative;display:flex;flex-direction:column;gap:6px;}
+.card::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;background:var(--navy);}
+.card .num{font-family:'Noto Serif SC',serif;font-size:11px;color:var(--gold);letter-spacing:3px;font-weight:600;}
+.card h3{font-family:'Noto Serif SC',serif;font-size:17px;color:var(--navy);font-weight:600;letter-spacing:1px;}
+.card p{font-size:12.5px;line-height:1.75;color:var(--text-muted);font-weight:300;}
+.card p em{font-style:normal;color:var(--navy);font-weight:500;}
+
+/* Stats bar below cards */
+.stats-row{display:flex;gap:12px;margin-top:4px;}
+.stat{flex:1;background:linear-gradient(135deg, rgba(13,33,55,0.04), rgba(176,141,87,0.05));border:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;gap:12px;}
+.stat .stat-num{font-family:'Noto Serif SC',serif;font-size:24px;color:var(--navy);font-weight:700;line-height:1;}
+.stat .stat-num .unit{font-size:13px;color:var(--gold);margin-left:2px;}
+.stat .stat-info{display:flex;flex-direction:column;gap:2px;}
+.stat .stat-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-weight:500;}
+.stat .stat-desc{font-size:11.5px;color:var(--text-muted);line-height:1.5;}
+
+/* Right column */
+.right{flex:1;display:flex;flex-direction:column;gap:8px;}
+.chart-wrap{flex:1;background:#fff;border:1px solid var(--line);padding:14px 16px 8px 16px;display:flex;flex-direction:column;}
+.chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;}
+.chart-head h4{font-family:'Noto Serif SC',serif;font-size:15px;color:var(--navy);font-weight:600;letter-spacing:1px;}
+.chart-head .tag{font-size:10px;color:var(--gold);letter-spacing:3px;font-weight:500;}
+#chart_1{width:100%;height:260px;}
+.chart-sub{font-size:12px;color:var(--text-muted);text-align:center;font-style:italic;padding:2px 0 4px 0;line-height:1.5;}
+.chart-sub b{color:var(--navy);font-weight:500;font-style:normal;}
+
+/* Bottom bar */
+.bottom{display:flex;align-items:center;gap:16px;margin-top:12px;padding-top:10px;border-top:1px solid var(--gold);}
+.bottom .gold-line{flex:1;height:1px;background:var(--gold);opacity:0.5;}
+.bottom .phrase{font-family:'Noto Serif SC',serif;font-size:14px;color:var(--navy);letter-spacing:8px;font-weight:600;}
+.bottom .meta{font-size:11px;color:var(--gold);letter-spacing:3px;font-weight:500;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="head">
+  <div class="kicker">OPEN SOURCE · COMMUNITY &amp; GOVERNANCE</div>
+  <div class="title">协作的力量<span class="accent">与</span>边界</div>
+  <div class="divider">
+    <div class="line"></div>
+    <div class="dot"></div>
+    <div class="line-full"></div>
+  </div>
+  <p class="intro">
+    <b>协作是开源最显著的标签。</b>但协作既是力量之源，也是压力之所——声誉机制激励贡献，也可能制造倦怠；治理结构决定社区走向，然而任何治理模式都有其适用范围。<b>理解边界，方能善用协作。</b>
+  </p>
+</div>
+
+<div class="main">
+
+<div class="left">
+<div class="cards-grid">
+  <div class="card">
+    <span class="num">— 01 —</span>
+    <h3>协作放大个人</h3>
+    <p>一个人可能只能写出一个小脚本，但一群人可以<em>共建一个操作系统</em>。协作是个人能力的杠杆，让微小的贡献汇入宏大的工程。</p>
+  </div>
+  <div class="card">
+    <span class="num">— 02 —</span>
+    <h3>声誉驱动机制</h3>
+    <p>开源社区以 <em>commit、issue、review</em> 记录个人贡献，声誉本身成为可累积的资本，驱动开发者持续投入。</p>
+  </div>
+  <div class="card">
+    <span class="num">— 03 —</span>
+    <h3>边界：贡献者倦怠</h3>
+    <p>持续输出带来的心理压力<em>不可忽视</em>。健康的协作需要制度化的<em>休息与轮换机制</em>，否则热情的火焰终将燃尽。</p>
+  </div>
+  <div class="card">
+    <span class="num">— 04 —</span>
+    <h3>治理即艺术</h3>
+    <p>从 <em>BDFL</em> 到<em>委员会制</em>，开源治理没有最优解，只有<em>最适合社区当下</em>的阶段性选择，需随社区演化而调整。</p>
+  </div>
+</div>
+
+<div class="stats-row">
+  <div class="stat">
+    <div class="stat-num">1.6万<span class="unit">+</span></div>
+    <div class="stat-info">
+      <span class="stat-label">CONTRIBUTORS</span>
+      <span class="stat-desc">Linux 内核贡献者数量<br>来自全球数百家组织的分布式协作</span>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">≈30<span class="unit">%</span></div>
+    <div class="stat-info">
+      <span class="stat-label">BURNOUT RATE</span>
+      <span class="stat-desc">贡献者倦怠比例<br>多项开源社区调研显示的心理健康挑战</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="right">
+<div class="chart-wrap">
+  <div class="chart-head">
+    <h4>贡献者活跃度 与 倦怠率 · 趋势对比</h4>
+    <span class="tag">2018 — 2024</span>
+  </div>
+  <div id="chart_1" style="width:100%;height:260px;"></div>
+  <p class="chart-sub"><b>协作放大个人</b>，但<b>倦怠风险</b>并存——两条线的背离，是社区需要正视的信号。</p>
+</div>
+</div>
+
+</div>
+
+<div class="bottom">
+  <div class="gold-line"></div>
+  <span class="meta">EPILOGUE</span>
+  <span class="phrase">理 解 边 界 · 善 用 协 作</span>
+  <span class="meta">CLOSING</span>
+  <div class="gold-line"></div>
+</div>
+
+</div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    grid:{left:42,right:48,top:36,bottom:30},
+    legend:{
+      data:[
+        {name:'贡献者活跃度（指数）',icon:'roundRect'},
+        {name:'倦怠率（%）',icon:'roundRect'}
+      ],
+      textStyle:{color:'#6b6b6b',fontSize:11,fontFamily:'Noto Sans SC'},
+      itemWidth:14,itemHeight:6,top:2,right:8
+    },
+    tooltip:{trigger:'axis'},
+    xAxis:{
+      type:'category',
+      data:['2018','2019','2020','2021','2022','2023','2024'],
+      axisLine:{lineStyle:{color:'#e4ded2'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#6b6b6b',fontSize:11,fontFamily:'Noto Sans SC'}
+    },
+    yAxis:[
+      {
+        type:'value',name:'活跃度',nameTextStyle:{color:'#B08D57',fontSize:10},
+        axisLine:{show:false},axisTick:{show:false},
+        splitLine:{lineStyle:{color:'#eef1f4'}},
+        axisLabel:{color:'#6b6b6b',fontSize:10}
+      },
+      {
+        type:'value',name:'倦怠率',nameTextStyle:{color:'#0D2137',fontSize:10},
+        axisLine:{show:false},axisTick:{show:false},
+        splitLine:{show:false},
+        axisLabel:{color:'#0D2137',fontSize:10,formatter:'{value}%'}
+      }
+    ],
+    series:[
+      {
+        name:'贡献者活跃度（指数）',type:'line',smooth:true,
+        data:[100,118,142,168,195,218,240],
+        yAxisIndex:0,
+        lineStyle:{color:'#0D2137',width:2.5},
+        itemStyle:{color:'#0D2137'},
+        symbol:'circle',symbolSize:7,
+        areaStyle:{color:'rgba(13,33,55,0.06)'},
+        markPoint:{
+          symbol:'circle',symbolSize:10,
+          itemStyle:{color:'#B08D57',borderColor:'#F7F4EF',borderWidth:2},
+          data:[{coord:['2020',142]},{coord:['2024',240]}],
+          label:{show:false}
+        },
+        markLine:{
+          symbol:'none',
+          lineStyle:{color:'#B08D57',type:'dashed',width:1},
+          label:{color:'#B08D57',fontSize:10,position:'insideEndTop'},
+          data:[{yAxis:195,name:'拐点 2022'}]
+        }
+      },
+      {
+        name:'倦怠率（%）',type:'line',smooth:true,
+        data:[12,15,18,22,26,29,32],
+        yAxisIndex:1,
+        lineStyle:{color:'#B08D57',width:2,type:'dashed'},
+        itemStyle:{color:'#B08D57'},
+        symbol:'diamond',symbolSize:7
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

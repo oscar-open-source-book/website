@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源文化的启蒙</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #F5F5F5;
+  --navy: #0D2137;
+  --navy-light: #142a48;
+  --red: #E53935;
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-muted: #7a7a7a;
+  --rule: #d8d8d8;
+  --paper: #fafafa;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px 44px 70px;
+  box-sizing: border-box;
+}
+
+/* 顶部页眉 */
+.masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 18px;
+}
+
+.masthead-left {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.kicker {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--red);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.kicker-sep {
+  color: var(--rule);
+  font-size: 12px;
+}
+
+.masthead-right {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+/* 主标题区 */
+.title-block {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.title-left { max-width: 1000px; }
+
+.main-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 1.05;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+
+.main-title .accent { color: var(--red); }
+
+.subtitle {
+  margin-top: 12px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  max-width: 940px;
+  border-left: 3px solid var(--red);
+  padding-left: 14px;
+}
+
+.subtitle .strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.title-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.title-meta .num {
+  font-size: 28px;
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+/* 正文网格 */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 620px;
+  gap: 32px;
+  height: 620px;
+}
+
+/* 左侧要点 */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.points {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  flex: 1;
+}
+
+.point-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--navy);
+  padding: 13px 15px 14px 15px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.point-card .pt-head {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+
+.point-card .pt-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+}
+
+.point-card .pt-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+
+.point-card .pt-tag {
+  font-family: 'Playfair Display', serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.point-card .pt-body {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.point-card .pt-body code {
+  font-family: 'Playfair Display', serif;
+  font-size: 11.5px;
+  color: var(--navy);
+  background: rgba(13,33,55,0.06);
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* 底部关键词 */
+.keywords {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+  margin-top: 4px;
+}
+
+.keywords .kw-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.keywords .kw-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 3px;
+}
+
+.keywords .kw-text .dot {
+  color: var(--red);
+  margin: 0 4px;
+}
+
+/* 右侧图区 */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.img-frame {
+  width: 100%;
+  height: 446px;
+  overflow: hidden;
+  background: #0a1a2e;
+  position: relative;
+  border: 1px solid var(--rule);
+}
+
+.img-frame img {
+  width: 620px;
+  height: 446px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.img-caption {
+  font-family: 'Noto Serif SC', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-align: center;
+  letter-spacing: 1px;
+  padding: 2px 0;
+}
+
+.img-caption .accent {
+  color: var(--red);
+  font-style: normal;
+  margin: 0 4px;
+}
+
+/* 图下小注解 */
+.fig-note {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--navy);
+}
+
+.fig-note .fn-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+}
+
+.fig-note .fn-text {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.fig-note .fn-text strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* 页脚 */
+.footnote {
+  position: absolute;
+  bottom: 14px;
+  left: 70px;
+  right: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  padding-top: 6px;
+  border-top: 1px solid var(--rule);
+}
+
+/* 装饰 */
+.deco-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 6px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="masthead">
+      <div class="masthead-left">
+        <span class="kicker">Culture · 文化篇</span>
+        <span class="kicker-sep">/</span>
+        <span class="kicker">启蒙阶段 · Enlightenment</span>
+      </div>
+      <div class="masthead-right">ISSUE 04 · CHAPTER 01</div>
+    </div>
+
+    <div class="title-block">
+      <div class="title-left">
+        <h1 class="main-title">开源文化的<span class="accent">启蒙</span></h1>
+        <p class="subtitle">
+          <span class="strong">启蒙阶段的阅读聚焦在开源的价值观层面 ——</span>
+          技术是表，文化是里。真正驱动开源世界的，从来不是代码本身，而是其背后那套关于协作、透明与信任的社会契约。
+        </p>
+      </div>
+      <div class="title-meta">
+        <span class="num">04</span>
+        <span>CULTURE</span>
+      </div>
+    </div>
+
+    <div class="main-grid">
+
+      <div class="left-col">
+        <div class="points">
+
+          <div class="point-card">
+            <div class="pt-head">
+              <span class="pt-num">01</span>
+              <span class="pt-title">协作哲学</span>
+            </div>
+            <span class="pt-tag">COLLABORATION</span>
+            <div class="pt-body">
+              开源不只是<span>免费软件</span>，更是一种<span>对等协作</span>与<span>透明治理</span>的价值观。代码的公开，本质上是决策权的重构。
+            </div>
+          </div>
+
+          <div class="point-card">
+            <div class="pt-head">
+              <span class="pt-num">02</span>
+              <span class="pt-title">许可证意识</span>
+            </div>
+            <span class="pt-tag">LICENSE</span>
+            <div class="pt-body">
+              <code>GPL</code> · <code>MIT</code> · <code>Apache 2.0</code> 的选择背后，是<span>不同治理理念</span>的分歧——从强传染到宽松授权，谱系清晰。
+            </div>
+          </div>
+
+          <div class="point-card">
+            <div class="pt-head">
+              <span class="pt-num">03</span>
+              <span class="pt-title">社区规则</span>
+            </div>
+            <span class="pt-tag">GOVERNANCE</span>
+            <div class="pt-body">
+              <code>CONTRIBUTING</code>、<code>CODE OF CONDUCT</code> 并非形式文件，而是社区运行的<span>社会契约</span>，定义谁可以参与、以何种方式参与。
+            </div>
+          </div>
+
+          <div class="point-card">
+            <div class="pt-head">
+              <span class="pt-num">04</span>
+              <span class="pt-title">精神传承</span>
+            </div>
+            <span class="pt-tag">LEGACY</span>
+            <div class="pt-body">
+              从 <code>Richard Stallman</code> 的自由软件运动，到今天的 <code>OSF</code> 开源基金会——精神脉络<span>清晰可辨</span>，薪火未熄。
+            </div>
+          </div>
+
+        </div>
+
+        <div class="keywords">
+          <span class="kw-label">KEYWORDS</span>
+          <span class="kw-text">协作<span class="dot">·</span>许可<span class="dot">·</span>治理</span>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="img-frame">
+          <img src="/slides/6-years-memory/images/page_004_culture_art.jpg" alt="网络节点互联的抽象意象，象征开源社区点对点协作的有机形态">
+        </div>
+        <div class="img-caption">
+          协作如网<span class="accent">·</span>节点自成星图
+        </div>
+        <div class="fig-note">
+          <span class="fn-num">FIG.</span>
+          <div class="fn-text">
+            <strong>节点与连线</strong>勾勒出开源社区点对点协作的有机形态——每个节点既是贡献者也是受益者，暖红色的交汇处，正是共识诞生的位置。
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footnote">
+      <span>OPEN SOURCE · CULTURE ENLIGHTENMENT</span>
+      <span>技术为表 <span class="deco-dot"></span> 文化为里</span>
+      <span>P. 04 / 12</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

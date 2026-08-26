@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>社区影响力数据</title>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+<style>
+:root {
+  --navy: #0D2137;
+  --blue: #2196F3;
+  --blue-light: #E3F2FD;
+  --gray: #F5F5F5;
+  --gray-mid: #B0BEC5;
+  --text-main: #0D2137;
+  --text-sub: #546E7A;
+  --font-main: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-cn: 'Noto Sans SC', 'Inter', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-main);
+  background: #FAFBFC;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: #FAFBFC;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #FAFBFC 0%, #F0F4F8 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.06) 0%, transparent 70%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13,33,55,0.04) 0%, transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--blue);
+  padding: 4px 12px;
+  border: 1px solid var(--blue);
+  border-radius: 2px;
+}
+
+.header-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--gray-mid) 0%, transparent 100%);
+}
+
+.header-num {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray-mid);
+  letter-spacing: 1px;
+}
+
+h1 {
+  font-family: var(--font-cn);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  font-family: var(--font-cn);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-sub);
+  line-height: 1.8;
+  max-width: 1200px;
+  margin-top: 4px;
+}
+
+/* KPI Cards */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: #FFFFFF;
+  border: 1px solid #E8ECF0;
+  border-radius: 4px;
+  padding: 20px 16px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: all 0.3s;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 2px;
+  background: var(--blue);
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, var(--blue-light) 0%, transparent 100%);
+}
+
+.kpi-label-top {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--blue);
+  margin-bottom: 12px;
+  font-family: var(--font-main);
+}
+
+.kpi-value {
+  font-family: var(--font-cn);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.kpi-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--gray-mid);
+  margin: 4px 0 10px 0;
+}
+
+.kpi-note {
+  font-family: var(--font-cn);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+/* Key Points */
+.points-section {
+  background: #FFFFFF;
+  border: 1px solid #E8ECF0;
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin-bottom: 18px;
+}
+
+.points-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.points-title-bar {
+  width: 3px;
+  height: 14px;
+  background: var(--blue);
+}
+
+.points-title-text {
+  font-family: var(--font-cn);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 0.5px;
+}
+
+.points-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 28px;
+}
+
+.point-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #F0F2F5;
+}
+
+.point-index {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--blue);
+  font-family: var(--font-main);
+  min-width: 22px;
+  padding-top: 2px;
+}
+
+.point-content {
+  flex: 1;
+}
+
+.point-label {
+  font-family: var(--font-cn);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+
+.point-desc {
+  font-family: var(--font-cn);
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.footer-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent 0%, var(--gray-mid) 50%, transparent 100%);
+}
+
+.footer-text {
+  font-family: var(--font-cn);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: 0.5px;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-top">
+        <span class="page-tag"><span>OPEN SOURCE COMMUNITY</span></span>
+        <div class="header-line"></div>
+        <span class="header-num"><span>PAGE 06 / DATA</span></span>
+      </div>
+      <h1>社区影响力数据</h1>
+      <p class="subtitle">
+        coases-penguin 项目自创建以来，获得了开源社区的广泛关注与支持。从书籍收录数量到社区贡献者规模，各项指标均体现了其作为开源学习资源枢纽的重要地位。
+      </p>
+    </div>
+
+    <div class="kpi-row">
+
+      <div class="kpi-card">
+        <span class="kpi-label-top"><span>01 / BOOKS</span></span>
+        <span class="kpi-value"><span>数百本</span></span>
+        <span class="kpi-divider"></span>
+        <span class="kpi-note"><span>涵盖多技术领域</span></span>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-label-top"><span>02 / DOMAINS</span></span>
+        <span class="kpi-value"><span>数十个</span></span>
+        <span class="kpi-divider"></span>
+        <span class="kpi-note"><span>从编程到系统架构</span></span>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-label-top"><span>03 / CONTRIBUTORS</span></span>
+        <span class="kpi-value"><span>全球协作</span></span>
+        <span class="kpi-divider"></span>
+        <span class="kpi-note"><span>多国开发者参与维护</span></span>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-label-top"><span>04 / LANGUAGES</span></span>
+        <span class="kpi-value"><span>中 / 英等</span></span>
+        <span class="kpi-divider"></span>
+        <span class="kpi-note"><span>多语言版本资源</span></span>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-label-top"><span>05 / PLATFORM</span></span>
+        <span class="kpi-value"><span>GitHub</span></span>
+        <span class="kpi-divider"></span>
+        <span class="kpi-note"><span>开源协作主阵地</span></span>
+      </div>
+
+    </div>
+
+    <div class="points-section">
+      <div class="points-title">
+        <div class="points-title-bar"></div>
+        <span class="points-title-text"><span>六大维度 · 全景洞察</span></span>
+      </div>
+      <div class="points-grid">
+
+        <div class="point-item">
+          <span class="point-index"><span>01</span></span>
+          <div class="point-content">
+            <div class="point-label"><span>收录规模</span></div>
+            <div class="point-desc"><span>累计收录数百本开源相关书籍，覆盖数十个技术领域与方向</span></div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <span class="point-index"><span>02</span></span>
+          <div class="point-content">
+            <div class="point-label"><span>星标增长</span></div>
+            <div class="point-desc"><span>GitHub Star 数量持续攀升，反映开发者社区的高度认可</span></div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <span class="point-index"><span>03</span></span>
+          <div class="point-content">
+            <div class="point-label"><span>贡献者网络</span></div>
+            <div class="point-desc"><span>全球多位贡献者参与书籍推荐、分类维护与文档改进工作</span></div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <span class="point-index"><span>04</span></span>
+          <div class="point-content">
+            <div class="point-label"><span>下载与引用</span></div>
+            <div class="point-desc"><span>项目仓库被大量开发者作为学习起点引用和 Fork</span></div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <span class="point-index"><span>05</span></span>
+          <div class="point-content">
+            <div class="point-label"><span>语言覆盖</span></div>
+            <div class="point-desc"><span>书籍资源涵盖中英文等多个语种，满足多样化阅读需求</span></div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <span class="point-index"><span>06</span></span>
+          <div class="point-content">
+            <div class="point-label"><span>更新频率</span></div>
+            <div class="point-desc"><span>新书籍收录与分类维护持续进行，保持资源新鲜度</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-line"></div>
+      <span class="footer-text"><span>"每一个 Star、每一条 Issue、每一次 Pull Request 都是社区对开放知识理念的投票。"</span></span>
+      <div class="footer-line"></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

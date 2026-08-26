@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>对开源的启示</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --gold: #C9A063;
+  --beige: #F7F2E9;
+  --navy-light: #1a3a5c;
+  --text-muted: #6b5f4a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--navy);
+  background: var(--beige);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--beige);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 52px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 38px;
+}
+
+.left-col {
+  width: 700px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.editorial-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.editorial-label .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+
+.editorial-label .line {
+  flex: 0 0 60px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.editorial-label .tag {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 4px;
+}
+
+.image-frame {
+  width: 700px;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  box-shadow: 0 10px 36px rgba(13, 33, 55, 0.18);
+}
+
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.image-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gold);
+}
+
+.image-caption {
+  margin-top: 16px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.image-caption .caption-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.image-caption .caption-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+.left-description {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(13, 33, 55, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.left-description .big-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+  font-style: italic;
+}
+
+.left-description .big-quote-cn {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.55;
+}
+
+.left-description .sub-text {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.left-foot {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(13, 33, 55, 0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 600;
+}
+
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.right-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--navy);
+}
+
+.right-header .title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+
+.right-header .subtitle {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 4px;
+  font-weight: 600;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.55);
+  border-left: 3px solid var(--gold);
+  position: relative;
+  min-height: 72px;
+}
+
+.card .card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--gold);
+  width: 50px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.card .card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card .card-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.5px;
+}
+
+.card .card-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.data-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.data-item {
+  flex: 1;
+  padding: 12px 12px;
+  background: var(--navy);
+  color: var(--beige);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.data-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  background: var(--gold);
+}
+
+.data-item .data-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+
+.data-item .data-label {
+  font-size: 10.5px;
+  color: var(--beige);
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+.closing {
+  margin-top: 4px;
+  padding: 14px 18px;
+  border: 1px solid rgba(201, 160, 99, 0.4);
+  background: rgba(13, 33, 55, 0.03);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.closing .quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 0.7;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.closing .closing-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--navy);
+  line-height: 1.65;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="left-col">
+      <div class="editorial-label">
+        <span class="num"><span>№ 08</span></span>
+        <span class="line"></span>
+        <span class="tag"><span>复杂性 · 开源</span></span>
+      </div>
+
+      <div class="image-frame">
+        <img src="/slides/complexity-the-emerging-science-by-kuosi/images/page_008_oss_network.jpg" alt="开源社区节点网络配图">
+      </div>
+
+      <div class="image-caption">
+        <span class="caption-num"><span>01</span></span>
+        <span class="caption-text"><span>去中心化协作网络的涌现图景</span></span>
+      </div>
+
+      <div class="left-description">
+        <div class="big-quote"><span>"一个活着的复杂适应系统"</span></div>
+        <div class="big-quote-cn"><span>当数千名独立贡献者在同一个代码库中进行局部交互，<br>一个超越任何单一设计师的软件生态便悄然涌现。</span></div>
+        <div class="sub-text"><span>开源社区的繁荣并非来自顶层设计，而是源于协议、惯例与激励所编织的自组织结构。每一个提交都是一次微小的适应，每一次合并都是对整个系统适应度的一次提升。</span></div>
+      </div>
+
+      <div class="left-foot">
+        <span><span>第 08 期</span></span>
+        <span><span>从复杂性到开源</span></span>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="right-header">
+        <span class="title"><span>对开源的启示</span></span>
+        <span class="subtitle"><span>复杂性视角 · 启示</span></span>
+      </div>
+
+      <div class="cards-container">
+        <div class="card">
+          <span class="card-num"><span>01</span></span>
+          <div class="card-content">
+            <span class="card-title"><span>涌现式协作</span></span>
+            <span class="card-desc"><span>开源社区无需中央管控，靠协议、惯例与激励机制自组织出繁荣生态</span></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-num"><span>02</span></span>
+          <div class="card-content">
+            <span class="card-title"><span>分布式治理</span></span>
+            <span class="card-desc"><span>Linux、Apache 等项目的成功，正是边缘秩序的鲜活案例</span></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-num"><span>03</span></span>
+          <div class="card-content">
+            <span class="card-title"><span>适应性进化</span></span>
+            <span class="card-desc"><span>代码库在持续 Fork、PR 与 Issue 中，像适应度景观一样不断爬升到更优解</span></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-num"><span>04</span></span>
+          <div class="card-content">
+            <span class="card-title"><span>涌现的风险</span></span>
+            <span class="card-desc"><span>过度社区化可能陷入噪音与分裂，需要精心设计的治理规则</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="data-item">
+          <span class="data-value"><span>数十万+</span></span>
+          <span class="data-label"><span>Linux 内核贡献者</span></span>
+        </div>
+        <div class="data-item">
+          <span class="data-value"><span>GPL / Apache / MIT</span></span>
+          <span class="data-label"><span>开源协议</span></span>
+        </div>
+        <div class="data-item">
+          <span class="data-value"><span>Fork / PR / Issue</span></span>
+          <span class="data-label"><span>协作机制</span></span>
+        </div>
+      </div>
+
+      <div class="closing">
+        <span class="quote-mark"><span>"</span></span>
+        <div class="closing-text">
+          <span>从复杂性的视角看，开源社区本质上就是一个活的复杂适应系统，无数独立贡献者遵循 Git 协议与开源精神进行局部交互，涌现出超越任何单一设计师能力的软件生态与治理结构。</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

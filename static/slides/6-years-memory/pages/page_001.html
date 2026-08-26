@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+SC:wght@400;700;900&family=Source+Sans+3:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --navy-light: #1a3a5c;
+  --gray: #F5F5F5;
+  --gray-mid: #e0e0e0;
+  --red: #E53935;
+  --text-main: #1a1a1a;
+  --text-sub: #4a4a4a;
+  --title-serif: 'Playfair Display', 'Noto Serif SC', serif;
+  --body-sans: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--body-sans);
+  color: var(--text-main);
+  background: #ffffff;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--gray);
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--gray);
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 320px; height: 100%;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy) 85%, transparent 100%);
+  opacity: 0.04;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 60px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 30px;
+}
+
+/* Left column */
+.left-col {
+  flex: 0 0 720px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.mag-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--body-sans);
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--text-sub);
+  border-bottom: 1px solid var(--gray-mid);
+  padding-bottom: 14px;
+  margin-bottom: 28px;
+}
+.mag-header .mag-brand {
+  font-weight: 600;
+  color: var(--navy);
+}
+.mag-header .mag-brand::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--red);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.mag-header .mag-issue {
+  color: var(--text-sub);
+}
+
+.title-block {
+  margin-bottom: 18px;
+}
+.title-main {
+  font-family: var(--title-serif);
+  font-weight: 900;
+  font-size: 120px;
+  line-height: 1.0;
+  color: var(--navy);
+  letter-spacing: 2px;
+}
+.title-lead {
+  font-family: var(--title-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--text-sub);
+  margin-top: 16px;
+  letter-spacing: 1px;
+}
+
+.accent-line {
+  width: 80px;
+  height: 3px;
+  background: var(--red);
+  margin: 22px 0 24px 0;
+}
+
+.subtitle-main {
+  font-family: var(--body-sans);
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--navy);
+  letter-spacing: 2px;
+  line-height: 1.5;
+}
+.subtitle-main .dot {
+  color: var(--red);
+  margin: 0 6px;
+  font-weight: 700;
+}
+
+.messages {
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.msg-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--gray-mid);
+}
+.msg-item:last-child { border-bottom: none; }
+.msg-num {
+  font-family: var(--title-serif);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--red);
+  min-width: 40px;
+  line-height: 1.2;
+}
+.msg-text {
+  font-family: var(--body-sans);
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.55;
+}
+.msg-text .msg-title {
+  font-weight: 600;
+  color: var(--navy);
+  margin-right: 6px;
+}
+
+.data-row {
+  margin-top: 22px;
+  display: flex;
+  gap: 16px;
+}
+.data-box {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid var(--gray-mid);
+  border-left: 3px solid var(--navy);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.data-box .data-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-sub);
+  font-weight: 600;
+}
+.data-box .data-value {
+  font-family: var(--title-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.data-box .data-value .red-num {
+  color: var(--red);
+  font-size: 28px;
+}
+
+.closing {
+  margin-top: 18px;
+  font-family: var(--title-serif);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-sub);
+  padding: 14px 0 0 14px;
+  border-left: 2px solid var(--navy);
+}
+
+/* Right column */
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.hero-wrap {
+  position: relative;
+  width: 100%;
+}
+.hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--gray-mid);
+  background: var(--navy);
+}
+.hero-caption {
+  font-family: var(--title-serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--text-sub);
+  text-align: right;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+.timeline {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid var(--gray-mid);
+  border-top: 3px solid var(--navy);
+  min-height: 0;
+}
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gray-mid);
+}
+.timeline-header .tl-title {
+  font-family: var(--title-serif);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+.timeline-header .tl-span {
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+}
+
+.timeline-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  position: relative;
+}
+.tl-year-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  padding-top: 18px;
+}
+.tl-year-col::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: var(--gray-mid);
+}
+.tl-year-col:first-child::before { left: 50%; }
+.tl-year-col:last-child::before { right: 50%; }
+.tl-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--navy);
+  position: relative;
+  z-index: 2;
+}
+.tl-year-col.is-start .tl-dot,
+.tl-year-col.is-end .tl-dot {
+  background: var(--red);
+  box-shadow: 0 0 0 1px var(--red);
+}
+.tl-year {
+  margin-top: 10px;
+  font-family: var(--title-serif);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--navy);
+}
+.tl-theme {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-sub);
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+}
+
+.footer-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-sub);
+  border-top: 1px solid var(--gray-mid);
+  padding-top: 10px;
+  z-index: 2;
+}
+.footer-bar .fb-left { display: flex; gap: 20px; }
+.footer-bar .fb-mark {
+  font-family: var(--title-serif);
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 3px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <!-- Left Column -->
+    <div class="left-col">
+      <div class="mag-header">
+        <span class="mag-brand">开源阅读档案 · OPEN SOURCE ARCHIVE</span>
+        <span class="mag-issue">ISSUE 01 · 2019 — 2024</span>
+      </div>
+
+      <div class="title-block">
+        <div class="title-main">开源之书记录</div>
+        <div class="title-lead">Open Source · Reading Memoir</div>
+      </div>
+
+      <div class="accent-line"></div>
+
+      <div class="subtitle-main">
+        六年阅读笔记<span class="dot">·</span>一个开源布道者的旅程
+      </div>
+
+      <div class="messages">
+        <div class="msg-item">
+          <div class="msg-num">01</div>
+          <div class="msg-text">
+            <span class="msg-title">六年时光</span>——从 2019 到 2024，一路与代码、社区与思想同行
+          </div>
+        </div>
+        <div class="msg-item">
+          <div class="msg-num">02</div>
+          <div class="msg-text">
+            <span class="msg-title">一份记录</span>——把每本开源书的启发沉淀成可复用的笔记
+          </div>
+        </div>
+        <div class="msg-item">
+          <div class="msg-num">03</div>
+          <div class="msg-text">
+            <span class="msg-title">一次分享</span>——以布道者视角回望，把经验传递给后来者
+          </div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="data-box">
+          <span class="data-label">阅 读 年 限</span>
+          <span class="data-value"><span class="red-num">6</span> 年</span>
+          <span class="data-label" style="margin-top:2px;">2019 — 2024</span>
+        </div>
+        <div class="data-box">
+          <span class="data-label">记 录 基 调</span>
+          <span class="data-value">布道<span style="color:var(--red);">·</span>复盘<span style="color:var(--red);">·</span>分享</span>
+        </div>
+      </div>
+
+      <div class="closing">
+        这是一份关于六年的开源阅读档案。从最初翻开第一本开源著作的懵懂，到今天成为开源布道者，每一本书都在记忆里留下印记。愿这份记录成为后来者的路标。
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-col">
+      <div class="hero-wrap">
+        <img class="hero-img" src="/slides/6-years-memory/images/page_001_hero.jpg" alt="书页化作代码，六年阅读如河流汇聚的意象" style="width:100%;height:auto;">
+        <div class="hero-caption">书页化作代码，六年阅读如河流汇聚</div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-header">
+          <span class="tl-title">六 年 时 间 轴</span>
+          <span class="tl-span">2019 → 2024</span>
+        </div>
+        <div class="timeline-body">
+          <div class="tl-year-col is-start">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2019</div>
+            <div class="tl-theme">启程</div>
+          </div>
+          <div class="tl-year-col">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2020</div>
+            <div class="tl-theme">沉浸</div>
+          </div>
+          <div class="tl-year-col">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2021</div>
+            <div class="tl-theme">沉淀</div>
+          </div>
+          <div class="tl-year-col">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2022</div>
+            <div class="tl-theme">体系</div>
+          </div>
+          <div class="tl-year-col">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2023</div>
+            <div class="tl-theme">布道</div>
+          </div>
+          <div class="tl-year-col is-end">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2024</div>
+            <div class="tl-theme">回望</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="fb-left">
+        <span class="fb-mark">OS · READING</span>
+        <span>开 源 之 书 · 记 录</span>
+      </div>
+      <span>01 / 封面</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
