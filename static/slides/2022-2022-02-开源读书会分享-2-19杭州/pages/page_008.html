@@ -1,0 +1,123 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>读书会机制设计</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #ECEFF1;
+  --text-dim: #B0BEC5;
+  --bg-dark: #0A1628;
+  --bg-card: #11223D;
+  --bg-card-border: #1E3A5F;
+  --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-mono: 'Roboto Mono', 'Noto Sans SC', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-sans); color: var(--text-main); background: #050D1A; }
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse at 30% 20%, #0F2444 0%, #08142A 45%, #040B18 100%); }
+#ct { position: absolute; inset: 0; z-index: 1; padding: 50px 60px 45px 60px; box-sizing: border-box; display: flex; flex-direction: column; }
+
+.header { margin-bottom: 24px; }
+.header .eyebrow { font-family: var(--font-mono); font-size: 13px; color: var(--accent); letter-spacing: 3px; margin-bottom: 10px; }
+.header h1 { font-size: 40px; font-weight: 700; letter-spacing: 1px; background: linear-gradient(90deg, #ECEFF1 0%, #2196F3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 14px; }
+.header .lede { font-size: 14.5px; line-height: 1.75; color: var(--text-dim); max-width: 1420px; }
+.header .lede .hl { color: var(--primary); font-weight: 500; }
+
+.divider { height: 1px; background: linear-gradient(90deg, transparent, #1E3A5F 20%, #1E3A5F 80%, transparent); margin: 0 0 22px 0; }
+
+.main { display: flex; gap: 32px; flex: 1; min-height: 0; }
+.col-left { width: 720px; display: flex; flex-direction: column; gap: 10px; }
+.col-right { flex: 1; display: flex; flex-direction: column; align-items: stretch; }
+
+.card { position: relative; background: linear-gradient(135deg, #11223D 0%, #0D1A30 100%); border: 1px solid var(--bg-card-border); border-left: 3px solid var(--primary); border-radius: 10px; padding: 12px 18px 12px 20px; display: flex; align-items: center; gap: 16px; flex: 1; }
+.card::after { content: ''; position: absolute; right: 16px; top: 12px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.card .idx { font-family: var(--font-mono); font-size: 20px; font-weight: 500; color: var(--primary); min-width: 36px; }
+.card .body { flex: 1; }
+.card .title { font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 3px; }
+.card .desc { font-size: 12.5px; line-height: 1.6; color: var(--text-dim); }
+
+.right-panel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(160deg, #0B1A30 0%, #0A1628 100%); border: 1px solid var(--bg-card-border); border-radius: 14px; padding: 18px 18px 22px 18px; position: relative; overflow: hidden; }
+.right-panel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 40%, rgba(33,150,243,0.10) 0%, transparent 55%); pointer-events: none; }
+.panel-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; }
+.panel-img { width: 100%; flex: 1; display: flex; align-items: center; justify-content: center; }
+.panel-img img { max-width: 620px; max-height: 300px; width: auto; height: auto; object-fit: contain; border-radius: 6px; filter: drop-shadow(0 0 18px rgba(33,150,243,0.25)); }
+.panel-caption { font-size: 13px; color: var(--text-main); font-weight: 500; letter-spacing: 1.5px; margin-top: 8px; display: flex; align-items: center; gap: 10px; }
+.panel-caption::before, .panel-caption::after { content: ''; display: inline-block; width: 40px; height: 1px; background: var(--accent); opacity: 0.7; }
+
+.footer-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); letter-spacing: 1.5px; }
+.footer-bar .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 6px var(--primary); margin: 0 8px; vertical-align: middle; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <div class="eyebrow"><span>READING CLUB · MECHANISM</span></div>
+      <h1><span>读书会机制设计</span></h1>
+      <p class="lede"><span>一套可复制的读书会机制是持续运营的关键，<span class="hl">杭州读书会</span>通过<span class="hl">选题、共读、输出、交流</span>四个环节构建完整闭环，既保证学习深度又兼顾社区活跃度，值得其他城市参考。</span></p>
+    </div>
+    <div class="divider"></div>
+    <div class="main">
+      <div class="col-left">
+        <div class="card">
+          <div class="idx"><span>01</span></div>
+          <div class="body">
+            <div class="title"><span>选题机制</span></div>
+            <div class="desc"><span>由成员轮值提出书目，经投票确定下一期共读主题</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="idx"><span>02</span></div>
+          <div class="body">
+            <div class="title"><span>共读节奏</span></div>
+            <div class="desc"><span>每月1-2次线下聚会，每次聚焦2-3章核心内容进行深度讨论</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="idx"><span>03</span></div>
+          <div class="body">
+            <div class="title"><span>输出要求</span></div>
+            <div class="desc"><span>每位参与者需提交阅读笔记与思考总结，沉淀为社区文档</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="idx"><span>04</span></div>
+          <div class="body">
+            <div class="title"><span>线上线下结合</span></div>
+            <div class="desc"><span>线下讨论配合线上群组持续交流，形成不间断的学习闭环</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="idx"><span>05</span></div>
+          <div class="body">
+            <div class="title"><span>新人友好</span></div>
+            <div class="desc"><span>设置导读环节与配对机制，降低新参与者的融入门槛</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-right">
+        <div class="right-panel">
+          <div class="panel-tag"><span>CYCLE DIAGRAM</span></div>
+          <div class="panel-img">
+            <img src="/slides/2022-2022-02-开源读书会分享-2-19杭州/images/page_008_cycle_diagram.jpg" alt="四环闭环循环流程图">
+          </div>
+          <div class="panel-caption"><span>四环闭环，持续运转</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span><span>HANGZHOU READING CLUB</span></span>
+      <span><span>MECHANISM</span><span class="dot"></span><span>DESIGN</span><span class="dot"></span><span>2024</span></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --cyan: #00BCD4;
+  --orange: #FF7043;
+  --gray: #B0BEC5;
+  --dark: #0A0E1A;
+  --dark-blue: #0D1B2A;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', 'Noto Sans SC', 'PingFang SC', monospace;
+  color: var(--gray);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,188,212,0.08) 0%, rgba(10,14,26,0.45) 55%, rgba(10,14,26,0.85) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top row */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  color: var(--gray);
+  letter-spacing: 0.5px;
+}
+
+.top-left .dot {
+  width: 8px; height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan), 0 0 20px rgba(0,188,212,0.5);
+}
+
+.top-left .label {
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.top-right .speaker-tag {
+  background: rgba(255,112,67,0.12);
+  border: 1px solid rgba(255,112,67,0.4);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--orange);
+  font-family: 'Roboto Mono', monospace;
+  letter-spacing: 0.5px;
+}
+
+/* Center content */
+.center-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.theme-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  padding: 8px 24px;
+  border: 1px solid rgba(0,188,212,0.35);
+  border-radius: 24px;
+  background: rgba(0,188,212,0.06);
+  font-size: 13px;
+  color: var(--cyan);
+  font-family: 'Roboto Mono', monospace;
+  letter-spacing: 1px;
+}
+
+.theme-badge .icon-dot {
+  width: 6px; height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.main-title {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 900;
+  font-size: 108px;
+  color: #E8F8FA;
+  letter-spacing: 12px;
+  text-shadow:
+    0 0 12px rgba(0,188,212,0.9),
+    0 0 30px rgba(0,188,212,0.6),
+    0 0 60px rgba(0,188,212,0.4),
+    0 0 100px rgba(0,188,212,0.25);
+  line-height: 1.1;
+  margin-bottom: 30px;
+}
+
+.subtitle {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--gray);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.subtitle .accent {
+  color: var(--orange);
+}
+
+.subtitle-divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  margin: 16px auto 18px;
+}
+
+.subtitle-zh {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-size: 16px;
+  color: var(--cyan);
+  letter-spacing: 6px;
+  opacity: 0.85;
+}
+
+/* Bottom three cards */
+.bottom-cards {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 20px 10px;
+}
+
+.card {
+  width: 320px;
+  padding: 22px 24px 24px;
+  background: rgba(13,27,42,0.65);
+  border: 1px solid rgba(0,188,212,0.2);
+  border-radius: 8px;
+  position: relative;
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 40px; height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.card:nth-child(3)::before {
+  background: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+}
+
+.card-number {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+
+.card:nth-child(3) .card-number { color: var(--orange); }
+
+.card-title {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #E8F8FA;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card-divider {
+  width: 30px;
+  height: 1px;
+  background: rgba(0,188,212,0.5);
+  margin-bottom: 12px;
+}
+
+.card:nth-child(3) .card-divider { background: rgba(255,112,67,0.5); }
+
+.card-desc {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.75;
+  letter-spacing: 0.5px;
+  font-family: 'Roboto Mono', 'Noto Sans SC', monospace;
+}
+
+/* Decorative corner brackets */
+.corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: var(--cyan);
+  opacity: 0.6;
+}
+.corner-tl { top: 30px; left: 30px; border-top: 1px solid; border-left: 1px solid; }
+.corner-tr { top: 30px; right: 30px; border-top: 1px solid; border-right: 1px solid; }
+.corner-bl { bottom: 30px; left: 30px; border-bottom: 1px solid; border-left: 1px solid; }
+.corner-br { bottom: 30px; right: 30px; border-bottom: 1px solid; border-right: 1px solid; }
+
+/* Side decoration */
+.side-line {
+  position: absolute;
+  left: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.5;
+}
+
+.side-line .vline {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(180deg, transparent, var(--cyan), transparent);
+}
+
+.side-line .vtext {
+  writing-mode: vertical-rl;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+}
+
+.side-line-right {
+  left: auto;
+  right: 36px;
+}
+
+.side-line-right .vtext { color: var(--orange); }
+.side-line-right .vline { background: linear-gradient(180deg, transparent, var(--orange), transparent); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="/slides/the-profile-of-os-people/images/page_001_hero.jpg" alt="深色科技背景">
+    <div class="bg-overlay"></div>
+  </div>
+  <div id="ct">
+    <span class="corner corner-tl"></span>
+    <span class="corner corner-tr"></span>
+    <span class="corner corner-bl"></span>
+    <span class="corner corner-br"></span>
+
+    <div class="side-line">
+      <div class="vline"></div>
+      <div class="vtext">OPEN SOURCE</div>
+      <div class="vline"></div>
+    </div>
+    <div class="side-line side-line-right">
+      <div class="vline"></div>
+      <div class="vtext">2025 · COVER</div>
+      <div class="vline"></div>
+    </div>
+
+    <div class="top-bar">
+      <div class="top-left">
+        <span class="dot"></span>
+        <span class="label">COVER / 001</span>
+        <span>｜</span>
+        <span>分享主题 · 开源人士画像（The Profile of OS People）</span>
+      </div>
+      <div class="top-right">
+        <span class="speaker-tag">分享人 · 开源之道·适兕</span>
+      </div>
+    </div>
+
+    <div class="center-area">
+      <div class="theme-badge">
+        <span class="icon-dot"></span>
+        <span>OPEN SOURCE · COMMUNITY PROFILE</span>
+        <span class="icon-dot"></span>
+      </div>
+
+      <div class="main-title">开源之书记录</div>
+
+      <div class="subtitle">The Profile of OS People <span class="accent">·</span> 开源人士画像</div>
+
+      <div class="subtitle-divider"></div>
+
+      <div class="subtitle-zh">探索开源世界中的每一个人</div>
+    </div>
+
+    <div class="bottom-cards">
+      <div class="card">
+        <div class="card-number">01 / 开源布道</div>
+        <div class="card-title">开源布道</div>
+        <div class="card-divider"></div>
+        <div class="card-desc">开源之道·适兕带你走进开源人士的内心世界与行为模式，揭开贡献者背后的故事与信念。</div>
+      </div>
+      <div class="card">
+        <div class="card-number">02 / 阅读分享</div>
+        <div class="card-title">阅读分享</div>
+        <div class="card-divider"></div>
+        <div class="card-desc">从动机、技能到贡献方式，全景解读开源社区中参与者生态的多元面貌与成长路径。</div>
+      </div>
+      <div class="card">
+        <div class="card-number">03 / 数据驱动</div>
+        <div class="card-title">数据驱动</div>
+        <div class="card-divider"></div>
+        <div class="card-desc">基于社区调研与真实案例，用数据还原开源人士的立体画像，让结论有据可依。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

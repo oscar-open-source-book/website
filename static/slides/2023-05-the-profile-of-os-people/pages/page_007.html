@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>四类核心动机</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0F1923;
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #E8EEF5;
+  --text-dim: #7A8FA8;
+  --card-bg: rgba(20, 36, 52, 0.85);
+  --border-subtle: rgba(33, 150, 243, 0.18);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg);
+}
+h1, h2, h3, .title-main {
+  font-family: 'Inter', sans-serif;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(33, 150, 243, 0.08) 0%, transparent 55%),
+    linear-gradient(180deg, #0D1720 0%, #0F1923 40%, #0B141C 100%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 42px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 背景装饰网格点 */
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(33,150,243,0.10) 1px, transparent 0);
+  background-size: 44px 44px;
+  opacity: 0.55;
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,188,212,0.10) 0%, transparent 65%);
+}
+
+/* 顶部标题区 */
+.title-section {
+  text-align: center;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 2;
+}
+.title-section h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  background: linear-gradient(90deg, #2196F3 0%, #00BCD4 60%, #4DD0E1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.title-section .subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-dim);
+  margin-top: 8px;
+  letter-spacing: 4px;
+}
+.title-line {
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  margin: 14px auto 0;
+  position: relative;
+}
+.title-line::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* 四象限区域 */
+.quadrant-area {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  position: relative;
+  margin: 0 20px;
+}
+
+.quadrant {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 22px 26px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.quadrant::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+}
+.q1::before { background: linear-gradient(180deg, var(--primary), var(--accent)); }
+.q2::before { background: linear-gradient(180deg, var(--accent), var(--primary)); }
+.q3::before { background: linear-gradient(180deg, var(--primary), var(--accent)); }
+.q4::before { background: linear-gradient(180deg, var(--accent), var(--primary)); }
+
+.quadrant-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.quadrant-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  flex-shrink: 0;
+  position: relative;
+}
+.q1 .quadrant-icon {
+  background: linear-gradient(135deg, rgba(33,150,243,0.25), rgba(33,150,243,0.08));
+  border: 1px solid rgba(33,150,243,0.5);
+  color: #64B5F6;
+}
+.q2 .quadrant-icon {
+  background: linear-gradient(135deg, rgba(0,188,212,0.25), rgba(0,188,212,0.08));
+  border: 1px solid rgba(0,188,212,0.5);
+  color: #4DD0E1;
+}
+.q3 .quadrant-icon {
+  background: linear-gradient(135deg, rgba(33,150,243,0.25), rgba(0,188,212,0.12));
+  border: 1px solid rgba(33,150,243,0.5);
+  color: #64B5F6;
+}
+.q4 .quadrant-icon {
+  background: linear-gradient(135deg, rgba(0,188,212,0.25), rgba(33,150,243,0.12));
+  border: 1px solid rgba(0,188,212,0.5);
+  color: #4DD0E1;
+}
+
+.quadrant-label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.quadrant-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+}
+.quadrant-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+.q1 .quadrant-title { color: #E3F2FD; }
+.q2 .quadrant-title { color: #E0F7FA; }
+.q3 .quadrant-title { color: #E3F2FD; }
+.q4 .quadrant-title { color: #E0F7FA; }
+
+.quadrant-desc {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+}
+
+.quadrant-kpi {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding: 10px 14px;
+  background: rgba(15, 25, 35, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.kpi-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+.q1 .kpi-value { color: var(--primary); }
+.q2 .kpi-value { color: var(--accent); }
+.q3 .kpi-value { color: var(--primary); }
+.q4 .kpi-value { color: var(--accent); }
+.kpi-label {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+}
+
+.quadrant-no {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  opacity: 0.6;
+}
+
+/* 中央发光圆点 */
+.center-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 130px;
+  height: 130px;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.center-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(0,188,212,0.55) 0%,
+    rgba(33,150,243,0.30) 35%,
+    rgba(33,150,243,0.10) 65%,
+    transparent 80%);
+  animation: pulse 3s ease-in-out infinite;
+}
+.center-glow::after {
+  content: '';
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,255,255,0.9) 0%,
+    rgba(0,188,212,0.6) 40%,
+    rgba(33,150,243,0.2) 75%,
+    transparent 100%);
+}
+.center-label {
+  position: relative;
+  z-index: 2;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(0,0,0,0.8);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+
+/* 连接线 */
+.connector {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+.connector-h {
+  left: 20px;
+  right: 20px;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.25) 20%, rgba(0,188,212,0.30) 50%, rgba(33,150,243,0.25) 80%, transparent);
+  transform: translateY(-50%);
+}
+.connector-v {
+  top: 20px;
+  bottom: 20px;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(33,150,243,0.25) 20%, rgba(0,188,212,0.30) 50%, rgba(33,150,243,0.25) 80%, transparent);
+  transform: translateX(-50%);
+}
+
+/* 底部叙述区 */
+.footer-section {
+  margin-top: 22px;
+  padding: 18px 30px;
+  background: linear-gradient(90deg,
+    rgba(33,150,243,0.06) 0%,
+    rgba(0,188,212,0.08) 50%,
+    rgba(33,150,243,0.06) 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.footer-section::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 3px;
+  height: 36px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  transform: translateY(-50%);
+}
+.footer-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(33,150,243,0.15);
+  border: 1px solid rgba(33,150,243,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.footer-text {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--text-main);
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+}
+.footer-text .highlight-pri {
+  color: var(--primary);
+  font-weight: 500;
+}
+.footer-text .highlight-acc {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* 角落装饰 */
+.corner-deco {
+  position: absolute;
+  z-index: 2;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  opacity: 0.45;
+}
+.corner-tl { top: 14px; left: 20px; }
+.corner-tr { top: 14px; right: 20px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="corner-deco corner-tl">SYSTEM // MOTIVATION_ENGINE</div>
+    <div class="corner-deco corner-tr">V.1.0 // FOUR_QUADRANTS</div>
+
+    <div class="title-section">
+      <h1>四类核心动机</h1>
+      <div class="title-line"></div>
+      <p class="subtitle">驱动贡献者参与的核心心理动因</p>
+    </div>
+
+    <div class="quadrant-area">
+
+      <div class="connector connector-h"></div>
+      <div class="connector connector-v"></div>
+
+      <div class="quadrant q1">
+        <span class="quadrant-no">Q1</span>
+        <div class="quadrant-header">
+          <div class="quadrant-icon"><span>⬆</span></div>
+          <div class="quadrant-label">
+            <span class="quadrant-tag">01 / LEARNING</span>
+            <span class="quadrant-title">学习与成长</span>
+          </div>
+        </div>
+        <p class="quadrant-desc">通过实际项目打磨技能，接触前沿技术栈与最佳实践，在真实场景中快速提升编码能力与工程素养。</p>
+        <div class="quadrant-kpi">
+          <span class="kpi-value">68%</span>
+          <span class="kpi-label">学习驱动占比<br>受访者提及率最高</span>
+        </div>
+      </div>
+
+      <div class="quadrant q2">
+        <span class="quadrant-no">Q2</span>
+        <div class="quadrant-header">
+          <div class="quadrant-icon"><span>◆</span></div>
+          <div class="quadrant-label">
+            <span class="quadrant-tag">02 / CAREER</span>
+            <span class="quadrant-title">职业资本</span>
+          </div>
+        </div>
+        <p class="quadrant-desc">开源履历是求职与晋升的重要加分项，雇主高度认可代码可见性与社区贡献能力。</p>
+        <div class="quadrant-kpi">
+          <span class="kpi-value">75%</span>
+          <span class="kpi-label">职业认可度<br>雇主将开源经验列为加分项</span>
+        </div>
+      </div>
+
+      <div class="quadrant q3">
+        <span class="quadrant-no">Q3</span>
+        <div class="quadrant-header">
+          <div class="quadrant-icon"><span>⬡</span></div>
+          <div class="quadrant-label">
+            <span class="quadrant-tag">03 / SOCIAL</span>
+            <span class="quadrant-title">社交与归属</span>
+          </div>
+        </div>
+        <p class="quadrant-desc">与志同道合者协作交流，构建职业网络与情感连接，在开源社区中获得身份认同与归属感。</p>
+        <div class="quadrant-kpi">
+          <span class="kpi-value">52%</span>
+          <span class="kpi-label">回馈意愿<br>因受助而选择贡献社区</span>
+        </div>
+      </div>
+
+      <div class="quadrant q4">
+        <span class="quadrant-no">Q4</span>
+        <div class="quadrant-header">
+          <div class="quadrant-icon"><span>♡</span></div>
+          <div class="quadrant-label">
+            <span class="quadrant-tag">04 / ALTRUISM</span>
+            <span class="quadrant-title">利他主义</span>
+          </div>
+        </div>
+        <p class="quadrant-desc">回馈社区、帮助他人解决问题的纯粹善意驱动贡献，享受"被需要"带来的内在满足感。</p>
+        <div class="quadrant-kpi">
+          <span class="kpi-value">+∞</span>
+          <span class="kpi-label">内在驱动<br>非物质回报的深层动机</span>
+        </div>
+      </div>
+
+      <div class="center-glow">
+        <span class="center-label">CORE</span>
+      </div>
+
+    </div>
+
+    <div class="footer-section">
+      <div class="footer-icon"><span>★</span></div>
+      <p class="footer-text">研究表明，大多数贡献者的动机是<span class="highlight-pri">复合型</span>的 —— <span class="highlight-pri">学习与技术热情</span>常常是入门的第一推力，而<span class="highlight-acc">职业回报</span>和<span class="highlight-acc">社区归属感</span>则是长期留存的关键因素。四类动机并非孤立，而是相互交织、动态演化的完整驱动体系。</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

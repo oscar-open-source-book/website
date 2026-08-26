@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>下篇 · 布道</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-warm: #F5F0EB;
+  --haze-blue: #6B8BA4;
+  --warm-brown: #A1887F;
+  --text-dark: #3D3A37;
+  --text-mute: #7A7268;
+  --line-soft: #C9C0B4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--text-dark);
+  background: var(--bg-warm);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-warm);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 0;
+}
+
+.deco-image {
+  position: absolute;
+  left: 300px;
+  bottom: -30px;
+  width: 1000px;
+  height: 558px;
+  object-fit: cover;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+.corner-deco {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  z-index: 1;
+  opacity: 0.45;
+}
+.corner-deco.tl { top: 44px; left: 44px; }
+.corner-deco.tr { top: 44px; right: 44px; }
+.corner-deco.bl { bottom: 44px; left: 44px; }
+.corner-deco.br { bottom: 44px; right: 44px; }
+.corner-deco::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 22px; height: 1px;
+  background: var(--haze-blue);
+}
+.corner-deco::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 1px; height: 22px;
+  background: var(--haze-blue);
+}
+.corner-deco.tr::before { left: auto; right: 0; }
+.corner-deco.tr::after { left: auto; right: 0; }
+.corner-deco.bl::before { top: auto; bottom: 0; }
+.corner-deco.br::before { top: auto; bottom: 0; left: auto; right: 0; }
+.corner-deco.br::after { left: auto; right: 0; }
+
+.side-mark {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  color: var(--haze-blue);
+  letter-spacing: 10px;
+  writing-mode: vertical-rl;
+  opacity: 0.4;
+  z-index: 1;
+}
+.side-mark.left { left: 56px; }
+.side-mark.right { right: 56px; }
+
+.chapter-block {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 3;
+}
+
+.deco-line-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.deco-line-top .seg {
+  width: 54px;
+  height: 1px;
+  background: var(--haze-blue);
+  opacity: 0.55;
+}
+.deco-line-top .dot {
+  width: 4px;
+  height: 4px;
+  background: var(--warm-brown);
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.chapter-tag {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--haze-blue);
+  letter-spacing: 14px;
+  margin-bottom: 22px;
+}
+
+.main-title-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  margin-bottom: 26px;
+}
+
+.title-seal {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--haze-blue);
+  position: relative;
+  display: inline-block;
+  opacity: 0.85;
+}
+.title-seal::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--haze-blue);
+  opacity: 0.45;
+}
+.title-seal::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  margin-top: -7px;
+  border: 1px solid var(--warm-brown);
+  opacity: 0.65;
+}
+
+.title-main {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 68px;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: 24px;
+  padding-left: 24px;
+}
+
+.subtitle-row {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-mute);
+  letter-spacing: 8px;
+}
+
+.subtitle-sep {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+.subtitle-sep .l {
+  width: 80px;
+  height: 1px;
+  background: var(--line-soft);
+}
+.subtitle-sep .d {
+  width: 4px;
+  height: 4px;
+  background: var(--haze-blue);
+  transform: rotate(45deg);
+  opacity: 0.6;
+}
+
+.columns-area {
+  position: absolute;
+  top: 360px;
+  left: 130px;
+  right: 130px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 70px;
+  z-index: 3;
+  background: rgba(245, 240, 235, 0.55);
+  padding: 24px 20px;
+}
+
+.col {
+  text-align: center;
+  position: relative;
+}
+
+.col-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--warm-brown);
+  letter-spacing: 6px;
+  margin-bottom: 12px;
+}
+
+.col-divider {
+  width: 28px;
+  height: 1px;
+  background: var(--haze-blue);
+  margin: 0 auto 16px;
+  opacity: 0.55;
+}
+
+.col-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+  letter-spacing: 5px;
+}
+
+.col-desc {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-mute);
+  line-height: 1.85;
+  letter-spacing: 1px;
+}
+
+.col-tag {
+  margin-top: 14px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 11px;
+  color: var(--haze-blue);
+  letter-spacing: 4px;
+  opacity: 0.6;
+}
+
+.closing-area {
+  position: absolute;
+  bottom: 50px;
+  left: 220px;
+  right: 220px;
+  text-align: center;
+  z-index: 3;
+}
+
+.closing-deco {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.closing-deco .seg {
+  width: 44px;
+  height: 1px;
+  background: var(--warm-brown);
+  opacity: 0.5;
+}
+.closing-deco .diamond {
+  width: 6px;
+  height: 6px;
+  background: var(--warm-brown);
+  transform: rotate(45deg);
+  opacity: 0.75;
+}
+
+.closing-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-dark);
+  line-height: 1.95;
+  letter-spacing: 2px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 18px 30px;
+  background: rgba(245, 240, 235, 0.82);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <img class="deco-image" src="/slides/open-source-community-from-science-community/images/page_006_deco_2.jpg" alt="章节扉页装饰纹样">
+
+  <div class="corner-deco tl"></div>
+  <div class="corner-deco tr"></div>
+  <div class="corner-deco bl"></div>
+  <div class="corner-deco br"></div>
+
+  <div class="side-mark left">布&nbsp;&nbsp;道</div>
+  <div class="side-mark right">下&nbsp;&nbsp;篇</div>
+
+  <div id="ct">
+    <div class="chapter-block">
+      <div class="deco-line-top">
+        <span class="seg"></span>
+        <span class="dot"></span>
+        <span class="seg"></span>
+      </div>
+      <div class="chapter-tag"><span>下&nbsp;&nbsp;篇</span></div>
+      <div class="main-title-wrap">
+        <span class="title-seal"></span>
+        <span class="title-main">布&nbsp;&nbsp;道</span>
+        <span class="title-seal"></span>
+      </div>
+      <div class="subtitle-row"><span>阅读分享与社区参与的方法</span></div>
+      <div class="subtitle-sep">
+        <span class="l"></span>
+        <span class="d"></span>
+        <span class="l"></span>
+      </div>
+    </div>
+
+    <div class="columns-area">
+      <div class="col">
+        <div class="col-num"><span>壹&nbsp;&nbsp;·&nbsp;&nbsp;主&nbsp;题</span></div>
+        <div class="col-divider"></div>
+        <div class="col-title"><span>本篇章主题</span></div>
+        <div class="col-desc"><span>聚焦如何通过阅读与分享，传播开源文化与知识</span></div>
+        <div class="col-tag"><span>— 知 识 传 播 —</span></div>
+      </div>
+      <div class="col">
+        <div class="col-num"><span>贰&nbsp;&nbsp;·&nbsp;&nbsp;路&nbsp;径</span></div>
+        <div class="col-divider"></div>
+        <div class="col-title"><span>实践路径</span></div>
+        <div class="col-desc"><span>从精读经典到参与社区，构建个人开源素养</span></div>
+        <div class="col-tag"><span>— 从 读 者 到 行 者 —</span></div>
+      </div>
+      <div class="col">
+        <div class="col-num"><span>叁&nbsp;&nbsp;·&nbsp;&nbsp;角&nbsp;色</span></div>
+        <div class="col-divider"></div>
+        <div class="col-title"><span>角色定位</span></div>
+        <div class="col-desc"><span>开源布道者的多重身份与责任边界</span></div>
+        <div class="col-tag"><span>— 身 份 与 责 任 —</span></div>
+      </div>
+    </div>
+
+    <div class="closing-area">
+      <div class="closing-deco">
+        <span class="seg"></span>
+        <span class="diamond"></span>
+        <span class="seg"></span>
+      </div>
+      <div class="closing-text">
+        <span>开源不止是技术选择，更是一种文化传承。下篇将从开源之道·适兕的阅读分享出发，探讨如何以书为舟、以社区为港，完成从读者到布道者的身份转化。</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

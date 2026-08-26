@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>他们是谁：人口画像</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --bg-main: #0F1923;
+  --bg-card: #16263a;
+  --bg-card-hover: #1a3050;
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #E8EEF5;
+  --text-sub: #8ba4bd;
+  --text-dim: #5a7a99;
+  --border-sub: #1e3a5f;
+  --glow-blue: rgba(33, 150, 243, 0.25);
+  --glow-cyan: rgba(0, 188, 212, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 30%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 80%, rgba(0, 188, 212, 0.06) 0%, transparent 50%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Header ---- */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.header .accent-bar {
+  width: 4px;
+  height: 44px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--glow-blue);
+}
+
+.header .title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--text-main);
+  background: linear-gradient(90deg, #ffffff 0%, #a8d8ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header .subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ---- Main three columns ---- */
+.main-area {
+  display: grid;
+  grid-template-columns: 520px 1fr 1fr;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---- Left column: image ---- */
+.col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.image-frame {
+  width: 100%;
+  height: 380px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-sub);
+  box-shadow: 0 0 30px var(--glow-blue), inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.image-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, transparent 50%, rgba(15, 25, 35, 0.4) 100%);
+  pointer-events: none;
+}
+
+.image-caption {
+  font-size: 12px;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.image-caption .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.meta-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-tag {
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid rgba(0, 188, 212, 0.3);
+  border-radius: 4px;
+  padding: 4px 10px;
+  background: rgba(0, 188, 212, 0.06);
+  letter-spacing: 0.5px;
+}
+
+/* ---- Middle column: KPI cards ---- */
+.col-middle {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kpi-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, #0e2035 100%);
+  border: 1px solid var(--border-sub);
+  border-radius: 10px;
+  padding: 16px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.kpi-card .kpi-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.kpi-card .kpi-label {
+  font-size: 12px;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.kpi-card .kpi-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(33, 150, 243, 0.12);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--primary);
+}
+
+.kpi-card .kpi-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.kpi-card .kpi-desc {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+
+.kpi-card .progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(33, 150, 243, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.kpi-card .progress-bar .fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  box-shadow: 0 0 8px var(--glow-blue);
+}
+
+/* ---- Right column: point cards ---- */
+.col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.point-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-sub);
+  border-radius: 8px;
+  padding: 12px 16px;
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.point-card .pc-index {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.point-card .pc-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.point-card .pc-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+.point-card .pc-desc {
+  font-size: 11.5px;
+  color: var(--text-sub);
+  line-height: 1.55;
+}
+
+/* ---- Bottom summary ---- */
+.bottom-summary {
+  margin-top: 18px;
+  background: linear-gradient(90deg, rgba(33, 150, 243, 0.1) 0%, rgba(0, 188, 212, 0.06) 50%, rgba(33, 150, 243, 0.1) 100%);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.bottom-summary .bs-icon {
+  font-size: 20px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.bottom-summary .bs-text {
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+}
+
+.bottom-summary .bs-text .highlight {
+  color: var(--accent);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <div class="accent-bar"></div>
+      <div class="title-block">
+        <h1>他们是谁：人口画像</h1>
+        <div class="subtitle">Demographic Profile of Open-Source Contributors</div>
+      </div>
+    </div>
+
+    <div class="main-area">
+      <!-- Left: Illustration -->
+      <div class="col-left">
+        <div class="image-frame">
+          <img src="/slides/2023-05-the-profile-of-os-people/images/page_004_side_illustration.jpg" alt="多样化开源贡献者抽象头像排列的概念图">
+        </div>
+        <div class="image-caption">
+          <span class="dot"></span>
+          <span>全球化贡献者社群 · 数字人剪影网络</span>
+        </div>
+        <div class="meta-tags">
+          <span class="meta-tag">多样性</span>
+          <span class="meta-tag">全球化</span>
+          <span class="meta-tag">网络协作</span>
+          <span class="meta-tag">技术社区</span>
+        </div>
+      </div>
+
+      <!-- Middle: KPI Cards -->
+      <div class="col-middle">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">主力年龄段</span>
+            <span class="kpi-icon">👤</span>
+          </div>
+          <div class="kpi-value">25-34岁 · 45%</div>
+          <div class="kpi-desc">四分之一到三分之一是最活跃的贡献力量</div>
+          <div class="progress-bar"><div class="fill" style="width: 45%;"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">本科及以上学历</span>
+            <span class="kpi-icon">🎓</span>
+          </div>
+          <div class="kpi-value">70%+</div>
+          <div class="kpi-desc">高学历人群在开源社区中占据绝对主导地位</div>
+          <div class="progress-bar"><div class="fill" style="width: 72%;"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">女性贡献者</span>
+            <span class="kpi-icon">⚖</span>
+          </div>
+          <div class="kpi-value">8% <span style="font-size:14px; color:var(--accent); -webkit-text-fill-color:var(--accent); font-weight:600;">↑ +2%</span></div>
+          <div class="kpi-desc">较 2020 年提升约 2%，多元化进程正在推进</div>
+          <div class="progress-bar"><div class="fill" style="width: 8%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Right: Point Cards -->
+      <div class="col-right">
+        <div class="point-card">
+          <span class="pc-index">01</span>
+          <div class="pc-content">
+            <span class="pc-title">年龄分布</span>
+            <span class="pc-desc">主力贡献者集中在 25-34 岁，占比约 45%；18-24 岁与 35-44 岁为次要群体</span>
+          </div>
+        </div>
+        <div class="point-card">
+          <span class="pc-index">02</span>
+          <div class="pc-content">
+            <span class="pc-title">教育背景</span>
+            <span class="pc-desc">本科及以上学历占比超过 70%，计算机相关专业居首，工程类紧随其后</span>
+          </div>
+        </div>
+        <div class="point-card">
+          <span class="pc-index">03</span>
+          <div class="pc-content">
+            <span class="pc-title">职业身份</span>
+            <span class="pc-desc">软件工程师为主体，其次为研究生、自由职业者与创业者，学生群体也占一定比例</span>
+          </div>
+        </div>
+        <div class="point-card">
+          <span class="pc-index">04</span>
+          <div class="pc-content">
+            <span class="pc-title">性别结构</span>
+            <span class="pc-desc">男性占比约 90%，女性贡献者比例虽低但增速显著，社区多元化持续推进</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-summary">
+      <span class="bs-icon">▹</span>
+      <span class="bs-text">典型的开源贡献者画像：<span class="highlight">年轻、高学历、以软件工程师职业为主</span>；社区正努力吸引更多元化参与者，<span class="highlight">女性与少数群体</span>贡献比例正在缓慢提升。</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

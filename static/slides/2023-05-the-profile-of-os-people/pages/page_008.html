@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>贡献行为模式</title>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap');
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg: #0F1923;
+  --bg-card: #162332;
+  --bg-card-hover: #1A2D40;
+  --text-main: #E8EEF4;
+  --text-dim: #7E94A6;
+  --text-bright: #FFFFFF;
+  --border: rgba(33, 150, 243, 0.18);
+  --glow: rgba(0, 188, 212, 0.25);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg);
+}
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 500px at 85% -10%, rgba(33,150,243,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 400px at -5% 105%, rgba(0,188,212,0.10) 0%, transparent 60%),
+    linear-gradient(180deg, #0F1923 0%, #0C1520 100%);
+}
+#ct { position: absolute; inset: 0; z-index: 1; padding: 48px 60px 40px 60px; box-sizing: border-box; display: flex; flex-direction: column; }
+
+/* Header */
+.header { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 28px; }
+.title-row { display: flex; align-items: center; gap: 18px; }
+.title-badge {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  border: 1px solid rgba(0,188,212,0.35);
+  padding: 5px 12px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 44px;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--text-bright) 0%, var(--primary) 60%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--text-dim);
+  margin-top: 10px;
+  line-height: 1.6;
+  max-width: 1150px;
+}
+.subtitle .hl { color: var(--accent); font-weight: 400; }
+.subtitle .hl2 { color: var(--primary); font-weight: 400; }
+
+/* Main content */
+.main { flex: 1; display: flex; gap: 36px; min-height: 0; }
+
+/* Left panel - progress bars */
+.left-panel {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(22, 35, 50, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+.left-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.left-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.left-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-bright);
+  margin-bottom: 20px;
+}
+.bars-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex: 1;
+  padding-bottom: 4px;
+}
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+.bar-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-dim);
+  text-align: center;
+  height: 26px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+.bar-track {
+  width: 40px;
+  height: 240px;
+  background: rgba(33, 150, 243, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: hidden;
+}
+.bar-fill {
+  width: 100%;
+  border-radius: 0 0 3px 3px;
+  position: relative;
+  transition: height 0.6s ease;
+}
+.bar-fill.p1 { background: linear-gradient(180deg, var(--primary) 0%, #1565C0 100%); height: 62%; }
+.bar-fill.p2 { background: linear-gradient(180deg, #42A5F5 0%, var(--primary) 100%); height: 18%; }
+.bar-fill.p3 { background: linear-gradient(180deg, var(--accent) 0%, #00838F 100%); height: 12%; }
+.bar-fill.p4 { background: linear-gradient(180deg, #26C6DA 0%, var(--accent) 100%); height: 5%; }
+.bar-fill.p5 { background: linear-gradient(180deg, #80DEEA 0%, #26C6DA 100%); height: 3%; }
+.bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--text-bright);
+  opacity: 0.6;
+}
+.bar-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-bright);
+  margin-top: 10px;
+}
+.bar-value .pct { font-size: 12px; color: var(--text-dim); font-weight: 400; }
+.bar-type {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: center;
+  margin-top: 3px;
+  line-height: 1.3;
+}
+
+/* Right panel - cards */
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  position: relative;
+  transition: all 0.3s;
+}
+.card:nth-child(2) { border-left-color: #42A5F5; }
+.card:nth-child(3) { border-left-color: var(--accent); }
+.card:nth-child(4) { border-left-color: #26C6DA; }
+.card:nth-child(5) { border-left-color: #80DEEA; }
+.card-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--primary);
+  opacity: 0.7;
+  line-height: 1;
+  min-width: 42px;
+}
+.card:nth-child(2) .card-num { color: #42A5F5; }
+.card:nth-child(3) .card-num { color: var(--accent); }
+.card:nth-child(4) .card-num { color: #26C6DA; }
+.card:nth-child(5) .card-num { color: #80DEEA; }
+.card-body { flex: 1; }
+.card-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-bright);
+  margin-bottom: 5px;
+}
+.card-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 11.5px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.card-desc .accent { color: var(--text-main); font-weight: 400; }
+
+/* Footer */
+.footer {
+  margin-top: 18px;
+  padding: 14px 28px;
+  background: rgba(33, 150, 243, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.footer-icon {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--accent);
+  border: 1px solid rgba(0,188,212,0.4);
+  padding: 6px 10px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.footer-text {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.5;
+}
+.footer-text .strong {
+  color: var(--text-bright);
+  font-weight: 500;
+}
+.footer-text .accent {
+  color: var(--accent);
+  font-weight: 400;
+}
+.footer-text .accent2 {
+  color: var(--primary);
+  font-weight: 400;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <span class="title-badge">Open Source · Contribution</span>
+      </div>
+      <h1>贡献行为模式</h1>
+      <p class="subtitle">
+        开源贡献早已不限于<span class="hl2">写代码</span>。<span class="hl">社区运营</span>、<span class="hl2">文档编写</span>、<span class="hl">基础设施维护</span>、<span class="hl2">资金赞助</span>——这些隐形劳动同样支撑着整个生态的健康运转，值得被看见和尊重。
+      </p>
+    </div>
+
+    <div class="main">
+      <div class="left-panel">
+        <div class="left-title">Contribution Breakdown</div>
+        <div class="left-subtitle">贡献总量分布</div>
+        <div class="bars-container">
+          <div class="bar-group">
+            <div class="bar-label">纯代码</div>
+            <div class="bar-track"><div class="bar-fill p1"></div></div>
+            <div class="bar-value">62<span class="pct">%</span></div>
+            <div class="bar-type">Code</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">社区维护</div>
+            <div class="bar-track"><div class="bar-fill p2"></div></div>
+            <div class="bar-value">18<span class="pct">%</span></div>
+            <div class="bar-type">Community</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">文档教学</div>
+            <div class="bar-track"><div class="bar-fill p3"></div></div>
+            <div class="bar-value">12<span class="pct">%</span></div>
+            <div class="bar-type">Docs</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">基础设施</div>
+            <div class="bar-track"><div class="bar-fill p4"></div></div>
+            <div class="bar-value">5<span class="pct">%</span></div>
+            <div class="bar-type">Infra</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">资金赞助</div>
+            <div class="bar-track"><div class="bar-fill p5"></div></div>
+            <div class="bar-value">3<span class="pct">%</span></div>
+            <div class="bar-type">Funding</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-num">01</div>
+            <div class="card-body">
+              <div class="card-tag">CODE · 62%</div>
+              <div class="card-title">代码贡献</div>
+              <div class="card-desc">提交 <span class="accent">PR</span>、修复 <span class="accent">bug</span>、实现新功能——传统核心贡献形式，直接驱动项目代码演进。</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-num">02</div>
+            <div class="card-body">
+              <div class="card-tag">COMMUNITY · 18%</div>
+              <div class="card-title">社区维护</div>
+              <div class="card-desc">回答问题、评审代码、管理 <span class="accent">issue</span>——同样消耗大量精力，维系协作生态。</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-num">03</div>
+            <div class="card-body">
+              <div class="card-tag">DOCUMENTATION · 12%</div>
+              <div class="card-title">文档与教学</div>
+              <div class="card-desc">编写教程、翻译文档、录制视频——降低入门门槛，让更多人加入贡献行列。</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-num">04</div>
+            <div class="card-body">
+              <div class="card-tag">INFRASTRUCTURE · 5%</div>
+              <div class="card-title">基础设施</div>
+              <div class="card-desc">搭建 <span class="accent">CI/CD</span>、管理包仓库、维护构建工具——默默支撑整个生态正常运转。</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-num">05</div>
+            <div class="card-body">
+              <div class="card-tag">FUNDING · 3%</div>
+              <div class="card-title">资金与赞助</div>
+              <div class="card-desc">通过捐赠、赞助、企业会员——为项目提供<span class="accent">可持续</span>的经济支持。</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-num" style="color: var(--text-dim);">+</div>
+            <div class="card-body">
+              <div class="card-tag">BEYOND</div>
+              <div class="card-title">还有更多</div>
+              <div class="card-desc">无障碍优化、本地化、安全研究、品牌设计……每一种参与都是对开源生态的真实贡献。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-icon">&gt;_</div>
+      <div class="footer-text">
+        <span class="strong">每一种贡献都同等重要</span>——无论写代码、做文档、搭基建还是给赞助，<span class="accent">都应该被社区看见</span>与<span class="accent2">尊重</span>。
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

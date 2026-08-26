@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源文化深度解读</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --primary-dark: #1565C0;
+  --cyan: #00BCD4;
+  --cyan-light: #00E5FF;
+  --text-main: #ECEFF1;
+  --text-dim: #90A4AE;
+  --bg-deep: #070D1A;
+  --bg-navy: #0A1628;
+  --card-bg: rgba(10, 22, 40, 0.88);
+  --card-border: rgba(33, 150, 243, 0.28);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif; color:var(--text-main); background:var(--bg-deep); overflow:hidden; }
+
+.wrapper {
+  width:1600px; height:900px; position:relative; overflow:hidden; margin:0 auto;
+}
+
+#bg {
+  position:absolute; inset:0; z-index:0;
+  background: linear-gradient(135deg, #050D1A 0%, #0A1628 40%, #0D1F3C 70%, #071425 100%);
+}
+
+.bg-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.bg-glow-1 {
+  position:absolute; width:900px; height:900px; left:350px; top:150px;
+  background: radial-gradient(circle, rgba(33,150,243,0.10) 0%, rgba(33,150,243,0.03) 35%, transparent 65%);
+  border-radius:50%;
+}
+
+.bg-glow-2 {
+  position:absolute; width:400px; height:400px; left:-150px; top:-100px;
+  background: radial-gradient(circle, rgba(0,188,212,0.10) 0%, transparent 60%);
+  border-radius:50%;
+}
+
+.bg-glow-3 {
+  position:absolute; width:400px; height:400px; right:-150px; bottom:-100px;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 60%);
+  border-radius:50%;
+}
+
+#ct {
+  position:absolute; inset:0; z-index:1;
+  padding:42px 60px;
+  box-sizing:border-box;
+}
+
+.connections {
+  position:absolute; inset:0; z-index:1;
+  pointer-events:none;
+}
+
+.header {
+  text-align:center;
+  margin-bottom:14px;
+  position:relative;
+  z-index:2;
+}
+
+.title {
+  font-size:36px;
+  font-weight:700;
+  letter-spacing:8px;
+  background: linear-gradient(135deg, #ECEFF1 0%, #2196F3 50%, #00BCD4 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:8px;
+  font-family:'Inter',sans-serif;
+}
+
+.title-underline {
+  width:110px; height:2px;
+  margin:0 auto 14px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+
+.subtitle {
+  font-size:13px;
+  color:var(--text-dim);
+  line-height:1.85;
+  max-width:940px;
+  margin:0 auto;
+  font-weight:300;
+  letter-spacing:0.3px;
+}
+
+.subtitle .accent { color:var(--cyan); font-weight:500; }
+.subtitle .accent2 { color:var(--primary); font-weight:500; }
+
+.main {
+  position:relative;
+  height:660px;
+  margin-top:6px;
+  z-index:2;
+}
+
+.center-diagram {
+  position:absolute;
+  left:410px; top:124px;
+  width:720px; height:402px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.diagram-glow-bg {
+  position:absolute;
+  inset:-40px;
+  background: radial-gradient(ellipse at center, rgba(33,150,243,0.18) 0%, rgba(33,150,243,0.05) 40%, transparent 70%);
+  z-index:0;
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%,100% { opacity:0.6; }
+  50% { opacity:1; }
+}
+
+.diagram-frame {
+  position:relative;
+  width:100%; height:100%;
+  border-radius:12px;
+  padding:6px;
+  background: rgba(33,150,243,0.06);
+  border:1px solid rgba(33,150,243,0.25);
+  overflow:hidden;
+  z-index:1;
+}
+
+.diagram-frame img {
+  width:100%; height:100%;
+  object-fit:contain;
+  border-radius:8px;
+  display:block;
+}
+
+.diagram-corner {
+  position:absolute;
+  width:14px; height:14px;
+  border-color: var(--cyan);
+  border-style: solid;
+  border-width: 0;
+}
+.diagram-corner.tl { top:2px; left:2px; border-top-width:1.5px; border-left-width:1.5px; }
+.diagram-corner.tr { top:2px; right:2px; border-top-width:1.5px; border-right-width:1.5px; }
+.diagram-corner.bl { bottom:2px; left:2px; border-bottom-width:1.5px; border-left-width:1.5px; }
+.diagram-corner.br { bottom:2px; right:2px; border-bottom-width:1.5px; border-right-width:1.5px; }
+
+.diagram-caption {
+  position:absolute;
+  bottom:-22px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;
+  color:rgba(0,188,212,0.5);
+  letter-spacing:3px;
+  white-space:nowrap;
+}
+
+.card {
+  position:absolute;
+  width:360px;
+  padding:20px 22px 18px 26px;
+  background: var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:10px;
+  backdrop-filter: blur(8px);
+  z-index:3;
+}
+
+.card::before {
+  content:'';
+  position:absolute;
+  top:12px; left:0;
+  width:3px; height:36px;
+  background: linear-gradient(180deg, var(--cyan) 0%, var(--primary) 100%);
+  border-radius:0 3px 3px 0;
+  box-shadow: 0 0 8px rgba(0,188,212,0.4);
+}
+
+.card-icon {
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;
+  color:var(--cyan);
+  letter-spacing:2.5px;
+  margin-bottom:6px;
+  opacity:0.85;
+}
+
+.card-title {
+  font-size:18px;
+  font-weight:600;
+  color:var(--text-main);
+  margin-bottom:8px;
+  line-height:1.35;
+  letter-spacing:0.5px;
+}
+
+.card-divider {
+  width:32px; height:1px;
+  background:var(--primary);
+  margin-bottom:9px;
+  opacity:0.6;
+}
+
+.card-text {
+  font-size:12.5px;
+  color:var(--text-dim);
+  line-height:1.75;
+  font-weight:300;
+}
+
+.card-text .hl { color:var(--cyan); font-weight:500; }
+.card-text .hl2 { color:var(--primary); font-weight:500; }
+
+.card-tl { left:0; top:0; }
+.card-tr { right:0; top:0; }
+.card-bl { left:0; bottom:0; }
+.card-br { right:0; bottom:0; }
+
+.stats-row {
+  position:absolute;
+  left:0; right:0;
+  bottom:12px;
+  display:flex;
+  justify-content:center;
+  gap:60px;
+  z-index:4;
+}
+
+.stat-item {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:'Roboto Mono',monospace;
+}
+
+.stat-dot {
+  width:6px; height:6px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);
+}
+
+.stat-text {
+  font-size:10px;
+  color:var(--text-dim);
+  letter-spacing:1.5px;
+}
+
+.stat-text .num {
+  color:var(--cyan);
+  font-weight:500;
+  margin-right:2px;
+}
+
+.stat-text .num-primary {
+  color:var(--primary);
+  font-weight:500;
+  margin-right:2px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-glow-3"></div>
+  </div>
+
+  <svg class="connections" viewBox="0 0 1600 900" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="glowTL" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#00BCD4;stop-opacity:0.55"/>
+        <stop offset="100%" style="stop-color:#2196F3;stop-opacity:0"/>
+      </linearGradient>
+      <linearGradient id="glowTR" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#00BCD4;stop-opacity:0.55"/>
+        <stop offset="100%" style="stop-color:#2196F3;stop-opacity:0"/>
+      </linearGradient>
+      <linearGradient id="glowBL" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#00BCD4;stop-opacity:0.55"/>
+        <stop offset="100%" style="stop-color:#2196F3;stop-opacity:0"/>
+      </linearGradient>
+      <linearGradient id="glowBR" x1="100%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" style="stop-color:#00BCD4;stop-opacity:0.55"/>
+        <stop offset="100%" style="stop-color:#2196F3;stop-opacity:0"/>
+      </linearGradient>
+      <filter id="softglow">
+        <feGaussianBlur stdDeviation="2.5" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <path d="M 415 275 Q 560 320, 750 400" fill="none" stroke="url(#glowTL)" stroke-width="1.8" filter="url(#softglow)" opacity="0.75"/>
+    <path d="M 415 310 Q 560 370, 770 450" fill="none" stroke="#2196F3" stroke-width="0.8" opacity="0.25"/>
+
+    <path d="M 1185 275 Q 1040 320, 850 400" fill="none" stroke="url(#glowTR)" stroke-width="1.8" filter="url(#softglow)" opacity="0.75"/>
+    <path d="M 1185 310 Q 1040 370, 830 450" fill="none" stroke="#2196F3" stroke-width="0.8" opacity="0.25"/>
+
+    <path d="M 415 720 Q 560 640, 750 560" fill="none" stroke="url(#glowBL)" stroke-width="1.8" filter="url(#softglow)" opacity="0.75"/>
+    <path d="M 415 680 Q 560 600, 770 540" fill="none" stroke="#2196F3" stroke-width="0.8" opacity="0.25"/>
+
+    <path d="M 1185 720 Q 1040 640, 850 560" fill="none" stroke="url(#glowBR)" stroke-width="1.8" filter="url(#softglow)" opacity="0.75"/>
+    <path d="M 1185 680 Q 1040 600, 830 540" fill="none" stroke="#2196F3" stroke-width="0.8" opacity="0.25"/>
+
+    <circle cx="800" cy="490" r="200" fill="none" stroke="#2196F3" stroke-width="0.5" opacity="0.18"/>
+    <circle cx="800" cy="490" r="245" fill="none" stroke="#00BCD4" stroke-width="0.5" opacity="0.12" stroke-dasharray="4 6"/>
+    <circle cx="800" cy="490" r="160" fill="none" stroke="#2196F3" stroke-width="0.5" opacity="0.12"/>
+
+    <circle cx="580" cy="360" r="2.5" fill="#00BCD4" opacity="0.7"/>
+    <circle cx="1020" cy="360" r="2.5" fill="#00BCD4" opacity="0.7"/>
+    <circle cx="580" cy="620" r="2.5" fill="#00BCD4" opacity="0.7"/>
+    <circle cx="1020" cy="620" r="2.5" fill="#00BCD4" opacity="0.7"/>
+    <circle cx="700" cy="430" r="2" fill="#2196F3" opacity="0.5"/>
+    <circle cx="900" cy="430" r="2" fill="#2196F3" opacity="0.5"/>
+    <circle cx="700" cy="550" r="2" fill="#2196F3" opacity="0.5"/>
+    <circle cx="900" cy="550" r="2" fill="#2196F3" opacity="0.5"/>
+  </svg>
+
+  <div id="ct">
+    <div class="header">
+      <span class="title">开源文化深度解读</span>
+      <div class="title-underline"></div>
+      <p class="subtitle">
+        <span>开源文化远不止于<span class="accent">代码共享</span>，它是一套关于<span class="accent2">信任</span>、<span class="accent2">自由</span>与<span class="accent2">协作</span>的价值体系，读书会参与者围绕其历史渊源与现代演变展开了热烈讨论。</span>
+      </p>
+    </div>
+
+    <div class="main">
+
+      <div class="card card-tl">
+        <span>
+          <div class="card-icon">// 01 · GENES</div>
+          <h3 class="card-title">黑客文化基因</h3>
+          <div class="card-divider"></div>
+          <p class="card-text">开源继承了早期<span class="hl">黑客文化的探索精神</span>，以解决有趣问题为<span class="hl2">内在驱动力</span>，崇尚智慧、开放与自我实现。</p>
+        </span>
+      </div>
+
+      <div class="card card-tr">
+        <span>
+          <div class="card-icon">// 02 · VALUE</div>
+          <h3 class="card-title">开源不等于免费</h3>
+          <div class="card-divider"></div>
+          <p class="card-text">免费是开源的<span class="hl">副产品</span>而非核心目的，真正的价值在于<span class="hl2">自由与协作</span>——思想的自由流动远比价格更重要。</p>
+        </span>
+      </div>
+
+      <div class="card card-bl">
+        <span>
+          <div class="card-icon">// 03 · DIVERSITY</div>
+          <h3 class="card-title">多样性与包容</h3>
+          <div class="card-divider"></div>
+          <p class="card-text">健康社区鼓励不同<span class="hl">背景、水平、观点</span>的成员参与并<span class="hl2">互相尊重</span>，差异正是创新的土壤。</p>
+        </span>
+      </div>
+
+      <div class="card card-br">
+        <span>
+          <div class="card-icon">// 04 · TRUST</div>
+          <h3 class="card-title">信任机制</h3>
+          <div class="card-divider"></div>
+          <p class="card-text">贡献者信誉通过<span class="hl">提交记录</span>、<span class="hl">代码审查</span>和社区互动<span class="hl2">逐步积累</span>，形成去中心化的信任网络。</p>
+        </span>
+      </div>
+
+      <div class="center-diagram">
+        <div class="diagram-glow-bg"></div>
+        <div class="diagram-frame">
+          <span class="diagram-corner tl"></span>
+          <span class="diagram-corner tr"></span>
+          <span class="diagram-corner bl"></span>
+          <span class="diagram-corner br"></span>
+          <img src="/slides/2022-2022-02-开源读书会分享-2-19杭州/images/page_004_culture_diagram.jpg" alt="开源文化符号网络图">
+        </div>
+        <span class="diagram-caption">CULTURE NETWORK · 文化生态枢纽</span>
+      </div>
+
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <span class="stat-dot"></span>
+        <span class="stat-text"><span class="num">4</span> 核心维度</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-dot" style="background:var(--primary);box-shadow:0 0 8px var(--primary);"></span>
+        <span class="stat-text"><span class="num-primary">1</span> 文化生态枢纽</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-dot"></span>
+        <span class="stat-text"><span class="num">∞</span> 协作网络</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

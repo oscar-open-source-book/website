@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源贡献者分类</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+:root{
+  --cyan:#00BCD4;
+  --cyan-dim:#007a87;
+  --cyan-glow:rgba(0,188,212,0.25);
+  --amber:#FF7043;
+  --bg:#050B14;
+  --bg-2:#0A1626;
+  --card:#0d1c2e;
+  --border:rgba(0,188,212,0.25);
+  --text-main:#e8f4f8;
+  --text-dim:#7fa0b0;
+  --title-font:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  --body-font:'Roboto Mono','PingFang SC',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;font-family:var(--body-font);color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);font-family:var(--body-font);}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 40%, rgba(0,188,212,0.18), transparent 55%),radial-gradient(ellipse at 90% 90%, rgba(255,112,67,0.10), transparent 50%),linear-gradient(180deg,#040912 0%,#06111c 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 56px 44px 56px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+.header{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:20px;}
+.h-left{display:flex;flex-direction:column;gap:6px;}
+.eyebrow{font-family:var(--body-font);font-size:12px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;}
+.title{font-family:var(--title-font);font-weight:800;font-size:34px;color:#fff;letter-spacing:1px;}
+.title .accent{color:var(--amber);}
+.h-right{font-family:var(--body-font);font-size:11px;color:var(--text-dim);letter-spacing:2px;text-align:right;line-height:1.6;}
+.h-right .code{color:var(--cyan);}
+
+.main{flex:1;display:flex;gap:32px;min-height:0;}
+
+/* 左侧：图片 */
+.left{width:800px;display:flex;flex-direction:column;gap:14px;}
+.stage{position:relative;width:800px;height:530px;background:linear-gradient(180deg,#07111f 0%,#050d17 100%);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 55%, rgba(0,188,212,0.18), transparent 60%);pointer-events:none;}
+.stage-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,188,212,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,188,212,0.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.stage img{position:relative;z-index:1;width:600px;height:450px;object-fit:contain;filter:drop-shadow(0 0 30px rgba(0,188,212,0.45));}
+.stage-corner{position:absolute;width:18px;height:18px;border:2px solid var(--cyan);z-index:2;}
+.stage-corner.tl{top:10px;left:10px;border-right:none;border-bottom:none;}
+.stage-corner.tr{top:10px;right:10px;border-left:none;border-bottom:none;}
+.stage-corner.bl{bottom:10px;left:10px;border-right:none;border-top:none;}
+.stage-corner.br{bottom:10px;right:10px;border-left:none;border-top:none;}
+.stage-tag{position:absolute;top:14px;left:38px;font-family:var(--body-font);font-size:10px;letter-spacing:2px;color:var(--cyan);z-index:3;}
+.stage-tag-r{position:absolute;top:14px;right:38px;font-family:var(--body-font);font-size:10px;letter-spacing:2px;color:var(--amber);z-index:3;}
+.stage-axis{position:absolute;left:20px;bottom:14px;display:flex;flex-direction:column;gap:6px;font-family:var(--body-font);font-size:10px;letter-spacing:1px;color:var(--text-dim);z-index:3;}
+.stage-axis .a-row{display:flex;align-items:center;gap:6px;}
+.stage-axis .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);}
+.stage-axis .dot.amber{background:var(--amber);box-shadow:0 0 6px var(--amber);}
+
+.pyramid-caption{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:rgba(0,188,212,0.06);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:4px;}
+.pyramid-caption .cap-t{font-family:var(--title-font);font-weight:700;font-size:14px;color:#fff;}
+.pyramid-caption .cap-s{font-size:11px;color:var(--text-dim);letter-spacing:1px;}
+
+/* 右侧 */
+.right{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0;}
+
+.stats{display:flex;flex-direction:column;gap:8px;}
+.stat{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:4px;}
+.stat.amber{border-left-color:var(--amber);}
+.stat .num{font-family:var(--title-font);font-weight:800;font-size:28px;color:var(--cyan);letter-spacing:0.5px;}
+.stat.amber .num{color:var(--amber);}
+.stat .meta{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.stat .lbl{font-family:var(--title-font);font-weight:700;font-size:13px;color:#fff;}
+.stat .desc{font-size:10px;color:var(--text-dim);letter-spacing:0.5px;}
+
+.section-h{display:flex;align-items:center;gap:10px;margin-top:2px;}
+.section-h .bar{width:24px;height:2px;background:var(--amber);}
+.section-h .txt{font-family:var(--title-font);font-weight:700;font-size:14px;color:#fff;letter-spacing:1px;}
+.section-h .tag{margin-left:auto;font-family:var(--body-font);font-size:10px;color:var(--text-dim);letter-spacing:2px;}
+
+.cards{display:flex;flex-direction:column;gap:6px;}
+.card{display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(--card);border:1px solid rgba(0,188,212,0.15);border-radius:4px;}
+.card .idx{font-family:var(--title-font);font-weight:800;font-size:18px;color:var(--cyan);width:28px;flex-shrink:0;}
+.card .info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.card .name{font-family:var(--title-font);font-weight:700;font-size:13px;color:#fff;}
+.card .role{font-size:10px;color:var(--text-dim);letter-spacing:0.3px;line-height:1.5;}
+.card.top .idx{color:var(--amber);}
+.card.top{border-color:rgba(255,112,67,0.4);}
+
+.footer{margin-top:8px;padding:12px 20px;background:linear-gradient(90deg,rgba(0,188,212,0.15),rgba(0,188,212,0.03));border-left:3px solid var(--cyan);border-radius:4px;display:flex;align-items:center;gap:14px;}
+.footer .ico{font-family:var(--title-font);font-weight:800;font-size:14px;color:var(--cyan);letter-spacing:3px;}
+.footer .txt{font-family:var(--title-font);font-weight:700;font-size:16px;color:#fff;letter-spacing:1px;}
+.footer .txt .hi{color:var(--cyan);}
+.footer .tag{margin-left:auto;font-family:var(--body-font);font-size:10px;color:var(--text-dim);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="h-left">
+    <div class="eyebrow">OPEN SOURCE · CONTRIBUTORS MAP</div>
+    <div class="title">开源贡献者分类 <span class="accent">/</span> 金字塔结构</div>
+  </div>
+  <div class="h-right">
+    <span class="code">// STRUCTURE</span><br>
+    五层贡献生态 · 由下而上
+  </div>
+</div>
+
+<div class="main">
+  <div class="left">
+    <div class="stage">
+      <div class="stage-grid"></div>
+      <span class="stage-corner tl"></span>
+      <span class="stage-corner tr"></span>
+      <span class="stage-corner bl"></span>
+      <span class="stage-corner br"></span>
+      <span class="stage-tag">PYRAMID · 贡献者金字塔</span>
+      <span class="stage-tag-r">APEX · 决策层</span>
+      <img src="/slides/the-profile-of-os-people/images/page_008_pyramid.jpg" alt="四层青色发光线框金字塔示意图">
+      <div class="stage-axis">
+        <div class="a-row"><span class="dot amber"></span> 决策</div>
+        <div class="a-row"><span class="dot"></span> 维护</div>
+        <div class="a-row"><span class="dot"></span> 活跃</div>
+        <div class="a-row"><span class="dot"></span> 新手</div>
+      </div>
+    </div>
+    <div class="pyramid-caption">
+      <div class="cap-t">四层渐升 · 逐级收窄</div>
+      <div class="cap-s">等距透视 · 未来极简 · 顶部橙色决策层</div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="stats">
+      <div class="stat">
+        <div class="num">80%</div>
+        <div class="meta">
+          <div class="lbl">新手参与者</div>
+          <div class="desc">全部贡献者中一次性贡献者比例</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="num">15%</div>
+        <div class="meta">
+          <div class="lbl">活跃贡献者</div>
+          <div class="desc">持续参与至少 6 个月</div>
+        </div>
+      </div>
+      <div class="stat amber">
+        <div class="num">&lt;5%</div>
+        <div class="meta">
+          <div class="lbl">核心维护者</div>
+          <div class="desc">拥有合并权限的贡献者比例</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-h">
+      <span class="bar"></span>
+      <span class="txt">五类贡献者画像</span>
+      <span class="tag">ROLE / 05</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="idx">01</div>
+        <div class="info">
+          <div class="name">新手参与者</div>
+          <div class="role">提交首个 PR、修复文档错别字、报告 bug，从最微小的贡献开始融入</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="idx">02</div>
+        <div class="info">
+          <div class="name">活跃贡献者</div>
+          <div class="role">定期为多个项目提交代码，建立社区声誉</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="idx">03</div>
+        <div class="info">
+          <div class="name">核心维护者</div>
+          <div class="role">拥有项目合并权限，负责代码审查、架构决策和社区管理</div>
+        </div>
+      </div>
+      <div class="card top">
+        <div class="idx">04</div>
+        <div class="info">
+          <div class="name">项目创始人</div>
+          <div class="role">发起并主导项目方向，定义技术路线</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="idx">05</div>
+        <div class="info">
+          <div class="name">非代码贡献者</div>
+          <div class="role">文档翻译、社区组织、活动策划等角色</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="ico">// INSIGHT</div>
+  <div class="txt">开源生态因<span class="hi">分层协作</span>而保持活力</div>
+  <div class="tag">EVERY LAYER · MATTERS</div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>核心数据一览</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0F1923;
+  --card-bg: #142233;
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #E0E8F0;
+  --text-dim: #7A8FA3;
+  --glow: rgba(33, 150, 243, 0.55);
+  --glow-strong: rgba(33, 150, 243, 0.85);
+  --border-glow: rgba(33, 150, 243, 0.25);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Roboto Mono', monospace;
+  background: var(--bg);
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(33,150,243,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 90%, rgba(0,188,212,0.06) 0%, transparent 50%),
+    linear-gradient(180deg, #0D1720 0%, #0F1923 40%, #0C141D 100%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 56px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 背景网格线装饰 */
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* 顶部标题区 */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(33,150,243,0.18);
+  position: relative;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 280px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+}
+.title-block { display: flex; flex-direction: column; gap: 6px; }
+.title-main {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 42px;
+  background: linear-gradient(135deg, #4FC3F7, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+.title-sub {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+.meta-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  margin-right: 6px;
+}
+
+/* KPI 卡片网格 */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+  flex: 0 0 auto;
+}
+.kpi-card {
+  position: relative;
+  background: linear-gradient(135deg, #142233 0%, #0E1A28 100%);
+  border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 10px;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 130px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.6;
+}
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.4;
+}
+.kpi-corner {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.kpi-value {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--primary);
+  text-shadow:
+    0 0 12px var(--glow),
+    0 0 24px rgba(33,150,243,0.35),
+    0 0 48px rgba(33,150,243,0.15);
+  line-height: 1.1;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.kpi-value .unit {
+  font-size: 18px;
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(0,188,212,0.5);
+  font-weight: 500;
+}
+.kpi-context {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+.kpi-bar {
+  margin-top: 8px;
+  height: 3px;
+  background: rgba(33,150,243,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.kpi-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  box-shadow: 0 0 6px var(--glow);
+}
+
+/* 底部维度说明 */
+.dim-section {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 12px;
+  padding: 14px 18px;
+  background: rgba(20,34,51,0.4);
+  border: 1px solid rgba(33,150,243,0.1);
+  border-radius: 8px;
+  position: relative;
+}
+.dim-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+}
+.dim-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 4px 6px;
+  border-left: 2px solid rgba(33,150,243,0.3);
+  transition: border-color 0.3s;
+}
+.dim-item:hover { border-left-color: var(--accent); }
+.dim-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(33,150,243,0.12);
+  border: 1px solid rgba(33,150,243,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.dim-text { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.dim-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+.dim-desc {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  letter-spacing: 0.3px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="title-main">核心数据一览</div>
+        <div class="title-sub">用数据说话：贡献行为呈现出明显的长尾分布</div>
+      </div>
+      <div class="header-meta">
+        <span><span class="meta-dot"></span>OPEN SOURCE COMMUNITY</span>
+        <span>|</span>
+        <span>DASHBOARD v2.0</span>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+        <span class="kpi-corner">01</span>
+        <div class="kpi-label">月均提交</div>
+        <div class="kpi-value">100<span class="unit">+ 次/月</span></div>
+        <div class="kpi-context">Top 5% 贡献者 · 头部核心维护者</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:95%"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-corner">02</span>
+        <div class="kpi-label">专注项目数</div>
+        <div class="kpi-value">≤ 3<span class="unit"> 个</span></div>
+        <div class="kpi-context">60% 贡献者 · 长期深耕少数项目</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:60%"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-corner">03</span>
+        <div class="kpi-label">Issue 响应时间</div>
+        <div class="kpi-value">&lt; 48<span class="unit"> 小时</span></div>
+        <div class="kpi-context">热门项目均值 · 社区响应高效</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:80%"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-corner">04</span>
+        <div class="kpi-label">新手留存率</div>
+        <div class="kpi-value">35<span class="unit">% </span></div>
+        <div class="kpi-context">首次贡献后 6 个月内 · 流失率偏高</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:35%"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-corner">05</span>
+        <div class="kpi-label">参与项目数</div>
+        <div class="kpi-value">4.2<span class="unit"> 个</span></div>
+        <div class="kpi-context">活跃贡献者均值 · 跨项目协作</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:42%"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <span class="kpi-corner">06</span>
+        <div class="kpi-label">非代码贡献占比</div>
+        <div class="kpi-value">22<span class="unit">% </span></div>
+        <div class="kpi-context">文档 / 测试 / 设计 · 多元化趋势</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:22%"></div></div>
+      </div>
+
+    </div>
+
+    <div class="dim-section">
+      <div class="dim-item">
+        <div class="dim-icon">F1</div>
+        <div class="dim-text">
+          <span class="dim-title">贡献频次</span>
+          <span class="dim-desc">头部贡献者平均每月提交超过 100 次 commit，长尾效应显著。</span>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon">F2</div>
+        <div class="dim-text">
+          <span class="dim-title">项目粘性</span>
+          <span class="dim-desc">超过 60% 的贡献者长期深耕 3 个以内核心项目。</span>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon">F3</div>
+        <div class="dim-text">
+          <span class="dim-title">响应速度</span>
+          <span class="dim-desc">热门项目 issue 平均响应时间已缩短至 48 小时以内。</span>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon">F4</div>
+        <div class="dim-text">
+          <span class="dim-title">新手留存</span>
+          <span class="dim-desc">首次贡献后 6 个月内留存率约 35%，社区引导至关重要。</span>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon">F5</div>
+        <div class="dim-text">
+          <span class="dim-title">跨项目协作</span>
+          <span class="dim-desc">平均每位活跃贡献者参与 4.2 个不同项目，知识流动活跃。</span>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon">F6</div>
+        <div class="dim-text">
+          <span class="dim-title">文档贡献</span>
+          <span class="dim-desc">非代码贡献占比已达 22%，贡献类型正从纯代码向多元化演变。</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源生态数据一览</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root{
+  --bg-deep:#0a0e1a;
+  --bg-card:rgba(20,28,50,0.72);
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#ECEFF1;
+  --muted:#7a8896;
+  --border:rgba(33,150,243,0.18);
+  --glow:rgba(33,150,243,0.35);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  color:var(--neutral);
+  background:var(--bg-deep);
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% 10%, rgba(33,150,243,0.10), transparent 70%),
+    radial-gradient(ellipse 800px 480px at 90% 95%, rgba(0,188,212,0.09), transparent 70%),
+    radial-gradient(ellipse 600px 400px at 50% 50%, rgba(33,150,243,0.04), transparent 80%),
+    linear-gradient(160deg, #0a0e1a 0%, #0d1424 40%, #0a1020 100%);
+}
+
+#bg::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.035) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, black 40%, transparent 90%);
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:38px 60px 30px 60px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* ---- Header ---- */
+.header{margin-bottom:14px;}
+
+.title-row{
+  display:flex;align-items:flex-end;gap:18px;
+  border-bottom:1px solid var(--border);
+  padding-bottom:14px;
+}
+
+.title-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;letter-spacing:2px;
+  color:var(--accent);
+  padding:5px 12px;
+  border:1px solid rgba(0,188,212,0.35);
+  border-radius:3px;
+  margin-bottom:8px;
+  align-self:flex-start;
+}
+.title-badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 8px var(--accent);
+}
+
+h1{
+  font-family:'Noto Sans SC','Inter',sans-serif;
+  font-weight:900;
+  font-size:40px;
+  letter-spacing:2px;
+  background:linear-gradient(92deg,#ECEFF1 0%, #2196F3 60%, #00BCD4 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  line-height:1.15;
+}
+
+.title-stats{
+  margin-left:auto;
+  text-align:right;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.6;
+  padding-bottom:4px;
+}
+.title-stats .row{display:flex;align-items:center;gap:8px;justify-content:flex-end;}
+.title-stats .dot{width:5px;height:5px;border-radius:50%;background:var(--primary);box-shadow:0 0 6px var(--primary);}
+
+.subtitle{
+  margin-top:12px;
+  font-size:13.5px;
+  line-height:1.75;
+  color:var(--muted);
+  max-width:1380px;
+}
+.subtitle b{color:var(--neutral);font-weight:500;}
+.subtitle .hl{color:var(--accent);font-weight:500;}
+
+/* ---- 6-card grid ---- */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  grid-template-rows:repeat(2, 1fr);
+  gap:16px;
+  margin-top:18px;
+  flex:1;
+  min-height:0;
+}
+
+.card{
+  position:relative;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px 22px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  overflow:hidden;
+  backdrop-filter:blur(4px);
+  transition:transform .2s, border-color .2s;
+}
+.card:hover{border-color:rgba(33,150,243,0.5);transform:translateY(-2px);}
+
+.card::before{
+  content:'';position:absolute;
+  left:0;top:0;width:3px;height:100%;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+}
+.card::after{
+  content:'';position:absolute;
+  right:-40px;top:-40px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.10), transparent 70%);
+}
+
+.card-top{display:flex;align-items:center;justify-content:space-between;}
+.card-label{
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:500;font-size:14px;
+  color:var(--neutral);
+  letter-spacing:1px;
+}
+.card-icon{
+  width:28px;height:28px;
+  border:1px solid rgba(0,188,212,0.4);
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;color:var(--accent);
+}
+
+.card-value{
+  font-family:'Inter',sans-serif;
+  font-weight:800;
+  font-size:46px;
+  letter-spacing:-1px;
+  color:var(--primary);
+  line-height:1;
+  text-shadow:0 0 24px rgba(33,150,243,0.35);
+  margin:6px 0 4px 0;
+}
+.card-value .unit{font-size:22px;font-weight:600;color:var(--accent);margin-left:2px;}
+
+.card-desc{
+  font-size:11.5px;color:var(--muted);
+  letter-spacing:0.5px;
+  display:flex;align-items:center;gap:6px;
+}
+.card-desc::before{
+  content:'';width:14px;height:1px;background:var(--accent);
+  flex-shrink:0;
+}
+
+/* mini spark bars */
+.spark{
+  position:absolute;right:16px;bottom:14px;
+  display:flex;gap:3px;align-items:flex-end;height:18px;
+  opacity:0.55;
+}
+.spark span{display:block;width:3px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:1px;}
+
+/* ---- Tag bar ---- */
+.tag-bar{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:10px;
+}
+
+.tag{
+  position:relative;
+  background:rgba(20,28,50,0.55);
+  border:1px solid var(--border);
+  border-top:2px solid var(--primary);
+  border-radius:6px;
+  padding:12px 14px 11px 14px;
+}
+.tag .tag-head{
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:6px;
+}
+.tag .tag-num{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--accent);
+  letter-spacing:1px;
+}
+.tag .tag-title{
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:600;font-size:12.5px;
+  color:var(--neutral);
+}
+.tag .tag-text{
+  font-size:10.8px;
+  color:var(--muted);
+  line-height:1.55;
+}
+
+/* ---- Footer gradient line ---- */
+.footer-line{
+  margin-top:14px;
+  height:6px;border-radius:3px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    rgba(33,150,243,0.4) 15%,
+    #2196F3 40%,
+    #00BCD4 60%,
+    rgba(0,188,212,0.4) 85%,
+    transparent 100%);
+  position:relative;
+}
+.footer-line::before{
+  content:'';position:absolute;
+  left:12%;top:-3px;width:8px;height:12px;border-radius:50%;
+  background:var(--primary);
+  box-shadow:0 0 12px var(--primary), 0 0 24px rgba(33,150,243,0.5);
+}
+.footer-line::after{
+  content:'';position:absolute;
+  right:8%;top:-2px;width:10px;height:10px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 14px var(--accent), 0 0 28px rgba(0,188,212,0.5);
+}
+
+.footer-meta{
+  margin-top:8px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--muted);
+  letter-spacing:1.5px;
+}
+.footer-meta .left{display:flex;gap:14px;align-items:center;}
+.footer-meta .sep{opacity:0.4;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div>
+          <div class="title-badge"><span>OPEN&nbsp;SOURCE&nbsp;//&nbsp;DATA&nbsp;OVERVIEW</span></div>
+          <h1>开源生态数据一览</h1>
+        </div>
+        <div class="title-stats">
+          <div class="row"><span class="dot"></span><span>6 组关键指标</span></div>
+          <div class="row"><span class="dot"></span><span>6 大观察维度</span></div>
+          <div class="row"><span class="dot"></span><span>数据截止 2021</span></div>
+        </div>
+      </div>
+      <p class="subtitle">
+        这组数据勾勒出全球开源生态的<b>蓬勃发展态势</b>——从开发者规模到企业采用率，每一个数字都在印证开源正从边缘走向主流。对读书会参与者而言，<span class="hl">参与开源不仅是兴趣，更是职业发展的关键路径</span>。
+      </p>
+    </div>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-top">
+          <span class="card-label"><span>GitHub开发者</span></span>
+          <span class="card-icon">01</span>
+        </div>
+        <div class="card-value"><span>1亿</span><span class="unit">+</span></div>
+        <div class="card-desc"><span>2021年数据</span></div>
+        <div class="spark">
+          <span style="height:5px"></span><span style="height:8px"></span><span style="height:6px"></span><span style="height:12px"></span><span style="height:10px"></span><span style="height:15px"></span><span style="height:18px"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="card-label"><span>开源项目数</span></span>
+          <span class="card-icon">02</span>
+        </div>
+        <div class="card-value"><span>4.6亿</span><span class="unit">+</span></div>
+        <div class="card-desc"><span>公开仓库总量</span></div>
+        <div class="spark">
+          <span style="height:4px"></span><span style="height:9px"></span><span style="height:7px"></span><span style="height:13px"></span><span style="height:11px"></span><span style="height:16px"></span><span style="height:18px"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="card-label"><span>企业采用率</span></span>
+          <span class="card-icon">03</span>
+        </div>
+        <div class="card-value"><span>90</span><span class="unit">%+</span></div>
+        <div class="card-desc"><span>IT组织使用开源</span></div>
+        <div class="spark">
+          <span style="height:6px"></span><span style="height:10px"></span><span style="height:9px"></span><span style="height:14px"></span><span style="height:13px"></span><span style="height:17px"></span><span style="height:18px"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="card-label"><span>MIT许可占比</span></span>
+          <span class="card-icon">04</span>
+        </div>
+        <div class="card-value"><span>~33</span><span class="unit">%</span></div>
+        <div class="card-desc"><span>GitHub头部许可</span></div>
+        <div class="spark">
+          <span style="height:8px"></span><span style="height:12px"></span><span style="height:10px"></span><span style="height:15px"></span><span style="height:13px"></span><span style="height:16px"></span><span style="height:14px"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="card-label"><span>Apache 2.0占比</span></span>
+          <span class="card-icon">05</span>
+        </div>
+        <div class="card-value"><span>~27</span><span class="unit">%</span></div>
+        <div class="card-desc"><span>GitHub头部许可</span></div>
+        <div class="spark">
+          <span style="height:7px"></span><span style="height:11px"></span><span style="height:9px"></span><span style="height:13px"></span><span style="height:12px"></span><span style="height:15px"></span><span style="height:14px"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="card-label"><span>中国贡献者增速</span></span>
+          <span class="card-icon">06</span>
+        </div>
+        <div class="card-value"><span>年增20</span><span class="unit">%+</span></div>
+        <div class="card-desc"><span>近年趋势</span></div>
+        <div class="spark">
+          <span style="height:5px"></span><span style="height:9px"></span><span style="height:12px"></span><span style="height:14px"></span><span style="height:16px"></span><span style="height:17px"></span><span style="height:18px"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tag-bar">
+      <div class="tag">
+        <div class="tag-head"><span class="tag-num">// 01</span><span class="tag-title"><span>全球开发者</span></span></div>
+        <div class="tag-text"><span>GitHub生态规模持续扩张，开源已成为软件创新的主战场。</span></div>
+      </div>
+      <div class="tag">
+        <div class="tag-head"><span class="tag-num">// 02</span><span class="tag-title"><span>项目增长</span></span></div>
+        <div class="tag-text"><span>中国开源项目数量稳步增长，企业开源贡献占比逐年提升。</span></div>
+      </div>
+      <div class="tag">
+        <div class="tag-head"><span class="tag-num">// 03</span><span class="tag-title"><span>企业采用</span></span></div>
+        <div class="tag-text"><span>超过90%的IT组织已在使用或评估开源组件。</span></div>
+      </div>
+      <div class="tag">
+        <div class="tag-head"><span class="tag-num">// 04</span><span class="tag-title"><span>人才需求</span></span></div>
+        <div class="tag-text"><span>具备开源经验的人才在就业市场更具竞争力。</span></div>
+      </div>
+      <div class="tag">
+        <div class="tag-head"><span class="tag-num">// 05</span><span class="tag-title"><span>许可证分布</span></span></div>
+        <div class="tag-text"><span>MIT与Apache 2.0合计占据GitHub开源项目许可的主要份额。</span></div>
+      </div>
+      <div class="tag">
+        <div class="tag-head"><span class="tag-num">// 06</span><span class="tag-title"><span>社区活跃度</span></span></div>
+        <div class="tag-text"><span>头部项目月均Issue与PR数量达到万级规模。</span></div>
+      </div>
+    </div>
+
+    <div class="footer-line"></div>
+
+    <div class="footer-meta">
+      <div class="left">
+        <span>// SOURCE</span><span class="sep">|</span><span>GITHUB&nbsp;OCTOVERSE</span><span class="sep">|</span><span>BSD&nbsp;REPORT</span><span class="sep">|</span><span>CSA&nbsp;SURVEY</span>
+      </div>
+      <div>OPEN&nbsp;SOURCE&nbsp;ECOSYSTEM&nbsp;//&nbsp;2021&nbsp;DATA&nbsp;SNAPSHOT</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

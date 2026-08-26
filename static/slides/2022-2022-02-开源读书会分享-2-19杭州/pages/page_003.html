@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之道核心观点</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --text:#ECEFF1;
+  --text-dim:#B0BEC5;
+  --bg-dark:#0A1428;
+  --bg-mid:#0F1E3D;
+  --card:#132445;
+  --border:#1E3A6E;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  color:var(--text);
+  background:var(--bg-dark);
+  letter-spacing:.01em;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg-dark);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:radial-gradient(ellipse at 20% 10%, #102850 0%, #0A1428 60%, #060C1B 100%);}
+#bg svg{position:absolute;inset:0;width:100%;height:100%;opacity:.5;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 64px 40px 64px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Header */
+.head{display:flex;flex-direction:column;gap:14px;margin-bottom:22px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:44px;background:linear-gradient(180deg,var(--primary),var(--cyan));border-radius:3px;box-shadow:0 0 18px var(--primary);}
+.title{font-size:36px;font-weight:800;color:var(--text);letter-spacing:.02em;}
+.title-accent{font-size:36px;font-weight:800;background:linear-gradient(90deg,var(--primary),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.narr{font-size:15px;line-height:1.7;color:var(--text-dim);max-width:1280px;font-family:'Noto Sans SC',sans-serif;}
+.narr .hl{color:var(--cyan);font-weight:500;}
+.tag-row{display:flex;gap:10px;margin-top:2px;}
+.tag{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--primary);border:1px solid var(--border);padding:4px 10px;border-radius:12px;background:rgba(33,150,243,.08);}
+
+/* Body */
+.body{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;flex:1;min-height:0;}
+
+/* Left cards */
+.points{display:flex;flex-direction:column;gap:10px;}
+.point{
+  display:flex;align-items:flex-start;gap:16px;
+  background:linear-gradient(90deg,rgba(33,150,243,.10),rgba(19,36,69,.6));
+  border:1px solid var(--border);
+  border-left:3px solid var(--primary);
+  border-radius:10px;
+  padding:12px 18px;
+  position:relative;
+  overflow:hidden;
+}
+.point::after{
+  content:'';position:absolute;top:0;right:0;width:120px;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(0,188,212,.08));
+  pointer-events:none;
+}
+.num{
+  flex:0 0 auto;
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Roboto Mono',monospace;font-weight:600;font-size:15px;
+  color:#fff;
+  background:linear-gradient(135deg,var(--primary),var(--cyan));
+  box-shadow:0 0 14px rgba(33,150,243,.55);
+  border:1px solid rgba(255,255,255,.15);
+}
+.ptxt{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
+.ptitle{font-size:16px;font-weight:700;color:var(--text);}
+.ptitle .icon{color:var(--cyan);margin-right:6px;}
+.pdesc{font-size:12.5px;color:var(--text-dim);line-height:1.55;font-family:'Noto Sans SC',sans-serif;}
+
+/* Right column */
+.right{display:flex;flex-direction:column;gap:16px;position:relative;}
+.kpi{
+  position:relative;
+  background:linear-gradient(145deg,rgba(33,150,243,.15),rgba(15,30,61,.7));
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px 20px 16px 20px;
+  overflow:hidden;
+  flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.kpi::before{
+  content:'';position:absolute;top:-30px;right:-30px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,188,212,.25),transparent 70%);
+  pointer-events:none;
+}
+.kpi-tag{
+  font-family:'Roboto Mono',monospace;font-size:11px;
+  color:var(--cyan);letter-spacing:.1em;margin-bottom:6px;
+}
+.kpi-num{
+  font-size:54px;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,#7EC8FF,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-family:'Inter',sans-serif;
+}
+.kpi-num .unit{font-size:18px;color:var(--text-dim);font-weight:600;margin-left:6px;-webkit-text-fill-color:var(--text-dim);}
+.kpi-label{font-size:13px;color:var(--text-dim);margin-top:6px;font-family:'Noto Sans SC',sans-serif;line-height:1.5;}
+.kpi-bar{margin-top:12px;height:4px;border-radius:2px;background:#1A2E52;overflow:hidden;}
+.kpi-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--cyan));border-radius:2px;}
+
+.mins{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;
+}
+.mini{
+  background:rgba(19,36,69,.7);border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;
+}
+.mini-num{font-size:22px;font-weight:800;color:#7EC8FF;font-family:'Inter',sans-serif;}
+.mini-num .u{font-size:12px;color:var(--text-dim);margin-left:3px;font-weight:500;}
+.mini-lbl{font-size:11px;color:var(--text-dim);font-family:'Noto Sans SC',sans-serif;}
+
+/* Bottom band */
+.band{
+  margin-top:18px;height:36px;border-radius:6px;
+  background:linear-gradient(90deg,#0D47A1 0%, #1565C0 25%, var(--primary) 55%, #00ACC1 78%, var(--cyan) 100%);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;
+  font-family:'Roboto Mono',monospace;font-size:11px;color:#E3F2FD;letter-spacing:.15em;
+  box-shadow:0 0 24px rgba(33,150,243,.35);
+  position:relative;overflow:hidden;
+}
+.band::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:60px;
+  background:linear-gradient(90deg,rgba(255,255,255,.15),transparent);
+}
+.band-left{font-weight:600;}
+.band-right{opacity:.85;}
+
+/* Decorative floating polygons */
+.deco{position:absolute;z-index:0;pointer-events:none;}
+.deco-1{top:24px;right:80px;width:120px;height:120px;}
+.deco-2{bottom:80px;left:30px;width:90px;height:90px;}
+.deco-3{top:180px;right:24px;width:60px;height:60px;}
+
+/* dot grid */
+.dot-grid{
+  position:absolute;right:64px;top:280px;width:180px;height:180px;z-index:0;
+  background-image:radial-gradient(rgba(0,188,212,.35) 1px, transparent 1px);
+  background-size:14px 14px;opacity:.5;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#2196F3" stop-opacity=".15"/>
+          <stop offset="1" stop-color="#00BCD4" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#00BCD4" stop-opacity=".12"/>
+          <stop offset="1" stop-color="#2196F3" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <polygon points="1400,-40,1600,200,1350,280,1240,80" fill="url(#lg1)"/>
+      <polygon points="-40,520,220,900,20,900" fill="url(#lg2)"/>
+      <line x1="0" y1="120" x2="1600" y2="80" stroke="#2196F3" stroke-opacity=".15" stroke-width="1"/>
+      <line x1="0" y1="240" x2="1600" y2="180" stroke="#00BCD4" stroke-opacity=".10" stroke-width="1"/>
+      <line x1="1600" y1="720" x2="0" y2="640" stroke="#2196F3" stroke-opacity=".12" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <div class="dot-grid"></div>
+
+  <svg class="deco deco-1" viewBox="0 0 100 100">
+    <polygon points="50,5 95,30 80,80 20,80 5,30" fill="none" stroke="#00BCD4" stroke-width="1.5" stroke-opacity=".7"/>
+    <polygon points="50,20 80,38 70,68 30,68 20,38" fill="none" stroke="#2196F3" stroke-width="1" stroke-opacity=".5"/>
+    <circle cx="50" cy="45" r="3" fill="#00BCD4"/>
+  </svg>
+  <svg class="deco deco-2" viewBox="0 0 100 100">
+    <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#2196F3" stroke-width="1.5" stroke-opacity=".6"/>
+    <circle cx="50" cy="50" r="10" fill="none" stroke="#00BCD4" stroke-width="1" stroke-opacity=".5"/>
+  </svg>
+  <svg class="deco deco-3" viewBox="0 0 60 60">
+    <polygon points="30,5 55,30 30,55 5,30" fill="none" stroke="#00BCD4" stroke-width="1.5" stroke-opacity=".8"/>
+  </svg>
+
+  <div id="ct">
+    <div class="head">
+      <div class="title-row">
+        <div class="title-bar"></div>
+        <div class="title">开源之道<span class="title-accent">核心观点</span></div>
+      </div>
+      <div class="tag-row">
+        <span class="tag"># 第 03 页 · 内容页</span>
+        <span class="tag"># 读书会分享</span>
+        <span class="tag"># 五大原则</span>
+      </div>
+      <p class="narr">
+        本次读书会重点阅读了<span class="hl">开源之道</span>相关章节，提炼出<span class="hl">协作、贡献、许可、沟通与长期主义</span>五大核心观点，这些原则不仅适用于技术实践，更是一种面向<span class="hl">开放世界</span>的生存哲学。
+      </p>
+    </div>
+
+    <div class="body">
+      <div class="points">
+        <div class="point">
+          <div class="num">01</div>
+          <div class="ptxt">
+            <div class="ptitle"><span class="icon">◆</span>协作胜过孤岛</div>
+            <div class="pdesc">开源精神的本质是公开协作，代码透明带来更高质量的工程实践，让问题在众目睽睽中被攻克。</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="num">02</div>
+          <div class="ptxt">
+            <div class="ptitle"><span class="icon">◆</span>先贡献再索取</div>
+            <div class="pdesc">社区强调从文档修复、Issue 反馈等小事做起，在持续的付出中逐步成长为核心贡献者。</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="num">03</div>
+          <div class="ptxt">
+            <div class="ptitle"><span class="icon">◆</span>许可即法律</div>
+            <div class="pdesc">理解 MIT、GPL、Apache 等许可证的差异与边界，是参与任何开源项目的基本素养与合规前提。</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="num">04</div>
+          <div class="ptxt">
+            <div class="ptitle"><span class="icon">◆</span>代码之外的软技能</div>
+            <div class="pdesc">沟通、文档撰写、Issue 管理等软技能往往比编码能力更被低估，却决定一个项目的温度与寿命。</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="num">05</div>
+          <div class="ptxt">
+            <div class="ptitle"><span class="icon">◆</span>长期主义思维</div>
+            <div class="pdesc">开源项目多经年累月迭代，参与者需具备耐心与持续投入的心态，做时间的朋友。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="kpi">
+          <div class="kpi-tag">// CORE PRINCIPLES</div>
+          <div class="kpi-num">5<span class="unit">项</span></div>
+          <div class="kpi-label">本书核心提炼原则总数</div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-tag">// CHAPTERS READ</div>
+          <div class="kpi-num">12<span class="unit">章</span></div>
+          <div class="kpi-label">本次读书会共读章节范围</div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" style="width:75%"></div></div>
+        </div>
+        <div class="mins">
+          <div class="mini">
+            <div class="mini-num">4<span class="u">类</span></div>
+            <div class="mini-lbl">许可证类型覆盖</div>
+          </div>
+          <div class="mini">
+            <div class="mini-num">8<span class="u">+</span></div>
+            <div class="mini-lbl">讨论议题数</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="band">
+      <span class="band-left">OPEN · SOURCE · WAYS</span>
+      <span class="band-right">COLLABORATE · CONTRIBUTE · COMMUNICATE · CONTINUE</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

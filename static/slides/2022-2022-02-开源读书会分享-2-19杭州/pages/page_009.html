@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>参与者收获与反馈</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #ECEFF1;
+  --text-dim: #90A4AE;
+  --bg-deep: #0A1628;
+  --bg-card: #0F2340;
+  --bg-card-2: #132D4F;
+  --border-glow: rgba(33, 150, 243, 0.35);
+  --border-accent: rgba(0, 188, 212, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 80% 10%, rgba(33, 150, 243, 0.12) 0%, transparent 55%),
+              radial-gradient(ellipse at 10% 90%, rgba(0, 188, 212, 0.08) 0%, transparent 50%),
+              linear-gradient(160deg, #0A1628 0%, #0B1E36 50%, #0A1628 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+}
+
+/* decorative grid lines */
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33, 150, 243, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 6px;
+}
+
+.header-accbar {
+  width: 6px;
+  height: 44px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 3px;
+  box-shadow: 0 0 12px rgba(33, 150, 243, 0.5);
+}
+
+.page-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 800;
+  font-size: 38px;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #ECEFF1 0%, #2196F3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-underline {
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+  margin-bottom: 18px;
+  margin-left: 24px;
+}
+
+.narrative {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text-main);
+  max-width: 1380px;
+  margin-left: 24px;
+  margin-bottom: 22px;
+  padding: 14px 20px;
+  background: rgba(15, 35, 64, 0.55);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+
+.narrative .hl {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* KPI Cards */
+.kpi-row {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 26px;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.kpi-card {
+  flex: 1;
+  position: relative;
+  padding: 20px 26px;
+  background: linear-gradient(135deg, rgba(19, 45, 79, 0.85) 0%, rgba(15, 35, 64, 0.7) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.kpi-label {
+  font-size: 12px;
+  font-family: 'Roboto Mono', monospace;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.kpi-value {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.kpi-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  color: var(--primary);
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(33, 150, 243, 0.35);
+}
+
+.kpi-unit {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.kpi-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* Key Points */
+.points-section-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: 24px;
+  margin-bottom: 12px;
+}
+
+.points-title-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.points-title-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-glow), transparent);
+}
+
+.points-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.point-card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  padding: 14px 18px 14px 0;
+  background: linear-gradient(135deg, rgba(19, 45, 79, 0.6) 0%, rgba(10, 22, 40, 0.4) 100%);
+  border: 1px solid rgba(33, 150, 243, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 100px;
+}
+
+.point-bar {
+  width: 5px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 3px 0 0 3px;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.4);
+  flex-shrink: 0;
+}
+
+.point-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 14px 4px 14px;
+  flex: 1;
+}
+
+.point-num {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--primary);
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(33, 150, 243, 0.3);
+  flex-shrink: 0;
+  width: 52px;
+  text-align: center;
+}
+
+.point-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.point-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+.point-desc {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+/* Footer decoration */
+.footer-bar {
+  position: absolute;
+  bottom: 18px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  z-index: 2;
+}
+
+.footer-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+  display: inline-block;
+  margin: 0 8px;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-accbar"></div>
+      <div class="page-title"><span>参与者收获与反馈</span></div>
+    </div>
+    <div class="title-underline"></div>
+
+    <p class="narrative">
+      参与者普遍反馈，参加读书会后最大的变化是<span class="hl">'敢下手了'</span>。从被动消费者转变为主动贡献者，这份勇气与自信正是开源社区最宝贵的财富。读书会通过持续陪伴，让每个人都找到了自己的<span class="hl">入口</span>。
+    </p>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label"><span>参与人次</span></div>
+        <div class="kpi-value">
+          <span class="kpi-num">15</span>
+          <span class="kpi-unit">+</span>
+        </div>
+        <div class="kpi-desc"><span>本次杭州场次</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span>新增贡献者</span></div>
+        <div class="kpi-value">
+          <span class="kpi-num">8</span>
+          <span class="kpi-unit">人</span>
+        </div>
+        <div class="kpi-desc"><span>活动后提交首个 PR</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span>满意度</span></div>
+        <div class="kpi-value">
+          <span class="kpi-num">95</span>
+          <span class="kpi-unit">%+</span>
+        </div>
+        <div class="kpi-desc"><span>参与者匿名反馈</span></div>
+      </div>
+    </div>
+
+    <div class="points-section-title">
+      <div class="points-title-text"><span>四大维度收获</span></div>
+      <div class="points-title-line"></div>
+    </div>
+
+    <div class="points-row">
+      <div class="point-card">
+        <div class="point-bar"></div>
+        <div class="point-body">
+          <div class="point-num"><span>01</span></div>
+          <div class="point-content">
+            <div class="point-title"><span>认知升级</span></div>
+            <div class="point-desc"><span>系统理解开源运作逻辑，不再停留在"用开源"的浅层阶段</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="point-card">
+        <div class="point-bar"></div>
+        <div class="point-body">
+          <div class="point-num"><span>02</span></div>
+          <div class="point-content">
+            <div class="point-title"><span>人脉拓展</span></div>
+            <div class="point-desc"><span>结识了本地志同道合的开源爱好者，后续合作项目持续涌现</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="point-card">
+        <div class="point-bar"></div>
+        <div class="point-body">
+          <div class="point-num"><span>03</span></div>
+          <div class="point-content">
+            <div class="point-title"><span>实践勇气</span></div>
+            <div class="point-desc"><span>从观望到提交第一份 PR，读书会提供了必要的鼓励与指导</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="point-card">
+        <div class="point-bar"></div>
+        <div class="point-body">
+          <div class="point-num"><span>04</span></div>
+          <div class="point-content">
+            <div class="point-title"><span>持续动力</span></div>
+            <div class="point-desc"><span>定期聚会形成的仪式感与同辈压力，有效对抗阅读惰性</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>OPEN SOURCE · READING CLUB</span>
+      <span>HANGZHOU<span class="footer-dot"></span>OPEN SOURCE COMMUNITY<span class="footer-dot"></span>FEEDBACK</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

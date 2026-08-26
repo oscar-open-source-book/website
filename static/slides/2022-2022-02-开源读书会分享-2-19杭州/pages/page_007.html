@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>杭州开源生态速览</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-dark: #0a1220;
+  --bg-mid: #111c2e;
+  --card-bg: rgba(16, 28, 48, 0.75);
+  --text-main: #e8eef6;
+  --text-muted: #8aa0b8;
+  --border-glow: rgba(33, 150, 243, 0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: #000;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #060d1a 0%, #0a1220 40%, #0d1a30 70%, #0a1628 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 70%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -300px;
+  left: -200px;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.06) 0%, transparent 70%);
+}
+
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(33,150,243,0.35);
+}
+
+.title-block h1 {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.title-block .subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  letter-spacing: 2px;
+}
+
+.header-badge {
+  padding: 8px 18px;
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--accent);
+  background: rgba(33,150,243,0.05);
+  letter-spacing: 1px;
+}
+
+/* Main Content */
+.main {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  height: 560px;
+}
+
+/* Left - Skyline */
+.left-panel {
+  width: 540px;
+  position: relative;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(10,20,40,0.6) 0%, rgba(6,15,30,0.9) 100%);
+  border: 1px solid rgba(33,150,243,0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.left-label {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.left-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 10px;
+}
+
+.skyline-svg {
+  width: 100%;
+  height: 340px;
+  margin-bottom: 12px;
+}
+
+.left-stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(33,150,243,0.08);
+  border: 1px solid rgba(33,150,243,0.18);
+  border-radius: 10px;
+}
+
+.stat-mini {
+  text-align: center;
+}
+
+.stat-mini .num {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.stat-mini .label {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+.stat-divider {
+  width: 1px;
+  background: rgba(33,150,243,0.2);
+}
+
+/* Light Beam */
+.beam {
+  width: 60px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beam::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  background: linear-gradient(180deg, transparent 0%, var(--primary) 25%, var(--accent) 50%, var(--primary) 75%, transparent 100%);
+  box-shadow: 0 0 12px rgba(33,150,243,0.6), 0 0 30px rgba(0,188,212,0.3);
+}
+
+.beam-node {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent), 0 0 24px rgba(0,188,212,0.4);
+  z-index: 2;
+}
+
+.beam-top {
+  position: absolute;
+  top: -6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.beam-bottom {
+  position: absolute;
+  bottom: -6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.beam-text {
+  position: absolute;
+  writing-mode: vertical-rl;
+  font-size: 10px;
+  color: rgba(33,150,243,0.5);
+  letter-spacing: 3px;
+  top: 12px;
+}
+
+/* Right - Cards */
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.point-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 22px;
+  background: var(--card-bg);
+  border: 1px solid rgba(33,150,243,0.12);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.point-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.point-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100%;
+  background: radial-gradient(circle at top right, rgba(33,150,243,0.06) 0%, transparent 70%);
+}
+
+.point-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--primary);
+  opacity: 0.7;
+  min-width: 48px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  z-index: 2;
+}
+
+.point-content {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.point-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.point-title .tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: rgba(0,188,212,0.15);
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.point-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Bottom Section */
+.bottom-section {
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.kpi-group {
+  display: flex;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.kpi-card {
+  width: 200px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.1) 0%, rgba(0,188,212,0.05) 100%);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-size: 36px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.kpi-note {
+  font-size: 10px;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.footnote {
+  flex: 1;
+  padding: 14px 20px;
+  background: rgba(10,20,40,0.5);
+  border-left: 2px solid var(--accent);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.footnote-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+}
+
+.footnote-text strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-lines"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="header-left">
+        <div class="header-icon">杭</div>
+        <div class="title-block">
+          <h1>杭州开源生态速览</h1>
+          <div class="subtitle">HANGZHOU OPEN SOURCE ECOSYSTEM OVERVIEW</div>
+        </div>
+      </div>
+      <div class="header-badge">◆ 内容展示 · 技术生态</div>
+    </div>
+
+    <div class="main">
+      <!-- Left: Skyline -->
+      <div class="left-panel">
+        <span class="left-label">CITY SKYLINE</span>
+        <span class="left-tag">杭州 · 钱塘江畔</span>
+
+        <svg class="skyline-svg" viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1a2a44" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#0a1220" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="buildGrad1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2a4060"/>
+              <stop offset="100%" stop-color="#111c2e"/>
+            </linearGradient>
+            <linearGradient id="buildGrad2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1e3555"/>
+              <stop offset="100%" stop-color="#0d1a2e"/>
+            </linearGradient>
+            <linearGradient id="riverGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.15"/>
+              <stop offset="100%" stop-color="#00BCD4" stop-opacity="0.05"/>
+            </linearGradient>
+            <linearGradient id="glowGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0"/>
+              <stop offset="50%" stop-color="#2196F3" stop-opacity="0.1"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <rect x="0" y="0" width="500" height="340" fill="url(#skyGrad)"/>
+
+          <!-- Stars -->
+          <circle cx="80" cy="30" r="0.8" fill="#2196F3" opacity="0.6"/>
+          <circle cx="150" cy="50" r="0.6" fill="#00BCD4" opacity="0.5"/>
+          <circle cx="220" cy="20" r="1" fill="#e8eef6" opacity="0.4"/>
+          <circle cx="320" cy="40" r="0.7" fill="#2196F3" opacity="0.5"/>
+          <circle cx="400" cy="25" r="0.8" fill="#00BCD4" opacity="0.6"/>
+          <circle cx="450" cy="55" r="0.6" fill="#e8eef6" opacity="0.3"/>
+
+          <!-- Moon -->
+          <circle cx="380" cy="60" r="22" fill="#2196F3" opacity="0.08"/>
+          <circle cx="380" cy="60" r="16" fill="#2196F3" opacity="0.1"/>
+
+          <!-- Distant buildings -->
+          <rect x="10" y="200" width="20" height="60" fill="#162338" opacity="0.6"/>
+          <rect x="35" y="190" width="15" height="70" fill="#162338" opacity="0.6"/>
+          <rect x="55" y="210" width="18" height="50" fill="#162338" opacity="0.6"/>
+
+          <!-- Mid buildings -->
+          <rect x="90" y="170" width="25" height="90" fill="url(#buildGrad2)"/>
+          <rect x="95" y="175" width="4" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="103" y="175" width="4" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="95" y="185" width="4" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="103" y="185" width="4" height="4" fill="#00BCD4" opacity="0.4"/>
+          <rect x="95" y="195" width="4" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="103" y="195" width="4" height="4" fill="#2196F3" opacity="0.5"/>
+
+          <polygon points="120,160 135,160 135,260 120,260" fill="url(#buildGrad1)"/>
+          <rect x="123" y="165" width="3" height="3" fill="#2196F3" opacity="0.5"/>
+          <rect x="130" y="165" width="3" height="3" fill="#00BCD4" opacity="0.4"/>
+          <rect x="123" y="175" width="3" height="3" fill="#2196F3" opacity="0.4"/>
+          <rect x="130" y="175" width="3" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="123" y="185" width="3" height="3" fill="#00BCD4" opacity="0.5"/>
+          <rect x="130" y="185" width="3" height="3" fill="#2196F3" opacity="0.4"/>
+          <rect x="123" y="195" width="3" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="130" y="195" width="3" height="3" fill="#2196F3" opacity="0.5"/>
+          <rect x="123" y="205" width="3" height="3" fill="#2196F3" opacity="0.4"/>
+          <rect x="130" y="205" width="3" height="3" fill="#00BCD4" opacity="0.3"/>
+
+          <rect x="145" y="180" width="30" height="80" fill="url(#buildGrad2)"/>
+          <rect x="149" y="188" width="4" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="157" y="188" width="4" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="165" y="188" width="4" height="4" fill="#00BCD4" opacity="0.5"/>
+          <rect x="149" y="200" width="4" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="157" y="200" width="4" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="165" y="200" width="4" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="149" y="212" width="4" height="4" fill="#00BCD4" opacity="0.4"/>
+          <rect x="157" y="212" width="4" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="165" y="212" width="4" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="149" y="224" width="4" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="157" y="224" width="4" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="165" y="224" width="4" height="4" fill="#00BCD4" opacity="0.4"/>
+
+          <!-- Leifeng Pagoda silhouette -->
+          <g opacity="0.9">
+            <rect x="185" y="230" width="12" height="40" fill="#1e3555"/>
+            <polygon points="182,230 200,230 191,222" fill="#2a4060"/>
+            <rect x="187" y="200" width="8" height="10" fill="#1e3555"/>
+            <polygon points="184,200 198,200 191,193" fill="#2a4060"/>
+            <rect x="188" y="175" width="6" height="8" fill="#1e3555"/>
+            <polygon points="186,175 196,175 191,170" fill="#2a4060"/>
+            <rect x="190" y="158" width="2" height="8" fill="#2196F3" opacity="0.4"/>
+            <circle cx="191" cy="157" r="1.5" fill="#00BCD4" opacity="0.5"/>
+          </g>
+
+          <!-- Main cluster -->
+          <rect x="210" y="140" width="35" height="120" fill="url(#buildGrad1)"/>
+          <rect x="214" y="145" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="222" y="145" width="4" height="5" fill="#00BCD4" opacity="0.4"/>
+          <rect x="230" y="145" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="238" y="145" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="214" y="155" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="222" y="155" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="230" y="155" width="4" height="5" fill="#00BCD4" opacity="0.5"/>
+          <rect x="238" y="155" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="214" y="165" width="4" height="5" fill="#00BCD4" opacity="0.4"/>
+          <rect x="222" y="165" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="230" y="165" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="238" y="165" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="214" y="175" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="222" y="175" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="230" y="175" width="4" height="5" fill="#00BCD4" opacity="0.4"/>
+          <rect x="238" y="175" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="214" y="185" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="222" y="185" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="230" y="185" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="238" y="185" width="4" height="5" fill="#00BCD4" opacity="0.5"/>
+          <rect x="214" y="195" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="222" y="195" width="4" height="5" fill="#00BCD4" opacity="0.3"/>
+          <rect x="230" y="195" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="238" y="195" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+
+          <rect x="250" y="160" width="40" height="100" fill="url(#buildGrad2)"/>
+          <rect x="254" y="168" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="262" y="168" width="3" height="4" fill="#00BCD4" opacity="0.5"/>
+          <rect x="270" y="168" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="278" y="168" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="254" y="180" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="262" y="180" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="270" y="180" width="3" height="4" fill="#00BCD4" opacity="0.4"/>
+          <rect x="278" y="180" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="254" y="192" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="262" y="192" width="3" height="4" fill="#00BCD4" opacity="0.5"/>
+          <rect x="270" y="192" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="278" y="192" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="254" y="204" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="262" y="204" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="270" y="204" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="278" y="204" width="3" height="4" fill="#00BCD4" opacity="0.4"/>
+          <rect x="254" y="216" width="3" height="4" fill="#00BCD4" opacity="0.5"/>
+          <rect x="262" y="216" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="270" y="216" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="278" y="216" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="254" y="228" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="262" y="228" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="270" y="228" width="3" height="4" fill="#00BCD4" opacity="0.4"/>
+          <rect x="278" y="228" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+
+          <!-- Twin towers -->
+          <rect x="295" y="120" width="28" height="140" fill="url(#buildGrad1)"/>
+          <rect x="300" y="125" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="308" y="125" width="4" height="5" fill="#00BCD4" opacity="0.4"/>
+          <rect x="316" y="125" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="300" y="135" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="308" y="135" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="316" y="135" width="4" height="5" fill="#00BCD4" opacity="0.3"/>
+          <rect x="300" y="145" width="4" height="5" fill="#00BCD4" opacity="0.5"/>
+          <rect x="308" y="145" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="316" y="145" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="300" y="155" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="308" y="155" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="316" y="155" width="4" height="5" fill="#00BCD4" opacity="0.4"/>
+          <rect x="300" y="165" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="308" y="165" width="4" height="5" fill="#00BCD4" opacity="0.3"/>
+          <rect x="316" y="165" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="300" y="175" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="308" y="175" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="316" y="175" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="300" y="185" width="4" height="5" fill="#00BCD4" opacity="0.5"/>
+          <rect x="308" y="185" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="316" y="185" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="300" y="195" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="308" y="195" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="316" y="195" width="4" height="5" fill="#00BCD4" opacity="0.3"/>
+          <rect x="300" y="205" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="308" y="205" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <rect x="316" y="205" width="4" height="5" fill="#2196F3" opacity="0.4"/>
+          <rect x="300" y="215" width="4" height="5" fill="#00BCD4" opacity="0.4"/>
+          <rect x="308" y="215" width="4" height="5" fill="#2196F3" opacity="0.5"/>
+          <rect x="316" y="215" width="4" height="5" fill="#2196F3" opacity="0.3"/>
+          <polygon points="295,120 323,120 309,105" fill="#2a4060"/>
+          <line x1="309" y1="105" x2="309" y2="95" stroke="#2196F3" stroke-width="1" opacity="0.4"/>
+          <circle cx="309" cy="93" r="1.5" fill="#00BCD4" opacity="0.6"/>
+
+          <rect x="328" y="150" width="30" height="110" fill="url(#buildGrad2)"/>
+          <rect x="332" y="158" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="340" y="158" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="348" y="158" width="3" height="4" fill="#00BCD4" opacity="0.4"/>
+          <rect x="332" y="170" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="340" y="170" width="3" height="4" fill="#00BCD4" opacity="0.5"/>
+          <rect x="348" y="170" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="332" y="182" width="3" height="4" fill="#00BCD4" opacity="0.4"/>
+          <rect x="340" y="182" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="348" y="182" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="332" y="194" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="340" y="194" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="348" y="194" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="332" y="206" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="340" y="206" width="3" height="4" fill="#00BCD4" opacity="0.5"/>
+          <rect x="348" y="206" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="332" y="218" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="340" y="218" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="348" y="218" width="3" height="4" fill="#00BCD4" opacity="0.4"/>
+
+          <rect x="362" y="170" width="22" height="90" fill="url(#buildGrad1)"/>
+          <rect x="366" y="178" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="374" y="178" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="366" y="190" width="3" height="4" fill="#00BCD4" opacity="0.5"/>
+          <rect x="374" y="190" width="3" height="4" fill="#2196F3" opacity="0.4"/>
+          <rect x="366" y="202" width="3" height="4" fill="#2196F3" opacity="0.5"/>
+          <rect x="374" y="202" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="366" y="214" width="3" height="4" fill="#2196F3" opacity="0.3"/>
+          <rect x="374" y="214" width="3" height="4" fill="#00BCD4" opacity="0.4"/>
+
+          <rect x="388" y="185" width="18" height="75" fill="url(#buildGrad2)"/>
+          <rect x="392" y="192" width="3" height="3" fill="#2196F3" opacity="0.5"/>
+          <rect x="398" y="192" width="3" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="392" y="202" width="3" height="3" fill="#00BCD4" opacity="0.4"/>
+          <rect x="398" y="202" width="3" height="3" fill="#2196F3" opacity="0.5"/>
+          <rect x="392" y="212" width="3" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="398" y="212" width="3" height="3" fill="#2196F3" opacity="0.4"/>
+          <rect x="392" y="222" width="3" height="3" fill="#2196F3" opacity="0.5"/>
+          <rect x="398" y="222" width="3" height="3" fill="#00BCD4" opacity="0.3"/>
+
+          <!-- Small buildings right -->
+          <rect x="410" y="200" width="20" height="60" fill="#1e3555"/>
+          <rect x="413" y="208" width="3" height="3" fill="#2196F3" opacity="0.4"/>
+          <rect x="421" y="208" width="3" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="413" y="218" width="3" height="3" fill="#00BCD4" opacity="0.5"/>
+          <rect x="421" y="218" width="3" height="3" fill="#2196F3" opacity="0.4"/>
+          <rect x="413" y="228" width="3" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="421" y="228" width="3" height="3" fill="#2196F3" opacity="0.5"/>
+
+          <rect x="434" y="210" width="16" height="50" fill="#162338"/>
+          <rect x="438" y="218" width="2" height="3" fill="#2196F3" opacity="0.4"/>
+          <rect x="444" y="218" width="2" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="438" y="228" width="2" height="3" fill="#00BCD4" opacity="0.4"/>
+          <rect x="444" y="228" width="2" height="3" fill="#2196F3" opacity="0.5"/>
+          <rect x="438" y="238" width="2" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="444" y="238" width="2" height="3" fill="#2196F3" opacity="0.4"/>
+
+          <rect x="454" y="220" width="20" height="40" fill="#1e3555"/>
+          <rect x="458" y="228" width="2" height="3" fill="#2196F3" opacity="0.5"/>
+          <rect x="464" y="228" width="2" height="3" fill="#2196F3" opacity="0.3"/>
+          <rect x="458" y="238" width="2" height="3" fill="#00BCD4" opacity="0.4"/>
+          <rect x="464" y="238" width="2" height="3" fill="#2196F3" opacity="0.4"/>
+
+          <!-- River -->
+          <rect x="0" y="260" width="500" height="80" fill="url(#riverGrad)"/>
+          <line x1="0" y1="265" x2="500" y2="265" stroke="#2196F3" stroke-width="0.5" opacity="0.2"/>
+          <line x1="0" y1="275" x2="500" y2="275" stroke="#2196F3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="0" y1="290" x2="500" y2="290" stroke="#00BCD4" stroke-width="0.5" opacity="0.1"/>
+
+          <!-- River reflections -->
+          <rect x="212" y="265" width="3" height="20" fill="#2196F3" opacity="0.08"/>
+          <rect x="255" y="265" width="2" height="25" fill="#2196F3" opacity="0.06"/>
+          <rect x="297" y="265" width="3" height="30" fill="#2196F3" opacity="0.08"/>
+          <rect x="330" y="265" width="2" height="20" fill="#00BCD4" opacity="0.06"/>
+
+          <!-- Glow line -->
+          <rect x="0" y="258" width="500" height="1" fill="url(#glowGrad)"/>
+        </svg>
+
+        <div class="left-stats">
+          <div class="stat-mini">
+            <div class="num">300+</div>
+            <div class="label">开源项目</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-mini">
+            <div class="num">5+</div>
+            <div class="label">月度 Meetup</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-mini">
+            <div class="num">20+</div>
+            <div class="label">高校社区</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Light Beam -->
+      <div class="beam">
+        <div class="beam-top"></div>
+        <div class="beam-node"></div>
+        <span class="beam-text">CITY × OPEN SOURCE</span>
+        <div class="beam-bottom"></div>
+      </div>
+
+      <!-- Right: Points -->
+      <div class="right-panel">
+        <div class="point-card">
+          <div class="point-num">01</div>
+          <div class="point-content">
+            <div class="point-title"><span>阿里技术社区</span><span class="tag">领军者</span></div>
+            <div class="point-desc">阿里巴巴开源了中国乃至全球影响力最大的开源项目群之一，涵盖云计算、大数据、中间件等核心技术方向。</div>
+          </div>
+        </div>
+        <div class="point-card">
+          <div class="point-num">02</div>
+          <div class="point-content">
+            <div class="point-title"><span>蚂蚁集团贡献</span><span class="tag">持续输出</span></div>
+            <div class="point-desc">在数据库、微服务、AI 框架等方向持续输出高质量开源项目，推动金融级开源技术的普及与演进。</div>
+          </div>
+        </div>
+        <div class="point-card">
+          <div class="point-num">03</div>
+          <div class="point-content">
+            <div class="point-title"><span>高校生态</span><span class="tag">学生社区</span></div>
+            <div class="point-desc">浙大、杭电等高校学生社区积极活跃，开源比赛与技术工作坊频繁举办，是杭州开源人才的重要孵化基地。</div>
+          </div>
+        </div>
+        <div class="point-card">
+          <div class="point-num">04</div>
+          <div class="point-content">
+            <div class="point-title"><span>线下活动</span><span class="tag">Monthly</span></div>
+            <div class="point-desc">杭州每月均有开源 Meetup、黑客松与技术沙龙等活动，形成自下而上、持续活跃的技术交流氛围。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="kpi-group">
+        <div class="kpi-card">
+          <div class="kpi-label">本地开源 Meetup 月均</div>
+          <div class="kpi-value">5+ 场</div>
+          <div class="kpi-note">2022 年初统计</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">阿里开源项目</div>
+          <div class="kpi-value">300+</div>
+          <div class="kpi-note">涵盖多技术领域</div>
+        </div>
+      </div>
+      <div class="footnote">
+        <p class="footnote-text"><strong>杭州作为中国开源重镇</strong>，拥有得天独厚的企业开源基因与活跃的社区氛围，参与者在读书会上特别分享了本地参与渠道与经验，为在场新人提供了清晰的入场指引。</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

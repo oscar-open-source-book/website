@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二部分：深度洞察</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --primary: #00BCD4;
+  --accent: #FF7043;
+  --neutral: #B0BEC5;
+  --dark: #0d1418;
+  --dark-2: #131c22;
+  --text-main: #E0E8EC;
+  --text-dim: #7A8C94;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', 'Noto Sans SC', monospace;
+  color: var(--text-main);
+  background: var(--dark);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(13,20,24,0.72) 0%, rgba(13,20,24,0.50) 40%, rgba(13,20,24,0.68) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 72px;
+  box-sizing: border-box;
+}
+
+.page-meta {
+  position: absolute;
+  top: 36px;
+  right: 72px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  z-index: 2;
+}
+
+.page-meta span { color: var(--primary); }
+
+.content-wrap {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 560px 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* Left: Big section number */
+.left-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.section-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--primary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-tag-line {
+  width: 60px;
+  height: 2px;
+  background: var(--primary);
+  margin-bottom: 28px;
+}
+
+.big-number {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 3px var(--accent);
+  text-stroke: 3px var(--accent);
+  letter-spacing: -12px;
+  position: relative;
+}
+
+.big-number::after {
+  content: '02';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent);
+  opacity: 0.12;
+  -webkit-text-stroke: 0;
+}
+
+.number-label {
+  margin-top: 14px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: var(--neutral);
+}
+
+/* Right column */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+}
+
+.title-block { margin-bottom: 40px; }
+
+.main-title {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 900;
+  font-size: 60px;
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: -1px;
+}
+
+.main-title .accent { color: var(--primary); }
+
+.subtitle {
+  margin-top: 18px;
+  font-family: 'Roboto Mono', 'Noto Sans SC', monospace;
+  font-weight: 300;
+  font-size: 17px;
+  color: var(--neutral);
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+.subtitle .en {
+  color: var(--primary);
+  font-weight: 400;
+}
+
+/* Three key points */
+.points-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.point-row {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(0, 188, 212, 0.28);
+}
+
+.point-row:last-child { border-bottom: none; }
+
+.point-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  padding-top: 2px;
+}
+
+.point-body { display: flex; flex-direction: column; gap: 6px; }
+
+.point-title {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #ffffff;
+  letter-spacing: 2px;
+}
+
+.point-title .tag {
+  display: inline-block;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--primary);
+  border: 1px solid rgba(0, 188, 212, 0.4);
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 10px;
+  letter-spacing: 2px;
+  vertical-align: middle;
+}
+
+.point-desc {
+  font-family: 'Noto Sans SC', 'Roboto Mono', sans-serif;
+  font-weight: 300;
+  font-size: 13.5px;
+  color: var(--neutral);
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+/* Bottom narrative */
+.bottom-narrative {
+  position: absolute;
+  bottom: 40px;
+  left: 72px;
+  right: 72px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.narrative-line {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 1px;
+  background: var(--primary);
+}
+
+.narrative-text {
+  flex: 1;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+.footer-meta {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img src="/slides/the-profile-of-os-people/images/page_007_section_bg.jpg" alt="">
+    <div class="bg-overlay"></div>
+  </div>
+
+  <div class="page-meta">SECTION <span>02</span> / 04 &nbsp;|&nbsp; PAGE <span>07</span></div>
+
+  <div id="ct">
+    <div class="content-wrap">
+
+      <div class="left-col">
+        <div class="section-tag"><span>SECTION 02</span></div>
+        <div class="section-tag-line"></div>
+        <div class="big-number">02</div>
+        <div class="number-label"><span>PART · INSIGHTS</span></div>
+      </div>
+
+      <div class="right-col">
+        <div class="title-block">
+          <h1 class="main-title">第二部分：<span class="accent">深度洞察</span></h1>
+          <div class="subtitle">
+            <span class="en">Beyond the Surface</span> — 深入开源人士的行为模式
+          </div>
+        </div>
+
+        <div class="points-list">
+          <div class="point-row">
+            <div class="point-num"><span>01</span></div>
+            <div class="point-body">
+              <div class="point-title"><span>行为分类</span><span class="tag">BEHAVIOR</span></div>
+              <div class="point-desc">将开源贡献者按参与模式分为不同类型，理解各自的行为特征。</div>
+            </div>
+          </div>
+          <div class="point-row">
+            <div class="point-num"><span>02</span></div>
+            <div class="point-body">
+              <div class="point-title"><span>生命周期</span><span class="tag">LIFECYCLE</span></div>
+              <div class="point-desc">从首次贡献到核心维护者的成长路径与关键转折点。</div>
+            </div>
+          </div>
+          <div class="point-row">
+            <div class="point-num"><span>03</span></div>
+            <div class="point-body">
+              <div class="point-title"><span>社区文化</span><span class="tag">COMMUNITY</span></div>
+              <div class="point-desc">不同项目社区的独特文化如何影响贡献者行为与留存。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-narrative">
+      <div class="narrative-line"></div>
+      <div class="narrative-text">
+        在了解了开源人士是谁、为什么参与之后，第二部分将深入探讨他们的行为模式与生命周期，揭示一个开源贡献者如何从陌生者成长为社区核心。
+      </div>
+      <div class="footer-meta">PART II</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

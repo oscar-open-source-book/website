@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源人群的规模与增长</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500;700&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --bg-dark:#0F1923;
+  --bg-card:#13202E;
+  --bg-card2:#182A3A;
+  --text-main:#E8F0FA;
+  --text-sub:#8AA0BA;
+  --text-dim:#5A7490;
+  --border-line:#1E3347;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:#081119;
+  font-family:'Roboto Mono', monospace;
+  color:var(--text-main);
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  background:var(--bg-dark);
+}
+
+#bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(33,150,243,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(0,188,212,0.06) 0%, transparent 50%);
+}
+
+#bg::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(30,51,71,0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,51,71,0.35) 1px, transparent 1px);
+  background-size:40px 40px;
+  opacity:0.4;
+  pointer-events:none;
+}
+
+#ct{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  padding:50px 60px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ===== Header ===== */
+.header{
+  margin-bottom:30px;
+}
+.title{
+  font-family:'Inter', sans-serif;
+  font-weight:800;
+  font-size:38px;
+  letter-spacing:1px;
+  color:var(--text-main);
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.title-accent{
+  display:inline-block;
+  width:6px;
+  height:38px;
+  background:linear-gradient(180deg, var(--primary), var(--cyan));
+  border-radius:3px;
+}
+.title-en{
+  font-family:'Roboto Mono', monospace;
+  font-size:13px;
+  color:var(--text-dim);
+  font-weight:300;
+  margin-left:10px;
+  letter-spacing:2px;
+}
+.subtitle{
+  font-size:14px;
+  color:var(--text-sub);
+  line-height:1.8;
+  max-width:1380px;
+  margin-top:14px;
+  padding-left:24px;
+  border-left:2px solid var(--border-line);
+  font-weight:300;
+}
+
+/* ===== Main Content ===== */
+.main{
+  display:flex;
+  gap:30px;
+  flex:1;
+  min-height:0;
+}
+
+/* ===== Left Column ===== */
+.left-col{
+  flex:0 0 680px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.col-label{
+  font-family:'Inter', sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:3px;
+  color:var(--cyan);
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:4px;
+}
+.col-label-line{
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg, var(--cyan), transparent);
+  opacity:0.5;
+}
+
+.point-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-line);
+  border-radius:10px;
+  padding:16px 20px;
+  display:flex;
+  align-items:flex-start;
+  gap:18px;
+  position:relative;
+  overflow:hidden;
+  transition:all 0.3s;
+}
+.point-card::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:linear-gradient(180deg, var(--primary), var(--cyan));
+  opacity:0.7;
+}
+.point-card::after{
+  content:'';
+  position:absolute;
+  right:-40px;
+  top:-40px;
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.05) 0%, transparent 70%);
+}
+.point-num{
+  font-family:'Inter', sans-serif;
+  font-weight:700;
+  font-size:26px;
+  color:var(--primary);
+  opacity:0.5;
+  min-width:42px;
+  line-height:1;
+  padding-top:4px;
+}
+.point-body{
+  flex:1;
+}
+.point-head{
+  font-family:'Inter', sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:var(--text-main);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:6px;
+}
+.point-head-tag{
+  font-family:'Roboto Mono', monospace;
+  font-size:10px;
+  font-weight:400;
+  color:var(--cyan);
+  background:rgba(0,188,212,0.1);
+  border:1px solid rgba(0,188,212,0.3);
+  padding:2px 8px;
+  border-radius:4px;
+  letter-spacing:1px;
+}
+.point-detail{
+  font-size:12.5px;
+  color:var(--text-sub);
+  line-height:1.7;
+  font-weight:300;
+}
+
+/* ===== Right Column ===== */
+.right-col{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.kpi-card{
+  background:var(--bg-card);
+  border:1px solid rgba(0,188,212,0.25);
+  border-radius:12px;
+  padding:20px 22px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 20px rgba(0,188,212,0.05);
+}
+.kpi-card.glow::after{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:12px;
+  border:1px solid rgba(33,150,243,0.15);
+  pointer-events:none;
+}
+.kpi-card-label{
+  font-family:'Roboto Mono', monospace;
+  font-size:10px;
+  font-weight:500;
+  color:var(--text-dim);
+  letter-spacing:2px;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.kpi-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);
+  display:inline-block;
+}
+.kpi-value{
+  font-family:'Inter', sans-serif;
+  font-weight:800;
+  font-size:36px;
+  color:var(--primary);
+  line-height:1.1;
+  letter-spacing:-0.5px;
+  text-shadow:0 0 20px rgba(33,150,243,0.3);
+}
+.kpi-value .unit{
+  font-size:18px;
+  font-weight:600;
+  color:var(--cyan);
+  margin-left:4px;
+}
+.kpi-context{
+  font-size:11px;
+  color:var(--text-sub);
+  margin-top:8px;
+  line-height:1.6;
+  font-weight:300;
+}
+.kpi-bar{
+  margin-top:12px;
+  height:3px;
+  background:rgba(33,150,243,0.15);
+  border-radius:2px;
+  overflow:hidden;
+  position:relative;
+}
+.kpi-bar-fill{
+  position:absolute;
+  left:0;top:0;bottom:0;
+  background:linear-gradient(90deg, var(--primary), var(--cyan));
+  border-radius:2px;
+}
+
+.kpi-wide{
+  grid-column:1 / -1;
+  display:flex;
+  align-items:center;
+  gap:24px;
+  padding:20px 24px;
+}
+.kpi-wide .kpi-left{
+  flex:1;
+}
+.kpi-wide .kpi-value{
+  font-size:42px;
+}
+.kpi-chart-mini{
+  flex:0 0 220px;
+  height:60px;
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  gap:6px;
+  padding-top:6px;
+}
+.mini-bar{
+  flex:1;
+  background:linear-gradient(180deg, var(--cyan), var(--primary));
+  border-radius:3px 3px 0 0;
+  opacity:0.7;
+  min-width:12px;
+}
+.mini-bar:hover{opacity:1;}
+
+/* ===== Bottom Stats Bar ===== */
+.bottom-bar{
+  margin-top:18px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.08), rgba(0,188,212,0.05));
+  border:1px solid var(--border-line);
+  border-radius:10px;
+  padding:14px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.bottom-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  color:var(--text-sub);
+  font-weight:300;
+}
+.bottom-item .bi-label{
+  font-family:'Roboto Mono', monospace;
+  color:var(--text-dim);
+  letter-spacing:1px;
+}
+.bottom-item .bi-value{
+  font-family:'Inter', sans-serif;
+  font-weight:700;
+  color:var(--text-main);
+  font-size:14px;
+}
+.bottom-divider{
+  width:1px;
+  height:24px;
+  background:var(--border-line);
+}
+
+/* ===== Decorative corners ===== */
+.corner-deco{
+  position:absolute;
+  width:80px;
+  height:80px;
+  pointer-events:none;
+}
+.corner-deco.tl{top:20px;left:20px;border-top:1px solid var(--cyan);border-left:1px solid var(--cyan);opacity:0.3;}
+.corner-deco.tr{top:20px;right:20px;border-top:1px solid var(--cyan);border-right:1px solid var(--cyan);opacity:0.3;}
+.corner-deco.bl{bottom:20px;left:20px;border-bottom:1px solid var(--primary);border-left:1px solid var(--primary);opacity:0.3;}
+.corner-deco.br{bottom:20px;right:20px;border-bottom:1px solid var(--primary);border-right:1px solid var(--primary);opacity:0.3;}
+
+.footer-tag{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:'Roboto Mono', monospace;
+  font-size:10px;
+  color:var(--text-dim);
+  letter-spacing:3px;
+  font-weight:300;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="corner-deco tl"></div>
+    <div class="corner-deco tr"></div>
+    <div class="corner-deco bl"></div>
+    <div class="corner-deco br"></div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="title">
+        <span class="title-accent"></span>
+        <span>开源人群的规模与增长</span>
+        <span class="title-en">// OPEN_SOURCE_COMMUNITY_GROWTH</span>
+      </div>
+      <p class="subtitle">
+        开源已从早期的小众极客运动演变为全球数千万人的协作实践。增长背后不仅有技术推动力，也有企业战略和社区运营的巨大投入。
+      </p>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Left Column -->
+      <div class="left-col">
+        <div class="col-label">
+          <span>关键维度</span>
+          <span class="col-label-line"></span>
+          <span>KEY DIMENSIONS</span>
+        </div>
+
+        <div class="point-card">
+          <div class="point-num">01</div>
+          <div class="point-body">
+            <div class="point-head"><span>贡献者总量</span><span class="point-head-tag">SCALE</span></div>
+            <div class="point-detail">全球活跃开源贡献者规模持续增长，年增长率保持在两位数。</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-num">02</div>
+          <div class="point-body">
+            <div class="point-head"><span>企业参与度</span><span class="point-head-tag">ENTERPRISE</span></div>
+            <div class="point-detail">超过 90% 的大型企业已将开源纳入技术战略与开发流程。</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-num">03</div>
+          <div class="point-body">
+            <div class="point-head"><span>语言多样性</span><span class="point-head-tag">LANGUAGES</span></div>
+            <div class="point-detail">Python、JavaScript、Go、Rust 成为贡献最活跃的前四语言。</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-num">04</div>
+          <div class="point-body">
+            <div class="point-head"><span>地域分布</span><span class="point-head-tag">GLOBAL</span></div>
+            <div class="point-detail">贡献者来源国超过 190 个，中美印构成最大三个贡献群体。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <div class="col-label">
+          <span>核心数据</span>
+          <span class="col-label-line"></span>
+          <span>CORE METRICS</span>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card glow">
+            <div class="kpi-card-label"><span class="kpi-dot"></span><span>GLOBAL CONTRIBUTORS</span></div>
+            <div class="kpi-value">6000<span class="unit">万+</span></div>
+            <div class="kpi-context">全球活跃贡献者规模（2023 年估算数据）</div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:85%;"></div></div>
+          </div>
+
+          <div class="kpi-card glow">
+            <div class="kpi-card-label"><span class="kpi-dot"></span><span>YoY GROWTH</span></div>
+            <div class="kpi-value">10<span class="unit">–15%</span></div>
+            <div class="kpi-context">年增长率（近五年平均）</div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:60%;"></div></div>
+          </div>
+
+          <div class="kpi-wide glow">
+            <div class="kpi-left">
+              <div class="kpi-card-label"><span class="kpi-dot"></span><span>COVERAGE / 国家地区</span></div>
+              <div class="kpi-value">190<span class="unit">+</span></div>
+              <div class="kpi-context">涉及国家 / 地区（有记录的贡献来源）</div>
+            </div>
+            <div class="kpi-chart-mini">
+              <div class="mini-bar" style="height:30%;"></div>
+              <div class="mini-bar" style="height:45%;"></div>
+              <div class="mini-bar" style="height:40%;"></div>
+              <div class="mini-bar" style="height:60%;"></div>
+              <div class="mini-bar" style="height:55%;"></div>
+              <div class="mini-bar" style="height:72%;"></div>
+              <div class="mini-bar" style="height:68%;"></div>
+              <div class="mini-bar" style="height:80%;"></div>
+              <div class="mini-bar" style="height:75%;"></div>
+              <div class="mini-bar" style="height:90%;"></div>
+              <div class="mini-bar" style="height:88%;"></div>
+              <div class="mini-bar" style="height:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+      <div class="bottom-item">
+        <span class="bi-label">// TOP_LANG</span>
+        <span class="bi-value">Python · JavaScript · Go · Rust</span>
+      </div>
+      <div class="bottom-divider"></div>
+      <div class="bottom-item">
+        <span class="bi-label">// TOP_REGION</span>
+        <span class="bi-value">中国 · 美国 · 印度</span>
+      </div>
+      <div class="bottom-divider"></div>
+      <div class="bottom-item">
+        <span class="bi-label">// ENTERPRISE</span>
+        <span class="bi-value">90%+ 已纳入战略</span>
+      </div>
+      <div class="bottom-divider"></div>
+      <div class="bottom-item">
+        <span class="bi-label">// TREND</span>
+        <span class="bi-value">持续两位数增长</span>
+      </div>
+    </div>
+
+    <div class="footer-tag">OPEN SOURCE · COMMUNITY · GROWTH · 2024</div>
+  </div>
+</div>
+</body>
+</html>

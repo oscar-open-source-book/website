@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一部分：认识开源人群</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0F1923;
+  --bg-darker: #0A121C;
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #E8EDF2;
+  --text-dim: #7A8A99;
+  --glow-blue: 0 0 20px rgba(33,150,243,0.6);
+  --glow-cyan: 0 0 16px rgba(0,188,212,0.7);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0F1923 0%, #0A121C 60%, #081018 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+}
+
+/* Geometric decorations */
+.geo-block-1 {
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(33,150,243,0.15);
+  transform: rotate(45deg);
+  z-index: 0;
+}
+
+.geo-block-2 {
+  position: absolute;
+  top: 60px;
+  right: 220px;
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(0,188,212,0.3);
+  z-index: 0;
+}
+
+.geo-block-3 {
+  position: absolute;
+  bottom: 100px;
+  right: 60px;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(33,150,243,0.1);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.geo-block-4 {
+  position: absolute;
+  bottom: 200px;
+  right: 200px;
+  width: 20px;
+  height: 20px;
+  background: var(--primary);
+  box-shadow: var(--glow-blue);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.geo-grid {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 600px;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+  mask-image: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
+}
+
+/* Glowing divider line on the right side */
+.glow-divider {
+  position: absolute;
+  top: 120px;
+  right: 360px;
+  width: 2px;
+  height: 500px;
+  background: linear-gradient(to bottom, transparent, var(--accent), var(--primary), transparent);
+  box-shadow: 0 0 12px rgba(0,188,212,0.8), 0 0 24px rgba(33,150,243,0.4);
+  z-index: 1;
+}
+
+.glow-divider-h {
+  position: absolute;
+  top: 370px;
+  right: 250px;
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  box-shadow: 0 0 10px rgba(0,188,212,0.6);
+  z-index: 1;
+}
+
+.glow-dot {
+  position: absolute;
+  top: 366px;
+  right: 246px;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(0,188,212,0.9), 0 0 24px rgba(0,188,212,0.4);
+  z-index: 1;
+}
+
+/* Top label */
+.top-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.top-label::before {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 1px;
+  background: var(--accent);
+  vertical-align: middle;
+  margin-right: 12px;
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* Chapter number */
+.chapter-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 200px;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--primary);
+  letter-spacing: -4px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 40px rgba(33,150,243,0.3);
+  position: relative;
+}
+
+.chapter-num .inner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgba(33,150,243,0.12);
+  -webkit-text-stroke: 0;
+}
+
+/* Main title */
+.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text-main);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.main-title .accent-bar {
+  display: inline-block;
+  width: 8px;
+  height: 44px;
+  background: var(--primary);
+  box-shadow: var(--glow-blue);
+  vertical-align: middle;
+  margin-right: 16px;
+}
+
+/* Guide sentence */
+.guide-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 750px;
+  margin-top: 20px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(33,150,243,0.4);
+}
+
+.guide-text strong {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Three columns */
+.three-cols {
+  position: absolute;
+  left: 70px;
+  right: 70px;
+  bottom: 70px;
+  display: flex;
+  gap: 24px;
+  z-index: 2;
+}
+
+.col-card {
+  flex: 1;
+  background: rgba(15,25,35,0.6);
+  border: 1px solid rgba(33,150,243,0.15);
+  border-top: 2px solid var(--primary);
+  padding: 22px 22px 20px 22px;
+  position: relative;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s;
+}
+
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: var(--glow-cyan);
+}
+
+.col-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.col-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.col-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-main);
+  margin: 8px 0 10px 0;
+  line-height: 1.3;
+}
+
+.col-divider {
+  width: 36px;
+  height: 1px;
+  background: rgba(33,150,243,0.5);
+  margin-bottom: 12px;
+}
+
+.col-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* Subtitle bottom */
+.subtitle-bar {
+  position: absolute;
+  left: 70px;
+  right: 70px;
+  top: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+
+.subtitle-left {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+.subtitle-right {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* Bottom accent line */
+.bottom-glow-line {
+  position: absolute;
+  left: 70px;
+  right: 70px;
+  bottom: 42px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(33,150,243,0.4) 20%, rgba(0,188,212,0.4) 50%, rgba(33,150,243,0.4) 80%, transparent);
+  box-shadow: 0 0 8px rgba(33,150,243,0.3);
+  z-index: 1;
+}
+
+.bottom-meta {
+  position: absolute;
+  left: 70px;
+  right: 70px;
+  bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  z-index: 2;
+}
+
+/* Right side big number decoration */
+.right-big-text {
+  position: absolute;
+  right: 80px;
+  top: 180px;
+  text-align: right;
+  z-index: 1;
+}
+
+.right-big-text .tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.right-big-text .big-word {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 88px;
+  color: rgba(33,150,243,0.08);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.right-big-text .sub-word {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-top: 14px;
+  letter-spacing: 2px;
+}
+
+.right-stats {
+  position: absolute;
+  right: 80px;
+  top: 420px;
+  z-index: 1;
+}
+
+.right-stats .stat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.right-stats .stat-bar {
+  width: 80px;
+  height: 2px;
+  background: rgba(33,150,243,0.3);
+  position: relative;
+}
+
+.right-stats .stat-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(0,188,212,0.7);
+}
+
+.right-stats .stat-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  width: 100px;
+}
+
+.right-stats .stat-val {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Animated scan line */
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 200px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(0,188,212,0.3), transparent);
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.scan-line-2 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 280px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(33,150,243,0.25), transparent);
+  z-index: 0;
+  opacity: 0.5;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="geo-grid"></div>
+    <div class="geo-block-1"></div>
+    <div class="geo-block-2"></div>
+    <div class="geo-block-3"></div>
+    <div class="geo-block-4"></div>
+    <div class="scan-line"></div>
+    <div class="scan-line-2"></div>
+  </div>
+  <div id="ct">
+    <div class="subtitle-bar">
+      <div class="subtitle-left"><span>PART ONE / OPEN SOURCE COMMUNITY</span></div>
+      <div class="subtitle-right"><span>从宏观视角看开源贡献者的基本构成</span></div>
+    </div>
+
+    <div class="glow-divider"></div>
+    <div class="glow-divider-h"></div>
+    <div class="glow-dot"></div>
+
+    <div style="position: absolute; left: 70px; top: 130px; z-index: 2;">
+      <div class="top-label"><span>CHAPTER · 章节导览</span></div>
+      <div class="chapter-num">
+        01<span class="inner">01</span>
+      </div>
+      <div class="main-title">
+        <span class="accent-bar"></span><span>第一部分：认识开源人群</span>
+      </div>
+      <div class="guide-text">
+        <span>开源运动的核心是<strong>人</strong>——要推动开源生态发展，首先要理解参与者是谁：他们的年龄、职业、地理位置，以及他们为什么愿意投入宝贵时间来贡献代码。</span>
+      </div>
+    </div>
+
+    <div class="right-big-text">
+      <div class="tag"><span>WHO · ARE · THEY</span></div>
+      <div class="big-word">人</div>
+      <div class="sub-word"><span>PEOPLE POWER THE ECOSYSTEM</span></div>
+    </div>
+
+    <div class="right-stats">
+      <div class="stat-row">
+        <div class="stat-label"><span>人口特征</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:85%;"></div></div>
+        <div class="stat-val"><span>D01</span></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label"><span>动机驱动</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:70%;"></div></div>
+        <div class="stat-val"><span>D02</span></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label"><span>贡献行为</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:90%;"></div></div>
+        <div class="stat-val"><span>D03</span></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label"><span>协作模式</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:75%;"></div></div>
+        <div class="stat-val"><span>D04</span></div>
+      </div>
+    </div>
+
+    <div class="three-cols">
+      <div class="col-card">
+        <div class="col-label"><span>01 / MOTIVATION</span></div>
+        <div class="col-num"><span>CHAPTER · 01</span></div>
+        <div class="col-title"><span>为什么画"画像"</span></div>
+        <div class="col-divider"></div>
+        <div class="col-desc"><span>理解贡献者才能构建更好的社区与工具生态，让开源协作更高效、更可持续。</span></div>
+      </div>
+      <div class="col-card">
+        <div class="col-label"><span>02 / DATA SOURCE</span></div>
+        <div class="col-num"><span>CHAPTER · 02</span></div>
+        <div class="col-title"><span>数据来源</span></div>
+        <div class="col-divider"></div>
+        <div class="col-desc"><span>综合 GitHub 公开数据、行业调查报告与权威研究报告，多维度交叉验证。</span></div>
+      </div>
+      <div class="col-card">
+        <div class="col-label"><span>03 / COVERAGE</span></div>
+        <div class="col-num"><span>CHAPTER · 03</span></div>
+        <div class="col-title"><span>覆盖维度</span></div>
+        <div class="col-divider"></div>
+        <div class="col-desc"><span>人口特征、动机驱动、贡献行为、协作模式——四大方向全面洞察。</span></div>
+      </div>
+    </div>
+
+    <div class="bottom-glow-line"></div>
+    <div class="bottom-meta">
+      <div><span>OPEN SOURCE / 2024 / RESEARCH DECK</span></div>
+      <div><span>PAGE 01 — CHAPTER TRANSITION</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
