@@ -9,12 +9,17 @@
     {{ if eq $slidesContent "" }}
       <p class="text-gray-400">文件为空或无法读取。</p>
     {{ else }}
-      {{ $total := (len $slidesContent) | div 200 }}
+      {{ $parts := split $slidesContent "---" }}
+      {{ $body := "" }}
+      {{ range after 1 $parts }}
+        {{ $body = printf "%s---%s" $body . }}
+      {{ end }}
+      {{ $total := (len $body) | div 200 }}
       <div class="mb-4 flex items-center justify-between">
         <div>
           <h1 class="text-2xl font-bold text-amber-100">{{ .Title }}</h1>
           <p class="text-sm text-gray-400 mt-1">
-            {{ if $total }}{{ $total }}+ slides · {{ else }}slides · {{ end }}
+            {{ if $total }}{{ $total }}+ slides · {{ end }}
             {{ .Date.Format "2006-01" }}
           </p>
         </div>
@@ -24,7 +29,7 @@
       </div>
 
       <div id="slide-deck" class="bg-gray-900/60 rounded-xl border border-white/10 overflow-hidden">
-        {{ $slidesContent | markdownify }}
+        {{ $body | markdownify }}
       </div>
     {{ end }}
   {{ end }}
