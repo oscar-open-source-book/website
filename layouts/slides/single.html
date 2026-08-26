@@ -2,28 +2,28 @@
 {{ $deckId := "dev-together-2024" }}
 {{ $total := 7 }}
 
-<section class="mx-auto max-w-screen-xl px-4 py-4">
-  <div class="flex items-center justify-between mb-4">
+<section class="mx-auto max-w-screen-xl px-4 py-4" id="deck-section">
+  <div class="flex items-center justify-between mb-4" data-part="header">
     <div>
       <h1 class="text-xl font-bold text-amber-100">{{ .Title }}</h1>
       <p class="text-xs text-gray-400 mt-0.5">{{ $total }} slides · {{ .Date.Format "2006-01" }}</p>
     </div>
     <div class="flex gap-2">
-      <button onclick="toggleFullscreen()" class="px-3 py-1 rounded-lg border border-amber-600/40 text-sm text-amber-300 hover:bg-amber-600/10 hover:text-amber-400">⛶ 全屏</button>
+      <button onclick="toggleFullscreen()" class="px-3 py-1 rounded-lg border border-amber-600/40 text-sm text-amber-300 hover:bg-amber-600/10 hover:text-amber-400" id="btn-fs">⛶ 全屏</button>
       <a href="/slides/" class="text-xs px-3 py-1 rounded-lg border border-white/20 text-gray-400 hover:text-amber-400">← 列表</a>
     </div>
   </div>
 
-  <!-- Thumbnail strip (CSS transform scale, no iframe scale hack) -->
-  <div class="mb-4 pb-3 border-b border-white/10">
+  <div data-part="thumbs" class="mb-4 pb-3 border-b border-white/10">
     <p class="text-xs text-gray-500 mb-2">缩略导航</p>
     <div id="thumb-strip" class="flex gap-2 overflow-x-auto pb-2">
       {{ range seq $total }}
       <div onclick="goTo({{ . }})"
            class="thumb-item flex-shrink-0 cursor-pointer"
            data-page="{{ . }}">
-        <div class="w-40 h-24 overflow-hidden rounded-md border border-white/10 hover:border-amber-600 transition-colors">
+        <div class="w-40 h-24 overflow-hidden rounded-md border border-white/10 hover:border-amber-600 transition-colors bg-gray-800">
           <iframe src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
+                  width="1600" height="900"
                   class="thumb-iframe"
                   scrolling="no">
           </iframe>
@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <div id="deck-nav" class="flex flex-wrap gap-1.5 mb-3 pb-3 border-b border-white/10">
+  <div id="deck-nav" data-part="nav" class="flex flex-wrap gap-1.5 mb-3 pb-3 border-b border-white/10">
     {{ range seq $total }}
     <button onclick="goTo({{ . }})"
             class="px-2 py-0.5 rounded text-xs border border-white/20 text-gray-400 hover:border-amber-600 hover:text-amber-400 transition-colors"
@@ -47,13 +47,14 @@
   {{ range seq $total }}
   <iframe id="slide-{{ . }}"
           data-slide="{{ . }}"
+          data-part="slide"
           src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
           class="slide-iframe"
           {{ if ne . 1 }}style="display:none"{{ end }}>
   </iframe>
   {{ end }}
 
-  <div class="flex justify-between mt-3 pb-2">
+  <div data-part="controls" class="flex justify-between mt-3 pb-2">
     <button onclick="prev()" class="px-3 py-1 rounded-lg border border-white/20 text-sm text-gray-400 hover:text-amber-400">← 上一页</button>
     <span id="page-indicator" class="text-xs text-gray-500 self-center">1 / {{ $total }}</span>
     <button onclick="next()" class="px-3 py-1 rounded-lg border border-white/20 text-sm text-gray-400 hover:text-amber-400">下一页 →</button>
@@ -72,29 +73,27 @@
   aspect-ratio:16/9;
   height:560px;
 }
-/* Thumbnail: scale via CSS transform, no fixed dimensions inside iframe */
 .thumb-iframe{
-  width:1600px;
-  height:900px;
-  border:none;
+  width:1600px !important;
+  height:900px !important;
+  border:none !important;
   transform: scale(0.1);
   transform-origin: top left;
   position:absolute;
   top:0;
   left:0;
+  display:block;
 }
-/* Fullscreen: hide controls, show only slide */
-.fullscreen-mode #deck-nav,
-.fullscreen-mode #thumb-strip-wrap,
-.fullscreen-mode .slide-controls,
-.fullscreen-mode .nav-header{
+/* Fullscreen */
+[data-part][data-fullscreen-hidden]{
   display:none !important;
 }
-.fullscreen-mode .slide-iframe{
+.slide-iframe.fs-active{
   max-width:170vh !important;
   height:95vh !important;
   aspect-ratio:16/9 !important;
   margin:0 auto !important;
+  border-radius:0 !important;
 }
 @media (max-width:768px){
   .slide-iframe{height:380px}
@@ -102,9 +101,32 @@
 </style>
 
 <script>
-let cur = 1, total = {{ $total }}, fullMode = false;
+let cur = 1, total = {{ $total }}, fs = false;
 
-function syncHighlight(){
+function toggleFS() {
+  fs = !fs;
+  const parts = document.querySelectorAll('[data-part]');
+  parts.forEach(el => {
+    if (fs) {
+      if (el.dataset.part !== 'slide') el.setAttribute('data-fullscreen-hidden', '1');
+    } else {
+      el.removeAttribute('data-fullscreen-hidden');
+    }
+  });
+  const btn = document.getElementById('btn-fs');
+  if (btn) btn.textContent = fs ? '✕ 退出全屏' : '⛶ 全屏';
+}
+
+function show(n) {
+  cur = Math.max(1, Math.min(total, n));
+  document.querySelectorAll('.slide-iframe').forEach(el => {
+    if (el.dataset.slide == cur) {
+      el.style.display = 'block';
+      if (fs) el.classList.add('fs-active');
+    } else {
+      el.style.display = 'none';
+    }
+  });
   document.querySelectorAll('#deck-nav button').forEach(el => {
     el.classList.toggle('border-amber-600', el.dataset.page == cur);
     el.classList.toggle('text-amber-400', el.dataset.page == cur);
@@ -114,14 +136,6 @@ function syncHighlight(){
     el.style.outlineOffset = '2px';
   });
   document.getElementById('page-indicator').textContent = cur + ' / ' + total;
-}
-
-function show(n) {
-  cur = Math.max(1, Math.min(total, n));
-  document.querySelectorAll('.slide-iframe').forEach(el => {
-    el.style.display = el.dataset.slide == cur ? 'block' : 'none';
-  });
-  syncHighlight();
   localStorage.setItem('slide-{{ $deckId }}', cur);
 }
 
@@ -129,17 +143,10 @@ function goTo(n) { show(n); }
 function prev() { if (cur > 1) show(cur - 1); }
 function next() { if (cur < total) show(cur + 1); }
 
-function toggleFullscreen() {
-  const sect = document.querySelector('section');
-  fullMode = !fullMode;
-  sect.classList.toggle('fullscreen-mode', fullMode);
-  document.querySelector('button[onclick="toggleFullscreen()"]').textContent = fullMode ? '✕ 退出全屏' : '⛶ 全屏';
-}
-
 document.addEventListener('keydown', e => {
   if (e.key == 'ArrowLeft') prev();
   else if (e.key == 'ArrowRight') next();
-  else if (e.key == 'f' || e.key == 'F') toggleFullscreen();
+  else if (e.key == 'f' || e.key == 'F') toggleFS();
   else if (e.key == 'Home') goTo(1);
   else if (e.key == 'End') goTo(total);
 });
