@@ -9,7 +9,7 @@
       <p class="text-xs text-gray-400 mt-0.5">{{ $total }} slides · {{ .Date.Format "2006-01" }}</p>
     </div>
     <div class="flex gap-2">
-      <button onclick="toggleFullscreen()" class="px-3 py-1 rounded-lg border border-amber-600/40 text-sm text-amber-300 hover:bg-amber-600/10 hover:text-amber-400" id="btn-fs">⛶ 全屏</button>
+      <button onclick="toggleFS()" class="px-3 py-1 rounded-lg border border-amber-600/40 text-sm text-amber-300 hover:bg-amber-600/10 hover:text-amber-400" id="btn-fs">⛶ 全屏</button>
       <a href="/slides/" class="text-xs px-3 py-1 rounded-lg border border-white/20 text-gray-400 hover:text-amber-400">← 列表</a>
     </div>
   </div>
@@ -21,9 +21,8 @@
       <div onclick="goTo({{ . }})"
            class="thumb-item flex-shrink-0 cursor-pointer"
            data-page="{{ . }}">
-        <div class="w-40 h-24 overflow-hidden rounded-md border border-white/10 hover:border-amber-600 transition-colors bg-gray-800">
+        <div class="w-40 h-[90px] overflow-hidden rounded-md border border-white/10 hover:border-amber-600 transition-colors bg-gray-800 relative">
           <iframe src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
-                  width="1600" height="900"
                   class="thumb-iframe"
                   scrolling="no">
           </iframe>
@@ -50,7 +49,8 @@
           data-part="slide"
           src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
           class="slide-iframe"
-          {{ if ne . 1 }}style="display:none"{{ end }}>
+          {{ if ne . 1 }}style="display:none"{{ end }}
+          width="1600" height="900">
   </iframe>
   {{ end }}
 
@@ -63,40 +63,27 @@
 
 <style>
 .slide-iframe{
-  width:100%;
-  max-width:1280px;
+  width:1280px;
+  max-width:100%;
+  height:720px;
   margin:0 auto;
   display:block;
   border:none;
   border-radius:8px;
   background:#F3EDE0;
-  aspect-ratio:16/9;
-  height:560px;
 }
 .thumb-iframe{
-  width:1600px !important;
-  height:900px !important;
-  border:none !important;
+  width:1600px;
+  height:900px;
+  border:none;
   transform: scale(0.1);
   transform-origin: top left;
   position:absolute;
   top:0;
   left:0;
-  display:block;
-}
-/* Fullscreen */
-[data-part][data-fullscreen-hidden]{
-  display:none !important;
-}
-.slide-iframe.fs-active{
-  max-width:170vh !important;
-  height:95vh !important;
-  aspect-ratio:16/9 !important;
-  margin:0 auto !important;
-  border-radius:0 !important;
 }
 @media (max-width:768px){
-  .slide-iframe{height:380px}
+  .slide-iframe{width:100%;height:auto;aspect-ratio:16/9}
 }
 </style>
 
@@ -105,16 +92,16 @@ let cur = 1, total = {{ $total }}, fs = false;
 
 function toggleFS() {
   fs = !fs;
-  const parts = document.querySelectorAll('[data-part]');
-  parts.forEach(el => {
+  document.querySelectorAll('[data-part]').forEach(el => {
     if (fs) {
-      if (el.dataset.part !== 'slide') el.setAttribute('data-fullscreen-hidden', '1');
+      if (el.dataset.part !== 'slide') el.setAttribute('data-hidden', '1');
     } else {
-      el.removeAttribute('data-fullscreen-hidden');
+      el.removeAttribute('data-hidden');
     }
   });
   const btn = document.getElementById('btn-fs');
   if (btn) btn.textContent = fs ? '✕ 退出全屏' : '⛶ 全屏';
+  show(cur);
 }
 
 function show(n) {
@@ -122,11 +109,22 @@ function show(n) {
   document.querySelectorAll('.slide-iframe').forEach(el => {
     if (el.dataset.slide == cur) {
       el.style.display = 'block';
-      if (fs) el.classList.add('fs-active');
+      if (fs) el.style.position = 'fixed';
+      else el.style.position = '';
     } else {
       el.style.display = 'none';
     }
   });
+  if (fs) {
+    const active = document.querySelector('.slide-iframe[style*="block"]');
+    if (active) {
+      active.style.left = '50%';
+      active.style.top = '50%';
+      active.style.transform = 'translate(-50%,-50%)';
+      active.style.width = 'min(1600px, 90vw)';
+      active.style.height = 'min(900px, 56vh)';
+    }
+  }
   document.querySelectorAll('#deck-nav button').forEach(el => {
     el.classList.toggle('border-amber-600', el.dataset.page == cur);
     el.classList.toggle('text-amber-400', el.dataset.page == cur);
