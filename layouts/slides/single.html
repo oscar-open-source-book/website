@@ -3,12 +3,36 @@
 {{ $total := 7 }}
 
 <section class="mx-auto max-w-screen-xl px-4 py-4">
-  <div class="flex items-center justify-between mb-3">
+  <div class="flex items-center justify-between mb-4">
     <div>
       <h1 class="text-xl font-bold text-amber-100">{{ .Title }}</h1>
       <p class="text-xs text-gray-400 mt-0.5">{{ $total }} slides · {{ .Date.Format "2006-01" }}</p>
     </div>
-    <a href="/slides/" class="text-xs px-3 py-1 rounded-lg border border-white/20 text-gray-400 hover:text-amber-400">← 列表</a>
+    <div class="flex gap-2">
+      <button onclick="toggleFullscreen()" class="px-3 py-1 rounded-lg border border-amber-600/40 text-sm text-amber-300 hover:bg-amber-600/10 hover:text-amber-400" id="btn-fullscreen">⛶ 全屏</button>
+      <a href="/slides/" class="text-xs px-3 py-1 rounded-lg border border-white/20 text-gray-400 hover:text-amber-400">← 列表</a>
+    </div>
+  </div>
+
+  <!-- Thumbnail strip -->
+  <div class="mb-4 pb-3 border-b border-white/10">
+    <p class="text-xs text-gray-500 mb-2">缩略导航</p>
+    <div id="thumb-strip" class="flex gap-2 overflow-x-auto pb-2">
+      {{ range seq $total }}
+      <div onclick="goTo({{ . }})"
+           class="thumb-item flex-shrink-0 cursor-pointer group"
+           data-page="{{ . }}">
+        <div class="w-32 h-18 border border-white/15 rounded-md overflow-hidden transition-all duration-200 group-hover:border-amber-600">
+          <iframe src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
+                  class="w-full h-full border-0 scale-[0.3125] origin-top-left"
+                  style="width:320px;height:180px;"
+                  scrolling="no">
+          </iframe>
+        </div>
+        <p class="text-[10px] text-gray-500 text-center mt-1">Slide {{ . }}</p>
+      </div>
+      {{ end }}
+    </div>
   </div>
 
   <div id="deck-nav" class="flex flex-wrap gap-1.5 mb-3 pb-3 border-b border-white/10">
@@ -26,7 +50,8 @@
           data-slide="{{ . }}"
           src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
           class="slide-iframe"
-          {{ if ne . 1 }}style="display:none"{{ end }}>
+          {{ if ne . 1 }}style="display:none"{{ end }}
+          scrolling="yes">
   </iframe>
   {{ end }}
 
@@ -49,32 +74,80 @@
   aspect-ratio:16/9;
   height:560px;
 }
+/* Fullscreen mode */
+html:fullscreen .slide-iframe,
+.slide-iframe:-webkit-full-screen,
+.slide-iframe:fullscreen{
+  max-width:none !important;
+  height:95vh !important;
+  aspect-ratio:16/9 !important;
+  max-width:170vh !important;
+}
 @media (max-width:768px){
   .slide-iframe{height:380px}
+}
+#deck-nav button{
+  transition: all 0.2s;
+}
+#deck-nav button.border-amber-600{
+  background: rgba(217, 119, 6, 0.15);
 }
 </style>
 
 <script>
-let cur = 1, total = {{ $total }};
-function show(n) {
-  document.querySelectorAll('.slide-iframe').forEach(el => {
-    el.style.display = el.dataset.slide == n ? 'block' : 'none';
-  });
+let cur = 1, total = {{ $total }}, fs = null;
+
+function syncHighlight(){
   document.querySelectorAll('#deck-nav button').forEach(el => {
-    el.classList.toggle('border-amber-600', el.dataset.page == n);
-    el.classList.toggle('text-amber-400', el.dataset.page == n);
+    el.classList.toggle('border-amber-600', el.dataset.page == cur);
+    el.classList.toggle('text-amber-400', el.dataset.page == cur);
   });
-  document.getElementById('page-indicator').textContent = n + ' / ' + total;
-  cur = n;
-  localStorage.setItem('slide-{{ $deckId }}', n);
+  document.querySelectorAll('.thumb-item').forEach(el => {
+    el.style.outline = el.dataset.page == cur ? '2px solid #f59e0b' : 'none';
+    el.style.outlineOffset = '2px';
+  });
+  document.getElementById('page-indicator').textContent = cur + ' / ' + total;
 }
-function goTo(n) { show(Math.max(1, Math.min(total, n))); }
+
+function show(n) {
+  cur = Math.max(1, Math.min(total, n));
+  document.querySelectorAll('.slide-iframe').forEach(el => {
+    el.style.display = el.dataset.slide == cur ? 'block' : 'none';
+  });
+  syncHighlight();
+  document.getElementById('page-indicator').textContent = cur + ' / ' + total;
+  localStorage.setItem('slide-{{ $deckId }}', cur);
+  // Sync fullscreen if active
+  if (fs) {
+    fs.style.display = fs.dataset.slide == cur ? 'block' : 'none';
+  }
+}
+
+function goTo(n) { show(n); }
 function prev() { if (cur > 1) show(cur - 1); }
 function next() { if (cur < total) show(cur + 1); }
+
+function toggleFullscreen() {
+  const iframe = document.querySelector('.slide-iframe[style*="block"]') || document.querySelector('.slide-iframe');
+  if (!fs) {
+    fs = iframe;
+    iframe.requestFullscreen().then(() => {
+      document.getElementById('btn-fullscreen').textContent = '✕ 退出';
+    }).catch(e => {});
+  } else {
+    document.exitFullscreen();
+    fs = null;
+    document.getElementById('btn-fullscreen').textContent = '⛶ 全屏';
+  }
+}
+
 document.addEventListener('keydown', e => {
   if (e.key == 'ArrowLeft') prev();
   else if (e.key == 'ArrowRight') next();
+  else if (e.key == 'f' || e.key == 'F') toggleFullscreen();
+  else if (e.key == 'Escape') {} // handled natively
 });
+
 show(localStorage.getItem('slide-{{ $deckId }}') ? parseInt(localStorage.getItem('slide-{{ $deckId }}')) : 1);
 </script>
 {{ end }}

@@ -10,19 +10,33 @@
       <p class="text-lg">暂无 slides。</p>
     </div>
   {{ else }}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {{ range $all }}
+      {{ $deckId := .Params.slides_deck_id }}
+      {{ $total := .Params.slides_count }}
       <a href="{{ .RelPermalink }}"
-         class="group block rounded-xl border border-white/10 dark:border-white/20 bg-white/5 dark:bg-white/5 hover:border-amber-700/40 transition-all p-4">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-amber-900/30 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+         class="group block rounded-xl border border-white/10 dark:border-white/20 bg-white/5 dark:bg-white/5 hover:border-amber-600/50 hover:bg-white/8 transition-all overflow-hidden">
+        {{ if $deckId }}
+        <div class="relative w-full aspect-video bg-gray-800 overflow-hidden border-b border-white/5">
+          <iframe src="/slides/{{ $deckId }}/pages/page_001.html"
+                  class="w-full h-full scale-75 origin-top-left"
+                  style="height:167px;width:267px;border:0;"
+                  scrolling="no">
+          </iframe>
+        </div>
+        {{ end }}
+        <div class="p-4 flex items-start gap-3">
+          <div class="w-9 h-9 rounded-lg bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
             </svg>
           </div>
-          <div>
+          <div class="flex-1 min-w-0">
             <h3 class="text-sm font-medium text-gray-200 group-hover:text-amber-400 transition-colors line-clamp-2">{{ .Title }}</h3>
-            <p class="text-xs text-gray-500 mt-1">{{ .Date.Format "2006-01" }}</p>
+            <p class="text-xs text-gray-500 mt-1">
+              {{ if $total }}{{ $total }} slides · {{ end }}
+              {{ .Date.Format "2006-01" }}
+            </p>
           </div>
         </div>
       </a>
