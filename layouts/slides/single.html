@@ -18,14 +18,10 @@
     <p class="text-xs text-gray-500 mb-2">缩略导航</p>
     <div id="thumb-strip" class="flex gap-2 overflow-x-auto pb-2">
       {{ range seq $total }}
-      <div onclick="goTo({{ . }})"
-           class="thumb-item flex-shrink-0 cursor-pointer"
-           data-page="{{ . }}">
+      <div onclick="goTo({{ . }})" class="thumb-item flex-shrink-0 cursor-pointer" data-page="{{ . }}">
         <div class="w-40 h-[90px] overflow-hidden rounded-md border border-white/10 hover:border-amber-600 transition-colors bg-gray-800 relative">
           <iframe src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
-                  class="thumb-iframe"
-                  scrolling="no">
-          </iframe>
+                  class="thumb-iframe" scrolling="no"></iframe>
         </div>
         <p class="text-[10px] text-gray-500 text-center mt-1">Slide {{ . }}</p>
       </div>
@@ -35,24 +31,21 @@
 
   <div id="deck-nav" data-part="nav" class="flex flex-wrap gap-1.5 mb-3 pb-3 border-b border-white/10">
     {{ range seq $total }}
-    <button onclick="goTo({{ . }})"
-            class="px-2 py-0.5 rounded text-xs border border-white/20 text-gray-400 hover:border-amber-600 hover:text-amber-400 transition-colors"
-            data-page="{{ . }}">
-      {{ . }}
-    </button>
+    <button onclick="goTo({{ . }})" data-page="{{ . }}"
+            class="px-2 py-0.5 rounded text-xs border border-white/20 text-gray-400 hover:border-amber-600 hover:text-amber-400 transition-colors">{{ . }}</button>
     {{ end }}
   </div>
 
-  {{ range seq $total }}
-  <iframe id="slide-{{ . }}"
-          data-slide="{{ . }}"
-          data-part="slide"
-          src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
-          class="slide-iframe"
-          {{ if ne . 1 }}style="display:none"{{ end }}
-          width="1600" height="900">
-  </iframe>
-  {{ end }}
+  <div id="slide-stage" data-part="slide-stage">
+    {{ range seq $total }}
+    <iframe id="slide-{{ . }}" data-slide="{{ . }}"
+            src="/slides/{{ $deckId }}/pages/page_{{ printf "%03d" . }}.html"
+            class="slide-iframe"
+            {{ if ne . 1 }}style="display:none"{{ end }}
+            width="1600" height="900"
+            scrolling="no"></iframe>
+    {{ end }}
+  </div>
 
   <div data-part="controls" class="flex justify-between mt-3 pb-2">
     <button onclick="prev()" class="px-3 py-1 rounded-lg border border-white/20 text-sm text-gray-400 hover:text-amber-400">← 上一页</button>
@@ -62,6 +55,12 @@
 </section>
 
 <style>
+#deck-section[data-fs="1"] [data-part="header"],
+#deck-section[data-fs="1"] [data-part="thumbs"],
+#deck-section[data-fs="1"] [data-part="nav"],
+#deck-section[data-fs="1"] [data-part="controls"] {
+  display:none !important;
+}
 .slide-iframe{
   width:1280px;
   max-width:100%;
@@ -72,15 +71,25 @@
   border-radius:8px;
   background:#F3EDE0;
 }
+#deck-section[data-fs="1"] #slide-stage{
+  position:fixed;
+  top:0;left:0;width:100vw;height:100vh;
+  background:#1B3B6B;
+  z-index:99999;
+  display:flex;align-items:center;justify-content:center;
+}
+#deck-section[data-fs="1"] .slide-iframe{
+  width:min(1600px, 90vw);
+  height:auto;
+  aspect-ratio:16/9;
+  max-height:90vh;
+  border-radius:0;
+}
 .thumb-iframe{
-  width:1600px;
-  height:900px;
-  border:none;
-  transform: scale(0.1);
-  transform-origin: top left;
-  position:absolute;
-  top:0;
-  left:0;
+  width:1600px;height:900px;border:none;
+  transform:scale(0.1);
+  transform-origin:top left;
+  position:absolute;top:0;left:0;
 }
 @media (max-width:768px){
   .slide-iframe{width:100%;height:auto;aspect-ratio:16/9}
@@ -89,42 +98,21 @@
 
 <script>
 let cur = 1, total = {{ $total }}, fs = false;
+const section = document.getElementById('deck-section');
 
 function toggleFS() {
   fs = !fs;
-  document.querySelectorAll('[data-part]').forEach(el => {
-    if (fs) {
-      if (el.dataset.part !== 'slide') el.setAttribute('data-hidden', '1');
-    } else {
-      el.removeAttribute('data-hidden');
-    }
-  });
+  section.setAttribute('data-fs', fs ? '1' : '0');
   const btn = document.getElementById('btn-fs');
   if (btn) btn.textContent = fs ? '✕ 退出全屏' : '⛶ 全屏';
-  show(cur);
 }
 
 function show(n) {
   cur = Math.max(1, Math.min(total, n));
+  const target = document.getElementById('slide-' + cur);
   document.querySelectorAll('.slide-iframe').forEach(el => {
-    if (el.dataset.slide == cur) {
-      el.style.display = 'block';
-      if (fs) el.style.position = 'fixed';
-      else el.style.position = '';
-    } else {
-      el.style.display = 'none';
-    }
+    el.style.display = (el === target) ? 'block' : 'none';
   });
-  if (fs) {
-    const active = document.querySelector('.slide-iframe[style*="block"]');
-    if (active) {
-      active.style.left = '50%';
-      active.style.top = '50%';
-      active.style.transform = 'translate(-50%,-50%)';
-      active.style.width = 'min(1600px, 90vw)';
-      active.style.height = 'min(900px, 56vh)';
-    }
-  }
   document.querySelectorAll('#deck-nav button').forEach(el => {
     el.classList.toggle('border-amber-600', el.dataset.page == cur);
     el.classList.toggle('text-amber-400', el.dataset.page == cur);
