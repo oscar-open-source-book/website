@@ -1,0 +1,502 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源文化核心</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg: #263238;
+  --bg-dark: #1B2529;
+  --bg-card: #2A363B;
+  --text-main: #ECEFF1;
+  --text-sub: #90A4AE;
+  --text-dim: #607D8B;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Roboto Mono', monospace; color: var(--text-main); overflow: hidden; }
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #1B2529 0%, #263238 50%, #1B2529 100%);
+}
+#ct {
+  position: absolute; inset: 0; z-index: 1;
+  padding: 48px 60px 40px 60px;
+  box-sizing: border-box;
+}
+
+/* 背景粒子 */
+.bg-particles {
+  position: absolute; top: 0; left: 0;
+  width: 2px; height: 2px; border-radius: 50%;
+  background: transparent;
+  box-shadow:
+    60px 40px 0 var(--accent),
+    180px 80px 0 var(--primary),
+    340px 30px 0 var(--accent),
+    520px 70px 0 var(--primary),
+    680px 50px 0 var(--accent),
+    860px 90px 0 var(--primary),
+    1040px 40px 0 var(--accent),
+    1220px 80px 0 var(--primary),
+    1400px 50px 0 var(--accent),
+    40px 180px 0 var(--primary),
+    220px 220px 0 var(--accent),
+    420px 180px 0 var(--primary),
+    620px 220px 0 var(--accent),
+    820px 200px 0 var(--primary),
+    1020px 230px 0 var(--accent),
+    1200px 190px 0 var(--primary),
+    1380px 220px 0 var(--accent),
+    50px 360px 0 var(--accent),
+    280px 380px 0 var(--primary),
+    560px 350px 0 var(--accent),
+    940px 370px 0 var(--primary),
+    1180px 350px 0 var(--accent),
+    1420px 380px 0 var(--primary),
+    80px 520px 0 var(--primary),
+    260px 560px 0 var(--accent),
+    500px 540px 0 var(--primary),
+    720px 580px 0 var(--accent),
+    960px 550px 0 var(--primary),
+    1200px 580px 0 var(--accent),
+    1400px 540px 0 var(--primary),
+    100px 720px 0 var(--accent),
+    320px 760px 0 var(--primary),
+    540px 740px 0 var(--accent),
+    780px 770px 0 var(--primary),
+    1040px 740px 0 var(--accent),
+    1280px 760px 0 var(--primary),
+    1440px 720px 0 var(--accent),
+    120px 850px 0 var(--primary),
+    380px 860px 0 var(--accent),
+    620px 850px 0 var(--primary),
+    880px 860px 0 var(--accent),
+    1140px 850px 0 var(--primary),
+    1380px 860px 0 var(--accent);
+}
+.bg-particles-2 {
+  position: absolute; top: 0; left: 0;
+  width: 1px; height: 1px; border-radius: 50%;
+  background: transparent;
+  box-shadow:
+    150px 120px 0 rgba(33,150,243,0.5),
+    450px 90px 0 rgba(0,188,212,0.4),
+    750px 140px 0 rgba(33,150,243,0.5),
+    1100px 110px 0 rgba(0,188,212,0.4),
+    1350px 150px 0 rgba(33,150,243,0.5),
+    90px 300px 0 rgba(0,188,212,0.4),
+    380px 320px 0 rgba(33,150,243,0.5),
+    660px 290px 0 rgba(0,188,212,0.4),
+    980px 310px 0 rgba(33,150,243,0.5),
+    1280px 300px 0 rgba(0,188,212,0.4),
+    160px 480px 0 rgba(33,150,243,0.5),
+    460px 500px 0 rgba(0,188,212,0.4),
+    780px 470px 0 rgba(33,150,243,0.5),
+    1100px 490px 0 rgba(0,188,212,0.4),
+    1360px 480px 0 rgba(33,150,243,0.5),
+    200px 660px 0 rgba(0,188,212,0.4),
+    520px 680px 0 rgba(33,150,243,0.5),
+    840px 650px 0 rgba(0,188,212,0.4),
+    1160px 670px 0 rgba(33,150,243,0.5),
+    1420px 660px 0 rgba(0,188,212,0.4);
+}
+
+/* 辐射线 */
+.radial-container {
+  position: absolute;
+  top: 470px; left: 800px;
+  width: 700px; height: 700px;
+  margin: -350px 0 0 -350px;
+  z-index: 0;
+}
+.ray {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 320px; height: 1px;
+  transform-origin: 0 0;
+}
+.ray-1 { transform: rotate(0deg); background: linear-gradient(to right, rgba(33,150,243,0.35), transparent); }
+.ray-2 { transform: rotate(45deg); background: linear-gradient(to right, rgba(0,188,212,0.3), transparent); }
+.ray-3 { transform: rotate(90deg); background: linear-gradient(to right, rgba(33,150,243,0.35), transparent); }
+.ray-4 { transform: rotate(135deg); background: linear-gradient(to right, rgba(0,188,212,0.3), transparent); }
+.ray-5 { transform: rotate(180deg); background: linear-gradient(to right, rgba(33,150,243,0.35), transparent); }
+.ray-6 { transform: rotate(225deg); background: linear-gradient(to right, rgba(0,188,212,0.3), transparent); }
+.ray-7 { transform: rotate(270deg); background: linear-gradient(to right, rgba(33,150,243,0.35), transparent); }
+.ray-8 { transform: rotate(315deg); background: linear-gradient(to right, rgba(0,188,212,0.3), transparent); }
+
+/* 标题区 */
+.header { position: relative; margin-bottom: 16px; }
+.header::before {
+  content: '';
+  position: absolute;
+  top: 18px; left: 0;
+  width: 4px; height: 32px;
+  background: linear-gradient(to bottom, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-main);
+  margin-left: 20px;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #ECEFF1 0%, #90CAF9 50%, #80DEEA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header-divider {
+  width: 100%;
+  height: 1px;
+  margin: 10px 0 12px 0;
+  background: linear-gradient(to right, rgba(33,150,243,0.6) 0%, rgba(0,188,212,0.4) 40%, transparent 100%);
+  position: relative;
+}
+.header-divider::after {
+  content: '';
+  position: absolute;
+  left: 0; top: -2px;
+  width: 8px; height: 5px;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+.subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-sub);
+  max-width: 1300px;
+  margin-left: 20px;
+}
+
+/* 核心区 */
+.core {
+  position: relative;
+  width: 1480px;
+  height: 600px;
+  margin-top: 8px;
+}
+
+/* 分隔线 */
+.divider-v {
+  position: absolute;
+  top: 0; left: 740px;
+  width: 1px; height: 600px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(33,150,243,0.25) 20%, rgba(0,188,212,0.25) 80%, transparent 100%);
+  z-index: 1;
+}
+.divider-h {
+  position: absolute;
+  top: 300px; left: 0;
+  width: 1480px; height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(33,150,243,0.25) 20%, rgba(0,188,212,0.25) 80%, transparent 100%);
+  z-index: 1;
+}
+.divider-dot {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  z-index: 2;
+}
+
+/* 象限卡片 */
+.quadrant {
+  position: absolute;
+  width: 600px;
+  height: 200px;
+  background: linear-gradient(135deg, #2A363B 0%, #263238 100%);
+  border: 1px solid rgba(33,150,243,0.2);
+  padding: 22px 26px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 3;
+}
+.quadrant::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--accent));
+}
+.quadrant::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 40px; height: 40px;
+  border-top: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+  opacity: 0.5;
+}
+
+.q1 { left: 0; top: 0; }
+.q2 { left: 880px; top: 0; }
+.q3 { left: 0; top: 400px; }
+.q4 { left: 880px; top: 400px; }
+
+.q-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.q-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 2px;
+}
+.q-icon {
+  font-size: 32px;
+  color: var(--accent);
+  text-shadow: 0 0 15px rgba(0,188,212,0.6);
+  line-height: 1;
+}
+.q-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+.q-rule {
+  width: 48px; height: 2px;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  margin-bottom: 10px;
+  border-radius: 1px;
+}
+.q-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12.5px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text-sub);
+}
+
+/* 中心图腾 */
+.totem {
+  position: absolute;
+  top: 190px;
+  left: 590px;
+  width: 220px; height: 220px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.totem-ring {
+  position: absolute;
+  top: 0; left: 0;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 40px rgba(33,150,243,0.5), 0 0 80px rgba(33,150,243,0.2), inset 0 0 20px rgba(0,188,212,0.15);
+}
+.totem-ring-2 {
+  position: absolute;
+  top: 20px; left: 20px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 1px dashed var(--accent);
+  opacity: 0.6;
+}
+.totem-ring-3 {
+  position: absolute;
+  top: 40px; left: 40px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.4);
+}
+.totem-core {
+  position: absolute;
+  top: 55px; left: 55px;
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.25) 0%, rgba(0,188,212,0.1) 60%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.totem-symbol {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(0,188,212,0.8);
+  line-height: 1;
+}
+.totem-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 2px;
+  margin-top: 6px;
+}
+.totem-label-2 {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 8px;
+  font-weight: 300;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  margin-top: 3px;
+}
+/* 图腾外圈小点 */
+.totem-dot {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.totem-dot-1 { top: -2px; left: 50%; margin-left: -2.5px; }
+.totem-dot-2 { bottom: -2px; left: 50%; margin-left: -2.5px; }
+.totem-dot-3 { left: -2px; top: 50%; margin-top: -2.5px; }
+.totem-dot-4 { right: -2px; top: 50%; margin-top: -2.5px; }
+
+/* 底部装饰 */
+.footer-deco {
+  position: absolute;
+  bottom: 12px; left: 0;
+  width: 1480px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  z-index: 5;
+}
+.footer-deco-left { display: flex; align-items: center; gap: 8px; }
+.footer-deco-line {
+  width: 120px; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(33,150,243,0.4));
+}
+.footer-deco-line-r {
+  width: 120px; height: 1px;
+  background: linear-gradient(to left, transparent, rgba(0,188,212,0.4));
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-particles"></div>
+    <div class="bg-particles-2"></div>
+    <div class="radial-container">
+      <div class="ray ray-1"></div>
+      <div class="ray ray-2"></div>
+      <div class="ray ray-3"></div>
+      <div class="ray ray-4"></div>
+      <div class="ray ray-5"></div>
+      <div class="ray ray-6"></div>
+      <div class="ray ray-7"></div>
+      <div class="ray ray-8"></div>
+    </div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <h1><span>开源文化核心</span></h1>
+      <div class="header-divider"></div>
+      <p class="subtitle"><span>开源不仅仅是代码许可证的选择，更是一种组织方式和文化信念。红帽把"开放、协作、透明、共享"当作企业 DNA，渗透进产品研发、客户沟通乃至招聘流程的每一个环节。</span></p>
+    </div>
+
+    <div class="core">
+      <div class="divider-v"></div>
+      <div class="divider-h"></div>
+      <div class="divider-dot" style="top:297px; left:-2px;"></div>
+      <div class="divider-dot" style="top:297px; left:1474px;"></div>
+      <div class="divider-dot" style="top:297px; left:737px;"></div>
+      <div class="divider-dot" style="top:-2px; left:737px;"></div>
+      <div class="divider-dot" style="bottom:-2px; left:737px;"></div>
+
+      <div class="quadrant q1">
+        <div class="q-top">
+          <span class="q-num">01</span>
+          <span class="q-icon">&infin;</span>
+        </div>
+        <div class="q-title"><span>开放协作</span></div>
+        <div class="q-rule"></div>
+        <p class="q-desc"><span>代码、设计、文档全部公开，任何人都可以参与讨论与贡献。</span></p>
+      </div>
+
+      <div class="quadrant q2">
+        <div class="q-top">
+          <span class="q-num">02</span>
+          <span class="q-icon">&#9711;</span>
+        </div>
+        <div class="q-title"><span>社区自治</span></div>
+        <div class="q-rule"></div>
+        <p class="q-desc"><span>决策由社区共识驱动，技术路线图透明，避免单一厂商锁定。</span></p>
+      </div>
+
+      <div class="quadrant q3">
+        <div class="q-top">
+          <span class="q-num">03</span>
+          <span class="q-icon">&#8635;</span>
+        </div>
+        <div class="q-title"><span>分享优先</span></div>
+        <div class="q-rule"></div>
+        <p class="q-desc"><span>知识、经验、教训主动外溢，"Give Back"是红帽文化的核心信条。</span></p>
+      </div>
+
+      <div class="quadrant q4">
+        <div class="q-top">
+          <span class="q-num">04</span>
+          <span class="q-icon">&#9672;</span>
+        </div>
+        <div class="q-title"><span>透明治理</span></div>
+        <div class="q-rule"></div>
+        <p class="q-desc"><span>通过开源基金会与社区章程实现权力制衡，保障生态健康发展。</span></p>
+      </div>
+
+      <div class="totem">
+        <div class="totem-ring">
+          <div class="totem-dot totem-dot-1"></div>
+          <div class="totem-dot totem-dot-2"></div>
+          <div class="totem-dot totem-dot-3"></div>
+          <div class="totem-dot totem-dot-4"></div>
+        </div>
+        <div class="totem-ring-2"></div>
+        <div class="totem-ring-3"></div>
+        <div class="totem-core">
+          <span class="totem-symbol">&infin;</span>
+          <span class="totem-label">OSS</span>
+          <span class="totem-label-2">OPEN · SHARE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-deco">
+      <div class="footer-deco-left">
+        <span class="footer-deco-line"></span>
+        <span>RED HAT &middot; OPEN SOURCE DNA</span>
+      </div>
+      <span>P.05 / OPEN SOURCE CULTURE</span>
+      <div class="footer-deco-left">
+        <span>CORE VALUES</span>
+        <span class="footer-deco-line-r"></span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

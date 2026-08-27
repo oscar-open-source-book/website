@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>红帽关键数据</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500;600&display=swap');
+:root{
+  --bg:#263238;
+  --bg-dark:#1B252B;
+  --bg-card:#2E3D45;
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --text-main:#ECEFF1;
+  --text-dim:#90A4AE;
+  --text-mid:#CFD8DC;
+  --border:rgba(33,150,243,0.22);
+  --glow-blue:0 0 20px rgba(33,150,243,0.65),0 0 40px rgba(33,150,243,0.35);
+  --glow-cyan:0 0 20px rgba(0,188,212,0.7),0 0 40px rgba(0,188,212,0.4);
+  --grid-line:rgba(33,150,243,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:#0d1317;}
+body{font-family:'Roboto Mono',monospace;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 10%,rgba(33,150,243,0.10),transparent 55%),
+    radial-gradient(ellipse at 85% 90%,rgba(0,188,212,0.08),transparent 55%),
+    var(--bg);
+}
+#bg::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:50px 50px;
+  mask-image:radial-gradient(ellipse at center,black 50%,transparent 95%);
+  -webkit-mask-image:radial-gradient(ellipse at center,black 50%,transparent 95%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 64px;display:flex;flex-direction:column;}
+
+/* ===== Header ===== */
+.header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:4px;}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:6px 18px;border:1px solid var(--border);
+  border-radius:999px;background:rgba(33,150,243,0.06);margin-bottom:14px;}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:var(--glow-cyan);}
+.badge span{font-size:12px;letter-spacing:3px;color:var(--text-dim);font-weight:500;}
+h1{font-family:'Inter',sans-serif;font-weight:800;font-size:44px;letter-spacing:2px;
+  background:linear-gradient(90deg,#fff 0%,var(--primary) 50%,var(--accent) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 40px rgba(33,150,243,0.25);}
+.narrative{margin-top:14px;font-size:13px;color:var(--text-mid);line-height:1.75;
+  max-width:1280px;text-align:center;font-weight:300;}
+.narrative b{color:var(--accent);font-weight:500;}
+
+/* ===== Cards Grid ===== */
+.grid{margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);
+  gap:18px;flex:1;}
+.card{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+  padding:20px 22px;display:flex;flex-direction:column;overflow:hidden;transition:transform .2s;}
+.card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+  box-shadow:0 0 12px rgba(33,150,243,0.5);}
+.card::after{content:"";position:absolute;top:12px;right:12px;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 8px rgba(0,188,212,0.8);opacity:0.85;}
+.card-tag{font-size:11px;letter-spacing:2px;color:var(--primary);font-weight:500;
+  display:flex;align-items:center;gap:8px;margin-bottom:2px;}
+.card-tag .line{flex:0 0 16px;height:1px;background:var(--primary);}
+.card-title{font-family:'Inter',sans-serif;font-size:13px;color:var(--text-dim);font-weight:400;margin-bottom:10px;}
+.num-row{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;}
+.big-num{font-family:'Roboto Mono',monospace;font-weight:600;font-size:42px;
+  color:var(--primary);text-shadow:var(--glow-blue);line-height:1;}
+.big-num.cyan{color:var(--accent);text-shadow:var(--glow-cyan);}
+.num-unit{font-size:14px;color:var(--text-mid);font-weight:400;}
+.sub-line{font-size:12px;color:var(--accent);font-weight:500;margin-bottom:12px;letter-spacing:1px;}
+.divider{width:48px;height:1px;background:linear-gradient(90deg,var(--primary),transparent);margin-bottom:10px;}
+.desc{font-size:11.5px;color:var(--text-mid);line-height:1.7;font-weight:300;}
+
+/* card 6 special */
+.card.accent-card{background:linear-gradient(135deg,rgba(33,150,243,0.08),rgba(0,188,212,0.05));}
+.card.accent-card .big-num{font-size:38px;}
+
+/* corner ticks */
+.tick{position:absolute;width:10px;height:10px;border:1px solid var(--accent);opacity:0.5;}
+.tick.tl{top:4px;left:4px;border-right:none;border-bottom:none;}
+.tick.tr{top:4px;right:4px;border-left:none;border-bottom:none;}
+.tick.bl{bottom:4px;left:4px;border-right:none;border-top:none;}
+.tick.br{bottom:4px;right:4px;border-left:none;border-top:none;}
+
+/* ===== Footer ===== */
+.footer{margin-top:18px;display:flex;align-items:center;justify-content:center;gap:16px;}
+.footer-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);opacity:0.4;}
+.footer-text{font-size:12px;letter-spacing:2px;color:var(--text-dim);text-align:center;font-weight:300;}
+.footer-text b{color:var(--primary);font-weight:500;}
+.footer-meta{font-size:10px;letter-spacing:1.5px;color:var(--text-dim);opacity:0.7;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="badge">
+        <span class="dot"></span>
+        <span>RED HAT · KEY METRICS</span>
+        <span class="dot"></span>
+      </div>
+      <h1>红帽关键数据</h1>
+      <p class="narrative">
+        这些数据勾勒出一个事实——红帽不仅是一家成功的开源公司，更是<b>开源生态的核心枢纽</b>，其影响力渗透到 Linux 内核、容器编排、自动化运维等几乎所有关键技术领域。
+      </p>
+    </div>
+
+    <div class="grid">
+
+      <!-- 1 -->
+      <div class="card">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <div class="card-tag"><span class="line"></span><span>收入规模</span></div>
+        <div class="card-title">年收入（被收购前）</div>
+        <div class="num-row">
+          <span class="big-num">~22</span>
+          <span class="num-unit">亿 美元</span>
+        </div>
+        <div class="sub-line">REVENUE · PRE-ACQUISITION</div>
+        <div class="divider"></div>
+        <div class="desc">被收购前年收入已达约 22 亿美元，保持连续增长态势。</div>
+      </div>
+
+      <!-- 2 -->
+      <div class="card">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <div class="card-tag"><span class="line"></span><span>企业客户</span></div>
+        <div class="card-title">企业客户数</div>
+        <div class="num-row">
+          <span class="big-num cyan">50,000+</span>
+        </div>
+        <div class="sub-line">全球订阅客户</div>
+        <div class="divider"></div>
+        <div class="desc">全球超过 5 万家企业订阅客户，含大量财富 500 强公司。</div>
+      </div>
+
+      <!-- 3 -->
+      <div class="card">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <div class="card-tag"><span class="line"></span><span>员工规模</span></div>
+        <div class="card-title">全球员工</div>
+        <div class="num-row">
+          <span class="big-num">~18,000</span>
+        </div>
+        <div class="sub-line">多国分布</div>
+        <div class="divider"></div>
+        <div class="desc">全球员工约 18,000 人，其中工程师占比最高。</div>
+      </div>
+
+      <!-- 4 -->
+      <div class="card">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <div class="card-tag"><span class="line"></span><span>Fedora 项目</span></div>
+        <div class="card-title">Fedora 运营年数</div>
+        <div class="num-row">
+          <span class="big-num cyan">20+</span>
+        </div>
+        <div class="sub-line">社区上游项目</div>
+        <div class="divider"></div>
+        <div class="desc">作为上游社区项目已运行超过 20 年，贡献者来自全球。</div>
+      </div>
+
+      <!-- 5 -->
+      <div class="card">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <div class="card-tag"><span class="line"></span><span>Red Hat Summit</span></div>
+        <div class="card-title">Summit 与会国数</div>
+        <div class="num-row">
+          <span class="big-num">150+</span>
+        </div>
+        <div class="sub-line">年度全球大会</div>
+        <div class="divider"></div>
+        <div class="desc">年度全球开源大会，吸引来自 150+ 国家的与会者参与。</div>
+      </div>
+
+      <!-- 6 -->
+      <div class="card accent-card">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <div class="card-tag"><span class="line"></span><span>云原生旗舰</span></div>
+        <div class="card-title">Kubernetes 社区贡献者</div>
+        <div class="num-row">
+          <span class="big-num cyan" style="font-size:36px;">第 2 大</span>
+        </div>
+        <div class="sub-line">OPENSHIFT · 旗舰产品</div>
+        <div class="divider"></div>
+        <div class="desc">OpenShift 是红帽的云原生旗舰产品，Kubernetes 社区第二大贡献者。</div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="footer-text">
+        一家公司，<b>整个生态</b>——红帽用数据证明开源可以成就产业级未来
+      </div>
+      <div class="footer-line"></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
