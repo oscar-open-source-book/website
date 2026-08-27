@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二章：核心内容解读</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --gray:#B0BEC5;
+  --dark:#0A0E1A;
+  --dark2:#0F1626;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','Noto Sans SC',sans-serif;color:#E8EAF6;background:#0A0E1A;overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;font-family:'Inter','Noto Sans SC',sans-serif;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:60px;box-sizing:border-box;}
+
+.bg-gradient{position:absolute;inset:0;background:radial-gradient(ellipse 900px 700px at 18% 28%, rgba(33,150,243,0.14), transparent 60%), radial-gradient(ellipse 650px 450px at 88% 78%, rgba(0,229,255,0.12), transparent 60%), linear-gradient(135deg,#0A0E1A 0%,#0F1626 50%,#0A0E1A 100%);}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px);background-size:60px 60px;}
+.bg-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle, rgba(33,150,243,0.22), transparent 70%);top:8%;left:-120px;filter:blur(40px);}
+.bg-glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle, rgba(0,229,255,0.16), transparent 70%);bottom:-120px;right:-120px;filter:blur(50px);}
+.bg-line{position:absolute;top:80px;left:80px;right:80px;height:1px;background:linear-gradient(90deg,transparent,rgba(33,150,243,0.45),transparent);}
+.bg-line2{position:absolute;bottom:250px;left:80px;right:80px;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,0.3),transparent);}
+
+.corner{position:absolute;width:34px;height:34px;}
+.corner-tl{top:28px;left:28px;border-top:1px solid rgba(33,150,243,0.5);border-left:1px solid rgba(33,150,243,0.5);}
+.corner-tr{top:28px;right:28px;border-top:1px solid rgba(0,229,255,0.5);border-right:1px solid rgba(0,229,255,0.5);}
+.corner-bl{bottom:28px;left:28px;border-bottom:1px solid rgba(33,150,243,0.5);border-left:1px solid rgba(33,150,243,0.5);}
+.corner-br{bottom:28px;right:28px;border-bottom:1px solid rgba(0,229,255,0.5);border-right:1px solid rgba(0,229,255,0.5);}
+
+.top-bar{position:absolute;top:60px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:center;font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:3px;color:var(--gray);}
+.top-bar .brand{display:flex;align-items:center;gap:14px;}
+.top-bar .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);}
+.top-bar .right{display:flex;gap:18px;align-items:center;}
+.top-bar .sep{color:rgba(176,190,197,0.4);}
+
+.main-area{position:absolute;top:150px;left:80px;right:80px;display:flex;gap:50px;align-items:flex-start;}
+
+.left-section{flex:1;position:relative;}
+.num-wrap{display:flex;align-items:flex-start;gap:36px;margin-bottom:30px;}
+.bignum{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:220px;line-height:0.85;background:linear-gradient(135deg,#2196F3 0%,#00E5FF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;}
+.bignum::after{content:'';position:absolute;bottom:6px;left:6px;width:90px;height:4px;background:linear-gradient(90deg,#2196F3,#00E5FF);box-shadow:0 0 12px rgba(0,229,255,0.5);}
+.chapter-label{font-family:'Space Grotesk',sans-serif;font-size:13px;letter-spacing:6px;color:var(--gray);margin-bottom:18px;padding-left:24px;}
+.chapter-label .bar{display:inline-block;width:30px;height:1px;background:var(--accent);vertical-align:middle;margin-right:10px;}
+.title-cn{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:700;font-size:68px;line-height:1.15;color:#FFFFFF;letter-spacing:1px;padding-left:24px;}
+.title-cn .highlight{background:linear-gradient(135deg,#2196F3,#00E5FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.subtitle{margin-top:22px;font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-size:22px;font-weight:500;color:var(--accent);letter-spacing:4px;padding-left:24px;position:relative;}
+.subtitle::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:14px;height:2px;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+
+.right-decoration{width:300px;position:relative;padding-top:30px;display:flex;flex-direction:column;align-items:center;}
+.deco-ring{width:180px;height:180px;border-radius:50%;border:1px solid rgba(33,150,243,0.35);position:relative;}
+.deco-ring::before{content:'';position:absolute;inset:18px;border-radius:50%;border:1px dashed rgba(0,229,255,0.3);}
+.deco-ring::after{content:'';position:absolute;inset:42px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.25),transparent 70%);}
+.deco-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-size:16px;color:var(--accent);letter-spacing:3px;font-weight:500;}
+.deco-orbit{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);top:-4px;left:50%;transform:translateX(-50%);}
+.deco-orbit2{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--primary);bottom:20px;right:10px;}
+.deco-lines{margin-top:30px;display:flex;flex-direction:column;gap:8px;width:100%;}
+.deco-line{height:2px;}
+.deco-line:nth-child(1){width:100%;background:linear-gradient(90deg,#2196F3,rgba(33,150,243,0.1));}
+.deco-line:nth-child(2){width:75%;background:linear-gradient(90deg,#2196F3,rgba(33,150,243,0.1));}
+.deco-line:nth-child(3){width:55%;background:linear-gradient(90deg,#00E5FF,rgba(0,229,255,0.1));}
+.deco-line:nth-child(4){width:35%;background:linear-gradient(90deg,#2196F3,rgba(33,150,243,0.1));}
+.deco-stats{margin-top:24px;text-align:center;font-family:'Space Grotesk',sans-serif;}
+.deco-stats .stat-num{font-size:32px;font-weight:700;background:linear-gradient(135deg,#2196F3,#00E5FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.deco-stats .stat-label{font-size:11px;letter-spacing:3px;color:var(--gray);margin-top:6px;font-family:'Space Grotesk','Noto Sans SC',sans-serif;}
+
+.narrative{position:absolute;top:530px;left:140px;right:140px;text-align:center;}
+.narrative-line{width:80px;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,0.7),transparent);margin:0 auto 22px;}
+.narrative-text{font-size:15px;line-height:2;color:var(--gray);letter-spacing:1px;max-width:1100px;margin:0 auto;}
+.narrative-text .em{color:var(--accent);font-weight:500;}
+.narrative-text .em2{color:#FFFFFF;font-weight:500;}
+
+.keypoints{position:absolute;top:670px;left:100px;right:100px;display:flex;justify-content:center;gap:36px;}
+.kp{display:flex;align-items:center;gap:12px;padding:10px 22px;border:1px solid rgba(33,150,243,0.28);border-radius:24px;background:rgba(33,150,243,0.05);font-size:12px;letter-spacing:1px;color:var(--gray);font-family:'Space Grotesk','Noto Sans SC',sans-serif;}
+.kp .kp-icon{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+.kp .kp-label{color:#fff;font-weight:500;}
+
+.flow-section{position:absolute;bottom:60px;left:80px;right:80px;}
+.flow-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;font-family:'Space Grotesk','Noto Sans SC',sans-serif;}
+.flow-header .flow-title{font-size:12px;letter-spacing:4px;color:var(--gray);}
+.flow-header .flow-title .bar{display:inline-block;width:24px;height:1px;background:var(--accent);vertical-align:middle;margin-right:10px;}
+.flow-header .flow-count{font-size:12px;letter-spacing:2px;color:var(--gray);}
+.flow-header .flow-count .num{font-size:28px;font-weight:700;background:linear-gradient(135deg,#2196F3,#00E5FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-right:6px;font-family:'Space Grotesk',sans-serif;vertical-align:-4px;}
+
+.flow-bar{position:relative;height:60px;display:flex;align-items:center;}
+.flow-track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:3px;border-radius:2px;background:linear-gradient(90deg,#2196F3 0%,#1565C0 30%,#00E5FF 70%,#2196F3 100%);box-shadow:0 0 18px rgba(33,150,243,0.4);}
+.flow-stages{position:relative;width:100%;display:flex;justify-content:space-between;align-items:center;}
+.flow-stage{display:flex;flex-direction:column;align-items:center;position:relative;flex:1;}
+.stage-dot{width:18px;height:18px;border-radius:50%;background:var(--dark);border:3px solid var(--accent);box-shadow:0 0 12px rgba(0,229,255,0.6);position:relative;z-index:2;}
+.stage-dot.active{background:var(--accent);box-shadow:0 0 16px var(--accent);}
+.stage-dot::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(0,229,255,0.2);}
+.stage-num{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--gray);letter-spacing:3px;margin-top:16px;}
+.stage-label{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-size:15px;font-weight:500;color:#fff;letter-spacing:3px;margin-top:6px;}
+.flow-arrow{color:rgba(0,229,255,0.4);font-size:18px;padding:0 14px;margin-top:18px;font-family:'Space Grotesk',sans-serif;}
+
+.bottom-line{position:absolute;bottom:28px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:center;font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:3px;color:rgba(176,190,197,0.4);}
+.bottom-line .dots{display:flex;gap:6px;}
+.bottom-line .dots span{width:4px;height:4px;border-radius:50%;background:rgba(176,190,197,0.3);}
+.bottom-line .dots span:first-child{background:var(--accent);box-shadow:0 0 6px var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-gradient"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow2"></div>
+    <div class="bg-line"></div>
+    <div class="bg-line2"></div>
+  </div>
+  <div id="ct">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>UNIX 历史叙事</span>
+      </div>
+      <div class="right">
+        <span>章节过渡</span>
+        <span class="sep">|</span>
+        <span>05 / 20</span>
+      </div>
+    </div>
+
+    <div class="main-area">
+      <div class="left-section">
+        <div class="num-wrap">
+          <div class="bignum">02</div>
+          <div>
+            <div class="chapter-label"><span class="bar"></span>CHAPTER · 章节</div>
+            <div class="title-cn">第二章：<br><span class="highlight">核心内容解读</span></div>
+            <div class="subtitle">UNIX的诞生、成长与商业化</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-decoration">
+        <div class="deco-ring">
+          <div class="deco-orbit"></div>
+          <div class="deco-orbit2"></div>
+          <div class="deco-core">核心</div>
+        </div>
+        <div class="deco-lines">
+          <div class="deco-line"></div>
+          <div class="deco-line"></div>
+          <div class="deco-line"></div>
+          <div class="deco-line"></div>
+        </div>
+        <div class="deco-stats">
+          <div class="stat-num">四大阶段</div>
+          <div class="stat-label">关键历史阶段 · KEY PHASES</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="narrative-line"></div>
+      <div class="narrative-text">
+        本章深入拆解书中<span class="em2">四大关键历史阶段</span>，聚焦<span class="em">技术决策背后的组织与人文因素</span>——从 Multics 的失败到 UNIX 的诞生，再到 System V 的商业化路径，带您理解<span class="em2">伟大软件产品</span>诞生所需的环境与条件。
+      </div>
+    </div>
+
+    <div class="keypoints">
+      <div class="kp">
+        <span class="kp-icon"></span>
+        <span class="kp-label">章节定位</span>
+        <span>四大历史阶段</span>
+      </div>
+      <div class="kp">
+        <span class="kp-icon"></span>
+        <span class="kp-label">关注焦点</span>
+        <span>组织与人文因素</span>
+      </div>
+      <div class="kp">
+        <span class="kp-icon"></span>
+        <span class="kp-label">阅读启示</span>
+        <span>环境与条件</span>
+      </div>
+    </div>
+
+    <div class="flow-section">
+      <div class="flow-header">
+        <div class="flow-title"><span class="bar"></span>关键阶段 · 技术演进路线</div>
+        <div class="flow-count">关键阶段：<span class="num">4</span>个</div>
+      </div>
+      <div class="flow-bar">
+        <div class="flow-track"></div>
+        <div class="flow-stages">
+          <div class="flow-stage">
+            <div class="stage-dot"></div>
+            <div class="stage-num">阶段 01</div>
+            <div class="stage-label">起源</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-stage">
+            <div class="stage-dot"></div>
+            <div class="stage-num">阶段 02</div>
+            <div class="stage-label">成型</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-stage">
+            <div class="stage-dot active"></div>
+            <div class="stage-num">阶段 03</div>
+            <div class="stage-label">发展</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-stage">
+            <div class="stage-dot"></div>
+            <div class="stage-num">阶段 04</div>
+            <div class="stage-label">商业化</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-line">
+      <span>UNIX · 历史叙事 · 章节过渡</span>
+      <div class="dots">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <span>NEXT · 深入历史脉络</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

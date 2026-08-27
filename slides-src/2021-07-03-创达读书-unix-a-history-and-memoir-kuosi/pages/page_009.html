@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>UNIX对开源的影响</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00E5FF;
+  --bg-dark: #0a0e1a;
+  --bg-card: #111827;
+  --text-main: #e8eaf6;
+  --text-muted: #8892b0;
+  --border: rgba(33, 150, 243, 0.25);
+  --glow: rgba(0, 229, 255, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Space Grotesk', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 900px 600px at 28% 18%, rgba(33,150,243,0.10) 0%, transparent 55%),
+              #0a0e1a;
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 75% 82%, rgba(0,229,255,0.05) 0%, transparent 45%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 55px 30px 55px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.header-left h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.header-left h1 .accent {
+  color: var(--accent);
+}
+
+.header-left .subtitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary);
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+}
+
+.header-right {
+  text-align: right;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.header-right .tag {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.header-right .tag-row {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.header-right .pill {
+  font-size: 10px;
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--accent);
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 1px;
+}
+
+.narrative {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 1400px;
+  margin-bottom: 18px;
+  padding: 8px 0 8px 18px;
+  border-left: 2px solid var(--primary);
+}
+
+.narrative strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.narrative .hl {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.main {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.diagram-container {
+  width: 720px;
+  height: 470px;
+  position: relative;
+  background: radial-gradient(ellipse at 50% 50%, rgba(33,150,243,0.08) 0%, rgba(10,14,26,0.95) 70%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.diagram-header {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+}
+
+.diagram-header .lh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.diagram-header .lh .pulse {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+  display: inline-block;
+}
+
+.diagram-header .stats {
+  font-size: 10px;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.diagram-svg {
+  position: absolute;
+  inset: 38px 8px 8px 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 46px);
+  z-index: 1;
+}
+
+.center-node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.5) 0%, rgba(33,150,243,0.12) 70%, transparent 100%);
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  z-index: 4;
+  box-shadow: 0 0 25px rgba(33,150,243,0.5), inset 0 0 15px rgba(33,150,243,0.2);
+}
+
+.center-node::before {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,229,255,0.3);
+}
+
+.center-node::after {
+  content: '1969';
+  position: absolute;
+  bottom: -22px;
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.branch {
+  position: absolute;
+  padding: 7px 14px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  z-index: 3;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.b-linux {
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(33,150,243,0.18);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.b-bsd {
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: rgba(0,229,255,0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.b-gnu {
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  background: rgba(33,150,243,0.18);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.b-macos {
+  bottom: 45px;
+  left: 22%;
+  background: rgba(33,150,243,0.10);
+  border-color: rgba(33,150,243,0.5);
+  color: #64b5f6;
+  font-size: 12px;
+}
+
+.b-solaris {
+  bottom: 45px;
+  right: 22%;
+  background: rgba(33,150,243,0.10);
+  border-color: rgba(33,150,243,0.5);
+  color: #64b5f6;
+  font-size: 12px;
+}
+
+.b-freebsd {
+  bottom: 70px;
+  right: 12px;
+  background: rgba(0,229,255,0.08);
+  border-color: rgba(0,229,255,0.4);
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.b-android {
+  bottom: 70px;
+  left: 12px;
+  background: rgba(0,229,255,0.08);
+  border-color: rgba(0,229,255,0.4);
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.tool-label {
+  position: absolute;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: var(--text-muted);
+  background: rgba(17,24,39,0.92);
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(33,150,243,0.18);
+  z-index: 3;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+.tool-label .d {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.cards-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, rgba(17,24,39,0.9) 0%, rgba(10,14,26,0.95) 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--primary);
+}
+
+.card:nth-child(2)::before { background: var(--accent); }
+.card:nth-child(3)::before { background: var(--primary); }
+.card:nth-child(4)::before { background: var(--accent); }
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(33,150,243,0.10);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.card:nth-child(1) .card-icon,
+.card:nth-child(3) .card-icon { color: var(--primary); }
+
+.card-content { flex: 1; min-width: 0; }
+
+.card-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title .num {
+  font-size: 10px;
+  color: var(--primary);
+  font-weight: 500;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.card:nth-child(2) .card-title .num,
+.card:nth-child(4) .card-title .num { color: var(--accent); }
+
+.card-text {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.card-text .hl {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.card-text .hl-accent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.timeline {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  height: 88px;
+}
+
+.tl-anchor {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  background: rgba(17,24,39,0.6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tl-anchor::after {
+  content: '';
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  width: 25px;
+  height: 25px;
+  border-top: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.tl-year {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tl-year .suffix {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.tl-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.tl-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 3px;
+  letter-spacing: 0.5px;
+}
+
+.tl-desc {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.footer-strip {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  color: rgba(136, 146, 176, 0.5);
+  letter-spacing: 2px;
+}
+
+.footer-strip .dots {
+  display: flex;
+  gap: 4px;
+}
+
+.footer-strip .dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border);
+  display: inline-block;
+}
+
+.footer-strip .dots span.active {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="header-left">
+    <div class="subtitle">CHAPTER · UNIX LEGACY</div>
+    <h1>UNIX<span class="accent">对开源的影响</span></h1>
+  </div>
+  <div class="header-right">
+    <div class="tag">DESIGN · TOOLS · CULTURE</div>
+    <div class="tag-row">
+      <span class="pill">1969 → NOW</span>
+      <span class="pill">RADIATION</span>
+      <span class="pill">INHERITANCE</span>
+    </div>
+  </div>
+</div>
+
+<div class="narrative">
+  今天<span class="hl">Linux上运行的每一个命令</strong></span>背后都有UNIX的影子，从<strong>设计哲学</strong>到工具链、从<strong>文档规范</strong>到<strong>包管理</strong>，开源世界对UNIX的继承如此全面而深入。
+</div>
+
+<div class="main">
+  <div class="diagram-container">
+    <div class="diagram-header">
+      <span class="lh"><span class="pulse"></span><span>中央放射状影响图谱</span></span>
+      <span class="stats">6 BRANCHES · 8 TOOLS · 1 SOURCE</span>
+    </div>
+
+    <svg class="diagram-svg" viewBox="0 0 700 390" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="gTop" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.8"/>
+          <stop offset="100%" style="stop-color:#2196F3;stop-opacity:0.2"/>
+        </linearGradient>
+        <linearGradient id="gRight" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#00E5FF;stop-opacity:0.8"/>
+          <stop offset="100%" style="stop-color:#00E5FF;stop-opacity:0.2"/>
+        </linearGradient>
+        <linearGradient id="gLeft" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" style="stop-color:#00E5FF;stop-opacity:0.8"/>
+          <stop offset="100%" style="stop-color:#00E5FF;stop-opacity:0.2"/>
+        </linearGradient>
+        <linearGradient id="gBottom" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.8"/>
+          <stop offset="100%" style="stop-color:#2196F3;stop-opacity:0.2"/>
+        </linearGradient>
+      </defs>
+
+      <ellipse cx="350" cy="200" rx="280" ry="160" fill="none" stroke="rgba(33,150,243,0.06)" stroke-width="1"/>
+      <ellipse cx="350" cy="200" rx="200" ry="115" fill="none" stroke="rgba(33,150,243,0.09)" stroke-width="1" stroke-dasharray="2,5"/>
+      <ellipse cx="350" cy="200" rx="130" ry="72" fill="none" stroke="rgba(0,229,255,0.08)" stroke-width="1" stroke-dasharray="3,6"/>
+
+      <line x1="350" y1="200" x2="350" y2="55" stroke="url(#gTop)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="350" y1="200" x2="625" y2="200" stroke="url(#gRight)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="350" y1="200" x2="75" y2="200" stroke="url(#gLeft)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="350" y1="200" x2="200" y2="355" stroke="url(#gBottom)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="350" y1="200" x2="500" y2="355" stroke="url(#gBottom)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="350" y1="200" x2="625" y2="290" stroke="url(#gRight)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="350" y1="200" x2="75" y2="290" stroke="url(#gLeft)" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+      <circle cx="350" cy="55" r="3" fill="#2196F3"/>
+      <circle cx="625" cy="200" r="3" fill="#00E5FF"/>
+      <circle cx="75" cy="200" r="3" fill="#00E5FF"/>
+      <circle cx="200" cy="355" r="3" fill="#2196F3"/>
+      <circle cx="500" cy="355" r="3" fill="#2196F3"/>
+      <circle cx="625" cy="290" r="3" fill="#00E5FF"/>
+      <circle cx="75" cy="290" r="3" fill="#00E5FF"/>
+    </svg>
+
+    <div class="center-node">UNIX</div>
+
+    <div class="branch b-linux">Linux</div>
+    <div class="branch b-bsd">BSD</div>
+    <div class="branch b-gnu">GNU</div>
+    <div class="branch b-macos">macOS</div>
+    <div class="branch b-solaris">Solaris</div>
+    <div class="branch b-freebsd">FreeBSD</div>
+    <div class="branch b-android">Android</div>
+
+    <div class="tool-label" style="top:80px; left:42%;"><span class="d"></span>Shell</div>
+    <div class="tool-label" style="top:70px; right:30%;"><span class="d"></span>grep</div>
+    <div class="tool-label" style="top:110px; right:14px;"><span class="d"></span>Makefile</div>
+    <div class="tool-label" style="top:110px; left:14px;"><span class="d"></span>man手册</div>
+    <div class="tool-label" style="top:32%; right:22%;"><span class="d"></span>awk</div>
+    <div class="tool-label" style="top:32%; left:22%;"><span class="d"></span>POSIX</div>
+    <div class="tool-label" style="bottom:55px; left:20%;"><span class="d"></span>包管理</div>
+    <div class="tool-label" style="bottom:55px; right:20%;"><span class="d"></span>设计哲学</div>
+  </div>
+
+  <div class="cards-column">
+    <div class="card">
+      <div class="card-icon">◇</div>
+      <div class="card-content">
+        <div class="card-title"><span class="num">01</span>哲学继承</div>
+        <div class="card-text"><span class="hl">Linus Torvalds</span>公开表示Linux设计直接受UNIX哲学影响，「一切皆文件」、小而专的工具链思想<span class="hl-accent">一脉相承</span>。</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">◆</div>
+      <div class="card-content">
+        <div class="card-title"><span class="num">02</span>BSD分支</div>
+        <div class="card-text">BSD从<span class="hl">贝尔实验室</span>分出后成为开源Unix系的重要分支，孕育了<span class="hl-accent">FreeBSD、OpenBSD</span>等经典发行版。</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">✧</div>
+      <div class="card-content">
+        <div class="card-title"><span class="num">03</span>工具文化</div>
+        <div class="card-text">Shell、grep、awk等工具至今仍是<span class="hl">Linux/Unix世界的基础设施</span>，每日被数以亿计开发者使用。</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⬡</div>
+      <div class="card-content">
+        <div class="card-title"><span class="num">04</span>设计范式</div>
+        <div class="card-text">Makefile、man手册、包管理等均源自<span class="hl">UNIX传统</span>，被开源社区<span class="hl-accent">延续并扩展</span>为现代软件工程基石。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="tl-anchor">
+    <div class="tl-year">1991</div>
+    <div class="tl-text">
+      <div class="tl-title">Linux内核公开</div>
+      <div class="tl-desc">Linus Torvalds在comp.os.minix发布Linux 0.01，开源时代正式开启</div>
+    </div>
+  </div>
+  <div class="tl-anchor">
+    <div class="tl-year">1993</div>
+    <div class="tl-text">
+      <div class="tl-title">FreeBSD诞生</div>
+      <div class="tl-desc">BSD开源分支的代表，Unix血统在NetBSD基础上延续至通用平台</div>
+    </div>
+  </div>
+  <div class="tl-anchor">
+    <div class="tl-year">40<span class="suffix">年+</span></div>
+    <div class="tl-text">
+      <div class="tl-title">核心工具沿用至今</div>
+      <div class="tl-desc">Shell · grep · awk 三大经典工具跨越四十年，仍是基础设施</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-strip">
+  <span>UNIX → OPEN SOURCE · EVOLUTION MAP</span>
+  <span class="dots">
+    <span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </span>
+  <span>END · LEGACY OF DESIGN</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>
