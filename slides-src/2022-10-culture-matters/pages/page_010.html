@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>从阅读到行动</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --klein: #002FA7;
+  --klein-deep: #001A6E;
+  --bright-blue: #4FC3F7;
+  --gray-blue: #B0BEC5;
+  --bg-dark: #040814;
+  --bg-card: rgba(0, 47, 167, 0.08);
+  --border-glow: rgba(79, 195, 247, 0.35);
+  --text-primary: #E8EEF7;
+  --text-secondary: #B0BEC5;
+  --text-mute: #7E8FA8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1600px;
+  height: 900px;
+  overflow: hidden;
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-primary);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 900px 500px at 50% 110%, rgba(0, 47, 167, 0.55) 0%, rgba(0, 47, 167, 0.18) 40%, rgba(4, 8, 20, 0) 70%),
+              linear-gradient(180deg, #040814 0%, #061026 60%, #0A1840 100%);
+}
+
+#bg .stars {
+  position: absolute;
+  inset: 0;
+}
+
+#bg .star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+#bg .star-glow {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--bright-blue);
+  filter: blur(1px);
+}
+
+.light-band {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 340px;
+  z-index: 0;
+  background: linear-gradient(0deg,
+    rgba(0, 47, 167, 0.45) 0%,
+    rgba(0, 47, 167, 0.18) 40%,
+    rgba(79, 195, 247, 0.08) 70%,
+    rgba(4, 8, 20, 0) 100%);
+  pointer-events: none;
+}
+
+.light-band-core {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg,
+    rgba(79, 195, 247, 0) 0%,
+    rgba(79, 195, 247, 0.9) 30%,
+    #4FC3F7 50%,
+    rgba(79, 195, 247, 0.9) 70%,
+    rgba(79, 195, 247, 0) 100%);
+  box-shadow: 0 0 24px rgba(79, 195, 247, 0.7), 0 0 48px rgba(0, 47, 167, 0.5);
+  z-index: 0;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 90px 48px 90px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- Title section ---- */
+.header {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.kicker {
+  font-family: 'Roboto Mono', 'Consolas', monospace;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--bright-blue);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.kicker .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--bright-blue);
+  border-radius: 50%;
+  margin: 0 10px 2px 10px;
+  vertical-align: middle;
+  box-shadow: 0 0 8px var(--bright-blue);
+}
+
+.main-title {
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: 12px;
+  color: var(--text-primary);
+  line-height: 1.1;
+  text-shadow: 0 0 40px rgba(0, 47, 167, 0.6), 0 0 80px rgba(79, 195, 247, 0.2);
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+}
+
+.main-title .arrow {
+  display: inline-block;
+  color: var(--bright-blue);
+  margin: 0 8px;
+  font-weight: 400;
+}
+
+.subtitle {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--gray-blue);
+  letter-spacing: 2px;
+  margin-top: 22px;
+  line-height: 1.6;
+}
+
+.divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--bright-blue), transparent);
+  margin: 24px auto 0;
+}
+
+/* ---- Cards ---- */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  width: 100%;
+  margin-top: 36px;
+}
+
+.card {
+  position: relative;
+  border: 1px solid var(--border-glow);
+  border-radius: 14px;
+  padding: 30px 28px 30px 28px;
+  background: linear-gradient(160deg, rgba(0, 47, 167, 0.14) 0%, rgba(4, 8, 20, 0.4) 100%);
+  backdrop-filter: blur(4px);
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--bright-blue), transparent);
+  opacity: 0.7;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(79, 195, 247, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.card-number {
+  font-family: 'Roboto Mono', 'Consolas', monospace;
+  font-size: 12px;
+  color: var(--bright-blue);
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+}
+
+.card-text {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--gray-blue);
+  font-family: 'Roboto Mono', 'Consolas', 'PingFang SC', monospace;
+  font-weight: 400;
+}
+
+.card-icon {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(79, 195, 247, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--bright-blue);
+  font-weight: 500;
+}
+
+/* ---- Closing narrative ---- */
+.closing {
+  margin-top: 34px;
+  text-align: center;
+  max-width: 1180px;
+}
+
+.closing-text {
+  font-size: 15px;
+  line-height: 2.05;
+  color: var(--gray-blue);
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+.closing-text .highlight {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.closing-text .glow {
+  color: var(--bright-blue);
+  font-weight: 600;
+}
+
+.closing-quote {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 4px;
+  margin-top: 22px;
+  font-weight: 500;
+}
+
+.closing-quote .line {
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: var(--gray-blue);
+  opacity: 0.4;
+  vertical-align: middle;
+  margin: 0 14px 3px 14px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="stars" id="stars"></div>
+  </div>
+  <div class="light-band"></div>
+  <div class="light-band-core"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="kicker"><span>END</span><span class="dot"></span><span>FROM READING TO ACTION</span><span class="dot"></span><span>文化重要</span></div>
+      <h1 class="main-title">从阅读<span class="arrow">→</span>到行动</h1>
+      <p class="subtitle">文化不是终点，而是通往更好开源社区的起点</p>
+      <div class="divider"></div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">01</div>
+        <div class="card-number">— FIRST STEP</div>
+        <div class="card-title">你的第一步</div>
+        <div class="card-text">从今天开始，选择一个你感兴趣的项目，提一个 Issue 或改进一行文档</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">02</div>
+        <div class="card-number">— KEEP ENGAGING</div>
+        <div class="card-title">持续参与</div>
+        <div class="card-text">订阅开源之道月志，加入线下读书会，在持续交流中深化对文化的理解</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">03</div>
+        <div class="card-number">— PASS IT ON</div>
+        <div class="card-title">传递文化</div>
+        <div class="card-text">把本期学到的关于社区文化的内容，分享给你的团队和身边的开源同行者</div>
+      </div>
+    </div>
+
+    <div class="closing">
+      <p class="closing-text">
+        感谢陪伴本期<span class="highlight">「文化重要」</span>主题分享。开源之道的月志系列将持续为你带来开源领域的深度阅读，而我们期待看到的，是你<span class="glow">从读者走向贡献者</span>、<span class="glow">从旁观者走向建设者</span>的旅程。<br>
+        <span class="highlight">文化重要，而你，就是文化的一部分。</span>
+      </p>
+      <div class="closing-quote"><span class="line"></span>THE END — OPEN SOURCE WAYS MONTHLY<span class="line"></span></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var starsEl = document.getElementById('stars');
+  var positions = [
+    [8,12],[18,28],[25,8],[35,42],[42,15],[52,6],[62,22],[72,10],[82,30],[92,14],
+    [10,60],[20,75],[30,88],[40,65],[50,82],[60,70],[70,90],[80,78],[90,68],[98,55],
+    [12,45],[22,55],[32,30],[48,38],[58,50],[68,35],[78,48],[88,40],[95,25],[5,35],
+    [14,82],[38,92],[55,72],[74,62],[86,92],[45,20],[65,15],[15,5],[33,62],
+    [70,55],[85,72],[28,18],[62,88],[90,85],[42,78],[58,42],[75,25],[3,22],
+    [97,38],[48,52],[63,55],[35,8],[22,38],[78,18],[55,12],[18,92],[82,5],
+    [45,8],[68,78],[92,45],[8,30],[38,50],[72,42]
+  ];
+
+  positions.forEach(function(p){
+    var dot = document.createElement('div');
+    var size = (Math.random() * 2 + 0.5).toFixed(1);
+    var opacity = (Math.random() * 0.5 + 0.25).toFixed(2);
+    dot.className = 'star';
+    dot.style.left = (p[0] * 16) + 'px';
+    dot.style.top = (p[1] * 9) + 'px';
+    dot.style.width = size + 'px';
+    dot.style.height = size + 'px';
+    dot.style.opacity = opacity;
+    starsEl.appendChild(dot);
+  });
+
+  for(var i = 0; i < 14; i++){
+    var glow = document.createElement('div');
+    var gx = Math.random() * 1600;
+    var gy = Math.random() * 900 * 0.7;
+    glow.className = 'star-glow';
+    glow.style.left = gx + 'px';
+    glow.style.top = gy + 'px';
+    glow.style.width = '3px';
+    glow.style.height = '3px';
+    glow.style.opacity = (Math.random() * 0.4 + 0.15).toFixed(2);
+    starsEl.appendChild(glow);
+  }
+})();
+</script>
+</body>
+</html>

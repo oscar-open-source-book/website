@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源文化关键数据</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700;900&display=swap');
+
+:root {
+  --klein: #002FA7;
+  --neon: #4FC3F7;
+  --gray: #B0BEC5;
+  --bg-dark: #040b1c;
+  --bg-card: #0a1638;
+  --bg-card-2: #0d1f4a;
+  --border-glow: rgba(79,195,247,0.35);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Roboto Mono', 'Noto Sans SC', sans-serif;
+  background: var(--bg-dark);
+  color: #e8f0ff;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 500px at 20% 10%, rgba(0,47,167,0.30), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 90% 90%, rgba(79,195,247,0.14), transparent 60%),
+    #040b1c;
+}
+
+#bg::after {
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(79,195,247,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,195,247,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 42px 60px 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-bottom: 6px;
+}
+
+.title-block { flex: 1; }
+
+.title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 800;
+  font-size: 44px;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #ffffff 0%, #4FC3F7 60%, #002FA7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.title-accent {
+  display:inline-block;
+  width: 10px;
+  height: 40px;
+  background: var(--neon);
+  box-shadow: 0 0 16px var(--neon);
+  margin-right: 18px;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+.subtitle {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.65;
+  margin-top: 10px;
+  max-width: 1300px;
+  font-weight: 400;
+}
+
+.subtitle b {
+  color: var(--neon);
+  font-weight: 500;
+}
+
+.header-tag {
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.tag-pill {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--neon);
+  border: 1px solid var(--border-glow);
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(79,195,247,0.06);
+  letter-spacing: 1px;
+}
+
+.tag-pill.solid {
+  background: var(--klein);
+  color: #fff;
+  border-color: rgba(79,195,247,0.5);
+}
+
+.header-dot {
+  width:8px; height:8px; border-radius:50%;
+  background: var(--neon);
+  box-shadow: 0 0 12px var(--neon);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; }
+  50% { opacity:0.4; }
+}
+
+.divider {
+  height:1px;
+  margin: 16px 0 18px 0;
+  background: linear-gradient(90deg, var(--neon), transparent);
+  opacity: 0.6;
+}
+
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.card {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-2) 100%);
+  border: 1px solid rgba(79,195,247,0.22);
+  border-radius: 14px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.card::before {
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0;
+  height:2px;
+  background: linear-gradient(90deg, transparent, var(--neon), transparent);
+  opacity:0.7;
+}
+
+.card::after {
+  content:"";
+  position:absolute;
+  top:12px; right:14px;
+  width:6px; height:6px;
+  border-radius:50%;
+  background: var(--neon);
+  box-shadow: 0 0 8px var(--neon);
+}
+
+.card-index {
+  position: absolute;
+  top: 14px;
+  right: 30px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: rgba(79,195,247,0.5);
+  letter-spacing: 2px;
+}
+
+.card-label {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #e0ecff;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.card-sublabel {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: rgba(79,195,247,0.7);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.card-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.big-number {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--neon);
+  text-shadow: 0 0 20px rgba(79,195,247,0.5);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.big-number .unit {
+  font-size: 22px;
+  color: rgba(79,195,247,0.8);
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.big-number .prefix {
+  font-size: 28px;
+  color: rgba(79,195,247,0.8);
+  font-weight: 500;
+  margin-right: 2px;
+}
+
+.card-context {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11.5px;
+  color: var(--gray);
+  line-height: 1.55;
+  margin-top: 10px;
+  font-weight: 400;
+}
+
+.card-decoration {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* Progress bar variant */
+.bar-track {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: rgba(79,195,247,0.12);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  position: absolute;
+  top:0; left:0;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #002FA7, #4FC3F7);
+  box-shadow: 0 0 10px rgba(79,195,247,0.6);
+}
+
+.bar-ticks {
+  display:flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9px;
+  color: rgba(176,190,197,0.6);
+  letter-spacing: 0.5px;
+}
+
+/* Ring variant */
+.ring-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ring-svg {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.ring-info {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--gray);
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+.ring-info b {
+  color: var(--neon);
+  font-size: 13px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* Vertical bars decoration */
+.v-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 30px;
+}
+
+.v-bars .vb {
+  flex: 1;
+  background: linear-gradient(180deg, var(--neon), rgba(79,195,247,0.2));
+  border-radius: 1px;
+  opacity: 0.7;
+}
+
+/* Stacked dots decoration */
+.dots-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--neon);
+  background: transparent;
+}
+
+.dot.filled {
+  background: var(--neon);
+  box-shadow: 0 0 6px var(--neon);
+}
+
+.footer {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 14px 24px;
+  background: linear-gradient(90deg, transparent, rgba(0,47,167,0.4), transparent);
+  border-top: 1px solid rgba(79,195,247,0.15);
+  border-bottom: 1px solid rgba(79,195,247,0.15);
+  border-radius: 6px;
+}
+
+.footer-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(79,195,247,0.4), transparent);
+}
+
+.footer-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+
+.footer-text .accent {
+  color: var(--neon);
+  text-shadow: 0 0 12px rgba(79,195,247,0.5);
+}
+
+.footer-badge {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--neon);
+  border: 1px solid var(--border-glow);
+  padding: 4px 10px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* Mini hex pattern corner */
+.hex-corner {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9px;
+  color: rgba(79,195,247,0.35);
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="title"><span class="title-accent"></span><span>开源文化关键数据</span></div>
+        <div class="subtitle">文化不是虚无缥缈的"软话题"，它直接体现在<b>新手留存、响应效率、创新产出</b>等硬指标上，投资文化就是投资开源项目的长期竞争力。</div>
+      </div>
+      <div class="header-tag">
+        <span class="header-dot"></span>
+        <span class="tag-pill">DATA DASHBOARD</span>
+        <span class="tag-pill solid">v 2024</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="grid">
+
+      <!-- Card 1 -->
+      <div class="card">
+        <span class="card-index">01 / 06</span>
+        <div class="card-label"><span>首次贡献者流失率</span></div>
+        <div class="card-sublabel"><span>FIRST-TIME CONTRIBUTOR DROPOUT</span></div>
+        <div class="card-main">
+          <div class="big-number"><span class="prefix">&gt;</span>50<span class="unit">%</span></div>
+          <div class="v-bars" style="width:80px;height:36px;">
+            <div class="vb" style="height:40%"></div>
+            <div class="vb" style="height:65%"></div>
+            <div class="vb" style="height:90%"></div>
+            <div class="vb" style="height:100%"></div>
+            <div class="vb" style="height:80%"></div>
+            <div class="vb" style="height:95%"></div>
+          </div>
+        </div>
+        <div class="card-context">首次 PR 被拒后不再返回项目的比例超过一半，社区包容度直接决定新人池深度。</div>
+        <div class="card-decoration">
+          <div class="bar-track"><div class="bar-fill" style="width:52%"></div></div>
+          <div class="bar-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <span class="card-index">02 / 06</span>
+        <div class="card-label"><span>女性贡献者占比</span></div>
+        <div class="card-sublabel"><span>FEMALE CONTRIBUTOR RATIO</span></div>
+        <div class="card-main">
+          <div class="big-number">5<span class="unit">–</span>7<span class="unit">%</span></div>
+          <div class="ring-wrap" style="padding-bottom:4px;">
+            <svg class="ring-svg" viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(79,195,247,0.12)" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="url(#g1)" stroke-width="6"
+                stroke-dasharray="5.5 163" stroke-dashoffset="0" transform="rotate(-90 32 32)" stroke-linecap="round"/>
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#002FA7"/><stop offset="100%" stop-color="#4FC3F7"/></linearGradient></defs>
+              <text x="32" y="36" text-anchor="middle" font-family="Roboto Mono" font-size="11" font-weight="700" fill="#4FC3F7">~6%</text>
+            </svg>
+            <div class="ring-info"><b>全球统计</b>开源项目女性<br>贡献者总体占比</div>
+          </div>
+        </div>
+        <div class="card-context">全球主流开源项目综合统计，性别多样性严重不足，制约社区创新广度。</div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <span class="card-index">03 / 06</span>
+        <div class="card-label"><span>平均 Issue 响应时间</span></div>
+        <div class="card-sublabel"><span>AVERAGE ISSUE RESPONSE TIME</span></div>
+        <div class="card-main">
+          <div class="big-number">2<span class="unit">–</span>3<span class="unit">天</span></div>
+          <div style="display:flex;flex-direction:column;gap:3px;padding-bottom:2px;">
+            <div style="font-family:'Roboto Mono';font-size:9px;color:rgba(79,195,247,0.7);letter-spacing:1px;">FAST &nbsp;■</div>
+            <div style="font-family:'Roboto Mono';font-size:9px;color:rgba(79,195,247,0.5);letter-spacing:1px;">MID &nbsp;&nbsp;■</div>
+            <div style="font-family:'Roboto Mono';font-size:9px;color:rgba(79,195,247,0.3);letter-spacing:1px;">SLOW &nbsp;■</div>
+          </div>
+        </div>
+        <div class="card-context">核心开源项目 Issue 首次响应中位数，响应速度直接影响贡献者参与意愿。</div>
+        <div class="card-decoration">
+          <div class="bar-track"><div class="bar-fill" style="width:30%"></div></div>
+          <div class="bar-ticks"><span>0天</span><span>3天</span><span>7天</span><span>14天+</span></div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card">
+        <span class="card-index">04 / 06</span>
+        <div class="card-label"><span>PR 合并中位时长</span></div>
+        <div class="card-sublabel"><span>PR MERGE MEDIAN TIME</span></div>
+        <div class="card-main">
+          <div class="big-number">2<span class="unit">–</span>5<span class="unit">天</span></div>
+          <div class="ring-wrap" style="padding-bottom:4px;">
+            <svg class="ring-svg" viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(79,195,247,0.12)" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="url(#g2)" stroke-width="6"
+                stroke-dasharray="60 104" stroke-dashoffset="0" transform="rotate(-90 32 32)" stroke-linecap="round"/>
+              <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#002FA7"/><stop offset="100%" stop-color="#4FC3F7"/></linearGradient></defs>
+              <text x="32" y="36" text-anchor="middle" font-family="Roboto Mono" font-size="10" font-weight="700" fill="#4FC3F7">3.5d</text>
+            </svg>
+            <div class="ring-info"><b>提交流程</b>从提交到合并<br>中位时长约3.5天</div>
+          </div>
+        </div>
+        <div class="card-context">从提交到合并的中位时长，评审文化的高效与严谨程度在此集中体现。</div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card">
+        <span class="card-index">05 / 06</span>
+        <div class="card-label"><span>文档对新手影响</span></div>
+        <div class="card-sublabel"><span>DOCUMENTATION MULTIPLIER</span></div>
+        <div class="card-main">
+          <div class="big-number">3<span class="unit">×</span></div>
+          <div class="ring-wrap" style="padding-bottom:4px;">
+            <svg class="ring-svg" viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(79,195,247,0.12)" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="url(#g3)" stroke-width="6"
+                stroke-dasharray="120 164" stroke-dashoffset="0" transform="rotate(-90 32 32)" stroke-linecap="round"/>
+              <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#002FA7"/><stop offset="100%" stop-color="#4FC3F7"/></linearGradient></defs>
+              <text x="32" y="36" text-anchor="middle" font-family="Roboto Mono" font-size="11" font-weight="700" fill="#4FC3F7">72%</text>
+            </svg>
+            <div class="ring-info"><b>成功率提升</b>完善文档使首次<br>贡献成功概率×3</div>
+          </div>
+        </div>
+        <div class="card-context">完善的入门文档可让首次贡献成功概率提升约3倍，文档即基础设施。</div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card">
+        <span class="card-index">06 / 06</span>
+        <div class="card-label"><span>多样性创新增益</span></div>
+        <div class="card-sublabel"><span>DIVERSITY INNOVATION UPLIFT</span></div>
+        <div class="card-main">
+          <div class="big-number"><span class="prefix">+</span>19<span class="unit">%</span></div>
+          <div class="dots-row" style="padding-bottom:4px;">
+            <span class="dot filled"></span>
+            <span class="dot filled"></span>
+            <span class="dot filled"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span style="font-family:'Roboto Mono';font-size:9px;color:rgba(79,195,247,0.6);margin-left:6px;">3 / 5</span>
+          </div>
+        </div>
+        <div class="card-context">多样化团队对比同质化团队，在创新产出与创新质量上平均增益达19%。</div>
+        <div class="card-decoration">
+          <div class="bar-track"><div class="bar-fill" style="width:76%"></div></div>
+          <div class="bar-ticks"><span>同质化基准</span><span>+19% 增益区间</span><span>高多样性</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span class="footer-line"></span>
+      <span class="footer-badge">INSIGHT · 006</span>
+      <span class="footer-text">投资<span class="accent">文化</span>，就是投资开源项目的长期<span class="accent">竞争力</span></span>
+      <span class="footer-badge">END OF DASHBOARD</span>
+      <span class="footer-line"></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
