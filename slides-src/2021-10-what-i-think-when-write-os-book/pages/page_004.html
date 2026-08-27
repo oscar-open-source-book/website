@@ -1,0 +1,193 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源书籍的形态</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+:root{
+  --primary:#00BCD4;
+  --primary-soft:rgba(0,188,212,0.18);
+  --accent:#FF7043;
+  --navy-1:#071626;
+  --navy-2:#0a1f33;
+  --navy-3:#0d2840;
+  --text-main:#e8f2f8;
+  --text-dim:#8aa6b8;
+  --text-dimmer:#5c7a8e;
+  --card-bg:rgba(13,40,64,0.55);
+  --line:rgba(0,188,212,0.42);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Inter','Noto Sans SC','PingFang SC',sans-serif;color:var(--text-main);-webkit-font-smoothing:antialiased;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,#071626 0%,#0a1f33 45%,#071626 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:46px 56px;box-sizing:border-box;display:flex;gap:44px;}
+
+/* 背景装饰网格 */
+.grid-deco{position:absolute;inset:0;z-index:0;opacity:0.06;pointer-events:none;
+  background-image:linear-gradient(to right,var(--primary) 1px,transparent 1px),linear-gradient(to bottom,var(--primary) 1px,transparent 1px);
+  background-size:54px 54px;}
+
+/* 左侧 */
+.left{flex:0 0 600px;display:flex;flex-direction:column;position:relative;z-index:2;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;letter-spacing:3px;color:var(--primary);
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.eyebrow::before{content:"";display:inline-block;width:34px;height:2px;background:var(--primary);}
+.main-title{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:64px;line-height:1.08;color:var(--text-main);
+  letter-spacing:1px;margin-bottom:6px;}
+.main-title .accent{color:var(--primary);}
+.title-underline{width:96px;height:3px;background:linear-gradient(90deg,var(--primary),transparent);margin:20px 0 24px 0;}
+.narrative{font-size:16px;line-height:1.85;color:var(--text-dim);font-weight:400;margin-bottom:22px;max-width:560px;}
+.narrative strong{color:var(--text-main);font-weight:600;}
+.stat-row{display:flex;gap:16px;margin-bottom:20px;}
+.stat{flex:1;background:var(--card-bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;position:relative;}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--primary);}
+.stat-label{font-size:12px;color:var(--text-dim);margin-top:4px;letter-spacing:0.5px;}
+
+/* 协议数据点 */
+.proto-card{margin-top:auto;background:linear-gradient(135deg,rgba(0,188,212,0.18),rgba(13,40,64,0.6));
+  border:1px solid var(--primary);border-radius:10px;padding:18px 22px;position:relative;overflow:hidden;}
+.proto-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);}
+.proto-card::after{content:"";position:absolute;right:-30px;bottom:-30px;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,112,67,0.18),transparent 70%);}
+.proto-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.proto-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--accent);
+  padding:3px 10px;border:1px solid var(--accent);border-radius:3px;letter-spacing:1px;}
+.proto-title{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--text-main);letter-spacing:0.5px;}
+.proto-desc{font-size:13.5px;color:var(--text-dim);line-height:1.6;}
+
+/* 右侧 */
+.right{flex:1;display:flex;flex-direction:column;gap:16px;position:relative;z-index:2;}
+.image-block{display:flex;flex-direction:column;align-items:center;}
+.image-frame{position:relative;width:700px;height:391px;border:1px solid var(--line);border-radius:8px;overflow:hidden;
+  background:rgba(7,22,38,0.5);}
+.image-frame img{width:100%;height:100%;object-fit:cover;display:block;}
+.image-frame .corner{position:absolute;width:14px;height:14px;border:2px solid var(--primary);}
+.image-frame .corner.tl{top:8px;left:8px;border-right:none;border-bottom:none;}
+.image-frame .corner.tr{top:8px;right:8px;border-left:none;border-bottom:none;}
+.image-frame .corner.bl{bottom:8px;left:8px;border-right:none;border-top:none;}
+.image-frame .corner.br{bottom:8px;right:8px;border-left:none;border-top:none;}
+.image-meta{display:flex;align-items:center;justify-content:space-between;width:700px;margin-top:8px;}
+.image-cap{font-size:12px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:1px;}
+.image-cap span{color:var(--primary);}
+.image-tag{font-size:11px;color:var(--text-dimmer);font-family:'JetBrains Mono',monospace;letter-spacing:2px;}
+
+/* 卡片四行 */
+.cards{display:flex;flex-direction:column;gap:9px;}
+.card{position:relative;background:var(--card-bg);border:1px solid var(--line);border-radius:7px;
+  padding:9px 16px 9px 40px;display:flex;align-items:center;gap:16px;height:78px;}
+.card::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;background:var(--primary);border-radius:2px;}
+.card .idx{position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--primary);letter-spacing:1px;}
+.card .corner-dot{position:absolute;right:10px;top:8px;width:8px;height:8px;border:1.5px solid var(--accent);border-radius:50%;}
+.card .icon{flex:0 0 40px;width:40px;height:40px;border:1px solid var(--line);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;
+  font-size:14px;font-weight:700;color:var(--primary);}
+.card .body{flex:1;min-width:0;}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:14.5px;font-weight:700;color:var(--text-main);
+  letter-spacing:0.5px;margin-bottom:3px;}
+.card-desc{font-size:12.5px;line-height:1.55;color:var(--text-dim);}
+.card .badge{flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  color:var(--accent);border:1px solid rgba(255,112,67,0.45);border-radius:3px;padding:3px 8px;letter-spacing:1px;
+  align-self:flex-start;margin-top:2px;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="grid-deco"></div>
+  <div id="ct">
+
+    <div class="left">
+      <div class="eyebrow"><span>04 / FORMAT · 形态</span></div>
+      <h1 class="main-title">开源书籍的<span class="accent">形态</span></h1>
+      <div class="title-underline"></div>
+      <p class="narrative">
+        开源书籍并非<strong>单一形态</strong>，而是随着技术工具和社区文化的发展，演化出多种写作与发布模式。从早期的 Wiki 协作到现代的 GitBook 流程，每种形态都有其<strong>独特的适用场景</strong>和贡献者群体。
+      </p>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-label">核心出版模式</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">Wiki → Git</div>
+          <div class="stat-label">协作范式演进</div>
+        </div>
+      </div>
+      <div class="proto-card">
+        <div class="proto-head">
+          <span class="proto-tag">PROTOCOL</span>
+          <span class="proto-title">开源书籍核心协议：CC BY-SA / MIT</span>
+        </div>
+        <div class="proto-desc">明确知识共享与再分发规则，让内容在许可框架内自由流动与再创作。</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="image-block">
+        <div class="image-frame">
+          <img src="../images/page_004_format_cards.png" alt="四种书籍形态的模块化视觉隐喻，深海军蓝底配青色描边与装饰性角标的悬浮矩形几何面板拼接构图">
+          <span class="corner tl"></span>
+          <span class="corner tr"></span>
+          <span class="corner bl"></span>
+          <span class="corner br"></span>
+        </div>
+        <div class="image-meta">
+          <div class="image-cap">// <span>四种形态各有其模块化视觉隐喻</span> · 四种书籍形态的视觉化表达</div>
+          <div class="image-tag">FIG · 04</div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <span class="idx">01</span>
+          <span class="corner-dot"></span>
+          <div class="icon">GB</div>
+          <div class="body">
+            <div class="card-title">GitBook 模式</div>
+            <div class="card-desc">基于 Markdown 编写，版本托管在 GitHub，读者可在线预览与提交修改。</div>
+          </div>
+          <span class="badge">PLATFORM</span>
+        </div>
+        <div class="card">
+          <span class="idx">02</span>
+          <span class="corner-dot"></span>
+          <div class="icon">中</div>
+          <div class="body">
+            <div class="card-title">中文开源系列</div>
+            <div class="card-desc">如开源之道、开源中国等系列，聚焦中文技术社区的原创与翻译作品。</div>
+          </div>
+          <span class="badge">COMMUNITY</span>
+        </div>
+        <div class="card">
+          <span class="idx">03</span>
+          <span class="corner-dot"></span>
+          <div class="icon">OR</div>
+          <div class="body">
+            <div class="card-title">O'Reilly 开源版</div>
+            <div class="card-desc">部分知名出版社提供开源电子版，内容以开源协议发布供免费使用。</div>
+          </div>
+          <span class="badge">PUBLISHER</span>
+        </div>
+        <div class="card">
+          <span class="idx">04</span>
+          <span class="corner-dot"></span>
+          <div class="icon">Σ</div>
+          <div class="body">
+            <div class="card-title">社区协作写作</div>
+            <div class="card-desc">由社区发起众筹或志愿写作，多人分工完成，充分体现开源协作精神。</div>
+          </div>
+          <span class="badge">COLLABORATE</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
