@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>共赴开源之旅</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --bg-dark: #1E293B;
+  --bg-darker: #0F1926;
+  --text-main: #E8F1FB;
+  --text-sub: #8FA8C7;
+  --glow-blue: rgba(33, 150, 243, 0.5);
+  --glow-cyan: rgba(0, 188, 212, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 1200px 700px at 50% 50%, rgba(33,150,243,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 800px 500px at 50% 55%, rgba(0,188,212,0.08) 0%, transparent 70%),
+    var(--bg-darker);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+}
+
+/* Light ray decoration */
+.rays {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ray {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2000px;
+  height: 2px;
+  transform-origin: 50% 50%;
+  background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.05) 20%, rgba(33,150,243,0.25) 45%, rgba(0,188,212,0.35) 50%, rgba(33,150,243,0.25) 55%, rgba(33,150,243,0.05) 80%, transparent 100%);
+  opacity: 0.6;
+}
+
+.ray:nth-child(1) { transform: translate(-50%, -50%) rotate(0deg); }
+.ray:nth-child(2) { transform: translate(-50%, -50%) rotate(30deg); }
+.ray:nth-child(3) { transform: translate(-50%, -50%) rotate(60deg); }
+.ray:nth-child(4) { transform: translate(-50%, -50%) rotate(90deg); }
+.ray:nth-child(5) { transform: translate(-50%, -50%) rotate(120deg); }
+.ray:nth-child(6) { transform: translate(-50%, -50%) rotate(150deg); }
+.ray:nth-child(7) { transform: translate(-50%, -50%) rotate(180deg); }
+.ray:nth-child(8) { transform: translate(-50%, -50%) rotate(210deg); }
+.ray:nth-child(9) { transform: translate(-50%, -50%) rotate(240deg); }
+.ray:nth-child(10) { transform: translate(-50%, -50%) rotate(270deg); }
+.ray:nth-child(11) { transform: translate(-50%, -50%) rotate(300deg); }
+.ray:nth-child(12) { transform: translate(-50%, -50%) rotate(330deg); }
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ring-1 { width: 300px; height: 300px; border-color: rgba(33,150,243,0.25); }
+.ring-2 { width: 480px; height: 480px; border-color: rgba(33,150,243,0.15); }
+.ring-3 { width: 700px; height: 700px; border-color: rgba(0,188,212,0.08); }
+.ring-4 { width: 980px; height: 980px; border-color: rgba(33,150,243,0.05); }
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.header-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.header-line .seg {
+  height: 1px;
+  width: 120px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.header-line .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 30px;
+  color: var(--text-main);
+  letter-spacing: 4px;
+  margin-bottom: 6px;
+}
+
+.header .subtitle {
+  font-size: 15px;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+}
+
+/* Three modules */
+.modules {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.mod-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(33,150,243,0.08) 0%, rgba(30,41,59,0.6) 100%);
+  border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 12px;
+  padding: 22px 24px 24px;
+  overflow: hidden;
+}
+
+.mod-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+
+.mod-card::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.1) 0%, transparent 70%);
+}
+
+.mod-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.mod-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mod-title .icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.25), rgba(0,188,212,0.15));
+  border: 1px solid rgba(33,150,243,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.mod-text {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-sub);
+}
+
+.mod-text strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.mod-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.mod-tag {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 10px;
+  background: rgba(33,150,243,0.1);
+  border: 1px solid rgba(33,150,243,0.2);
+  color: var(--cyan);
+  letter-spacing: 1px;
+}
+
+/* Central hero */
+.hero-section {
+  position: relative;
+  text-align: center;
+  margin-bottom: 28px;
+  padding: 30px 0 20px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.hero-badge .h-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.hero-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #2196F3 0%, #00BCD4 50%, #2196F3 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 40px rgba(33,150,243,0.3);
+}
+
+.hero-cn {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 8px;
+  margin-bottom: 14px;
+}
+
+.hero-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.hero-divider .h-seg {
+  height: 1px;
+  width: 100px;
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.5), transparent);
+}
+
+.hero-divider .h-tri {
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  transform: rotate(45deg);
+  box-shadow: 0 0 12px var(--glow-blue);
+}
+
+.hero-tags {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.hero-tag {
+  font-size: 13px;
+  color: var(--text-sub);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-tag .ht-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--cyan);
+  border-radius: 50%;
+}
+
+/* Bottom section */
+.bottom-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 160px;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.bottom-card {
+  background: linear-gradient(135deg, rgba(33,150,243,0.06), rgba(30,41,59,0.5));
+  border: 1px solid rgba(33,150,243,0.15);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.bottom-card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bottom-card-title::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+  border-radius: 2px;
+}
+
+.bottom-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 16px;
+}
+
+.bl-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.bl-item .bl-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: rgba(33,150,243,0.15);
+  border: 1px solid rgba(33,150,243,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.bl-item .bl-text {
+  line-height: 1.3;
+}
+
+.bl-item .bl-text .bl-name {
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.bl-item .bl-text .bl-url {
+  font-size: 10px;
+  color: rgba(0,188,212,0.7);
+}
+
+.qr-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(33,150,243,0.06), rgba(30,41,59,0.5));
+  border: 1px solid rgba(33,150,243,0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.qr-placeholder {
+  width: 90px;
+  height: 90px;
+  border: 2px dashed rgba(33,150,243,0.4);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.qr-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 4px;
+}
+
+.qr-label {
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 1px;
+}
+
+.qr-sub-label {
+  font-size: 9px;
+  color: var(--text-sub);
+  margin-top: 2px;
+}
+
+/* Decorative corner marks */
+.corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(33,150,243,0.4);
+}
+.corner-tl { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+.corner-tr { top: 30px; right: 30px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 30px; left: 30px; border-right: none; border-top: none; }
+.corner-br { bottom: 30px; right: 30px; border-left: none; border-top: none; }
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.p1 { width: 3px; height: 3px; background: var(--primary); top: 12%; left: 8%; box-shadow: 0 0 8px var(--primary); opacity: 0.6; }
+.p2 { width: 2px; height: 2px; background: var(--cyan); top: 22%; left: 92%; box-shadow: 0 0 6px var(--cyan); opacity: 0.7; }
+.p3 { width: 4px; height: 4px; background: var(--primary); top: 78%; left: 5%; box-shadow: 0 0 10px var(--primary); opacity: 0.5; }
+.p4 { width: 2px; height: 2px; background: var(--cyan); top: 85%; left: 95%; box-shadow: 0 0 6px var(--cyan); opacity: 0.6; }
+.p5 { width: 3px; height: 3px; background: var(--cyan); top: 45%; left: 3%; box-shadow: 0 0 8px var(--cyan); opacity: 0.5; }
+.p6 { width: 2px; height: 2px; background: var(--primary); top: 38%; left: 97%; box-shadow: 0 0 6px var(--primary); opacity: 0.7; }
+
+/* Footer line */
+.footer-bar {
+  position: absolute;
+  bottom: 18px;
+  left: 70px;
+  right: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+  opacity: 0.6;
+}
+
+.footer-bar .fb-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-bar .fb-center .fb-line {
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.3), transparent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="rays">
+    <div class="ray"></div><div class="ray"></div><div class="ray"></div>
+    <div class="ray"></div><div class="ray"></div><div class="ray"></div>
+    <div class="ray"></div><div class="ray"></div><div class="ray"></div>
+    <div class="ray"></div><div class="ray"></div><div class="ray"></div>
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+    <div class="ring ring-4"></div>
+  </div>
+  <div class="particle p1"></div>
+  <div class="particle p2"></div>
+  <div class="particle p3"></div>
+  <div class="particle p4"></div>
+  <div class="particle p5"></div>
+  <div class="particle p6"></div>
+
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <div id="ct">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-line">
+        <span class="seg"></span>
+        <span class="dot"></span>
+        <span>第 10 页 · 终章</span>
+        <span class="dot"></span>
+        <span class="seg"></span>
+      </div>
+      <h1>共赴开源之旅</h1>
+      <div class="subtitle">让我们一起构建更开放的世界</div>
+    </div>
+
+    <!-- Three modules -->
+    <div class="modules">
+      <div class="mod-card">
+        <div class="mod-num">MODULE 01</div>
+        <div class="mod-title">
+          <span class="icon">◆</span>
+          <span>本期总结</span>
+        </div>
+        <div class="mod-text">
+          <strong>工匠精神</strong>、<strong>协作之道</strong>、<strong>行动指南</strong>三位一体，构成开源布道的完整叙事闭环，为每一位贡献者指明方向。
+        </div>
+        <div class="mod-tags">
+          <span class="mod-tag">工匠精神</span>
+          <span class="mod-tag">协作之道</span>
+          <span class="mod-tag">行动指南</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-num">MODULE 02</div>
+        <div class="mod-title">
+          <span class="icon">◎</span>
+          <span>持续参与</span>
+        </div>
+        <div class="mod-text">
+          开源之道每期刊物都是<strong>对话的开始</strong>，欢迎订阅并加入 <strong>ApacheCN 开源社区</strong>大家庭，与我们共同推进技术文明。
+        </div>
+        <div class="mod-tags">
+          <span class="mod-tag">订阅期刊</span>
+          <span class="mod-tag">加入社区</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-num">MODULE 03</div>
+        <div class="mod-title">
+          <span class="icon">★</span>
+          <span>开放邀请</span>
+        </div>
+        <div class="mod-text">
+          无论你是<strong>技术新人</strong>还是<strong>资深工程师</strong>，开源世界始终为你敞开大门，期待你的每一份贡献，共同书写未来。
+        </div>
+        <div class="mod-tags">
+          <span class="mod-tag">新人友好</span>
+          <span class="mod-tag">资深同行</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero section -->
+    <div class="hero-section">
+      <div class="hero-badge">
+        <span class="h-dot"></span>
+        <span>OPEN · SOURCE · FUTURE</span>
+        <span class="h-dot"></span>
+      </div>
+      <div class="hero-en">Open Source, Open Future</div>
+      <div class="hero-cn">未 来 因 开 源 而 开 放</div>
+      <div class="hero-divider">
+        <span class="h-seg"></span>
+        <span class="h-tri"></span>
+        <span class="h-seg"></span>
+      </div>
+      <div class="hero-tags">
+        <span class="hero-tag"><span class="ht-dot"></span>自由 · Freedom</span>
+        <span class="hero-tag"><span class="ht-dot"></span>协作 · Collaboration</span>
+        <span class="hero-tag"><span class="ht-dot"></span>创新 · Innovation</span>
+        <span class="hero-tag"><span class="ht-dot"></span>共享 · Sharing</span>
+        <span class="hero-tag"><span class="ht-dot"></span>开放 · Openness</span>
+      </div>
+    </div>
+
+    <!-- Bottom section -->
+    <div class="bottom-section">
+      <div class="bottom-card">
+        <div class="bottom-card-title">社区链接</div>
+        <div class="bottom-links">
+          <div class="bl-item">
+            <span class="bl-icon">GH</span>
+            <span class="bl-text">
+              <span class="bl-name">GitHub</span>
+              <span class="bl-url">github.com/apachecn</span>
+            </span>
+          </div>
+          <div class="bl-item">
+            <span class="bl-icon">WWW</span>
+            <span class="bl-text">
+              <span class="bl-name">官方网站</span>
+              <span class="bl-url">www.apachecn.org</span>
+            </span>
+          </div>
+          <div class="bl-item">
+            <span class="bl-icon">GIT</span>
+            <span class="bl-text">
+              <span class="bl-name">Gitee 镜像</span>
+              <span class="bl-url">gitee.com/apachecn</span>
+            </span>
+          </div>
+          <div class="bl-item">
+            <span class="bl-icon">DOC</span>
+            <span class="bl-text">
+              <span class="bl-name">开源之道</span>
+              <span class="bl-url">docs.oscto.cn</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-card">
+        <div class="bottom-card-title">关注我们</div>
+        <div class="bottom-links">
+          <div class="bl-item">
+            <span class="bl-icon">公众号</span>
+            <span class="bl-text">
+              <span class="bl-name">ApacheCN 公众号</span>
+              <span class="bl-url">扫码关注公众号</span>
+            </span>
+          </div>
+          <div class="bl-item">
+            <span class="bl-icon">QQ群</span>
+            <span class="bl-text">
+              <span class="bl-name">开源学习 QQ 群</span>
+              <span class="bl-url">加入技术交流群</span>
+            </span>
+          </div>
+          <div class="bl-item">
+            <span class="bl-icon">DISC</span>
+            <span class="bl-text">
+              <span class="bl-name">Discord 频道</span>
+              <span class="bl-url">国际社区实时讨论</span>
+            </span>
+          </div>
+          <div class="bl-item">
+            <span class="bl-icon">NEWS</span>
+            <span class="bl-text">
+              <span class="bl-name">订阅每期刊物</span>
+              <span class="bl-url">获取最新开源资讯</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="qr-box">
+        <div class="qr-placeholder">QR</div>
+        <div class="qr-label">扫码加入</div>
+        <div class="qr-sub-label">APACHECN 开源社区</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>APACHECN · OPEN SOURCE COMMUNITY</span>
+    <span class="fb-center">
+      <span class="fb-line"></span>
+      <span>END · 感谢观看</span>
+      <span class="fb-line"></span>
+    </span>
+    <span>PAGE 10 / 10</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>行动指南 - 从阅读走向实践</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-dark: #1E293B;
+  --bg-darker: #0F1B2D;
+  --text-main: #E8F1FB;
+  --text-muted: #7E94B0;
+  --glow-blue: 0 0 20px rgba(33, 150, 243, 0.6), 0 0 40px rgba(33, 150, 243, 0.3);
+  --glow-cyan: 0 0 12px rgba(0, 188, 212, 0.8), 0 0 24px rgba(0, 188, 212, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(135deg, #0F1B2D 0%, #1E293B 40%, #142238 70%, #0D1825 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33, 150, 243, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 1;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.12) 0%, transparent 60%);
+  z-index: 2;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  padding: 50px 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top row */
+.top-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 24px;
+}
+
+.chapter-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 160px;
+  line-height: 0.9;
+  color: var(--primary);
+  text-shadow:
+    0 0 20px rgba(33, 150, 243, 0.8),
+    0 0 40px rgba(33, 150, 243, 0.5),
+    0 0 80px rgba(33, 150, 243, 0.3),
+    0 0 120px rgba(0, 188, 212, 0.2);
+  letter-spacing: -4px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.chapter-num::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 10px;
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  box-shadow: var(--glow-cyan);
+}
+
+.title-block {
+  flex: 1;
+  padding-top: 24px;
+  border-left: 2px solid rgba(33, 150, 243, 0.3);
+  padding-left: 40px;
+}
+
+.title-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  color: var(--accent);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: 12px;
+}
+
+.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 68px;
+  color: var(--text-main);
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #E8F1FB 0%, #2196F3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 8px;
+}
+
+.subtitle .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: var(--glow-cyan);
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+/* Narrative */
+.narrative {
+  margin: 8px 0 20px 0;
+  padding: 18px 28px;
+  background: linear-gradient(90deg, rgba(33, 150, 243, 0.08) 0%, rgba(0, 188, 212, 0.04) 100%);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  position: relative;
+  max-width: 1360px;
+}
+
+.narrative p {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text-main);
+  font-weight: 300;
+}
+
+.narrative .highlight {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.narrative .highlight-cyan {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Staircase */
+.staircase-area {
+  flex: 1;
+  position: relative;
+  margin-top: 10px;
+}
+
+.step {
+  position: absolute;
+  width: 380px;
+  padding: 18px 22px;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 27, 45, 0.95) 100%);
+  border: 1px solid rgba(33, 150, 243, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.step-1 {
+  left: 0px;
+  bottom: 0px;
+  border-top: 2px solid var(--primary);
+}
+
+.step-2 {
+  left: 410px;
+  bottom: 60px;
+  border-top: 2px solid #3DA9FC;
+}
+
+.step-3 {
+  left: 820px;
+  bottom: 120px;
+  border-top: 2px solid var(--accent);
+}
+
+.step-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: 6px;
+}
+
+.step-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.step-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+.step-icon {
+  position: absolute;
+  top: -12px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-darker);
+  border: 2px solid var(--accent);
+  box-shadow: var(--glow-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Connecting line SVG */
+.connector {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Decorative elements */
+.corner-deco {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgba(0, 188, 212, 0.3);
+}
+
+.corner-deco.tl {
+  top: 20px;
+  left: 20px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner-deco.br {
+  bottom: 20px;
+  right: 20px;
+  border-left: none;
+  border-top: none;
+}
+
+.glow-node {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: var(--glow-cyan);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+/* Bottom decoration */
+.bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent 0%, var(--primary) 30%, var(--accent) 50%, var(--primary) 70%, transparent 100%);
+  box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+  z-index: 5;
+}
+
+/* Page number */
+.page-meta {
+  position: absolute;
+  top: 30px;
+  right: 50px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  z-index: 20;
+}
+
+.page-meta .num {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.ascend-label {
+  position: absolute;
+  left: 1240px;
+  bottom: 80px;
+  width: 240px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-shadow: var(--glow-cyan);
+  z-index: 5;
+}
+
+.ascend-label .arrow {
+  font-size: 20px;
+  display: block;
+  margin-top: 8px;
+}
+
+.ascend-label .sub {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-size: 11px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="particle" style="top:120px;right:300px;width:4px;height:4px;background:#2196F3;box-shadow:0 0 8px #2196F3;"></div>
+    <div class="particle" style="top:680px;right:200px;width:3px;height:3px;background:#00BCD4;box-shadow:0 0 8px #00BCD4;"></div>
+    <div class="particle" style="top:200px;right:500px;width:2px;height:2px;background:#00BCD4;opacity:0.6;"></div>
+    <div class="particle" style="top:800px;left:700px;width:3px;height:3px;background:#2196F3;box-shadow:0 0 6px #2196F3;"></div>
+  </div>
+
+  <div class="page-meta">
+    <span>SECTION</span> &nbsp; <span class="num">03</span> &nbsp;/&nbsp; <span>P.009</span>
+  </div>
+
+  <div id="ct">
+
+    <div class="top-row">
+      <div class="chapter-num">03</div>
+      <div class="title-block">
+        <div class="title-tag">CHAPTER · 行动篇</div>
+        <div class="main-title">行动指南</div>
+        <div class="subtitle"><span class="dot"></span>从阅读走向实践</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <p>
+        最后一个篇章将目光从<span class="highlight">阅读</span>转向<span class="highlight-cyan">行动</span>——开源不是一本读完后就合上的书，而是一个需要<span class="highlight">持续投入</span>、<span class="highlight">不断实践</span>的生活方式。本页为你指明<span class="highlight-cyan">第一步的落脚点</span>。
+      </p>
+    </div>
+
+    <div class="staircase-area">
+
+      <svg class="connector" viewBox="0 0 1460 360" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="lineGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.8"/>
+            <stop offset="50%" style="stop-color:#3DA9FC;stop-opacity:0.9"/>
+            <stop offset="100%" style="stop-color:#00BCD4;stop-opacity:1"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <path d="M 190 340 L 370 280 L 550 280 L 790 220 L 1000 220 L 1180 160"
+              fill="none" stroke="url(#lineGrad)" stroke-width="2.5"
+              stroke-dasharray="8 4" filter="url(#glow)"/>
+        <circle cx="190" cy="340" r="5" fill="#2196F3" filter="url(#glow)"/>
+        <circle cx="550" cy="280" r="4" fill="#3DA9FC" filter="url(#glow)"/>
+        <circle cx="1000" cy="220" r="4" fill="#3DA9FC" filter="url(#glow)"/>
+        <circle cx="1180" cy="160" r="5" fill="#00BCD4" filter="url(#glow)"/>
+      </svg>
+
+      <div class="step step-1">
+        <div class="step-icon">01</div>
+        <div class="step-number">STEP · 01</div>
+        <div class="step-title">三个台阶</div>
+        <div class="step-desc">选定项目、提交首个 PR、参与社区决策，每一步都是成长的里程碑。</div>
+      </div>
+
+      <div class="step step-2">
+        <div class="step-icon">02</div>
+        <div class="step-number">STEP · 02</div>
+        <div class="step-title">工具武装</div>
+        <div class="step-desc">掌握 Git 工作流、Issue 追踪、CI/CD 工具链是参与开源的基础技能储备。</div>
+      </div>
+
+      <div class="step step-3">
+        <div class="step-icon">03</div>
+        <div class="step-number">STEP · 03</div>
+        <div class="step-title">心态建设</div>
+        <div class="step-desc">接受不完美、拥抱反馈、保持好奇，这些心态比技术能力更重要。</div>
+      </div>
+
+      <div class="ascend-label">
+        <span>ASCENDING</span>
+        <span class="arrow">▲</span>
+        <span class="sub">向上攀登</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="corner-deco tl"></div>
+  <div class="corner-deco br"></div>
+  <div class="bottom-bar"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>阅读札记与洞见</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --bg:#1E293B;
+  --bg-deep:#0F1B2D;
+  --card:#1A2740;
+  --card-border:#243B5A;
+  --text-main:#E8EDF5;
+  --text-sub:#8FA3C0;
+  --glow-blue:0 0 24px rgba(33,150,243,.5);
+  --glow-cyan:0 0 18px rgba(0,188,212,.45);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Source Sans Pro','PingFang SC',sans-serif;}
+body{background:var(--bg-deep);color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:radial-gradient(ellipse at 20% 10%,#162743 0%,#0F1B2D 60%,#0A1324 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg::before{content:"";position:absolute;top:-120px;right:-100px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,.18) 0%,transparent 70%);}
+#bg::after{content:"";position:absolute;bottom:-160px;left:-80px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,.14) 0%,transparent 70%);}
+.grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,.05) 1px,transparent 1px);background-size:60px 60px;opacity:.5;}
+#ct{position:absolute;inset:0;z-index:1;padding:38px 56px 32px 56px;box-sizing:border-box;display:flex;flex-direction:column;}
+.header{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:46px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:3px;box-shadow:var(--glow-cyan);}
+h1{font-family:'Inter',sans-serif;font-weight:800;font-size:34px;color:var(--text-main);letter-spacing:1px;}
+h1 .accent{color:var(--accent);}
+.page-tag{margin-left:auto;font-family:'Inter',sans-serif;font-size:13px;color:var(--text-sub);border:1px solid var(--card-border);padding:5px 14px;border-radius:20px;letter-spacing:2px;}
+.narrative{font-size:14px;line-height:1.85;color:var(--text-sub);max-width:1280px;padding:12px 20px;border-left:3px solid var(--primary);background:linear-gradient(90deg,rgba(33,150,243,.08),transparent);}
+.main{display:flex;gap:24px;flex:1;min-height:0;margin-top:8px;}
+.left-panel{width:35%;display:flex;flex-direction:column;gap:14px;}
+.right-panel{width:65%;display:flex;flex-direction:column;gap:12px;}
+
+/* Book illustration */
+.book-scene{flex:1;background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:18px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.book-scene::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);}
+.scene-tag{position:absolute;top:10px;left:14px;font-size:11px;color:var(--accent);letter-spacing:2px;font-family:'Inter',sans-serif;font-weight:600;}
+.scene-desc{position:absolute;bottom:10px;left:14px;right:14px;font-size:11px;color:var(--text-sub);text-align:center;letter-spacing:1px;}
+
+/* CSS Book */
+.book-wrap{position:relative;width:280px;height:180px;display:flex;align-items:center;justify-content:center;}
+.book{position:relative;width:240px;height:140px;display:flex;perspective:1200px;}
+.book-page{width:120px;height:140px;background:linear-gradient(135deg,#1B2E4A,#162340);border:1px solid var(--card-border);position:relative;display:flex;flex-direction:column;padding:10px 8px;gap:5px;}
+.book-page.left{border-radius:8px 0 0 8px;border-right:none;background:linear-gradient(180deg,#1A2A48 0%,#122140 100%);box-shadow:inset -8px 0 12px rgba(0,0,0,.35);}
+.book-page.right{border-radius:0 8px 8px 0;background:linear-gradient(180deg,#16263F 0%,#0E1A30 100%);box-shadow:inset 8px 0 12px rgba(0,0,0,.35);}
+.book-page .code-line{height:3px;border-radius:2px;background:rgba(33,150,243,.3);}
+.book-page .code-line.g1{width:70%;background:rgba(33,150,243,.7);}
+.book-page .code-line.g2{width:90%;background:rgba(0,188,212,.6);}
+.book-page .code-line.g3{width:55%;background:rgba(33,150,243,.5);}
+.book-page .code-line.g4{width:80%;background:rgba(0,188,212,.5);}
+.book-page .code-line.g5{width:40%;background:rgba(33,150,243,.4);}
+.book-page .code-line.g6{width:65%;background:rgba(0,188,212,.45);}
+.book-page .code-line.g7{width:75%;background:rgba(33,150,243,.55);}
+.book-page.right .code-line{background:rgba(0,188,212,.3);}
+.book-page.right .code-line.g1{background:rgba(0,188,212,.7);}
+.book-page.right .code-line.g2{background:rgba(33,150,243,.6);}
+.book-page.right .code-line.g3{background:rgba(0,188,212,.5);}
+.book-page.right .code-line.g4{background:rgba(33,150,243,.5);}
+.book-page.right .code-line.g5{background:rgba(0,188,212,.4);}
+.book-page.right .code-line.g6{background:rgba(33,150,243,.45);}
+.book-page.right .code-line.g7{background:rgba(0,188,212,.55);}
+.book-spine{position:absolute;top:0;bottom:0;left:50%;width:2px;background:linear-gradient(180deg,rgba(33,150,243,.6),rgba(0,188,212,.4));transform:translateX(-50%);box-shadow:0 0 8px rgba(33,150,243,.5);}
+
+/* Floating code rows */
+.float-code{position:absolute;font-family:'Inter',monospace;font-size:9px;color:rgba(0,188,212,.55);letter-spacing:.5px;}
+.float-code.c1{top:8px;left:10px;}
+.float-code.c2{top:14px;right:12px;color:rgba(33,150,243,.5);}
+.float-code.c3{bottom:16px;left:8px;color:rgba(33,150,243,.4);}
+.float-code.c4{bottom:10px;right:10px;color:rgba(0,188,212,.45);}
+
+/* Thought bubble */
+.bubble-wrap{position:absolute;top:32px;right:22px;}
+.bubble{background:linear-gradient(135deg,rgba(33,150,243,.25),rgba(0,188,212,.15));border:1px solid rgba(33,150,243,.4);border-radius:14px;padding:8px 12px;font-size:11px;color:var(--accent);font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;box-shadow:var(--glow-cyan);}
+.bubble::after{content:"";position:absolute;bottom:-8px;left:20px;width:12px;height:12px;background:rgba(33,150,243,.25);border-right:1px solid rgba(33,150,243,.4);border-bottom:1px solid rgba(33,150,243,.4);transform:rotate(45deg);}
+
+/* KPI cards (left bottom) */
+.kpi-row{display:flex;gap:10px;}
+.kpi-card{flex:1;background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:10px 12px;text-align:center;position:relative;overflow:hidden;}
+.kpi-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+.kpi-num{font-family:'Inter',sans-serif;font-weight:800;font-size:30px;line-height:1.1;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.kpi-label{font-size:10px;color:var(--text-sub);margin-top:4px;letter-spacing:.5px;}
+
+/* Timeline */
+.timeline-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:2px;display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.timeline-title::before{content:"";width:20px;height:2px;background:var(--accent);border-radius:1px;box-shadow:var(--glow-cyan);}
+.timeline{flex:1;display:flex;flex-direction:column;gap:8px;position:relative;padding-left:36px;}
+.timeline::before{content:"";position:absolute;left:14px;top:10px;bottom:10px;width:2px;background:linear-gradient(180deg,var(--primary),var(--accent),transparent);}
+.tl-item{position:relative;background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:9px 14px;display:flex;gap:14px;align-items:flex-start;transition:border-color .2s;}
+.tl-item::before{content:"";position:absolute;left:-28px;top:14px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--primary);box-shadow:0 0 8px rgba(33,150,243,.6);}
+.tl-item:nth-child(even)::before{border-color:var(--accent);box-shadow:0 0 8px rgba(0,188,212,.6);}
+.tl-idx{font-family:'Inter',sans-serif;font-weight:800;font-size:22px;color:var(--primary);min-width:32px;line-height:1.1;text-align:center;}
+.tl-item:nth-child(even) .tl-idx{color:var(--accent);}
+.tl-content{flex:1;}
+.tl-head{display:flex;align-items:center;gap:8px;margin-bottom:3px;}
+.tl-title{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:var(--text-main);letter-spacing:.5px;}
+.tl-badge{font-size:9px;color:var(--accent);border:1px solid rgba(0,188,212,.4);padding:1px 7px;border-radius:8px;letter-spacing:1px;font-family:'Inter',sans-serif;}
+.tl-text{font-size:12px;line-height:1.65;color:var(--text-sub);}
+.tl-text strong{color:var(--accent);font-weight:600;}
+.tl-text em{color:var(--primary);font-style:normal;font-weight:600;}
+
+/* Bottom data strip */
+.data-strip{display:flex;gap:12px;margin-top:4px;}
+.data-module{flex:1;background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:9px 14px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;}
+.data-module::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.dm-icon{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,rgba(33,150,243,.25),rgba(0,188,212,.15));border:1px solid rgba(33,150,243,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dm-icon svg{width:20px;height:20px;}
+.dm-body{flex:1;}
+.dm-label{font-size:10px;color:var(--text-sub);letter-spacing:1px;margin-bottom:2px;}
+.dm-value{font-family:'Inter',sans-serif;font-weight:800;font-size:16px;color:var(--text-main);display:flex;align-items:center;gap:8px;}
+.dm-value .num{font-size:24px;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dm-value .unit{font-size:11px;color:var(--text-sub);font-weight:400;}
+.dm-stages{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-sub);margin-top:2px;}
+.dm-stages span{padding:1px 6px;background:rgba(33,150,243,.12);border:1px solid rgba(33,150,243,.25);border-radius:4px;}
+.dm-stages .arrow{padding:0;color:var(--accent);}
+.dm-actions{font-size:11px;color:var(--text-sub);margin-top:2px;}
+.dm-actions span{padding:1px 6px;background:rgba(0,188,212,.12);border:1px solid rgba(0,188,212,.25);border-radius:4px;margin-right:4px;}
+
+.footer{margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-sub);letter-spacing:1px;}
+.footer-left{display:flex;align-items:center;gap:8px;}
+.footer-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"><div class="grid-lines"></div></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title-bar"></div>
+        <h1>阅读札记<span class="accent">与洞见</span></h1>
+        <div class="page-tag">P / 08 &nbsp;·&nbsp; NOTES &amp; INSIGHTS</div>
+      </div>
+      <p class="narrative">阅读札记是本期最具个人温度的部分，适兕通过精读经典文章，提炼出可操作的方法论与反共识的思考角度，鼓励读者将阅读转化为行动，从旁观者走向共建者。</p>
+    </div>
+
+    <div class="main">
+
+      <div class="left-panel">
+
+        <div class="book-scene">
+          <span class="scene-tag">// READING · CODING</span>
+          <div class="float-code c1">&lt;thought&gt;</div>
+          <div class="float-code c2">git commit</div>
+          <div class="float-code c3">import read;</div>
+          <div class="float-code c4">→ contribute()</div>
+
+          <div class="bubble-wrap">
+            <div class="bubble">⚡ 思辨时刻</div>
+          </div>
+
+          <div class="book-wrap">
+            <div class="book">
+              <div class="book-page left">
+                <div class="code-line g1"></div>
+                <div class="code-line g2"></div>
+                <div class="code-line g3"></div>
+                <div class="code-line g4"></div>
+                <div class="code-line g5"></div>
+                <div class="code-line g6"></div>
+                <div class="code-line g7"></div>
+              </div>
+              <div class="book-page right">
+                <div class="code-line g1"></div>
+                <div class="code-line g2"></div>
+                <div class="code-line g3"></div>
+                <div class="code-line g4"></div>
+                <div class="code-line g5"></div>
+                <div class="code-line g6"></div>
+                <div class="code-line g7"></div>
+              </div>
+              <div class="book-spine"></div>
+            </div>
+          </div>
+          <span class="scene-desc">📖 打开书本 · 环绕代码 · 灵感迸发</span>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-num">3</div>
+            <div class="kpi-label">阶段成长路径</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-num">5</div>
+            <div class="kpi-label">起步微行动</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="right-panel">
+
+        <div class="timeline-title">四 条 札 记 · 时 间 轴</div>
+
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-idx">01</div>
+            <div class="tl-content">
+              <div class="tl-head">
+                <span class="tl-title">核心观点</span>
+                <span class="tl-badge">CORE IDEA</span>
+              </div>
+              <p class="tl-text">阅读中最深刻的感悟是：<strong>开源的本质不是技术共享，而是人与人之间信任的共建</strong>。</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-idx">02</div>
+            <div class="tl-content">
+              <div class="tl-head">
+                <span class="tl-title">方法论提炼</span>
+                <span class="tl-badge">METHODOLOGY</span>
+              </div>
+              <p class="tl-text">从文章中提取了<strong>"渐进式参与"模型</strong>——从<em>使用者</em>到<em>贡献者</em>再到<em>维护者</em>的三阶成长路径。</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-idx">03</div>
+            <div class="tl-content">
+              <div class="tl-head">
+                <span class="tl-title">反共识思考</span>
+                <span class="tl-badge">COUNTER-VIEW</span>
+              </div>
+              <p class="tl-text">对<strong>"开源必然免费"</strong>的刻板印象提出质疑，探讨了<em>开源商业化的多元可持续模式</em>。</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-idx">04</div>
+            <div class="tl-content">
+              <div class="tl-head">
+                <span class="tl-title">个人行动清单</span>
+                <span class="tl-badge">ACTION LIST</span>
+              </div>
+              <p class="tl-text">结合阅读心得，列出了每位开发者可以<em>立即开始</em>的<strong>五个微行动</strong>：提 Issue、改文档等。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-strip">
+          <div class="data-module">
+            <div class="dm-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+            </div>
+            <div class="dm-body">
+              <div class="dm-label">从阅读到行动路径</div>
+              <div class="dm-value"><span class="num">3</span><span class="unit">阶段</span></div>
+              <div class="dm-stages"><span>使用者</span><span class="arrow">→</span><span>贡献者</span><span class="arrow">→</span><span>维护者</span></div>
+            </div>
+          </div>
+          <div class="data-module">
+            <div class="dm-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            </div>
+            <div class="dm-body">
+              <div class="dm-label">建议起步微行动</div>
+              <div class="dm-value"><span class="num">5</span><span class="unit">项</span></div>
+              <div class="dm-actions"><span>提 Issue</span><span>修文档</span><span>复现 Bug</span><span>…</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <span class="footer-dot"></span>
+        <span>READING NOTES &amp; INSIGHTS · 阅读札记与洞见</span>
+      </div>
+      <div>08 / TOTAL &nbsp;·&nbsp; 从旁观者走向共建者</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
