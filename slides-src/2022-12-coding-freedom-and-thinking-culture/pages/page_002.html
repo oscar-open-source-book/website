@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>本期导读</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --klein:#002FA7;
+  --klein-deep:#001a66;
+  --cyan:#00BCD4;
+  --cyan-glow:#4dd9ea;
+  --neutral:#F0F4F8;
+  --text-light:#ffffff;
+  --text-dim:rgba(240,244,248,0.75);
+  --text-dimmer:rgba(240,244,248,0.5);
+  --card-bg:rgba(255,255,255,0.06);
+  --card-border:rgba(0,188,212,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  color:var(--text-light);
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  font-family:'Inter',sans-serif;
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 20% 30%, rgba(0,47,167,0.85) 0%, rgba(0,26,102,0.95) 60%, rgba(0,10,55,1) 100%);
+}
+#bg .bg-img{
+  position:absolute;inset:0;width:1600px;height:900px;
+  background-image:url('../images/page_002_bg_pattern.png');
+  background-size:cover;background-position:center;
+  opacity:0.55;
+  mix-blend-mode:screen;
+}
+#bg .bg-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg, rgba(0,47,167,0.35) 0%, rgba(0,18,70,0.55) 100%);
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:56px 72px 48px 72px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+/* top bar */
+.top-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:20px;
+  border-bottom:1px solid rgba(0,188,212,0.25);
+}
+.top-left{display:flex;align-items:center;gap:14px;}
+.top-left .dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1;box-shadow:0 0 12px var(--cyan);}
+  50%{opacity:0.5;box-shadow:0 0 6px var(--cyan);}
+}
+.top-left .label{
+  font-family:'Orbitron',sans-serif;
+  font-size:13px;font-weight:500;letter-spacing:3px;
+  color:var(--cyan);
+}
+.top-left .sep{
+  width:1px;height:16px;background:rgba(0,188,212,0.4);
+}
+.top-left .sub{
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;font-weight:500;letter-spacing:2px;
+  color:var(--text-dimmer);
+}
+.top-right{display:flex;align-items:center;gap:10px;}
+.top-right .tag{
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;letter-spacing:2px;
+  color:var(--text-dim);
+  padding:6px 14px;
+  border:1px solid rgba(0,188,212,0.3);
+  border-radius:20px;
+  background:rgba(0,188,212,0.06);
+}
+
+/* main area */
+.main{
+  flex:1;display:flex;
+  padding-top:32px;
+  gap:56px;
+}
+
+/* left chapter number */
+.left-col{
+  width:520px;flex-shrink:0;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.chap-head{
+  font-family:'Orbitron',sans-serif;
+  font-size:12px;letter-spacing:5px;
+  color:var(--cyan);
+  margin-bottom:12px;
+}
+.chap-num{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:300px;
+  line-height:0.85;
+  color:var(--text-light);
+  position:relative;
+  display:inline-block;
+  background:linear-gradient(180deg, #ffffff 0%, #6dd0ec 60%, #00BCD4 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 60px rgba(0,188,212,0.3);
+  margin-left:-6px;
+}
+.chap-num::after{
+  content:'';
+  position:absolute;left:-10px;right:-10px;bottom:8px;height:6px;
+  background:linear-gradient(90deg, var(--cyan), transparent);
+  opacity:0.6;
+}
+.chap-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:36px;font-weight:700;
+  letter-spacing:4px;
+  color:var(--text-light);
+  margin-top:24px;
+}
+.chap-sub{
+  font-size:15px;line-height:1.7;
+  color:var(--text-dim);
+  margin-top:14px;
+  max-width:440px;
+}
+.chap-accent{
+  margin-top:22px;
+  display:flex;align-items:center;gap:12px;
+}
+.chap-accent .bar{
+  width:48px;height:2px;background:var(--cyan);
+}
+.chap-accent .txt{
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;letter-spacing:3px;
+  color:var(--cyan);
+}
+
+/* right cards */
+.right-col{
+  flex:1;display:flex;flex-direction:column;
+  gap:16px;
+  padding-top:8px;
+}
+.card{
+  display:flex;align-items:flex-start;
+  padding:20px 24px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:10px;
+  position:relative;
+  overflow:hidden;
+  backdrop-filter:blur(4px);
+}
+.card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;
+  background:linear-gradient(180deg, var(--cyan) 0%, rgba(0,188,212,0.2) 100%);
+}
+.card-idx{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;font-weight:700;
+  color:var(--cyan);
+  letter-spacing:2px;
+  margin-right:18px;
+  padding-top:4px;
+  min-width:40px;
+}
+.card-body{flex:1;}
+.card-title{
+  font-size:20px;font-weight:700;
+  color:var(--text-light);
+  margin-bottom:8px;
+  letter-spacing:1px;
+}
+.card-title .em{color:var(--cyan);}
+.card-desc{
+  font-size:14px;line-height:1.75;
+  color:var(--text-dim);
+}
+.card-tag{
+  position:absolute;top:14px;right:16px;
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;letter-spacing:2px;
+  color:var(--text-dimmer);
+}
+
+/* bottom bar */
+.bottom-bar{
+  display:flex;align-items:center;
+  padding-top:16px;
+  border-top:1px solid rgba(0,188,212,0.2);
+  gap:40px;
+}
+.data-point{
+  display:flex;align-items:center;gap:14px;
+}
+.data-icon{
+  width:44px;height:44px;
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,188,212,0.08);
+  font-family:'Orbitron',sans-serif;
+  font-size:16px;font-weight:700;
+  color:var(--cyan);
+}
+.data-text{display:flex;flex-direction:column;}
+.data-num{
+  font-family:'Orbitron',sans-serif;
+  font-size:22px;font-weight:700;
+  color:var(--text-light);
+  line-height:1;
+}
+.data-num .unit{
+  font-size:13px;font-weight:500;
+  color:var(--cyan);margin-left:4px;
+}
+.data-label{
+  font-size:11px;color:var(--text-dimmer);
+  margin-top:5px;
+  letter-spacing:1px;
+}
+.data-divider{
+  width:1px;height:40px;
+  background:rgba(0,188,212,0.25);
+}
+.bottom-right{
+  margin-left:auto;
+  display:flex;align-items:center;gap:12px;
+}
+.bottom-right .arrow{
+  font-family:'Orbitron',sans-serif;
+  font-size:24px;color:var(--cyan);
+  animation:slide 2.5s ease-in-out infinite;
+}
+@keyframes slide{
+  0%,100%{transform:translateX(0);opacity:0.8;}
+  50%{transform:translateX(6px);opacity:1;}
+}
+.bottom-right .go{
+  font-family:'Orbitron',sans-serif;
+  font-size:12px;letter-spacing:3px;
+  color:var(--text-dim);
+}
+
+/* hex decoration */
+.hex-deco{
+  position:absolute;
+  right:-40px;top:30%;
+  font-family:'Orbitron',sans-serif;
+  font-size:12px;letter-spacing:4px;
+  color:rgba(0,188,212,0.25);
+  writing-mode:vertical-rl;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-img"></div>
+    <div class="bg-veil"></div>
+  </div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="top-left">
+        <span class="dot"></span>
+        <span class="label">OPEN SOURCE READING</span>
+        <span class="sep"></span>
+        <span class="sub">CHAPTER 01 · 章节导览</span>
+      </div>
+      <div class="top-right">
+        <span class="tag">FRAMEWORK</span>
+        <span class="tag">CONTEXT</span>
+        <span class="tag">PARTICIPATION</span>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="chap-head">// CHAPTER OPENING</div>
+        <div class="chap-num">01</div>
+        <div class="chap-title">本期导读</div>
+        <div class="chap-sub">阅读主题、背景与参与方式一览 —— 帮助读者快速建立全局认知框架，理解为什么在这个时间点重读这两本书，以及它们对今天开源实践意味着什么。</div>
+        <div class="chap-accent">
+          <span class="bar"></span>
+          <span class="txt">A QUICK START GUIDE</span>
+        </div>
+        <div class="hex-deco">HEX · 00BCD4 · 002FA7</div>
+      </div>
+
+      <div class="right-col">
+
+        <div class="card">
+          <span class="card-tag">WHY</span>
+          <span class="card-idx">01 /</span>
+          <div class="card-body">
+            <div class="card-title">为什么<span class="em">要读</span></div>
+            <div class="card-desc">在 AI 与商业化浪潮下，重新审视开源精神的底层逻辑</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-tag">WHAT</span>
+          <span class="card-idx">02 /</span>
+          <div class="card-body">
+            <div class="card-title">读<span class="em">什么</span></div>
+            <div class="card-desc">两本经典读物互为镜像，从技术自由延伸到文化思考</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-tag">HOW</span>
+          <span class="card-idx">03 /</span>
+          <div class="card-body">
+            <div class="card-title">怎么<span class="em">参与</span></div>
+            <div class="card-desc">提前领读 + 现场分享 + 社群复盘，三阶段递进式共读</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="data-point">
+        <div class="data-icon">⏱</div>
+        <div class="data-text">
+          <span class="data-num">3<span class="unit">周</span></span>
+          <span class="data-label">筹备周期 · 从选题到成稿</span>
+        </div>
+      </div>
+      <div class="data-divider"></div>
+      <div class="data-point">
+        <div class="data-icon">👥</div>
+        <div class="data-text">
+          <span class="data-num">8<span class="unit">人</span></span>
+          <span class="data-label">领读人数 · 跨领域开源贡献者</span>
+        </div>
+      </div>
+      <div class="bottom-right">
+        <span class="go">LET'S BEGIN</span>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

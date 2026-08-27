@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --primary: #002FA7;
+  --cyan: #00BCD4;
+  --light-gray: #F0F4F8;
+  --dark-bg: #001a5e;
+  --text-on-dark: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--light-gray);
+}
+
+h1, h2, h3 { font-family: 'Orbitron', 'PingFang SC', sans-serif; }
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#bg .bg-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1600px;
+  height: 900px;
+  object-fit: cover;
+  display: block;
+}
+
+#bg .bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1600px;
+  height: 900px;
+  background: linear-gradient(180deg, rgba(0,20,100,0.55) 0%, rgba(0,20,100,0.35) 30%, rgba(0,20,100,0.60) 70%, rgba(0,10,70,0.80) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 45px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 顶部标题区 ===== */
+.header {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.title-tag {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 8px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  opacity: 0.9;
+}
+
+.main-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 76px;
+  letter-spacing: 6px;
+  color: var(--light-gray);
+  text-shadow: 0 0 30px rgba(0,188,212,0.4), 0 0 60px rgba(0,47,167,0.5);
+  line-height: 1.1;
+}
+
+.title-accent {
+  width: 180px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  margin: 16px auto 14px;
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  color: rgba(240,244,248,0.85);
+}
+
+/* ===== 中部卡片 ===== */
+.cards-row {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 22px;
+  margin-top: 28px;
+}
+
+.card {
+  width: 440px;
+  background: rgba(0,47,167,0.35);
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 6px;
+  padding: 20px 22px;
+  backdrop-filter: blur(4px);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--cyan);
+  opacity: 0.8;
+}
+
+.card-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--light-gray);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.card-divider {
+  width: 30px;
+  height: 1px;
+  background: rgba(0,188,212,0.6);
+  margin-bottom: 8px;
+}
+
+.card-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(240,244,248,0.88);
+  letter-spacing: 0.5px;
+}
+
+/* ===== 叙事文字 ===== */
+.narrative {
+  text-align: center;
+  max-width: 1200px;
+  margin: 20px auto 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(240,244,248,0.78);
+  letter-spacing: 0.5px;
+}
+
+.narrative .highlight {
+  color: var(--cyan);
+  font-weight: 400;
+}
+
+/* ===== 数据点 ===== */
+.data-points {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-top: 18px;
+  padding: 0 40px;
+}
+
+.dp {
+  flex: 1;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+}
+
+.dp + .dp::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: rgba(0,188,212,0.3);
+}
+
+.dp-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 1px;
+  line-height: 1.2;
+  text-shadow: 0 0 20px rgba(0,188,212,0.3);
+}
+
+.dp-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(240,244,248,0.6);
+  letter-spacing: 2px;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.dp-note {
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  font-weight: 300;
+  color: rgba(240,244,248,0.7);
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 底部装饰线 ===== */
+.footer-line {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.footer-line .line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,188,212,0.5), transparent);
+}
+
+.footer-line .dot {
+  width: 4px;
+  height: 4px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.footer-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: rgba(0,188,212,0.7);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_001_hero.png" alt="开源之书记录封面主视觉——克莱因蓝渐变延伸至青色的科技感画面，电路板纹理交织，发光粒子流漂移，中央径向光晕与几何线框球体">
+    <div class="bg-overlay"></div>
+  </div>
+
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-tag"><span>OPEN SOURCE · READING RECORD</span></div>
+      <h1 class="main-title"><span>开源之书记录</span></h1>
+      <div class="title-accent"></div>
+      <p class="subtitle"><span>2022年12月 · 编码自由与思考文化</span></p>
+    </div>
+
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-num"><span>01 / THEME</span></div>
+        <div class="card-title"><span>本期主题</span></div>
+        <div class="card-divider"></div>
+        <p class="card-text"><span>围绕『编码自由』与『思考文化』两大议题展开深度共读，在代码与哲学之间搭建思想的桥梁。</span></p>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>02 / FORMAT</span></div>
+        <div class="card-title"><span>活动形式</span></div>
+        <div class="card-divider"></div>
+        <p class="card-text"><span>线下沙龙加线上直播，读者分享加主讲人点评，多维互动激发思想碰撞。</span></p>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>03 / ORGANIZER</span></div>
+        <div class="card-title"><span>主办方</span></div>
+        <div class="card-divider"></div>
+        <p class="card-text"><span>开源之道·适兕，聚焦开源文化与自由软件理念的传播，持续推动思想自由与代码开放。</span></p>
+      </div>
+    </div>
+
+    <p class="narrative">
+      <span>2022年12月，开源之道·适兕带来这期特别的阅读分享，以<span class="highlight">『编码自由』</span>为引、以<span class="highlight">『思考文化』</span>为镜，探讨程序员在代码世界中的精神归属与思想独立，这是一场关于自由、责任与创造力的对话。</span>
+    </p>
+
+    <div class="data-points">
+      <div class="dp">
+        <div class="dp-value"><span>2022.12</span></div>
+        <div class="dp-label"><span>举办月份</span></div>
+        <div class="dp-note"><span>岁末特别场次</span></div>
+      </div>
+      <div class="dp">
+        <div class="dp-value"><span>2 本</span></div>
+        <div class="dp-label"><span>阅读书目</span></div>
+        <div class="dp-note"><span>《编码自由》《思考文化》</span></div>
+      </div>
+      <div class="dp">
+        <div class="dp-value"><span>自由·思想·代码</span></div>
+        <div class="dp-label"><span>核心议题</span></div>
+        <div class="dp-note"><span>三大关键词贯穿全场</span></div>
+      </div>
+    </div>
+
+    <div class="footer-line">
+      <div class="line"></div>
+      <div class="dot"></div>
+      <div class="footer-text"><span>KRAFTWERK · OPEN · IDEAS</span></div>
+      <div class="dot"></div>
+      <div class="line"></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

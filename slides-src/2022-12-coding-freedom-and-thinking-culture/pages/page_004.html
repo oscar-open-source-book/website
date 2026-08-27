@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>《编码自由》书籍解读</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+:root{
+  --klein:#002FA7;
+  --klein-deep:#001E72;
+  --cyan:#00BCD4;
+  --cyan-glow:rgba(0,188,212,0.55);
+  --dark:#020621;
+  --panel:rgba(2,15,60,0.55);
+  --panel-solid:#041140;
+  --line:rgba(0,188,212,0.22);
+  --line-strong:rgba(0,188,212,0.5);
+  --text:#EAF1FF;
+  --text-dim:#8FA6DC;
+  --text-mid:#B8C8F0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1600px;height:900px;overflow:hidden;background:#000}
+body{font-family:'Inter','Noto Sans SC',sans-serif;color:var(--text);font-weight:400;-webkit-font-smoothing:antialiased}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:linear-gradient(140deg,#01041A 0%,#050D38 48%,#001960 100%)}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+#ct{position:absolute;inset:0;z-index:2;padding:44px 56px 32px 56px;box-sizing:border-box;
+  display:flex;flex-direction:column;gap:16px}
+
+/* ---------- BG decorations ---------- */
+.grid-lines{position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,188,212,0.05) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at 70% 40%,#000 30%,transparent 85%);
+  -webkit-mask-image:radial-gradient(ellipse at 70% 40%,#000 30%,transparent 85%)}
+.glow-a{position:absolute;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,188,212,0.22) 0%,rgba(0,188,212,0) 65%);
+  top:-260px;right:-220px;filter:blur(20px)}
+.glow-b{position:absolute;width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,47,167,0.55) 0%,rgba(0,47,167,0) 65%);
+  bottom:-200px;left:-160px;filter:blur(24px)}
+.bg-code{position:absolute;inset:0;font-family:'Orbitron',monospace;color:rgba(0,188,212,0.14);
+  font-size:13px;letter-spacing:2px;line-height:1.9;user-select:none;overflow:hidden;font-weight:500}
+.bg-code .row{position:absolute;white-space:nowrap}
+.bg-code .sym{position:absolute;font-size:120px;opacity:0.07;font-weight:900}
+
+/* ---------- Header ---------- */
+.top{display:flex;justify-content:space-between;align-items:flex-end;height:54px;
+  border-bottom:1px solid var(--line-strong);padding-bottom:12px;position:relative}
+.top::after{content:"";position:absolute;left:0;bottom:-1px;width:220px;height:2px;
+  background:linear-gradient(90deg,var(--cyan),transparent);box-shadow:0 0 12px var(--cyan-glow)}
+.brand{display:flex;align-items:center;gap:14px}
+.brand .tag{font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;letter-spacing:4px;
+  color:var(--cyan);padding:5px 12px;border:1px solid var(--line-strong);border-radius:2px;
+  background:rgba(0,188,212,0.06)}
+.brand .title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:26px;letter-spacing:3px;color:var(--text)}
+.brand .title em{font-style:normal;color:var(--cyan)}
+.meta{display:flex;gap:28px;align-items:center;font-family:'Orbitron',sans-serif;
+  font-size:11px;letter-spacing:2px;color:var(--text-dim);font-weight:500}
+.meta .dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan-glow);display:inline-block;margin:0 10px}
+
+/* ---------- Main ---------- */
+.main{display:flex;gap:22px;height:600px}
+
+/* Spine */
+.spine{width:300px;height:600px;position:relative;flex-shrink:0;
+  background:linear-gradient(180deg,rgba(0,30,114,0.85) 0%,rgba(0,15,80,0.9) 100%);
+  border:1px solid var(--line-strong);border-radius:2px;
+  box-shadow:0 0 24px rgba(0,188,212,0.18),inset 0 0 40px rgba(0,20,90,0.5);
+  display:flex;flex-direction:column;overflow:hidden;padding:28px 22px}
+.spine::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--cyan),transparent 70%)}
+.spine::after{content:"";position:absolute;right:-40px;top:-40px;width:80px;height:80px;
+  border:1px solid var(--line);border-radius:50%;opacity:0.4}
+.spine-head{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:var(--cyan);
+  font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.spine-head .sq{width:8px;height:8px;background:var(--cyan);box-shadow:0 0 8px var(--cyan-glow)}
+.spine-title{writing-mode:vertical-rl;text-orientation:upright;font-family:'Orbitron','Noto Sans SC',sans-serif;
+  font-weight:900;font-size:60px;letter-spacing:8px;color:var(--text);
+  line-height:1.05;margin:6px 0 12px 0;height:280px;
+  text-shadow:0 0 20px rgba(0,188,212,0.35)}
+.spine-title em{font-style:normal;color:var(--cyan)}
+.spine-divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);margin:6px 0 18px 0}
+.stat{margin-bottom:14px}
+.stat-label{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--text-dim);font-weight:600;margin-bottom:6px}
+.stat-row{display:flex;align-items:baseline;gap:10px}
+.stat-num{font-family:'Orbitron',sans-serif;font-weight:900;font-size:36px;color:var(--cyan);
+  text-shadow:0 0 12px var(--cyan-glow);line-height:1}
+.stat-unit{font-size:12px;color:var(--text-mid);letter-spacing:1px;font-weight:500}
+.stat-sub{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:1px}
+.spine-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.spine-tag{font-size:11px;padding:4px 10px;border:1px solid var(--line-strong);border-radius:1px;
+  color:var(--cyan);background:rgba(0,188,212,0.06);letter-spacing:1px;font-weight:600}
+.spine-foot{margin-top:auto;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;
+  color:var(--text-dim);border-top:1px solid var(--line);padding-top:10px;display:flex;justify-content:space-between}
+
+/* Grid */
+.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;height:600px}
+.card{background:linear-gradient(135deg,rgba(4,17,64,0.75) 0%,rgba(2,10,42,0.65) 100%);
+  border:1px solid var(--line);border-radius:3px;padding:22px 24px;position:relative;
+  display:flex;flex-direction:column;gap:10px;overflow:hidden;
+  transition:all .3s}
+.card::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--cyan),transparent 70%)}
+.card::after{content:"";position:absolute;right:16px;top:16px;width:30px;height:30px;
+  border-right:1px solid var(--line-strong);border-top:1px solid var(--line-strong);opacity:0.6}
+.card-head{display:flex;align-items:center;gap:14px}
+.icon{width:44px;height:44px;border:1px solid var(--cyan);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;background:rgba(0,188,212,0.08);
+  box-shadow:0 0 12px rgba(0,188,212,0.25) inset}
+.icon svg{width:22px;height:22px;stroke:var(--cyan);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.idx{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--cyan);font-weight:700;margin-bottom:2px}
+.card-title{font-family:'Orbitron','Noto Sans SC',sans-serif;font-weight:700;font-size:18px;color:var(--text);letter-spacing:1px}
+.card-sub{font-size:11px;color:var(--text-dim);letter-spacing:1px;margin-top:2px;font-weight:500}
+.card-body{font-size:13.5px;line-height:1.75;color:var(--text-mid);margin-top:4px;flex:1}
+.card-body strong{color:var(--cyan);font-weight:600}
+.card-body em{font-style:normal;color:var(--text);font-weight:600;border-bottom:1px dashed var(--line-strong);padding-bottom:1px}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px dashed var(--line)}
+.ctag{font-size:10.5px;padding:3px 9px;background:rgba(0,47,167,0.3);border:1px solid var(--line);
+  color:var(--text-mid);border-radius:1px;letter-spacing:1px}
+.ctag.cyan{color:var(--cyan);border-color:var(--line-strong);background:rgba(0,188,212,0.08)}
+
+/* ---------- Footer ---------- */
+.foot{height:96px;border:1px solid var(--line-strong);border-radius:2px;padding:16px 24px;
+  display:flex;align-items:center;gap:22px;position:relative;overflow:hidden;
+  background:linear-gradient(90deg,rgba(0,47,167,0.35) 0%,rgba(0,15,60,0.4) 60%,rgba(0,188,212,0.15) 100%)}
+.foot::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--cyan),transparent)}
+.foot::after{content:"";position:absolute;right:0;top:0;bottom:0;width:180px;
+  background:radial-gradient(ellipse at right center,rgba(0,188,212,0.2),transparent 70%)}
+.foot-icon{width:56px;height:56px;flex-shrink:0;border:1px solid var(--cyan);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;background:rgba(0,188,212,0.1);
+  box-shadow:0 0 16px rgba(0,188,212,0.4) inset,0 0 12px rgba(0,188,212,0.3)}
+.foot-icon svg{width:26px;height:26px;stroke:var(--cyan);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.foot-body{flex:1;position:relative;z-index:1}
+.foot-label{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:4px;color:var(--cyan);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.foot-label .lbar{width:24px;height:1px;background:var(--cyan)}
+.foot-text{font-size:14.5px;line-height:1.65;color:var(--text);letter-spacing:0.5px}
+.foot-text strong{color:var(--cyan);font-weight:700}
+.foot-text em{font-style:normal;color:var(--text);font-weight:700;background:linear-gradient(180deg,transparent 60%,rgba(0,188,212,0.25) 60%);padding:0 3px}
+
+/* Decorative code symbols floating */
+.deco{position:absolute;font-family:'Orbitron',sans-serif;color:rgba(0,188,212,0.12);
+  font-weight:900;user-select:none;pointer-events:none;line-height:1}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+    <div class="grid-lines"></div>
+    <div class="bg-code">
+      <span class="row" style="top:8%;left:2%">#include &lt;freedom.h&gt; &nbsp; // 编码自由 · 领读计划</span>
+      <span class="row" style="top:14%;right:3%;left:auto">const CODE_FREEDOM = true; &nbsp; /* GPLv3 / CC0 / AI */</span>
+      <span class="row" style="top:40%;left:1%">if (!isFree(software)) { return "rethink"; }</span>
+      <span class="row" style="top:46%;right:1%;left:auto">class EthicalCode extends Expression { static manifesto() { ... } }</span>
+      <span class="row" style="top:72%;left:2%">/* 从 GPL 到 Llama · 代码政治学的演进 */</span>
+      <span class="row" style="top:78%;right:2%;left:auto">$ git commit -m "自由是代码的默认值"</span>
+      <span class="row" style="top:88%;left:1%">function whoControlsCode(source, model, capital) { // 三问</span>
+      <span class="row" style="top:94%;right:1%;left:auto">export { freedom, license, openSource }; &nbsp; // EOF</span>
+      <span class="sym" style="top:20%;left:48%">/&lt;</span>
+      <span class="sym" style="top:55%;right:10%">{} </span>
+      <span class="sym" style="top:30%;right:24%">() </span>
+      <span class="sym" style="bottom:15%;left:38%">[]</span>
+    </div>
+  </div>
+
+  <div id="ct">
+    <header class="top">
+      <div class="brand">
+        <span class="tag">LEAD &nbsp;READING</span>
+        <span class="title">CODE &nbsp;/&nbsp; <em>FREEDOM</em></span>
+      </div>
+      <div class="meta">
+        <span>BOOK · 04</span>
+        <span class="dot"></span>
+        <span>CHAPTER · 4</span>
+        <span class="dot"></span>
+        <span>FOCUS · LICENSE · AI · PROPRIETARY</span>
+      </div>
+    </header>
+
+    <div class="main">
+      <aside class="spine">
+        <div class="spine-head"><span class="sq"></span><span>B · K · 0 4 &nbsp;·&nbsp; SPINE</span></div>
+        <div class="spine-title">《编码<em>自由</em>》</div>
+        <div class="spine-divider"></div>
+
+        <div class="stat">
+          <div class="stat-label">// READING_SCOPE</div>
+          <div class="stat-row">
+            <span class="stat-num">04</span>
+            <span class="stat-unit">CHAPTERS</span>
+          </div>
+          <div class="stat-sub">阅读章节 4 章（重点选读）</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">// HOT_TOPICS</div>
+          <div class="stat-sub" style="margin-top:0">讨论热点：许可证 · AI · 闭源（三大争议焦点）</div>
+          <div class="spine-tags">
+            <span class="spine-tag">LICENSE</span>
+            <span class="spine-tag">AI</span>
+            <span class="spine-tag">CLOSED</span>
+          </div>
+        </div>
+
+        <div class="spine-foot">
+          <span>SYS::BOOK</span>
+          <span>END_OF_SPINE</span>
+        </div>
+      </aside>
+
+      <section class="grid">
+        <div class="card">
+          <div class="card-head">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4z"/><path d="M15 4v5h5"/><path d="M8 13h8M8 17h6"/></svg>
+            </div>
+            <div>
+              <div class="idx">DIMENSION_01</div>
+              <div class="card-title">书籍定位</div>
+              <div class="card-sub">POSITIONING</div>
+            </div>
+          </div>
+          <div class="card-body">
+            以<em>编程实践</em>为切口，梳理软件自由与信息伦理的<em>经典论述</em>。本书并非技术手册，而是一部跨越版权、代码与政治的<em>思想史</em>，将"自由软件"置于当代数字生活的语境中重新审视。
+          </div>
+          <div class="card-tags">
+            <span class="ctag cyan">编程实践</span>
+            <span class="ctag cyan">信息伦理</span>
+            <span class="ctag">思想史</span>
+            <span class="ctag">数字政治</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 1-4.5 4 1 6.5L12 16l-5.5 3.5L8 13 3.5 9 9 3z"/></svg>
+            </div>
+            <div>
+              <div class="idx">DIMENSION_02</div>
+              <div class="card-title">核心命题</div>
+              <div class="card-sub">CORE_PROPOSITION</div>
+            </div>
+          </div>
+          <div class="card-body">
+            代码不应成为<em>束缚人的工具</em>，而应是<em>表达思想、传递价值</em>的载体。作者主张：源代码的可读、可改、可再分发，是数字时代<em>思想自由</em>的基础设施，是公民面对算法权力的<em>最小抵抗单元</em>。
+          </div>
+          <div class="card-tags">
+            <span class="ctag cyan">思想自由</span>
+            <span class="ctag cyan">表达权</span>
+            <span class="ctag">再分发</span>
+            <span class="ctag">算法权力</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M3 12l4-8 5 5 5-5 4 8"/><path d="M7 12v9M12 12v9M17 12v9"/><path d="M3 21h18"/></svg>
+            </div>
+            <div>
+              <div class="idx">DIMENSION_03</div>
+              <div class="card-title">典型论据</div>
+              <div class="card-sub">EVIDENCE_STACK</div>
+            </div>
+          </div>
+          <div class="card-body">
+            作者通过<em>版权制度演化</em>、<em>开源运动史</em>、<em>GPL 许可证设计</em>等案例层层论证：每一次代码自由的推进，都伴随制度、技术与社群的<em>三方博弈</em>；而 GPL 的"传染性条款"，则是这一脉络中最具张力的<em>制度实验</em>。
+          </div>
+          <div class="card-tags">
+            <span class="ctag cyan">版权史</span>
+            <span class="ctag cyan">GPL</span>
+            <span class="ctag">开源运动</span>
+            <span class="ctag">制度实验</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4"/></svg>
+            </div>
+            <div>
+              <div class="idx">DIMENSION_04</div>
+              <div class="card-title">现实回响</div>
+              <div class="card-sub">PRESENT_ECHO</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <em>AI 代码生成</em>与<em>闭源模型</em>崛起，让编码自由议题在当下愈发<em>尖锐</em>：训练数据从何处来？生成的代码归谁所有？当模型成为"看不见的编译器"，自由软件运动的旧命题正在被<em>重新激活</em>。
+          </div>
+          <div class="card-tags">
+            <span class="ctag cyan">AI 生成</span>
+            <span class="ctag cyan">闭源模型</span>
+            <span class="ctag">训练数据</span>
+            <span class="ctag">议题重启</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="foot">
+      <div class="foot-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 6h13l4 4v8a1 1 0 0 1-1 1H4z"/><path d="M17 6v4h4"/><path d="M8 14h8M8 17h6"/></svg>
+      </div>
+      <div class="foot-body">
+        <div class="foot-label"><span class="lbar"></span>NARRATIVE_CLOSURE &nbsp;//&nbsp; 一句话收束<span class="lbar"></span></div>
+        <div class="foot-text">
+          《编码自由》并非一本<strong>技术手册</strong>，而是一份关于<strong>代码政治</strong>与<strong>软件伦理</strong>的宣言——领读人从书籍的<em>历史语境</em>出发，将<em>自由软件运动</em>的脉络与当下的<em>AI 时代困境</em>相连接，引发观众对<em>"谁在控制代码"</em>这一核心问题的深度思考。
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>
