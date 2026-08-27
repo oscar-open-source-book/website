@@ -69,8 +69,8 @@
   width:1600px; height:900px;
   display:block; margin:0 auto; border:none; border-radius:8px;
   background:#F3EDE0;
+  flex-shrink:0;
   transform-origin: top left;
-  transform: scale(var(--slide-scale, 0.78));
 }
 #deck-section[data-fs="1"] .slide-iframe {
   transform: none !important;
@@ -184,19 +184,22 @@ document.addEventListener('keydown', e => {
 // stays at 1600x900 (the slide's native resolution); only the iframe
 // element is CSS-scaled, so content renders at full fidelity.
 function scaleFrames() {
-  const fs = document.fullscreenElement || document.webkitFullscreenElement;
-  document.querySelectorAll('.slide-iframe').forEach(ifr => {
-    if (fs) {
-      ifr.style.transform = 'none';
-      ifr.style.marginLeft = '0px';
-      return;
-    }
-    const wrap = ifr.parentElement;
-    const avail = wrap.clientWidth;
-    const scale = Math.min(avail / 1600, wrap.clientHeight / 900, 1);
-    const offset = (1600 - 1600 * scale) / 2;
-    ifr.style.transform = `scale(${scale})`;
-    ifr.style.marginLeft = `${offset}px`;
+  requestAnimationFrame(() => {
+    const fs = document.fullscreenElement || document.webkitFullscreenElement;
+    document.querySelectorAll('.slide-iframe').forEach(ifr => {
+      if (fs) {
+        ifr.style.transform = 'none';
+        ifr.style.marginLeft = '0px';
+        return;
+      }
+      const wrap = ifr.parentElement;
+      if (!wrap || wrap.clientWidth === 0) return;
+      const avail = wrap.clientWidth;
+      const scale = Math.min(avail / 1600, wrap.clientHeight / 900, 1);
+      const offset = (1600 - 1600 * scale) / 2;
+      ifr.style.transform = `scale(${scale})`;
+      ifr.style.marginLeft = `${offset}px`;
+    });
   });
 }
 
