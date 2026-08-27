@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>什么是开源许可证</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --bg:#0A1628;
+  --bg-2:#0F2038;
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --gray:#B0BEC5;
+  --gray-dark:#546E7A;
+  --text:#E8EEF4;
+  --card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(33,150,243,0.25);
+  --glow-blue:0 0 24px rgba(33,150,243,0.35);
+  --glow-cyan:0 0 24px rgba(0,188,212,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;color:var(--text);overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Background decoration */
+#bg{
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(33,150,243,0.10) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 80%, rgba(0,188,212,0.08) 0%, transparent 40%),
+    var(--bg);
+}
+#bg::before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  opacity:0.5;
+}
+
+/* Header */
+.header{margin-bottom:22px;}
+.header h1{
+  font-size:38px;font-weight:800;letter-spacing:1px;
+  background:linear-gradient(90deg,#2196F3,#00BCD4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:10px;
+}
+.header .narrative{
+  font-size:15px;line-height:1.7;color:var(--gray);max-width:1380px;
+  padding-left:14px;border-left:3px solid var(--primary);
+}
+.header .narrative .hl{color:var(--cyan);font-weight:500;}
+
+/* Main */
+.main{flex:1;display:flex;gap:32px;min-height:0;}
+
+/* Left column */
+.left-col{width:640px;display:flex;flex-direction:column;gap:16px;}
+
+.kpi-row{display:flex;gap:16px;}
+.kpi{
+  flex:1;
+  background:linear-gradient(135deg,rgba(33,150,243,0.10),rgba(0,188,212,0.06));
+  border:1px solid var(--card-border);
+  border-radius:12px;padding:14px 18px;
+  box-shadow:var(--glow-blue);
+  position:relative;overflow:hidden;
+}
+.kpi::before{
+  content:"";position:absolute;top:0;left:0;width:4px;height:100%;
+  background:linear-gradient(180deg,var(--primary),var(--cyan));
+}
+.kpi-num{font-size:32px;font-weight:800;color:var(--primary);line-height:1;}
+.kpi-num .unit{font-size:18px;font-weight:600;color:var(--cyan);margin-left:4px;}
+.kpi-label{font-size:14px;font-weight:600;color:var(--text);margin-top:6px;}
+.kpi-sub{font-size:12px;color:var(--gray);margin-top:3px;line-height:1.5;}
+
+.cards{display:flex;flex-direction:column;gap:10px;flex:1;}
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:10px;
+  padding:12px 18px;
+  display:flex;align-items:center;gap:16px;
+  transition:all 0.3s;
+  position:relative;
+}
+.card .icon{
+  width:42px;height:42px;flex-shrink:0;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--primary),var(--cyan));
+  box-shadow:var(--glow-cyan);
+  font-size:20px;font-weight:700;color:#fff;
+}
+.card .body{flex:1;min-width:0;}
+.card .title{font-size:14px;font-weight:700;color:var(--cyan);margin-bottom:3px;}
+.card .desc{font-size:13px;color:var(--gray);line-height:1.55;}
+.card .num{
+  font-size:28px;font-weight:800;color:rgba(33,150,243,0.25);
+  line-height:1;flex-shrink:0;
+}
+
+/* Right column */
+.right-col{
+  flex:1;display:flex;flex-direction:column;
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(15,32,56,0.6),rgba(10,22,40,0.8));
+  padding:18px 20px 14px 20px;
+  box-shadow:var(--glow-blue);
+  position:relative;
+  overflow:hidden;
+}
+.right-col::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--primary),var(--cyan),transparent);
+}
+.q-title{
+  font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;
+  display:flex;align-items:center;gap:10px;
+}
+.q-title .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 12px var(--cyan);
+}
+.q-subtitle{font-size:11px;color:var(--gray-dark);margin-bottom:12px;}
+
+.quadrant-grid{
+  flex:1;position:relative;
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:8px;
+  padding:32px 40px 36px 40px;
+}
+.q-cell{
+  border-radius:10px;
+  padding:12px 14px;
+  position:relative;
+  display:flex;flex-direction:column;gap:5px;
+  overflow:hidden;
+}
+.q-cell.q1{
+  background:linear-gradient(135deg,rgba(244,67,54,0.12),rgba(244,67,54,0.04));
+  border:1px solid rgba(244,67,54,0.4);
+  box-shadow:0 0 20px rgba(244,67,54,0.20) inset;
+}
+.q-cell.q2{
+  background:linear-gradient(135deg,rgba(0,188,212,0.12),rgba(0,188,212,0.04));
+  border:1px solid rgba(0,188,212,0.45);
+  box-shadow:0 0 20px rgba(0,188,212,0.20) inset, var(--glow-cyan);
+}
+.q-cell.q3{
+  background:linear-gradient(135deg,rgba(255,152,0,0.12),rgba(255,152,0,0.04));
+  border:1px solid rgba(255,152,0,0.45);
+  box-shadow:0 0 20px rgba(255,152,0,0.18) inset;
+}
+.q-cell.q4{
+  background:linear-gradient(135deg,rgba(33,150,243,0.12),rgba(33,150,243,0.04));
+  border:1px solid rgba(33,150,243,0.45);
+  box-shadow:0 0 20px rgba(33,150,243,0.20) inset, var(--glow-blue);
+}
+.q-cell .q-tag{
+  font-size:10px;font-weight:600;letter-spacing:1px;
+  color:var(--gray-dark);text-transform:uppercase;
+}
+.q-cell .q-name{
+  font-size:14px;font-weight:700;line-height:1.3;
+}
+.q-cell.q1 .q-name{color:#EF5350;}
+.q-cell.q2 .q-name{color:var(--cyan);}
+.q-cell.q3 .q-name{color:#FF9800;}
+.q-cell.q4 .q-name{color:var(--primary);}
+.q-cell .q-ex{font-size:12px;color:var(--gray);font-weight:500;margin-top:1px;}
+.q-cell .q-feats{
+  display:flex;flex-direction:column;gap:3px;margin-top:4px;
+}
+.q-feat{
+  font-size:11px;color:var(--gray);
+  display:flex;align-items:center;gap:5px;
+  line-height:1.4;
+}
+.q-feat::before{
+  content:"";width:4px;height:4px;border-radius:50%;
+  background:currentColor;flex-shrink:0;opacity:0.6;
+}
+.q-cell.q1 .q-feat{color:#EF9A9A;}
+.q-cell.q2 .q-feat{color:#80DEEA;}
+.q-cell.q3 .q-feat{color:#FFCC80;}
+.q-cell.q4 .q-feat{color:#90CAF9;}
+
+/* Axes */
+.axis-x{
+  position:absolute;bottom:8px;left:40px;right:40px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:10px;color:var(--gray-dark);
+}
+.axis-x .ax-label{
+  position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);
+  font-size:11px;font-weight:600;color:var(--gray);
+}
+.axis-y{
+  position:absolute;left:6px;top:40px;bottom:36px;
+  display:flex;flex-direction:column;justify-content:space-between;align-items:center;
+  font-size:10px;color:var(--gray-dark);
+}
+.axis-y .ax-label{
+  position:absolute;top:50%;left:-2px;transform:translateY(-50%) rotate(-90deg);
+  font-size:11px;font-weight:600;color:var(--gray);
+  white-space:nowrap;
+}
+
+.cross-hair{
+  position:absolute;pointer-events:none;
+}
+.cross-hair.h{
+  top:calc(50% + 2px);left:40px;right:40px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(33,150,243,0.3),transparent);
+}
+.cross-hair.v{
+  left:calc(50% + 2px);top:40px;bottom:36px;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(33,150,243,0.3),transparent);
+}
+
+/* Footer */
+.footer{
+  margin-top:14px;padding:10px 20px;text-align:center;
+  font-size:13px;color:var(--gray);
+  background:linear-gradient(90deg,transparent,rgba(33,150,243,0.08),transparent);
+  border-top:1px solid rgba(33,150,243,0.15);
+  border-bottom:1px solid rgba(33,150,243,0.15);
+}
+.footer .accent{color:var(--cyan);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <h1>什么是开源许可证</h1>
+  <p class="narrative">
+    开源许可证不是简单的<span class="hl">"免费使用"</span>,而是一份带有<span class="hl">条件限制的法律契约</span>。理解其背后的<span class="hl">权利让渡逻辑</span>,是选择许可证与合规使用的第一步。
+  </p>
+</div>
+
+<div class="main">
+
+<!-- Left column -->
+<div class="left-col">
+
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-num">40<span class="unit">+</span></div>
+    <div class="kpi-label">OSI 认证许可数</div>
+    <div class="kpi-sub">截至2022年OSI认证的开放许可证总数</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-num">4</div>
+    <div class="kpi-label">核心维度</div>
+    <div class="kpi-sub">复制、修改、分发、再授权</div>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="icon">§</div>
+    <div class="body">
+      <div class="title">法律契约本质</div>
+      <div class="desc">开源许可证是著作权人授予使用、修改、分发权的法律文件</div>
+    </div>
+    <div class="num">01</div>
+  </div>
+  <div class="card">
+    <div class="icon">⇄</div>
+    <div class="body">
+      <div class="title">Copyleft vs Permissive</div>
+      <div class="desc">核心分歧在于衍生作品是否必须沿用相同许可证发布</div>
+    </div>
+    <div class="num">02</div>
+  </div>
+  <div class="card">
+    <div class="icon">✓</div>
+    <div class="body">
+      <div class="title">OSI 认证标准</div>
+      <div class="desc">Open Source Initiative 定义了开源许可须满足的十项标准</div>
+    </div>
+    <div class="num">03</div>
+  </div>
+  <div class="card">
+    <div class="icon">◆</div>
+    <div class="body">
+      <div class="title">非开源不等于闭源</div>
+      <div class="desc">SSPL、BUSL 等新型协议填补商业开源的新形态</div>
+    </div>
+    <div class="num">04</div>
+  </div>
+</div>
+
+</div>
+
+<!-- Right column -->
+<div class="right-col">
+  <div class="q-title"><span class="dot"></span>Copyleft 与 Permissive 四象限对比</div>
+  <div class="q-subtitle">基于衍生作品授权要求与附加限制强度两个维度的许可证分类图谱</div>
+
+  <div class="quadrant-grid">
+    <div class="cross-hair h"></div>
+    <div class="cross-hair v"></div>
+
+    <div class="q-cell q1">
+      <div class="q-tag">象限 I · 强 Copyleft</div>
+      <div class="q-name">强 Copyleft 协议</div>
+      <div class="q-ex">代表：GPL v2 / GPL v3 / AGPL</div>
+      <div class="q-feats">
+        <div class="q-feat">衍生作品必须沿用相同许可证</div>
+        <div class="q-feat">附加限制多,约束网络服务分发</div>
+        <div class="q-feat">商业使用需开源衍生代码</div>
+      </div>
+    </div>
+
+    <div class="q-cell q2">
+      <div class="q-tag">象限 II · 新型商业协议</div>
+      <div class="q-name">新型商业开源协议</div>
+      <div class="q-ex">代表：SSPL / BUSL / Elastic License</div>
+      <div class="q-feats">
+        <div class="q-feat">衍生作品不必沿用同许可证</div>
+        <div class="q-feat">特定场景限制,如云服务商</div>
+        <div class="q-feat">填补商业开源与服务的平衡</div>
+      </div>
+    </div>
+
+    <div class="q-cell q3">
+      <div class="q-tag">象限 III · 弱 Copyleft</div>
+      <div class="q-name">弱 Copyleft 协议</div>
+      <div class="q-ex">代表：LGPL / MPL 2.0 / EPL</div>
+      <div class="q-feats">
+        <div class="q-feat">仅要求修改部分沿用许可证</div>
+        <div class="q-feat">库级别 Copyleft,商业集成灵活</div>
+        <div class="q-feat">适合作为商业项目依赖</div>
+      </div>
+    </div>
+
+    <div class="q-cell q4">
+      <div class="q-tag">象限 IV · 宽松 Permissive</div>
+      <div class="q-name">宽松 Permissive 协议</div>
+      <div class="q-ex">代表：MIT / BSD / Apache 2.0</div>
+      <div class="q-feats">
+        <div class="q-feat">衍生作品可自由选择协议</div>
+        <div class="q-feat">附加限制少,可闭源商用</div>
+        <div class="q-feat">高度商业友好,广泛采用</div>
+      </div>
+    </div>
+
+    <div class="axis-x">
+      <span>严格</span>
+      <span>宽松</span>
+      <span class="ax-label">衍生作品是否必须沿用同许可证</span>
+    </div>
+    <div class="axis-y">
+      <span>多</span>
+      <span>少</span>
+      <span class="ax-label">附加限制 / 协议强度</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  从<span class="accent">权利让渡</span>到<span class="accent">合规使用</span>，理解许可证是开源协作的起点
+</div>
+
+</div>
+</div>
+</body>
+</html>

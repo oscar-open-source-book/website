@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-muted: #B0BEC5;
+  --text-main: #FFFFFF;
+  --bg-deep: #0A1628;
+  --bg-card: rgba(33, 150, 243, 0.06);
+  --border-subtle: rgba(33, 150, 243, 0.22);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-deep);
+}
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg { position: absolute; inset: 0; z-index: 0; background: linear-gradient(135deg, #06101F 0%, #0A1628 40%, #081B2D 100%); }
+#ct { position: absolute; inset: 0; z-index: 1; padding: 54px 60px; box-sizing: border-box; display: flex; gap: 44px; }
+
+.left {
+  width: 720px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.right {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deco-vline {
+  position: absolute;
+  left: -22px;
+  top: 30px;
+  width: 3px;
+  height: 220px;
+  background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 30%, rgba(0,188,212,0.15) 60%, transparent 100%);
+  box-shadow: 0 0 14px rgba(0,188,212,0.6);
+}
+.deco-vline::before {
+  content: '';
+  position: absolute;
+  top: -4px; left: -3px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.tag-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.tag-row .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.tag-row .line { flex: 1; height: 1px; background: linear-gradient(to right, rgba(0,188,212,0.6), transparent); }
+
+.main-title {
+  font-size: 86px;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -3px;
+  margin-top: 26px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #4FC3F7 45%, #2196F3 70%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.subtitle {
+  margin-top: 20px;
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+.subtitle .accent { color: var(--accent); font-weight: 600; }
+
+.divider {
+  margin: 28px 0 20px 0;
+  height: 1px;
+  background: linear-gradient(to right, var(--primary), rgba(33,150,243,0.05) 75%, transparent);
+}
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.info-item .label {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  width: 64px;
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 188, 212, 0.4);
+  border-radius: 3px;
+  text-align: center;
+  background: rgba(0, 188, 212, 0.06);
+}
+.info-item .content {
+  font-size: 15px;
+  color: #E8EEF4;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.stats {
+  display: flex;
+  gap: 22px;
+  margin-top: 26px;
+}
+.stat-card {
+  flex: 1;
+  padding: 16px 20px 16px 22px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card .bar {
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--accent);
+}
+.stat-card .num {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.stat-card .num .plus {
+  color: var(--accent);
+  font-size: 30px;
+  font-weight: 700;
+}
+.stat-card .desc {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+
+.narrative {
+  margin-top: 22px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-muted);
+  letter-spacing: 0.4px;
+  padding: 4px 0 4px 18px;
+  border-left: 2px solid var(--primary);
+}
+
+.hero-img {
+  width: 100%;
+  height: 792px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 40px rgba(33, 150, 243, 0.12);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(10, 22, 40, 0.35) 100%);
+  pointer-events: none;
+}
+.hero-caption {
+  position: absolute;
+  bottom: -30px;
+  left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+.hero-caption .pulse {
+  display: inline-block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  margin-right: 10px;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33, 150, 243, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+.bg-glow-1 {
+  position: absolute;
+  top: -120px; left: -120px;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.bg-glow-2 {
+  position: absolute;
+  bottom: -100px; left: 35%;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+  </div>
+  <div id="ct">
+    <div class="left">
+      <div class="deco-vline"></div>
+      <div>
+        <div class="tag-row">
+          <span class="dot"></span>
+          <span>开源阅读笔记</span>
+          <span class="line"></span>
+        </div>
+        <h1 class="main-title">开源之书<br>记录</h1>
+        <div class="subtitle"><span class="accent">2022年4月</span> · 开源许可证阅读分享</div>
+      </div>
+
+      <div>
+        <div class="divider"></div>
+        <div class="info-list">
+          <div class="info-item">
+            <span class="label">主题</span>
+            <span class="content">开源许可证全景解读与合规实践要点</span>
+          </div>
+          <div class="info-item">
+            <span class="label">记录者</span>
+            <span class="content">开源之道 · 适兕 的月度阅读笔记</span>
+          </div>
+          <div class="info-item">
+            <span class="label">时间</span>
+            <span class="content">2022年4月，聚焦许可证选择与合规边界</span>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat-card">
+            <div class="bar"></div>
+            <div class="num"><span>20</span><span class="plus">+</span></div>
+            <div class="desc"><span>覆盖许可证数量　OSI认证的主流与次主流协议</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="bar"></div>
+            <div class="num"><span>6</span></div>
+            <div class="desc"><span>核心解读协议　GPL / Apache / MIT / BSD / AGPL / MPL</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="narrative">
+        <span>本期阅读分享围绕开源许可证展开，从分类体系到主流协议条款，再到企业选证与合规实践，带你系统理解开源许可的生态全貌。</span>
+      </div>
+    </div>
+
+    <div class="right">
+      <img class="hero-img" src="../images/page_001_hero.png" alt="深科技背景图，流动代码流与六边形网格构成几何图案">
+      <div class="hero-overlay"></div>
+      <div class="hero-caption">
+        <span><span class="pulse"></span>代码流 · 六边形网格</span>
+        <span>HEXAGRAM · CODE STREAM</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

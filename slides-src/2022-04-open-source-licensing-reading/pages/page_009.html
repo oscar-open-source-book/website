@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>实践建议与总结</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --gray:#B0BEC5;
+  --bg-deep:#070B1A;
+  --bg-mid:#0D1228;
+  --card-bg:#0F1A35;
+  --line:#1B2A52;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;color:#fff;overflow:hidden;}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg-deep);}
+
+#bg{position:absolute;inset:0;z-index:0;background:
+  radial-gradient(ellipse at 20% 15%, rgba(33,150,243,0.18) 0%, transparent 45%),
+  radial-gradient(ellipse at 80% 85%, rgba(0,188,212,0.16) 0%, transparent 50%),
+  linear-gradient(180deg,#070B1A 0%,#0B1228 60%,#091024 100%);
+}
+
+#bg::after{content:"";position:absolute;inset:0;background-image:
+  linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
+  background-size:40px 40px;pointer-events:none;}
+
+#ct{position:absolute;inset:0;z-index:1;padding:50px 70px 50px 70px;display:flex;flex-direction:column;}
+
+/* Top header area */
+.header{text-align:center;padding-top:10px;position:relative;}
+.chapter-tag{
+  display:inline-block;font-size:13px;font-weight:600;letter-spacing:6px;
+  color:var(--cyan);padding:8px 22px;border:1px solid rgba(0,188,212,0.45);
+  border-radius:30px;background:rgba(0,188,212,0.06);margin-bottom:22px;
+}
+.title{font-size:58px;font-weight:800;letter-spacing:2px;line-height:1.15;
+  background:linear-gradient(120deg,#FFFFFF 0%,#2196F3 50%,#00BCD4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-shadow:0 0 40px rgba(33,150,243,0.25);}
+.subtitle{margin-top:16px;font-size:19px;font-weight:400;color:var(--gray);letter-spacing:1px;}
+.divider{margin:22px auto 0;display:flex;align-items:center;gap:14px;width:520px;justify-content:center;}
+.divider .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);}
+.divider .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);}
+
+.narrative{margin-top:16px;font-size:15px;color:var(--gray);letter-spacing:0.5px;font-weight:300;}
+.narrative b{color:var(--cyan);font-weight:600;}
+
+/* Steps area */
+.steps{margin-top:30px;display:flex;align-items:stretch;justify-content:space-between;gap:8px;}
+.step{
+  flex:1;background:linear-gradient(180deg,rgba(33,150,243,0.08) 0%,rgba(15,26,53,0.95) 100%);
+  border:1px solid rgba(33,150,243,0.35);border-radius:16px;padding:22px 20px 20px 20px;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 24px rgba(33,150,243,0.12),inset 0 0 30px rgba(0,188,212,0.04);
+  display:flex;flex-direction:column;
+}
+.step::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--primary),var(--cyan));}
+.step .num{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--cyan);margin-bottom:6px;}
+.step .icon{font-size:26px;margin-bottom:8px;line-height:1;}
+.step .title-s{font-size:18px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:0.5px;}
+.step .desc{font-size:13px;font-weight:400;color:var(--gray);line-height:1.65;letter-spacing:0.3px;}
+.step .glow-corner{position:absolute;bottom:-30px;right:-30px;width:90px;height:90px;
+  background:radial-gradient(circle,rgba(0,188,212,0.18) 0%,transparent 70%);border-radius:50%;}
+
+.arrow{align-self:center;font-size:22px;color:var(--primary);font-weight:700;
+  text-shadow:0 0 10px var(--cyan);padding:0 2px;flex-shrink:0;line-height:1;}
+.arrow svg{filter:drop-shadow(0 0 6px rgba(0,188,212,0.7));}
+
+/* Bottom stats */
+.stats{margin-top:26px;display:flex;gap:20px;justify-content:center;}
+.stat{
+  display:flex;align-items:center;gap:16px;padding:14px 28px;
+  background:linear-gradient(135deg,rgba(33,150,243,0.08),rgba(0,188,212,0.06));
+  border:1px solid rgba(33,150,243,0.28);border-radius:12px;
+  box-shadow:0 0 18px rgba(33,150,243,0.08);
+}
+.stat .num-big{font-size:32px;font-weight:800;
+  background:linear-gradient(120deg,#2196F3,#00BCD4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  min-width:62px;text-align:center;}
+.stat .divider-v{width:1px;height:34px;background:linear-gradient(180deg,transparent,rgba(0,188,212,0.5),transparent);}
+.stat .meta{display:flex;flex-direction:column;gap:2px;}
+.stat .label{font-size:12px;font-weight:600;color:var(--cyan);letter-spacing:2px;}
+.stat .sub{font-size:12px;color:var(--gray);font-weight:400;letter-spacing:0.3px;}
+
+/* Footer tagline */
+.footer{margin-top:auto;padding-top:18px;display:flex;justify-content:space-between;align-items:center;}
+.footer .left{font-size:12px;color:var(--gray);letter-spacing:2px;font-weight:500;}
+.footer .right{font-size:12px;color:var(--gray);letter-spacing:1px;font-weight:400;opacity:0.7;}
+.footer .pill{
+  display:inline-block;font-size:11px;color:var(--cyan);padding:5px 14px;border:1px solid rgba(0,188,212,0.35);
+  border-radius:20px;letter-spacing:2px;font-weight:600;margin-left:14px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="chapter-tag"><span>CHAPTER · 05</span></div>
+      <h1 class="title"><span>实践建议与总结</span></h1>
+      <p class="subtitle"><span>从阅读到落地的开源许可证行动指南</span></p>
+      <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+      <p class="narrative"><span>阅读是起点，落地才是目的 — 从 <b>许可证选型</b>、<b>依赖审查</b>、<b>合规文档</b> 与 <b>持续学习</b> 四个维度，给出可操作的实践建议。</span></p>
+    </div>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="glow-corner"></div>
+        <div class="num"><span>STEP 01</span></div>
+        <div class="icon"><span>◎</span></div>
+        <div class="title-s"><span>选型原则</span></div>
+        <div class="desc"><span>新项目优先考虑 Apache 2.0，个人工具选 MIT，确保初始选型与项目定位匹配。</span></div>
+      </div>
+
+      <div class="arrow">
+        <svg width="28" height="20" viewBox="0 0 28 20" fill="none">
+          <path d="M2 10 H22 M16 4 L24 10 L16 16" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="step">
+        <div class="glow-corner"></div>
+        <div class="num"><span>STEP 02</span></div>
+        <div class="icon"><span>◈</span></div>
+        <div class="title-s"><span>依赖审查</span></div>
+        <div class="desc"><span>建立 SBOM 清单，并自动检测许可证兼容性，将合规检查融入 CI 流水线。</span></div>
+      </div>
+
+      <div class="arrow">
+        <svg width="28" height="20" viewBox="0 0 28 20" fill="none">
+          <path d="M2 10 H22 M16 4 L24 10 L16 16" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="step">
+        <div class="glow-corner"></div>
+        <div class="num"><span>STEP 03</span></div>
+        <div class="icon"><span>▤</span></div>
+        <div class="title-s"><span>合规文档</span></div>
+        <div class="desc"><span>维护 LICENSE、NOTICE 与版权声明清单，确保分发时所有义务可追溯、可审计。</span></div>
+      </div>
+
+      <div class="arrow">
+        <svg width="28" height="20" viewBox="0 0 28 20" fill="none">
+          <path d="M2 10 H22 M16 4 L24 10 L16 16" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="step">
+        <div class="glow-corner"></div>
+        <div class="num"><span>STEP 04</span></div>
+        <div class="icon"><span>✦</span></div>
+        <div class="title-s"><span>持续学习</span></div>
+        <div class="desc"><span>关注 SPDX、FOSSA 等行业合规工具动态，持续更新知识库与团队培训机制。</span></div>
+      </div>
+
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num-big"><span>4</span></div>
+        <div class="divider-v"></div>
+        <div class="meta">
+          <div class="label"><span>建议行动项</span></div>
+          <div class="sub"><span>选型 / 审查 / 文档 / 学习</span></div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="num-big"><span>5</span></div>
+        <div class="divider-v"></div>
+        <div class="meta">
+          <div class="label"><span>推荐工具</span></div>
+          <div class="sub"><span>FOSSA / Scancode / Ort / SNYK / SPDX</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="left"><span>从 阅 读 到 落 地</span><span class="pill">FROM READING TO ACTION</span></div>
+      <div class="right"><span>OPEN SOURCE LICENSE · PRACTICE & SUMMARY</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
