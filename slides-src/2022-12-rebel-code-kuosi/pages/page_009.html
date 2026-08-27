@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>适兕栏目阅读计划</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #1A1A2E;
+  --bg-deep: #0F0F1A;
+  --primary: #002FA7;
+  --primary-light: #1A4FE0;
+  --accent: #00BCD4;
+  --accent-soft: #00BCD433;
+  --text-main: #EAEAF2;
+  --text-sub: #9A9AB0;
+  --card-bg: #16213E;
+  --card-border: #1F2D52;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 10%, #002FA722 0%, transparent 40%),
+              radial-gradient(ellipse at 80% 90%, #00BCD422 0%, transparent 40%),
+              var(--bg);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 24px;
+}
+
+.title-block h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #FFFFFF, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-block .subtitle {
+  font-size: 14px;
+  color: var(--text-sub);
+  margin-top: 8px;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+.page-tag {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-align: right;
+  line-height: 1.6;
+}
+
+.page-tag .num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-light);
+  display: block;
+}
+
+/* Timeline section */
+.timeline-section {
+  position: relative;
+  margin: 10px 0 18px;
+  padding: 30px 20px 20px;
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.timeline-header .icon-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.timeline-header .label {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+.timeline-header .cn-label {
+  font-size: 14px;
+  color: var(--text-sub);
+  font-weight: 400;
+}
+
+.timeline-track {
+  position: relative;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 50%, var(--accent) 100%);
+  border-radius: 2px;
+  margin: 28px 40px 0;
+}
+
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, #002FA744, #00BCD444);
+  filter: blur(6px);
+  border-radius: 4px;
+}
+
+.node-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.node-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--primary), 0 0 16px #002FA788;
+  position: relative;
+}
+
+.node-dot::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-soft);
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Node cards */
+.nodes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.node-card {
+  background: linear-gradient(180deg, #16213E 0%, #1A1A2E 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 18px 16px;
+  position: relative;
+  overflow: hidden;
+  min-height: 230px;
+}
+
+.node-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.node-step {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.node-step .step-num {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  margin-right: 6px;
+  font-weight: 700;
+}
+
+.node-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.node-closure {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.node-desc {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.node-tag {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 3px 8px;
+  background: #002FA722;
+  border: 1px solid #002FA744;
+  border-radius: 3px;
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* KPI Section */
+.kpi-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
+.kpi-block {
+  background: linear-gradient(135deg, #16213E 0%, #0F1528 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-block::after {
+  content: '';
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #002FA733, transparent 70%);
+  border-radius: 50%;
+}
+
+.kpi-number {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+}
+
+.kpi-number .unit {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-left: 4px;
+}
+
+.kpi-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--card-border);
+}
+
+.kpi-text .kpi-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 3px;
+}
+
+.kpi-text .kpi-desc {
+  font-size: 11px;
+  color: var(--text-sub);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--card-border);
+}
+
+.closing-statement {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, var(--accent), #FFFFFF, var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.closing-statement .highlight {
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.footer-right {
+  font-size: 10px;
+  color: var(--text-sub);
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-align: right;
+}
+
+.footer-right .brand {
+  color: var(--accent);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="title-block">
+        <h1>适兕栏目阅读计划</h1>
+        <div class="subtitle">不是一次性的分享活动，而是一套可持续运转的社区阅读闭环</div>
+      </div>
+      <div class="page-tag">
+        <span class="num">09</span>
+        内容页 / CONTENT
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-section">
+      <div class="timeline-header">
+        <span class="icon-dot"></span>
+        <span class="label">READING LOOP</span>
+        <span class="cn-label">读 — 写 — 议 — 汇  四环节完整闭环</span>
+      </div>
+
+      <div class="timeline-track">
+        <div class="node-marker" style="left: 12.5%;">
+          <div class="node-dot"></div>
+        </div>
+        <div class="node-marker" style="left: 37.5%;">
+          <div class="node-dot"></div>
+        </div>
+        <div class="node-marker" style="left: 62.5%;">
+          <div class="node-dot"></div>
+        </div>
+        <div class="node-marker" style="left: 87.5%;">
+          <div class="node-dot"></div>
+        </div>
+      </div>
+
+      <div class="nodes-grid">
+        <div class="node-card">
+          <div class="node-step"><span class="step-num">01</span>读 · READ</div>
+          <div class="node-title">月度主题制</div>
+          <div class="node-closure">每月聚焦 · 深度共读</div>
+          <div class="node-desc">每月设定一个聚焦主题（如容器安全、AI 治理），围绕主题精选 2-3 本书目进行深度共读，让阅读有方向、有主题、有节奏。</div>
+          <span class="node-tag">📅 月度 · 每月一期</span>
+        </div>
+        <div class="node-card">
+          <div class="node-step"><span class="step-num">02</span>写 · WRITE</div>
+          <div class="node-title">读书笔记共享</div>
+          <div class="node-closure">个人笔记 · 社区共享</div>
+          <div class="node-desc">鼓励参与者提交个人读书笔记，栏目定期汇编精选笔记，并邀请作者线上点评与讨论，让个人思考成为可被阅读的公共文本。</div>
+          <span class="node-tag">✍️ 持续 · 定期汇编</span>
+        </div>
+        <div class="node-card">
+          <div class="node-step"><span class="step-num">03</span>议 · DISCUSS</div>
+          <div class="node-title">线下沙龙联动</div>
+          <div class="node-closure">面对面 · 深度碰撞</div>
+          <div class="node-desc">季度性线下沙龙结合线上共读成果，邀请社区嘉宾与参与者面对面交流实践经验，在线上思考的基础上延伸真实场景对话。</div>
+          <span class="node-tag">🤝 季度 · 线上线下联动</span>
+        </div>
+        <div class="node-card">
+          <div class="node-step"><span class="step-num">04</span>汇 · ARCHIVE</div>
+          <div class="node-title">年度合集出版</div>
+          <div class="node-closure">全年沉淀 · 知识年鉴</div>
+          <div class="node-desc">年终将全年优秀读书笔记汇编成册，形成开源之道的阅读年鉴，持续沉淀社区知识资产，让一年的阅读真正留下痕迹。</div>
+          <span class="node-tag">📚 年度 · 12月发布</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-section">
+      <div class="kpi-block">
+        <div class="kpi-number">2-3<span class="unit">本/月</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-text">
+          <div class="kpi-label">月度共读书目</div>
+          <div class="kpi-desc">每月精选主题书目，围绕聚焦主题深度共读</div>
+        </div>
+      </div>
+      <div class="kpi-block">
+        <div class="kpi-number">1<span class="unit">次/季度</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-text">
+          <div class="kpi-label">线下沙龙频率</div>
+          <div class="kpi-desc">线上线下联动，面对面交流实践经验</div>
+        </div>
+      </div>
+      <div class="kpi-block">
+        <div class="kpi-number">12<span class="unit">月发布</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-text">
+          <div class="kpi-label">年度合集</div>
+          <div class="kpi-desc">全年优秀笔记汇编成册，形成阅读年鉴</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="closing-statement">
+        <span class="highlight">读 — 写 — 议 — 汇</span>，让个人阅读成为社区公共知识
+      </div>
+      <div class="footer-right">
+        <span class="brand">适兕栏目</span> · 开源之道阅读计划 · PAGE 09
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

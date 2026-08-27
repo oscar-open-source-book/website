@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2022开源阅读地图</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #1A1A2E;
+  --bg-card: #222244;
+  --bg-card-hover: #2A2A50;
+  --klein-blue: #002FA7;
+  --cyan: #00BCD4;
+  --text-main: #EAEAF5;
+  --text-sub: #9FA4C0;
+  --text-dim: #6B7099;
+  --border: #2E2E55;
+  --accent-glow: rgba(0, 188, 212, 0.12);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1600px; height: 900px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% 10%, rgba(0,47,167,0.18), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 90% 90%, rgba(0,188,212,0.10), transparent 60%),
+    #1A1A2E;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部标题区 */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.title-block { max-width: 1000px; }
+.title-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--cyan);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.main-title {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #ffffff 0%, #c8d6ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.year-mark {
+  font-size: 14px;
+  color: var(--text-dim);
+  text-align: right;
+  font-weight: 300;
+  line-height: 1.6;
+}
+.year-mark .yr {
+  font-size: 22px;
+  color: var(--cyan);
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* 叙事段 */
+.narrative {
+  margin-top: 14px;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--text-sub);
+  max-width: 1400px;
+  letter-spacing: 0.3px;
+}
+.narrative .hl { color: var(--text-main); font-weight: 500; }
+.narrative .hl-c { color: var(--cyan); font-weight: 500; }
+
+/* 四象限 */
+.quadrants {
+  margin-top: 16px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  position: relative;
+}
+.q-card {
+  position: relative;
+  background: linear-gradient(145deg, #1E1E3E 0%, #242448 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px 18px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.q-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(180deg, var(--cyan), var(--klein-blue));
+  border-radius: 3px 0 0 3px;
+}
+.q-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,47,167,0.15), transparent 70%);
+  pointer-events: none;
+}
+.q-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.q-icon {
+  width: 38px; height: 38px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--klein-blue), #0040C8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0,47,167,0.4);
+}
+.q-icon svg { width: 20px; height: 20px; }
+.q-num {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+.q-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.q-subtitle {
+  font-size: 11px;
+  color: var(--cyan);
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.q-body {
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+.q-body .k { color: var(--text-main); font-weight: 500; }
+.q-tags {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.q-tag {
+  font-size: 10.5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(0,47,167,0.15);
+  border: 1px solid rgba(0,47,167,0.3);
+  color: #a8b8ff;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* 底部数据卡 */
+.footer-cards {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.fc {
+  background: linear-gradient(135deg, #1E1E3E, #202040);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.fc-icon {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(0,188,212,0.1);
+  border: 1px solid rgba(0,188,212,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.fc-icon svg { width: 22px; height: 22px; }
+.fc-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--cyan);
+  letter-spacing: 0.5px;
+  line-height: 1;
+  min-width: 80px;
+}
+.fc-num.alt { color: #6B9FFF; }
+.fc-text {
+  flex: 1;
+}
+.fc-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.fc-desc {
+  font-size: 12.5px;
+  color: var(--text-main);
+  font-weight: 400;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="title-tag"><span>OPEN SOURCE · READING MAP</span></div>
+        <div class="main-title"><span>2022 开源阅读地图</span></div>
+      </div>
+      <div class="year-mark">
+        <div class="yr"><span>2022</span></div>
+        <div><span>ANNUAL READING GUIDE</span></div>
+      </div>
+    </div>
+
+    <p class="narrative">
+      2022年的开源阅读版图呈现出<span class="hl">经典与新兴并重</span>的格局——<span class="hl">奠基性著作</span>依然提供不可替代的历史纵深，而 <span class="hl-c">AI 大模型开源化</span>、<span class="hl-c">云原生成熟化</span>等新趋势催生了大量新的阅读素材，共同形成层次丰富的知识地图。
+    </p>
+
+    <div class="quadrants">
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="q-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              <line x1="9" y1="7" x2="16" y2="7"/>
+              <line x1="9" y1="11" x2="14" y2="11"/>
+            </svg>
+          </div>
+          <div>
+            <div class="q-num"><span>01 / CLASSIC</span></div>
+            <div class="q-title"><span>经典重温</span></div>
+          </div>
+        </div>
+        <div class="q-subtitle"><span>REVISITING FOUNDATIONS</span></div>
+        <p class="q-body">
+          重新阅读<span class="k">《大教堂与集市》</span>、<span class="k">《Open Sources》</span>等奠基之作，理解开放协作的底层逻辑，从历史中提炼出穿越周期的方法论。
+        </p>
+        <div class="q-tags">
+          <span class="q-tag"><span>大教堂与集市</span></span>
+          <span class="q-tag"><span>Open Sources</span></span>
+          <span class="q-tag"><span>黑客与画家</span></span>
+          <span class="q-tag"><span>代码大全</span></span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="q-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="q-num"><span>02 / EMERGING</span></div>
+            <div class="q-title"><span>新兴趋势</span></div>
+          </div>
+        </div>
+        <div class="q-subtitle"><span>2022 BREAKOUT THEMES</span></div>
+        <p class="q-body">
+          关注 <span class="k">AI 开源模型</span>、<span class="k">云原生治理</span>、<span class="k">Rust 语言生态</span>等 2022 年爆发方向的相关读物，把握技术浪潮的前沿脉搏。
+        </p>
+        <div class="q-tags">
+          <span class="q-tag"><span>LLM 开源</span></span>
+          <span class="q-tag"><span>云原生治理</span></span>
+          <span class="q-tag"><span>Rust 编程</span></span>
+          <span class="q-tag"><span>Web3 基建</span></span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="q-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="q-num"><span>03 / TOOLS</span></div>
+            <div class="q-title"><span>工具链实践</span></div>
+          </div>
+        </div>
+        <div class="q-subtitle"><span>HANDS-ON PRACTICE</span></div>
+        <p class="q-body">
+          <span class="k">Git 工作流</span>、<span class="k">CI/CD</span>、<span class="k">容器编排</span>等实操类书籍，连接理论与日常开发，让工程效率在工具链层面持续进化。
+        </p>
+        <div class="q-tags">
+          <span class="q-tag"><span>Git 工作流</span></span>
+          <span class="q-tag"><span>CI/CD</span></span>
+          <span class="q-tag"><span>K8s 编排</span></span>
+          <span class="q-tag"><span>DevOps</span></span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="q-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div>
+            <div class="q-num"><span>04 / COMMUNITY</span></div>
+            <div class="q-title"><span>社区文化</span></div>
+          </div>
+        </div>
+        <div class="q-subtitle"><span>THE HUMAN DIMENSION</span></div>
+        <p class="q-body">
+          探讨<span class="k">治理模式</span>、<span class="k">许可证选择</span>、<span class="k">多元化包容</span>等议题，读懂开源背后的人文维度，看见技术之外的社会契约。
+        </p>
+        <div class="q-tags">
+          <span class="q-tag"><span>治理模式</span></span>
+          <span class="q-tag"><span>开源许可证</span></span>
+          <span class="q-tag"><span>多元包容</span></span>
+          <span class="q-tag"><span>社群运营</span></span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-cards">
+      <div class="fc">
+        <div class="fc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </div>
+        <div class="fc-num"><span>12+</span></div>
+        <div class="fc-text">
+          <div class="fc-label"><span>推荐书目数</span></div>
+          <div class="fc-desc"><span>涵盖经典与新兴领域，构建完整阅读框架</span></div>
+        </div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6B9FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+        </div>
+        <div class="fc-num alt"><span>5+</span></div>
+        <div class="fc-text">
+          <div class="fc-label"><span>涉及语言</span></div>
+          <div class="fc-desc"><span>Rust / Go / Python / Kotlin 等主流开源语言</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
