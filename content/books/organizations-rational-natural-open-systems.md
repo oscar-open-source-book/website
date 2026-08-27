@@ -1,12 +1,12 @@
 ---
 title: "组织理论：理性、自然与开放系统的视角"
-date: 2026-08-28
+date: 2026-08-27T23:30:00+08:00
 originalTitle: "Organizations: Rational, Natural, and Open Systems Perspectives"
 author: "W. Richard Scott & Gerald F. Davis"
 image:
   filename: "books/organizations-scott-davis.jpg"
   caption: "organizations-scott-davis-2011"
-category: "管理"
+category: "管理类"
 type: book
 weight: 19
 recommender: "[适兕](https://opensourceway.community/all_about_kuosi)，「开源之道」主创。推荐理由：「开源是一种有组织的生产方式，那么如何理解开源世界的组织了呢？没有那本书比这本更好的了。」"
