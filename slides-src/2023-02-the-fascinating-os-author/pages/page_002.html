@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源与阅读 - 章节过渡</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-dark: #0a1628;
+  --bg-deeper: #060f1c;
+  --text-main: #e8f4ff;
+  --text-dim: #8bb8d9;
+  --text-muted: #4a6a85;
+  --line-color: rgba(33, 150, 243, 0.25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url('../images/page_002_bg.png') center/cover no-repeat;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(6, 15, 28, 0.45) 0%, rgba(6, 15, 28, 0.25) 40%, rgba(33, 150, 243, 0.08) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+/* 顶部装饰条 */
+.top-bar {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-bar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.top-bar-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+/* 主内容区 */
+.main-area {
+  position: absolute;
+  top: 140px;
+  left: 60px;
+  right: 60px;
+  bottom: 260px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+/* 左侧大数字 */
+.chapter-number {
+  flex-shrink: 0;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.chapter-number .num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 200px;
+  font-weight: 700;
+  line-height: 0.9;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -4px;
+}
+
+.chapter-number .chapter-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 6px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chapter-number .chapter-label-line {
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.chapter-number .chapter-tag {
+  margin-top: 18px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+}
+
+/* 右侧标题区 */
+.title-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.title-area .main-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 72px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.1;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.title-area .main-title::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+
+.title-area .subtitle {
+  margin-top: 36px;
+  font-size: 19px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.7;
+  letter-spacing: 1px;
+  max-width: 620px;
+}
+
+/* 数据模块 */
+.data-stats {
+  margin-top: 32px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 18px;
+}
+
+.stat-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 1px;
+}
+
+.stat-item .stat-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.stat-item .stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+/* 底部三要点 */
+.bottom-section {
+  position: absolute;
+  bottom: 60px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bottom-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+}
+
+.bottom-divider .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-color), transparent);
+}
+
+.three-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.point-card {
+  position: relative;
+  padding: 20px 22px 20px 24px;
+  background: rgba(10, 22, 40, 0.55);
+  border: 1px solid rgba(33, 150, 243, 0.18);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.point-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.point-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at top right, rgba(33, 150, 243, 0.12), transparent 70%);
+}
+
+.point-index {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.point-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.point-desc {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.65;
+}
+
+/* 底部网格装饰 */
+.bottom-grid-deco {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--primary) 15%,
+    var(--accent) 30%,
+    var(--primary) 50%,
+    var(--accent) 70%,
+    var(--primary) 85%,
+    transparent 100%);
+  opacity: 0.5;
+}
+
+.bottom-grid-deco2 {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(90deg,
+    var(--line-color) 0px,
+    var(--line-color) 1px,
+    transparent 1px,
+    transparent 40px);
+  opacity: 0.4;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <span class="top-bar-dot"></span>
+        <span>CHAPTER TRANSITION</span>
+        <span class="top-bar-line"></span>
+        <span>2024</span>
+      </div>
+      <div><span>01 / 07</span></div>
+    </div>
+
+    <div class="main-area">
+      <div class="chapter-number">
+        <div class="chapter-label">
+          <span class="chapter-label-line"></span>
+          <span>CHAPTER</span>
+        </div>
+        <div class="num">01</div>
+        <div class="chapter-tag">// OPEN SOURCE × READING</div>
+      </div>
+
+      <div class="title-area">
+        <h1 class="main-title">开源与阅读</h1>
+        <p class="subtitle">为什么开源社区需要持续阅读与分享<br>在代码与人之间，阅读架起理解与传承的桥梁</p>
+
+        <div class="data-stats">
+          <div class="stat-item">
+            <span class="stat-num">1,400万+</span>
+            <span class="stat-label">全球开源贡献者</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">100万+</span>
+            <span class="stat-label">年度新增开源项目</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="bottom-divider">
+        <span class="line"></span>
+        <span>KEY PILLARS · 三大核心</span>
+        <span class="line"></span>
+      </div>
+
+      <div class="three-points">
+        <div class="point-card">
+          <div class="point-index">01 — ITERATION</div>
+          <div class="point-title">知识迭代</div>
+          <div class="point-desc">开源生态每年涌现大量新框架与工具，阅读是保持技术视野的必要手段，持续输入才能不被时代淘汰。</div>
+        </div>
+        <div class="point-card">
+          <div class="point-index">02 — HERITAGE</div>
+          <div class="point-title">文化传承</div>
+          <div class="point-desc">开源精神需要书籍、文章与布道者来传播，让后来者理解其价值与历史，让理念薪火相传。</div>
+        </div>
+        <div class="point-card">
+          <div class="point-index">03 — CONNECTION</div>
+          <div class="point-title">社区连接</div>
+          <div class="point-desc">阅读分享活动是开发者社区维系情感与知识纽带的重要场景，让个体成长与群体进步同步发生。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-grid-deco"></div>
+    <div class="bottom-grid-deco2"></div>
+
+  </div>
+</div>
+</body>
+</html>
