@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>技术的本质再思考</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #1A1A2E;
+  --bg-deep: #0F0F1A;
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #E8E8F0;
+  --text-sub: #9B9BB8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 800px 500px at 50% 35%, rgba(33, 150, 243, 0.10) 0%, rgba(26, 26, 46, 0) 70%), var(--bg-dark);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Geometric rings */
+.geo-ring {
+  position: absolute;
+  border: 1px solid rgba(33, 150, 243, 0.18);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.geo-ring-1 { width: 320px; height: 320px; left: -180px; top: -180px; }
+.geo-ring-2 { width: 220px; height: 220px; right: -120px; bottom: -120px; border-color: rgba(0, 188, 212, 0.14); }
+.geo-ring-3 { width: 140px; height: 140px; right: 60px; top: 80px; border-color: rgba(0, 188, 212, 0.10); }
+
+/* Circuit decorations */
+.circuit {
+  position: absolute;
+  width: 50px;
+  height: 100%;
+  top: 0;
+  z-index: 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.circuit-left { left: 8px; }
+.circuit-right { right: 8px; }
+
+.cline { position: absolute; background: var(--primary); opacity: 0.55; }
+.cdot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent), 0 0 14px rgba(0, 188, 212, 0.35);
+}
+
+/* Divider lines */
+.divider {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(33, 150, 243, 0.08) 8%, var(--primary) 50%, rgba(33, 150, 243, 0.08) 92%, transparent 100%);
+  position: relative;
+}
+.divider::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent), 0 0 22px rgba(0, 188, 212, 0.3);
+}
+
+/* Chapter header */
+.chapter-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.chapter-mark {
+  font-size: 12px;
+  letter-spacing: 10px;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+
+.chapter-title {
+  font-size: 82px;
+  font-weight: 900;
+  color: var(--text-main);
+  text-align: center;
+  line-height: 1.05;
+  letter-spacing: 6px;
+  text-shadow: 0 0 50px rgba(33, 150, 243, 0.35), 0 0 100px rgba(33, 150, 243, 0.12);
+}
+
+.chapter-subtitle {
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: 8px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 20px;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+}
+
+/* Cards */
+.cards-row {
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+  margin-top: 34px;
+}
+
+.card {
+  width: 300px;
+  padding: 24px 22px 22px;
+  background: rgba(33, 150, 243, 0.05);
+  border: 1px solid rgba(33, 150, 243, 0.22);
+  border-radius: 8px;
+  position: relative;
+  backdrop-filter: blur(2px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  border-radius: 0 0 3px 0;
+}
+
+.card-num {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.card-content {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+/* Narrative */
+.narrative {
+  max-width: 1120px;
+  margin: 30px auto 0;
+  padding: 18px 40px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.9;
+  font-weight: 300;
+  border-left: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
+  background: rgba(33, 150, 243, 0.03);
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.narrative span { display: inline; }
+
+/* Bottom area */
+.bottom-area {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-mark {
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: rgba(33, 150, 243, 0.5);
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <div id="ct">
+    <div class="geo-ring geo-ring-1"></div>
+    <div class="geo-ring geo-ring-2"></div>
+    <div class="geo-ring geo-ring-3"></div>
+
+    <div class="circuit circuit-left">
+      <div class="cline" style="left: 16px; top: 90px; width: 2px; height: 70px;"></div>
+      <div class="cline" style="left: 16px; top: 160px; width: 26px; height: 2px;"></div>
+      <div class="cdot" style="left: 39px; top: 157px;"></div>
+      <div class="cline" style="left: 8px; top: 310px; width: 2px; height: 60px;"></div>
+      <div class="cline" style="left: 8px; top: 370px; width: 22px; height: 2px;"></div>
+      <div class="cdot" style="left: 27px; top: 367px;"></div>
+      <div class="cline" style="left: 20px; top: 520px; width: 2px; height: 80px;"></div>
+      <div class="cdot" style="left: 17px; top: 597px;"></div>
+      <div class="cline" style="left: 12px; top: 710px; width: 2px; height: 60px;"></div>
+      <div class="cline" style="left: 12px; top: 770px; width: 30px; height: 2px;"></div>
+      <div class="cdot" style="left: 39px; top: 767px;"></div>
+    </div>
+
+    <div class="circuit circuit-right">
+      <div class="cline" style="right: 16px; top: 70px; width: 2px; height: 80px;"></div>
+      <div class="cdot" style="right: 13px; top: 147px;"></div>
+      <div class="cline" style="right: 16px; top: 150px; width: 24px; height: 2px;"></div>
+      <div class="cline" style="right: 10px; top: 300px; width: 2px; height: 70px;"></div>
+      <div class="cline" style="right: 10px; top: 370px; width: 22px; height: 2px;"></div>
+      <div class="cdot" style="right: 29px; top: 367px;"></div>
+      <div class="cline" style="right: 22px; top: 510px; width: 2px; height: 85px;"></div>
+      <div class="cdot" style="right: 19px; top: 593px;"></div>
+      <div class="cline" style="right: 14px; top: 700px; width: 2px; height: 65px;"></div>
+      <div class="cline" style="right: 14px; top: 765px; width: 30px; height: 2px;"></div>
+      <div class="cdot" style="right: 41px; top: 762px;"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="chapter-header">
+      <div class="chapter-mark">CHAPTER &nbsp;·&nbsp; 章 节</div>
+      <div class="chapter-title">技术的本质再思考</div>
+      <div class="chapter-subtitle">从 工 具 理 性 到 价 值 追 问</div>
+    </div>
+
+    <div class="divider" style="margin-top: 36px;"></div>
+
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-num">01</div>
+        <div class="card-title">章节导览</div>
+        <div class="card-content">本章深入探讨技术的本质属性，以及开源如何折射出技术发展的内在规律</div>
+      </div>
+      <div class="card">
+        <div class="card-num">02</div>
+        <div class="card-title">关键问题</div>
+        <div class="card-content">技术是价值中立的工具，还是承载了创造者的价值观与权力关系？</div>
+      </div>
+      <div class="card">
+        <div class="card-num">03</div>
+        <div class="card-title">阅读线索</div>
+        <div class="card-content">结合2021年开源之道的思考片段，串联哲学视角与工程实践的双线叙事</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span>在进入技术本质的深层探讨之前，我们需要意识到：技术从来不只是工具。它承载着设计者的意图、组织的利益和社会的规范。开源运动恰恰为理解这一复杂关系提供了独特的观察窗口。</span>
+    </div>
+
+    <div class="bottom-area">
+      <div class="footer-mark">P H I L O S O P H Y &nbsp;·&nbsp; 哲 学 之 思</div>
+      <div class="divider"></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
