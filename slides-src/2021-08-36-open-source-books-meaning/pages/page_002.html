@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>为什么读开源之书</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #1A1A2E;
+  --bg-darker: #0F0F1A;
+  --mint: #A8E6CF;
+  --neon: #39FF14;
+  --text-main: #E8E8F0;
+  --text-dim: #8888AA;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg-deep);
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg-deep);
+}
+#bg .bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.35;
+}
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26,26,46,0.6) 0%, rgba(15,15,26,0.85) 100%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+/* Diagonal neon line on left */
+.diagonal-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--neon);
+  box-shadow: 0 0 12px var(--neon), 0 0 24px var(--neon);
+  opacity: 0.9;
+  z-index: 2;
+}
+.diagonal-line::after {
+  content: '';
+  position: absolute;
+  left: -180px;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--mint);
+  opacity: 0.3;
+  transform: skewX(-12deg);
+  transform-origin: top left;
+  box-shadow: 0 0 8px var(--mint);
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+.title-block {
+  flex: 1;
+  padding-left: 40px;
+}
+.eyebrow {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  color: var(--neon);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px var(--neon);
+}
+.main-title {
+  font-family: 'Fira Code', monospace;
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--mint);
+  letter-spacing: 1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+.chapter-num-block {
+  text-align: right;
+  padding-right: 20px;
+  padding-top: 10px;
+  position: relative;
+}
+.chapter-num {
+  font-family: 'Fira Code', monospace;
+  font-weight: 700;
+  font-size: 180px;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--neon);
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(57,255,20,0.3);
+  letter-spacing: -4px;
+}
+.chapter-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--mint);
+  letter-spacing: 3px;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+/* Quote */
+.quote-section {
+  position: absolute;
+  top: 340px;
+  left: 100px;
+  right: 100px;
+  padding-left: 30px;
+  border-left: 2px solid var(--neon);
+  box-shadow: -2px 0 8px rgba(57,255,20,0.3);
+}
+.quote-text {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--mint);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+  font-style: italic;
+}
+
+/* Cards */
+.cards {
+  position: absolute;
+  bottom: 60px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+.card {
+  flex: 1;
+  max-width: 440px;
+  border: 1px solid var(--mint);
+  background: rgba(26, 26, 46, 0.75);
+  padding: 24px 26px;
+  position: relative;
+  backdrop-filter: blur(2px);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 24px;
+  height: 24px;
+  border-top: 2px solid var(--neon);
+  border-left: 2px solid var(--neon);
+}
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 24px;
+  height: 24px;
+  border-bottom: 2px solid var(--neon);
+  border-right: 2px solid var(--neon);
+}
+.card-num {
+  font-family: 'Fira Code', monospace;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--neon);
+  text-shadow: 0 0 10px rgba(57,255,20,0.5);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.card-title {
+  font-family: 'Fira Code', monospace;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--mint);
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+.card-text {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.65;
+  letter-spacing: 0.3px;
+}
+.card-prompt {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+/* Bottom bar */
+.footer-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--neon) 0%, var(--mint) 50%, transparent 100%);
+  opacity: 0.6;
+}
+
+/* Scan line decoration */
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--neon);
+  opacity: 0.4;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_002_section_bg.png" alt="抽象电路板纹理叠加终端窗口元素背景">
+    <div class="bg-overlay"></div>
+  </div>
+  <div id="ct">
+    <div class="scanline"></div>
+    <div class="diagonal-line"></div>
+
+    <div class="header">
+      <div class="title-block">
+        <div class="eyebrow">// CHAPTER TRANSITION · 02</div>
+        <h1 class="main-title">为什么读开源之书</h1>
+        <p class="subtitle">从代码到哲学——理解开源的完整图谱</p>
+      </div>
+      <div class="chapter-num-block">
+        <div class="chapter-num">01</div>
+        <div class="chapter-tag">// SECTION 01</div>
+      </div>
+    </div>
+
+    <div class="quote-section">
+      <p class="quote-text">$ echo "我们不只是为学技术而读书，更是在追寻一种关于自由、协作与创造的价值观体系" &lt;&lt; EOF</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-prompt">$ item[0]</div>
+        <div class="card-num">01</div>
+        <h3 class="card-title">超越代码</h3>
+        <p class="card-text">开源不只是技术，更是一种协作文化与知识自由运动</p>
+      </div>
+      <div class="card">
+        <div class="card-prompt">$ item[1]</div>
+        <div class="card-num">02</div>
+        <h3 class="card-title">历史纵深</h3>
+        <p class="card-text">从 GNU 宣言到 AGPL，理解四十余年思想演进脉络</p>
+      </div>
+      <div class="card">
+        <div class="card-prompt">$ item[2]</div>
+        <div class="card-num">03</div>
+        <h3 class="card-title">实践指引</h3>
+        <p class="card-text">阅读为实际参与开源贡献提供方法论与心态准备</p>
+      </div>
+    </div>
+
+    <div class="footer-bar"></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源精神四大内核</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1A1A2E;
+  --bg2:#12121F;
+  --mint:#A8E6CF;
+  --lime:#39FF14;
+  --dim:#5A6A7A;
+  --line:rgba(168,230,207,0.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Roboto Mono',monospace;
+  color:#E8EEF2;
+  background:var(--bg);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;display:flex;flex-direction:column;}
+
+/* ===== Background decoration ===== */
+#bg{
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(57,255,20,0.06), transparent 55%),
+    radial-gradient(ellipse at 90% 90%, rgba(168,230,207,0.05), transparent 60%),
+    var(--bg);
+}
+.grid-overlay{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(168,230,207,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,230,207,0.045) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+.scanlines{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+  opacity:0.55;
+  pointer-events:none;
+}
+.corner{
+  position:absolute;width:32px;height:32px;
+  border-color:var(--lime);
+  border-style:solid;
+  border-width:0;
+}
+.corner.tl{top:14px;left:14px;border-top-width:2px;border-left-width:2px;}
+.corner.tr{top:14px;right:14px;border-top-width:2px;border-right-width:2px;}
+.corner.bl{bottom:14px;left:14px;border-bottom-width:2px;border-left-width:2px;}
+.corner.br{bottom:14px;right:14px;border-bottom-width:2px;border-right-width:2px;}
+
+/* ===== Header ===== */
+.head{
+  display:flex;align-items:center;gap:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+}
+.blink{display:inline-block;width:12px;height:22px;background:var(--lime);
+  box-shadow:0 0 10px var(--lime),0 0 20px rgba(57,255,20,0.5);
+  animation:blink 1s steps(2) infinite;}
+@keyframes blink{50%{opacity:0;}}
+.path{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--dim);letter-spacing:0.12em;}
+.title{
+  font-family:'Fira Code',monospace;font-weight:700;font-size:44px;
+  color:var(--mint);
+  letter-spacing:0.02em;
+  text-shadow:0 0 12px rgba(168,230,207,0.35);
+  margin-top:6px;
+}
+.subtitle{
+  font-family:'Fira Code',monospace;font-size:13px;color:var(--lime);
+  letter-spacing:0.2em;margin-top:4px;
+}
+.narrative{
+  margin-top:14px;
+  font-size:14px;line-height:1.75;color:#C9D3DA;
+  max-width:1400px;
+  padding:14px 18px;
+  border-left:2px solid var(--lime);
+  background:rgba(57,255,20,0.04);
+}
+.narrative .accent{color:var(--lime);font-weight:500;}
+
+/* ===== Grid ===== */
+.grid{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:18px;
+  flex:1;
+}
+.card{
+  position:relative;
+  background:linear-gradient(135deg, rgba(57,255,20,0.05), rgba(168,230,207,0.02));
+  border:1.5px solid var(--lime);
+  box-shadow:0 0 14px rgba(57,255,20,0.15), inset 0 0 30px rgba(57,255,20,0.03);
+  padding:18px 22px 16px 22px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;top:0;left:0;width:6px;height:100%;
+  background:linear-gradient(180deg,var(--lime),transparent);
+  opacity:0.6;
+}
+.card-head{
+  display:flex;align-items:center;gap:14px;
+  padding-bottom:10px;
+  border-bottom:1px dashed rgba(57,255,20,0.3);
+}
+.icon-wrap{
+  width:52px;height:52px;border:1.5px solid var(--lime);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 10px rgba(57,255,20,0.25) inset;
+  flex-shrink:0;
+  background:rgba(57,255,20,0.04);
+}
+.icon-wrap svg{width:30px;height:30px;}
+.tag{
+  font-family:'Fira Code',monospace;font-size:11px;
+  color:var(--dim);letter-spacing:0.18em;
+}
+.idx{
+  font-family:'Fira Code',monospace;font-size:12px;
+  color:var(--lime);letter-spacing:0.14em;
+}
+.core-name{
+  font-family:'Fira Code',monospace;font-weight:700;font-size:26px;
+  color:var(--mint);letter-spacing:0.08em;
+  text-shadow:0 0 8px rgba(168,230,207,0.3);
+  margin-top:2px;
+}
+.core-en{
+  font-family:'Fira Code',monospace;font-size:11px;
+  color:var(--lime);opacity:0.7;letter-spacing:0.2em;margin-top:2px;
+}
+.desc{
+  margin-top:12px;font-size:14px;line-height:1.7;color:#DDE5EC;
+}
+.data{
+  margin-top:12px;padding:8px 12px;
+  background:rgba(57,255,20,0.08);
+  border:1px dashed rgba(57,255,20,0.4);
+  font-family:'Fira Code',monospace;font-size:11.5px;
+  color:var(--lime);letter-spacing:0.06em;
+  display:flex;align-items:center;gap:8px;
+}
+.data .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);
+  box-shadow:0 0 6px var(--lime);}
+.no-data{
+  margin-top:12px;font-family:'Fira Code',monospace;font-size:11.5px;
+  color:var(--dim);letter-spacing:0.14em;
+  display:flex;align-items:center;gap:8px;
+}
+.no-data .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);opacity:0.5;}
+
+/* Card corner tags */
+.c-tag{
+  position:absolute;top:8px;right:12px;
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--dim);letter-spacing:0.18em;
+}
+
+/* ===== Footer ===== */
+.footer{
+  margin-top:18px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  border:1px solid var(--lime);
+  background:linear-gradient(90deg,rgba(57,255,20,0.06),rgba(168,230,207,0.02),rgba(57,255,20,0.06));
+  box-shadow:0 0 18px rgba(57,255,20,0.12);
+}
+.footer-left{
+  font-family:'Fira Code',monospace;font-size:12px;color:var(--dim);letter-spacing:0.2em;
+}
+.resonance{
+  font-family:'Fira Code',monospace;font-weight:700;font-size:22px;
+  color:var(--lime);letter-spacing:0.14em;
+  text-shadow:0 0 10px rgba(57,255,20,0.5);
+}
+.footer-right{
+  font-family:'Fira Code',monospace;font-size:11px;color:var(--mint);letter-spacing:0.16em;
+}
+.divider{
+  width:10px;height:10px;border:1.5px solid var(--lime);transform:rotate(45deg);
+  box-shadow:0 0 8px rgba(57,255,20,0.5);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-overlay"></div>
+    <div class="scanlines"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+  </div>
+  <div id="ct">
+
+    <div class="head">
+      <span class="blink"></span>
+      <div>
+        <div class="path">$ ./open-source --core --mode=terminal</div>
+        <div class="title"><span>开源精神四大内核</span></div>
+        <div class="subtitle">// FOUR CORES OF OPEN SOURCE SPIRIT</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span>&gt;&gt;&gt; </span>开源精神并非单一概念，而是由<span class="accent">自由</span>、<span class="accent">协作</span>、<span class="accent">共享</span>、<span class="accent">社区</span>四大内核共同支撑的复合体系。每一本书都以不同侧面回应这些核心命题。
+    </div>
+
+    <div class="grid">
+
+      <!-- Card 1 : 自由 -->
+      <div class="card">
+        <div class="c-tag">CORE_01</div>
+        <div class="card-head">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 4h8M12 4v5"/>
+              <rect x="6" y="9" width="12" height="11" rx="1.5"/>
+              <circle cx="12" cy="14" r="1.4"/>
+              <path d="M12 15.4v2.2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tag">// CORE_01 // FREEDOM</div>
+            <div class="core-name"><span>自由</span></div>
+            <div class="core-en">FREEDOM · The Right to Choose</div>
+          </div>
+        </div>
+        <div class="desc">
+          <span>用户拥有自由运行、复制、分发、学习、修改以及再分发软件的四大基本自由——这是开源精神的基石。</span>
+        </div>
+        <div class="data">
+          <span class="dot"></span>
+          <span>DATA · 四大自由 F0-F3（运行 / 复制 / 学习 / 修改）</span>
+        </div>
+      </div>
+
+      <!-- Card 2 : 协作 -->
+      <div class="card">
+        <div class="c-tag">CORE_02</div>
+        <div class="card-head">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5" cy="6" r="2"/>
+              <circle cx="19" cy="6" r="2"/>
+              <circle cx="5" cy="18" r="2"/>
+              <circle cx="19" cy="18" r="2"/>
+              <circle cx="12" cy="12" r="2.4"/>
+              <path d="M6.6 7.2l4.4 3.8M17.4 7.2l-4.4 3.8M6.6 16.8l4.4-3.8M17.4 16.8l-4.4-3.8"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tag">// CORE_02 // COLLABORATION</div>
+            <div class="core-name"><span>协作</span></div>
+            <div class="core-en">COLLABORATION · Global Iteration</div>
+          </div>
+        </div>
+        <div class="desc">
+          <span>开放透明的发展模式让全球开发者能在同一个代码库上协同迭代，用分布式智慧驱动技术演进。</span>
+        </div>
+        <div class="no-data">
+          <span class="dot"></span>
+          <span>&gt; 开放仓库 · 全球贡献者协同 · 持续集成</span>
+        </div>
+      </div>
+
+      <!-- Card 3 : 共享 -->
+      <div class="card">
+        <div class="c-tag">CORE_03</div>
+        <div class="card-head">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="8" height="8" rx="1"/>
+              <rect x="13" y="13" width="8" height="8" rx="1"/>
+              <path d="M11 7h8v3"/>
+              <path d="M19 17H7v-3"/>
+              <path d="M16 4l3 3-3 3" opacity="0.6"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tag">// CORE_03 // SHARING</div>
+            <div class="core-name"><span>共享</span></div>
+            <div class="core-en">SHARING · Knowledge Without Walls</div>
+          </div>
+        </div>
+        <div class="desc">
+          <span>知识不应被围墙封闭，代码与文档的共享最大化社会总价值，让每一次创造都成为下一人的起点。</span>
+        </div>
+        <div class="no-data">
+          <span class="dot"></span>
+          <span>&gt; 知识无围墙 · 代码公开 · 文档共享</span>
+        </div>
+      </div>
+
+      <!-- Card 4 : 社区 -->
+      <div class="card">
+        <div class="c-tag">CORE_04</div>
+        <div class="card-head">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="8" r="2.6"/>
+              <circle cx="16" cy="9.5" r="2"/>
+              <path d="M3.5 19c.6-3 3-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/>
+              <path d="M14.2 19c.3-1.8 1.6-2.8 3-2.8s2.7 1 3 2.8"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tag">// CORE_04 // COMMUNITY</div>
+            <div class="core-name"><span>社区</span></div>
+            <div class="core-en">COMMUNITY · Trust &amp; Consensus</div>
+          </div>
+        </div>
+        <div class="desc">
+          <span>以人为中心的治理结构，通过共识与信任建立可持续的协作生态，让技术价值在群体中沉淀与传承。</span>
+        </div>
+        <div class="data">
+          <span class="dot"></span>
+          <span>DATA · 核心理念 4 个（自由 · 协作 · 共享 · 社区）</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-left"><span>$ echo "四词共振"</span></div>
+      <div class="resonance">自由 · 协作 · 共享 · 社区</div>
+      <div class="divider"></div>
+      <div class="footer-right"><span>// RESONANCE &gt;&gt; OK</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

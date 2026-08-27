@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>读书分享会的组织</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --bg-dark: #1A1A2E;
+  --bg-card: #16213E;
+  --bg-card2: #0F3460;
+  --mint: #A8E6CF;
+  --neon: #39FF14;
+  --text-main: #E8E8E8;
+  --text-dim: #7FB3A3;
+  --terminal-orange: #FF79C6;
+  --border-glow: rgba(57, 255, 20, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Fira Code', 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg-dark);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 47px, rgba(168,230,207,0.03) 48px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 47px, rgba(168,230,207,0.03) 48px);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header --- */
+.header-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.title-line {
+  font-family: 'Fira Code', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--neon);
+  text-shadow: 0 0 12px rgba(57,255,20,0.5);
+  letter-spacing: 2px;
+}
+
+.title-line .prefix {
+  color: var(--mint);
+  font-weight: 400;
+}
+
+.title-line .bracket {
+  color: var(--terminal-orange);
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.terminal-bar .dots {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-bar .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.terminal-bar .dot.r { background: #FF5F57; }
+.terminal-bar .dot.y { background: #FEBC2E; }
+.terminal-bar .dot.g { background: var(--neon); }
+
+.terminal-bar .path {
+  color: var(--text-dim);
+}
+
+.terminal-bar .path .sep { color: var(--mint); }
+.terminal-bar .path .fname { color: var(--neon); }
+
+.intro-block {
+  border: 1px solid var(--border-glow);
+  background: rgba(15, 52, 96, 0.3);
+  padding: 12px 18px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-main);
+  position: relative;
+}
+
+.intro-block::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--neon);
+  box-shadow: 0 0 8px var(--neon);
+}
+
+.intro-block .comment {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.intro-block .kw {
+  color: var(--neon);
+  font-weight: 700;
+}
+
+.intro-block .str {
+  color: var(--terminal-orange);
+}
+
+/* --- Timeline --- */
+.timeline-wrap {
+  margin-top: 22px;
+  position: relative;
+  padding: 20px 0 20px 0;
+}
+
+.timeline-title {
+  font-size: 14px;
+  color: var(--mint);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timeline-title .hash { color: var(--terminal-orange); }
+
+.timeline-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding-top: 36px;
+}
+
+.timeline-track::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 4%;
+  right: 4%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--mint), var(--neon), var(--mint));
+  box-shadow: 0 0 6px var(--border-glow);
+}
+
+.node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.node .marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--neon);
+  box-shadow: 0 0 12px var(--neon), 0 0 24px rgba(57,255,20,0.4);
+  border: 2px solid var(--bg-dark);
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.node .marker::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--border-glow);
+}
+
+.node-card {
+  width: 100%;
+  border: 1px solid rgba(168,230,207,0.25);
+  background: rgba(22, 33, 62, 0.6);
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  min-height: 240px;
+}
+
+.node-card::before {
+  content: "";
+  position: absolute;
+  top: -1px; left: -1px;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--neon);
+  border-left: 2px solid var(--neon);
+}
+
+.node-card::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 20px;
+  height: 20px;
+  border-bottom: 2px solid var(--neon);
+  border-right: 2px solid var(--neon);
+}
+
+.node-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(168,230,207,0.2);
+}
+
+.node-num {
+  font-size: 12px;
+  color: var(--terminal-orange);
+  background: rgba(255,121,198,0.1);
+  padding: 2px 6px;
+  border: 1px solid rgba(255,121,198,0.3);
+}
+
+.node-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--mint);
+}
+
+.node-subtitle {
+  font-size: 11px;
+  color: var(--neon);
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+.node-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.node-meta .tag {
+  font-size: 10px;
+  padding: 2px 7px;
+  border: 1px solid rgba(168,230,207,0.2);
+  color: var(--mint);
+  background: rgba(168,230,207,0.05);
+}
+
+.node-meta .tag.active {
+  color: var(--neon);
+  border-color: var(--border-glow);
+}
+
+.node-desc {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-main);
+  margin-top: 4px;
+}
+
+.node-desc .hl { color: var(--neon); font-weight: 700; }
+.node-desc .dim { color: var(--text-dim); }
+
+.node-desc pre {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  background: rgba(0,0,0,0.3);
+  padding: 6px 8px;
+  border-left: 2px solid var(--mint);
+  white-space: pre-wrap;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.node-desc pre .c { color: var(--text-dim); }
+.node-desc pre .k { color: var(--terminal-orange); }
+.node-desc pre .v { color: var(--neon); }
+
+/* --- KPI cards --- */
+.kpi-wrap {
+  margin-top: 22px;
+}
+
+.kpi-title {
+  font-size: 13px;
+  color: var(--mint);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kpi-title .hash { color: var(--terminal-orange); }
+.kpi-title .bar {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-glow), transparent);
+}
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.kpi-card {
+  border: 1px solid rgba(168,230,207,0.2);
+  background: rgba(15, 52, 96, 0.4);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--neon);
+  box-shadow: 0 0 10px var(--neon);
+}
+
+.kpi-icon {
+  font-family: 'Fira Code', monospace;
+  font-size: 28px;
+  color: var(--neon);
+  text-shadow: 0 0 8px rgba(57,255,20,0.5);
+  min-width: 40px;
+  text-align: center;
+}
+
+.kpi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--neon);
+  text-shadow: 0 0 6px rgba(57,255,20,0.3);
+}
+
+.kpi-unit {
+  font-size: 13px;
+  color: var(--mint);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.kpi-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* --- Footer decoration --- */
+.footer-bar {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--text-dim);
+  border-top: 1px solid rgba(168,230,207,0.1);
+  padding-top: 8px;
+}
+
+.footer-bar .left,
+.footer-bar .right { display: flex; gap: 14px; }
+.footer-bar .blink {
+  display: inline-block;
+  width: 8px;
+  height: 12px;
+  background: var(--neon);
+  margin-left: 4px;
+  animation: blink 1s steps(1) infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.scanline {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(57,255,20,0.15);
+  animation: scan 6s linear infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 900px; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="scanline"></div>
+
+    <!-- Terminal Bar -->
+    <div class="terminal-bar">
+      <span class="dots">
+        <span class="dot r"></span>
+        <span class="dot y"></span>
+        <span class="dot g"></span>
+      </span>
+      <span class="path"><span class="sep">~/</span>book-sharing<span class="sep">/</span><span class="fname">organize.sh</span></span>
+      <span style="flex:1"></span>
+      <span>1600×900 · UTF-8 · Fira Code</span>
+    </div>
+
+    <!-- Header -->
+    <div class="header-block">
+      <div class="title-line">
+        <span class="prefix">$</span> ./book-sharing <span class="bracket">--org</span> <span style="color:var(--mint);font-weight:700;">读书分享会的组织</span><span class="blink"></span>
+      </div>
+      <div class="intro-block">
+        <span class="comment">// 核心观点</span>　一个高效的<span class="kw">读书分享会</span>需要在 <span class="kw">议程</span> · <span class="kw">角色</span> · <span class="kw">沉淀</span> · <span class="kw">迭代</span> 四个维度精心设计；<span class="str">"结构化流程 × 自由讨论"</span> 之间的动态平衡，是决定分享质量的关键杠杆。
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-wrap">
+      <div class="timeline-title"><span class="hash">#</span> 核心流程 · four_stages</div>
+      <div class="timeline-track">
+
+        <!-- Stage 1 -->
+        <div class="node">
+          <span class="marker"></span>
+          <div class="node-card">
+            <div class="node-header">
+              <span class="node-num">[01]</span>
+              <span class="node-title">议程设计</span>
+            </div>
+            <span class="node-subtitle">Agenda Design</span>
+            <div class="node-meta">
+              <span class="tag active">30min 导读</span>
+              <span class="tag active">20min 共读</span>
+              <span class="tag active">30min 讨论</span>
+            </div>
+            <div class="node-desc">
+              <pre><span class="c">/* 节奏紧凑，避免单向灌输 */</span>
+<span class="k">const</span> flow <span class="c">=</span> [<span class="v">"导读"</span>,
+   <span class="v">"共读"</span>, <span class="v">"讨论"</span>];</pre>
+              三段时间配比 <span class="hl">3 : 2 : 3</span>，从作者背景介绍到原文精读，最后开放自由讨论，形成 <span class="hl">输入→消化→输出</span> 的完整闭环。<span class="dim">// 拒绝"PPT念稿式"单向输出</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="node">
+          <span class="marker"></span>
+          <div class="node-card">
+            <div class="node-header">
+              <span class="node-num">[02]</span>
+              <span class="node-title">角色轮换</span>
+            </div>
+            <span class="node-subtitle">Role Rotation</span>
+            <div class="node-meta">
+              <span class="tag">主持人 × 1</span>
+              <span class="tag">记录员 × 1</span>
+              <span class="tag active">轮流领读</span>
+            </div>
+            <div class="node-desc">
+              <pre><span class="c">/* 每期指定不同主持人 */</span>
+<span class="k">for</span> (let w <span class="c">=</span> <span class="v">0</span>; w <span class="c">&lt;</span> weeks; w++) {
+  <span class="k">host</span> <span class="c">=</span> roster[w <span class="c">%</span> n];
+}</pre>
+              每期指定 <span class="hl">不同主持人</span>轮流领读，打破固定分工带来的"舒适区"。<span class="dim">// 激发参与者主动思考与表达欲，让每个人都是驱动者。</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="node">
+          <span class="marker"></span>
+          <div class="node-card">
+            <div class="node-header">
+              <span class="node-num">[03]</span>
+              <span class="node-title">会后沉淀</span>
+            </div>
+            <span class="node-subtitle">Knowledge Asset</span>
+            <div class="node-meta">
+              <span class="tag active">会议纪要</span>
+              <span class="tag active">金句卡片</span>
+              <span class="tag">知识资产</span>
+            </div>
+            <div class="node-desc">
+              <pre><span class="c">/* 24h 内完成产出 */</span>
+<span class="k">output</span> <span class="c">=</span> {
+  <span class="v">minutes</span>:   <span class="c">"会议纪要.md"</span>,
+  <span class="v">quotes</span>:    <span class="c">"金句卡片.md"</span>
+}</pre>
+              整理 <span class="hl">会议纪要</span>与<span class="hl">金句卡片</span>，形成可持续查阅的知识资产。<span class="dim">// 让每次分享的价值跨越时间，避免"聊完就忘"。</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="node">
+          <span class="marker"></span>
+          <div class="node-card">
+            <div class="node-header">
+              <span class="node-num">[04]</span>
+              <span class="node-title">反馈迭代</span>
+            </div>
+            <span class="node-subtitle">Feedback Loop</span>
+            <div class="node-meta">
+              <span class="tag active">评分收集</span>
+              <span class="tag active">建议汇总</span>
+              <span class="tag">持续优化</span>
+            </div>
+            <div class="node-desc">
+              <pre><span class="c">/* 每期闭环反馈 */</span>
+<span class="k">while</span> (active) {
+  score <span class="c">=</span> collectFeedback();
+  <span class="k">if</span> (score <span class="c">&lt;</span> <span class="v">threshold</span>) optimize();
+}</pre>
+              每期结束收集参与者 <span class="hl">评分与建议</span>，持续优化分享流程与内容选择。<span class="dim">// 形成"做→评→改"的敏捷迭代闭环，越办越好。</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="kpi-wrap">
+      <div class="kpi-title">
+        <span class="hash">#</span> KPI_指标 · key_metrics
+        <span class="bar"></span>
+      </div>
+      <div class="kpi-row">
+
+        <div class="kpi-card">
+          <div class="kpi-icon">⏱</div>
+          <div class="kpi-body">
+            <span class="kpi-label">单期时长</span>
+            <span class="kpi-value">80<span class="kpi-unit">分钟</span></span>
+            <span class="kpi-desc">// 导读 + 共读 + 讨论 = 30 + 20 + 30</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon">🔄</div>
+          <div class="kpi-body">
+            <span class="kpi-label">主持人轮换制</span>
+            <span class="kpi-value">1<span class="kpi-unit">人 / 期</span></span>
+            <span class="kpi-desc">// 每期仅设 1 名领读人，全员参与感 MAX</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon">📄</div>
+          <div class="kpi-body">
+            <span class="kpi-label">产出物 · 纪要 + 金句</span>
+            <span class="kpi-value">24h<span class="kpi-unit">内产出</span></span>
+            <span class="kpi-desc">// 会后 24 小时完成沉淀，知识资产即时入库</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-bar">
+      <div class="left">
+        <span>// reading-club · org_v1.0</span>
+        <span>// structured × free-flow</span>
+      </div>
+      <div class="right">
+        <span>EOF</span>
+        <span><span class="blink"></span></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

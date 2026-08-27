@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>阅读数据一览</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Roboto+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --bg-main: #1A1A2E;
+  --bg-card: #16213E;
+  --bg-card-alt: #0F3460;
+  --green: #39FF14;
+  --mint: #A8E6CF;
+  --text-dim: #7F8C8D;
+  --border: #1B5E20;
+  --text-white: #E8E8E8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', 'Fira Code', monospace;
+  background: var(--bg-main);
+  color: var(--text-white);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg-main);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(57, 255, 20, 0.015) 2px,
+      rgba(57, 255, 20, 0.015) 4px
+    );
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 56px;
+  box-sizing: border-box;
+}
+
+/* ── Top terminal bar ── */
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: rgba(22, 33, 62, 0.6);
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-dots span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red { background: #FF5F56; }
+.dot-yellow { background: #FFBD2E; }
+.dot-green { background: #27C93F; }
+
+.terminal-bar .path {
+  color: var(--mint);
+}
+
+.terminal-bar .cmd {
+  color: var(--green);
+}
+
+.terminal-bar .caret {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--green);
+  margin-left: 4px;
+  animation: blink 1s steps(2) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.header-left h1 {
+  font-family: 'Fira Code', monospace;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(57, 255, 20, 0.4);
+}
+
+.header-left .subtitle-line {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--mint);
+  margin-top: 6px;
+}
+
+.header-right {
+  text-align: right;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+.header-right .status-green {
+  color: var(--green);
+}
+
+.header-right .status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 6px;
+  box-shadow: 0 0 6px var(--green);
+}
+
+/* ── Narrative ── */
+.narrative {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  color: var(--text-dim);
+  border-left: 3px solid var(--green);
+  padding: 12px 20px;
+  margin: 16px 0 22px 0;
+  background: rgba(57, 255, 20, 0.03);
+  line-height: 1.7;
+}
+
+.narrative .hl {
+  color: var(--mint);
+}
+
+/* ── Section label ── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+
+.section-label .brackets {
+  color: var(--text-dim);
+}
+
+.section-label .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ── KPI Grid ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.kpi-card {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  padding: 16px 20px 14px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--green);
+}
+
+.kpi-card .kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi-card .kpi-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--mint);
+  letter-spacing: 1px;
+}
+
+.kpi-card .kpi-id {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+
+.kpi-card .kpi-value {
+  font-family: 'Fira Code', monospace;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--green);
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+  line-height: 1.1;
+  margin-top: 4px;
+}
+
+.kpi-card .kpi-unit {
+  font-size: 16px;
+  color: var(--mint);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.kpi-card .kpi-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+.kpi-card .kpi-bar {
+  height: 4px;
+  background: rgba(57, 255, 20, 0.1);
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card .kpi-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+}
+
+/* ── Key Points Row ── */
+.points-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.point-card {
+  border: 1px solid var(--border);
+  background: rgba(22, 33, 62, 0.5);
+  padding: 12px 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.point-card .point-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--green);
+  line-height: 1;
+}
+
+.point-card .point-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--mint);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+.point-card .point-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10.5px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+.point-card .point-sep {
+  width: 30px;
+  height: 2px;
+  background: var(--green);
+  margin-top: 8px;
+}
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(57, 255, 20, 0.2);
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.footer .footer-left {
+  display: flex;
+  gap: 20px;
+}
+
+.footer .tag {
+  color: var(--mint);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  font-size: 10px;
+}
+
+.footer .caret-end {
+  display: inline-block;
+  width: 7px;
+  height: 12px;
+  background: var(--green);
+  animation: blink 1s steps(2) infinite;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="terminal-bar">
+      <div class="terminal-dots">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <span>$</span>
+      <span class="path">~/reading-dashboard</span>
+      <span class="cmd">python3 reading_report.py --period 2024Q2</span>
+      <span class="caret"></span>
+    </div>
+
+    <div class="header">
+      <div class="header-left">
+        <h1>&gt; 阅读数据一览</h1>
+        <div class="subtitle-line">// READING_INSIGHTS_OVERVIEW — 终端仪表盘 v1.0</div>
+      </div>
+      <div class="header-right">
+        <div><span class="status-dot"></span><span class="status-green">SYSTEM ONLINE</span></div>
+        <div>周期 | 2024-Q2 · 6 Weeks</div>
+        <div>数据源 | 个人知识库 · 开源社区</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span class="hl">[叙述]</span> 阅读不止于输入，更需转化为可量化的输出。以下数据展示了从阅读到实践、从个人习得到社区分享的<span class="hl">完整闭环</span>。
+    </div>
+
+    <div class="section-label">
+      <span class="brackets">/**</span>
+      <span>核心指标 KPI · CORE_METRICS</span>
+      <span class="line"></span>
+      <span class="brackets">*/</span>
+    </div>
+
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">&gt; 阅读书籍</span>
+            <span class="kpi-id">#K01</span>
+          </div>
+          <div class="kpi-value">8<span class="kpi-unit"> 册</span></div>
+          <div class="kpi-desc">// 6 周周期内系统阅读完成</div>
+        </div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 80%;"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">&gt; 笔记字数</span>
+            <span class="kpi-id">#K02</span>
+          </div>
+          <div class="kpi-value">15000<span class="kpi-unit">+ 字</span></div>
+          <div class="kpi-desc">// 中文字符累计产出</div>
+        </div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 75%;"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">&gt; 分享场次</span>
+            <span class="kpi-id">#K03</span>
+          </div>
+          <div class="kpi-value">3<span class="kpi-unit"> 场</span></div>
+          <div class="kpi-desc">// 线上直播读书分享</div>
+        </div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 50%;"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">&gt; 覆盖听众</span>
+            <span class="kpi-id">#K04</span>
+          </div>
+          <div class="kpi-value">~60<span class="kpi-unit"> 人</span></div>
+          <div class="kpi-desc">// 开源社区活跃成员</div>
+        </div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 60%;"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">&gt; 代码贡献</span>
+            <span class="kpi-id">#K05</span>
+          </div>
+          <div class="kpi-value">2<span class="kpi-unit"> 个 PR</span></div>
+          <div class="kpi-desc">// Merge 至上游主分支</div>
+        </div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 40%;"></div></div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-top">
+            <span class="kpi-label">&gt; 产出文档</span>
+            <span class="kpi-id">#K06</span>
+          </div>
+          <div class="kpi-value">1<span class="kpi-unit"> 份</span></div>
+          <div class="kpi-desc">// 开源布道入门手册</div>
+        </div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 25%;"></div></div>
+      </div>
+
+    </div>
+
+    <div class="section-label">
+      <span class="brackets">/**</span>
+      <span>关键要点 KEY_POINTS · 五维拆解</span>
+      <span class="line"></span>
+      <span class="brackets">*/</span>
+    </div>
+
+    <div class="points-row">
+      <div class="point-card">
+        <div class="point-num">01</div>
+        <div class="point-sep"></div>
+        <div class="point-title">阅读量</div>
+        <div class="point-text">六周共完成 8 册书籍的系统阅读与笔记整理</div>
+      </div>
+      <div class="point-card">
+        <div class="point-num">02</div>
+        <div class="point-sep"></div>
+        <div class="point-title">笔记产出</div>
+        <div class="point-text">累计输出超过 15000 字的阅读笔记与思维导图</div>
+      </div>
+      <div class="point-card">
+        <div class="point-num">03</div>
+        <div class="point-sep"></div>
+        <div class="point-title">讨论参与</div>
+        <div class="point-text">参与 3 场线上读书分享会，覆盖听众约 60 人次</div>
+      </div>
+      <div class="point-card">
+        <div class="point-num">04</div>
+        <div class="point-sep"></div>
+        <div class="point-title">代码实践</div>
+        <div class="point-text">基于书中理念完成 2 个开源项目的小幅 PR 贡献</div>
+      </div>
+      <div class="point-card">
+        <div class="point-num">05</div>
+        <div class="point-sep"></div>
+        <div class="point-title">知识转化</div>
+        <div class="point-text">沉淀 1 份开源布道入门手册供新晋贡献者参考</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <span class="tag"># reading</span>
+        <span class="tag"># open-source</span>
+        <span class="tag"># knowledge-share</span>
+        <span class="tag"># community</span>
+      </div>
+      <div>
+        <span style="color: var(--mint);">$</span> echo "阅读闭环 · 从输入到输出"
+        <span class="caret-end"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

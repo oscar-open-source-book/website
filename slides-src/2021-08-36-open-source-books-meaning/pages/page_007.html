@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>如何开始开源贡献</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1A1A2E;
+  --bg2:#16162a;
+  --panel:#232343;
+  --mint:#A8E6CF;
+  --neon:#39FF14;
+  --text:#e8e8f0;
+  --dim:#7a7a9a;
+  --accent:#5EEAD4;
+  --border:#2e2e58;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Roboto Mono',monospace;
+  color:var(--text);
+  background:var(--bg);
+  width:1600px;
+  height:900px;
+  overflow:hidden;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 56px 36px 56px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+#bg{
+  background:
+    radial-gradient(ellipse 900px 500px at 80% 20%, rgba(57,255,20,0.06), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 10% 90%, rgba(168,230,207,0.05), transparent 60%);
+}
+#bg::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(57,255,20,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,20,0.035) 1px, transparent 1px);
+  background-size:40px 40px;
+  opacity:0.7;
+}
+#bg::after{
+  content:'';
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.15) 0px,
+    rgba(0,0,0,0.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode:overlay;
+  opacity:0.4;
+}
+
+.terminal-bar{
+  display:flex;align-items:center;gap:14px;
+  padding:8px 16px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:6px;
+  font-family:'Fira Code',monospace;
+  font-size:13px;
+}
+.dots{display:flex;gap:7px;}
+.dot{width:11px;height:11px;border-radius:50%;}
+.dot.r{background:#ff5f57;}
+.dot.y{background:#ffbd2e;}
+.dot.g{background:#28c840;}
+.path{color:var(--dim);font-size:13px;}
+.path b{color:var(--mint);font-weight:500;}
+.path .neon{color:var(--neon);font-weight:500;}
+.cmd-prompt{color:var(--neon);font-weight:600;margin-right:4px;}
+
+.head{
+  margin-top:16px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+}
+.title-block h1{
+  font-family:'Fira Code',monospace;
+  font-size:38px;font-weight:700;
+  color:var(--mint);
+  letter-spacing:1px;
+  text-shadow:0 0 18px rgba(57,255,20,0.35);
+}
+.title-block .sub{
+  font-family:'Fira Code',monospace;
+  font-size:13px;color:var(--dim);
+  margin-top:6px;
+}
+.title-block .sub .caret{
+  display:inline-block;width:8px;height:15px;background:var(--neon);
+  vertical-align:-2px;margin-left:4px;animation:blink 1s steps(2) infinite;
+  box-shadow:0 0 8px var(--neon);
+}
+@keyframes blink{50%{opacity:0;}}
+
+.meta-tags{
+  display:flex;gap:8px;flex-direction:column;align-items:flex-end;
+  font-family:'Fira Code',monospace;font-size:11px;color:var(--dim);
+}
+.tag{
+  padding:4px 10px;border:1px solid var(--border);border-radius:4px;
+  background:rgba(35,35,67,0.7);color:var(--accent);
+}
+.tag.neon{color:var(--neon);border-color:rgba(57,255,20,0.4);}
+
+.narrative{
+  margin-top:12px;
+  padding:12px 18px;
+  border-left:3px solid var(--neon);
+  background:linear-gradient(90deg, rgba(57,255,20,0.06), rgba(35,35,67,0.4));
+  font-family:'Roboto Mono',monospace;font-size:13px;line-height:1.7;
+  color:var(--text);
+}
+.narrative b{color:var(--mint);font-weight:500;}
+.narrative .neon{color:var(--neon);font-weight:500;}
+
+.body{
+  flex:1;
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:34px 1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:14px 22px;
+  position:relative;
+}
+.progress-rail{
+  grid-row:1 / span 2;
+  width:34px;
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;
+  padding-top:8px;
+}
+.rail-line{
+  position:absolute;top:30px;bottom:14px;left:16px;width:2px;
+  background:linear-gradient(180deg,var(--neon) 0%,var(--neon) 45%,rgba(57,255,20,0.4) 46%,rgba(57,255,20,0.4) 100%);
+  box-shadow:0 0 6px rgba(57,255,20,0.5);
+}
+.rail-line::before{
+  content:'';position:absolute;left:-4px;top:-4px;width:10px;height:10px;
+  border-radius:50%;background:var(--neon);box-shadow:0 0 10px var(--neon),0 0 20px var(--neon);
+}
+.rail-line::after{
+  content:'';position:absolute;left:-3px;bottom:-3px;width:8px;height:8px;
+  border-radius:50%;background:var(--mint);box-shadow:0 0 6px var(--mint);
+}
+.rail-top{font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);writing-mode:vertical-rl;letter-spacing:2px;text-shadow:0 0 6px var(--neon);}
+.rail-bot{font-family:'Fira Code',monospace;font-size:10px;color:var(--dim);writing-mode:vertical-rl;letter-spacing:2px;margin-bottom:6px;}
+
+.card{
+  position:relative;
+  background:linear-gradient(135deg, rgba(35,35,67,0.85), rgba(22,22,42,0.9));
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 18px 14px 60px;
+  display:flex;flex-direction:column;justify-content:center;
+  overflow:hidden;
+  transition:none;
+}
+.card::before{
+  content:'';
+  position:absolute;top:0;left:0;width:3px;height:100%;
+  background:var(--neon);
+  box-shadow:0 0 8px var(--neon);
+  opacity:0.8;
+}
+.card::after{
+  content:'';
+  position:absolute;top:0;right:0;width:80px;height:80px;
+  background:radial-gradient(circle at top right, rgba(57,255,20,0.1), transparent 70%);
+  pointer-events:none;
+}
+.card .num{
+  position:absolute;top:10px;left:12px;
+  font-family:'Fira Code',monospace;font-weight:700;
+  font-size:20px;color:var(--neon);
+  text-shadow:0 0 8px rgba(57,255,20,0.5);
+}
+.card .pulse{
+  position:absolute;bottom:10px;left:14px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--neon);
+  box-shadow:0 0 8px var(--neon),0 0 16px var(--neon);
+}
+.card:nth-child(3) .pulse,
+.card:nth-child(4) .pulse{
+  background:var(--mint);box-shadow:0 0 6px var(--mint);
+}
+.card .h-row{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:4px;
+}
+.card .step-tag{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--dim);letter-spacing:2px;
+}
+.card h3{
+  font-family:'Fira Code',monospace;font-size:20px;font-weight:600;
+  color:var(--mint);
+}
+.card .desc{
+  font-family:'Roboto Mono',monospace;font-size:12px;line-height:1.6;
+  color:var(--text);opacity:0.9;
+  margin-top:2px;
+}
+.card .desc .hi{color:var(--neon);font-weight:500;}
+.card .desc .mint{color:var(--mint);font-weight:500;}
+
+.cmd-line{
+  margin-top:6px;
+  font-family:'Fira Code',monospace;font-size:11px;
+  color:var(--dim);
+  padding:3px 8px;
+  background:rgba(0,0,0,0.3);
+  border-radius:3px;
+  display:inline-block;
+  width:fit-content;
+}
+.cmd-line .p{color:var(--neon);}
+.cmd-line .c{color:var(--accent);}
+
+.footer{
+  margin-top:10px;
+  padding:12px 20px;
+  border:1px solid rgba(57,255,20,0.35);
+  border-radius:6px;
+  background:linear-gradient(90deg, rgba(57,255,20,0.08), rgba(35,35,67,0.6) 60%, rgba(57,255,20,0.06));
+  display:flex;align-items:center;gap:20px;
+  font-family:'Fira Code',monospace;
+  position:relative;
+  overflow:hidden;
+}
+.footer::after{
+  content:'';position:absolute;left:0;top:0;height:100%;width:6px;
+  background:var(--neon);box-shadow:0 0 10px var(--neon);
+}
+.footer .label{
+  font-size:11px;color:var(--dim);letter-spacing:2px;
+  padding-right:14px;border-right:1px solid var(--border);
+  line-height:1.4;
+}
+.footer .label b{display:block;font-size:13px;color:var(--neon);letter-spacing:1px;margin-bottom:2px;}
+.footer .chain{
+  display:flex;align-items:center;gap:8px;flex:1;flex-wrap:nowrap;
+}
+.chain .node{
+  padding:6px 12px;
+  background:rgba(57,255,20,0.08);
+  border:1px solid rgba(57,255,20,0.4);
+  border-radius:4px;
+  font-size:13px;font-weight:600;color:var(--mint);
+  white-space:nowrap;
+}
+.chain .arr{color:var(--neon);font-size:16px;font-weight:700;text-shadow:0 0 6px var(--neon);}
+.footer .stat{
+  display:flex;flex-direction:column;align-items:flex-end;
+  padding-left:14px;border-left:1px solid var(--border);
+}
+.footer .stat .num{font-size:26px;font-weight:700;color:var(--neon);text-shadow:0 0 12px var(--neon);line-height:1;}
+.footer .stat .txt{font-size:10px;color:var(--dim);letter-spacing:2px;margin-top:4px;}
+
+.footer-right-tag{
+  font-size:10px;color:var(--dim);letter-spacing:2px;
+  padding-left:10px;border-left:1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="terminal-bar">
+      <div class="dots">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      </div>
+      <span class="path">root@<b>opencore</b>:/home/contributor<span class="neon">~/open-source</span> <span class="cmd-prompt">$</span> cat roadmap.md</span>
+    </div>
+
+    <div class="head">
+      <div class="title-block">
+        <h1>&gt; 如何开始开源贡献<span class="caret"></span></h1>
+        <div class="sub"># 从零到第一个 PR · Open Source Onboarding Guide v1.0</div>
+      </div>
+      <div class="meta-tags">
+        <span class="tag"># 新手友好</span>
+        <span class="tag neon"># 四步闭环</span>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span class="cmd-prompt">$</span> echo "将<b>阅读的感悟</b>落地为<span class="neon">实际行动</span>，是本次分享最重要的<span class="neon">闭环</span>。<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;以下是我们为新手整理的<b>一套从零开始参与开源的四步实践路径</b>——从选项目到建信任，每一步都可落地、可复盘、可复制。"
+    </div>
+
+    <div class="body">
+
+      <div class="progress-rail">
+        <span class="rail-top">PIPELINE</span>
+        <div class="rail-line"></div>
+        <span class="rail-bot">EXECUTE</span>
+      </div>
+
+      <div class="card">
+        <span class="num">01</span>
+        <div class="pulse"></div>
+        <div class="h-row">
+          <span class="step-tag">// STEP 01</span>
+          <h3>选好项目</h3>
+        </div>
+        <div class="desc">从<span class="mint">日常使用的工具</span>入手，关注带有 <span class="hi">Good First Issue</span> 标签的新手友好项目，降低理解成本与上手门槛。</div>
+        <div class="cmd-line"><span class="p">$</span> gh issue list --label <span class="c">"good first issue"</span></div>
+      </div>
+
+      <div class="card">
+        <span class="num">02</span>
+        <div class="pulse"></div>
+        <div class="h-row">
+          <span class="step-tag">// STEP 02</span>
+          <h3>读懂规范</h3>
+        </div>
+        <div class="desc">仔细阅读 <span class="hi">CONTRIBUTING.md</span> 与 <span class="hi">CODE_OF_CONDUCT</span>，理解项目的<span class="mint">协作礼仪</span>、提交流程与行为准则。</div>
+        <div class="cmd-line"><span class="p">$</span> cat <span class="c">CONTRIBUTING.md</span> &amp;&amp; cat <span class="c">CODE_OF_CONDUCT.md</span></div>
+      </div>
+
+      <div class="card">
+        <span class="num">03</span>
+        <div class="pulse"></div>
+        <div class="h-row">
+          <span class="step-tag">// STEP 03</span>
+          <h3>从小开始</h3>
+        </div>
+        <div class="desc">第一个 <span class="hi">PR</span> 可以是修正文档错别字，关键是<span class="mint">建立信心</span>与代码审查对话，感受完整的协作闭环。</div>
+        <div class="cmd-line"><span class="p">$</span> git commit -m <span class="c">"fix: typo in README"</span> &amp;&amp; gh pr create</div>
+      </div>
+
+      <div class="card">
+        <span class="num">04</span>
+        <div class="pulse"></div>
+        <div class="h-row">
+          <span class="step-tag">// STEP 04</span>
+          <h3>保持耐心</h3>
+        </div>
+        <div class="desc">维护者的反馈可能有延迟，用<span class="mint">礼貌与持续沟通</span>赢得信任与合作，长期积累才是开源之路的<span class="hi">底层逻辑</span>。</div>
+        <div class="cmd-line"><span class="p">$</span> echo <span class="c">"be polite, be persistent, build trust"</span></div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="label"><b>SUMMARY</b>入门步骤合计</div>
+      <div class="chain">
+        <span class="node">① 选项目</span>
+        <span class="arr">→</span>
+        <span class="node">② 读规范</span>
+        <span class="arr">→</span>
+        <span class="node">③ 小起步</span>
+        <span class="arr">→</span>
+        <span class="node">④ 耐心沟通</span>
+      </div>
+      <div class="stat">
+        <span class="num">4 步</span>
+        <span class="txt">CLOSED-LOOP</span>
+      </div>
+      <div class="footer-right-tag">
+        <b style="color:var(--neon);">$</b> exit(0) // success
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
