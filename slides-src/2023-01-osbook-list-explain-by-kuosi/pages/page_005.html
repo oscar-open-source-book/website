@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二部分·工程实践</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --gold: #C08B3E;
+  --gold-light: #E0B777;
+  --gray: #9CA3AF;
+  --gray-light: #E5E7EB;
+  --bg-warm: #FAF8F4;
+  --bg-card: #FFFFFF;
+  --text-main: #1F2937;
+  --text-sub: #4B5563;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-warm);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-warm);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #FAF8F4 0%, #F3EEE6 50%, #FAF8F4 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
+  box-sizing: border-box;
+}
+
+/* Top decorative line */
+.top-line {
+  position: absolute;
+  top: 40px;
+  left: 72px;
+  right: 72px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, transparent 100%);
+  opacity: 0.6;
+}
+
+.top-meta {
+  position: absolute;
+  top: 52px;
+  left: 72px;
+  right: 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--gray);
+  font-weight: 500;
+}
+
+/* Main area */
+.main-area {
+  display: flex;
+  margin-top: 48px;
+  gap: 40px;
+}
+
+/* Left column - big number */
+.left-col {
+  width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 12px;
+  position: relative;
+}
+
+.left-label {
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.big-number {
+  font-size: 360px;
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 0.9;
+  letter-spacing: -8px;
+  position: relative;
+}
+
+.big-number-deco {
+  position: absolute;
+  top: 20px;
+  right: -10px;
+  width: 80px;
+  height: 80px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.left-caption {
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--gray);
+  letter-spacing: 4px;
+  font-weight: 400;
+}
+
+.left-vline {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 16px 0;
+}
+
+.left-sub-caption {
+  font-size: 12px;
+  color: var(--gray);
+  letter-spacing: 2px;
+  line-height: 1.8;
+  max-width: 360px;
+}
+
+/* Right column */
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.section-tag::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  display: inline-block;
+}
+
+.main-title {
+  font-size: 58px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.15;
+  letter-spacing: 2px;
+}
+
+.gold-underline {
+  width: 120px;
+  height: 3px;
+  background: var(--gold);
+  margin: 22px 0 22px 0;
+  position: relative;
+}
+
+.gold-underline::after {
+  content: '';
+  position: absolute;
+  left: 130px;
+  top: 1px;
+  width: 4px;
+  height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.subtitle {
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.7;
+  max-width: 640px;
+  letter-spacing: 1px;
+}
+
+/* Horizontal divider */
+.h-divider {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.h-divider .line {
+  flex: 1;
+  height: 1px;
+  background: var(--gray-light);
+}
+
+.h-divider .dot {
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--gold);
+  transform: rotate(45deg);
+}
+
+/* Three columns */
+.three-cols {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+}
+
+.col-card {
+  padding: 22px 24px;
+  background: var(--bg-card);
+  border: 1px solid #F0EBE1;
+  border-radius: 2px;
+  position: relative;
+  min-height: 160px;
+}
+
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 2px;
+  background: var(--gold);
+}
+
+.col-num {
+  font-size: 12px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.col-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.col-en {
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 2px;
+  font-style: italic;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.col-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+/* Bottom narrative */
+.bottom-area {
+  position: absolute;
+  bottom: 60px;
+  left: 72px;
+  right: 72px;
+}
+
+.bottom-narrative {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+  max-width: 1000px;
+  font-weight: 400;
+  border-left: 2px solid var(--gold);
+  padding-left: 16px;
+}
+
+.bottom-line {
+  margin-top: 14px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gray-light) 20%, var(--gray-light) 80%, transparent 100%);
+}
+
+/* Decorative corner elements */
+.corner-tl {
+  position: absolute;
+  top: 72px;
+  left: 40px;
+  width: 12px;
+  height: 12px;
+  border-left: 1px solid var(--gold);
+  border-top: 1px solid var(--gold);
+  opacity: 0.4;
+}
+
+.corner-br {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 12px;
+  height: 12px;
+  border-right: 1px solid var(--gold);
+  border-bottom: 1px solid var(--gold);
+  opacity: 0.4;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="top-line"></div>
+    <div class="top-meta">
+      <span>ENGINEERING PRACTICE</span>
+      <span>PART 02 / 03</span>
+    </div>
+
+    <div class="main-area">
+      <div class="left-col">
+        <div class="left-label">CHAPTER</div>
+        <div class="big-number">02<span class="big-number-deco"></span></div>
+        <div class="left-vline"></div>
+        <div class="left-caption">PART TWO</div>
+        <div class="left-sub-caption">从代码出发<br>回到工程的本质</div>
+      </div>
+
+      <div class="right-col">
+        <div class="section-tag"><span>本&nbsp;&nbsp;篇</span></div>
+        <h1 class="main-title">第二部分·工程实践</h1>
+        <div class="gold-underline"></div>
+        <p class="subtitle">从代码出发，掌握让软件更优雅、<br>可维护的方法</p>
+
+        <div class="h-divider">
+          <div class="line"></div>
+          <div class="dot"></div>
+          <span style="font-size:11px;color:var(--gray);letter-spacing:3px;font-weight:500;">CORE DIRECTIONS</span>
+          <div class="dot"></div>
+          <div class="line"></div>
+        </div>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-num">01 / 03</div>
+            <div class="col-title">代码质量</div>
+            <div class="col-en">CODE QUALITY</div>
+            <div class="col-desc">阅读可维护性、可读性、可测试性三位一体的核心工程素养</div>
+          </div>
+          <div class="col-card">
+            <div class="col-num">02 / 03</div>
+            <div class="col-title">重构思维</div>
+            <div class="col-en">REFACTORING MINDSET</div>
+            <div class="col-desc">以渐进式改写替代推倒重来，降低系统演进风险</div>
+          </div>
+          <div class="col-card">
+            <div class="col-num">03 / 03</div>
+            <div class="col-title">设计智慧</div>
+            <div class="col-en">DESIGN WISDOM</div>
+            <div class="col-desc">经典设计模式与架构原则如何服务于长期可维护目标</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-area">
+      <p class="bottom-narrative">工程实践篇关注工程师每天的代码工作——如何写出能活过自己维护期的软件？本书从书单中精选了最具实战价值的三本参考。</p>
+      <div class="bottom-line"></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,435 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>《代码整洁之道》核心内容梳理</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #0D2137;
+  --gold: #C08B3E;
+  --gray: #9CA3AF;
+  --gray-light: #F3F4F6;
+  --gray-mid: #E5E7EB;
+  --white: #FFFFFF;
+  --ink: #1F2937;
+  --ink-soft: #4B5563;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--ink);
+  background: #FAFBFC;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #FDFCFA 0%, #F5F1E9 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 80% 10%, rgba(192,139,62,0.06) 0%, transparent 55%),
+              radial-gradient(ellipse at 5% 95%, rgba(13,33,55,0.04) 0%, transparent 50%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 64px 40px 64px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Top header ---- */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header .eyebrow {
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  font-family: 'PingFang SC', 'Inter', sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+}
+
+.header .title-rule {
+  width: 60px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0 auto 12px auto;
+}
+
+.header .lede {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+  max-width: 1080px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+/* ---- Main grid ---- */
+.main {
+  display: flex;
+  gap: 28px;
+  flex: 1;
+  min-height: 0;
+  margin-top: 6px;
+}
+
+/* ---- Left: cards column ---- */
+.cards-col {
+  width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(13,33,55,0.06), 0 1px 2px rgba(13,33,55,0.04);
+  border-left: 3px solid var(--gold);
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card .card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.card .num {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--primary);
+  padding: 3px 8px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+
+.card .num.gold {
+  background: var(--gold);
+}
+
+.card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 1px;
+  font-family: 'PingFang SC', 'Inter', sans-serif;
+}
+
+.card p {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ---- Right: comparison block ---- */
+.comparison {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(13,33,55,0.08);
+}
+
+.block {
+  padding: 18px 22px 16px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.block.bad {
+  background: var(--primary);
+  color: #DCE3EC;
+}
+
+.block.good {
+  background: var(--white);
+  color: var(--ink);
+}
+
+.block .block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.block .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+.block.bad .tag {
+  color: var(--gold);
+}
+
+.block.good .tag {
+  color: var(--primary);
+}
+
+.tag-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.block.bad .tag-dot { background: var(--gold); }
+.block.good .tag-dot { background: var(--gold); }
+
+.block .meta {
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+.block h4 {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.block.bad h4 { color: #E8C98A; }
+.block.good h4 { color: var(--primary); }
+
+.code-box {
+  font-family: 'Inter', 'SFMono-Regular', Consolas, monospace;
+  font-size: 11.5px;
+  line-height: 1.55;
+  padding: 10px 14px;
+  border-radius: 6px;
+  flex: 1;
+  overflow: hidden;
+  white-space: pre;
+}
+
+.block.bad .code-box {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #B8C4D4;
+}
+
+.block.good .code-box {
+  background: #F7F5EE;
+  border: 1px solid var(--gray-mid);
+  color: var(--ink);
+}
+
+.code-box .kw { color: #7EB6E0; }
+.code-box .fn { color: #E8C98A; }
+.block.good .code-box .kw { color: var(--primary); }
+.block.good .code-box .fn { color: var(--gold); }
+.code-box .cm { color: var(--gray); font-style: italic; }
+.code-box .str { color: #D4A574; }
+
+.divider {
+  height: 3px;
+  background: var(--gold);
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: var(--gold);
+  border: 2px solid #FDFCFA;
+}
+
+/* ---- Bottom data labels ---- */
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-mid);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat .stat-label {
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+
+.stat .stat-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.stat .stat-value .gold { color: var(--gold); }
+
+.stat-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--gray-mid);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="eyebrow"><span>CLEAN CODE · 书摘点评</span></div>
+      <h1><span>《代码整洁之道》</span></h1>
+      <div class="title-rule"></div>
+      <p class="lede"><span>这本书用大量对比示例展示了「好代码」与「坏代码」的差距——它不仅仅关乎格式化规范，更关乎一种工程素养：写代码的人，对自己产出的尊重。</span></p>
+    </div>
+
+    <div class="main">
+
+      <div class="cards-col">
+        <div class="card">
+          <div class="card-head">
+            <span class="num">01</span>
+            <h3><span>核心理念</span></h3>
+          </div>
+          <p><span>Robert C. Martin 强调：代码首先是写给人读的，其次才是给机器执行。</span></p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="num">02</span>
+            <h3><span>命名艺术</span></h3>
+          </div>
+          <p><span>有意义的命名是降低认知负荷的第一步，远胜于任何注释。</span></p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="num">03</span>
+            <h3><span>函数纪律</span></h3>
+          </div>
+          <p><span>函数应只做一件事，且尽量短小，便于测试与复用。</span></p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="num gold">★</span>
+            <h3><span>适兕点评</span></h3>
+          </div>
+          <p><span>适合作为团队代码评审的共识手册，每次 Code Review 都是对本书的实践。</span></p>
+        </div>
+      </div>
+
+      <div class="comparison">
+        <div class="block bad">
+          <div class="block-head">
+            <span class="tag"><span class="tag-dot"></span><span>坏代码 · BAD CODE</span></span>
+            <span class="meta">命名含糊 · 职责混杂 · 难以复用</span>
+          </div>
+          <h4>一段真实的「反模式」——变量名自欺欺人，函数同时完成查询、格式化与筛选</h4>
+<div class="code-box"><span class="cm">// 看起来能跑，但没人愿意维护</span>
+<span class="kw">function</span> <span class="fn">get</span>(d) {
+  <span class="kw">var</span> r = db.query(d.q);
+  <span class="kw">for</span> (<span class="kw">var</span> i = 0; i &lt; r.length; i++) {
+    r[i].name = r[i].name.<span class="fn">toLowerCase</span>();
+    <span class="kw">if</span> (!r[i].<span class="fn">isActive</span>()) r.splice(i, 1);
+  }
+  <span class="kw">return</span> r;
+}</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="block good">
+          <div class="block-head">
+            <span class="tag"><span class="tag-dot"></span><span>好代码 · CLEAN CODE</span></span>
+            <span class="meta">命名自解释 · 单一职责 · 易于测试</span>
+          </div>
+          <h4>同样的逻辑，拆解为可组合、可复用的纯函数，让意图一目了然</h4>
+<div class="code-box"><span class="cm">// 每个片段都说明自己的意图</span>
+<span class="kw">function</span> <span class="fn">fetchActiveUsers</span>(startDate) {
+  <span class="kw">return</span> db.query(<span class="fn">buildUserQuery</span>(startDate))
+    .<span class="fn">map</span>(<span class="fn">normalizeUserName</span>)
+    .<span class="fn">filter</span>(<span class="fn">isActive</span>);
+}
+
+<span class="kw">function</span> <span class="fn">normalizeUserName</span>(user) {
+  <span class="kw">return</span> { ...user, name: user.name.<span class="fn">toLowerCase</span>() };
+}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="stat">
+        <span class="stat-label">AUTHOR</span>
+        <span class="stat-value">Robert C. Martin</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-label">CHAPTERS</span>
+        <span class="stat-value"><span class="gold">50+</span> 章节</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-label">TEAM VALUE</span>
+        <span class="stat-value">代码评审基准</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

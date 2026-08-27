@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>《重构》案例介绍</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #0D2137;
+  --amber: #C08B3E;
+  --gray: #9CA3AF;
+  --light-bg: #F7F8FA;
+  --card-bg: #FFFFFF;
+  --border: #E5E7EB;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--light-bg);
+  color: var(--primary);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #F7F8FA 0%, #EEF1F5 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 56px 40px 56px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top accent line */
+#ct::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 56px;
+  width: 72px;
+  height: 3px;
+  background: var(--amber);
+  z-index: 2;
+}
+
+/* Page header tag */
+.page-tag {
+  position: absolute;
+  top: 48px;
+  right: 56px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+
+.main-area {
+  display: flex;
+  gap: 32px;
+  flex: 1;
+  margin-top: 28px;
+  min-height: 0;
+}
+
+/* ===== Left Column ===== */
+.left-col {
+  width: 380px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-title {
+  font-size: 68px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--primary);
+}
+
+.book-subtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--gray);
+  margin-top: 12px;
+  letter-spacing: 1px;
+}
+
+.meta-row {
+  display: flex;
+  gap: 18px;
+  margin-top: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gray);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.meta-value .accent {
+  color: var(--amber);
+}
+
+.narrative {
+  margin-top: 24px;
+  padding-left: 16px;
+  border-left: 2px solid var(--amber);
+}
+
+.narrative-text {
+  font-size: 13px;
+  line-height: 1.85;
+  color: #374151;
+  font-weight: 400;
+}
+
+.narrative-text .hl {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ===== Center Column ===== */
+.center-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--amber);
+}
+
+.card-num {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.card-text {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #4B5563;
+  font-weight: 400;
+}
+
+.card-tag {
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gray);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ===== Right Column ===== */
+.right-col {
+  width: 460px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.right-title::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--amber);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.comparison-box {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+  position: relative;
+}
+
+.comp-side {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 16px;
+}
+
+.comp-side-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+
+.comp-before-label {
+  color: #DC2626;
+  background: #FEF2F2;
+}
+
+.comp-after-label {
+  color: #059669;
+  background: #ECFDF5;
+}
+
+/* Messy lines container */
+.messy-lines {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  overflow: hidden;
+}
+
+.messy-lines .line {
+  position: absolute;
+  height: 2px;
+  background: #DC2626;
+  opacity: 0.55;
+}
+
+.l1 { top: 30%; left: -10%; width: 120%; transform: rotate(-25deg); }
+.l2 { top: 50%; left: -20%; width: 140%; transform: rotate(15deg); }
+.l3 { top: 70%; left: -15%; width: 130%; transform: rotate(-8deg); }
+.l4 { top: 20%; left: 20%; width: 80%; transform: rotate(40deg); height: 1.5px; }
+.l5 { top: 60%; left: 10%; width: 90%; transform: rotate(-35deg); height: 1.5px; }
+.l6 { top: 40%; left: 30%; width: 70%; transform: rotate(55deg); height: 1px; opacity: 0.4; }
+.l7 { top: 80%; left: -5%; width: 110%; transform: rotate(22deg); height: 1px; opacity: 0.35; }
+.l8 { top: 10%; left: 40%; width: 60%; transform: rotate(-50deg); height: 1px; opacity: 0.35; }
+.l9 { top: 45%; left: 5%; width: 95%; transform: rotate(3deg); height: 1px; opacity: 0.3; }
+.l10 { top: 85%; left: 25%; width: 50%; transform: rotate(-60deg); height: 1.5px; opacity: 0.5; }
+
+/* Grid container */
+.grid-area {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  overflow: hidden;
+}
+
+.grid-area .grid-cell {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #059669;
+  opacity: 0.3;
+  border-radius: 2px;
+}
+
+/* Arrow divider */
+.comp-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 40px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, rgba(220,38,38,0.05) 0%, rgba(192,139,62,0.15) 50%, rgba(5,150,105,0.05) 100%);
+  z-index: 2;
+}
+
+.arrow-svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* Transition gradient band */
+.transit-band {
+  position: absolute;
+  top: 40px;
+  bottom: 50px;
+  left: 50%;
+  width: 60px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, rgba(220,38,38,0.08) 0%, rgba(192,139,62,0.12) 50%, rgba(5,150,105,0.08) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.comp-desc {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.comp-desc-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--gray);
+}
+
+.comp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dot-red { background: #DC2626; }
+.dot-green { background: #059669; }
+
+.right-bottom-note {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.note-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.note-text {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #E5E7EB;
+}
+
+/* ===== Bottom Footer ===== */
+.footer-line {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-main {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.footer-main .accent-dot {
+  color: var(--amber);
+}
+
+.footer-meta {
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="page-tag">CASE STUDY · 01</div>
+
+    <div class="main-area">
+      <!-- Left Column -->
+      <div class="left-col">
+        <div class="book-title">《重构》</div>
+        <div class="book-subtitle">REFACTORING · IMPROVING THE DESIGN OF EXISTING CODE</div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">作者</span>
+            <span class="meta-value">Martin Fowler</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">版本</span>
+            <span class="meta-value">第 2 版 · 2018</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">重构手法</span>
+            <span class="meta-value"><span class="accent">50+</span></span>
+          </div>
+        </div>
+
+        <div class="narrative">
+          <p class="narrative-text">重构<span class="hl">不是重写</span>，而是在不改变外部行为的前提下持续改善内部结构，本书给出了清晰的重构清单和测试策略，是现代软件工程中<span class="hl">影响最深远的实践手册之一</span>。</p>
+        </div>
+      </div>
+
+      <!-- Center Column -->
+      <div class="center-col">
+        <div class="cards-grid">
+          <div class="card">
+            <span class="card-num">01</span>
+            <div class="card-title">核心方法</div>
+            <p class="card-text">Martin Fowler 定义了数十种重构手法，为代码演进提供系统工具箱。</p>
+            <span class="card-tag">METHOD</span>
+          </div>
+          <div class="card">
+            <span class="card-num">02</span>
+            <div class="card-title">坏味道</div>
+            <p class="card-text">过长函数、重复代码、过大类等坏味道是重构的触发信号。</p>
+            <span class="card-tag">SMELL</span>
+          </div>
+          <div class="card">
+            <span class="card-num">03</span>
+            <div class="card-title">测试保障</div>
+            <p class="card-text">重构前先补测试，用自动化测试守护行为不变性。</p>
+            <span class="card-tag">TEST</span>
+          </div>
+          <div class="card">
+            <span class="card-num">04</span>
+            <div class="card-title">适兕点评</div>
+            <p class="card-text">每个写代码的人都应把它放在手边，遇到坏味道时随时翻阅对照。</p>
+            <span class="card-tag">REVIEW</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <div class="right-title">重构前后对比示意</div>
+        <div class="comparison-box">
+          <div class="comp-side">
+            <div class="messy-lines">
+              <div class="line l1"></div>
+              <div class="line l2"></div>
+              <div class="line l3"></div>
+              <div class="line l4"></div>
+              <div class="line l5"></div>
+              <div class="line l6"></div>
+              <div class="line l7"></div>
+              <div class="line l8"></div>
+              <div class="line l9"></div>
+              <div class="line l10"></div>
+            </div>
+            <span class="comp-side-label comp-before-label">重构前</span>
+          </div>
+          <div class="transit-band"></div>
+          <div class="comp-arrow">
+            <svg class="arrow-svg" viewBox="0 0 28 28" fill="none">
+              <path d="M4 14 H22" stroke="#C08B3E" stroke-width="2" stroke-linecap="round"/>
+              <path d="M16 8 L23 14 L16 20" stroke="#C08B3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div class="comp-side">
+            <div class="grid-area" id="gridArea"></div>
+            <span class="comp-side-label comp-after-label">重构后</span>
+          </div>
+        </div>
+
+        <div class="comp-desc">
+          <span class="comp-desc-item"><span class="comp-dot dot-red"></span>混乱·低可维护</span>
+          <span class="comp-desc-item"><span class="comp-dot dot-green"></span>秩序·清晰可演进</span>
+        </div>
+
+        <div class="right-bottom-note">
+          <span class="note-icon">!</span>
+          <span class="note-text">外部行为不变，内部结构持续优化——这正是重构的核心承诺。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-line">
+      <span class="footer-main">重构，让代码持续变好<span class="accent-dot">。</span></span>
+      <span class="footer-meta">REFACTORING · A PRACTICE GUIDE</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var gridArea = document.getElementById('gridArea');
+  if (!gridArea) return;
+  var rows = 7, cols = 12;
+  var cellW = 24, cellH = 20;
+  for (var r = 0; r < rows; r++) {
+    for (var c = 0; c < cols; c++) {
+      var cell = document.createElement('div');
+      cell.className = 'grid-cell';
+      var baseOpacity = 0.25 + (Math.sin(r + c) * 0.15 + 0.15);
+      cell.style.left = (c * cellW + 6) + 'px';
+      cell.style.top = (r * cellH + 4) + 'px';
+      cell.style.width = '18px';
+      cell.style.height = '14px';
+      cell.style.opacity = baseOpacity.toFixed(2);
+      cell.style.background = '#059669';
+      gridArea.appendChild(cell);
+    }
+  }
+})();
+</script>
+</body>
+</html>
