@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>阅读分享 · 核心观点</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --gray:#B0BEC5;
+  --dark-bg:#070d1c;
+  --panel:#0d1830;
+  --panel-2:#10203f;
+  --line:rgba(0,188,212,0.28);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:#000;}
+body{font-family:'Roboto Mono',monospace;font-size:16px;color:#e3ecfa;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#050a18 0%,#07102a 45%,#040714 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg::before{content:"";position:absolute;top:-200px;right:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.18) 0%,rgba(33,150,243,0) 70%);}
+#bg::after{content:"";position:absolute;bottom:-200px;left:-150px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,0.16) 0%,rgba(0,188,212,0) 70%);}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,188,212,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,188,212,0.05) 1px,transparent 1px);background-size:60px 60px;opacity:0.6;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+h1,h2,h3{font-family:'Inter',sans-serif;font-weight:700;}
+
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+.title-wrap{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:44px;background:linear-gradient(180deg,#2196F3,#00BCD4);box-shadow:0 0 14px rgba(33,150,243,0.7);}
+.page-title{font-family:'Inter',sans-serif;font-weight:800;font-size:32px;color:#fff;letter-spacing:1px;}
+.page-title .accent{color:#2196F3;text-shadow:0 0 18px rgba(33,150,243,0.6);}
+.title-sub{font-size:13px;color:var(--gray);letter-spacing:3px;margin-top:6px;font-family:'Roboto Mono',monospace;}
+.badge{display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid rgba(0,188,212,0.4);border-radius:20px;font-size:12px;color:#00BCD4;letter-spacing:2px;}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:#00BCD4;box-shadow:0 0 10px #00BCD4;animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+.main{display:grid;grid-template-columns:430px 1fr;gap:32px;flex:1;min-height:0;}
+
+/* LEFT */
+.left{background:linear-gradient(160deg,#0d1a38 0%,#081025 100%);border:1px solid rgba(0,188,212,0.22);border-radius:14px;padding:28px 26px;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.left::after{content:"";position:absolute;top:0;right:0;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.22),transparent 70%);}
+.quote-mark{font-family:'Inter',sans-serif;font-size:150px;font-weight:800;line-height:1;color:#2196F3;text-shadow:0 0 30px rgba(33,150,243,0.85),0 0 60px rgba(33,150,243,0.45);align-self:flex-start;margin-top:-18px;margin-left:-4px;}
+.quote-mark::after{content:"";display:block;width:60px;height:3px;background:linear-gradient(90deg,#00BCD4,transparent);margin-top:6px;box-shadow:0 0 8px rgba(0,188,212,0.7);}
+.golden-quote{font-family:'Inter',sans-serif;font-weight:600;font-size:18px;line-height:1.75;color:#eaf2ff;margin-top:14px;letter-spacing:0.3px;}
+.golden-quote .hl{color:#00BCD4;text-shadow:0 0 10px rgba(0,188,212,0.5);}
+
+.kpi-block{margin-top:22px;display:flex;flex-direction:column;gap:12px;}
+.kpi{background:rgba(255,255,255,0.03);border:1px solid rgba(33,150,243,0.25);border-left:3px solid #2196F3;border-radius:8px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.kpi .k-label{font-size:12px;color:var(--gray);letter-spacing:1px;line-height:1.5;}
+.kpi .k-num-wrap{text-align:right;}
+.kpi .k-num{font-family:'Inter',sans-serif;font-weight:800;font-size:26px;color:#2196F3;text-shadow:0 0 12px rgba(33,150,243,0.75);letter-spacing:0.5px;}
+.kpi .k-note{font-size:10px;color:#00BCD4;letter-spacing:1px;margin-top:2px;}
+
+/* RIGHT */
+.right{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+.card{position:relative;background:linear-gradient(175deg,#0f1c3a 0%,#081327 100%);border:1px solid rgba(0,188,212,0.35);border-radius:12px;padding:20px 16px 18px 16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 18px rgba(33,150,243,0.08) inset;}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#2196F3,#00BCD4);box-shadow:0 0 10px rgba(0,188,212,0.6);}
+.card::after{content:"";position:absolute;bottom:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,188,212,0.5),transparent);}
+.card-num{font-family:'Inter',sans-serif;font-weight:800;font-size:42px;color:rgba(33,150,243,0.22);line-height:1;letter-spacing:1px;}
+.card-tag{font-size:10px;color:#00BCD4;letter-spacing:2px;margin-top:6px;}
+.card-divider{width:36px;height:2px;background:linear-gradient(90deg,#2196F3,#00BCD4);margin:10px 0 10px 0;box-shadow:0 0 8px rgba(0,188,212,0.6);}
+.card-title{font-family:'Inter',sans-serif;font-weight:700;font-size:19px;color:#fff;line-height:1.3;letter-spacing:0.5px;text-shadow:0 0 10px rgba(33,150,243,0.35);}
+.card-desc{font-family:'Roboto Mono',monospace;font-size:11.5px;line-height:1.7;color:var(--gray);margin-top:10px;flex:1;}
+.card-footer{margin-top:14px;display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(0,188,212,0.15);}
+.card-footer .ft-l{font-size:9px;color:#00BCD4;letter-spacing:1px;}
+.card-footer .ft-r{font-size:9px;color:var(--gray);letter-spacing:1px;}
+
+.foot{margin-top:18px;padding:12px 20px;background:linear-gradient(90deg,rgba(33,150,243,0.12),rgba(0,188,212,0.08));border:1px solid rgba(0,188,212,0.28);border-left:3px solid #00BCD4;border-radius:6px;font-size:13px;color:#eaf2ff;letter-spacing:1.5px;display:flex;align-items:center;justify-content:space-between;}
+.foot .dotline{display:flex;align-items:center;gap:8px;}
+.foot .fdot{width:6px;height:6px;border-radius:50%;background:#00BCD4;box-shadow:0 0 8px #00BCD4;}
+.foot .fr{font-size:11px;color:var(--gray);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"><div class="grid"></div></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-wrap">
+        <div class="title-bar"></div>
+        <div>
+          <div class="page-title">阅读分享 · <span class="accent">核心观点</span></div>
+          <div class="title-sub">OPEN SOURCE · CORE INSIGHTS</div>
+        </div>
+      </div>
+      <div class="badge"><span class="dot"></span><span>INSIGHTS 05</span></div>
+    </div>
+
+    <div class="main">
+
+      <div class="left">
+        <div class="quote-mark">"</div>
+        <div class="golden-quote">
+          开源是献给世界的一份<span class="hl">珍贵礼物</span>，它让知识不再是少数人的特权。通过阅读与讨论，我们将看到<span class="hl">开源</span>如何塑造个人成长、组织创新乃至整个社会的<span class="hl">未来走向</span>。
+        </div>
+
+        <div class="kpi-block">
+          <div class="kpi">
+            <div class="k-label">全球活跃<br>贡献者</div>
+            <div class="k-num-wrap">
+              <div class="k-num">5000万+</div>
+              <div class="k-note">持续参与中</div>
+            </div>
+          </div>
+          <div class="kpi">
+            <div class="k-label">中国开发者<br>增速</div>
+            <div class="k-num-wrap">
+              <div class="k-num">30%+</div>
+              <div class="k-note">年增长率</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card">
+          <div class="card-num">01</div>
+          <div class="card-tag">CONCEPT</div>
+          <div class="card-divider"></div>
+          <div class="card-title">开源即礼物</div>
+          <div class="card-desc">开源不仅是技术选择，更是一种向世界赠予知识和协作方式的精神礼物。</div>
+          <div class="card-footer">
+            <span class="ft-l">◆ GIFT</span>
+            <span class="ft-r">KEY 01</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">02</div>
+          <div class="card-tag">PARADIGM</div>
+          <div class="card-divider"></div>
+          <div class="card-title">协作新范式</div>
+          <div class="card-desc">互联网让陌生人协作成为可能，开源展示了去中心化协作的巨大潜力。</div>
+          <div class="card-footer">
+            <span class="ft-l">◆ COOP</span>
+            <span class="ft-r">KEY 02</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">03</div>
+          <div class="card-tag">GROWTH</div>
+          <div class="card-divider"></div>
+          <div class="card-title">个人成长路径</div>
+          <div class="card-desc">参与开源是技术人员锻炼能力、建立声誉、融入全球社区的有效成长路径。</div>
+          <div class="card-footer">
+            <span class="ft-l">◆ PATH</span>
+            <span class="ft-r">KEY 03</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">04</div>
+          <div class="card-tag">STRATEGY</div>
+          <div class="card-divider"></div>
+          <div class="card-title">企业与国家</div>
+          <div class="card-desc">开源已成为国家科技战略的重要组成部分，企业需构建完善开源治理体系。</div>
+          <div class="card-footer">
+            <span class="ft-l">◆ GOV</span>
+            <span class="ft-r">KEY 04</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">05</div>
+          <div class="card-tag">POWER</div>
+          <div class="card-divider"></div>
+          <div class="card-title">开放的力量</div>
+          <div class="card-desc">开放让创新不再局限于封闭实验室，而是成为一场全民参与的共创运动。</div>
+          <div class="card-footer">
+            <span class="ft-l">◆ OPEN</span>
+            <span class="ft-r">KEY 05</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <div class="dotline"><span class="fdot"></span><span>从个人到国家，开源正成为驱动未来创新的共同语言。</span></div>
+      <div class="fr">SHARING · INSIGHTS</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

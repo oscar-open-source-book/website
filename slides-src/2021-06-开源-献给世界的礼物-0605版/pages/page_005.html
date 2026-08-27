@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源的价值与影响</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --dark:#060b18;
+  --dark2:#0b1526;
+  --line:rgba(33,150,243,0.18);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+
+body{
+  font-family:'Roboto Mono',monospace;
+  color:#E8EEF4;
+  background:var(--dark);
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:var(--dark);
+  font-family:'Roboto Mono',monospace;
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 1200px 700px at 50% 120%, rgba(33,150,243,0.10), transparent 60%),
+    linear-gradient(180deg,#050912 0%,#0a1326 55%,#060b18 100%);
+}
+
+#bg::after{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:60px 60px;
+  mix-blend-mode:screen;
+  opacity:0.7;
+}
+
+.particles{
+  position:absolute;left:0;right:0;bottom:0;height:100%;
+  overflow:hidden;z-index:1;pointer-events:none;
+}
+
+.particles span{
+  position:absolute;
+  bottom:-10px;
+  width:3px;height:3px;
+  border-radius:50%;
+  background:var(--primary);
+  box-shadow:0 0 6px var(--primary), 0 0 12px rgba(33,150,243,0.4);
+  animation:rise linear infinite;
+  opacity:0;
+}
+
+@keyframes rise{
+  0%{transform:translateY(0) scale(1);opacity:0;}
+  10%{opacity:0.8;}
+  60%{opacity:0.6;}
+  100%{transform:translateY(-920px) scale(0.6);opacity:0;}
+}
+
+#ct{
+  position:absolute;inset:0;z-index:2;
+  padding:48px 60px 40px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* Header */
+.header{
+  text-align:center;
+  padding-top:6px;
+  position:relative;
+}
+
+.chapter-tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:13px;
+  letter-spacing:6px;
+  color:var(--accent);
+  margin-bottom:14px;
+  display:inline-flex;align-items:center;gap:14px;
+}
+.chapter-tag .bar{
+  display:inline-block;width:48px;height:1px;background:var(--accent);
+}
+
+.title{
+  font-family:'Inter',sans-serif;
+  font-weight:800;
+  font-size:56px;
+  letter-spacing:2px;
+  background:linear-gradient(90deg,#E8EEF4 0%,#ffffff 45%, var(--accent) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  line-height:1.1;
+}
+
+.subtitle{
+  font-family:'Inter',sans-serif;
+  font-weight:400;
+  font-size:19px;
+  letter-spacing:8px;
+  color:var(--neutral);
+  margin-top:14px;
+}
+
+.divider{
+  margin:22px auto 0;
+  width:340px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--primary),var(--accent),var(--primary),transparent);
+  position:relative;
+}
+.divider::before,.divider::after{
+  content:"";position:absolute;top:50%;width:6px;height:6px;border-radius:50%;
+  transform:translateY(-50%);
+}
+.divider::before{left:-3px;background:var(--primary);box-shadow:0 0 8px var(--primary);}
+.divider::after{right:-3px;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+
+/* Pillars */
+.pillars{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:26px;
+  margin-top:30px;
+}
+
+.pillar{
+  position:relative;
+  background:linear-gradient(180deg, rgba(33,150,243,0.08), rgba(6,11,24,0.6));
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:24px 22px 22px;
+  min-height:340px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.pillar::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+.pillar::after{
+  content:"";position:absolute;left:-30%;top:-30%;width:60%;height:60%;
+  background:radial-gradient(circle, rgba(33,150,243,0.12), transparent 60%);
+  pointer-events:none;
+}
+
+.pillar-head{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:14px;position:relative;z-index:2;
+}
+
+.icon{
+  width:46px;height:46px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(33,150,243,0.4);
+  background:rgba(33,150,243,0.08);
+  flex-shrink:0;
+  position:relative;
+}
+
+/* Icon: tech - cube grid */
+.icon-tech{position:relative;}
+.icon-tech .ic{
+  width:22px;height:22px;position:relative;
+  background:
+    linear-gradient(135deg, transparent 47%, var(--primary) 48%, var(--primary) 52%, transparent 53%),
+    linear-gradient(45deg, transparent 47%, var(--primary) 48%, var(--primary) 52%, transparent 53%);
+}
+.icon-tech .base{
+  position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+  width:28px;height:2px;background:var(--accent);box-shadow:0 0 6px var(--accent);
+}
+
+/* Icon: biz - coins */
+.icon-biz{position:relative;}
+.icon-biz .c1{
+  position:absolute;left:4px;top:4px;
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--primary);
+}
+.icon-biz .c2{
+  position:absolute;right:4px;top:4px;
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--accent);
+}
+.icon-biz .c3{
+  position:absolute;left:14px;bottom:4px;
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--primary);
+  background:rgba(33,150,243,0.15);
+}
+
+/* Icon: culture - nodes */
+.icon-culture{position:relative;}
+.icon-culture .n{
+  position:absolute;width:7px;height:7px;border-radius:50%;background:var(--primary);
+  box-shadow:0 0 5px var(--primary);
+}
+.icon-culture .n1{left:6px;top:12px;}
+.icon-culture .n2{right:6px;top:6px;}
+.icon-culture .n3{left:14px;bottom:6px;}
+.icon-culture .n4{right:14px;bottom:12px;}
+.icon-culture .n5{left:19px;top:19px;background:var(--accent);box-shadow:0 0 6px var(--accent);}
+.icon-culture .ln{
+  position:absolute;height:1px;background:var(--primary);opacity:0.55;
+}
+.icon-culture .l1{left:9px;top:14px;width:22px;transform:rotate(-25deg);transform-origin:left center;}
+.icon-culture .l2{left:9px;top:19px;width:22px;transform:rotate(18deg);transform-origin:left center;}
+.icon-culture .l3{left:18px;top:18px;width:16px;transform:rotate(35deg);transform-origin:left center;background:var(--accent);opacity:0.7;}
+
+.pillar-title{
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  font-size:22px;
+  color:#fff;
+  letter-spacing:1px;
+}
+
+.pillar-sub{
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:2px;
+  margin-top:3px;
+}
+
+.pillar-tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--neutral);
+  letter-spacing:2px;
+  margin-bottom:6px;
+  margin-top:4px;
+}
+
+.pillar-divider{
+  height:1px;
+  background:linear-gradient(90deg,var(--primary),transparent);
+  margin:6px 0 14px;
+}
+
+.pillar-desc{
+  font-family:'Inter',sans-serif;
+  font-size:13.5px;
+  line-height:1.75;
+  color:#D4DCE4;
+  font-weight:400;
+  position:relative;z-index:2;
+}
+
+.pillar-tags{
+  margin-top:auto;
+  padding-top:14px;
+  display:flex;flex-wrap:wrap;gap:8px;
+  position:relative;z-index:2;
+}
+.pillar-tags .tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:10.5px;
+  padding:4px 10px;
+  border:1px solid rgba(0,188,212,0.35);
+  border-radius:20px;
+  color:var(--accent);
+  background:rgba(0,188,212,0.06);
+}
+
+/* Data strip */
+.data-strip{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:26px;
+  margin-top:22px;
+}
+
+.data-card{
+  display:flex;align-items:center;gap:18px;
+  padding:14px 20px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.10), rgba(6,11,24,0.4));
+  position:relative;
+  overflow:hidden;
+}
+.data-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+}
+
+.data-num{
+  font-family:'Inter',sans-serif;
+  font-weight:800;
+  font-size:34px;
+  color:#fff;
+  letter-spacing:0.5px;
+  line-height:1;
+  flex-shrink:0;
+}
+.data-num .unit{
+  font-size:16px;color:var(--accent);font-weight:600;margin-left:3px;
+}
+.data-num .plus{
+  color:var(--accent);font-size:22px;margin-left:2px;
+}
+
+.data-text{
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;color:var(--neutral);
+  line-height:1.5;
+}
+.data-text .lbl{
+  display:block;
+  color:#fff;font-weight:600;
+  font-size:13px;margin-bottom:3px;
+}
+
+/* Narrative footer */
+.narrative{
+  margin-top:18px;
+  text-align:center;
+  padding:0 40px;
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;
+  line-height:1.75;
+  color:var(--neutral);
+  letter-spacing:1px;
+  position:relative;
+}
+.narrative .accent{color:var(--accent);font-weight:500;}
+
+/* Corner decorations */
+.corner{
+  position:absolute;width:28px;height:28px;
+  border-color:rgba(33,150,243,0.5);
+}
+.corner.tl{top:24px;left:24px;border-top:1px solid;border-left:1px solid;}
+.corner.tr{top:24px;right:24px;border-top:1px solid;border-right:1px solid;}
+.corner.bl{bottom:24px;left:24px;border-bottom:1px solid;border-left:1px solid;}
+.corner.br{bottom:24px;right:24px;border-bottom:1px solid;border-right:1px solid;}
+
+.page-no{
+  position:absolute;top:24px;right:60px;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;color:var(--neutral);
+  letter-spacing:3px;
+  z-index:3;
+}
+.side-tag{
+  position:absolute;top:24px;left:60px;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;color:var(--accent);
+  letter-spacing:3px;
+  z-index:3;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <div class="particles" id="particles"></div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="side-tag">CHAPTER · 05</div>
+  <div class="page-no">05 / OPEN SOURCE</div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="chapter-tag">
+        <span class="bar"></span>
+        <span>FIFTH CHAPTER</span>
+        <span class="bar"></span>
+      </div>
+      <h1 class="title">开源的价值与影响</h1>
+      <div class="subtitle">技 术 · 商 业 · 文 化 的 多 维 渗 透</div>
+      <div class="divider"></div>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="icon icon-tech">
+            <div class="ic"></div>
+            <div class="base"></div>
+          </div>
+          <div>
+            <div class="pillar-title">技术底座</div>
+            <div class="pillar-sub">TECHNOLOGY STACK</div>
+          </div>
+        </div>
+        <div class="pillar-tag">// DIMENSION 01</div>
+        <div class="pillar-divider"></div>
+        <div class="pillar-desc">从操作系统到云计算，再到 AI 框架，开源构成了数字时代的底层基础设施，托举起当代全部关键技术栈。</div>
+        <div class="pillar-tags">
+          <span class="tag">操作系统</span>
+          <span class="tag">云计算</span>
+          <span class="tag">AI 框架</span>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="icon icon-biz">
+            <div class="c1"></div>
+            <div class="c2"></div>
+            <div class="c3"></div>
+          </div>
+          <div>
+            <div class="pillar-title">商业模式</div>
+            <div class="pillar-sub">BUSINESS MODEL</div>
+          </div>
+        </div>
+        <div class="pillar-tag">// DIMENSION 02</div>
+        <div class="pillar-divider"></div>
+        <div class="pillar-desc">红帽、MongoDB 等标杆企业证明：开源完全可以与可持续的商业成功和谐并存，并催生全新的价值分配体系。</div>
+        <div class="pillar-tags">
+          <span class="tag">红帽</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">可持续</span>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="icon icon-culture">
+            <div class="ln l1"></div>
+            <div class="ln l2"></div>
+            <div class="ln l3"></div>
+            <div class="n n1"></div>
+            <div class="n n2"></div>
+            <div class="n n3"></div>
+            <div class="n n4"></div>
+            <div class="n n5"></div>
+          </div>
+          <div>
+            <div class="pillar-title">文化基因</div>
+            <div class="pillar-sub">CULTURAL DNA</div>
+          </div>
+        </div>
+        <div class="pillar-tag">// DIMENSION 03</div>
+        <div class="pillar-divider"></div>
+        <div class="pillar-desc">开源正在从技术领域渗透到教育、科研、公共治理等更广泛的社会场景，重塑协作与信任的社会底色。</div>
+        <div class="pillar-tags">
+          <span class="tag">教育</span>
+          <span class="tag">科研</span>
+          <span class="tag">公共治理</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-strip">
+      <div class="data-card">
+        <div class="data-num">90<span class="plus">%</span></div>
+        <div class="data-text">
+          <span class="lbl">互联网基础设施占比</span>
+          全球互联网基础设施中由开源软件支撑的比例
+        </div>
+      </div>
+      <div class="data-card">
+        <div class="data-num">1000<span class="unit">亿</span><span class="plus">+</span></div>
+        <div class="data-text">
+          <span class="lbl">全球开源商业市场规模</span>
+          以美元计量的开源衍生商业市场总量
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      开源早已超越单纯的<span class="accent">软件许可模式</span>，正在重塑技术产业格局、企业商业模式乃至社会协作方式；理解其<span class="accent">多维价值</span>，有助于我们更好地拥抱和参与开源时代。
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var container = document.getElementById('particles');
+  var N = 70;
+  for(var i=0;i<N;i++){
+    var s = document.createElement('span');
+    var left = Math.random()*100;
+    var dur = 6 + Math.random()*10;
+    var delay = -Math.random()*dur;
+    var size = 1.5 + Math.random()*3;
+    var isAccent = Math.random()<0.35;
+    s.style.left = left + '%';
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.animationDuration = dur + 's';
+    s.style.animationDelay = delay + 's';
+    if(isAccent){
+      s.style.background = '#00BCD4';
+      s.style.boxShadow = '0 0 6px #00BCD4, 0 0 12px rgba(0,188,212,0.4)';
+    }
+    container.appendChild(s);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源生态数据一览</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --grey: #B0BEC5;
+  --bg-dark: #0A0E1A;
+  --bg-panel: #0F1729;
+  --bg-card: #111B30;
+  --border: #1A2742;
+  --text-main: #E8EEF7;
+  --text-dim: #7A8AA5;
+  --glow-blue: rgba(33,150,243,0.4);
+  --glow-cyan: rgba(0,188,212,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Roboto Mono', 'Inter', monospace;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 10%, rgba(33,150,243,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 90%, rgba(0,188,212,0.06) 0%, transparent 50%),
+              var(--bg-dark);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 42px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 22px;
+  position: relative;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+  border-radius: 2px;
+}
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+.page-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 38px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #E8EEF7 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  border: 1px solid rgba(0,188,212,0.35);
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--grey);
+  max-width: 1280px;
+}
+
+/* Grid of 6 KPI cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+.kpi-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.6;
+}
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.4;
+}
+.kpi-card .corner {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+.kpi-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--grey);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.kpi-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 46px;
+  line-height: 1.05;
+  color: var(--text-main);
+  text-shadow: 0 0 20px var(--glow-blue), 0 0 40px rgba(33,150,243,0.15);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.kpi-value .unit {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--cyan);
+  text-shadow: 0 0 12px var(--glow-cyan);
+}
+.kpi-value .plus {
+  font-size: 32px;
+  color: var(--cyan);
+  font-weight: 700;
+}
+.kpi-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--primary);
+  border: 1px solid rgba(33,150,243,0.3);
+  background: rgba(33,150,243,0.06);
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+}
+.kpi-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--text-dim);
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+
+/* Number mini bar visualization */
+.mini-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 28px;
+  margin-top: 6px;
+}
+.mini-bar .bar {
+  flex: 1;
+  background: linear-gradient(to top, rgba(33,150,243,0.15), var(--primary));
+  border-radius: 2px 2px 0 0;
+  min-width: 8px;
+}
+.mini-bar .bar.accent {
+  background: linear-gradient(to top, rgba(0,188,212,0.15), var(--cyan));
+}
+
+/* Bottom trend bar */
+.trend-bar {
+  margin-top: 16px;
+  height: 52px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+.trend-bar .glow-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    rgba(33,150,243,0.05) 0%,
+    rgba(33,150,243,0.12) 30%,
+    rgba(0,188,212,0.18) 60%,
+    rgba(0,188,212,0.25) 100%);
+  z-index: 0;
+}
+.trend-bar .grid-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 39px,
+    rgba(176,190,197,0.06) 39px,
+    rgba(176,190,197,0.06) 40px
+  );
+}
+.trend-bar .trend-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.trend-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+.trend-label .hl {
+  color: var(--cyan);
+  font-weight: 600;
+}
+.trend-sparkline {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 30px;
+}
+.trend-sparkline .spark {
+  width: 4px;
+  background: linear-gradient(to top, var(--primary), var(--cyan));
+  border-radius: 1px;
+  opacity: 0.7;
+}
+.trend-right {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--grey);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.trend-right .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--glow-cyan);
+  display: inline-block;
+}
+.trend-right .arrow {
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Decorative corner brackets */
+.deck {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.deck .br {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--primary);
+  opacity: 0.5;
+}
+.deck .br.tl { top: 12px; left: 12px; border-top: 2px solid; border-left: 2px solid; }
+.deck .br.tr { top: 12px; right: 12px; border-top: 2px solid; border-right: 2px solid; }
+.deck .br.bl { bottom: 12px; left: 12px; border-bottom: 2px solid; border-left: 2px solid; }
+.deck .br.br2 { bottom: 12px; right: 12px; border-bottom: 2px solid; border-right: 2px solid; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="deck">
+      <span class="br tl"></span>
+      <span class="br tr"></span>
+      <span class="br bl"></span>
+      <span class="br br2"></span>
+    </div>
+
+    <div class="header">
+      <div class="title-row">
+        <div class="page-title">开源生态数据一览</div>
+        <div class="page-tag">OPEN SOURCE · INSIGHTS</div>
+      </div>
+      <p class="subtitle">开源不再是边缘选择，而是全球软件生态的绝对主流——从代码占比到开发者规模、从项目数量到资金投入，每一项指标都在告诉我们应当拥抱开源。</p>
+    </div>
+
+    <div class="kpi-grid">
+
+      <!-- Card 1: 代码占比 -->
+      <div class="kpi-card">
+        <span class="corner">01 / KPI</span>
+        <div>
+          <div class="kpi-label">商业软件代码占比</div>
+          <div class="kpi-value">
+            <span>~90</span><span class="unit">%</span>
+          </div>
+          <span class="kpi-tag">来自开源</span>
+        </div>
+        <div>
+          <div class="mini-bar">
+            <span class="bar" style="height:30%"></span>
+            <span class="bar" style="height:45%"></span>
+            <span class="bar" style="height:60%"></span>
+            <span class="bar" style="height:72%"></span>
+            <span class="bar" style="height:82%"></span>
+            <span class="bar accent" style="height:90%"></span>
+            <span class="bar accent" style="height:92%"></span>
+          </div>
+          <p class="kpi-desc">开源已是绝对主流范式，商业软件构建于开源基石之上。</p>
+        </div>
+      </div>
+
+      <!-- Card 2: 企业采用率 -->
+      <div class="kpi-card">
+        <span class="corner">02 / KPI</span>
+        <div>
+          <div class="kpi-label">企业采用率</div>
+          <div class="kpi-value">
+            <span>&gt;81</span><span class="unit">%</span>
+          </div>
+          <span class="kpi-tag">全球统计</span>
+        </div>
+        <div>
+          <div class="mini-bar">
+            <span class="bar" style="height:50%"></span>
+            <span class="bar" style="height:58%"></span>
+            <span class="bar" style="height:65%"></span>
+            <span class="bar" style="height:72%"></span>
+            <span class="bar accent" style="height:78%"></span>
+            <span class="bar accent" style="height:84%"></span>
+            <span class="bar accent" style="height:88%"></span>
+          </div>
+          <p class="kpi-desc">超81%企业采用率表明覆盖率仍在持续扩大，渗透趋势不可逆。</p>
+        </div>
+      </div>
+
+      <!-- Card 3: 全球开发者 -->
+      <div class="kpi-card">
+        <span class="corner">03 / KPI</span>
+        <div>
+          <div class="kpi-label">全球活跃开发者</div>
+          <div class="kpi-value">
+            <span>5000</span><span class="unit">万+</span>
+          </div>
+          <span class="kpi-tag">人才池膨胀</span>
+        </div>
+        <div>
+          <div class="mini-bar">
+            <span class="bar" style="height:25%"></span>
+            <span class="bar" style="height:38%"></span>
+            <span class="bar" style="height:52%"></span>
+            <span class="bar" style="height:64%"></span>
+            <span class="bar accent" style="height:76%"></span>
+            <span class="bar accent" style="height:86%"></span>
+            <span class="bar accent" style="height:95%"></span>
+          </div>
+          <p class="kpi-desc">5000万+开发者规模且中国增速超30%，全球人才池正在快速膨胀。</p>
+        </div>
+      </div>
+
+      <!-- Card 4: 开源仓库 -->
+      <div class="kpi-card">
+        <span class="corner">04 / KPI</span>
+        <div>
+          <div class="kpi-label">GitHub 托管开源仓库</div>
+          <div class="kpi-value">
+            <span>2</span><span class="unit">亿+</span>
+          </div>
+          <span class="kpi-tag">全栈生态</span>
+        </div>
+        <div>
+          <div class="mini-bar">
+            <span class="bar" style="height:20%"></span>
+            <span class="bar" style="height:30%"></span>
+            <span class="bar" style="height:42%"></span>
+            <span class="bar" style="height:55%"></span>
+            <span class="bar accent" style="height:70%"></span>
+            <span class="bar accent" style="height:82%"></span>
+            <span class="bar accent" style="height:94%"></span>
+          </div>
+          <p class="kpi-desc">2亿+仓库涵盖从工具库到AI模型的全栈生态，内容体量指数级增长。</p>
+        </div>
+      </div>
+
+      <!-- Card 5: 市场规模 -->
+      <div class="kpi-card">
+        <span class="corner">05 / KPI</span>
+        <div>
+          <div class="kpi-label">开源商业市场规模</div>
+          <div class="kpi-value">
+            <span>1000</span><span class="unit">亿$+</span>
+          </div>
+          <span class="kpi-tag">资金快速攀升</span>
+        </div>
+        <div>
+          <div class="mini-bar">
+            <span class="bar" style="height:22%"></span>
+            <span class="bar" style="height:35%"></span>
+            <span class="bar" style="height:48%"></span>
+            <span class="bar" style="height:60%"></span>
+            <span class="bar accent" style="height:74%"></span>
+            <span class="bar accent" style="height:85%"></span>
+            <span class="bar accent" style="height:92%"></span>
+          </div>
+          <p class="kpi-desc">突破1000亿美元市场，资本与商业化双轮驱动，资金快速攀升。</p>
+        </div>
+      </div>
+
+      <!-- Card 6: 中国增长率 -->
+      <div class="kpi-card">
+        <span class="corner">06 / KPI</span>
+        <div>
+          <div class="kpi-label">中国开源贡献者年增长率</div>
+          <div class="kpi-value">
+            <span class="plus">&gt;</span><span>30</span><span class="unit">%</span>
+          </div>
+          <span class="kpi-tag">创新驱动力</span>
+        </div>
+        <div>
+          <div class="mini-bar">
+            <span class="bar" style="height:30%"></span>
+            <span class="bar" style="height:42%"></span>
+            <span class="bar" style="height:55%"></span>
+            <span class="bar" style="height:68%"></span>
+            <span class="bar accent" style="height:80%"></span>
+            <span class="bar accent" style="height:90%"></span>
+            <span class="bar accent" style="height:98%"></span>
+          </div>
+          <p class="kpi-desc">大模型时代开源模型成为创新驱动力，社区协作显著加速技术迭代。</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="trend-bar">
+      <div class="glow-bg"></div>
+      <div class="grid-lines"></div>
+      <div class="trend-content">
+        <span class="trend-label">开源生态增长趋势 · <span class="hl">持续动能增强</span></span>
+        <div class="trend-sparkline">
+          <span class="spark" style="height:8px"></span>
+          <span class="spark" style="height:10px"></span>
+          <span class="spark" style="height:12px"></span>
+          <span class="spark" style="height:11px"></span>
+          <span class="spark" style="height:15px"></span>
+          <span class="spark" style="height:18px"></span>
+          <span class="spark" style="height:16px"></span>
+          <span class="spark" style="height:20px"></span>
+          <span class="spark" style="height:22px"></span>
+          <span class="spark" style="height:19px"></span>
+          <span class="spark" style="height:24px"></span>
+          <span class="spark" style="height:23px"></span>
+          <span class="spark" style="height:26px"></span>
+          <span class="spark" style="height:25px"></span>
+          <span class="spark" style="height:28px"></span>
+          <span class="spark" style="height:27px"></span>
+          <span class="spark" style="height:29px"></span>
+          <span class="spark" style="height:30px"></span>
+        </div>
+        <div class="trend-right">
+          <span><span class="dot"></span> OPEN SOURCE GROWTH</span>
+          <span class="arrow">▸▸ 生态持续增长</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
