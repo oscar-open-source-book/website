@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Go 1.18 泛型时代</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0a0f1e;
+  --bg-card: #111929;
+  --bg-card2: #151f33;
+  --text-main: #E8ECF4;
+  --text-dim: #8896A8;
+  --border: #1e2a44;
+  --glow: rgba(33,150,243,0.45);
+  --accent-glow: rgba(0,188,212,0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-dark);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(1200px 700px at 15% 10%, rgba(33,150,243,0.10) 0%, transparent 60%),
+              radial-gradient(900px 600px at 90% 100%, rgba(0,188,212,0.08) 0%, transparent 60%),
+              #080d19;
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.08);
+  box-shadow: 0 0 80px rgba(33,150,243,0.05) inset;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 42px 56px 36px 56px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ===================== TOP ===================== */
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title-block {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.go-logo {
+  width: 76px;
+  height: 76px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00ADD8 0%, #00BCD4 60%, #2196F3 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 32px;
+  color: #0a0f1e;
+  box-shadow: 0 0 24px rgba(0,188,212,0.5), inset 0 0 12px rgba(255,255,255,0.15);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.go-logo::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 17px;
+  border: 1px solid rgba(0,188,212,0.3);
+}
+
+.title-text h1 {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.title-text h1 span {
+  color: var(--primary);
+}
+
+.title-text .sub {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+
+.kpis {
+  display: flex;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.kpi {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 10px;
+  padding: 12px 18px;
+  min-width: 178px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi:nth-child(2) { border-left-color: var(--accent); }
+.kpi:nth-child(3) { border-left-color: #42A5F5; }
+
+.kpi .val {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.kpi:nth-child(2) .val { color: var(--accent); }
+.kpi:nth-child(3) .val { color: #42A5F5; }
+
+.kpi .lbl {
+  font-size: 11px;
+  color: var(--neutral);
+  margin-top: 6px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.kpi .desc {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+/* ===================== MIDDLE ===================== */
+.middle {
+  display: grid;
+  grid-template-columns: 540px 1fr;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---- narrative ---- */
+.narrative {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.narrative::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 14px; bottom: 14px;
+  width: 4px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow: 0 0 12px var(--glow), 0 0 24px var(--accent-glow);
+  border-radius: 0 2px 2px 0;
+}
+
+.narr-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.narr-head .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.narr-head .tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.narr-head .date {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+
+.narr-title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.narr-body {
+  font-size: 12.5px;
+  color: var(--neutral);
+  line-height: 1.7;
+}
+
+.narr-body strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.narr-body .hl { color: var(--primary); font-weight: 600; }
+.narr-body .hl2 { color: var(--accent); font-weight: 600; }
+
+.code-block {
+  background: #080d19;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--neutral);
+  position: relative;
+}
+
+.code-block .cb-dots {
+  position: absolute;
+  top: 8px; right: 10px;
+  display: flex; gap: 4px;
+}
+
+.code-block .cb-dots span {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+
+.code-block .cb-dots span:nth-child(1) { background: #ff5f57; }
+.code-block .cb-dots span:nth-child(2) { background: #febc2e; }
+.code-block .cb-dots span:nth-child(3) { background: #28c840; }
+
+.code-block .kw { color: #c792ea; }
+.code-block .fn { color: #82aaff; }
+.code-block .type { color: #ffcb6b; }
+.code-block .str { color: #c3e88d; }
+.code-block .cm { color: #546e7a; font-style: italic; }
+.code-block .num { color: #f78c6c; }
+.code-block .gen { color: var(--accent); }
+
+.code-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+/* ---- cards ---- */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0.7;
+}
+
+.card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent), #26C6DA); }
+.card:nth-child(3)::before { background: linear-gradient(90deg, #42A5F5, var(--primary)); }
+.card:nth-child(4)::before { background: linear-gradient(90deg, #26C6DA, var(--accent)); }
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: rgba(33,150,243,0.12);
+  border: 1px solid rgba(33,150,243,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.card:nth-child(2) .card-icon { background: rgba(0,188,212,0.12); border-color: rgba(0,188,212,0.3); color: var(--accent); }
+.card:nth-child(3) .card-icon { background: rgba(66,165,245,0.12); border-color: rgba(66,165,245,0.3); color: #42A5F5; }
+.card:nth-child(4) .card-icon { background: rgba(38,198,218,0.12); border-color: rgba(38,198,218,0.3); color: #26C6DA; }
+
+.card-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+}
+
+.card-title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.card-body {
+  font-size: 11.5px;
+  color: var(--neutral);
+  line-height: 1.6;
+}
+
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.card-tags span {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(33,150,243,0.1);
+  border: 1px solid rgba(33,150,243,0.2);
+  color: var(--primary);
+}
+
+.card:nth-child(2) .card-tags span { background: rgba(0,188,212,0.1); border-color: rgba(0,188,212,0.2); color: var(--accent); }
+.card:nth-child(3) .card-tags span { background: rgba(66,165,245,0.1); border-color: rgba(66,165,245,0.2); color: #42A5F5; }
+.card:nth-child(4) .card-tags span { background: rgba(38,198,218,0.1); border-color: rgba(38,198,218,0.2); color: #26C6DA; }
+
+/* ===================== BOTTOM TIMELINE ===================== */
+.timeline {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 24px 12px 24px;
+  position: relative;
+}
+
+.timeline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.timeline-head .lbl {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.timeline-head .meta {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.timeline-track {
+  position: relative;
+  height: 42px;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 20px;
+  left: 4%;
+  right: 4%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.15), var(--primary) 60%, var(--accent) 100%);
+  border-radius: 1px;
+}
+
+.tl-node {
+  position: absolute;
+  top: 14px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tl-node .dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 0 3px rgba(33,150,243,0.1);
+}
+
+.tl-node.now .dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(0,188,212,0.2), 0 0 12px var(--accent);
+}
+
+.tl-node .ver {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10.5px;
+  color: var(--neutral);
+  margin-top: 6px;
+}
+
+.tl-node.now .ver { color: var(--accent); font-weight: 700; }
+
+.tl-node .yr {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+}
+
+.tl-node.now .yr { color: var(--accent); }
+
+.tl-label {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 8.5px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.tl-node.now .tl-label { color: var(--accent); }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- ==================== TOP ==================== -->
+    <div class="top">
+      <div class="title-block">
+        <div class="go-logo">Go</div>
+        <div class="title-text">
+          <h1><span>Go 1.18</span> 泛型时代</h1>
+          <div class="sub">GENERICS · WORKSPACES · MATCH DEFAULT</div>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="val">GA</div>
+          <div class="lbl">泛型支持状态</div>
+          <div class="desc">编译时类型推断，运行时无额外开销</div>
+        </div>
+        <div class="kpi">
+          <div class="val">~8<span style="font-size:16px;"> 年</span></div>
+          <div class="lbl">开发时长</div>
+          <div class="desc">从泛型提案讨论到正式落地</div>
+        </div>
+        <div class="kpi">
+          <div class="val">3<span style="font-size:16px;"> 项</span></div>
+          <div class="lbl">新增语言特性</div>
+          <div class="desc">泛型 · Workspaces · Match 默认赋值</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== MIDDLE ==================== -->
+    <div class="middle">
+
+      <!-- narrative -->
+      <div class="narrative">
+        <div class="narr-head">
+          <span class="dot"></span>
+          <span class="tag">// Chapter · 2022.02</span>
+          <span class="date">Release: Feb 24, 2022</span>
+        </div>
+        <div class="narr-title">Go 1.18 是 2022 年 2 月最受瞩目的开源发布之一</div>
+        <div class="narr-body">
+          泛型<span class="hl">补齐了 Go 语言最后一块被社区长期诟病的短板</span>——集合库、算法库、序列化框架等通用代码终于可以用统一接口表达，不必再重复编写多套具体类型版本。<br><br>
+          <span class="hl2">Workspaces 等新机制显著改善了开发者日常体验</strong></span>，让大型多模块仓库的本地联调从"手工 replace 地狱"回归简洁。同时引入 <strong>match 默认赋值</strong>，补齐了控制流中一个长期缺失的小但高频的语言糖。
+        </div>
+
+        <div>
+          <div class="code-label">&gt; generics_in_action.go</div>
+          <div class="code-block">
+            <div class="cb-dots"><span></span><span></span><span></span></div>
+<span class="kw">func</span> <span class="fn">Filter</span>&lt;<span class="gen">T any</span>&gt;(slice []<span class="gen">T</span>, pred <span class="kw">func</span>(<span class="gen">T</span>) <span class="kw">bool</span>) []<span class="gen">T</span> {
+    <span class="kw">var</span> result []<span class="gen">T</span>
+    <span class="kw">for</span> _, v := <span class="kw">range</span> slice {
+        <span class="kw">if</span> pred(v) { result = <span class="kw">append</span>(result, v) }
+    }
+    <span class="kw">return</span> result
+}
+            <span class="cm">// 编译期展开 · 零运行时开销</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- cards -->
+      <div class="cards">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-icon">G</div>
+            <div>
+              <div class="card-num">01 / FEATURE</div>
+              <div class="card-title">泛型正式落地</div>
+            </div>
+          </div>
+          <div class="card-body">经过八年讨论，Go 语言终于获得泛型支持，集合库、算法库编写效率大幅提升。</div>
+          <div class="card-tags">
+            <span>&lt;T any&gt;</span><span>type parameters</span><span>inference</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-icon">⚡</div>
+            <div>
+              <div class="card-num">02 / TOOLCHAIN</div>
+              <div class="card-title">Toolchain 升级</div>
+            </div>
+          </div>
+          <div class="card-body">编译器支持泛型展开，运行时性能开销几乎为零，与手写具体类型版本持平。</div>
+          <div class="card-tags">
+            <span>monomorphization</span><span>zero-overhead</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-icon">W</div>
+            <div>
+              <div class="card-num">03 / WORKSPACE</div>
+              <div class="card-title">Workspaces 模式</div>
+            </div>
+          </div>
+          <div class="card-body">新增 Go Workspaces 机制，简化多模块开发体验，替代此前笨重的 replace 做法。</div>
+          <div class="card-tags">
+            <span>go work</span><span>multi-module</span><span>no replace</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-icon">★</div>
+            <div>
+              <div class="card-num">04 / STANDARD LIB</div>
+              <div class="card-title">标准库新特性</div>
+            </div>
+          </div>
+          <div class="card-body">time、net/http 等标准库获得改进，支持更优雅的错误处理和中间件编程。</div>
+          <div class="card-tags">
+            <span>time</span><span>net/http</span><span>middleware</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== BOTTOM TIMELINE ==================== -->
+    <div class="timeline">
+      <div class="timeline-head">
+        <span class="lbl">// Go VERSION ROADMAP</span>
+        <span class="meta">2009 ──────────── 2024</span>
+      </div>
+      <div class="timeline-track">
+        <div class="timeline-line"></div>
+
+        <div class="tl-node" style="left:6%;">
+          <div class="dot"></div>
+          <div class="ver">Go 1.0</div>
+          <div class="tl-label">2009</div>
+        </div>
+        <div class="tl-node" style="left:18%;">
+          <div class="dot"></div>
+          <div class="ver">Go 1.5</div>
+          <div class="tl-label">2015 · 移除 GC 暂停</div>
+        </div>
+        <div class="tl-node" style="left:32%;">
+          <div class="dot"></div>
+          <div class="ver">Go 1.8</div>
+          <div class="tl-label">2017 · 提案讨论启动</div>
+        </div>
+        <div class="tl-node" style="left:48%;">
+          <div class="dot"></div>
+          <div class="ver">Go 1.11</div>
+          <div class="tl-label">2018 · Modules</div>
+        </div>
+        <div class="tl-node" style="left:62%;">
+          <div class="dot"></div>
+          <div class="ver">Go 1.16</div>
+          <div class="tl-label">2021 · embed / 自动管理</div>
+        </div>
+        <div class="tl-node now" style="left:76%;">
+          <div class="dot"></div>
+          <div class="ver">Go 1.18 ★</div>
+          <div class="tl-label">2022.02 · 泛型时代</div>
+        </div>
+        <div class="tl-node" style="left:88%;">
+          <div class="dot"></div>
+          <div class="ver">Go 1.22+</div>
+          <div class="tl-label">2024 · 持续演进</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

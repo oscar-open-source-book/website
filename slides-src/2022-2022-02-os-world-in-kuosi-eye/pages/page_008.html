@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>供应链安全行动</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0A1628;
+  --bg-card: #112035;
+  --text-main: #E8EDF3;
+  --text-dim: #7E8FA3;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 10%, rgba(33, 150, 243, 0.1) 0%, transparent 55%);
+}
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(33, 150, 243, 0.025) 0px, rgba(33, 150, 243, 0.025) 1px, transparent 1px, transparent 50px);
+}
+.deco-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.deco-orb-1 {
+  top: -60px; right: -60px; width: 220px; height: 220px;
+  border: 1px solid rgba(33, 150, 243, 0.12);
+}
+.deco-orb-2 {
+  bottom: -90px; left: -90px; width: 280px; height: 280px;
+  border: 1px solid rgba(0, 188, 212, 0.1);
+}
+.deco-orb-3 {
+  top: 40%; left: 50%; transform: translate(-50%, -50%);
+  width: 500px; height: 500px;
+  border: 1px solid rgba(33, 150, 243, 0.04);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 45px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.title-block h1 {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+.subtitle-tag {
+  display: block;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+}
+.header-meta {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--neutral);
+  text-align: right;
+  letter-spacing: 1px;
+  line-height: 1.8;
+}
+.header-meta .line { display: block; }
+.header-meta .line .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.narrative {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--neutral);
+  padding: 14px 22px;
+  border-left: 3px solid var(--primary);
+  background: rgba(33, 150, 243, 0.05);
+  margin-bottom: 22px;
+  position: relative;
+}
+.narrative::after {
+  content: '';
+  position: absolute;
+  right: -1px; top: -1px;
+  width: 40px; height: 3px;
+  background: var(--accent);
+}
+.main-area {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  position: relative;
+}
+.quadrant {
+  background: var(--bg-card);
+  border: 1px solid rgba(33, 150, 243, 0.18);
+  border-radius: 6px;
+  padding: 18px 22px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.quadrant::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0.8;
+}
+.quadrant::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 60px; height: 60px;
+  background: radial-gradient(circle at bottom right, rgba(33, 150, 243, 0.08) 0%, transparent 70%);
+}
+.q-corner {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-color: var(--accent);
+  opacity: 0.45;
+}
+.q-corner.tl { top: 6px; left: 6px; border-top: 1.5px solid; border-left: 1.5px solid; }
+.q-corner.tr { top: 6px; right: 6px; border-top: 1.5px solid; border-right: 1.5px solid; }
+.q-corner.bl { bottom: 6px; left: 6px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.q-corner.br { bottom: 6px; right: 6px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+.q-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.q-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  background: rgba(0, 188, 212, 0.12);
+  border: 1px solid rgba(0, 188, 212, 0.3);
+  border-radius: 3px;
+  padding: 2px 7px;
+  letter-spacing: 1.5px;
+}
+.q-title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+.q-desc {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--neutral);
+  flex: 1;
+}
+.q-metric {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(176, 190, 197, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.metric-val {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+.metric-val .u {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 400;
+  margin-left: 3px;
+}
+.metric-lbl {
+  font-size: 10.5px;
+  color: var(--neutral);
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+.metric-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(33, 150, 243, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-left: auto;
+  max-width: 110px;
+}
+.metric-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+.metric-icon {
+  width: 28px; height: 28px;
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+}
+.center-shield {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px; height: 120px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shield-halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.3) 0%, rgba(33, 150, 243, 0.05) 50%, transparent 80%);
+}
+.shield-ring {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 188, 212, 0.35);
+}
+.shield-svg {
+  position: relative;
+  width: 66px; height: 66px;
+}
+.bottom-bar {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 14px 20px;
+  border: 1px solid rgba(33, 150, 243, 0.15);
+  background: rgba(33, 150, 243, 0.04);
+}
+.bottom-bar .bb-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  padding: 4px 10px;
+  border: 1px solid rgba(0, 188, 212, 0.3);
+  border-radius: 3px;
+}
+.bottom-bar .bb-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 15px;
+  color: var(--text-main);
+  letter-spacing: 1.5px;
+  font-weight: 500;
+}
+.bottom-bar .bb-text .hl { color: var(--accent); }
+.bottom-bar .bb-divider {
+  width: 1px; height: 24px;
+  background: rgba(33, 150, 243, 0.3);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="deco-orb deco-orb-1"></div>
+    <div class="deco-orb deco-orb-2"></div>
+    <div class="deco-orb deco-orb-3"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="title-block">
+        <span class="subtitle-tag">// SUPPLY CHAIN SECURITY INITIATIVE</span>
+        <h1>供应链安全行动</h1>
+      </div>
+      <div class="header-meta">
+        <span class="line"><span class="dot"></span>SECTOR · 开源生态治理</span>
+        <span class="line"><span class="dot"></span>TIMELINE · 2022 · 02</span>
+        <span class="line"><span class="dot"></span>STATUS · 加速推进中</span>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span>Log4j 事件彻底改变了行业对开源依赖管理的态度。2022 年 2 月，从工具链到标准化框架，从个人开发者到大型企业，整个生态系统都在加速构建更可靠的供应链安全体系。</span>
+    </div>
+
+    <div class="main-area">
+      <div class="center-shield">
+        <div class="shield-halo"></div>
+        <div class="shield-ring"></div>
+        <svg class="shield-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M33 3 L59 13 L59 33 C59 48 47 57 33 61 C19 57 7 48 7 33 L7 13 Z"
+                fill="rgba(33,150,243,0.18)" stroke="#2196F3" stroke-width="1.5"/>
+          <path d="M33 10 L53 18 L53 33 C53 45 43 52 33 55 C23 52 13 45 13 33 L13 18 Z"
+                fill="rgba(0,188,212,0.08)" stroke="#00BCD4" stroke-width="0.8" opacity="0.6"/>
+          <path d="M23 34 L31 41 L45 25" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="33" cy="33" r="28" stroke="rgba(33,150,243,0.15)" stroke-width="0.5" stroke-dasharray="2 3" fill="none"/>
+        </svg>
+      </div>
+
+      <div class="quadrant">
+        <span class="q-corner tl"></span><span class="q-corner tr"></span>
+        <span class="q-corner bl"></span><span class="q-corner br"></span>
+        <div class="q-header">
+          <span class="q-num">Q1</span>
+          <span class="q-title">Log4j 余波持续</span>
+        </div>
+        <div class="q-desc">
+          <span>自 2021 年底 Log4j 漏洞爆发以来，社区投入大量资源进行依赖审计与漏洞修复，影响波及数千个下游项目与生产环境。</span>
+        </div>
+        <div class="q-metric">
+          <span class="metric-icon">!!</span>
+          <span class="metric-val">2021<span class="u">年·底</span></span>
+          <span class="metric-lbl">漏洞爆发时间线<br/>CVSS 10.0 严重级</span>
+          <div class="metric-bar"><div class="metric-bar-fill" style="width:92%"></div></div>
+        </div>
+      </div>
+
+      <div class="quadrant">
+        <span class="q-corner tl"></span><span class="q-corner tr"></span>
+        <span class="q-corner bl"></span><span class="q-corner br"></span>
+        <div class="q-header">
+          <span class="q-num">Q2</span>
+          <span class="q-title">SLSA 框架推进</span>
+        </div>
+        <div class="q-desc">
+          <span>Supply-chain Levels for Software Artifacts 框架获更多企业采用，分级验证成为趋势，从基础构建到完全自动化供应链验证逐步落地。</span>
+        </div>
+        <div class="q-metric">
+          <span class="metric-icon">L4</span>
+          <span class="metric-val">1-4<span class="u">级</span></span>
+          <span class="metric-lbl">分级验证体系<br/>基础构建 → 完全自动化</span>
+          <div class="metric-bar"><div class="metric-bar-fill" style="width:78%"></div></div>
+        </div>
+      </div>
+
+      <div class="quadrant">
+        <span class="q-corner tl"></span><span class="q-corner tr"></span>
+        <span class="q-corner bl"></span><span class="q-corner br"></span>
+        <div class="q-header">
+          <span class="q-num">Q3</span>
+          <span class="q-title">GitHub Dependabot</span>
+        </div>
+        <div class="q-desc">
+          <span>Dependabot 安全更新功能覆盖更多语言，自动 PR 修复流程日趋完善，涵盖 Go、Python、JS、Rust 等主流开发生态。</span>
+        </div>
+        <div class="q-metric">
+          <span class="metric-icon">PR</span>
+          <span class="metric-val">13<span class="u">种</span></span>
+          <span class="metric-lbl">覆盖语言数量<br/>Go · Python · JS · Rust 等</span>
+          <div class="metric-bar"><div class="metric-bar-fill" style="width:65%"></div></div>
+        </div>
+      </div>
+
+      <div class="quadrant">
+        <span class="q-corner tl"></span><span class="q-corner tr"></span>
+        <span class="q-corner bl"></span><span class="q-corner br"></span>
+        <div class="q-header">
+          <span class="q-num">Q4</span>
+          <span class="q-title">CNCF 安全 SIG</span>
+        </div>
+        <div class="q-desc">
+          <span>云原生供应链安全 SIG 发布系列白皮书，推动行业标准化工具链建设，为容器化部署与微服务架构提供安全基线参考。</span>
+        </div>
+        <div class="q-metric">
+          <span class="metric-icon">03</span>
+          <span class="metric-val">3<span class="u">份</span></span>
+          <span class="metric-lbl">安全白皮书已发布<br/>2022 年 2 月前已发布</span>
+          <div class="metric-bar"><div class="metric-bar-fill" style="width:52%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span class="bb-tag">SUMMARY</span>
+      <span class="bb-divider"></span>
+      <span class="bb-text">Log4j 余波推动行业从<span class="hl">被动修复</span>走向<span class="hl">主动防御</span></span>
+      <span class="bb-divider"></span>
+      <span class="bb-tag">2022 · 02</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
