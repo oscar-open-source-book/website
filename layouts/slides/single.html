@@ -66,7 +66,8 @@
 
 .slide-wrap { display:flex; align-items:center; justify-content:center; }
 .slide-iframe {
-  width:1280px; max-width:100%; height:720px;
+  width:1280px; max-width:100%;
+  height:auto; aspect-ratio:16/9;
   display:block; margin:0 auto; border:none; border-radius:8px;
   background:#F3EDE0;
 }
@@ -185,16 +186,18 @@ function scaleIFrameContent() {
     try {
       const doc = ifr.contentDocument;
       if (!doc) return;
-      if (doc.getElementById('os-slide-scale')) {
-        if (fs) doc.getElementById('os-slide-scale').remove();
+      const existing = doc.getElementById('os-slide-scale');
+      if (fs) {
+        if (existing) existing.textContent = '';
         return;
       }
-      if (!fs) {
+      const scale = ifr.offsetWidth / 1600;
+      if (!existing) {
         const st = doc.createElement('style');
         st.id = 'os-slide-scale';
-        st.textContent = `html,body{margin:0;padding:0;overflow:hidden;}html{transform-origin:top left;transform:scale(0.8);}`;
         doc.head.appendChild(st);
       }
+      existing.textContent = `html,body{margin:0;padding:0;overflow:hidden;}html{transform-origin:top left;transform:scale(${scale});}`;
     } catch(e) {}
   });
 }
