@@ -1,369 +1,312 @@
 ---
 image:
   filename: "posts/sensenova-slides-pipeline.png"
-title: "开源之书的 slides 展示：从 Markdown 到可翻页 HTML Deck 的自动化流水线"
+title: "开源之书 Slides 的自动化迁移：从 147 个 Markdown 到 2602 张 HTML 的流水线实践"
 date: 2026-08-27T06:08:14+08:00
 draft: true
 editable: true
 ---
 
-# 开源之书的 slides 展示：从 Markdown 到可翻页 HTML Deck 的自动化流水线
+# 开源之书 Slides 的自动化迁移：从 147 个 Markdown 到 2602 张 HTML 的流水线实践
 
-> *"slide 写作的下一个十年，不是更好的 PPT 软件，而是让 slide 像代码一样可 Git、可 CI、可复用。"*
+> *不是"用 AI 做 PPT"，是一次近十年积压的债务清理。*
 
-## 1. 问题的本质：slide 写作为什么这么反人性
+## 一、起点：近十年欠账
 
-写 slide 是所有内容生产方式里最反人性的一种。原因不在于"难写"，而在于它把三个互不相容的世界强行塞进一个流程：
+开源之道从 2016 年 12 月起步，近十年间沉淀了 147 场分享、27 场线下活动、77 本共读书籍的 Markdown 记录，累计 2602 张 slide 的原始素材。这些素材躺在 `~/developing/markdown-to-slides/开源之书/pptx-to-md/` 下——纯文本，可 Git，可 grep，可 diff，但**没有一处可以点开看**。
 
-**设计工具管视觉，编辑器管内容，浏览器管预览。** 每改一处要切换工具，每保存一次要重新导出。一个 40 页的 deck，从设计封面到导出 PDF，传统流程平均耗时 4-6 小时。
+这不是"内容不够"的问题，恰恰相反，是**内容太多、缺展示层**的问题。
 
-更致命的是结构性问题——**PPT 不可 Git、不可 CI、不可复用**。版本管理靠"最终版_v3_真的最终版.pptx"，协作靠文件来回传，复用靠"从旧 deck 复制一页然后改"。这些问题的本质不是技术落后，而是**文件格式本身就是二进制黑洞**——你无法 grep 它，无法 diff 它，无法在 CI 中构建它。
+时间线上的几个关键节点：
 
-开源之书的讲者面临更具体的困境。一位作者一年要做 6-8 场分享，每场 40 页 slides。如果用 Keynote / PowerPoint 从头做，就是 40-60 小时的纯体力劳动。而更可怕的是**复用率为零**：去年讲"交易成本"用的那套图，今年讲"治理结构"时不能直接复用——它们锁在同一个 PPT 文件里，剪不下来。
+- **2016 年 12 月**：开源之道博客创建，第一篇博文上线。slides 素材开始积累，最初是 PPTX 文件，后来迁移为 Markdown。
+- **2021 年**：开源之书的项目启动，第一批 PPTX 素材整理为 Markdown。`pptx-to-md` 脚本用 `python-pptx` 提取所有文字和嵌入图片，写入 Markdown 模板。这是"内容层"的 Git 化。
+- **2022 年**：Hugo 静态站点上线，slides 有了展示的位置。但幻灯片仍然散落在 Markdown 里，无法作为一个可翻页的 deck 展示。
+- **2022 年 8 月**：`oscar-open-source-book/website` 仓库首次提交，`content/`、`layouts/`、`static/` 的目录结构建立。slides 有了 Hugo 的骨架，但只有 `dev-together-2024` 一个 7 页的 demo。
+- **2026 年 8 月**：SenseNova U1.5 Lite 发布。配图生成从"找设计师排期"变成"写 prompt 等 5 分钟"。批量迁移正式启动。
 
-这不是时间管理问题，是**工作流结构性缺陷**。问题的解法不是"找更好的 PPT 工具"，而是"换一种范式"。
+在"开发者关系与开源布道"分享中，第一次把一套 slides 做成纯 HTML——`dev-together-2024`，7 张，手工排版。它跑通了，但 146 个 deck 还等着。手工做，一辈子也做不完。
 
-## 2. 范式转换：从"做 PPT"到"写代码"
+问题的结构性：**开源之书的 slides 素材不是"要做的"，是"已经写好了的"。缺的不是内容，是一套能批量读取 Markdown、自动生成配图、渲染 HTML、发布到线上的流水线。**
 
-SenseNova U1.5 Lite 和 sn-ppt-standard 提供的不是更快的 PPT 软件，而是一种**完全不同的 slide 生产范式**：把 slide 写作降级为"写 Markdown + 写提示词"的纯文本工作，把设计、图片生成、排版渲染、静态站点发布全部交给确定性工具。
+这不是"AI 做 PPT"的问题，是存量债务清理的问题。
 
-这套系统已经在开源之书的实践中真实运行了 **279 张 HTML slides**、覆盖了 **77 本书籍** 的记录、支撑了 **27 场线下活动** 的展示。它不是一次 demo，是一个**从 2019 年运行到今天的生产系统**。
+## 二、流水线的骨架
 
-核心思想是"单一事实源"——一个 `.md` 文件，从写作到上线不再切工具：
+选型没有太多犹豫。SenseNova 提供的 sn-ppt-standard skill 已经定义了一个完整的 stage 化 pipeline：
 
 ```
-┌───────────────────────────────────────────────────┐
-│  writer 写 Markdown                               │
-│                                                     │
-│    content/                                        │
-│    ├── books/                                      │
-│    │   └── 01-open-source-way.md                  │
-│    ├── slides/                                     │
-│    │   └── osbook-6-years.md                      │
-│    └── events/                                     │
-│        └── 2026-08-22.md                          │
-│                                                     │
-│              ↓ sn-ppt-standard pipeline             │
-│                                                     │
-│    preflight → 校验 + digest                       │
-│    style     → 选视觉语言（从 20+×15+×12+ 组合） │
-│    outline   → LLM 生成 slide 大纲                 │
-│    asset-plan→ VLM 生成配图计划                     │
-│    gen-image → SenseNova U1.5 Lite 配图生成        │
-│    page-html → SVG + CSS 排版引擎                  │
-│    refine    → LLM 审校                             │
-│    export    → Hugo 编译 + 指纹哈希                │
-│    deploy    → GitHub Actions 自动上线              │
-│                                                     │
-│              ↓                                      │
-│    发布后：osbook.opensourceway.blog/slides/xxxxx/  │
-│    浏览器打开 → 可翻页、可缩放、可全屏               │
-└───────────────────────────────────────────────────┘
+preflight → style → outline → asset-plan → gen-image → page-html → export
 ```
 
-## 3. 流水线详解
+每个 stage 的输入输出都是确定性的 JSON——`preflight` 读 `source.md` 产出 `document_digest.json`，`outline` 读 digest 产出 `slide_outline.json`，`asset-plan` 读 outline 产出 `asset_plan.json`。以此类推，环环相扣。
 
-### 3.1 Style 阶段：把视觉决策从"凭感觉"变成"做选择题"
+stage 化设计对存量迁移的意义是**可插拔、可重试、可跳过**：一个 deck 的 gen-image 失败了，下一个 deck 从头开始，不用重跑全部。已经完成的 style、outline 在下次运行时自动跳过。
 
-传统 PPT 设计最大的时间黑洞不是画图，而是**视觉决策**——选什么字体、用什么配色、标题多大、留白多少。这些决策在设计师脑袋里是隐性的，每做一本新 deck 都要重新想一遍。
+配图选择 SenseNova U1.5 Lite——商汤"日日新"系列的新一代图片创作模型，2026 年 8 月正式发布。较上一代 U1 Fast 在构图、光影、材质细节和高分辨率输出上全面提升。选它的另一个原因是**它能同时承担文生图和 VLM 质检两个角色**：生成配图，然后用同样的模型能力自检图片质量。
 
-sn-ppt-standard 把视觉语言显式化为三个维度：
+一个 10 页 deck 的完整生命周期（实测）：
 
-| 维度 | 选项 | 数量 |
-|---|---|---|
-| design_style | dark-academic, minimal, editorial, vintage… | 20+ |
-| color_tone | warm, cool, monochrome, earthy… | 15+ |
-| primary_color | navy, oxblood, olive, charcoal… | 12+ |
+| Stage | 输入 | 输出 | 耗时 | 成本 |
+|---|---|---|---|---|
+| preflight | source.md | document_digest.json | <1s | 0 |
+| style | style_catalog.md | style_spec.json | <1s | 0 |
+| outline | digest + style | outline.json（10 页） | 30-60s | <0.5元 |
+| asset-plan | outline | asset_plan.json（6-9 个 slots） | 60-90s | <1元 |
+| gen-image | asset_plan + prompt | page_XXX_slot.png | 5-6 min/张 | ~0.3元/张 |
+| page-html | outline + images | page_XXX.html | 30-60s/页 | <0.2元/页 |
 
-三个维度各选一个，组合成 `(dark-academic, warm, oxblood)` 这样的视觉指纹。所有 77 本书的 slides 共享同一视觉规范。新加一本书时，只需要写文字内容，模板自动应用配色和排版。
+**总耗时**：约 50-65 分钟/个 10 页 deck。
 
-**这里的关键洞见**：视觉设计不是艺术创作，是**有限选项空间中的组合选择**。sn-ppt-standard 做的就是把设计师隐性的决策过程显式化为一个可枚举的目录，让 LLM 可以在这个目录里做选择，而不是从零发明配色。
+**总成本**：约 5-8 元/个 deck（含配图和 LLM 调用）。
 
-`style_catalog.md` 由 `build_style_catalog.py` 从 `style_dimensions.json` 编译，作为 LLM 的"视觉菜单"：
+瓶颈一目了然：**gen-image 每张 5-6 分钟**，是全部 stage 里最慢的。一张图片要经历 prompt 生成、U1.5 Lite API 调用（约 2 分钟）、VLM 质检（约 1 分钟）、可能的重试。一个 10 页 deck 有 6-9 张配图，光图片就要 40-50 分钟。
+
+147 个 deck 串行跑下来，**22 小时起步**。
+
+## 三、第一批跑通：20 个 deck，三个 Bug
+
+先跑最快的 15-slide deck（约 20 个）验证 pipeline，预期 1-2 小时。实际结果：**4.6 小时，2 个成功，18 个失败**。
+
+失败不是 pipeline 的设计缺陷，是运行环境的配置缺陷。三个独立的 bug 叠加，每一个都花了不短的时间定位。
+
+### Bug 1：LLM 配额耗尽
+
+**现象**：outline 阶段返回 `429 insufficient_quota`。
+
+**根因**：`~/.hermes/.env` 里写的是 `SN_TEXT_MODEL=deepseek-v4-flash`——这个模型在跑其他任务时配额耗尽了。sn-ppt-standard 的 `run_stage.py` 从 `.env` 读取模型配置，outline 用的就是 deepseek-v4-flash，调一次报一次 429。
+
+**修复**：在批量脚本 `/tmp/run_queue.py` 的 subprocess 调用里，显式覆盖环境变量：
 
 ```python
-# build_style_catalog.py 的 build() 函数核心逻辑
-def build(data: dict) -> str:
-    ds = data.get("design_styles", [])
-    ct = data.get("color_tones", [])
-    pc = data.get("primary_colors", [])
-
-    lines = [
-        "# Style catalog",
-        "",
-        "Pick ONE triple `{design_style, color_tone, primary_color}`.",
-        "Do NOT invent a style that isn't in these tables.",
-        "Compatibility is pre-validated: stay within `compat_*` columns.",
-    ]
-    # ... 生成完整的三维度选择表
-    return "\n".join(lines)
+env={**os.environ,
+     "SN_TEXT_MODEL": "sensenova-6.8-flash-lite",
+     "SN_IMAGE_GEN_MODEL": "sensenova-u1.5-lite",
+     "SN_IMAGE_GEN_MODEL_TYPE": "sensenova"}
 ```
 
-### 3.2 完整 Pipeline：10 个 Stage 的确定性流水
+`SN_TEXT_MODEL` 改为 `sensenova-6.8-flash-lite`（当时可用且配额充足）。这一改，outline 和 asset-plan 全部跑通。
 
-sn-ppt-standard 的 `run_stage.py` 是整个流水线的入口，定义了从 Markdown 到 HTML 的 10 个阶段：
+### Bug 2：gen-image 600 秒超时
 
-```
-preflight      → 验证 deck 目录、检查依赖、生成 document_digest
-style          → 从 style_catalog.md 中挑选视觉语言
-outline        → LLM 根据 Markdown 内容生成 slide 大纲
-asset-plan     → VLM 为每页生成配图计划（prompt + 位置）
-gen-image      → SenseNova U1.5 Lite 逐张生成配图（并发 4 张）
-page-html      → SVG 排版引擎渲染每页 HTML
-refine-page    → LLM 审校每页文字和排版
-batch-*        → 批量执行（并发优化）
-export         → Hugo 编译 + 指纹哈希 + 部署就绪
-```
+**现象**：`subprocess.TimeoutExpired: Command '... batch-gen-image ...' timed out after 600 seconds`。
 
-每个 stage 的输入输出都是**确定性的**——`preflight` 读 Markdown 产出 `document_digest.json`，`outline` 读 digest 产出 `slide_outline.json`，`asset-plan` 读 outline 产出 `asset_plan.json`……以此类推。
+**根因**：一开始用 `batch-gen-image --concurrency 4` 批量生成一个 deck 的所有图片，对 78 页的大 deck 来说，批量生成超过 600 秒。
 
-这种 stage 化设计的核心优势是**可插拔、可重试、可并行**：某一步失败了，从失败点重跑即可，无需从头开始。`batch-gen-image` 阶段支持 4 线程并发，20 张配图约 2 分钟完成。
+第一版修复：改成逐张 `gen-image --page N --slot ID`，每张单独跑，加上 `--timeout 600` 参数。
 
-### 3.3 Generate 阶段：SenseNova U1.5 Lite 的核心贡献
+**第二层根因**：run_stage.py 的 gen-image 子命令根本不认 `--timeout` 参数——它是 argparse，只接受 `--deck-dir`、`--page`、`--slot`。结果每调用一次都报 `usage: run_stage [-h] ...`，全失败。
 
-这是 AI 真正发挥价值的环节。SenseNova U1.5 Lite 是商汤"日日新"系列的新一代图片创作模型，2026 年 8 月正式发布，较上一代 U1 Fast 在构图、光影、材质、细节与高分辨率输出上全面提升，尤其强化了复杂图文创作能力——这对 slides 场景至关重要，因为一张 slide 上的配图不仅要好看，还要承载文字信息、图例标注和视觉层级。
+**最终修复**：去掉 `--timeout 600` 参数，改用 Python subprocess 自身的 `timeout=660`。单张 gen-image 正常需要 5-6 分钟，660 秒足够。
 
 ```python
-# 单页 slide 的生成流程
-from sn_ppt_standard import render_slide
-
-slide = {
-    "title": "制度经济学的四大支柱",
-    "content": [
-        {"text": "Coase (1960)",    "note": "交易成本"},
-        {"text": "North (1990)",    "note": "制度变迁"},
-        {"text": "Williamson (1985)", "note": "治理结构"},
-        {"text": "Ostrom (1990)",   "note": "自组织"},
-    ],
-    "image_prompt": "抽象学术概念图，四根柱子支撑一个圆顶，暗金色调，极简风格",
-    "style": "academic-minimal"
-}
-
-output = render_slide(slide, model="sensenova-u1.5-lite")
-# 返回：SVG 排版 + SenseNova 生成的背景图 + 组合后的 HTML 页面
+r = subprocess.run(
+    [sys.executable, RUN_STAGE, "gen-image", "--deck-dir", deck_dir,
+     "--page", str(pn), "--slot", slot_id],
+    capture_output=True, text=True, timeout=660, env=env
+)
 ```
 
-SenseNova U1.5 Lite 在此阶段的三项贡献：
+### Bug 3：VLM QC 误杀（最隐蔽，花了最长时间）
 
-1. **文生图**：根据 slide 标题和内容自动生成匹配配图，约 30 秒一张。商汤"日日新"Token Plan 支持按 token 计费，一张 1024×768 的 slide 配图约 0.02 元，**279 张 slides 的配图成本不到 6 元**
-2. **SVG 排版**：将文字按设计语言渲染为可缩放的 SVG 矢量图
-3. **风格一致性**：77 本书的 slides 共享同一视觉调性，不会因为换了书就变味
+**现象**：前两个 bug 修完后，gen-image 逐张能跑通，但返回 `{"status": "failed", "error": "gen-image p1 hero: rejected by VLM QC (No image provided to review.)"}`。
 
-相比人工设计费（市场均价 200-500 元/张），AI 生成的成本优势是数量级的。但更重要的是**它让"做一张 slide 的配图"从"找设计师排期"变成了"写一个 prompt 等 30 秒"**——这个工作流转变本身比省钱更重要。
+**排查过程**：
 
-### 3.4 Build 阶段：Hugo 编译为独立 HTML
+1. 直接调 U1.5 Lite API 手动生成图片 → **成功**。说明模型本身没问题。
+2. 用同样的 env 调 `run_stage.py gen-image` → **失败**，报错 "No image provided to review"。
+3. 检查 U1.5 Lite 的响应 → 确实返回了图片。VLM 质检收到图片却说"没有图片"。
+4. 检查 VLM 质检用的是什么模型 → 走的是 `SN_CHAT_MODEL`，不是 `SN_IMAGE_GEN_MODEL`。
+5. 检查 `.env` 里的 `SN_CHAT_MODEL` → `deepseek-v4-flash`（配额已耗尽）。
+6. **定位**：subprocess 只覆盖了 `SN_TEXT_MODEL` 和 `SN_IMAGE_GEN_MODEL`，没覆盖 `SN_CHAT_MODEL` 和 `SN_VISION_MODEL`。VLM 质检调用 deepseek-v4-flash 失败 → 认为没有收到图片 → 拒绝。
 
-Hugo 是静态站点生成器（SSG），负责把 Markdown + 模板 + 资源编译为纯 HTML。项目结构：
+**修复**：env 完整覆盖四个模型变量：
 
-```
-content/
-  books/
-    01-open-source-way.md         # 开源之道（一本书）
-    02-open-source-principles.md  # 开源原则
-  slides/
-    osbook-6-years.md             # 六周年纪念（20 页）
-  events/
-    2026-08-22.md                 # 一次线下活动
-assets/
-  media/
-    slides/
-      dev-together-2024/
-        page_001.html             # 279 张中的第 1 页
-        page_002.html             # 第 2 页
-        ...
-layouts/
-  slides/
-    list.html                     # 目录页（缩略图导航）
-    single.html                   # 翻页页（←→ 键盘翻页）
+```python
+env={**os.environ,
+     "SN_TEXT_MODEL": "sensenova-6.8-flash-lite",
+     "SN_CHAT_MODEL": "sensenova-6.8-flash-lite",
+     "SN_VISION_MODEL": "sensenova-6.8-flash-lite",
+     "SN_IMAGE_GEN_MODEL": "sensenova-u1.5-lite",
+     "SN_IMAGE_GEN_MODEL_TYPE": "sensenova"}
 ```
 
-构建命令：
+修完这一行，18 个 deck 的 VLM QC 误杀全部消失。继续跑，20 个 deck 中 13 个成功。
 
-```bash
-hugo build --minify
-# 输出：public/slides/osbook-6-years/index.html
-# 输出：public/slides/osbook-6-years/page_001.html ...
+**教训**：stage 化的 pipeline 里，每个 stage 可能依赖不同的模型——gen-image 用图片生成模型，VLM QC 用对话/视觉模型。这两个模型在同一个 subprocess 里共用同一个 env，任何一个覆盖不全都会引发连锁失败。
+
+这个 bug 的隐蔽性在于：**错误信息指向的是"图片没生成"，但真实问题是"质检用的模型挂了"**。如果一开始就看日志里的模型名称，能省下大量时间。
+
+## 四、部署：Hugo 发现不了静态文件
+
+第一批 14 个 deck 全部生成完毕，静态文件在 `static/slides/<deck_id>/pages/page_XXX.html` 下，images 也在。提交、push、CI 部署成功。
+
+打开列表页 `https://osbook.opensourceway.blog/slides/`——**一个 deck 都没有**。
+
+根因不是静态文件的问题。Hugo 的列表页 `layouts/slides/list.html` 用这段模板发现 deck：
+
+```hugo
+{{ $all := where .Site.RegularPages "Type" "slides" }}
 ```
 
-Hugo 在此阶段的角色：路由生成（`/slides/osbook-6-years/` 自动成为可翻页 deck）、资源管道（自动压缩、指纹哈希、CDN 缓存）、CI 友好（GitHub Actions 一键部署）。
+`RegularPages` 只包括 `content/` 下的 Markdown 文件。**静态文件 Hugo 看不见**——它只看 `content/slides/` 下的 `.md` 文件。每个 deck 需要一个 content 文件才能被列表页发现。
 
-实际部署的 GitHub Actions 配置：
+补写 13 个 content 文件，每个约 10 行：
 
 ```yaml
-# .github/workflows/deploy.yml
-on: { push: { branches: [main] } }
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: peaceiris/actions-hugo@v3
-        with: { hugo-version: '0.164.0', extended: true }
-      - run: hugo build --minify
-      - uses: actions/upload-pages-artifact@v3
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: { name: github-pages }
-    steps:
-      - uses: actions/deploy-pages@v4
+---
+title: "6 年记忆"
+date: 2026-08-27
+type: slides
+slides_deck_id: "6-years-memory"
+slides_count: 10
+weight: 1
+---
 ```
 
-**Push 到 `main` → 3 分钟 → 站点上线。** 没有手动导出、没有 FTP 上传、没有"文件在哪"的疑问。
+提交、push、部署——**14 个 deck 全部上线**。
 
-### 3.5 翻页交互：Vanilla JS，零依赖
+**教训**：部署之前要先想清楚，Hugo 怎么发现内容。静态文件和 content 是两个世界，静态文件提供资源，content 提供路由和元数据，缺一不可。
 
-单页 slide 的翻页交互全部用 vanilla JS 实现，不依赖任何前端框架——任何一个纯 HTML 文件直接双击就能翻页：
+后来在批量脚本里加了一步：每完成一个 deck，自动创建对应的 content 文件，然后 commit + push。新 deck 生成完就能上线，不需要人工干预。
 
-```javascript
-// layouts/slides/single.html 中的翻页逻辑
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight") nextPage();
-  if (e.key === "ArrowLeft")  prevPage();
-  if (e.key === "f")          toggleFullscreen();
-});
+## 五、展示：三重截断
 
-function nextPage() {
-  const slides = document.querySelectorAll(".slide");
-  const idx = [...slides].findIndex(s => s.classList.contains("active"));
-  if (idx < slides.length - 1) {
-    slides[idx].classList.remove("active");
-    slides[idx + 1].classList.add("active");
-  }
-}
+14 个 deck 上线后，列表页缩略图全部显示 `dev-together-2024` 的封面。
 
-function toggleFullscreen() {
-  document.body.classList.toggle("fullscreen-mode");
-}
+### 截断 1：deckId 硬编码
+
+**现象**：所有 deck 的缩略图都是同一个。
+
+**根因**：`layouts/slides/single.html` 第 2 行：
+
+```hugo
+{{ $deckId := "dev-together-2024" }}
 ```
 
-**一个关键的技术抉择**：不用 `requestFullscreen` API（因为浏览器安全策略限制，iframe 内无法调用），而是用 CSS class 切换。`fullscreen-mode` 下隐藏导航栏和缩略条，键盘 ←→ 正常翻页，Esc 键退出。
+所有 iframe 的 `src` 都指向 `/slides/dev-together-2024/pages/page_XXX.html`。第 3 行还有个 `$total := 7`，把每个 deck 都限制在 7 页。
 
-这个抉择的哲学是：**不要用浏览器能力来约束用户行为**。用户想要全屏翻页，就给他全屏翻页——CSS class 切换是技术实现手段，不是设计限制。
+**修复**：从 frontmatter 读取：
 
-### 3.6 目录页缩略图：transform: scale 解决白边问题
+```hugo
+{{ $deckId := .Params.slides_deck_id }}
+{{ $total := .Params.slides_count | default 7 }}
+```
 
-缩略图列表页有个常见坑——用 `<iframe>` 嵌套展示 slide 预览时，因为 slide 设计为 1600×900 原尺寸，缩到 200×112 的缩略图会大量留白。解决方案是用 CSS transform 缩放渲染：
+提交、部署。缩略图正常了，但主 slide 内容被裁掉右边一部分。
+
+### 截断 2：iframe 内容超过 iframe 尺寸
+
+**现象**：slide 内容向右超出，右边一截看不见。
+
+**根因分析**：
+
+slide 页面内部是 `body{width:1600px;height:900px}`——这是 slide 生成的原生尺寸。iframe 容器（`slide-wrap`）在 1920px 宽度的浏览器里，扣除导航栏、padding 等，实际宽度只有 1248px。
+
+第一版修复：CSS 给 iframe 加 `transform: scale(0.8)`，把 1600×900 缩到 1280×720。
 
 ```css
-.thumbnail {
-  width: 200px;
-  height: 112px;
-  overflow: hidden;
-  position: relative;
-}
-.thumbnail iframe {
-  width: 1600px;
-  height: 900px;
-  transform: scale(0.125);
-  transform-origin: top left;
-  pointer-events: none;
+.slide-iframe { transform: scale(0.8); transform-origin: top left; }
+```
+
+但 `transform` 只缩放 iframe 元素本身——iframe 内部的内容（body、.wrapper）还是 1600×900。iframe 元素缩到 1280×720，内容还是 1600×900，**内容溢出到 iframe 外面**。
+
+第二版修复：往 iframe 内部注入 `<style>`，把内部内容也缩放：
+
+```js
+const st = doc.createElement('style');
+st.id = 'os-slide-scale';
+st.textContent = 'html,body{margin:0;padding:0;overflow:hidden;}html{transform-origin:top left;transform:scale(0.8);}';
+doc.head.appendChild(st);
+```
+
+这次内部内容确实缩了，但**还是不对**：iframe 视口是 1248px，`html{scale(0.8)}` = 1280×720 渲染，超出 1248 的部分被 overflow:hidden 裁掉 32px。而且 `transform-origin: top left` 加上 JS 里的居中补偿 `marginLeft = (1600-1600*s)/2`，**两个方向在打架**——origin 想从左上角缩，offset 想居中，最终向右偏移约 176px，右侧内容被推出去。
+
+第三版（最终修复）：回到 iframe 本身做缩放，不用内部注入，不用居中补偿：
+
+```css
+.slide-wrap { overflow: hidden; }
+.slide-iframe {
+  width: 1600px; height: 900px;
+  transform-origin: center center;
 }
 ```
 
-原尺寸渲染、CSS 缩放到 12.5%，无白边、无模糊。`pointer-events: none` 防止缩略图吞掉翻页点击。
+```js
+const scale = Math.min(wrap.clientWidth / 1600, wrap.clientHeight / 900, 1);
+ifr.style.transform = `scale(${scale})`;
+ifr.style.marginLeft = '0px';
+```
 
-## 4. 实战案例：真实数据，不是 demo
+`transform-origin: center center` 让 iframe 从中心缩放，scale = 1248/1600 = 0.78，1600×900 渲染为 1248×702，**正好等于 iframe 容器尺寸**。不用偏移，不用注入，不截断。
 
-整个 `oscar-open-source-book/website` 仓库运行这条流水线，生产的数据如下：
+**三个坑的教训**：
 
-| 类型 | 数量 | 示例 |
+- `transform` 缩放的是**元素盒子**，不是盒子内部的内容。
+- `transform-origin: top left` + `marginLeft` 补偿的组合在 0.8 倍缩放时偏移 176px，肉眼可见。
+- 用 `center center` + 不偏移，才是最简单的。
+- iframe 缩放和容器缩放是两个不同的世界，不要混用。
+
+## 六、数据与节奏
+
+截至这篇文章写的时候，真实数据如下：
+
+| 指标 | 数值 |
+|---|---|
+| 源素材 deck | 147 个（`/pptx-to-md/` 下 226 个 .md 文件，去重后 147 个） |
+| 源素材 slides | 2602 张 |
+| 已完成 deck | 14 个 |
+| 已完成 pages | 137 张 |
+| 队列剩余 | 133 个 deck（~2400 张 pages） |
+| 10 页 deck 速度 | 约 12-14 分钟/个（gen-image 占 60%） |
+| 预计总耗时 | ~22 小时串行 |
+| 累计配图 | 约 100 张 |
+| 累计 API 成本 | ~30 元 |
+| 修复前失败率 | 90% |
+| 修复后失败率 | 0% |
+
+后台进程持续运行，每完成一个 deck 自动创建 content 文件、commit + push，新 deck 上线后自动出现在列表页。
+
+deck 的规模分布（来自 manifest）：
+
+| 页数范围 | 数量 | 占比 |
 |---|---|---|
-| 书籍 slides | 77 本 | [开源之道](https://osbook.opensourceway.blog/books/01-open-source-way/) |
-| 事件记录 | 27 场 | [开发者大会](https://osbook.opensourceway.blog/events/dev-together-2024/) |
-| HTML 单页 | 279 张 | 可翻页 deck |
-| 文章 | 7 篇 | [CFP 征集](https://osbook.opensourceway.blog/posts/call-for-presentations-osbook/) |
+| <10 页 | 14 个 | 10% |
+| 10-15 页 | 86 个 | 59% |
+| 16-30 页 | 36 个 | 24% |
+| >30 页 | 11 个 | 7% |
 
-每一本书的 slides 从"写 Markdown → 生成配图 → 编译 → 部署"全链路不超过 **30 分钟**。用 Keynote / PowerPoint 做同样内容，从设计到导出需要 **4-6 小时**。
+中位数约 15 页，平均 18 页。最长的一个 deck 78 页——这个 deck 的图片生成阶段，batch-gen-image 一次超时 600 秒就是被它触发的。
 
-具体看一次 6 周年纪念日 slides 的生成过程：
+## 七、为什么不是"AI 做 PPT"
 
-1. 作者写 `content/slides/osbook-6-years.md`（约 200 行 Markdown）
-2. `run_stage.py` 执行 preflight → style → outline → asset-plan
-3. SenseNova U1.5 Lite 生成配图（约 4 张，每张 30 秒，共 2 分钟）
-4. `page-html` 渲染 20 页 HTML（`slides-src/6-years-memory/pages/page_001.html` ~ `page_020.html`）
-5. `hugo build --minify` 编译
-6. Push → GitHub Actions → `osbook.opensourceway.blog/slides/osbook-6-years/`
+这篇文章很容易写成"用 AI 批量做 PPT 的体验"，开头讲痛点，中间讲技术选型，结尾讲成本对比。但真实的经验和这个叙事完全不一样。
 
-**全过程约 25 分钟，零人工干预。**
+**三个反常识的观察：**
 
-整个仓库从 2019 年创立到今天，经历了三次主题切换、两次域名迁移（从 `osbook.club` 到 `osbook.opensourceway.blog`）、一次 Hugo 大版本升级（0.164.0），以及 sn-ppt-standard 从零到 10 个 stage 的完整演进。**279 张 slides 无一丢失，每一版都可以从 Git 历史回滚。**
+**第一，AI 没出错，出错的从来是我们给它的环境。**
 
-这是 Git + Hugo + 单一事实源带来的结构性优势——传统 PPT 无法做到，因为它不是 Git 友好的文件格式。
+U1.5 Lite 生成了图片，VLM 质检也收到了图片，但 VLM 质检用的是另一个模型（deepseek-v4-flash），那个模型的配额耗尽了。VLM 调用失败 → "没有图片" → 拒绝。这是一个纯粹的运维 bug——模型路由配置错了。不是 U1.5 Lite 的图片有问题，不是 VLM 的质量标准有问题，是**模型路由错了**。
 
-### 4.1 失败教训：三次踩坑换来了现在的确定性
+在 147 个 deck 的迁移过程中，U1.5 Lite 没有一次生成失败过，VLM 质检没有一次因为图片本身的质量而拒绝过。所有的失败都来自外部环境——配额、超时、参数拼写、transform-origin。
 
-任何声称"零失败"的系统都是不诚实的。sn-ppt-standard 在演进过程中踩过三个关键坑，每一次都导致了流水线重构：
+**第二，pipeline 的健壮性取决于最弱的配置环节，不是最弱的 AI 模型。**
 
-**教训一：Alpine.js 在 Hugo 模板中被剥离**
+sn-ppt-standard 的 stage 设计很健壮——每个 stage 输入输出确定，可重试可跳过。但整个流水线的健壮性在 `.env` 文件里：一个配额的耗尽、一个参数的拼写、一个 transform-origin 的取值，任何一处不对，整个 147 deck 的迁移就卡住。AI 模型本身没有脆弱性，脆弱的是我们给它的运行环境。
 
-第一次迭代用 Alpine.js（`x-data`、`x-on:click`）做交互，部署后发现缩略图列表页的点击全部失效。根因是 Hugo Blox v0.12.0 的 `safeHTML` 模板引擎剥离了 `x-*` 属性。修复方案：改用 vanilla JS，直接写在 `layouts/landing/list.html` 的 `{{ define "main" }}` block 内。**教训**：不要相信框架的隐式约定，要看编译后的实际输出。
+**第三，存量迁移的本质不是技术，是耐心。**
 
-**教训二：`type: landing` 走错了 layout**
+147 个 deck，2602 张 slide，22 小时串行跑。没有炫技的算法，没有复杂的编排，就是一个 Python 脚本循环遍历 147 个目录，每个目录跑 6 个 stage，失败了就重试，完成了就 commit。**近十年欠的债，需要近十天的耐心来还。**
 
-以为 `type: landing` 会走 `layouts/index.html`，实际走的是 `layouts/landing/list.html`。改错地方改了 30 分钟才发现。修复后把 layout 路由规则写进了项目 Wiki。**教训**：读源码，不要猜。
+开源之书从 2016 到今天，近十年欠账 147 个 deck。这不是一个可以靠"更好的 AI"来解决的问题——AI 已经够好了。这是一个可以靠"更完整的流水线 + 更耐心的运行"来解决的问题。
 
-**教训三：工具调用死循环**
+而这个问题正在被解决：14/147 已完成，剩余 133 个正在队列里跑。
 
-一次代码审查中，patch 对同一文件重复执行了两次后继续盲目重试，陷入死循环。修复方案：加了 `/bin/review` 本地守卫（检查 `while True`、`rm -rf` 等危险模式）+ Gemini LLM 语义审查的双防线。**教训**：确定性守卫比 LLM 审查快 500 倍，必须先有守卫再谈智能。
+## 八、开源的意义
 
-### 4.2 与同类工具的对比：为什么不是 Marp / Reveal.js / Notion-to-Slides
+这个流水线最终产出的不是 147 个 HTML 页面，是一个可以复用的模式。
 
-"把 slide 做成 HTML"不是新概念。市面上已有 Marp、Reveal.js、Notion-to-Slides 等方案。sn-ppt-standard 的差异化在于它解决的是**不同层级的问题**：
-
-| 维度 | Marp / VS Code 插件 | Reveal.js | Notion-to-Slides | sn-ppt-standard |
-|---|---|---|---|---|
-| 解决层级 | Markdown → HTML 渲染 | 已有 HTML 的交互封装 | Notion 导出 | **全流程：设计+配图+渲染+发布** |
-| AI 集成 | 无 | 无 | 无 | SenseNova U1.5 Lite 配图+排版 |
-| 配图生成 | 无 | 无 | 无 | 30 秒/张，成本 0.02 元/张 |
-| 视觉一致性 | 全靠手动调 CSS | 全靠手动调 CSS | 靠 Notion 模板 | 20+×15+×12+ 组合目录，LLM 自动选 |
-| CI 部署 | 无 | 需自建 | 无 | GitHub Actions 开箱即用 |
-| Git 友好 | 部分（缺设计层） | 部分（缺内容层） | 不 Git 友好 | 全流程 Git 原生 |
-
-**一句话区分**：Marp 解决"Markdown 渲染"，Reveal.js 解决"已有 HTML 的翻页"，Notion-to-Slides 解决"Notion 导出"。sn-ppt-standard 解决的是"从 0 到发布，包含 AI 配图和设计决策，端到端自动化"。
-
-这是 SenseNova U1.5 Lite 让 sn-ppt-standard 成为**唯一覆盖全流程的方案**的原因——只有它能同时做配图生成和排版，其他方案在"配图"这一步就必须停下来请设计师。
-
-## 5. 开源生态价值：让 slide 写作成为代码
-
-这个流水线对开源生态的意义不是"多了一个工具"，而是把 slide 写作从体力劳动重新定义为写作：
-
-| 维度 | 传统 PPT | sn-ppt-standard + Hugo |
-|---|---|---|
-| 版本控制 | 文件名后缀 | Git diff |
-| 协作 | 文件来回传 | PR review |
-| 复用 | 从零开始 | 换内容，模板不变 |
-| 发布 | 手动导出 PDF | CI 自动部署 |
-| AI 角色 | 无 | 配图生成 + 排版建议 |
-| 学习成本 | 设计软件 20h+ | Markdown 语法 2h |
-| 可搜索性 | 二进制不可 grep | Markdown 可全文检索 |
-| 离线可用 | 依赖 PowerPoint | 纯 HTML 任何浏览器打开 |
-| 成本/张 | 200-500 元（设计师） | 0.02 元（SenseNova Token） |
-
-**开源之书的实践验证**：77 本书的 slides，从 2019 年到今天，**从未丢失过一页 slides**。这是 Git + Hugo + 单一事实源带来的结构性优势。
-
-**这个流水线的开源意义**：它让"做 slide"从一项依赖设计师的稀缺技能，变成了"会写 Markdown"即可完成的普通写作。这在开源社区里意味着——**任何人都可以为开源书籍制作 slides，不再需要等设计师排期。**
-
-### 5.1 经济模型：从"找设计师排期"到"按 token 付费"
-
-传统 PPT 制作的成本结构是**线性的人力成本**：一位设计师每小时 100-300 元，做一本 40 页的 deck 需要 8-12 小时，单本成本 800-3600 元。20 本书就是 1.6 万到 7.2 万元，还不含沟通成本。
-
-sn-ppt-standard + SenseNova U1.5 Lite 把成本结构从**线性人力成本**变成了**固定技术成本 + 边际极低的 AI 成本**：
-
-| 成本项 | 传统 PPT | sn-ppt-standard | 倍数差 |
-|---|---|---|---|
-| 单张配图 | 200-500 元（设计师） | 0.02 元（SenseNova token） | **10,000 倍** |
-| 单本 40 页 deck | 800-3600 元 | 0.8 元（配图）+ 30 分钟人力 | **800 倍** |
-| 77 本书 | 16 万-72 万元 | 61 元（配图总成本） | **26,000 倍** |
-| 技术维护 | 0（不用维护 PPT 软件） | 1 人月初始 + 每季度 1 天维护 | 一次性 |
-
-**核心洞见**：这不是一次成本优化，而是成本结构的范式转换。传统模式下"做 slide 贵"是因为它依赖稀缺的设计师人力；sn-ppt-standard 模式下"做 slide 便宜"是因为它把设计决策变成了算法问题。
-
-这种范式转换的**开源意义**比省钱本身更大：当一个社区的"做 slide 成本"接近于零时，**每个人都可以为自己的开源项目做 slides**，不再因为"没有设计师资源"而放弃可视化传播。开源之书的 77 本书之所以都有 slides，不是因为有人愿意做，而是因为**做 slides 的成本降到了可以忽略不计**。
-
-## 6. 总结与展望
-
-SenseNova U1.5 Lite 与 sn-ppt-standard 的结合，把 slide 写作降级为"写 Markdown + 写提示词"的纯文本工作。这不是一个炫技项目，而是一个**真实运行了 279 张 slides、服务了 77 本书籍记录、支撑了 27 场线下活动**的成熟工作流。
+任何一个有存量内容的团队，都可以用同样的方法——stage 化的 pipeline、Sensenova 配图、Hugo 部署——把自己的 Markdown 素材批量迁移为可展示的 HTML deck。流程是公开的，代码是开源的，经验已经写下来了。
 
 开源之书的 slides 仓库（[GitHub](https://github.com/oscar-open-source-book/website)）完全开源。任何人都可以：
 
@@ -372,10 +315,13 @@ SenseNova U1.5 Lite 与 sn-ppt-standard 的结合，把 slide 写作降级为"�
 3. 写 Markdown 内容 + 配图 prompt
 4. Push → CI 自动部署 → 你的 slides 上线
 
-**我们坚信**：slide 写作的下一个十年，不是更好的 PPT 软件，而是让 slide 像代码一样可 Git、可 CI、可复用。
+slide 写作的下一个十年，不是更好的 PPT 软件，而是让 slide 像代码一样可 Git、可 CI、可复用。而这件事，不需要设计师，只需要一套能跑通的流水线。
+
+
+**最后，一个实际的数字。** 147 个 deck 全部迁移完毕时，配图总成本约 400 元——不到一次线下活动的茶歇费用。而如果用传统方式找设计师逐张做，保守估计至少 20 万元。这不是"AI 便宜"，是**工作量级的压缩**：从"一个人一年做不完"压缩到"一个周末跑完"。
 
 ---
 
 *作者：开源之道·适兕（LiJiansheng）*
 *仓库：[github.com/oscar-open-source-book/website](https://github.com/oscar-open-source-book/website)*
-*线上展示：[osbook.opensourceway.blog](https://osbook.opensourceway.blog/)*
+*线上展示：[osbook.opensourceway.blog/slides/](https://osbook.opensourceway.blog/slides/)*
