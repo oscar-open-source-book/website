@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Part 1 · 2022年度回顾</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Roboto+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --gray: #B0BEC5;
+  --dark-bg: #0A0E1A;
+  --dark-card: #111626;
+  --dark-line: #1A2040;
+  --text-main: #E0E6F0;
+  --glow-blue: rgba(33, 150, 243, 0.45);
+  --glow-cyan: rgba(0, 188, 212, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  background: var(--dark-bg);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(0, 188, 212, 0.06) 0%, transparent 50%),
+              #0A0E1A;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 80px;
+  box-sizing: border-box;
+}
+
+/* Grid lines decoration */
+#ct::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#ct > * { position: relative; z-index: 1; }
+
+/* Top meta row */
+.top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--gray);
+  letter-spacing: 2px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--dark-line);
+}
+.top-meta .left-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.top-meta .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--glow-cyan);
+}
+
+/* Main title area */
+.title-zone {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 76px;
+  letter-spacing: 2px;
+  color: var(--text-main);
+  text-shadow:
+    0 0 20px var(--glow-blue),
+    0 0 40px var(--glow-blue),
+    0 0 2px var(--primary);
+  line-height: 1.1;
+}
+
+.main-title .part-num {
+  color: var(--accent);
+  text-shadow:
+    0 0 20px var(--glow-cyan),
+    0 0 40px var(--glow-cyan),
+    0 0 2px var(--accent);
+}
+
+.subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--gray);
+  margin-top: 18px;
+  letter-spacing: 3px;
+}
+
+.subtitle-line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 20px auto 0;
+}
+
+/* Timeline */
+.timeline-zone {
+  margin-top: 28px;
+  padding: 0 40px;
+  position: relative;
+}
+.timeline-track {
+  position: relative;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.timeline-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary) 15%, var(--accent) 85%, transparent);
+  box-shadow: 0 0 8px var(--glow-blue);
+  transform: translateY(-50%);
+}
+.timeline-nodes {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+.tl-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.tl-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--glow-blue);
+  border: 2px solid var(--dark-bg);
+}
+.tl-dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--glow-cyan);
+  width: 14px;
+  height: 14px;
+}
+.tl-label {
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+.tl-label.active {
+  color: var(--accent);
+}
+
+/* Cards row */
+.cards-zone {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.card {
+  background: var(--dark-card);
+  border: 1px solid rgba(0, 188, 212, 0.25);
+  border-radius: 6px;
+  padding: 20px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--primary));
+  box-shadow: 0 0 10px var(--glow-cyan);
+}
+.card-index {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.card-divider {
+  width: 36px;
+  height: 1px;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--glow-cyan);
+  margin-bottom: 12px;
+}
+.card-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--gray);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+/* Bottom footer */
+.footer-zone {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--dark-line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.footer-narrative {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--gray);
+  line-height: 1.7;
+  flex: 1;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+}
+.footer-meta {
+  display: flex;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 14px;
+  border: 1px solid rgba(33, 150, 243, 0.25);
+  border-radius: 4px;
+  background: rgba(33, 150, 243, 0.04);
+}
+.meta-label {
+  font-size: 9px;
+  color: var(--gray);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+.meta-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+/* Left big number decoration */
+.big-num-deco {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+}
+.big-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 140px;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--primary);
+  text-shadow: 0 0 30px var(--glow-blue);
+  writing-mode: vertical-rl;
+  letter-spacing: 6px;
+  opacity: 0.5;
+}
+
+/* Right corner decoration */
+.corner-deco {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  z-index: 1;
+  pointer-events: none;
+}
+.corner-lines {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+.corner-lines::before,
+.corner-lines::after {
+  content: '';
+  position: absolute;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--glow-cyan);
+}
+.corner-lines::before {
+  top: 0; right: 0;
+  width: 40px; height: 1px;
+}
+.corner-lines::after {
+  top: 0; right: 0;
+  width: 1px; height: 40px;
+}
+
+.bottom-right-deco {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  z-index: 1;
+  pointer-events: none;
+}
+.br-dot-cluster {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.br-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gray);
+  opacity: 0.4;
+}
+.br-dot.lit {
+  background: var(--accent);
+  opacity: 1;
+  box-shadow: 0 0 8px var(--glow-cyan);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="corner-deco">
+      <div class="corner-lines"></div>
+    </div>
+
+    <div class="big-num-deco">
+      <div class="big-num">01</div>
+    </div>
+
+    <div class="top-meta">
+      <div class="left-tag">
+        <span class="dot"></span>
+        <span>ANNUAL · OPEN SOURCE REPORT 2022</span>
+      </div>
+      <div>CHAPTER TRANSITION · 章节过渡</div>
+    </div>
+
+    <div class="title-zone">
+      <h1 class="main-title">
+        <span class="part-num">Part 1</span> · 2022年度回顾
+      </h1>
+      <p class="subtitle">一年走过的开源之路：阅读、实践与布道</p>
+      <div class="subtitle-line"></div>
+    </div>
+
+    <div class="timeline-zone">
+      <div class="timeline-track">
+        <div class="timeline-line"></div>
+        <div class="timeline-nodes">
+          <div class="tl-node"><div class="tl-dot active"></div><span class="tl-label active">2022.01</span></div>
+          <div class="tl-node"><div class="tl-dot"></div><span class="tl-label">2022.02</span></div>
+          <div class="tl-node"><div class="tl-dot"></div><span class="tl-label">2022.03</span></div>
+          <div class="tl-node"><div class="tl-dot"></div><span class="tl-label">2022.04</span></div>
+          <div class="tl-node"><div class="tl-dot"></div><span class="tl-label">2022.05</span></div>
+          <div class="tl-node"><div class="tl-dot active"></div><span class="tl-label active">2022.06</span></div>
+          <div class="tl-node"><div class="tl-dot"></div><span class="tl-label">2022.07</span></div>
+          <div class="tl-node"><div class="tl-dot"></div><span class="tl-label">2022.08</span></div>
+          <div class="tl-node"><div class="tl-dot active"></div><span class="tl-label active">2022.09</span></div>
+          <div class="tl-node"><div class="tl-dot"></div><span class="tl-label">2022.10</span></div>
+          <div class="tl-node"><div class="tl-dot"></div><span class="tl-label">2022.11</span></div>
+          <div class="tl-node"><div class="tl-dot active"></div><span class="tl-label active">2022.12</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards-zone">
+      <div class="card">
+        <div class="card-index">SECTION / 01</div>
+        <div class="card-title">阅读笔记</div>
+        <div class="card-divider"></div>
+        <p class="card-desc">全年精读开源技术书籍与社区文档的数量与深度统计，梳理知识摄入的路径与质量。</p>
+      </div>
+      <div class="card">
+        <div class="card-index">SECTION / 02</div>
+        <div class="card-title">布道活动</div>
+        <div class="card-divider"></div>
+        <p class="card-desc">线上线下技术分享、社区参与及影响力的汇总，记录每一次输出与交流的价值。</p>
+      </div>
+      <div class="card">
+        <div class="card-index">SECTION / 03</div>
+        <div class="card-title">关键数据</div>
+        <div class="card-divider"></div>
+        <p class="card-desc">用核心KPI量化2022年的整体开源贡献与产出，以数据说话，客观审视全年的努力。</p>
+      </div>
+      <div class="card">
+        <div class="card-index">SECTION / 04</div>
+        <div class="card-title">反思复盘</div>
+        <div class="card-divider"></div>
+        <p class="card-desc">从数据与体验中提取经验教训，为2023年的方向选择与行动策略奠定思考基础。</p>
+      </div>
+    </div>
+
+    <div class="footer-zone">
+      <p class="footer-narrative">
+        第一章回顾2022年度开源阅读与布道实践，从阅读产出、社区活动、关键指标三个维度全面复盘，并用反思沉淀成长经验。
+      </p>
+      <div class="footer-meta">
+        <div class="meta-item">
+          <span class="meta-label">章节主题</span>
+          <span class="meta-value">年度回顾</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">小节数</span>
+          <span class="meta-value">04</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">时间范围</span>
+          <span class="meta-value">2022.01 – 2022.12</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-right-deco">
+      <div class="br-dot-cluster">
+        <span class="br-dot lit"></span>
+        <span class="br-dot"></span>
+        <span class="br-dot lit"></span>
+        <span class="br-dot"></span>
+        <span class="br-dot"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

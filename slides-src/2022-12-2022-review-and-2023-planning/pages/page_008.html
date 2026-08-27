@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2023 阅读升级</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --gray: #B0BEC5;
+  --bg-dark: #0A1628;
+  --bg-card: #102340;
+  --bg-card2: #0E1F38;
+  --line: rgba(33,150,243,0.35);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1600px; height:900px; overflow:hidden; }
+body {
+  font-family: 'Roboto Mono', monospace;
+  color:#E8EEF7;
+  background: var(--bg-dark);
+}
+.wrapper {
+  width:1600px; height:900px;
+  position: relative; overflow: hidden; margin:0 auto;
+}
+#bg {
+  position:absolute; inset:0; z-index:0;
+  background: radial-gradient(1200px 700px at 20% 15%, rgba(33,150,243,0.18), transparent 60%),
+              radial-gradient(900px 600px at 85% 90%, rgba(0,188,212,0.14), transparent 60%),
+              linear-gradient(180deg, #0A1628 0%, #071220 100%);
+}
+#ct {
+  position:absolute; inset:0; z-index:1;
+  padding: 46px 64px 40px 64px;
+  box-sizing:border-box;
+  display:flex; flex-direction:column;
+}
+
+/* Header */
+.header {
+  display:flex; align-items:flex-end; justify-content:space-between;
+  margin-bottom: 22px;
+}
+.header-left { display:flex; flex-direction:column; gap:6px; }
+.eyebrow {
+  font-family:'Roboto Mono',monospace;
+  font-size:13px; letter-spacing:3px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.title {
+  font-family:'Inter', sans-serif;
+  font-weight:800;
+  font-size:44px;
+  color:#fff;
+  letter-spacing:1px;
+  line-height:1.05;
+}
+.title .accent { color: var(--primary); }
+.subtitle {
+  font-family:'Roboto Mono',monospace;
+  font-size:13px; color: var(--gray);
+  margin-top:6px;
+}
+.header-right {
+  display:flex; gap:10px; align-items:center;
+  padding-bottom:6px;
+}
+.tag {
+  font-family:'Roboto Mono',monospace;
+  font-size:11px; color: var(--accent);
+  border:1px solid rgba(0,188,212,0.5);
+  padding:5px 10px; border-radius:2px;
+  background: rgba(0,188,212,0.08);
+}
+.tag.pri { color: var(--primary); border-color: rgba(33,150,243,0.6); background: rgba(33,150,243,0.08); }
+
+/* Upper half: legend + timeline */
+.upper {
+  height: 388px;
+  display:grid;
+  grid-template-columns: 230px 1fr;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+/* Legend cards */
+.legend-col { display:flex; flex-direction:column; gap:14px; }
+.legend-card {
+  flex:1;
+  background: linear-gradient(135deg, rgba(33,150,243,0.12) 0%, rgba(16,35,64,0.6) 100%);
+  border:1px solid rgba(33,150,243,0.35);
+  border-radius:8px;
+  padding: 16px 16px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  position:relative; overflow:hidden;
+}
+.legend-card.alt {
+  background: linear-gradient(135deg, rgba(0,188,212,0.12) 0%, rgba(16,35,64,0.6) 100%);
+  border-color: rgba(0,188,212,0.35);
+}
+.legend-card::before {
+  content:''; position:absolute; right:-30px; top:-30px;
+  width:100px; height:100px;
+  background: radial-gradient(circle, rgba(33,150,243,0.25), transparent 70%);
+}
+.legend-card.alt::before {
+  background: radial-gradient(circle, rgba(0,188,212,0.25), transparent 70%);
+}
+.legend-head { display:flex; align-items:center; gap:10px; }
+.legend-icon {
+  width:36px; height:36px;
+  border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(33,150,243,0.18);
+  border:1px solid rgba(33,150,243,0.45);
+  font-size:18px;
+}
+.legend-card.alt .legend-icon {
+  background: rgba(0,188,212,0.18);
+  border-color: rgba(0,188,212,0.45);
+}
+.legend-title {
+  font-family:'Inter',sans-serif;
+  font-weight:700; font-size:16px; color:#fff;
+}
+.legend-sub {
+  font-family:'Roboto Mono',monospace;
+  font-size:10px; color: var(--accent); letter-spacing:1.5px;
+}
+.legend-card.alt .legend-sub { color: var(--accent); }
+.legend-desc {
+  font-size:11px; color: var(--gray);
+  line-height:1.55;
+  position:relative; z-index:1;
+}
+.legend-metric {
+  font-family:'Roboto Mono',monospace;
+  font-size:11px; color: var(--primary);
+  border-top:1px dashed rgba(33,150,243,0.3);
+  padding-top:8px; margin-top:6px;
+  display:flex; justify-content:space-between;
+}
+.legend-card.alt .legend-metric {
+  color: var(--accent);
+  border-top-color: rgba(0,188,212,0.3);
+}
+
+/* Timeline */
+.timeline-wrap {
+  background: linear-gradient(180deg, rgba(16,35,64,0.55) 0%, rgba(10,22,40,0.55) 100%);
+  border:1px solid rgba(33,150,243,0.25);
+  border-radius:10px;
+  padding: 22px 26px 20px 26px;
+  position:relative; overflow:hidden;
+}
+.timeline-wrap::before {
+  content:'阅读主题 · 季度时间轴'; position:absolute;
+  top:10px; left:22px;
+  font-family:'Roboto Mono',monospace; font-size:10px;
+  letter-spacing:2px; color: var(--accent);
+}
+.timeline-wrap::after {
+  content:'READING PLAN / Q1-Q4'; position:absolute;
+  top:10px; right:22px;
+  font-family:'Roboto Mono',monospace; font-size:10px;
+  letter-spacing:2px; color: var(--gray);
+}
+.timeline-title {
+  font-family:'Inter',sans-serif; font-weight:700;
+  font-size:18px; color:#fff; margin-top:16px;
+  text-align:center;
+}
+.timeline-track {
+  margin-top: 40px;
+  position: relative;
+  height: 240px;
+}
+.axis-line {
+  position:absolute;
+  left: 40px; right: 40px; top: 96px;
+  height:2px;
+  background: linear-gradient(90deg,
+    rgba(33,150,243,0.15) 0%,
+    rgba(33,150,243,0.9) 20%,
+    rgba(0,188,212,0.9) 80%,
+    rgba(0,188,212,0.15) 100%);
+}
+.axis-ticks {
+  position:absolute; left:40px; right:40px; top:80px;
+  height:34px;
+  display:flex; justify-content:space-between;
+}
+.tick {
+  width:2px; height:34px; background: rgba(176,190,197,0.25);
+  position:relative;
+}
+.tick-label {
+  position:absolute; top:38px; left:50%; transform:translateX(-50%);
+  font-family:'Roboto Mono',monospace; font-size:10px; color: var(--gray);
+  white-space:nowrap;
+}
+
+.node {
+  position:absolute;
+  width: 26%;
+  transform: translateX(-50%);
+  display:flex; flex-direction:column; align-items:center;
+}
+.node.n1 { left: 15.625%; top: 0; }
+.node.n2 { left: 39.0625%; top: 0; }
+.node.n3 { left: 62.5%; top: 0; }
+.node.n4 { left: 85.9375%; top: 0; }
+
+.dot-row {
+  position:relative; top:70px;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.dot {
+  width:22px; height:22px; border-radius:50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 4px rgba(33,150,243,0.15),
+              0 0 18px rgba(33,150,243,0.7);
+  position:relative;
+}
+.node.n4 .dot { background: var(--accent); box-shadow: 0 0 0 4px rgba(0,188,212,0.15), 0 0 18px rgba(0,188,212,0.7); }
+.q-label {
+  font-family:'Inter',sans-serif; font-weight:700; font-size:13px;
+  color: var(--primary); letter-spacing:1px;
+}
+.node.n4 .q-label { color: var(--accent); }
+
+/* Node upper info card */
+.node-card-top {
+  position:absolute;
+  top: 0;
+  left:50%; transform:translateX(-50%);
+  width: 100%;
+  background: rgba(16,35,64,0.85);
+  border:1px solid rgba(33,150,243,0.3);
+  border-radius:6px;
+  padding: 8px 10px;
+  display:flex; flex-direction:column; gap:4px;
+}
+.node.n4 .node-card-top { border-color: rgba(0,188,212,0.3); }
+.node-card-top .nc-title {
+  font-family:'Inter',sans-serif; font-weight:700; font-size:12.5px;
+  color:#fff; line-height:1.2;
+}
+.node-card-top .nc-tags {
+  display:flex; gap:4px; flex-wrap:wrap;
+}
+.nc-tag {
+  font-family:'Roboto Mono',monospace; font-size:9px;
+  color: var(--primary); padding: 2px 5px;
+  border:1px solid rgba(33,150,243,0.4);
+  border-radius:2px;
+}
+.node.n4 .nc-tag { color: var(--accent); border-color: rgba(0,188,212,0.4); }
+
+/* Node lower meta */
+.node-card-bot {
+  position:absolute;
+  top: 118px;
+  left:50%; transform:translateX(-50%);
+  width: 100%;
+  display:flex; flex-direction:column; gap:6px;
+  padding: 0 4px;
+}
+.meta-row {
+  display:flex; align-items:center; gap:6px;
+  font-family:'Roboto Mono',monospace; font-size:10px;
+  color: var(--gray);
+}
+.meta-ico { font-size:12px; width:14px; text-align:center; }
+.meta-ico.b { color: var(--primary); }
+.meta-ico.t { color: var(--accent); }
+.meta-txt { color:#E0E6EE; }
+
+.connector {
+  position:absolute; left:50%; transform:translateX(-50%);
+  width:1px; height:22px;
+  background: linear-gradient(180deg, rgba(33,150,243,0.6), rgba(33,150,243,0.15));
+  top: 96px;
+}
+.node.n4 .connector {
+  background: linear-gradient(180deg, rgba(0,188,212,0.6), rgba(0,188,212,0.15));
+}
+
+/* Lower half: KPI cards */
+.lower {
+  flex:1;
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.kpi {
+  background: linear-gradient(160deg, rgba(16,35,64,0.85) 0%, rgba(7,18,32,0.9) 100%);
+  border:1px solid rgba(33,150,243,0.3);
+  border-radius:10px;
+  padding: 18px 18px 16px 18px;
+  display:flex; flex-direction:column;
+  position:relative; overflow:hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.kpi::before {
+  content:''; position:absolute;
+  left:0; top:0; width:100%; height:3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.kpi::after {
+  content:''; position:absolute; right:-40px; bottom:-40px;
+  width:120px; height:120px;
+  background: radial-gradient(circle, rgba(33,150,243,0.18), transparent 70%);
+}
+.kpi-head {
+  display:flex; justify-content:space-between; align-items:center;
+  position:relative; z-index:1;
+}
+.kpi-idx {
+  font-family:'Roboto Mono',monospace; font-size:11px;
+  color: var(--accent); letter-spacing:2px;
+}
+.kpi-ico {
+  font-size:16px; color: var(--primary);
+  width:28px; height:28px; border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(33,150,243,0.12);
+  border:1px solid rgba(33,150,243,0.4);
+}
+.kpi-label {
+  font-family:'Inter',sans-serif; font-weight:700;
+  font-size:15px; color:#fff;
+  margin-top: 16px;
+  position:relative; z-index:1;
+}
+.kpi-num-wrap {
+  display:flex; align-items:baseline; gap:6px;
+  margin-top: 8px;
+  position:relative; z-index:1;
+}
+.kpi-num {
+  font-family:'Inter',sans-serif; font-weight:800;
+  font-size: 40px; color: var(--primary);
+  line-height:1;
+  text-shadow: 0 0 20px rgba(33,150,243,0.4);
+}
+.kpi.k4 .kpi-num { color: var(--accent); text-shadow: 0 0 20px rgba(0,188,212,0.4); }
+.kpi.k4::after { background: radial-gradient(circle, rgba(0,188,212,0.2), transparent 70%); }
+.kpi.k4::before { background: linear-gradient(90deg, var(--accent), var(--primary)); }
+.kpi-unit {
+  font-family:'Roboto Mono',monospace; font-size:13px;
+  color: var(--gray);
+}
+.kpi-sub {
+  font-family:'Roboto Mono',monospace; font-size:10px;
+  color: var(--accent); letter-spacing:1.5px;
+  margin-top: 6px;
+  position:relative; z-index:1;
+}
+.kpi-divider {
+  height:1px; margin: 10px 0 8px 0;
+  background: linear-gradient(90deg, rgba(33,150,243,0.4), transparent);
+  position:relative; z-index:1;
+}
+.kpi-desc {
+  font-family:'Roboto Mono',monospace; font-size:11px;
+  color: var(--gray); line-height:1.5;
+  position:relative; z-index:1;
+}
+.kpi-desc .hi { color:#E0E6EE; }
+
+/* Footnote */
+.foot {
+  margin-top: 14px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:'Roboto Mono',monospace; font-size:10px;
+  color: rgba(176,190,197,0.6);
+  letter-spacing:1.5px;
+  border-top:1px dashed rgba(33,150,243,0.2);
+  padding-top: 8px;
+}
+.foot .l { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span>READING UPGRADE / 2023</span></div>
+        <div class="title"><span>2023<span class="accent"> 阅读升级</span></span></div>
+        <div class="subtitle"><span>保持精读节奏 · 新增翻译解读 · 季度主题化推进 · 知识图谱化升级</span></div>
+      </div>
+      <div class="header-right">
+        <span class="tag pri">v2023.01</span>
+        <span class="tag">CLOUD-NATIVE</span>
+        <span class="tag">OPEN-SOURCE</span>
+      </div>
+    </div>
+
+    <div class="upper">
+      <div class="legend-col">
+        <div class="legend-card">
+          <div>
+            <div class="legend-head">
+              <div class="legend-icon"><span>📖</span></div>
+              <div>
+                <div class="legend-title"><span>精读主线</span></div>
+                <div class="legend-sub"><span>IN-DEPTH READING</span></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="legend-desc"><span>延续月均 1 本精读节奏，聚焦云原生与开源安全新领域，全年累计输出结构化笔记。</span></div>
+            <div class="legend-metric">
+              <span><span>节奏</span></span>
+              <span><span>1 本 / 月</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="legend-card alt">
+          <div>
+            <div class="legend-head">
+              <div class="legend-icon"><span>🌐</span></div>
+              <div>
+                <div class="legend-title"><span>翻译解读</span></div>
+                <div class="legend-sub"><span>NEW · OUTPUT CHANNEL</span></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="legend-desc"><span>新增开源经典论文与书籍的中文翻译 / 解读任务，作为知识输出与内化的新通道。</span></div>
+            <div class="legend-metric">
+              <span><span>输出节奏</span></span>
+              <span><span>2-3 篇 / 季</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-wrap">
+        <div class="timeline-title"><span>季度阅读主题时间轴</span></div>
+        <div class="timeline-track">
+          <div class="axis-line"></div>
+          <div class="axis-ticks">
+            <div class="tick"><span class="tick-label"><span>01</span></span></div>
+            <div class="tick"><span class="tick-label"><span>02</span></span></div>
+            <div class="tick"><span class="tick-label"><span>03</span></span></div>
+            <div class="tick"><span class="tick-label"><span>04</span></span></div>
+          </div>
+
+          <div class="node n1">
+            <div class="node-card-top">
+              <div class="nc-title"><span>K8s 安全</span></div>
+              <div class="nc-tags">
+                <span class="nc-tag"><span>容器安全</span></span>
+                <span class="nc-tag"><span>RBAC</span></span>
+              </div>
+            </div>
+            <div class="connector"></div>
+            <div class="dot-row">
+              <div class="dot"></div>
+              <div class="q-label"><span>Q1</span></div>
+            </div>
+            <div class="node-card-bot">
+              <div class="meta-row"><span class="meta-ico b">📖</span><span class="meta-txt"><span>精读 3 本</span></span></div>
+              <div class="meta-row"><span class="meta-ico t">🌐</span><span class="meta-txt"><span>翻译 2 篇</span></span></div>
+            </div>
+          </div>
+
+          <div class="node n2">
+            <div class="node-card-top">
+              <div class="nc-title"><span>服务网格</span></div>
+              <div class="nc-tags">
+                <span class="nc-tag"><span>Istio</span></span>
+                <span class="nc-tag"><span>Sidecar</span></span>
+              </div>
+            </div>
+            <div class="connector"></div>
+            <div class="dot-row">
+              <div class="dot"></div>
+              <div class="q-label"><span>Q2</span></div>
+            </div>
+            <div class="node-card-bot">
+              <div class="meta-row"><span class="meta-ico b">📖</span><span class="meta-txt"><span>精读 3 本</span></span></div>
+              <div class="meta-row"><span class="meta-ico t">🌐</span><span class="meta-txt"><span>翻译 2 篇</span></span></div>
+            </div>
+          </div>
+
+          <div class="node n3">
+            <div class="node-card-top">
+              <div class="nc-title"><span>云原生进阶</span></div>
+              <div class="nc-tags">
+                <span class="nc-tag"><span>Operator</span></span>
+                <span class="nc-tag"><span>eBPF</span></span>
+              </div>
+            </div>
+            <div class="connector"></div>
+            <div class="dot-row">
+              <div class="dot"></div>
+              <div class="q-label"><span>Q3</span></div>
+            </div>
+            <div class="node-card-bot">
+              <div class="meta-row"><span class="meta-ico b">📖</span><span class="meta-txt"><span>精读 4 本</span></span></div>
+              <div class="meta-row"><span class="meta-ico t">🌐</span><span class="meta-txt"><span>翻译 2 篇</span></span></div>
+            </div>
+          </div>
+
+          <div class="node n4">
+            <div class="node-card-top">
+              <div class="nc-title"><span>开源安全新领域</span></div>
+              <div class="nc-tags">
+                <span class="nc-tag"><span>SBOM</span></span>
+                <span class="nc-tag"><span>Supply-Chain</span></span>
+              </div>
+            </div>
+            <div class="connector"></div>
+            <div class="dot-row">
+              <div class="dot"></div>
+              <div class="q-label"><span>Q4</span></div>
+            </div>
+            <div class="node-card-bot">
+              <div class="meta-row"><span class="meta-ico b">📖</span><span class="meta-txt"><span>精读 4 本</span></span></div>
+              <div class="meta-row"><span class="meta-ico t">🌐</span><span class="meta-txt"><span>解读 2 篇</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lower">
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-idx"><span>01 / GOAL</span></span>
+          <span class="kpi-ico"><span>📖</span></span>
+        </div>
+        <div class="kpi-label"><span>精读节奏保持</span></div>
+        <div class="kpi-num-wrap">
+          <span class="kpi-num"><span>14</span></span>
+          <span class="kpi-unit"><span>本 / 年</span></span>
+        </div>
+        <div class="kpi-sub"><span>YEARLY TARGET · 14 BOOKS</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc"><span>延续月均 <span class="hi">1 本</span> 精读节奏，聚焦 <span class="hi">云原生</span> 与 <span class="hi">开源安全</span> 新领域，结构化笔记沉淀。</span></div>
+      </div>
+
+      <div class="kpi k2">
+        <div class="kpi-head">
+          <span class="kpi-idx"><span>02 / GOAL</span></span>
+          <span class="kpi-ico"><span>🌐</span></span>
+        </div>
+        <div class="kpi-label"><span>翻译与解读新增</span></div>
+        <div class="kpi-num-wrap">
+          <span class="kpi-num"><span>8-10</span></span>
+          <span class="kpi-unit"><span>篇 / 年</span></span>
+        </div>
+        <div class="kpi-sub"><span>NEW OUTPUT · 8-10 ARTICLES</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc"><span>新增开源经典 <span class="hi">论文与书籍</span> 的中文翻译 / 解读任务，作为知识 <span class="hi">输出与内化</span> 的新通道。</span></div>
+      </div>
+
+      <div class="kpi k3">
+        <div class="kpi-head">
+          <span class="kpi-idx"><span>03 / GOAL</span></span>
+          <span class="kpi-ico"><span>🗂️</span></span>
+        </div>
+        <div class="kpi-label"><span>主题化阅读</span></div>
+        <div class="kpi-num-wrap">
+          <span class="kpi-num"><span>4</span></span>
+          <span class="kpi-unit"><span>个主题 / 年</span></span>
+        </div>
+        <div class="kpi-sub"><span>QUARTERLY THEMES · Q1-Q4</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc"><span>按季度设定阅读 <span class="hi">主题</span>，围绕 K8s 安全 / 服务网格 / 云原生进阶 / 开源安全实现 <span class="hi">系统化知识构建</span>。</span></div>
+      </div>
+
+      <div class="kpi k4">
+        <div class="kpi-head">
+          <span class="kpi-idx"><span>04 / GOAL</span></span>
+          <span class="kpi-ico"><span>🕸️</span></span>
+        </div>
+        <div class="kpi-label"><span>笔记体系升级</span></div>
+        <div class="kpi-num-wrap">
+          <span class="kpi-num"><span>KG</span></span>
+          <span class="kpi-unit"><span>Knowledge Graph</span></span>
+        </div>
+        <div class="kpi-sub"><span>TOOL UPGRADE · KNOWLEDGE GRAPH</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc"><span>引入 <span class="hi">知识图谱工具</span>，将分散笔记从文档升级为 <span class="hi">可检索、可关联</span> 的知识网络。</span></div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="l"><span>◆ 2023 READING UPGRADE · IN-DEPTH + OUTPUT + THEME + KG</span></span>
+      <span><span>PAGE 01 / 01  ·  CLOUD-NATIVE &amp; OPEN-SOURCE</span></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

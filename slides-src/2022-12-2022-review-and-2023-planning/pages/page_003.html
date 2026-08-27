@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2022阅读全景</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap');
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#0B1424;
+  --bg-card:#111E36;
+  --bg-card2:#0F1A30;
+  --line:#1E3A5F;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Roboto Mono',monospace;color:#E0E6ED;overflow:hidden;}
+h1,h2,h3{font-family:'Inter',sans-serif;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#060C1A 0%,#0B1424 40%,#0E1B33 100%);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;box-sizing:border-box;}
+/* 背景装饰 */
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.04) 1px,transparent 1px);background-size:48px 48px;}
+.bg-glow1{position:absolute;top:-120px;right:-100px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.18),transparent 70%);}
+.bg-glow2{position:absolute;bottom:-160px;left:-80px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,0.12),transparent 70%);}
+.bg-orb{position:absolute;top:200px;right:240px;width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px var(--cyan);}
+.bg-orb2{position:absolute;bottom:200px;left:180px;width:10px;height:10px;border-radius:50%;background:var(--primary);box-shadow:0 0 12px var(--primary);}
+
+/* 头部 */
+.header{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:52px;background:linear-gradient(180deg,var(--primary),var(--cyan));border-radius:3px;box-shadow:0 0 12px rgba(33,150,243,0.5);}
+.title-main{font-size:44px;font-weight:800;color:#FFFFFF;letter-spacing:1px;line-height:1.1;}
+.title-sub{font-family:'Roboto Mono',monospace;font-size:13px;color:var(--neutral);letter-spacing:3px;margin-left:10px;}
+.lede{font-size:13px;color:var(--neutral);line-height:1.75;max-width:1380px;font-weight:300;}
+.lede b{color:var(--primary);font-weight:500;}
+.lede em{color:var(--cyan);font-style:normal;font-weight:500;}
+
+/* 主体两栏 */
+.main{display:flex;gap:28px;margin-bottom:16px;}
+/* 左侧书籍 */
+.left-panel{width:340px;flex-shrink:0;position:relative;}
+.left-title{font-family:'Inter',sans-serif;font-size:15px;color:var(--cyan);font-weight:600;letter-spacing:2px;margin-bottom:4px;}
+.left-desc{font-size:11px;color:var(--neutral);margin-bottom:16px;line-height:1.6;}
+.book-stack{position:relative;width:300px;height:330px;margin:0 auto;}
+.book{position:absolute;width:200px;height:32px;border-radius:4px;box-shadow:0 4px 14px rgba(0,0,0,0.4),inset 0 0 0 1px rgba(255,255,255,0.05);}
+.book::before{content:'';position:absolute;top:0;bottom:0;width:6px;background:rgba(255,255,255,0.1);border-radius:4px 0 0 4px;left:0;}
+.book-1{bottom:0;left:50px;background:linear-gradient(135deg,#1565C0,#2196F3);transform:rotate(-3deg);}
+.book-2{bottom:36px;left:80px;background:linear-gradient(135deg,#00838F,#00BCD4);transform:rotate(2deg);width:180px;}
+.book-3{bottom:72px;left:40px;background:linear-gradient(135deg,#1565C0,#42A5F5);transform:rotate(-1deg);width:210px;}
+.book-4{bottom:108px;left:100px;background:linear-gradient(135deg,#006064,#00ACC1);transform:rotate(3deg);width:170px;}
+.book-5{bottom:144px;left:55px;background:linear-gradient(135deg,#1976D2,#64B5F6);transform:rotate(-2deg);width:195px;}
+.book-6{bottom:180px;left:75px;background:linear-gradient(135deg,#0097A7,#4DD0E1);transform:rotate(1deg);width:165px;}
+.book-glow{position:absolute;bottom:-20px;left:60px;width:180px;height:40px;background:radial-gradient(ellipse,rgba(33,150,243,0.3),transparent 70%);filter:blur(8px);}
+.book-label{position:absolute;bottom:-30px;left:80px;font-family:'Inter',sans-serif;font-size:11px;color:var(--cyan);letter-spacing:2px;font-weight:600;}
+
+.left-stats{margin-top:24px;display:flex;flex-direction:column;gap:10px;}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg-card2);border:1px solid var(--line);border-radius:6px;}
+.stat-label{font-size:11px;color:var(--neutral);letter-spacing:1px;}
+.stat-val{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:var(--primary);}
+.stat-val.cyan{color:var(--cyan);}
+
+/* 右侧KPI */
+.right-panel{flex:1;display:flex;flex-direction:column;gap:14px;}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;height:236px;}
+.kpi-card{position:relative;background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:18px 22px;overflow:hidden;transition:all 0.3s;}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--primary),var(--cyan));}
+.kpi-card:nth-child(2)::before{background:linear-gradient(180deg,var(--cyan),var(--primary));}
+.kpi-card:nth-child(3)::before{background:linear-gradient(180deg,var(--primary),#42A5F5);}
+.kpi-card:nth-child(4)::before{background:linear-gradient(180deg,var(--cyan),#4DD0E1);}
+.kpi-card::after{content:'';position:absolute;top:-30px;right:-30px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.1),transparent 70%);}
+.kpi-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.kpi-tag{font-family:'Inter',sans-serif;font-size:10px;color:var(--cyan);letter-spacing:2px;font-weight:600;background:rgba(0,188,212,0.1);padding:4px 10px;border-radius:3px;border:1px solid rgba(0,188,212,0.25);}
+.kpi-card:nth-child(2) .kpi-tag{color:var(--primary);background:rgba(33,150,243,0.1);border-color:rgba(33,150,243,0.25);}
+.kpi-card:nth-child(4) .kpi-tag{color:var(--primary);background:rgba(33,150,243,0.1);border-color:rgba(33,150,243,0.25);}
+.kpi-icon{font-family:'Inter',sans-serif;font-size:16px;color:var(--neutral);opacity:0.5;}
+.kpi-num{font-family:'Inter',sans-serif;font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px;}
+.kpi-unit{font-size:14px;color:var(--neutral);font-weight:400;margin-left:4px;-webkit-text-fill-color:var(--neutral);}
+.kpi-title{font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#FFFFFF;margin-bottom:4px;}
+.kpi-desc{font-size:11px;color:var(--neutral);line-height:1.5;}
+
+/* 维度卡片 */
+.dim-section{margin-top:4px;}
+.dim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.dim-card{position:relative;background:var(--bg-card2);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow:hidden;}
+.dim-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--cyan));}
+.dim-idx{font-family:'Inter',sans-serif;font-size:10px;color:var(--cyan);letter-spacing:2px;font-weight:600;margin-bottom:4px;}
+.dim-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#FFFFFF;margin-bottom:6px;line-height:1.4;}
+.dim-text{font-size:10.5px;color:var(--neutral);line-height:1.55;}
+.dim-bar{position:absolute;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--primary),transparent);width:60%;}
+.dim-card:nth-child(2) .dim-bar{width:75%;}
+.dim-card:nth-child(3) .dim-bar{width:50%;}
+.dim-card:nth-child(4) .dim-bar{width:90%;}
+
+/* 时间轴 */
+.timeline{margin-top:14px;display:flex;align-items:center;gap:0;background:var(--bg-card2);border:1px solid var(--line);border-radius:8px;padding:14px 24px;}
+.tl-label{font-family:'Inter',sans-serif;font-size:11px;color:var(--cyan);letter-spacing:2px;font-weight:600;margin-right:20px;flex-shrink:0;}
+.tl-bar{flex:1;display:flex;align-items:center;gap:6px;position:relative;}
+.tl-track{flex:1;height:6px;background:rgba(33,150,243,0.15);border-radius:3px;position:relative;overflow:hidden;}
+.tl-fill{position:absolute;top:0;left:0;height:100%;width:100%;background:linear-gradient(90deg,var(--primary),var(--cyan),var(--primary));background-size:200% 100%;border-radius:3px;}
+.tl-months{position:absolute;top:14px;left:0;right:0;display:flex;justify-content:space-between;}
+.tl-month{font-size:9px;color:var(--neutral);letter-spacing:1px;}
+.tl-node{width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px rgba(33,150,243,0.6);flex-shrink:0;}
+.tl-node.cyan{background:var(--cyan);box-shadow:0 0 8px rgba(0,188,212,0.6);}
+.tl-node.small{width:6px;height:6px;}
+.tl-footer{margin-left:20px;display:flex;gap:16px;flex-shrink:0;}
+.tl-stat{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--neutral);}
+.tl-dot{width:6px;height:6px;border-radius:50%;}
+.tl-dot.blue{background:var(--primary);}
+.tl-dot.cyan{background:var(--cyan);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow1"></div>
+    <div class="bg-glow2"></div>
+    <div class="bg-orb"></div>
+    <div class="bg-orb2"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title-bar"></div>
+        <div class="title-main">2022 阅读全景</div>
+        <div class="title-sub">READING OVERVIEW · 2022</div>
+      </div>
+      <p class="lede">2022年阅读覆盖<b>技术书籍</b>、<b>社区文档</b>与<b>前沿论文</b>三大类别，全年以<em>精读为主</em>、<em>泛读为辅</em>，形成结构化笔记体系，为布道内容输出提供扎实的知识输入。</p>
+    </div>
+
+    <div class="main">
+      <!-- 左侧书籍堆叠 -->
+      <div class="left-panel">
+        <div class="left-title">// READING STACK</div>
+        <div class="left-desc">全年精读书籍与技术资料<br>持续积累，层层叠加</div>
+        <div class="book-stack">
+          <div class="book book-6"></div>
+          <div class="book book-5"></div>
+          <div class="book book-4"></div>
+          <div class="book book-3"></div>
+          <div class="book book-2"></div>
+          <div class="book book-1"></div>
+          <div class="book-glow"></div>
+          <div class="book-label">12 BOOKS · 12 NOTES</div>
+        </div>
+        <div class="left-stats">
+          <div class="stat-row">
+            <span class="stat-label">阅读类别</span>
+            <span class="stat-val">03</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">知识体系</span>
+            <span class="stat-val cyan">已构建</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">复用效率</span>
+            <span class="stat-val">↑ 60%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧KPI -->
+      <div class="right-panel">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-row1">
+              <span class="kpi-tag">BOOK</span>
+              <span class="kpi-icon">▤</span>
+            </div>
+            <div class="kpi-num">12<span class="kpi-unit">本</span></div>
+            <div class="kpi-title">精读书籍</div>
+            <div class="kpi-desc">含技术专著与行业经典，覆盖系统与架构核心</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-row1">
+              <span class="kpi-tag">NOTE</span>
+              <span class="kpi-icon">✎</span>
+            </div>
+            <div class="kpi-num">12<span class="kpi-unit">篇</span></div>
+            <div class="kpi-title">笔记产出</div>
+            <div class="kpi-desc">每本精读书籍配套一篇结构化精读笔记</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-row1">
+              <span class="kpi-tag">DOC</span>
+              <span class="kpi-icon">☰</span>
+            </div>
+            <div class="kpi-num">6<span class="kpi-unit">+ 项目</span></div>
+            <div class="kpi-title">文档研读</div>
+            <div class="kpi-desc">深入主流开源项目架构与工程实践文档</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-row1">
+              <span class="kpi-tag">PAPER</span>
+              <span class="kpi-icon">✦</span>
+            </div>
+            <div class="kpi-num">10<span class="kpi-unit">+ 篇</span></div>
+            <div class="kpi-title">论文追踪</div>
+            <div class="kpi-desc">OS 与 PL 方向前沿论文持续跟踪与精读</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 四个维度卡片 -->
+    <div class="dim-section">
+      <div class="dim-grid">
+        <div class="dim-card">
+          <div class="dim-idx">DIM · 01</div>
+          <div class="dim-title">技术书籍精读</div>
+          <div class="dim-text">涵盖分布式系统、云原生、开源治理等核心领域，全年完成精读笔记12篇。</div>
+          <div class="dim-bar"></div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-idx">DIM · 02</div>
+          <div class="dim-title">社区文档研读</div>
+          <div class="dim-text">深入阅读 Kubernetes、Prometheus 等主流开源项目架构文档，沉淀理解。</div>
+          <div class="dim-bar"></div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-idx">DIM · 03</div>
+          <div class="dim-title">开源论文追踪</div>
+          <div class="dim-text">关注操作系统、编程语言方向前沿论文，保持技术视野前沿性。</div>
+          <div class="dim-bar"></div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-idx">DIM · 04</div>
+          <div class="dim-title">笔记体系搭建</div>
+          <div class="dim-text">建立统一的读书笔记模板与标签体系，提升长期知识复用效率。</div>
+          <div class="dim-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 时间轴 -->
+    <div class="timeline">
+      <span class="tl-label">全年节奏</span>
+      <div class="tl-bar">
+        <div class="tl-node"></div>
+        <div class="tl-track"><div class="tl-fill"></div>
+          <div class="tl-months">
+            <span class="tl-month">JAN</span>
+            <span class="tl-month">FEB</span>
+            <span class="tl-month">MAR</span>
+            <span class="tl-month">APR</span>
+            <span class="tl-month">MAY</span>
+            <span class="tl-month">JUN</span>
+            <span class="tl-month">JUL</span>
+            <span class="tl-month">AUG</span>
+            <span class="tl-month">SEP</span>
+            <span class="tl-month">OCT</span>
+            <span class="tl-month">NOV</span>
+            <span class="tl-month">DEC</span>
+          </div>
+        </div>
+        <div class="tl-node cyan"></div>
+      </div>
+      <div class="tl-footer">
+        <div class="tl-stat"><span class="tl-dot blue"></span>精读 12本</div>
+        <div class="tl-stat"><span class="tl-dot cyan"></span>论文 10+篇</div>
+        <div class="tl-stat" style="color:var(--primary);font-weight:500;">持续 12 个月</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

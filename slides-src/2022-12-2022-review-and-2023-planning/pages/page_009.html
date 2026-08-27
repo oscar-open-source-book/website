@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>布道与代码突破</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#070E1B;
+  --bg-card:rgba(20,34,58,0.62);
+  --border:rgba(33,150,243,0.22);
+  --glow:rgba(33,150,243,0.45);
+  --glow-cyan:rgba(0,188,212,0.4);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Roboto Mono',monospace;color:#E4E9F2;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:
+  radial-gradient(1200px 700px at 15% -10%, rgba(33,150,243,0.16), transparent 60%),
+  radial-gradient(900px 600px at 105% 110%, rgba(0,188,212,0.14), transparent 55%),
+  linear-gradient(160deg,#050A16 0%, #0A1528 55%, #070E1B 100%);
+}
+#bg{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px);
+  background-size:54px 54px;
+  mask-image:radial-gradient(ellipse 1200px 700px at 50% 45%, #000 30%, transparent 85%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:46px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 顶部装饰条 */
+#ct::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;
+  background:linear-gradient(90deg, transparent, #2196F3 20%, #00BCD4 50%, #2196F3 80%, transparent);}
+
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;}
+.head .left{display:flex;flex-direction:column;gap:10px;}
+.pageno{font-family:'Inter',sans-serif;font-size:12px;letter-spacing:4px;color:#00BCD4;font-weight:600;}
+.title{font-family:'Inter',sans-serif;font-weight:800;font-size:42px;letter-spacing:2px;
+  background:linear-gradient(90deg,#FFFFFF 0%, #BDE0FF 60%, #00BCD4 130%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  text-shadow:0 0 24px rgba(33,150,243,0.18);}
+.title .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#00BCD4;
+  box-shadow:0 0 14px #00BCD4;vertical-align:middle;margin:0 12px 6px 6px;}
+.subtitle{font-size:12px;color:var(--neutral);letter-spacing:3px;}
+
+.narrative{margin-top:18px;padding:16px 22px;border-left:3px solid var(--primary);
+  background:linear-gradient(90deg, rgba(33,150,243,0.12), rgba(0,188,212,0.04) 70%, transparent);
+  font-size:13.5px;line-height:1.85;color:#DCE6F2;letter-spacing:0.5px;}
+.narrative b{color:#FFFFFF;font-weight:600;}
+.narrative .hl{color:#00BCD4;font-weight:600;}
+
+/* KPI 卡片区 */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:20px;}
+.kpi{position:relative;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;}
+.kpi::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;
+  background:linear-gradient(180deg,#2196F3,#00BCD4);box-shadow:0 0 12px var(--glow-cyan);}
+.kpi .label{font-size:11px;color:var(--neutral);letter-spacing:2px;margin-bottom:6px;}
+.kpi .num{font-family:'Inter',sans-serif;font-weight:800;font-size:34px;color:#FFFFFF;line-height:1;
+  text-shadow:0 0 16px var(--glow);}
+.kpi .num .unit{font-size:15px;color:var(--accent);font-weight:600;margin-left:4px;}
+.kpi .sub{font-size:11px;color:var(--neutral);margin-top:6px;letter-spacing:1px;}
+.kpi::after{content:"";position:absolute;right:-20px;bottom:-20px;width:70px;height:70px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,188,212,0.18),transparent 70%);}
+
+/* 核心双栏 */
+.core{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px;flex:1;}
+.panel{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;
+  padding:22px 24px 24px 24px;overflow:hidden;display:flex;flex-direction:column;}
+.panel::after{content:"";position:absolute;left:-40px;top:-40px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(33,150,243,0.15),transparent 70%);}
+.panel .ph{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
+.panel .ph .pt{font-family:'Inter',sans-serif;font-weight:700;font-size:19px;color:#FFFFFF;letter-spacing:1px;}
+.panel .ph .pt .tag{display:inline-block;font-size:10px;font-weight:600;padding:3px 9px;margin-right:10px;
+  border-radius:20px;background:rgba(0,188,212,0.16);color:#00BCD4;border:1px solid rgba(0,188,212,0.35);
+  letter-spacing:1px;vertical-align:middle;margin-bottom:4px;}
+.panel .ph .pid{font-size:11px;color:var(--neutral);letter-spacing:2px;}
+.divider{margin:14px 0 14px 0;height:1px;
+  background:linear-gradient(90deg, transparent, #2196F3 30%, #00BCD4 60%, transparent);}
+
+/* 左栏路线图 */
+.roadmap{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1;}
+.stage{display:flex;gap:14px;align-items:flex-start;}
+.stage .step{flex-shrink:0;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:#0A1528;
+  background:linear-gradient(135deg,#2196F3,#00BCD4);box-shadow:0 0 14px var(--glow);}
+.stage .body{flex:1;}
+.stage .body .t{font-size:13.5px;font-weight:600;color:#FFFFFF;margin-bottom:4px;letter-spacing:0.5px;}
+.stage .body .d{font-size:11.5px;color:var(--neutral);line-height:1.7;}
+.stage .body .d b{color:#8BD4F0;font-weight:600;}
+.connect{margin-left:17px;width:0;height:10px;border-left:2px dashed rgba(0,188,212,0.45);}
+
+/* 右栏里程碑阶梯 */
+.stairs{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1;}
+.step{display:flex;align-items:center;gap:14px;padding:11px 14px;border-radius:8px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.14), rgba(0,188,212,0.04));
+  border:1px solid rgba(33,150,243,0.18);}
+.step .lv{font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#00BCD4;
+  padding:3px 9px;border-radius:4px;background:rgba(0,188,212,0.14);border:1px solid rgba(0,188,212,0.3);
+  letter-spacing:1px;flex-shrink:0;}
+.step .desc{font-size:12.5px;color:#E4E9F2;line-height:1.55;flex:1;}
+.step .desc b{color:#FFFFFF;}
+.step .arrow{color:var(--accent);font-size:14px;flex-shrink:0;}
+
+/* 底部横向模块 */
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:20px;}
+.mod{position:relative;padding:16px 22px;border-radius:10px;border:1px solid var(--border);
+  background:linear-gradient(90deg, rgba(33,150,243,0.12), rgba(0,188,212,0.05) 80%);overflow:hidden;}
+.mod .mh{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.mod .mh .ico{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',sans-serif;font-weight:700;color:#0A1528;background:linear-gradient(135deg,#2196F3,#00BCD4);
+  box-shadow:0 0 12px var(--glow-cyan);font-size:13px;}
+.mod .mh .mt{font-family:'Inter',sans-serif;font-weight:700;font-size:16px;color:#FFFFFF;letter-spacing:1px;}
+.mod .mh .meta{margin-left:auto;font-size:11px;color:var(--accent);letter-spacing:2px;font-weight:600;}
+.mod .md{font-size:12.5px;color:#C8D6E6;line-height:1.7;}
+.mod .md b{color:#FFFFFF;}
+.mod::before{content:"";position:absolute;left:0;top:0;height:100%;width:3px;
+  background:linear-gradient(180deg,#00BCD4,#2196F3);}
+.mod .mini{display:flex;gap:10px;margin-top:10px;}
+.mod .mini .ch{flex:1;text-align:center;padding:6px 4px;border-radius:6px;
+  background:rgba(0,188,212,0.08);border:1px solid rgba(0,188,212,0.22);}
+.mod .mini .ch .v{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:#FFFFFF;}
+.mod .mini .ch .k{font-size:9.5px;color:var(--neutral);letter-spacing:1px;margin-top:2px;}
+
+.footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;
+  padding-top:10px;border-top:1px dashed rgba(33,150,243,0.25);font-size:10.5px;color:var(--neutral);letter-spacing:2px;}
+.footer .l{display:flex;align-items:center;gap:10px;}
+.footer .l .glowdot{width:7px;height:7px;border-radius:50%;background:#00BCD4;box-shadow:0 0 10px #00BCD4;}
+.footer .r{color:#8BD4F0;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="head">
+      <div class="left">
+        <div class="pageno">— PAGE 09 · CORE CHAPTER —</div>
+        <div class="title"><span>布道</span><span class="dot"></span><span>与</span><span class="dot"></span><span>代码突破</span></div>
+        <div class="subtitle">EVANGELISM &nbsp;×&nbsp; CODE BREAKTHROUGH</div>
+      </div>
+      <div class="right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div style="font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;color:#00BCD4;font-weight:600;">2025 · GROWTH ROADMAP</div>
+        <div style="display:flex;gap:6px;">
+          <span style="width:34px;height:2px;background:#2196F3;box-shadow:0 0 8px #2196F3;"></span>
+          <span style="width:14px;height:2px;background:#00BCD4;box-shadow:0 0 8px #00BCD4;"></span>
+          <span style="width:6px;height:2px;background:#B0BEC5;"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span>主旨叙事 — </span><b>布道层面</b>从单次分享升级为<b>系列课程体系</b>；<b>代码层面</b>设定<span class="hl">明确破零目标</span>；<b>社群层面</b>扩大 <span class="hl">meetup 规模</span>并引入<span class="hl">联合主办</span>；同时深化与<b>开源之友社区</b>的协作，实现<b>个人与社区的双向成长</b>。
+    </div>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="label">SERIES COURSE</div>
+        <div class="num">2-3<span class="unit">个系列</span></div>
+        <div class="sub">系列课程目标</div>
+      </div>
+      <div class="kpi">
+        <div class="label">PR MILESTONE</div>
+        <div class="num">5+<span class="unit">有效 PR</span></div>
+        <div class="sub">全年代码贡献破零</div>
+      </div>
+      <div class="kpi">
+        <div class="label">MEETUP SCALE</div>
+        <div class="num">8<span class="unit">场 / 年</span></div>
+        <div class="sub">社群活动扩展目标</div>
+      </div>
+      <div class="kpi">
+        <div class="label">COMMUNITY DEPTH</div>
+        <div class="num">∞<span class="unit">深度</span></div>
+        <div class="sub">社区协作深度</div>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="panel">
+        <div class="ph">
+          <div class="pt"><span class="tag">左栏</span>布道系列课程路线图</div>
+          <div class="pid">EVANGELISM ROADMAP / 01</div>
+        </div>
+        <div class="divider"></div>
+
+        <div style="font-size:12px;color:#8BD4F0;margin-bottom:12px;letter-spacing:1px;position:relative;z-index:1;">
+          ▍ <b style="color:#FFFFFF;">系列课程打造</b> &nbsp;·&nbsp; 将分散分享整合为系统化知识输出
+        </div>
+
+        <div class="roadmap">
+          <div class="stage">
+            <div class="step">01</div>
+            <div class="body">
+              <div class="t">K8s 实战系列</div>
+              <div class="d">聚焦 <b>容器编排与生产实践</b>，从集群部署到调度优化，形成 <b>4-6 讲</b>系统课程。</div>
+            </div>
+          </div>
+          <div class="connect"></div>
+          <div class="stage">
+            <div class="step">02</div>
+            <div class="body">
+              <div class="t">开源治理系列</div>
+              <div class="d">覆盖 <b>治理模型 / 贡献流程 / 社区运营</b>，沉淀方法论，输出 <b>3-5 讲</b>。</div>
+            </div>
+          </div>
+          <div class="connect"></div>
+          <div class="stage">
+            <div class="step">03</div>
+            <div class="body">
+              <div class="t">跨系列主题专题</div>
+              <div class="d">针对 <b>AI Infra / 安全 / 性能</b>等跨域议题，组织 <b>1 个主题系列</b>，形成知识矩阵。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ph">
+          <div class="pt"><span class="tag">右栏</span>代码贡献里程碑阶梯</div>
+          <div class="pid">CODE MILESTONE / 02</div>
+        </div>
+        <div class="divider"></div>
+
+        <div style="font-size:12px;color:#8BD4F0;margin-bottom:12px;letter-spacing:1px;position:relative;z-index:1;">
+          ▍ <b style="color:#FFFFFF;">代码贡献破零</b> &nbsp;·&nbsp; 选定 1-2 个关注已久的开源项目，逐级攀升
+        </div>
+
+        <div class="stairs">
+          <div class="step">
+            <div class="lv">LV · 01</div>
+            <div class="desc"><b>环境搭建 & 文档修复</b> —— 熟悉项目结构，从 typo / README 修复起步，建立贡献链路。</div>
+            <div class="arrow">▲</div>
+          </div>
+          <div class="step">
+            <div class="lv">LV · 02</div>
+            <div class="desc"><b>Issue 跟进 & 测试补充</b> —— 认领 Good First Issue，补充单测、修复小 Bug，PR × 1-2。</div>
+            <div class="arrow">▲</div>
+          </div>
+          <div class="step">
+            <div class="lv">LV · 03</div>
+            <div class="desc"><b>小功能实现</b> —— 独立完成小型 feature，参与 Code Review 讨论，PR × 2-3。</div>
+            <div class="arrow">▲</div>
+          </div>
+          <div class="step">
+            <div class="lv">LV · 04</div>
+            <div class="desc"><b>全年 5+ 有效 PR</b> —— 达到 <span style="color:#00BCD4;font-weight:600;">破零目标</span>，进入社区核心贡献者视野。</div>
+            <div class="arrow">★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="mod">
+        <div class="mh">
+          <div class="ico">M</div>
+          <div class="mt">meetup 升级</div>
+          <div class="meta">SCALE × 2</div>
+        </div>
+        <div class="md">从 <b>4 场</b> 扩展至 <b>8 场</b>，引入<b>联合主办</b>模式，覆盖更广泛的<b>城市</b>与<b>主题</b>，构建可复制的活动范式。</div>
+        <div class="mini">
+          <div class="ch"><div class="v">4 → 8</div><div class="k">场次目标</div></div>
+          <div class="ch"><div class="v">JOINT</div><div class="k">联合主办</div></div>
+          <div class="ch"><div class="v">CITY+</div><div class="k">城市覆盖</div></div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mh">
+          <div class="ico">C</div>
+          <div class="mt">开源社区协作</div>
+          <div class="meta">OPEN-SOURCE FRIENDS</div>
+        </div>
+        <div class="md">与<b>开源之友社区</b>建立更紧密协作关系，探索<b>联合内容生产</b>与<b>活动共建</b>，实现个人影响力与社区生态的双向增益。</div>
+        <div class="mini">
+          <div class="ch"><div class="v">CONTENT</div><div class="k">联合内容</div></div>
+          <div class="ch"><div class="v">EVENT</div><div class="k">活动共建</div></div>
+          <div class="ch"><div class="v">SYNERGY</div><div class="k">双向成长</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="l">
+        <span class="glowdot"></span>
+        <span>SECTION 09 &nbsp;·&nbsp; EVANGELISM ROADMAP × CODE MILESTONE × COMMUNITY SCALE</span>
+      </div>
+      <div class="r">— 个人与社区 · 双向成长 —</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

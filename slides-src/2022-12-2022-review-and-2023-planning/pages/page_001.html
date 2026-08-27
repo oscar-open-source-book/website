@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0A1628;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#bg .bg-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10,22,40,0.82) 0%, rgba(10,22,40,0.55) 35%, rgba(10,22,40,0.15) 65%, rgba(10,22,40,0.35) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 60px 44px 60px;
+  box-sizing: border-box;
+}
+
+.corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--primary);
+  z-index: 2;
+}
+.corner-tl { top: 18px; left: 18px; border-right: none; border-bottom: none; }
+.corner-tr { top: 18px; right: 18px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 18px; left: 18px; border-right: none; border-top: none; }
+.corner-br { bottom: 18px; right: 18px; border-left: none; border-top: none; }
+
+.header {
+  position: relative;
+  max-width: 820px;
+  margin-bottom: 32px;
+}
+
+.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 76px;
+  color: #ffffff;
+  text-shadow: 0 0 22px var(--primary), 0 0 44px rgba(33,150,243,0.55), 0 0 88px rgba(33,150,243,0.3);
+  letter-spacing: 6px;
+  line-height: 1.05;
+  margin-bottom: 22px;
+}
+
+.subtitle-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+.subtitle-row .glow-line {
+  width: 56px;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.sub-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--accent);
+  letter-spacing: 3px;
+}
+
+.lead-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--neutral);
+  max-width: 740px;
+  padding: 16px 20px;
+  border-left: 2px solid var(--primary);
+  background: rgba(10, 22, 40, 0.5);
+  border-radius: 0 4px 4px 0;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: rgba(10, 22, 40, 0.65);
+  border: 1px solid rgba(33, 150, 243, 0.45);
+  border-radius: 8px;
+  padding: 22px 20px 20px 20px;
+  position: relative;
+  backdrop-filter: blur(3px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.card-index {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--primary);
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.card-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--neutral);
+}
+
+.footer-bar {
+  display: flex;
+  gap: 44px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(176, 190, 197, 0.18);
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-item .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent), 0 0 20px rgba(0,188,212,0.4);
+  flex-shrink: 0;
+}
+
+.footer-item .label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--neutral);
+  letter-spacing: 1px;
+}
+
+.footer-item .value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_001_hero.png" alt="深空科技封面主视觉">
+    <div class="bg-overlay"></div>
+  </div>
+
+  <div id="ct">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="header">
+      <h1 class="main-title"><span>开源之书记录</span></h1>
+      <div class="subtitle-row">
+        <span class="glow-line"></span>
+        <p class="sub-title"><span>2022年度回顾与2023规划展望</span></p>
+      </div>
+      <p class="lead-text"><span>本报告是开源之道·适兕在2022年末完成的年度复盘与2023规划，涵盖开源阅读笔记、社区布道活动、个人成长复盘三大主线，以数据与思考驱动下一阶段行动。</span></p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-index"><span>01 / 回溯</span></div>
+        <div class="card-title"><span>回溯全年</span></div>
+        <p class="card-text"><span>系统梳理2022年开源阅读与布道实践的得与失</span></p>
+      </div>
+      <div class="card">
+        <div class="card-index"><span>02 / 量化</span></div>
+        <div class="card-title"><span>数据说话</span></div>
+        <p class="card-text"><span>以量化指标呈现全年产出、影响与成长轨迹</span></p>
+      </div>
+      <div class="card">
+        <div class="card-index"><span>03 / 展望</span></div>
+        <div class="card-title"><span>前瞻2023</span></div>
+        <p class="card-text"><span>基于年度反思制定下阶段开源学习与推广计划</span></p>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-item">
+        <span class="dot"></span>
+        <span class="label">报告时间</span>
+        <span class="value">2022.12</span>
+      </div>
+      <div class="footer-item">
+        <span class="dot"></span>
+        <span class="label">覆盖周期</span>
+        <span class="value">2022全财年</span>
+      </div>
+      <div class="footer-item">
+        <span class="dot"></span>
+        <span class="label">规划目标年</span>
+        <span class="value">2023</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

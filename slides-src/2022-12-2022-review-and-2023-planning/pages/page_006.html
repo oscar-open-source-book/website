@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>反思与收获</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0a0f1a;
+  --bg-card: #101828;
+  --bg-card-alt: #0e1626;
+  --border: #1a2a3a;
+  --text-main: #e8eaf0;
+  --text-dim: #7a8896;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', 'Inter', monospace;
+  background: #050810;
+  color: var(--text-main);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, #0a1020 0%, #060a14 50%, #0a1020 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 50px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
+  position: relative;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 280px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), transparent);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.page-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, var(--primary) 60%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--neutral);
+  letter-spacing: 2px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Main two-column layout */
+.main-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.col {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-card);
+  padding: 18px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.col-positive {
+  border-color: rgba(33,150,243,0.35);
+  box-shadow: 0 0 20px rgba(33,150,243,0.05) inset;
+}
+
+.col-improve {
+  border-color: rgba(176,190,197,0.25);
+  background: var(--bg-card-alt);
+}
+
+.col-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.col-positive .col-head {
+  border-bottom-color: rgba(33,150,243,0.2);
+}
+
+.col-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 3px;
+  letter-spacing: 1.5px;
+}
+
+.col-positive .col-badge {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+.col-improve .col-badge {
+  color: var(--neutral);
+  background: rgba(176,190,197,0.12);
+  border: 1px solid rgba(176,190,197,0.3);
+}
+
+.col-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.col-positive .col-title { color: var(--primary); }
+.col-improve .col-title { color: var(--neutral); }
+
+.col-sub {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-left: auto;
+  letter-spacing: 1px;
+}
+
+/* Positive items */
+.pos-items {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.pos-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(33,150,243,0.04);
+  border-left: 2px solid var(--primary);
+  border-radius: 0 4px 4px 0;
+  transition: all 0.2s;
+}
+
+.pos-item .idx {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent);
+  min-width: 28px;
+  text-shadow: 0 0 10px rgba(0,188,212,0.4);
+}
+
+.pos-item .content {
+  flex: 1;
+}
+
+.pos-item .name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 3px;
+}
+
+.pos-item .desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--neutral);
+}
+
+/* Improve item */
+.improve-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(176,190,197,0.04);
+  border-left: 2px solid var(--neutral);
+  border-radius: 0 4px 4px 0;
+}
+
+.improve-item .idx {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--neutral);
+  min-width: 28px;
+  opacity: 0.7;
+}
+
+.improve-item .content { flex: 1; }
+
+.improve-item .name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--neutral);
+  margin-bottom: 4px;
+}
+
+.improve-item .desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: #6a7a8a;
+}
+
+.improve-item .tag {
+  display: inline-block;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9px;
+  color: var(--neutral);
+  border: 1px solid rgba(176,190,197,0.3);
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+/* Comparison connector */
+.col-improve .arrow-row {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(176,190,197,0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.arrow-row .arrow {
+  color: var(--primary);
+  font-size: 14px;
+}
+
+/* KPI Cards */
+.kpi-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.kpi-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-card);
+  padding: 14px 18px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+}
+
+.kpi-card.k1::before { background: linear-gradient(180deg, var(--primary), var(--accent)); }
+.kpi-card.k2::before { background: var(--neutral); }
+.kpi-card.k3::before { background: linear-gradient(180deg, var(--accent), #4fc3f7); }
+
+.kpi-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.kpi-card.k1 .kpi-num {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.kpi-card.k2 .kpi-num { color: var(--neutral); font-size: 22px; font-weight: 700; }
+.kpi-card.k3 .kpi-num {
+  background: linear-gradient(135deg, var(--accent), #4fc3f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.kpi-text { flex: 1; }
+
+.kpi-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 3px;
+}
+
+.kpi-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.kpi-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.kpi-card.k1 .kpi-icon {
+  background: rgba(33,150,243,0.12);
+  border: 1px solid rgba(33,150,243,0.3);
+  color: var(--primary);
+}
+
+.kpi-card.k2 .kpi-icon {
+  background: rgba(176,190,197,0.08);
+  border: 1px solid rgba(176,190,197,0.25);
+  color: var(--neutral);
+}
+
+.kpi-card.k3 .kpi-icon {
+  background: rgba(0,188,212,0.1);
+  border: 1px solid rgba(0,188,212,0.3);
+  color: var(--accent);
+}
+
+/* Bottom banner */
+.banner {
+  background: linear-gradient(90deg, rgba(33,150,243,0.12) 0%, rgba(0,188,212,0.08) 50%, rgba(33,150,243,0.12) 100%);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 6px;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+}
+
+.banner-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-main);
+}
+
+.banner-text .hl-blue {
+  color: var(--primary);
+}
+
+.banner-text .hl-cyan {
+  color: var(--accent);
+}
+
+.banner-text .divider {
+  color: var(--text-dim);
+  margin: 0 10px;
+  font-weight: 400;
+}
+
+.banner-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.banner-meta .pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <span class="page-num">P · 06</span>
+        <span class="title">反思与收获</span>
+      </div>
+      <div class="header-right">
+        <span>ANNUAL REVIEW</span>
+        <span class="dot"></span>
+        <span>2024</span>
+      </div>
+    </div>
+
+    <div class="main-cols">
+      <div class="col col-positive">
+        <div class="col-head">
+          <span class="col-badge">POSITIVE</span>
+          <span class="col-title">值得延续的正面经验</span>
+          <span class="col-sub">3 ITEMS · CONTINUE</span>
+        </div>
+        <div class="pos-items">
+          <div class="pos-item">
+            <span class="idx">01</span>
+            <div class="content">
+              <div class="name">结构化沉淀有效</div>
+              <div class="desc">统一笔记模板让碎片化知识得以长期复用，布道内容输出更顺畅，知识资产逐步累积。</div>
+            </div>
+          </div>
+          <div class="pos-item">
+            <span class="idx">02</span>
+            <div class="content">
+              <div class="name">分享驱动学习</div>
+              <div class="desc">以讲促学，通过准备分享倒逼深度理解，是全年最高效的学习方式之一，认知闭环形成明显。</div>
+            </div>
+          </div>
+          <div class="pos-item">
+            <span class="idx">03</span>
+            <div class="content">
+              <div class="name">社区连接有价值</div>
+              <div class="desc">线下 meetup 建立的深度连接远胜纯线上互动，社群归属感显著增强，人脉网络持续扩展。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col col-improve">
+        <div class="col-head">
+          <span class="col-badge">TO IMPROVE</span>
+          <span class="col-title">关键短板：需重点突破</span>
+          <span class="col-sub">1 GAP · PRIORITY</span>
+        </div>
+        <div class="improve-item">
+          <span class="idx">!</span>
+          <div class="content">
+            <div class="name">代码贡献需加强</div>
+            <div class="desc">文档与内容产出丰富，但实际代码贡献偏少；在开源社区与项目实践中，代码层面的参与度明显不足，是下一阶段需重点突破的方向。</div>
+            <span class="tag">PRIORITY · HIGH</span>
+          </div>
+        </div>
+        <div class="arrow-row">
+          <span class="arrow">▶</span>
+          <span>反思直接决定下一阶段行动优先级：动手实践 &gt; 内容输出</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card k1">
+        <div class="kpi-icon">★</div>
+        <div>
+          <div class="kpi-num">3</div>
+        </div>
+        <div class="kpi-text">
+          <div class="kpi-label">核心经验</div>
+          <div class="kpi-desc">沉淀 · 分享 · 连接<br>三条路径持续发力</div>
+        </div>
+      </div>
+      <div class="kpi-card k2">
+        <div class="kpi-icon">!</div>
+        <div>
+          <div class="kpi-num">1</div>
+        </div>
+        <div class="kpi-text">
+          <div class="kpi-label">关键短板</div>
+          <div class="kpi-desc">代码贡献不足<br>下一阶段重点突破方向</div>
+        </div>
+      </div>
+      <div class="kpi-card k3">
+        <div class="kpi-icon">→</div>
+        <div>
+          <div class="kpi-num">→</div>
+        </div>
+        <div class="kpi-text">
+          <div class="kpi-label">改进方向</div>
+          <div class="kpi-desc">动手实践优先<br>从写文档转向写代码</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner">
+      <div class="banner-text">
+        <span class="hl-blue">三条经验延续</span>
+        <span class="divider">/</span>
+        <span class="hl-cyan">一个短板突破</span>
+      </div>
+      <div class="banner-meta">
+        <span class="pulse"></span>
+        <span>REFLECTION COMPLETE</span>
+        <span>NEXT PHASE LOADING</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
