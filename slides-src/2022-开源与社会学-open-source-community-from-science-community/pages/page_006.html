@@ -1,0 +1,697 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源协作的社会机制</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --text-main: #E8EAF0;
+  --text-secondary: #B0BEC5;
+  --bg-dark: #0B1426;
+  --bg-card: #121F3A;
+  --bg-card-hover: #162748;
+  --border: #1E3560;
+  --accent-glow: rgba(33, 150, 243, 0.18);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 10%, rgba(33,150,243,0.10) 0%, transparent 50%),
+              radial-gradient(ellipse at 85% 90%, rgba(0,188,212,0.08) 0%, transparent 45%),
+              var(--bg-dark);
+}
+
+#bg .grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+#bg .glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+}
+
+#bg .glow-orb-1 {
+  width: 400px; height: 400px;
+  background: var(--primary);
+  top: -100px; left: -100px;
+  opacity: 0.15;
+}
+
+#bg .glow-orb-2 {
+  width: 350px; height: 350px;
+  background: var(--cyan);
+  bottom: -80px; right: 200px;
+  opacity: 0.10;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 42px 56px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.title-block {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.title-accent-bar {
+  width: 5px;
+  height: 48px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+  border-radius: 3px;
+  box-shadow: 0 0 16px var(--primary);
+}
+
+.title-text h1 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #ffffff 0%, #B0BEC5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-text .subtitle {
+  font-size: 12px;
+  color: var(--cyan);
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.header-tag {
+  font-size: 11px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  letter-spacing: 2px;
+  background: rgba(33,150,243,0.05);
+}
+
+.intro-text {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  text-align: justify;
+  margin: 14px 0 18px 0;
+  padding: 14px 22px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.06), rgba(0,188,212,0.03));
+  border-left: 3px solid var(--primary);
+  border-radius: 0 8px 8px 0;
+}
+
+.intro-text .hl { color: var(--primary); font-weight: 600; }
+.intro-text .hl2 { color: var(--cyan); font-weight: 600; }
+
+/* Main content */
+.main-area {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Left panel */
+.left-panel {
+  width: 560px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.panel-header .icon-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+.panel-header .label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.panel-header .label-en {
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  margin-left: auto;
+}
+
+.pyramid-card {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(18,31,58,0.9), rgba(10,20,40,0.95));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pyramid-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--cyan), transparent);
+}
+
+.pyramid-svg-wrap {
+  width: 100%;
+  height: 320px;
+  position: relative;
+}
+
+.pyramid-svg-wrap svg {
+  width: 100%;
+  height: 100%;
+}
+
+.pyramid-legend {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+
+.left-footer-note {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+/* Right panel */
+.right-panel {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+}
+
+.point-card {
+  background: linear-gradient(135deg, rgba(18,31,58,0.85), rgba(10,20,40,0.9));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s;
+}
+
+.point-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+}
+
+.point-card .card-num {
+  font-size: 11px;
+  color: var(--cyan);
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.point-card .card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.point-card .card-title .mini-icon {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: rgba(33,150,243,0.15);
+  border: 1px solid rgba(33,150,243,0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.point-card .card-title-en {
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  margin-left: 32px;
+}
+
+.point-card .card-body {
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.point-card .card-body .kw {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.point-card .card-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.point-card .tag {
+  font-size: 9.5px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(33,150,243,0.3);
+  color: var(--primary);
+  background: rgba(33,150,243,0.06);
+  letter-spacing: 0.5px;
+}
+
+.point-card .tag-cyan {
+  border-color: rgba(0,188,212,0.3);
+  color: var(--cyan);
+  background: rgba(0,188,212,0.06);
+}
+
+/* Bottom KPI */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.kpi-card {
+  background: linear-gradient(135deg, rgba(18,31,58,0.7), rgba(10,20,40,0.85));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+  opacity: 0.6;
+}
+
+.kpi-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(0,188,212,0.1));
+  border: 1px solid rgba(33,150,243,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-content { display: flex; flex-direction: column; flex: 1; }
+
+.kpi-label {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  letter-spacing: 1.5px;
+  margin-bottom: 2px;
+}
+
+.kpi-value {
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
+}
+
+.kpi-desc {
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+  opacity: 0.7;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-lines"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="title-accent-bar"></div>
+        <div class="title-text">
+          <h1>开源协作的社会机制</h1>
+          <div class="subtitle">SOCIAL MECHANISMS OF OPEN SOURCE</div>
+        </div>
+      </div>
+      <div class="header-tag">CH · 04 / MECHANISM</div>
+    </div>
+
+    <div class="intro-text">
+      开源协作之所以能跨越时空边界大规模运作，依赖于一套精巧的社会机制——<span class="hl">声誉系统</span>替代了传统激励，<span class="hl2">弱联系网络</span>降低了协作成本，<span class="hl">金字塔结构</span>在效率与包容之间取得平衡，而<span class="hl2">情感归属</span>则为持续贡献提供了内在动力。
+    </div>
+
+    <div class="main-area">
+
+      <div class="left-panel">
+        <div class="panel-header">
+          <span class="icon-dot"></span>
+          <span class="label">贡献者金字塔结构</span>
+          <span class="label-en">CONTRIBUTOR PYRAMID</span>
+        </div>
+        <div class="pyramid-card">
+          <div class="pyramid-svg-wrap">
+            <svg viewBox="0 0 520 320" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gradCore" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#2196F3"/>
+                  <stop offset="100%" stop-color="#00BCD4"/>
+                </linearGradient>
+                <linearGradient id="gradMid" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#1E5FBF"/>
+                  <stop offset="100%" stop-color="#1A4A9E"/>
+                </linearGradient>
+                <linearGradient id="gradBase" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#162748"/>
+                  <stop offset="100%" stop-color="#0D1B33"/>
+                </linearGradient>
+                <radialGradient id="nodeGlow">
+                  <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#00BCD4" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Network nodes background -->
+              <g opacity="0.4">
+                <line x1="60" y1="40" x2="140" y2="80" stroke="#2196F3" stroke-width="0.5"/>
+                <line x1="140" y1="80" x2="200" y2="50" stroke="#2196F3" stroke-width="0.5"/>
+                <line x1="200" y1="50" x2="280" y2="30" stroke="#2196F3" stroke-width="0.5"/>
+                <line x1="320" y1="60" x2="400" y2="40" stroke="#2196F3" stroke-width="0.5"/>
+                <line x1="400" y1="40" x2="460" y2="80" stroke="#2196F3" stroke-width="0.5"/>
+                <line x1="60" y1="280" x2="120" y2="240" stroke="#00BCD4" stroke-width="0.5"/>
+                <line x1="120" y1="240" x2="200" y2="270" stroke="#00BCD4" stroke-width="0.5"/>
+                <line x1="200" y1="270" x2="320" y2="250" stroke="#00BCD4" stroke-width="0.5"/>
+                <line x1="320" y1="250" x2="440" y2="270" stroke="#00BCD4" stroke-width="0.5"/>
+                <line x1="440" y1="270" x2="480" y2="240" stroke="#00BCD4" stroke-width="0.5"/>
+                <line x1="60" y1="40" x2="120" y2="240" stroke="#2196F3" stroke-width="0.3"/>
+                <line x1="280" y1="30" x2="200" y2="270" stroke="#2196F3" stroke-width="0.3"/>
+                <line x1="460" y1="80" x2="440" y2="270" stroke="#00BCD4" stroke-width="0.3"/>
+                <line x1="140" y1="80" x2="200" y2="270" stroke="#2196F3" stroke-width="0.3"/>
+                <line x1="320" y1="60" x2="320" y2="250" stroke="#00BCD4" stroke-width="0.3"/>
+              </g>
+
+              <circle cx="60" cy="40" r="3" fill="#2196F3"/>
+              <circle cx="140" cy="80" r="2.5" fill="#2196F3"/>
+              <circle cx="200" cy="50" r="3" fill="#00BCD4"/>
+              <circle cx="280" cy="30" r="2" fill="#2196F3"/>
+              <circle cx="320" cy="60" r="2.5" fill="#2196F3"/>
+              <circle cx="400" cy="40" r="3" fill="#00BCD4"/>
+              <circle cx="460" cy="80" r="2" fill="#2196F3"/>
+              <circle cx="60" cy="280" r="2.5" fill="#00BCD4"/>
+              <circle cx="120" cy="240" r="2" fill="#2196F3"/>
+              <circle cx="200" cy="270" r="3" fill="#2196F3"/>
+              <circle cx="320" cy="250" r="2.5" fill="#00BCD4"/>
+              <circle cx="440" cy="270" r="2" fill="#2196F3"/>
+              <circle cx="480" cy="240" r="3" fill="#00BCD4"/>
+
+              <!-- Pyramid -->
+              <g>
+                <!-- Top: Core maintainers -->
+                <polygon points="240,50 280,50 290,100 230,100" fill="url(#gradCore)" opacity="0.95"/>
+                <polygon points="240,50 280,50 290,100 230,100" fill="none" stroke="#00BCD4" stroke-width="0.5" opacity="0.6"/>
+                <text x="260" y="82" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="700" font-family="Inter">核心维护者</text>
+
+                <!-- Upper mid -->
+                <polygon points="230,105 290,105 302,155 218,155" fill="url(#gradCore)" opacity="0.75"/>
+                <text x="260" y="136" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="600" font-family="Inter">活跃贡献者</text>
+
+                <!-- Mid -->
+                <polygon points="218,160 302,160 318,210 202,210" fill="url(#gradMid)"/>
+                <text x="260" y="191" text-anchor="middle" fill="#E8EAF0" font-size="10" font-weight="600" font-family="Inter">定期贡献者</text>
+
+                <!-- Lower mid -->
+                <polygon points="202,215 318,215 336,265 184,265" fill="url(#gradMid)" opacity="0.7"/>
+                <text x="260" y="246" text-anchor="middle" fill="#B0BEC5" font-size="10" font-weight="500" font-family="Inter">偶尔贡献者</text>
+
+                <!-- Base -->
+                <polygon points="184,270 336,270 360,310 160,310" fill="url(#gradBase)"/>
+                <text x="260" y="295" text-anchor="middle" fill="#B0BEC5" font-size="11" font-weight="600" font-family="Inter">长尾参与者（仅消费）</text>
+              </g>
+
+              <!-- Side annotations -->
+              <text x="155" y="78" text-anchor="end" fill="#2196F3" font-size="9" font-weight="700" font-family="Inter">~2%</text>
+              <line x1="160" y1="75" x2="225" y2="75" stroke="#2196F3" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+              <text x="370" y="78" text-anchor="start" fill="#00BCD4" font-size="8" font-family="Inter">核心维护者</text>
+              <line x1="290" y1="75" x2="365" y2="75" stroke="#00BCD4" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+              <text x="155" y="190" text-anchor="end" fill="#2196F3" font-size="9" font-weight="700" font-family="Inter">~18%</text>
+              <line x1="160" y1="187" x2="215" y2="187" stroke="#2196F3" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+              <text x="370" y="190" text-anchor="start" fill="#00BCD4" font-size="8" font-family="Inter">活跃+定期贡献者</text>
+              <line x1="310" y1="187" x2="365" y2="187" stroke="#00BCD4" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+              <text x="155" y="305" text-anchor="end" fill="#2196F3" font-size="9" font-weight="700" font-family="Inter">~80%</text>
+              <line x1="160" y1="302" x2="180" y2="302" stroke="#2196F3" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+              <text x="370" y="305" text-anchor="start" fill="#00BCD4" font-size="8" font-family="Inter">偶尔贡献者 + 长尾</text>
+              <line x1="345" y1="302" x2="365" y2="302" stroke="#00BCD4" stroke-width="0.5" stroke-dasharray="2,2"/>
+            </svg>
+          </div>
+          <div class="pyramid-legend">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--primary);"></span> 核心层（决策与产出）</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#1E5FBF;"></span> 中间层（稳定贡献）</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#162748;border:1px solid var(--cyan);"></span> 长尾层（多样性基础）</div>
+          </div>
+          <div class="left-footer-note">数据综合自 GitHub Octoverse 及多个开源社区研究报告</div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+
+        <div class="point-card">
+          <div class="card-num">01 / 04</div>
+          <div class="card-title">
+            <span class="mini-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+            </span>
+            声誉经济
+          </div>
+          <div class="card-title-en">REPUTATION ECONOMY</div>
+          <div class="card-body">
+            提交次数、被引用率、Issue 响应速度构成<span class="kw">可量化的声誉资本</span>，驱动贡献者持续参与并获得社区认可。
+          </div>
+          <div class="card-tags">
+            <span class="tag">Commit 计数</span>
+            <span class="tag tag-cyan">引用率</span>
+            <span class="tag">响应速度</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="card-num">02 / 04</div>
+          <div class="card-title">
+            <span class="mini-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/><line x1="5" y1="19" x2="19" y2="19"/></svg>
+            </span>
+            弱联系协作
+          </div>
+          <div class="card-title-en">WEAK TIES COLLABORATION</div>
+          <div class="card-body">
+            开源协作跨越<span class="kw">地理与机构边界</span>，大量有效协作发生于陌生人之间，验证了社会学的弱联系理论。
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-cyan">跨地域</span>
+            <span class="tag">跨机构</span>
+            <span class="tag tag-cyan">陌生人协作</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="card-num">03 / 04</div>
+          <div class="card-title">
+            <span class="mini-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2"><polygon points="12,3 20,20 4,20"/><line x1="8" y1="20" x2="8" y2="14"/><line x1="16" y1="20" x2="16" y2="14"/></svg>
+            </span>
+            贡献者金字塔
+          </div>
+          <div class="card-title-en">CONTRIBUTOR PYRAMID</div>
+          <div class="card-body">
+            少数<span class="kw">核心贡献者产出绝大部分代码</span>，长尾参与者则构成社区的多样性基础与创新源泉。
+          </div>
+          <div class="card-tags">
+            <span class="tag">20/80 法则</span>
+            <span class="tag tag-cyan">长尾价值</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="card-num">04 / 04</div>
+          <div class="card-title">
+            <span class="mini-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </span>
+            情感与归属
+          </div>
+          <div class="card-title-en">EMOTION & BELONGING</div>
+          <div class="card-body">
+            社区<span class="kw">认同感、社交满足感与利他动机</span>共同支撑志愿者的长期参与承诺，构成内在驱动力。
+          </div>
+          <div class="card-tags">
+            <span class="tag">认同感</span>
+            <span class="tag tag-cyan">利他动机</span>
+            <span class="tag">社交满足</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="kpi-row">
+
+      <div class="kpi-card">
+        <div class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="10" r="2"/><path d="M14 20c0-2 2-4 4-4"/></svg>
+        </div>
+        <div class="kpi-content">
+          <span class="kpi-label">核心贡献者占比</span>
+          <span class="kpi-value">~20%</span>
+          <span class="kpi-desc">金字塔顶部活跃力量</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.8"><path d="M4 19h16M6 19V9l5-4 5 4v10M9 19v-6h6v6"/></svg>
+        </div>
+        <div class="kpi-content">
+          <span class="kpi-label">核心产出占比</span>
+          <span class="kpi-value">~80%</span>
+          <span class="kpi-desc">20/80 法则典型验证</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+        </div>
+        <div class="kpi-content">
+          <span class="kpi-label">协作边界</span>
+          <span class="kpi-value">跨国 / 跨机构</span>
+          <span class="kpi-desc">无组织边界的全球协作</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.8"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg>
+        </div>
+        <div class="kpi-content">
+          <span class="kpi-label">核心动机</span>
+          <span class="kpi-value">声誉 + 归属</span>
+          <span class="kpi-desc">内在驱动替代外在激励</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

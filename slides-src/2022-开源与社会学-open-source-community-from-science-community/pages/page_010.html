@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开放的未来</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --muted:#B0BEC5;
+  --bg1:#050B1E;
+  --bg2:#0B1430;
+  --line:rgba(176,190,197,.18);
+  --glow:rgba(33,150,243,.55);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:#E8EEF7;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:radial-gradient(120% 90% at 50% 0%, #0F2050 0%, #060C22 45%, #030818 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:2;padding:56px 80px 60px 80px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 星空粒子层 */
+#bg .star{position:absolute;border-radius:50%;background:#fff;opacity:.55;animation:twinkle 3.5s ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.15;}50%{opacity:.85;}}
+
+/* 顶部细线 */
+#bg .topline{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,rgba(33,150,243,.0) 10%,rgba(33,150,243,.6) 45%,rgba(0,188,212,.7) 55%,rgba(33,150,243,.0) 90%,transparent 100%);}
+#bg .bottomline{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,rgba(0,188,212,.0) 10%,rgba(0,188,212,.55) 45%,rgba(33,150,243,.7) 55%,rgba(33,150,243,.0) 90%,transparent 100%);}
+
+/* 背景大光晕 */
+#bg .halo1{position:absolute;width:900px;height:900px;left:-200px;top:-350px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,.18) 0%,rgba(33,150,243,0) 65%);filter:blur(20px);}
+#bg .halo2{position:absolute;width:1000px;height:1000px;right:-260px;bottom:-420px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,.16) 0%,rgba(0,188,212,0) 65%);filter:blur(24px);}
+#bg .halo3{position:absolute;width:560px;height:560px;left:50%;top:52%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,.10) 0%,rgba(33,150,243,0) 60%);filter:blur(30px);}
+
+/* 网格细线装饰 */
+#bg .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(176,190,197,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(176,190,197,.05) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(circle at 50% 55%,black 30%,transparent 78%);}
+
+/* 底部粒子扩散环 */
+#bg .ring{position:absolute;left:50%;bottom:-180px;transform:translateX(-50%);border-radius:50%;border:1px solid rgba(33,150,243,.15);}
+#bg .ring.r1{width:1800px;height:600px;bottom:-260px;}
+#bg .ring.r2{width:1200px;height:400px;bottom:-160px;border-color:rgba(0,188,212,.18);}
+#bg .ring.r3{width:700px;height:260px;bottom:-60px;border-color:rgba(33,150,243,.22);}
+
+/* 头部装饰 */
+.head-deco{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:12px;letter-spacing:.32em;text-transform:uppercase;margin-bottom:8px;}
+.head-deco .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 10px var(--glow);}
+.head-deco .bar{flex:0 0 60px;height:1px;background:linear-gradient(90deg,var(--primary),transparent);}
+
+/* 主标题区 */
+.hero{margin-top:8px;text-align:center;position:relative;}
+.hero .kicker{display:inline-flex;align-items:center;gap:10px;color:var(--cyan);font-size:13px;letter-spacing:.42em;font-weight:500;margin-bottom:14px;}
+.hero .kicker .ln{width:38px;height:1px;background:linear-gradient(90deg,transparent,var(--cyan));}
+.hero .kicker .ln.r{background:linear-gradient(90deg,var(--cyan),transparent);}
+.hero h1{font-size:118px;font-weight:800;letter-spacing:.08em;line-height:1;background:linear-gradient(180deg,#FFFFFF 0%,#B8DDFF 55%,#6FB8F5 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 40px rgba(33,150,243,.25);position:relative;display:inline-block;}
+.hero h1::after{content:"";position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);}
+.hero .subtitle{margin-top:30px;font-size:22px;font-weight:400;color:#D6E4F5;letter-spacing:.05em;line-height:1.6;}
+.hero .subtitle .accent{color:var(--cyan);font-weight:500;}
+
+/* 叙事串联短句 */
+.narrative{margin:36px auto 26px auto;max-width:1180px;text-align:center;position:relative;padding:20px 40px;}
+.narrative .quote-l,.narrative .quote-r{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border:1px solid rgba(33,150,243,.4);}
+.narrative .quote-l{left:0;border-right:none;}
+.narrative .quote-r{right:0;border-left:none;}
+.narrative p{font-size:14px;line-height:1.85;color:#C7D4E6;font-weight:300;letter-spacing:.02em;}
+.narrative p .hl{color:#9DD4FB;font-weight:500;}
+
+/* 标签行 */
+.tags{display:flex;justify-content:center;align-items:center;gap:18px;margin:6px 0 22px 0;}
+.tag{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--line);border-radius:999px;background:rgba(33,150,243,.05);font-size:12.5px;color:var(--muted);letter-spacing:.05em;}
+.tag .tagdot{width:6px;height:6px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--glow);}
+.tag .tagk{color:#7EC8F7;font-weight:500;}
+
+/* 三模块 */
+.modules{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:14px;}
+.mod{position:relative;padding:24px 24px 26px 24px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,rgba(33,150,243,.07) 0%,rgba(33,150,243,.02) 60%,rgba(0,188,212,.04) 100%);overflow:hidden;backdrop-filter:blur(2px);}
+.mod::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--primary),var(--cyan));box-shadow:0 0 12px rgba(33,150,243,.5);}
+.mod::after{content:"";position:absolute;right:-40px;bottom:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,.18) 0%,transparent 70%);}
+.mod .mhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.mod .midx{font-size:11px;color:var(--cyan);letter-spacing:.3em;font-weight:500;}
+.mod .micon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(33,150,243,.4);background:rgba(33,150,243,.08);font-size:16px;color:#9DD4FB;}
+.mod h3{font-size:20px;font-weight:700;color:#FFFFFF;letter-spacing:.06em;margin-bottom:4px;}
+.mod .msub{font-size:11.5px;color:var(--muted);letter-spacing:.22em;margin-bottom:14px;text-transform:uppercase;}
+.mod .mdivider{width:48px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);margin-bottom:14px;}
+.mod p{font-size:13.5px;line-height:1.85;color:#D6E4F5;font-weight:300;letter-spacing:.01em;}
+.mod p .hl{color:#9DD4FB;font-weight:500;}
+
+/* 底部签名条 */
+.footline{margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(33,150,243,.04),rgba(0,188,212,.05),rgba(33,150,243,.04));}
+.footline .fleft{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:12px;letter-spacing:.28em;text-transform:uppercase;}
+.footline .fleft .fdot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px rgba(0,188,212,.7);animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.5;transform:scale(.9);}50%{opacity:1;transform:scale(1.15);}}
+.footline .fcenter{font-size:13px;color:#9DD4FB;letter-spacing:.16em;font-weight:400;}
+.footline .fright{font-size:11.5px;color:var(--muted);letter-spacing:.28em;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
+.footline .fright .ln{width:36px;height:1px;background:linear-gradient(90deg,transparent,var(--primary));}
+
+/* 底部粒子条 */
+.particles-bar{position:absolute;left:0;right:0;bottom:0;height:90px;z-index:1;overflow:hidden;pointer-events:none;}
+.particles-bar .p{position:absolute;bottom:0;width:3px;height:3px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--glow);animation:rise linear infinite;}
+@keyframes rise{0%{transform:translateY(0) scale(1);opacity:0;}20%{opacity:.9;}100%{transform:translateY(-160px) scale(.3);opacity:0;}}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="topline"></div>
+    <div class="bottomline"></div>
+    <div class="halo1"></div>
+    <div class="halo2"></div>
+    <div class="halo3"></div>
+    <div class="grid"></div>
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+    <div class="ring r3"></div>
+  </div>
+
+  <div id="ct">
+    <div class="head-deco">
+      <span class="dot"></span>
+      <span>开源社区 × 默顿科学规范</span>
+      <span class="bar"></span>
+      <span>研究汇报 · 闭幕</span>
+    </div>
+
+    <div class="hero">
+      <div class="kicker"><span class="ln"></span><span>CLOSING · 收束</span><span class="ln r"></span></div>
+      <h1>开放的未来</h1>
+      <div class="subtitle">在<span class="accent">协作</span>与<span class="accent">信任</span>中，构建<span class="accent">数字时代</span>的知识共同体</div>
+    </div>
+
+    <div class="narrative">
+      <span class="quote-l"></span>
+      <span class="quote-r"></span>
+      <p>开源不仅是一种<span class="hl">软件开发模式</span>，更是一场深刻的<span class="hl">社会实验</span>——它证明了在缺乏传统权威的情况下，人类可以通过<span class="hl">代码、声誉与共享价值观</span>构建大规模的协作秩序；展望未来，需要在<span class="hl">开放与规范</span>、<span class="hl">效率与公平</span>、<span class="hl">自由与问责</span>之间持续探索。</p>
+    </div>
+
+    <div class="tags">
+      <span class="tag"><span class="tagdot"></span><span class="tagk">核心理论</span><span>默顿科学规范</span></span>
+      <span class="tag"><span class="tagdot"></span><span class="tagk">研究对象</span><span>开源社区</span></span>
+      <span class="tag"><span class="tagdot"></span><span class="tagk">关键命题</span><span>数字时代的知识共同体</span></span>
+    </div>
+
+    <div class="modules">
+      <div class="mod">
+        <div class="mhead">
+          <div class="micon">◈</div>
+          <span class="midx">01 / INSIGHT</span>
+        </div>
+        <h3>核心洞见</h3>
+        <div class="msub">CORE INSIGHT</div>
+        <div class="mdivider"></div>
+        <p>开源社区是<span class="hl">默顿科学共同体</span>在数字时代的<span class="hl">结构性回响</span>与<span class="hl">创造性演化</span>，开放科学的精神在协作代码中延续并生长。</p>
+      </div>
+
+      <div class="mod">
+        <div class="mhead">
+          <div class="micon">◎</div>
+          <span class="midx">02 / WATCH</span>
+        </div>
+        <h3>持续关注</h3>
+        <div class="msub">WATCHING POINTS</div>
+        <div class="mdivider"></div>
+        <p><span class="hl">治理可持续性</span>、<span class="hl">多样性包容</span>与<span class="hl">知识问责机制</span>，仍是数字时代亟需解答的开放性<span class="hl">社会学命题</span>。</p>
+      </div>
+
+      <div class="mod">
+        <div class="mhead">
+          <div class="micon">✦</div>
+          <span class="midx">03 / CALL</span>
+        </div>
+        <h3>行动召唤</h3>
+        <div class="msub">CALL TO ACTION</div>
+        <div class="mdivider"></div>
+        <p>每一位开源参与者，都在<span class="hl">共同塑造</span>这个数字时代<span class="hl">最重要的协作实验</span>——未来因开放而辽阔，共同体因信任而生生不息。</p>
+      </div>
+    </div>
+
+    <div class="footline">
+      <div class="fleft"><span class="fdot"></span><span>THANK YOU FOR LISTENING</span></div>
+      <div class="fcenter">在协作与信任中，共同书写开放的未来</div>
+      <div class="fright"><span>开源 · 默顿 · 共同体</span><span class="ln"></span></div>
+    </div>
+  </div>
+
+  <div class="particles-bar" id="pb"></div>
+</div>
+
+<script>
+(function(){
+  var bg=document.getElementById('bg');
+  for(var i=0;i<70;i++){
+    var s=document.createElement('div');
+    s.className='star';
+    var sz=Math.random()<0.15?2:(Math.random()<0.5?1:0.6);
+    s.style.width=sz+'px';s.style.height=sz+'px';
+    s.style.left=(Math.random()*1600)+'px';
+    s.style.top=(Math.random()*900)+'px';
+    s.style.animationDelay=(Math.random()*3.5)+'s';
+    s.style.animationDuration=(2.5+Math.random()*3)+'s';
+    if(Math.random()<0.15){s.style.background='#9DD4FB';s.style.boxShadow='0 0 4px #9DD4FB';}
+    bg.appendChild(s);
+  }
+  var pb=document.getElementById('pb');
+  for(var j=0;j<28;j++){
+    var p=document.createElement('div');
+    p.className='p';
+    p.style.left=(Math.random()*1600)+'px';
+    var dur=4+Math.random()*6;
+    p.style.animationDuration=dur+'s';
+    p.style.animationDelay=(Math.random()*6)+'s';
+    if(Math.random()<0.35){p.style.background='#00BCD4';p.style.boxShadow='0 0 8px #00BCD4';}
+    pb.appendChild(p);
+  }
+})();
+</script>
+</body>
+</html>

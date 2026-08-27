@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二部分：社区治理</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --dark: #0A1628;
+  --dark-deep: #050D1A;
+  --text-main: #E8EEF5;
+  --text-dim: #90A4B8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; color:var(--text-main); overflow:hidden; }
+.wrapper { width:1600px; height:900px; position:relative; overflow:hidden; margin:0 auto; background:var(--dark-deep); }
+#bg { position:absolute; inset:0; z-index:0; overflow:hidden; }
+#bg img { width:100%; height:100%; object-fit:cover; display:block; }
+#bg .overlay { position:absolute; inset:0; background:linear-gradient(90deg, rgba(5,13,26,0.90) 0%, rgba(5,13,26,0.55) 55%, rgba(10,22,40,0.80) 100%); }
+#ct { position:absolute; inset:0; z-index:1; padding:64px 76px; display:flex; flex-direction:column; }
+
+.header-bar { display:flex; align-items:center; gap:18px; margin-bottom:28px; }
+.header-bar .line { flex:0 0 50px; height:1px; background:var(--accent); opacity:0.5; }
+.header-bar .dot { width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent); }
+.header-bar .part-label { font-size:12px; font-weight:600; letter-spacing:6px; color:var(--accent); }
+.header-bar .part-label.dim { color:var(--neutral); font-weight:400; letter-spacing:4px; }
+.header-bar .spacer { flex:1; }
+.header-bar .side-label { font-size:11px; font-weight:500; letter-spacing:3px; color:var(--text-dim); }
+
+.main { flex:1; display:flex; align-items:center; gap:50px; }
+
+.number-block { flex:0 0 460px; position:relative; padding-left:8px; }
+.number-block .num {
+  font-size:310px; font-weight:900; line-height:0.85; letter-spacing:-14px;
+  background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; position:relative;
+}
+.number-block .num-tag { margin-top:18px; font-size:12px; letter-spacing:5px; color:var(--neutral); font-weight:500; }
+.number-block .glow-line { position:absolute; left:8px; bottom:-28px; width:220px; height:2px; background:linear-gradient(90deg, var(--accent), transparent); }
+
+.right-block { flex:1; }
+.main-title { font-size:42px; font-weight:800; letter-spacing:2px; color:var(--text-main); margin-bottom:12px; line-height:1.2; }
+.sub-title { font-size:17px; font-weight:400; color:var(--neutral); letter-spacing:1px; margin-bottom:30px; padding-bottom:22px; border-bottom:1px solid rgba(176,190,197,0.15); }
+
+.points { display:flex; flex-direction:column; }
+.point-row { display:flex; align-items:flex-start; gap:18px; padding:12px 0; position:relative; }
+.point-row::before { content:''; position:absolute; left:13px; top:0; bottom:0; width:2px; background:rgba(33,150,243,0.18); }
+.point-row:first-child::before { top:10px; }
+.point-row:last-child::before { bottom:10px; }
+.point-node { flex:0 0 26px; width:26px; height:26px; border-radius:50%; border:2px solid var(--primary); background:var(--dark-deep); display:flex; align-items:center; justify-content:center; position:relative; z-index:1; }
+.point-node::after { content:''; width:8px; height:8px; border-radius:50%; background:var(--primary); box-shadow:0 0 8px var(--primary); }
+.point-row.accent .point-node { border-color:var(--accent); }
+.point-row.accent .point-node::after { background:var(--accent); box-shadow:0 0 8px var(--accent); }
+
+.point-content { flex:1; }
+.point-head { display:flex; align-items:center; gap:12px; margin-bottom:5px; }
+.point-num { font-size:11px; font-weight:700; color:var(--primary); letter-spacing:2px; }
+.point-row.accent .point-num { color:var(--accent); }
+.point-title { font-size:16px; font-weight:700; color:var(--text-main); letter-spacing:1px; }
+.point-desc { font-size:13px; font-weight:400; color:var(--text-dim); line-height:1.6; letter-spacing:0.3px; }
+
+.footer-bar { display:flex; align-items:center; gap:28px; margin-top:24px; padding-top:20px; border-top:1px solid rgba(176,190,197,0.10); }
+.data-tag { display:flex; align-items:center; gap:10px; padding:7px 15px; border:1px solid rgba(0,188,212,0.30); background:rgba(0,188,212,0.06); border-radius:4px; }
+.data-tag .tag-label { font-size:10px; font-weight:500; color:var(--neutral); letter-spacing:2px; }
+.data-tag .tag-sep { width:1px; height:13px; background:rgba(0,188,212,0.30); }
+.data-tag .tag-value { font-size:13px; font-weight:700; color:var(--accent); letter-spacing:1px; }
+.footer-spacer { flex:1; }
+.footer-mark { font-size:10px; font-weight:600; letter-spacing:4px; color:var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img src="../images/page_005_section_bg2.png" alt="深色科技纹理背景，发光节点连接网络，暗示治理拓扑结构">
+    <div class="overlay"></div>
+  </div>
+  <div id="ct">
+    <div class="header-bar">
+      <span class="dot"></span>
+      <span class="line"></span>
+      <span class="part-label">章 节 标 识 · 02</span>
+      <span class="line"></span>
+      <span class="part-label dim">SECTION TRANSITION</span>
+      <span class="spacer"></span>
+      <span class="side-label">开源社区研究 · 专题报告</span>
+    </div>
+
+    <div class="main">
+      <div class="number-block">
+        <div class="num"><span>02</span></div>
+        <div class="num-tag"><span>CHAPTER · 02</span></div>
+        <div class="glow-line"></div>
+      </div>
+
+      <div class="right-block">
+        <div class="main-title">第二部分：社区治理</div>
+        <div class="sub-title">权力、信任与制度化的协作秩序</div>
+
+        <div class="points">
+          <div class="point-row">
+            <div class="point-node"></div>
+            <div class="point-content">
+              <div class="point-head">
+                <span class="point-num">01</span>
+                <span class="point-title">治理结构</span>
+              </div>
+              <div class="point-desc">开源社区的权力分配从扁平协作到核心维护者寡头化的连续光谱。</div>
+            </div>
+          </div>
+          <div class="point-row accent">
+            <div class="point-node"></div>
+            <div class="point-content">
+              <div class="point-head">
+                <span class="point-num">02</span>
+                <span class="point-title">信任机制</span>
+              </div>
+              <div class="point-desc">在匿名与弱联系中，代码贡献与声誉系统构成信任的替代基础设施。</div>
+            </div>
+          </div>
+          <div class="point-row">
+            <div class="point-node"></div>
+            <div class="point-content">
+              <div class="point-head">
+                <span class="point-num">03</span>
+                <span class="point-title">制度化进程</span>
+              </div>
+              <div class="point-desc">从个人爱好到企业级治理，开源社区面临正式化与草根精神之间的张力。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="data-tag">
+        <span class="tag-label">治理光谱</span>
+        <span class="tag-sep"></span>
+        <span class="tag-value">扁平 ↔ 寡头</span>
+      </div>
+      <div class="data-tag">
+        <span class="tag-label">核心角色</span>
+        <span class="tag-sep"></span>
+        <span class="tag-value">Maintainer</span>
+      </div>
+      <div class="data-tag">
+        <span class="tag-label">关键张力</span>
+        <span class="tag-sep"></span>
+        <span class="tag-value">开放 vs 效率</span>
+      </div>
+      <span class="footer-spacer"></span>
+      <span class="footer-mark">GOVERNANCE · TRUST · INSTITUTION</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

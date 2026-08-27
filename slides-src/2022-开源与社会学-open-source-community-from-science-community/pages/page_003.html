@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>默顿科学规范与开源映射</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --text-main:#B0BEC5;
+  --text-bright:#E8EAF6;
+  --bg-dark:#0a0f1e;
+  --bg-mid:#0f1b33;
+  --card-bg:rgba(15,27,51,0.72);
+  --card-border:rgba(33,150,243,0.35);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;color:var(--text-main);}
+
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:radial-gradient(ellipse at 50% 40%, #10254a 0%, #0a1428 55%, #060c1a 100%);
+}
+
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+#bg .glow-blob-1{
+  position:absolute;top:-150px;left:-150px;width:500px;height:500px;
+  background:radial-gradient(circle, rgba(33,150,243,0.18) 0%, transparent 70%);
+  filter:blur(30px);
+}
+#bg .glow-blob-2{
+  position:absolute;bottom:-150px;right:-150px;width:550px;height:550px;
+  background:radial-gradient(circle, rgba(0,188,212,0.15) 0%, transparent 70%);
+  filter:blur(30px);
+}
+#bg .glow-blob-3{
+  position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;
+  background:radial-gradient(circle, rgba(33,150,243,0.10) 0%, transparent 65%);
+  filter:blur(40px);
+}
+
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Header */
+.header{text-align:center;margin-bottom:18px;position:relative;}
+.header h1{
+  font-size:42px;font-weight:800;letter-spacing:2px;
+  background:linear-gradient(135deg, #64b5f6 0%, #2196F3 40%, #00BCD4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px;
+}
+.header .accent-line{
+  width:180px;height:3px;margin:0 auto 12px;
+  background:linear-gradient(90deg, transparent, var(--primary), var(--cyan), transparent);
+  border-radius:2px;
+}
+.header .subtitle{
+  font-size:13px;line-height:1.7;color:var(--text-main);font-weight:300;
+  max-width:1200px;margin:0 auto;letter-spacing:0.3px;
+}
+.header .subtitle .hl{color:#64b5f6;font-weight:500;}
+.header .subtitle .hl-cyan{color:var(--cyan);font-weight:500;}
+
+/* Grid area */
+.grid-area{
+  position:relative;flex:1;display:grid;
+  grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:16px;margin:14px 20px;
+}
+
+/* Central glow cross */
+.center-glow{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:320px;height:320px;pointer-events:none;z-index:0;
+}
+.center-glow .core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle, rgba(0,188,212,0.55) 0%, rgba(33,150,243,0.3) 40%, transparent 75%);
+  filter:blur(8px);
+}
+.center-glow .ring{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:130px;height:130px;border-radius:50%;
+  border:1px solid rgba(0,188,212,0.3);
+  box-shadow:0 0 25px rgba(0,188,212,0.25), inset 0 0 25px rgba(33,150,243,0.15);
+}
+.center-glow .ring-2{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:200px;height:200px;border-radius:50%;
+  border:1px dashed rgba(33,150,243,0.2);
+}
+.center-glow .h-beam{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:100%;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(33,150,243,0.5) 30%, rgba(0,188,212,0.7) 50%, rgba(33,150,243,0.5) 70%, transparent);
+}
+.center-glow .v-beam{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:1px;height:100%;
+  background:linear-gradient(180deg, transparent, rgba(33,150,243,0.5) 30%, rgba(0,188,212,0.7) 50%, rgba(33,150,243,0.5) 70%, transparent);
+}
+.center-glow .center-label{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:10px;font-weight:600;color:var(--cyan);letter-spacing:2px;
+  text-align:center;
+}
+
+/* Cards */
+.card{
+  position:relative;z-index:1;
+  background:linear-gradient(135deg, rgba(15,27,51,0.85) 0%, rgba(10,20,42,0.9) 100%);
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:18px 22px;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  overflow:hidden;
+  backdrop-filter:blur(6px);
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg, var(--primary), var(--cyan));
+  opacity:0.7;
+}
+.card::after{
+  content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  background:radial-gradient(circle, rgba(33,150,243,0.12) 0%, transparent 70%);
+  pointer-events:none;
+}
+.card .card-head{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;
+}
+.card .card-title{
+  display:flex;align-items:center;gap:10px;
+}
+.card .num{
+  font-size:22px;font-weight:700;color:var(--cyan);
+  font-family:'Inter',monospace;opacity:0.85;
+}
+.card .name{
+  font-size:19px;font-weight:700;color:var(--text-bright);letter-spacing:1px;
+}
+.card .badge{
+  font-size:9px;font-weight:600;letter-spacing:1.5px;
+  color:var(--cyan);
+  border:1px solid rgba(0,188,212,0.4);
+  padding:3px 8px;border-radius:10px;
+  background:rgba(0,188,212,0.08);
+}
+.card .divider{
+  height:1px;margin:6px 0 10px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.4), rgba(0,188,212,0.15), transparent);
+}
+.card .desc{
+  font-size:12.5px;line-height:1.7;color:var(--text-main);font-weight:300;
+  margin-bottom:10px;
+}
+.card .desc .kw{color:#90CAF9;font-weight:500;}
+.card .desc .kw-cyan{color:var(--cyan);font-weight:500;}
+.card .mapping{
+  margin-top:auto;display:flex;align-items:center;gap:8px;
+  padding:8px 12px;border-radius:8px;
+  background:linear-gradient(135deg, rgba(33,150,243,0.12) 0%, rgba(0,188,212,0.08) 100%);
+  border:1px solid rgba(33,150,243,0.2);
+}
+.card .mapping .label{
+  font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--primary);
+}
+.card .mapping .pair{
+  font-size:12px;font-weight:600;color:var(--text-bright);letter-spacing:0.5px;
+}
+.card .mapping .arrow{
+  font-size:12px;color:var(--cyan);font-weight:700;
+}
+.card .mapping .pair .open{color:var(--cyan);}
+
+/* Card-specific corner accents */
+.card-tl{border-top-left-radius:14px;}
+.card-tr{border-top-right-radius:14px;}
+.card-bl{border-bottom-left-radius:14px;}
+.card-br{border-bottom-right-radius:14px;}
+
+/* Decorative side labels */
+.side-tag{
+  position:absolute;left:50%;transform:translateX(-50%);
+  font-size:8px;letter-spacing:3px;font-weight:600;
+  color:rgba(0,188,212,0.4);
+  z-index:2;
+}
+.side-tag-top{top:calc(50% - 88px);}
+.side-tag-bottom{bottom:calc(50% - 88px);}
+
+/* Footer */
+.footer{
+  text-align:center;padding:10px 0 0;
+  border-top:1px solid rgba(33,150,243,0.15);
+  position:relative;
+}
+.footer .divider-glow{
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  width:400px;height:2px;
+  background:linear-gradient(90deg, transparent, var(--primary), var(--cyan), var(--primary), transparent);
+  opacity:0.6;
+}
+.footer p{
+  font-size:14px;font-weight:500;letter-spacing:1px;
+  background:linear-gradient(90deg, #64b5f6, #00BCD4, #64b5f6);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-top:6px;
+}
+.footer .meta{
+  font-size:10px;color:rgba(176,190,197,0.4);letter-spacing:3px;margin-top:4px;font-weight:300;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="glow-blob-1"></div>
+    <div class="glow-blob-2"></div>
+    <div class="glow-blob-3"></div>
+    <div class="grid-lines"></div>
+  </div>
+
+  <div id="ct">
+    <div class="header">
+      <h1>默顿科学规范与开源映射</h1>
+      <div class="accent-line"></div>
+      <p class="subtitle">
+        默顿科学规范四要素 <span class="hl">USPS</span> 与开源社区核心文化之间存在深刻的结构对应关系——
+        <span class="hl">普遍主义</span>对应代码审查中的 <span class="hl-cyan">Meritocracy</span>，
+        <span class="hl">公有性</span>映射开源许可证的知识共享逻辑，
+        <span class="hl">无私利性</span>体现于志愿协作，
+        <span class="hl">有组织怀疑</span>则化为 <span class="hl-cyan">Code Review</span> 的制度化批判流程。
+      </p>
+    </div>
+
+    <div class="grid-area">
+      <div class="center-glow">
+        <div class="ring-2"></div>
+        <div class="ring"></div>
+        <div class="core"></div>
+        <div class="h-beam"></div>
+        <div class="v-beam"></div>
+        <div class="center-label">USPS<br>↔ OPEN<br>SOURCE</div>
+      </div>
+
+      <!-- Card 1: 普遍主义 (top-left) -->
+      <div class="card card-tl">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="num">U</span>
+            <span class="name">普遍主义</span>
+          </div>
+          <span class="badge">UNIVERSALISM</span>
+        </div>
+        <div class="divider"></div>
+        <p class="desc">
+          知识评价应<span class="kw">基于内在标准</span>而非贡献者身份。在开源世界中，这一原则化为<span class="kw-cyan">"代码即正义"</span>的审查文化——无论作者资历，代码质量是唯一准绳。
+        </p>
+        <div class="mapping">
+          <span class="label">MAPPING</span>
+          <span class="pair">普遍主义 <span class="arrow">↔</span> <span class="open">Meritocracy</span></span>
+        </div>
+      </div>
+
+      <!-- Card 2: 公有性 (top-right) -->
+      <div class="card card-tr">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="num">P</span>
+            <span class="name">公有性</span>
+          </div>
+          <span class="badge">COMMUNALISM</span>
+        </div>
+        <div class="divider"></div>
+        <p class="desc">
+          科学知识属<span class="kw">公共领域</span>，开源许可证从 <span class="kw-cyan">GPL</span> 到 <span class="kw-cyan">MIT</span> 均以不同方式强调知识成果的<span class="kw">社会共享属性</span>，确保创新红利向社区流动。
+        </p>
+        <div class="mapping">
+          <span class="label">MAPPING</span>
+          <span class="pair">公有性 <span class="arrow">↔</span> <span class="open">Open License</span></span>
+        </div>
+      </div>
+
+      <!-- Card 3: 无私利性 (bottom-left) -->
+      <div class="card card-bl">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="num">D</span>
+            <span class="name">无私利性</span>
+          </div>
+          <span class="badge">DISINTERESTEDNESS</span>
+        </div>
+        <div class="divider"></div>
+        <p class="desc">
+          科学贡献<span class="kw">不追求个人直接经济回报</span>，开源志愿者以<span class="kw-cyan">无偿协作</span>的方式投入时间与智力，体现与默顿规范一致的<span class="kw">利他精神</span>。
+        </p>
+        <div class="mapping">
+          <span class="label">MAPPING</span>
+          <span class="pair">无私利性 <span class="arrow">↔</span> <span class="open">Volunteer</span></span>
+        </div>
+      </div>
+
+      <!-- Card 4: 有组织怀疑 (bottom-right) -->
+      <div class="card card-br">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="num">S</span>
+            <span class="name">有组织怀疑</span>
+          </div>
+          <span class="badge">ORGANIZED SKEPTICISM</span>
+        </div>
+        <div class="divider"></div>
+        <p class="desc">
+          所有成果须经<span class="kw">同行批判</span>方能成立。开源社区的 <span class="kw-cyan">Code Review</span> 与 <span class="kw-cyan">Issue</span> 讨论机制，正是这一规范在数字时代的<span class="kw">制度形态</span>。
+        </p>
+        <div class="mapping">
+          <span class="label">MAPPING</span>
+          <span class="pair">有组织怀疑 <span class="arrow">↔</span> <span class="open">Code Review</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="divider-glow"></div>
+      <p>从科学精神到开源文化：USPS 四要素在数字协作中的镜像重现</p>
+      <div class="meta">M E R T O N &nbsp; × &nbsp; O P E N &nbsp; S O U R C E</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
