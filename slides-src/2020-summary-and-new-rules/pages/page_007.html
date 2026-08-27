@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>贡献新规范</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+  --primary:#2196F3;
+  --secondary:#00BCD4;
+  --text:#607D8B;
+  --dark:#1A2332;
+  --bg:#F4F8FC;
+  --card:#FFFFFF;
+  --border:#E3EDF5;
+  --success:#2ECC71;
+  --warning:#F39C12;
+  --purple:#7C3AED;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:var(--dark);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 600px 400px at 100% -50px, rgba(33,150,243,0.10), transparent 70%),
+    radial-gradient(ellipse 500px 350px at -80px 110%, rgba(0,188,212,0.08), transparent 70%),
+    var(--bg);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+.header{margin-bottom:22px;}
+.header .tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;background:linear-gradient(90deg,rgba(33,150,243,0.12),rgba(0,188,212,0.10));color:var(--primary);font-size:12px;font-weight:600;letter-spacing:0.5px;margin-bottom:12px;}
+.header .tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--primary);display:inline-block;box-shadow:0 0 6px rgba(33,150,243,0.6);}
+.header h1{font-size:34px;font-weight:800;letter-spacing:1px;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.header .lead{font-size:13.5px;color:var(--text);line-height:1.8;max-width:1400px;}
+.header .lead b{color:var(--primary);font-weight:600;}
+
+.main{display:grid;grid-template-columns:1fr 1.05fr;gap:36px;flex:1;min-height:0;}
+
+/* LEFT */
+.cards-col{display:flex;flex-direction:column;gap:14px;}
+.card{display:flex;align-items:flex-start;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px 16px 22px;position:relative;overflow:hidden;transition:transform .2s;}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--secondary));}
+.card-num{flex-shrink:0;width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--primary),var(--secondary));font-family:'Inter',monospace;}
+.card-body{flex:1;min-width:0;}
+.card-title{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:5px;display:flex;align-items:center;gap:8px;}
+.card-title .en{font-size:10.5px;font-weight:500;color:var(--secondary);letter-spacing:0.5px;padding:2px 8px;border:1px solid rgba(0,188,212,0.3);border-radius:5px;background:rgba(0,188,212,0.06);}
+.card-desc{font-size:12.5px;color:var(--text);line-height:1.7;}
+
+/* RIGHT */
+.gh-wrap{display:flex;flex-direction:column;gap:12px;}
+.gh-title{display:flex;align-items:center;justify-content:space-between;padding:0 4px;}
+.gh-title .t{font-size:13px;font-weight:600;color:var(--dark);display:flex;align-items:center;gap:8px;}
+.gh-title .t::before{content:"";width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,var(--primary),var(--secondary));}
+.gh-title .meta{font-size:11px;color:var(--text);display:flex;gap:14px;}
+.gh-title .meta span{display:inline-flex;align-items:center;gap:4px;}
+.gh-title .meta .dot{width:5px;height:5px;border-radius:50%;background:var(--success);}
+
+.gh-mock{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(33,150,243,0.08);}
+.gh-topbar{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);background:#FAFBFD;gap:10px;}
+.gh-topbar .branch{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--dark);padding:4px 10px;border-radius:6px;background:#E8F2FF;border:1px solid rgba(33,150,243,0.2);}
+.gh-topbar .branch .ic{font-size:9px;color:var(--primary);}
+.gh-topbar .pr-id{font-size:11.5px;color:var(--text);}
+.gh-topbar .pr-id b{color:var(--dark);font-weight:700;}
+.gh-topbar .pr-badge{margin-left:auto;display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;background:rgba(46,204,113,0.12);color:#1E8449;font-size:11px;font-weight:600;}
+.gh-topbar .pr-badge .ic{width:7px;height:7px;border-radius:50%;background:var(--success);}
+.gh-topbar .review-btn{padding:5px 12px;border-radius:6px;background:var(--primary);color:#fff;font-size:11px;font-weight:600;border:none;display:inline-flex;align-items:center;gap:5px;}
+
+.gh-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+.gh-diff-header{display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:1px dashed var(--border);}
+.gh-diff-header .file-tag{padding:3px 9px;border-radius:5px;background:#F0F4F8;font-size:11px;font-weight:600;color:var(--dark);font-family:'Inter',monospace;}
+.gh-diff-header .file-meta{font-size:10.5px;color:var(--text);}
+.gh-diff-header .file-meta b{color:var(--primary);}
+
+.diff-block{font-family:'Courier New',monospace;font-size:10.5px;line-height:1.7;border-radius:6px;overflow:hidden;}
+.diff-row{display:flex;align-items:flex-start;padding:1px 10px;gap:10px;}
+.diff-row .ln{width:24px;text-align:right;color:#90A4AE;font-size:9.5px;padding-top:2px;flex-shrink:0;}
+.diff-row .sign{width:14px;font-size:9.5px;font-weight:700;flex-shrink:0;padding-top:2px;}
+.diff-row .code{flex:1;padding:0 8px;}
+.diff-add{background:rgba(46,204,113,0.08);border-left:3px solid var(--success);}
+.diff-add .sign{color:var(--success);}
+.diff-del{background:rgba(244,67,54,0.07);border-left:3px solid #F44336;}
+.diff-del .sign{color:#F44336;text-decoration:line-through;}
+.diff-context{background:#FAFBFD;}
+.diff-context .code{color:var(--text);}
+
+.gh-comment{display:flex;gap:10px;padding:10px 12px;background:linear-gradient(135deg,rgba(33,150,243,0.05),rgba(0,188,212,0.04));border:1px solid rgba(33,150,243,0.12);border-radius:8px;}
+.gh-comment .avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;}
+.gh-comment .ct{flex:1;}
+.gh-comment .ct .name{font-size:11px;font-weight:700;color:var(--dark);}
+.gh-comment .ct .name span{font-weight:400;color:var(--text);margin-left:6px;}
+.gh-comment .ct .msg{font-size:11px;color:var(--text);line-height:1.6;margin-top:2px;}
+.gh-comment .ct .labels{margin-top:5px;display:flex;gap:5px;}
+.gh-comment .ct .labels .lb{padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;}
+.gh-comment .ct .labels .lb1{background:rgba(33,150,243,0.12);color:var(--primary);}
+.gh-comment .ct .labels .lb2{background:rgba(0,188,212,0.12);color:#00838F;}
+
+.gh-cibar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#F7FAFE;border-top:1px solid var(--border);border-radius:0 0 14px 14px;}
+.gh-cibar .check{width:16px;height:16px;border-radius:50%;background:var(--success);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;flex-shrink:0;}
+.gh-cibar .ci-text{font-size:11px;color:var(--dark);font-weight:600;}
+.gh-cibar .ci-text span{color:var(--success);font-weight:700;}
+.gh-cibar .ci-bar{flex:1;height:4px;background:#E8EDF2;border-radius:2px;margin:0 8px;position:relative;}
+.gh-cibar .ci-bar::after{content:"";position:absolute;left:0;top:0;bottom:0;width:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:2px;}
+.gh-cibar .ci-time{font-size:10px;color:var(--text);}
+
+.gh-tags{display:flex;gap:8px;flex-wrap:wrap;padding:0 4px;}
+.gh-tags .tg{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:6px;font-size:11px;font-weight:500;background:#fff;border:1px solid var(--border);color:var(--text);}
+.gh-tags .tg.pri{color:var(--primary);border-color:rgba(33,150,243,0.3);background:rgba(33,150,243,0.06);}
+.gh-tags .tg.cy{color:#00838F;border-color:rgba(0,188,212,0.3);background:rgba(0,188,212,0.06);}
+.gh-tags .tg::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="tag"><span>CONTRIBUTION STANDARDS</span></div>
+      <h1>贡献新规范</h1>
+      <p class="lead">贡献新规范从四个具体维度入手 —— <b>PR模板化</b>让每次贡献都信息完整，<b>Issue分级</b>让问题管理井井有条，<b>CODEOWNERS</b>让代码所有权清晰可追溯，<b>CI自动化</b>则保障了代码质量的底线。这些规范看似琐碎，却是高效协作的基石。</p>
+    </div>
+
+    <div class="main">
+      <!-- LEFT -->
+      <div class="cards-col">
+
+        <div class="card">
+          <div class="card-num">01</div>
+          <div class="card-body">
+            <div class="card-title">PR 模板化 <span class="en">PULL REQUEST</span></div>
+            <div class="card-desc">所有项目应提供标准化 PR 模板，包含变更说明、测试验证与影响范围，让每次代码合并都信息完整、有据可查。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">02</div>
+          <div class="card-body">
+            <div class="card-title">Issue 分级 <span class="en">ISSUE TRIAGE</span></div>
+            <div class="card-desc">建立 Bug、Feature、Question 等分类标签体系，按优先级排序管理，提升 Issue 流转与团队协作效率。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">03</div>
+          <div class="card-body">
+            <div class="card-title">CODEOWNERS <span class="en">CODE OWNERSHIP</span></div>
+            <div class="card-desc">关键模块设置 CODEOWNERS 文件，明确代码所有权与评审责任人，让每一处变更都有归属、有追溯。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">04</div>
+          <div class="card-body">
+            <div class="card-title">CI 自动化 <span class="en">CONTINUOUS INTEGRATION</span></div>
+            <div class="card-desc">每次提交自动运行测试与代码检查，实时反馈构建结果，确保代码质量基线不被逾越。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: GitHub-style mockup -->
+      <div class="gh-wrap">
+
+        <div class="gh-title">
+          <div class="t">Pull Request 评审流程示意</div>
+          <div class="meta">
+            <span><span class="dot"></span>主分支同步</span>
+            <span>3 个检查项通过</span>
+          </div>
+        </div>
+
+        <div class="gh-mock">
+
+          <div class="gh-topbar">
+            <div class="branch"><span class="ic">⬡</span> main ← feature/ci-refactor</div>
+            <div class="pr-id">Pull Request <b>#247</b></div>
+            <div class="pr-badge"><span class="ic"></span>All checks passed</div>
+            <button class="review-btn">✎ Request Review</button>
+          </div>
+
+          <div class="gh-body">
+
+            <div class="gh-diff-header">
+              <span class="file-tag">.github/pull_request_template.md</span>
+              <span class="file-meta"><b>+18</b> / −3 &nbsp;·&nbsp; 由 ci-bot 自动合并</span>
+            </div>
+
+            <div class="diff-block">
+              <div class="diff-row diff-context"><span class="ln">42</span><span class="sign"></span><span class="code"># 变更说明</span></div>
+              <div class="diff-row diff-add"><span class="ln">43</span><span class="sign">+</span><span class="code">## 变更说明</span></div>
+              <div class="diff-row diff-add"><span class="ln">44</span><span class="sign">+</span><span class="code">请简要描述本次提交做了什么：</span></div>
+              <div class="diff-row diff-add"><span class="ln">45</span><span class="sign">+</span><span class="code">- 修复了 xxx 问题</span></div>
+              <div class="diff-row diff-add"><span class="ln">46</span><span class="sign">+</span><span class="code">- 新增了 xxx 功能</span></div>
+              <div class="diff-row diff-context"><span class="ln">47</span><span class="sign"></span><span class="code"></span></div>
+              <div class="diff-row diff-add"><span class="ln">48</span><span class="sign">+</span><span class="code">## 测试验证</span></div>
+              <div class="diff-row diff-add"><span class="ln">49</span><span class="sign">+</span><span class="code">- [ ] 单元测试通过</span></div>
+              <div class="diff-row diff-add"><span class="ln">50</span><span class="sign">+</span><span class="code">- [ ] 集成测试通过</span></div>
+              <div class="diff-row diff-context"><span class="ln">51</span><span class="sign"></span><span class="code"></span></div>
+              <div class="diff-row diff-del"><span class="ln">52</span><span class="sign">−</span><span class="code">请填写变更说明</span></div>
+              <div class="diff-row diff-add"><span class="ln">53</span><span class="sign">+</span><span class="code">## 影响范围</span></div>
+            </div>
+
+            <div class="gh-comment">
+              <div class="avatar">ZL</div>
+              <div class="ct">
+                <div class="name">zhanglei <span>reviewed 2 小时前</span></div>
+                <div class="msg">模板结构很清晰，建议补充回滚方案字段，方便紧急情况快速恢复。</div>
+                <div class="labels">
+                  <span class="lb lb1">🏷 模板</span>
+                  <span class="lb lb2">💬 建议</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="gh-cibar">
+            <span class="check">✓</span>
+            <span class="ci-text">CI 构建 · <span>通过</span></span>
+            <span class="ci-bar"></span>
+            <span class="ci-time">3 分 24 秒</span>
+          </div>
+
+        </div>
+
+        <div class="gh-tags">
+          <span class="tg pri">📋 PR 模板</span>
+          <span class="tg cy">🏷 Issue 分级</span>
+          <span class="tg">👤 CODEOWNERS</span>
+          <span class="tg">⚡ CI 自动化</span>
+          <span class="tg">✓ Checks Passed</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

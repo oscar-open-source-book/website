@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2020开源大事记</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#607D8B;
+  --bg-soft:#F4F8FD;
+  --text-main:#1A2B3C;
+  --text-sub:#4A6072;
+  --white:#FFFFFF;
+  --line:#DCE7F2;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg-soft);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg::before{content:"";position:absolute;top:-200px;right:-150px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,0.12) 0%,rgba(0,188,212,0) 70%);}
+#bg::after{content:"";position:absolute;bottom:-250px;left:-100px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.10) 0%,rgba(33,150,243,0) 70%);}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 64px 32px 64px;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+.title-block{max-width:1150px;}
+.title-tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:2px;margin-bottom:10px;}
+.title-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(0,188,212,0.18);}
+h1{font-size:44px;font-weight:800;color:var(--text-main);letter-spacing:1px;line-height:1.15;}
+h1 .accent-bar{display:inline-block;width:6px;height:36px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:3px;vertical-align:-6px;margin-right:14px;}
+.subtitle{font-size:14px;line-height:1.85;color:var(--text-sub);margin-top:14px;max-width:1050px;font-weight:400;}
+.page-badge{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-top:6px;}
+.page-badge .num{font-size:40px;font-weight:800;color:var(--primary);line-height:1;letter-spacing:1px;}
+.page-badge .lbl{font-size:11px;color:var(--neutral);letter-spacing:3px;font-weight:500;}
+
+/* Divider */
+.divider{height:1px;background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 40%,transparent 100%);margin:20px 0 22px 0;}
+
+/* Body grid */
+.body{display:grid;grid-template-columns:35% 65%;gap:32px;flex:1;min-height:0;}
+
+/* Left KPI */
+.left-col{display:flex;flex-direction:column;gap:20px;}
+.kpi-card{background:var(--white);border-radius:16px;padding:26px 26px 24px 26px;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(33,150,243,0.08);flex:1;display:flex;flex-direction:column;justify-content:center;}
+.kpi-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.kpi-card .kpi-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+.kpi-card.c1 .kpi-ico{background:rgba(33,150,243,0.12);color:var(--primary);}
+.kpi-card.c2 .kpi-ico{background:rgba(0,188,212,0.14);color:var(--accent);}
+.kpi-card .kpi-label{font-size:12px;color:var(--neutral);letter-spacing:2px;font-weight:600;margin-bottom:6px;}
+.kpi-card .kpi-value{font-size:34px;font-weight:800;color:var(--text-main);line-height:1.1;letter-spacing:0.5px;}
+.kpi-card .kpi-value .unit{font-size:18px;font-weight:600;color:var(--primary);margin-left:4px;}
+.kpi-card .kpi-value .plus{font-size:24px;color:var(--accent);font-weight:700;}
+.kpi-card .kpi-desc{font-size:13px;color:var(--text-sub);margin-top:10px;line-height:1.6;}
+.kpi-card .kpi-deco{position:absolute;right:-30px;bottom:-30px;width:110px;height:110px;border-radius:50%;opacity:0.06;}
+.kpi-card.c1 .kpi-deco{background:var(--primary);}
+.kpi-card.c2 .kpi-deco{background:var(--accent);}
+
+/* Right timeline */
+.right-col{position:relative;background:var(--white);border-radius:16px;padding:22px 30px 20px 30px;box-shadow:0 4px 20px rgba(33,150,243,0.08);overflow:hidden;}
+.right-col .col-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--line);}
+.col-head .col-title{font-size:16px;font-weight:700;color:var(--text-main);letter-spacing:1px;}
+.col-head .col-title .bar{display:inline-block;width:4px;height:16px;background:var(--primary);border-radius:2px;vertical-align:-3px;margin-right:8px;}
+.col-head .col-meta{font-size:12px;color:var(--neutral);letter-spacing:1px;}
+
+.timeline{position:relative;padding-left:70px;margin-top:8px;}
+.timeline .line{position:absolute;left:32px;top:14px;bottom:14px;width:2px;background:linear-gradient(180deg,var(--primary) 0%,var(--accent) 100%);border-radius:1px;}
+
+.node{position:relative;padding-bottom:12px;display:grid;grid-template-columns:1fr auto;align-items:start;gap:12px;}
+.node:last-child{padding-bottom:0;}
+.node .circle{position:absolute;left:-54px;top:0;width:44px;height:44px;border-radius:50%;background:var(--white);border:3px solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--primary);font-weight:800;box-shadow:0 0 0 4px rgba(33,150,243,0.12);}
+.node.n2 .circle{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,188,212,0.14);}
+.node.n3 .circle{border-color:var(--primary);box-shadow:0 0 0 4px rgba(33,150,243,0.12);}
+.node.n4 .circle{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,188,212,0.14);}
+.node.n5 .circle{border-color:var(--primary);box-shadow:0 0 0 4px rgba(33,150,243,0.12);}
+
+.node .content{flex:1;}
+.node .n-title{font-size:16px;font-weight:700;color:var(--text-main);margin-bottom:3px;display:flex;align-items:center;gap:8px;}
+.node .n-title .ico{font-size:14px;}
+.node .n-desc{font-size:12.5px;line-height:1.55;color:var(--text-sub);max-width:460px;}
+.node .n-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:rgba(33,150,243,0.10);color:var(--primary);white-space:nowrap;align-self:start;margin-top:2px;}
+.node.n2 .n-tag,.node.n4 .n-tag{background:rgba(0,188,212,0.12);color:var(--accent);}
+
+/* Footer */
+.footer{margin-top:14px;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:linear-gradient(90deg,rgba(33,150,243,0.08) 0%,rgba(0,188,212,0.06) 100%);border-radius:12px;border-left:4px solid var(--primary);}
+.footer .quote{font-size:14.5px;font-weight:600;color:var(--text-main);letter-spacing:0.5px;}
+.footer .quote .mark{color:var(--accent);font-size:20px;font-weight:800;margin-right:6px;vertical-align:-2px;}
+.footer .brand{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--neutral);letter-spacing:2px;font-weight:500;}
+.footer .brand .sq{width:8px;height:8px;background:var(--primary);border-radius:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="title-tag"><span class="dot"></span><span>OPEN SOURCE ANNUAL REVIEW · 2020</span></div>
+        <h1><span class="accent-bar"></span>2020 开源大事记</h1>
+        <div class="subtitle">2020 年开源世界发生了诸多标志性事件，从 GitHub 年度盛典到主流语言版本迭代，从云原生基础设施的成熟到新兴语言的崛起，中文社区也在这一年迈出了坚实的一步，鸿蒙等项目的开源发布标志着中国开源力量进入新阶段。</div>
+      </div>
+      <div class="page-badge">
+        <div class="num">03</div>
+        <div class="lbl">PAGE</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="body">
+
+      <div class="left-col">
+        <div class="kpi-card c1">
+          <div class="kpi-ico">▲</div>
+          <div class="kpi-label">GITHUB USERS</div>
+          <div class="kpi-value">1000<span class="unit">万</span><span class="plus">+</span></div>
+          <div class="kpi-desc">平台活跃度创纪录，全球开发者汇聚，代码协作规模再创新高。</div>
+          <div class="kpi-deco"></div>
+        </div>
+        <div class="kpi-card c2">
+          <div class="kpi-ico">★</div>
+          <div class="kpi-label">NEW PROJECTS</div>
+          <div class="kpi-value">年度<span class="unit">新高</span></div>
+          <div class="kpi-desc">各平台合计新开源项目数量持续攀升，创新活力充分释放。</div>
+          <div class="kpi-deco"></div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="col-head">
+          <div class="col-title"><span class="bar"></span>年度里程碑时间轴</div>
+          <div class="col-meta">5 MILESTONES · 2020</div>
+        </div>
+
+        <div class="timeline">
+          <div class="line"></div>
+
+          <div class="node n1">
+            <div class="circle">01</div>
+            <div class="content">
+              <div class="n-title"><span class="ico">🏆</span>GitHub 年度盛典</div>
+              <div class="n-desc">年度开源项目评选揭晓，AI 与基础设施类项目表现亮眼，多个项目斩获 GitHub Stars 大奖。</div>
+            </div>
+            <div class="n-tag">📌 年度盛典</div>
+          </div>
+
+          <div class="node n2">
+            <div class="circle">02</div>
+            <div class="content">
+              <div class="n-title"><span class="ico">🐹</span>Golang 1.16 发布</div>
+              <div class="n-desc">Go 语言新版本带来嵌入式文件系统与性能优化，工具链升级进一步降低工程门槛，生态持续繁荣。</div>
+            </div>
+            <div class="n-tag">🚀 语言版本</div>
+          </div>
+
+          <div class="node n3">
+            <div class="circle">03</div>
+            <div class="content">
+              <div class="n-title"><span class="ico">☸️</span>Kubernetes 1.22</div>
+              <div class="n-desc">容器编排标准版本迭代，Server-Side Apply 稳定发布，声明式管理迈向工程化成熟阶段。</div>
+            </div>
+            <div class="n-tag">☁️ 云原生</div>
+          </div>
+
+          <div class="node n4">
+            <div class="circle">04</div>
+            <div class="content">
+              <div class="n-title"><span class="ico">🦀</span>Rust 持续受关注</div>
+              <div class="n-desc">Rust 语言连续多年获 Stack Overflow 开发者最喜爱编程语言殊荣，社区热情高涨、生态加速扩张。</div>
+            </div>
+            <div class="n-tag">❤️ 开发者之选</div>
+          </div>
+
+          <div class="node n5">
+            <div class="circle">05</div>
+            <div class="content">
+              <div class="n-title"><span class="ico">🌏</span>中文开源项目</div>
+              <div class="n-desc">Gitee 等平台推动中文项目数量激增，鸿蒙开源成为年度焦点，中国开源力量进入新阶段。</div>
+            </div>
+            <div class="n-tag">🇨🇳 中文社区</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="quote"><span class="mark">"</span>开源世界的每一步，都在为下一年蓄力。<span class="mark">"</span></div>
+      <div class="brand"><span class="sq"></span><span>OPEN SOURCE · 2020 ANNUAL</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
