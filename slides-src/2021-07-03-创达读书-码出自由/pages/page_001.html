@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>码出自由——从黑客文化到开源运动的简史</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#0a0e1a;
+  --bg-card:rgba(10,14,26,0.72);
+  --border-glow:rgba(33,150,243,0.35);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  color:#e8eaf6;
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+}
+
+#bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+
+#bg .bg-photo{
+  position:absolute;
+  top:0;left:0;
+  width:1600px;
+  height:900px;
+  object-fit:cover;
+}
+
+#bg .bg-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(105deg, rgba(5,8,18,0.92) 0%, rgba(5,8,18,0.72) 35%, rgba(5,8,18,0.35) 65%, rgba(5,8,18,0.55) 100%);
+}
+
+#ct{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  padding:52px 72px 44px 84px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+/* 顶部标签 */
+.top-bar{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:18px;
+}
+.top-bar .dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent), 0 0 24px rgba(0,188,212,0.5);
+}
+.top-bar .tag{
+  font-family:'Orbitron',sans-serif;
+  font-size:13px;
+  letter-spacing:6px;
+  color:var(--primary);
+  font-weight:600;
+}
+.top-bar .line{
+  flex:1;height:1px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.6), rgba(0,188,212,0.15));
+}
+.top-bar .date{
+  font-family:'Orbitron',sans-serif;
+  font-size:12px;
+  letter-spacing:3px;
+  color:var(--neutral);
+}
+
+/* 主标题区 */
+.hero{
+  margin-top:10px;
+  margin-bottom:8px;
+}
+.hero .pre{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:8px;
+  color:var(--accent);
+  font-weight:500;
+  margin-bottom:14px;
+}
+.hero h1{
+  font-family:'Orbitron','Noto Sans SC',sans-serif;
+  font-weight:900;
+  font-size:128px;
+  line-height:1.05;
+  letter-spacing:6px;
+  background:linear-gradient(135deg, #4fc3f7 0%, #2196F3 35%, #00BCD4 70%, #4dd0e1 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 60px rgba(33,150,243,0.4);
+  filter:drop-shadow(0 0 24px rgba(33,150,243,0.35));
+  margin-bottom:18px;
+}
+.hero .sub{
+  font-size:26px;
+  font-weight:400;
+  color:#e0e6f0;
+  letter-spacing:3px;
+  padding-left:4px;
+  border-left:3px solid var(--accent);
+  padding:4px 0 4px 18px;
+  display:inline-block;
+}
+
+/* 三栏 */
+.cols{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:22px;
+  margin-top:38px;
+  margin-bottom:24px;
+}
+.col{
+  background:var(--bg-card);
+  border:1px solid var(--border-glow);
+  border-radius:10px;
+  padding:20px 22px 22px 22px;
+  backdrop-filter:blur(6px);
+  position:relative;
+  overflow:hidden;
+}
+.col::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:3px;height:100%;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow:0 0 12px rgba(33,150,243,0.6);
+}
+.col .num{
+  font-family:'Orbitron',sans-serif;
+  font-size:12px;
+  letter-spacing:4px;
+  color:var(--accent);
+  margin-bottom:6px;
+}
+.col .ttl{
+  font-size:19px;
+  font-weight:700;
+  color:#ffffff;
+  margin-bottom:10px;
+  letter-spacing:1px;
+}
+.col .desc{
+  font-size:13px;
+  line-height:1.75;
+  color:var(--neutral);
+  font-weight:300;
+}
+.col .desc .hl{
+  color:#81d4fa;
+  font-weight:500;
+}
+
+/* 底部数据 */
+.footer{
+  margin-top:auto;
+  display:flex;
+  align-items:stretch;
+  gap:0;
+  border:1px solid rgba(33,150,243,0.25);
+  border-radius:8px;
+  background:rgba(5,8,18,0.6);
+  overflow:hidden;
+}
+.footer .cell{
+  flex:1;
+  padding:16px 26px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.footer .cell + .cell{
+  border-left:1px solid rgba(33,150,243,0.2);
+}
+.footer .label{
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;
+  letter-spacing:4px;
+  color:var(--neutral);
+  margin-bottom:6px;
+}
+.footer .value{
+  font-family:'Orbitron',sans-serif;
+  font-size:20px;
+  font-weight:700;
+  color:#ffffff;
+  letter-spacing:1px;
+}
+.footer .value .accent{color:var(--accent);}
+.footer .value .primary{color:var(--primary);}
+.footer .note{
+  font-size:11.5px;
+  color:var(--neutral);
+  margin-top:4px;
+  font-weight:300;
+  letter-spacing:0.5px;
+}
+
+/* 装饰角标 */
+.corner-tl{
+  position:absolute;
+  top:18px;left:18px;
+  width:24px;height:24px;
+  border-top:2px solid var(--accent);
+  border-left:2px solid var(--accent);
+  z-index:2;
+  opacity:0.6;
+}
+.corner-br{
+  position:absolute;
+  bottom:14px;right:14px;
+  width:24px;height:24px;
+  border-bottom:2px solid var(--primary);
+  border-right:2px solid var(--primary);
+  z-index:2;
+  opacity:0.6;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_001_hero.png" alt="深色科技背景：从中心辐射的发光电路板纹理">
+    <div class="bg-overlay"></div>
+  </div>
+
+  <div class="corner-tl"></div>
+  <div class="corner-br"></div>
+
+  <div id="ct">
+
+    <div class="top-bar">
+      <span class="dot"></span>
+      <span class="tag">READING · SHARE · 01</span>
+      <span class="line"></span>
+      <span class="date">OPEN SOURCE · 2021</span>
+    </div>
+
+    <div class="hero">
+      <div class="pre">CODE &nbsp;·&nbsp; FREEDOM &nbsp;·&nbsp; HISTORY</div>
+      <h1>码出自由</h1>
+      <div class="sub">从黑客文化到开源运动的简史</div>
+    </div>
+
+    <div class="cols">
+      <div class="col">
+        <div class="num">PART / 01</div>
+        <div class="ttl">一本书的旅程</div>
+        <div class="desc"><span class="hl">Robert X. Cringely</span> 笔下的黑客英雄们，如何用一行行代码重塑了整个数字世界。</div>
+      </div>
+      <div class="col">
+        <div class="num">PART / 02</div>
+        <div class="ttl">一场读书分享</div>
+        <div class="desc">创达读书会 · <span class="hl">2021-07-03</span>，开源之道 · <span class="hl">适兕</span> 主讲，共读一段四十年技术史。</div>
+      </div>
+      <div class="col">
+        <div class="num">PART / 03</div>
+        <div class="ttl">一个永恒命题</div>
+        <div class="desc"><span class="hl">"信息想要自由"</span>——技术演进背后那条从未断绝的哲学与精神脉络。</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="cell">
+        <div class="label">PUBLISHED</div>
+        <div class="value"><span class="primary">1984</span> &nbsp;/&nbsp; <span class="accent">1996</span></div>
+        <div class="note">原版 Hackers 与美国增订版成书时间</div>
+      </div>
+      <div class="cell">
+        <div class="label">TIMESPAN</div>
+        <div class="value"><span class="primary">1950s</span> — <span class="accent">1990s</span></div>
+        <div class="note">约四十年黑客文化与开源技术史</div>
+      </div>
+      <div class="cell">
+        <div class="label">SCOPE</div>
+        <div class="value">TX-0 → <span class="accent">Linux</span></div>
+        <div class="note">从麻省理工到全球开源崛起</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

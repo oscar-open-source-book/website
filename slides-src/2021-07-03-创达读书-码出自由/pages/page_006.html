@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开放源码的崛起</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --gray: #B0BEC5;
+  --dark: #05080f;
+  --dark2: #0a1220;
+  --card-bg: rgba(10, 20, 40, 0.7);
+  --glow-blue: 0 0 20px rgba(33, 150, 243, 0.5);
+  --glow-cyan: 0 0 16px rgba(0, 188, 212, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: #E0E6ED;
+  background: var(--dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 40%, #0a1a30 0%, #05080f 70%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Code rain left */
+.rain {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 1;
+  opacity: 0.35;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--cyan);
+  writing-mode: vertical-rl;
+  overflow: hidden;
+  pointer-events: none;
+}
+.rain.left { left: 0; text-shadow: 0 0 6px rgba(0,188,212,0.6); }
+.rain.right { right: 0; text-shadow: 0 0 6px rgba(33,150,243,0.6); color: var(--primary); }
+
+.rain-col {
+  display: inline-block;
+  margin-right: 6px;
+  animation: rainfall 8s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes rainfall {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Side light bars */
+.lightbar {
+  position: absolute;
+  top: 80px;
+  bottom: 80px;
+  width: 2px;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent, rgba(0,188,212,0.6), transparent);
+  animation: barPulse 3s ease-in-out infinite;
+}
+.lightbar.l { left: 100px; }
+.lightbar.r { right: 100px; animation-delay: 1.5s; background: linear-gradient(to bottom, transparent, rgba(33,150,243,0.6), transparent); }
+
+@keyframes barPulse {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 40px 140px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Chapter marker */
+.chapter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--cyan);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.chapter-tag .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: var(--glow-cyan);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+/* Title */
+.title {
+  font-family: 'Orbitron', 'Noto Sans SC', sans-serif;
+  font-size: 68px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  text-align: center;
+  background: linear-gradient(90deg, #78c6ff, var(--primary) 30%, #ffffff 50%, var(--cyan) 70%, #78c6ff);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 6s linear infinite;
+  text-shadow: 0 0 30px rgba(33,150,243,0.3);
+  margin-bottom: 8px;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.subtitle {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 19px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  color: var(--gray);
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+/* Tux geometric icon */
+.tux-wrap {
+  position: relative;
+  width: 100px;
+  height: 90px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tux-svg {
+  filter: drop-shadow(0 0 12px rgba(33,150,243,0.7));
+  animation: floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.tux-wrap::before {
+  content: '';
+  position: absolute;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.2);
+  animation: ringExpand 3s ease-out infinite;
+}
+.tux-wrap::after {
+  content: '';
+  position: absolute;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,188,212,0.2);
+  animation: ringExpand 3s ease-out infinite 1s;
+}
+@keyframes ringExpand {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 18px;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--cyan), var(--primary), transparent);
+  z-index: 0;
+}
+.tl-node {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 20px;
+}
+.tl-year {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cyan);
+  margin-bottom: 14px;
+  text-shadow: var(--glow-cyan);
+}
+.tl-dot {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  background: var(--dark);
+  border: 2px solid var(--primary);
+  box-shadow: var(--glow-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tl-dot::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+}
+.tl-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.tl-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--gray);
+  letter-spacing: 1px;
+}
+
+/* Cards */
+.cards {
+  display: flex;
+  gap: 18px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+.card {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 10px;
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+.card::after {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.12), transparent 70%);
+}
+.card-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.card-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.card-text {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--gray);
+  font-weight: 300;
+}
+
+/* Bottom narrative */
+.narrative {
+  width: 100%;
+  border-top: 1px solid rgba(33,150,243,0.15);
+  border-bottom: 1px solid rgba(33,150,243,0.15);
+  padding: 12px 30px;
+  text-align: center;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #90A4AE;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+.narrative::before, .narrative::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cyan);
+  font-size: 8px;
+}
+.narrative::before { left: 8px; }
+.narrative::after { right: 8px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <div class="rain left">
+    <span class="rain-col" style="animation-duration:7s">01101001 01001011 01110011 01101111 01110101 01110010 01100011 01100101 00100000 01010100 01101000 01100101 00100000 01010000 01100101 01101110 01101101 01100101 01101111 01101110</span>
+    <span class="rain-col" style="animation-duration:9s;animation-delay:1s">10100110 01101000 01100001 01100011 01101011 01100101 01110010 00100000 01000111 01001110 01010101 00100000 01100010 01110232 01100101 00100000 01110011 01101001 01100001 01101000</span>
+    <span class="rain-col" style="animation-duration:11s;animation-delay:2s">11010111 10000010 11000100 10111000 00100000 10010001 10000000 11001000 10011000 11010101 10011000 11010101 10100010 11010110 10001100 01110100 01110100 01110101 01101100</span>
+  </div>
+
+  <div class="rain right">
+    <span class="rain-col" style="animation-duration:8s">#!/usr/bin/env sh git init git commit -m "freedom" ./configure make && sudo make install</span>
+    <span class="rain-col" style="animation-duration:10s;animation-delay:1.5s">gcc -o world freedom.c cp world /bin/ chmod 777 /bin/world echo "free the code"</span>
+    <span class="rain-col" style="animation-duration:12s;animation-delay:3s">while true; do fork(); open_source(); distribute(); sleep 0; done # copyleft forever</span>
+  </div>
+
+  <div class="lightbar l"></div>
+  <div class="lightbar r"></div>
+
+  <div id="ct">
+
+    <div class="chapter-tag">
+      <span class="dot"></span>
+      <span>CHAPTER · 01</span>
+      <span class="dot"></span>
+    </div>
+
+    <h1 class="title">开放源码的崛起</h1>
+    <p class="subtitle">从 GNU 宣言到 Linux 帝国（1983–2000s）</p>
+
+    <div class="tux-wrap">
+      <svg class="tux-svg" width="64" height="60" viewBox="0 0 64 60" fill="none">
+        <ellipse cx="32" cy="34" rx="20" ry="22" fill="#0d1b2a" stroke="#2196F3" stroke-width="1.5"/>
+        <ellipse cx="32" cy="36" rx="12" ry="16" fill="#e0e6ed" opacity="0.9"/>
+        <circle cx="25" cy="24" r="2.5" fill="#0d1b2a"/>
+        <circle cx="39" cy="24" r="2.5" fill="#0d1b2a"/>
+        <path d="M28 28 L32 31 L36 28" stroke="#0d1b2a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M22 44 L18 50 M22 46 L16 51 M30 46 L26 52 M34 46 L38 52 M42 44 L46 50 M42 46 L48 51" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="14" cy="38" rx="5" ry="6" fill="#0d1b2a" stroke="#2196F3" stroke-width="1"/>
+        <ellipse cx="50" cy="38" rx="5" ry="6" fill="#0d1b2a" stroke="#2196F3" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-node">
+        <div class="tl-year">1983</div>
+        <div class="tl-dot"></div>
+        <div class="tl-title">GNU 项目启动</div>
+        <div class="tl-desc">Richard Stallman 发布宣言</div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-year">1989</div>
+        <div class="tl-dot"></div>
+        <div class="tl-title">GPL 1.0 发布</div>
+        <div class="tl-desc">首个 Copyleft 许可证</div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-year">1991</div>
+        <div class="tl-dot"></div>
+        <div class="tl-title">Linux 0.01 诞生</div>
+        <div class="tl-desc">Linus Torvalds 向世界发布</div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-num">01</div>
+        <div class="card-title">商业化的反噬</div>
+        <div class="card-text">1980 年代软件日益封闭，激怒整个黑客社区。</div>
+      </div>
+      <div class="card">
+        <div class="card-num">02</div>
+        <div class="card-title">理想主义的反击</div>
+        <div class="card-text">Stallman 的 GNU 运动与 Torvalds 的 Linux 共同改变历史进程。</div>
+      </div>
+      <div class="card">
+        <div class="card-num">03</div>
+        <div class="card-title">协作的力量</div>
+        <div class="card-text">全球分布式开发模式证明了"大教堂 vs 集市"中后者的威力。</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span>当大型软件公司开始用许可证和法律手段封锁源代码时，黑客们选择了另一条路——不仅开放代码，更开放整个开发过程。GNU 与 Linux 的诞生，标志着一种全新的协作模式从理念走向现实，最终深刻改变了全球软件产业格局。</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

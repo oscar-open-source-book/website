@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>黑客伦理六原则</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#0a1628;
+  --bg-card:#0f2035;
+  --glow:rgba(33,150,243,0.35);
+  --glow-accent:rgba(0,188,212,0.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter','Roboto',sans-serif;
+  background:var(--bg-dark);
+  color:#e0e6ed;
+  overflow:hidden;
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:radial-gradient(ellipse at 30% 20%, rgba(33,150,243,0.08) 0%, transparent 50%),
+             radial-gradient(ellipse at 70% 80%, rgba(0,188,212,0.06) 0%, transparent 50%),
+             #0a1628;
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size:50px 50px;
+  mask-image:radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+#bg::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(circle at 50% 50%, transparent 55%, rgba(0,0,0,0.4) 100%);
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:40px 60px 30px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+/* Header */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(33,150,243,0.2);
+  margin-bottom:18px;
+}
+.header-left{display:flex;flex-direction:column;gap:4px;}
+.title{
+  font-family:'Orbitron','Rajdhani',sans-serif;
+  font-weight:900;font-size:36px;
+  background:linear-gradient(135deg,#2196F3,#00BCD4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:3px;
+  line-height:1.1;
+}
+.subtitle{
+  font-size:13px;color:var(--neutral);
+  letter-spacing:1px;
+}
+.header-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
+}
+.chapter-tag{
+  font-family:'Rajdhani',sans-serif;
+  font-size:12px;font-weight:600;
+  color:var(--accent);
+  letter-spacing:2px;
+  border:1px solid rgba(0,188,212,0.4);
+  padding:4px 14px;
+  border-radius:20px;
+}
+.meta-info{font-size:11px;color:#5a6a7e;letter-spacing:1px;}
+
+/* Honeycomb area */
+.honeycomb{
+  position:relative;
+  height:420px;
+  margin:0 auto;
+  flex-shrink:0;
+}
+.hex{
+  position:absolute;
+  width:340px;height:310px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:30px 42px;
+}
+.hex-body{
+  position:relative;
+  width:100%;height:100%;
+  background:linear-gradient(160deg, rgba(15,32,53,0.95), rgba(10,22,40,0.98));
+  clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:28px 38px;
+}
+.hex-border{
+  position:absolute;
+  width:100%;height:100%;
+  background:linear-gradient(160deg, #2196F3, #00BCD4);
+  clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index:0;
+  opacity:0.6;
+}
+.hex-inner{
+  position:relative;
+  width:calc(100% - 6px);height:calc(100% - 6px);
+  margin:3px 0;
+  background:linear-gradient(160deg, rgba(15,32,53,0.97), rgba(10,22,40,0.99));
+  clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:26px 34px;
+  gap:6px;
+}
+.hex-glow{
+  position:absolute;width:100%;height:100%;z-index:0;
+  background:radial-gradient(circle at 50% 50%, rgba(33,150,243,0.12), transparent 70%);
+  clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.hex-symbol{
+  font-family:'Orbitron',monospace;
+  font-size:22px;font-weight:700;
+  color:var(--accent);
+  text-shadow:0 0 12px var(--glow-accent), 0 0 24px rgba(0,188,212,0.15);
+  letter-spacing:1px;
+  margin-bottom:2px;
+}
+.hex-num{
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;font-weight:600;
+  color:var(--primary);
+  letter-spacing:3px;
+}
+.hex-name{
+  font-family:'Rajdhani',sans-serif;
+  font-size:22px;font-weight:700;
+  color:#ffffff;
+  letter-spacing:2px;
+  margin-top:2px;
+}
+.hex-desc{
+  font-size:11px;
+  color:var(--neutral);
+  line-height:1.45;
+  letter-spacing:0.3px;
+  max-width:240px;
+}
+.hex-divider{
+  width:30px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--primary),transparent);
+  margin:4px 0;
+}
+
+/* Hex positions - honeycomb staggered */
+.hex-1{left:60px;top:0px;}
+.hex-2{left:630px;top:0px;}
+.hex-3{left:1200px;top:0px;}
+.hex-4{left:345px;top:195px;}
+.hex-5{left:915px;top:195px;}
+.hex-6{left:345px;top:195px;opacity:0;}
+
+/* Actually let me redo - 3 on top, 3 below staggered */
+.hex-4{left:345px;top:200px;opacity:1;}
+.hex-6{left:345px;top:195px;display:none;}
+
+/* Bottom section */
+.bottom{
+  display:flex;align-items:stretch;gap:20px;
+  margin-top:14px;
+}
+.kpi-card{
+  flex:1;
+  background:linear-gradient(135deg, rgba(15,32,53,0.9), rgba(10,22,40,0.95));
+  border:1px solid rgba(33,150,243,0.3);
+  border-radius:10px;
+  padding:14px 22px;
+  display:flex;align-items:center;gap:18px;
+  position:relative;overflow:hidden;
+}
+.kpi-card::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;
+  width:3px;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+}
+.kpi-icon{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;font-weight:700;
+  color:var(--accent);
+  border:1px solid rgba(0,188,212,0.4);
+  border-radius:50%;
+  width:42px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.kpi-content{display:flex;flex-direction:column;gap:2px;flex:1;}
+.kpi-label{font-size:11px;color:var(--neutral);letter-spacing:1px;}
+.kpi-value{
+  font-family:'Orbitron',sans-serif;
+  font-size:24px;font-weight:700;
+  color:#ffffff;
+  letter-spacing:1px;
+}
+.kpi-sub{font-size:10px;color:#5a6a7e;letter-spacing:0.5px;}
+
+.narrative-card{
+  flex:2.2;
+  background:linear-gradient(135deg, rgba(15,32,53,0.9), rgba(10,22,40,0.95));
+  border:1px solid rgba(33,150,243,0.25);
+  border-radius:10px;
+  padding:14px 22px;
+  display:flex;align-items:center;gap:14px;
+  position:relative;overflow:hidden;
+}
+.narrative-card::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--accent), var(--primary));
+}
+.narrative-icon{
+  font-size:24px;flex-shrink:0;
+  color:var(--primary);
+  filter:drop-shadow(0 0 6px var(--glow));
+}
+.narrative-text{
+  font-size:11px;
+  color:var(--neutral);
+  line-height:1.5;
+  letter-spacing:0.3px;
+}
+
+/* Decorative corner elements */
+.corner-tl, .corner-tr, .corner-bl, .corner-br{
+  position:absolute;
+  width:40px;height:40px;
+  z-index:2;
+  opacity:0.5;
+}
+.corner-tl{top:16px;left:16px;border-top:1px solid var(--primary);border-left:1px solid var(--primary);}
+.corner-tr{top:16px;right:16px;border-top:1px solid var(--accent);border-right:1px solid var(--accent);}
+.corner-bl{bottom:12px;left:16px;border-bottom:1px solid var(--accent);border-left:1px solid var(--accent);}
+.corner-br{bottom:12px;right:16px;border-bottom:1px solid var(--primary);border-right:1px solid var(--primary);}
+
+/* Floating particles */
+.particle{
+  position:absolute;
+  width:3px;height:3px;
+  background:var(--accent);
+  border-radius:50%;
+  box-shadow:0 0 6px var(--accent);
+  z-index:2;
+  opacity:0.4;
+  animation:float 4s ease-in-out infinite;
+}
+.p1{top:120px;left:20px;animation-delay:0s;}
+.p2{top:180px;right:30px;animation-delay:1s;}
+.p3{top:80px;left:500px;animation-delay:2s;}
+.p4{top:300px;right:60px;animation-delay:0.5s;background:var(--primary);box-shadow:0 0 6px var(--primary);}
+.p5{bottom:200px;left:80px;animation-delay:1.5s;}
+@keyframes float{
+  0%,100%{transform:translateY(0);opacity:0.4;}
+  50%{transform:translateY(-10px);opacity:0.8;}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <span class="corner-tl"></span>
+    <span class="corner-tr"></span>
+    <span class="corner-bl"></span>
+    <span class="corner-br"></span>
+    <span class="particle p1"></span>
+    <span class="particle p2"></span>
+    <span class="particle p3"></span>
+    <span class="particle p4"></span>
+    <span class="particle p5"></span>
+
+    <div class="header">
+      <div class="header-left">
+        <div class="title"><span>黑客伦理六原则</span></div>
+        <div class="subtitle"><span>《码出自由》四十年技术文化精髓凝练 · Hacker Ethics Manifesto</span></div>
+      </div>
+      <div class="header-right">
+        <div class="chapter-tag"><span>EST. 1984 · STEWART BRAND</span></div>
+        <div class="meta-info"><span>SIX PRINCIPLES · ONE MANIFESTO</span></div>
+      </div>
+    </div>
+
+    <div class="honeycomb">
+      <div class="hex hex-1">
+        <div class="hex-body">
+          <div class="hex-border"></div>
+          <div class="hex-inner">
+            <div class="hex-glow"></div>
+            <div class="hex-symbol"><span>&lt;/&gt;</span></div>
+            <div class="hex-num"><span>PRINCIPLE 01</span></div>
+            <div class="hex-name"><span>访问自由</span></div>
+            <div class="hex-divider"></div>
+            <div class="hex-desc"><span>对计算机和信息的访问应该是无限制的，知识不应被任何个人或机构垄断</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hex hex-2">
+        <div class="hex-body">
+          <div class="hex-border"></div>
+          <div class="hex-inner">
+            <div class="hex-glow"></div>
+            <div class="hex-symbol"><span>{ } </span></div>
+            <div class="hex-num"><span>PRINCIPLE 02</span></div>
+            <div class="hex-name"><span>信息免费</span></div>
+            <div class="hex-divider"></div>
+            <div class="hex-desc"><span>信息应当自由流通，收费限制信息传播会严重阻碍技术进步与文明演进</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hex hex-3">
+        <div class="hex-body">
+          <div class="hex-border"></div>
+          <div class="hex-inner">
+            <div class="hex-glow"></div>
+            <div class="hex-symbol"><span>&#10070; &#10070; &#10070;</span></div>
+            <div class="hex-num"><span>PRINCIPLE 03</span></div>
+            <div class="hex-name"><span>去中心化</span></div>
+            <div class="hex-divider"></div>
+            <div class="hex-desc"><span>不信任权威，推崇去中心化和分布式自治的组织形式与协作模式</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hex hex-4">
+        <div class="hex-body">
+          <div class="hex-border"></div>
+          <div class="hex-inner">
+            <div class="hex-glow"></div>
+            <div class="hex-symbol"><span>&#9733; SKILL</span></div>
+            <div class="hex-num"><span>PRINCIPLE 04</span></div>
+            <div class="hex-name"><span>以技术论英雄</span></div>
+            <div class="hex-divider"></div>
+            <div class="hex-desc"><span>黑客应以其技术能力而非学历、年龄或职位来评判，实力至上</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hex hex-5">
+        <div class="hex-body">
+          <div class="hex-border"></div>
+          <div class="hex-inner">
+            <div class="hex-glow"></div>
+            <div class="hex-symbol"><span>&#10024; ART</span></div>
+            <div class="hex-num"><span>PRINCIPLE 05</span></div>
+            <div class="hex-name"><span>代码即艺术</span></div>
+            <div class="hex-divider"></div>
+            <div class="hex-desc"><span>计算机可以用来创造美，优雅代码本身就是一门独特的艺术形式</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hex hex-6">
+        <div class="hex-body">
+          <div class="hex-border"></div>
+          <div class="hex-inner">
+            <div class="hex-glow"></div>
+            <div class="hex-symbol"><span>&#9654; WORLD</span></div>
+            <div class="hex-num"><span>PRINCIPLE 06</span></div>
+            <div class="hex-name"><span>改变世界</span></div>
+            <div class="hex-divider"></div>
+            <div class="hex-desc"><span>计算机可以让人们的生活变得更好，技术应当服务于人类自由与进步</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="kpi-card">
+        <div class="kpi-icon"><span>#06</span></div>
+        <div class="kpi-content">
+          <div class="kpi-label"><span>核心原则数</span></div>
+          <div class="kpi-value"><span>6 条</span></div>
+          <div class="kpi-sub"><span>《码出自由》书中精炼提炼</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon"><span>&#9670;</span></div>
+        <div class="kpi-content">
+          <div class="kpi-label"><span>影响领域</span></div>
+          <div class="kpi-value"><span>3+</span></div>
+          <div class="kpi-sub"><span>技术领域 · 社会变革 · 哲学思辨</span></div>
+        </div>
+      </div>
+      <div class="narrative-card">
+        <div class="narrative-icon"><span>&#10022;</span></div>
+        <div class="narrative-text">
+          <span>《码出自由》提炼的黑客伦理六原则，是四十年技术文化的精髓凝练，这些原则不仅是技术准则，更是一种关于自由、平等和创造力的哲学宣言，指引着一代又一代的开源贡献者。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
