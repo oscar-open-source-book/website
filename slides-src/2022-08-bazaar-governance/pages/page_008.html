@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>阅读数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0A1628;
+  --bg-card: #0F1F38;
+  --bg-card-alt: #132A48;
+  --text-main: #E8F0FA;
+  --text-sub: #7E94AE;
+  --border-glow: rgba(33, 150, 243, 0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Roboto Mono', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 30%, rgba(33, 150, 243, 0.08) 0%, transparent 55%),
+              radial-gradient(ellipse at 80% 70%, rgba(0, 188, 212, 0.06) 0%, transparent 50%),
+              #0A1628;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 56px 32px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.title-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.title-icon {
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--cyan);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: var(--cyan);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  box-shadow: 0 0 18px rgba(0, 188, 212, 0.25);
+}
+.title-text h1 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 3px;
+  line-height: 1;
+}
+.title-text .subtitle-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 4px;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+.header-right {
+  text-align: right;
+  max-width: 640px;
+}
+.header-right p {
+  font-size: 12.5px;
+  color: var(--neutral);
+  line-height: 1.6;
+  font-weight: 300;
+}
+.header-right p .hl {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+  margin-bottom: 20px;
+}
+
+/* Main Content */
+.main {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  min-height: 0;
+}
+
+/* Left - KPI Cards */
+.kpi-column {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.kpi-card {
+  flex: 1;
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-alt) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--cyan), var(--primary));
+}
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.08), transparent);
+}
+.kpi-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: rgba(33, 150, 243, 0.12);
+  border: 1px solid rgba(0, 188, 212, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--cyan);
+  flex-shrink: 0;
+}
+.kpi-content {
+  flex: 1;
+  min-width: 0;
+}
+.kpi-number {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1;
+  letter-spacing: 1px;
+}
+.kpi-number .unit {
+  color: var(--cyan);
+  font-size: 22px;
+  margin-left: 2px;
+}
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-top: 4px;
+  font-weight: 400;
+}
+.kpi-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9.5px;
+  color: var(--primary);
+  margin-top: 6px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* Right - Funnel Area */
+.funnel-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-alt) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  padding: 18px 22px;
+  min-width: 0;
+}
+.funnel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.funnel-header h3 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+.funnel-header .badge {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+  border: 1px solid rgba(0, 188, 212, 0.4);
+  border-radius: 20px;
+  padding: 3px 10px;
+  letter-spacing: 1px;
+}
+.chart-container {
+  flex: 1;
+  min-height: 0;
+}
+#chart_1 {
+  width: 100%;
+  height: 100%;
+}
+.funnel-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(33, 150, 243, 0.15);
+  margin-top: 6px;
+}
+.funnel-footer .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  flex-shrink: 0;
+}
+.funnel-footer p {
+  font-size: 11.5px;
+  color: var(--neutral);
+  font-weight: 300;
+  line-height: 1.4;
+}
+.funnel-footer p .hl {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* Bottom Summary */
+.summary {
+  margin-top: 14px;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, rgba(33, 150, 243, 0.12) 0%, rgba(0, 188, 212, 0.08) 50%, rgba(33, 150, 243, 0.12) 100%);
+  border: 1px solid rgba(0, 188, 212, 0.25);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.summary .arrow {
+  color: var(--cyan);
+  font-size: 16px;
+  font-weight: 600;
+}
+.summary p {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 2px;
+}
+.summary p .accent {
+  color: var(--cyan);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="title-icon">RD</div>
+        <div class="title-text">
+          <h1>阅读数据</h1>
+          <div class="subtitle-tag">READING DATA · COMMUNITY INSIGHTS</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <p>阅读分享不仅增进知识，更催化了<span class="hl">社区的凝聚力</span>。数据表明，系统化的阅读活动能显著提升开发者对<span class="hl">开源文化的认同感和参与度</span>。</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="main">
+
+      <div class="kpi-column">
+
+        <div class="kpi-card">
+          <div class="kpi-icon">📖</div>
+          <div class="kpi-content">
+            <div class="kpi-number">20<span class="unit">+</span></div>
+            <div class="kpi-label">《大教堂与集市》语言版本</div>
+            <div class="kpi-tag">GLOBAL SPREAD · 全球传播</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-content">
+            <div class="kpi-number">60<span class="unit">%+</span></div>
+            <div class="kpi-label">开源开发者阅读比例</div>
+            <div class="kpi-tag">READING RATIO · 阅读相关书籍</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon">🔄</div>
+          <div class="kpi-content">
+            <div class="kpi-number">40<span class="unit">%</span></div>
+            <div class="kpi-label">读书会参与转化率</div>
+            <div class="kpi-tag">CONVERSION · 参与后成为贡献者</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon">📋</div>
+          <div class="kpi-content">
+            <div class="kpi-number">50<span class="unit">+</span></div>
+            <div class="kpi-label">年度书单推荐数</div>
+            <div class="kpi-tag">COMMUNITY PICKS · 社区精选</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="funnel-column">
+        <div class="funnel-header">
+          <h3>阅读分享转化漏斗</h3>
+          <span class="badge">FUNNEL · 认知 → 贡献</span>
+        </div>
+        <div class="chart-container">
+          <div id="chart_1" style="width:100%;height:100%;"></div>
+        </div>
+        <div class="funnel-footer">
+          <div class="dot"></div>
+          <p>书单根据<span class="hl">社区需求持续迭代动态更新</span>，形成从认知到贡献的完整链路收束。</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="summary">
+      <span class="arrow">▸</span>
+      <p>从<span class="accent">读</span>到<span class="accent">贡献</span>，阅读驱动<span class="accent">开源社区持续成长</span></p>
+      <span class="arrow">◂</span>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var el = document.getElementById('chart_1');
+  var chart = echarts.init(el, null, {renderer: 'svg'});
+
+  var data = [
+    {
+      name: '认知 · 书籍影响力',
+      value: 100,
+      desc: '被翻译成 20 多种语言',
+      color: '#2196F3'
+    },
+    {
+      name: '阅读 · 开发者触达',
+      value: 60,
+      desc: '超 60% 开发者读过相关著作',
+      color: '#1976D2'
+    },
+    {
+      name: '参与 · 读书会覆盖',
+      value: 35,
+      desc: '线上线下结合，覆盖全球时区',
+      color: '#00838F'
+    },
+    {
+      name: '贡献 · 转化产出',
+      value: 14,
+      desc: '40% 参与者转为贡献者',
+      color: '#00BCD4'
+    }
+  ];
+
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { show: false },
+    grid: { left: 130, right: 180, top: 20, bottom: 16, containLabel: false },
+    xAxis: {
+      type: 'value',
+      max: 110,
+      show: false
+    },
+    yAxis: {
+      type: 'category',
+      data: data.map(function(d){ return d.name; }),
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: {
+        color: '#E8F0FA',
+        fontSize: 12,
+        fontFamily: 'Inter',
+        fontWeight: 500,
+        lineHeight: 14
+      }
+    },
+    series: [
+      {
+        type: 'bar',
+        data: data.map(function(d){
+          return {
+            value: d.value,
+            itemStyle: {
+              color: {
+                type: 'linear',
+                x: 0, y: 0, x2: 1, y2: 0,
+                colorStops: [
+                  { offset: 0, color: d.color },
+                  { offset: 1, color: '#00BCD4' }
+                ]
+              },
+              borderRadius: [0, 6, 6, 0],
+              shadowColor: 'rgba(0, 188, 212, 0.3)',
+              shadowBlur: 12
+            },
+            label: {
+              show: true,
+              position: 'right',
+              distance: 12,
+              formatter: function(){
+                return d.desc;
+              },
+              color: '#B0BEC5',
+              fontSize: 11,
+              fontFamily: 'Inter',
+              fontWeight: 400,
+              align: 'left',
+              width: 150,
+              overflow: 'break',
+              lineHeight: 14
+            }
+          };
+        }),
+        barWidth: 28,
+        label: { show: false },
+        markPoint: {
+          symbol: 'rect',
+          symbolSize: [0, 0],
+          data: []
+        }
+      },
+      {
+        type: 'bar',
+        data: data.map(function(d){
+          return {
+            value: d.value,
+            label: {
+              show: true,
+              position: 'insideRight',
+              distance: 10,
+              formatter: d.value + '%',
+              color: '#FFFFFF',
+              fontSize: 13,
+              fontFamily: 'Rajdhani',
+              fontWeight: 700
+            }
+          };
+        }),
+        barWidth: 28,
+        barGap: '-100%',
+        itemStyle: {
+          color: 'transparent',
+          borderColor: 'rgba(0, 188, 212, 0.4)',
+          borderWidth: 1,
+          borderRadius: [0, 6, 6, 0]
+        },
+        z: 2
+      }
+    ],
+    animation: false
+  });
+
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>
