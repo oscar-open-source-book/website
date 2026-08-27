@@ -253,13 +253,13 @@ ifr.style.marginLeft = '0px';
 
 | 指标 | 数值 |
 |---|---|
-| 源素材 deck | 147 个（`/pptx-to-md/` 下 226 个 .md 文件，去重后 147 个） |
+| 源素材 deck | 147 个 Markdown（去重后在 `slides-src/` 下组织为 107 个 deck 目录） |
 | 源素材 slides | 2602 张 |
 | 已完成 deck | 14 个 |
-| 已完成 pages | 137 张 |
-| 队列剩余 | 133 个 deck（~2400 张 pages） |
-| 10 页 deck 速度 | 约 12-14 分钟/个（gen-image 占 60%） |
-| 预计总耗时 | ~22 小时串行 |
+| 已完成 pages | ~140 张 |
+| 队列剩余 | 93 个 deck（kanban board，每 deck 一个 task） |
+| 10 页 deck 速度 | 约 8-10 分钟/个（page-html rewrite 占 60%） |
+| 预计总耗时 | ~13 小时串行（93 deck × 10 pages × 50s/page） |
 | 累计配图 | 约 100 张 |
 | 累计 API 成本 | ~30 元 |
 | 修复前失败率 | 90% |
@@ -318,7 +318,59 @@ sn-ppt-standard 的 stage 设计很健壮——每个 stage 输入输出确定�
 slide 写作的下一个十年，不是更好的 PPT 软件，而是让 slide 像代码一样可 Git、可 CI、可复用。而这件事，不需要设计师，只需要一套能跑通的流水线。
 
 
-**最后，一个实际的数字。** 147 个 deck 全部迁移完毕时，配图总成本约 400 元——不到一次线下活动的茶歇费用。而如果用传统方式找设计师逐张做，保守估计至少 20 万元。这不是"AI 便宜"，是**工作量级的压缩**：从"一个人一年做不完"压缩到"一个周末跑完"。
+## 九、从批处理到 Kanban：任务调度的一次重构
+
+六月的后台进程跑通了 14 个 deck 后，剩下的 133 个 deck 需要一个更稳的任务调度方式。最初的想法是 `terminal(background=true)` 跑一个 22 小时的 Python 脚本——`run_queue.py` 循环遍历 manifest，每个 deck 跑六个 stage，失败了重试，完成了 commit + push。它跑了 40 个 deck，凌晨因为会话回收死了。
+
+**批处理的结构性问题**：`terminal(background=true)` 的进程是 Hermes 会话的子进程。Hermes dashboard 重启、会话超时、系统负载抖动，进程就会被 SIGTERM。这不是"加个 nohup"能解决的问题——批处理脚本本身没有失败恢复机制，脚本死了，进度就丢了。
+
+改用 **Hermes Kanban** 后，每个 deck 是一个独立的 kanban task。Kanban worker 由 Hermes gateway 直接 spawn（`hermes chat -q work`），是独立 agent 进程，走完整的 Hermes 生命周期。Gateway 是 systemd user service（`hermes-gateway.service`），独立于当前会话。会话关闭不影响 worker。
+
+### 调度配置
+
+```
+kanban.max_in_progress_per_profile = 1          # 单次 1 个 worker
+kanban.dispatch_in_gateway = true               # Gateway 60s 轮询自动 dispatch
+kanban.failure_limit = 2                        # 3 次连续失败自动 blocked
+```
+
+### 每个 Task 的结构
+
+```json
+{
+  "title": "deck: 2021-08-36-open-source-books-meaning (0/10)",
+  "body": "python3 /tmp/run_one_deck.py 2021-08-36-open-source-books-meaning",
+  "max-runtime": "2h",
+  "max-retries": 3,
+  "assignee": "default",
+  "idempotency-key": "osbook-deck-2021-08-36-open-source-books-meaning"
+}
+```
+
+### 为什么是 per-deck 而不是 per-page
+
+考虑过每个 slide 一个 task（107 deck × 10 pages = ~1070 tasks）。否决了——单个 deck 内部 stage 之间有依赖（preflight → style → outline → asset-plan → batch-gen-image → batch-page-html），一个 deck 一个 task 让 stage 间的状态检查（文件存在即 skip）留在同一进程内，最简。**跨 deck 的并发控制交给 kanban，deck 内的串行交给 `run_one_deck.py`。**
+
+### 冒烟测试暴露的两个 pipeline 层问题
+
+第一次用 kanban worker 跑 `2024-10-ignorance-and-awe` 时，`batch-page-html` 10 页全部失败，日志里是两类错误：
+
+**第一个问题：模型路由错误。**
+
+默认模型 `deepseek-v4-flash` 是推理模型，HTML 内容写在 `reasoning_content` 而非 `content`。`model_client` 读取 `content` 字段，为空 → "LLM response had no usable text"。切到 `sensenova-6.8-flash-lite` 后解决。
+
+**第二个问题：Rate limit。**
+
+`deepseek-v4-flash` 的 TPM/RPM 配额极低。`batch-page-html` 并发 4 时，10 页同时请求触发 `429 Too Many Requests` + `inference tpm exhausted`。`sensenova-6.8-flash-lite` 的配额高一个数量级，`concurrency=1` 即可流畅运行。
+
+这两个问题都不属于"AI 出错"——是**模型路由配置**和**并发参数**的问题。修正后 `run_one_deck.py` 在 env 中显式覆盖 `SN_TEXT_MODEL` / `SN_CHAT_MODEL` / `SN_VISION_MODEL`。
+
+### 调度启动
+
+93 个 task 创建完成，全部分配给 `default` profile。Gateway 自动 dispatch 第一个 worker——`2020-11-黑客伦理与新造王者`（78 pages 的 deck，目前最大的一个）。后续每完成一个，gateway 在 60 秒内 dispatch 下一个。
+
+24 小时不间断运行。无需峰值门控（SenseNova 非峰值期 RPM 充足），无需人工介入。
+
 
 ---
 
