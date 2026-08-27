@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源生态数据全景</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1E2A38;
+  --bg-2:#16222E;
+  --primary:#2196F3;
+  --cyan:#00E5FF;
+  --text-main:#E8F1FB;
+  --text-dim:#8AA0BC;
+  --card-bg:#21304A;
+  --card-border:#2C4A6E;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'JetBrains Mono','Inter',monospace;color:var(--text-main);background:var(--bg);overflow:hidden;}
+h1,h2,h3{font-family:'Inter','JetBrains Mono',sans-serif;}
+p,li,span{font-family:'JetBrains Mono',monospace;}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 50px 30px 50px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* grid background */
+.bg-grid{position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+.bg-glow1{position:absolute;top:-120px;right:-100px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,229,255,0.12),transparent 70%);}
+.bg-glow2{position:absolute;bottom:-100px;left:-80px;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(33,150,243,0.14),transparent 70%);}
+.bg-line{position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan) 30%,var(--primary) 60%,transparent);}
+.bg-line2{position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--primary) 40%,var(--cyan) 60%,transparent);}
+
+/* Header */
+.header{margin-bottom:14px;}
+.header .kicker{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.header .kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);}
+.header .kicker span{font-size:12px;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;}
+.header h1{font-size:38px;font-weight:800;color:var(--text-main);
+  background:linear-gradient(90deg,var(--text-main),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:1px;margin-bottom:10px;}
+.header .subtitle{font-size:13px;color:var(--text-dim);line-height:1.7;max-width:1350px;}
+
+.divider{margin:14px 0 16px 0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--primary),var(--cyan),var(--primary),transparent);}
+
+/* KPI Row */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:18px;}
+.kpi-card{position:relative;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;
+  padding:18px 18px 16px 18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.kpi-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--primary));}
+.kpi-card::after{content:"";position:absolute;bottom:-30px;right:-30px;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,229,255,0.10),transparent 70%);}
+.kpi-label{font-size:11px;letter-spacing:2px;color:var(--cyan);margin-bottom:8px;text-transform:uppercase;}
+.kpi-num{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--text-main);
+  text-shadow:0 0 18px rgba(0,229,255,0.55);line-height:1.1;margin-bottom:8px;}
+.kpi-num .unit{font-size:16px;color:var(--cyan);margin-left:2px;}
+.kpi-num .money{font-size:22px;}
+.kpi-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+
+/* Points Row */
+.points-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;flex:1;margin-bottom:14px;}
+.point-card{position:relative;background:linear-gradient(180deg,rgba(33,48,74,0.7),rgba(22,34,46,0.5));
+  border:1px solid var(--card-border);border-radius:8px;padding:16px 14px 14px 14px;display:flex;flex-direction:column;
+  overflow:hidden;}
+.point-card .num-badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);
+  border:1px solid var(--cyan);border-radius:3px;display:inline-block;padding:2px 7px;align-self:flex-start;
+  margin-bottom:10px;letter-spacing:1px;background:rgba(0,229,255,0.06);}
+.point-card h3{font-size:15px;font-weight:700;color:var(--text-main);margin-bottom:10px;line-height:1.35;
+  font-family:'Inter',sans-serif;}
+.point-card h3::before{content:"";display:inline-block;width:14px;height:2px;background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);margin-right:6px;vertical-align:middle;}
+.point-card p{font-size:11.5px;color:var(--text-dim);line-height:1.7;flex:1;}
+.point-card .deco-line{position:absolute;bottom:0;left:0;height:2px;width:0;
+  background:linear-gradient(90deg,var(--cyan),transparent);}
+.point-card:hover .deco-line{width:100%;}
+
+/* Bottom trend area */
+.trend-area{height:54px;border:1px solid var(--card-border);border-radius:8px;
+  background:linear-gradient(180deg,rgba(33,48,74,0.4),rgba(22,34,46,0.6));
+  display:flex;align-items:center;padding:0 20px;gap:16px;position:relative;overflow:hidden;}
+.trend-label{font-size:10px;color:var(--cyan);letter-spacing:2px;white-space:nowrap;}
+.trend-line{flex:1;height:38px;position:relative;}
+.trend-svg{width:100%;height:100%;display:block;}
+.trend-meta{font-size:10px;color:var(--text-dim);white-space:nowrap;display:flex;gap:16px;}
+.trend-meta b{color:var(--cyan);font-weight:500;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow1"></div>
+    <div class="bg-glow2"></div>
+    <div class="bg-line"></div>
+    <div class="bg-line2"></div>
+  </div>
+
+  <div id="ct">
+
+    <div class="header">
+      <div class="kicker">
+        <div class="dot"></div>
+        <span>OPEN SOURCE · GLOBAL DATA DASHBOARD</span>
+        <span style="font-size:11px;color:var(--text-dim);letter-spacing:2px;">// 2024 ANNUAL REPORT</span>
+      </div>
+      <h1>开源生态数据全景</h1>
+      <p class="subtitle">开源已从边缘亚文化发展为全球数字经济的核心基础设施。数据清晰地勾勒出这一趋势：开发者规模持续增长，企业采纳近乎饱和，亚太力量快速崛起。开源不再是理想主义者的游戏，而是现实世界的运转规则。</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="kpi-row">
+
+      <div class="kpi-card">
+        <div class="kpi-label">// 全球开发者</div>
+        <div class="kpi-num">3000<span class="unit">万+</span></div>
+        <div class="kpi-desc">活跃开源贡献者规模，覆盖软件、文档、社区治理全链路</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">// GitHub 用户</div>
+        <div class="kpi-num">7000<span class="unit">万+</span></div>
+        <div class="kpi-desc">2020 年统计口径，全球最大代码托管平台活跃账号</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">// 企业采纳率</div>
+        <div class="kpi-num">90<span class="unit">%+</span></div>
+        <div class="kpi-desc">生产环境中使用开源软件的企业比例，近饱和</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">// 红帽收购价</div>
+        <div class="kpi-num money"><span class="unit" style="margin-right:2px;">$</span>310<span class="unit">亿</span></div>
+        <div class="kpi-desc">IBM 收购红帽，开源商业化里程碑事件</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">// 主流许可证</div>
+        <div class="kpi-num" style="font-size:24px;">Apache 2.0</div>
+        <div class="kpi-desc">占比最高，超越 GPL，反映商业友好化趋势</div>
+      </div>
+
+    </div>
+
+    <div class="divider" style="margin:0 0 14px 0;"></div>
+
+    <div class="points-row">
+
+      <div class="point-card">
+        <span class="num-badge">01</span>
+        <h3>全球开发者规模</h3>
+        <p>截至 2020 年全球开源贡献者已超数千万，GitHub 用户突破 7000 万，开源人力资本持续膨胀。</p>
+        <div class="deco-line"></div>
+      </div>
+
+      <div class="point-card">
+        <span class="num-badge">02</span>
+        <h3>企业采纳率</h3>
+        <p>超过 90% 的科技企业已在生产环境中使用开源软件，成为数字化基础设施的默认基石。</p>
+        <div class="deco-line"></div>
+      </div>
+
+      <div class="point-card">
+        <span class="num-badge">03</span>
+        <h3>商业化加速</h3>
+        <p>开源商业模式日趋成熟，红帽以 310 亿美元被 IBM 收购，创下行业并购标杆。</p>
+        <div class="deco-line"></div>
+      </div>
+
+      <div class="point-card">
+        <span class="num-badge">04</span>
+        <h3>基础设施开源化</h3>
+        <p>Kubernetes、Prometheus 等项目成为云原生时代的操作系统级基础设施，重塑技术栈。</p>
+        <div class="deco-line"></div>
+      </div>
+
+      <div class="point-card">
+        <span class="num-badge">05</span>
+        <h3>亚太崛起</h3>
+        <p>中国与印度贡献者数量快速增长，全球开源版图正在多极化演进，东方力量加速入场。</p>
+        <div class="deco-line"></div>
+      </div>
+
+      <div class="point-card">
+        <span class="num-badge">06</span>
+        <h3>许可证演进</h3>
+        <p>Apache 2.0 超越 GPL 成为最主流许可证，反映从自由软件到商业友好的范式转移。</p>
+        <div class="deco-line"></div>
+      </div>
+
+    </div>
+
+    <div class="trend-area">
+      <span class="trend-label">// TREND</span>
+      <div class="trend-line">
+        <svg class="trend-svg" viewBox="0 0 1000 38" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="lg1" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0"/>
+              <stop offset="20%" stop-color="#2196F3"/>
+              <stop offset="80%" stop-color="#00E5FF"/>
+              <stop offset="100%" stop-color="#00E5FF" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="lg2" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#00E5FF" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,30 L100,28 L200,25 L300,22 L400,20 L500,16 L600,14 L700,10 L800,8 L900,5 L1000,3"
+                fill="none" stroke="url(#lg1)" stroke-width="2"
+                style="filter:drop-shadow(0 0 6px rgba(0,229,255,0.7));"/>
+          <path d="M0,30 L100,28 L200,25 L300,22 L400,20 L500,16 L600,14 L700,10 L800,8 L900,5 L1000,3 L1000,38 L0,38 Z"
+                fill="url(#lg2)" opacity="0.5"/>
+          <circle cx="100" cy="28" r="2" fill="#2196F3"/>
+          <circle cx="300" cy="22" r="2" fill="#2196F3"/>
+          <circle cx="500" cy="16" r="2" fill="#00E5FF"/>
+          <circle cx="700" cy="10" r="2" fill="#00E5FF"/>
+          <circle cx="900" cy="5" r="2.5" fill="#00E5FF" style="filter:drop-shadow(0 0 6px #00E5FF);"/>
+        </svg>
+      </div>
+      <span class="trend-meta"><span><b>+114%</b> 贡献者增长</span><span><b>+89%</b> 项目增速</span><span><b>+72%</b> 亚太份额</span></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

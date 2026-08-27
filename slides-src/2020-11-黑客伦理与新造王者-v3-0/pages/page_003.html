@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>黑客伦理的诞生</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1E2A38;
+  --bg-2:#16212E;
+  --bg-3:#253241;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --text:#E8EDF3;
+  --text-dim:#8FA4B8;
+  --line:#2E4157;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'JetBrains Mono',monospace;
+  color:var(--text);
+  background:var(--bg);
+  width:1600px;height:900px;
+  overflow:hidden;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;
+  background:radial-gradient(1200px 700px at 20% 0%, #23344A 0%, var(--bg) 55%, var(--bg-2) 100%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 60px 40px 60px;display:flex;flex-direction:column;}
+
+/* Header */
+.head{margin-bottom:22px;}
+.title{
+  font-family:'Inter',sans-serif;
+  font-weight:800;font-size:46px;letter-spacing:2px;
+  color:var(--text);
+  display:flex;align-items:baseline;gap:18px;
+}
+.title .bar{
+  display:inline-block;width:8px;height:38px;background:var(--accent);
+  box-shadow:0 0 14px var(--accent);align-self:center;
+}
+.title .tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;color:var(--accent);letter-spacing:3px;font-weight:400;
+}
+.subtitle{
+  margin-top:14px;margin-left:26px;
+  font-size:13.5px;line-height:1.85;color:var(--text-dim);
+  max-width:1300px;font-weight:300;
+}
+
+/* Main split */
+.main{display:flex;gap:24px;height:340px;margin-bottom:14px;}
+
+/* Timeline */
+.timeline{width:340px;flex-shrink:0;position:relative;padding:8px 10px 8px 16px;
+  border-left:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(33,150,243,0.06) 0%, transparent 60%);
+}
+.tl-head{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+  color:var(--primary);letter-spacing:3px;margin-bottom:18px;
+}
+.tl-node{position:relative;padding:0 0 16px 22px;}
+.tl-node .dot{
+  position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;
+  background:var(--primary);box-shadow:0 0 10px var(--primary);
+}
+.tl-node.alt .dot{background:var(--accent);box-shadow:0 0 12px var(--accent);}
+.tl-node .conn{
+  position:absolute;left:5px;top:18px;bottom:-6px;width:1px;background:var(--line);
+}
+.tl-node .label{
+  font-size:10.5px;color:var(--accent);letter-spacing:2px;font-weight:500;margin-bottom:4px;
+}
+.tl-node .val{font-size:14px;color:var(--text);font-weight:500;line-height:1.5;}
+.tl-node .desc{font-size:11px;color:var(--text-dim);margin-top:3px;line-height:1.5;}
+
+/* Cards */
+.cards{flex:1;display:flex;gap:14px;}
+.card{
+  flex:1;background:linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 100%);
+  border:1px solid var(--line);border-radius:4px;
+  padding:16px 14px;display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg, var(--primary), var(--accent));
+}
+.card .cnum{
+  font-family:'Inter',sans-serif;font-size:11px;color:var(--text-dim);
+  letter-spacing:2px;margin-bottom:6px;
+}
+.card .ctitle{
+  font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--primary);
+  letter-spacing:1px;margin-bottom:10px;
+}
+.card .cdiv{width:24px;height:1px;background:var(--accent);margin-bottom:10px;opacity:0.7;}
+.card .ctext{font-size:11px;line-height:1.75;color:var(--text);font-weight:300;}
+.card .ctext em{font-style:normal;color:var(--accent);font-weight:500;}
+.card .cfoot{
+  margin-top:auto;padding-top:10px;
+  font-size:10px;color:var(--text-dim);letter-spacing:2px;border-top:1px dashed var(--line);
+}
+
+/* Image band */
+.band{margin-bottom:14px;}
+.band-note{
+  display:flex;align-items:center;gap:10px;margin-bottom:8px;
+}
+.band-note .line{flex:1;height:1px;background:linear-gradient(90deg, transparent, var(--line), transparent);}
+.band-note .txt{
+  font-size:11.5px;color:var(--accent);letter-spacing:2px;font-weight:500;
+}
+.band-note .dot-l,.band-note .dot-r{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px var(--accent);
+}
+.band-img{
+  width:100%;height:170px;overflow:hidden;border-radius:4px;
+  border:1px solid var(--line);position:relative;
+}
+.band-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.band-img::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg, rgba(30,42,56,0.35) 0%, transparent 25%, transparent 75%, rgba(30,42,56,0.35) 100%);
+}
+
+/* Bottom values */
+.values{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:14px 0 2px 0;
+  border-top:1px solid var(--line);margin-top:2px;
+}
+.values .v{
+  font-family:'Inter',sans-serif;font-size:16px;font-weight:700;letter-spacing:4px;
+  color:var(--text);
+}
+.values .v.hi{color:var(--accent);}
+.values .sep{color:var(--primary);font-size:14px;}
+.values .vlabel{
+  font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-right:10px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="head">
+      <div class="title">
+        <span class="bar"></span>
+        <span>黑客伦理的诞生</span>
+        <span class="tag">// ORIGIN OF HACKER ETHICS</span>
+      </div>
+      <p class="subtitle">黑客伦理并非一时兴起的口号，而是特定历史条件下技术人与理想主义交汇的产物，强调知识的开放性、工具的自由度以及个体能力的充分释放，至今仍深刻影响着全球开源社区的行为准则与价值判断。</p>
+    </div>
+
+    <div class="main">
+      <div class="timeline">
+        <div class="tl-head">TIMELINE / 时间脉络</div>
+
+        <div class="tl-node">
+          <span class="dot"></span><span class="conn"></span>
+          <div class="label">[ 01 ] 起源时期</div>
+          <div class="val">1970 – 1980 年代</div>
+          <div class="desc">个人计算萌芽与技术社群形成期</div>
+        </div>
+
+        <div class="tl-node alt">
+          <span class="dot"></span><span class="conn"></span>
+          <div class="label">[ 02 ] 发源地</div>
+          <div class="val">MIT · 早期互联网</div>
+          <div class="desc">AI Lab 与 ARPANET 孕育技术亚文化</div>
+        </div>
+
+        <div class="tl-node">
+          <span class="dot"></span>
+          <div class="label">[ 03 ] 核心人物</div>
+          <div class="val">Stallman · Torvalds 等</div>
+          <div class="desc">以行动践行黑客伦理的先驱群体</div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="cnum">01 / 04</div>
+          <div class="ctitle">起源背景</div>
+          <div class="cdiv"></div>
+          <div class="ctext">20 世纪 70 至 80 年代，<em>MIT</em> 与早期互联网催生了独特的<em>技术亚文化</em>精神，重塑了人与机器的关系边界。</div>
+          <div class="cfoot">CONTEXT</div>
+        </div>
+        <div class="card">
+          <div class="cnum">02 / 04</div>
+          <div class="ctitle">核心信念</div>
+          <div class="cdiv"></div>
+          <div class="ctext"><em>信息应当自由流动</em>，对权威保持不信任，技术应服务于<em>个人解放</em>与知识共享。</div>
+          <div class="cfoot">BELIEF</div>
+        </div>
+        <div class="card">
+          <div class="cnum">03 / 04</div>
+          <div class="ctitle">代表人物</div>
+          <div class="cdiv"></div>
+          <div class="ctext"><em>Richard Stallman</em>、<em>Linus Torvalds</em> 等以代码行动践行黑客伦理，奠定开源运动基石。</div>
+          <div class="cfoot">FIGURES</div>
+        </div>
+        <div class="card">
+          <div class="cnum">04 / 04</div>
+          <div class="ctitle">文化基因</div>
+          <div class="cdiv"></div>
+          <div class="ctext"><em>创造 · 共享 · 开放 · 透明</em> 成为黑客文化区别于商业软件的根本特征与精神底色。</div>
+          <div class="cfoot">GENE</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="band">
+      <div class="band-note">
+        <span class="dot-l"></span>
+        <span class="txt">1970 年代至今 · 黑客伦理的时间脉络</span>
+        <span class="line"></span>
+        <span class="dot-r"></span>
+      </div>
+      <div class="band-img">
+        <img src="../images/page_003_timeline_bg.png" alt="抽象时间线概念图">
+      </div>
+    </div>
+
+    <div class="values">
+      <span class="vlabel">CORE VALUES</span>
+      <span class="v hi">创造</span>
+      <span class="sep">·</span>
+      <span class="v">共享</span>
+      <span class="sep">·</span>
+      <span class="v">开放</span>
+      <span class="sep">·</span>
+      <span class="v hi">透明</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,527 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二章·新造王者</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00E5FF;
+  --bg-dark: #1E2A38;
+  --bg-deeper: #141e2b;
+  --bg-card: #1a2735;
+  --text-main: #e8eef5;
+  --text-sub: #8ba3b8;
+  --line: rgba(33,150,243,0.25);
+  --line-soft: rgba(255,255,255,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #1E2A38 0%, #141e2b 50%, #0f1722 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top decorative header */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.top-bar .left-meta { display: flex; align-items: center; gap: 16px; }
+.top-bar .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); display: inline-block; }
+.top-bar .right-meta { color: var(--primary); font-weight: 500; }
+
+/* Main content area */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 32px;
+  align-items: center;
+}
+
+/* Left column */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chapter-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.chapter-tag .tag-line {
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  display: inline-block;
+}
+
+.big-number {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 280px;
+  line-height: 0.85;
+  letter-spacing: -10px;
+  background: linear-gradient(180deg, #2196F3 0%, #00E5FF 60%, rgba(0,229,255,0.1) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: -8px;
+  position: relative;
+}
+.big-number::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 4px;
+  width: 200px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), transparent);
+}
+
+.title-cn {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 62px;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  color: var(--text-main);
+  margin-top: 8px;
+}
+.title-cn .accent {
+  color: var(--primary);
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  color: var(--text-sub);
+  letter-spacing: 3px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.subtitle .bar {
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+  display: inline-block;
+}
+
+/* Right column - crown decoration */
+.right-col {
+  position: relative;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glow-orb {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.28) 0%, rgba(0,229,255,0.1) 40%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(8px);
+}
+
+.glow-ring {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.3);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.glow-ring.r2 {
+  width: 260px;
+  height: 260px;
+  border-color: rgba(0,229,255,0.2);
+  border-style: dashed;
+}
+.glow-ring.r3 {
+  width: 400px;
+  height: 400px;
+  border-color: rgba(33,150,243,0.12);
+}
+
+.crown-wrap {
+  position: relative;
+  z-index: 2;
+  width: 280px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CSS Crown */
+.crown {
+  position: relative;
+  width: 240px;
+  height: 160px;
+}
+.crown-base {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(180deg, var(--primary) 0%, #1a6fb8 100%);
+  border-radius: 4px 4px 8px 8px;
+  box-shadow: 0 4px 24px rgba(33,150,243,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 20px;
+}
+.crown-base .gem {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.crown-point {
+  position: absolute;
+  bottom: 40px;
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 80px solid var(--primary);
+}
+.crown-point.p1 { left: 0; }
+.crown-point.p2 { left: 60px; border-bottom-width: 110px; }
+.crown-point.p3 { left: 120px; border-bottom-color: var(--accent); border-bottom-width: 130px; box-shadow: -10px 0 20px rgba(0,229,255,0.3); }
+.crown-point.p4 { left: 180px; border-bottom-width: 110px; }
+
+.crown-point .top-gem {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 16px var(--accent);
+}
+.crown-point.p3 .top-gem {
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  box-shadow: 0 0 24px var(--accent), 0 0 48px var(--primary);
+}
+
+.crown-inner-base {
+  position: absolute;
+  bottom: 10px;
+  left: 14px;
+  width: calc(100% - 28px);
+  height: 20px;
+  background: linear-gradient(180deg, rgba(0,229,255,0.15), rgba(0,229,255,0));
+  border-radius: 3px;
+}
+
+/* Crown caption */
+.crown-caption {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 4px;
+  white-space: nowrap;
+}
+.crown-caption .highlight { color: var(--accent); }
+
+/* Side tick marks on right */
+.right-ticks {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(0,229,255,0.4);
+}
+.right-ticks span { display: flex; align-items: center; gap: 8px; }
+.right-ticks span::before {
+  content: '';
+  width: 16px;
+  height: 1px;
+  background: rgba(0,229,255,0.3);
+}
+
+/* Chapter points section */
+.points-section {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.point-card {
+  display: flex;
+  gap: 20px;
+  padding: 22px 26px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.06) 0%, rgba(0,229,255,0.02) 100%);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+  position: relative;
+}
+.point-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.point-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+  min-width: 40px;
+}
+
+.point-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.point-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.point-title .pt-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.point-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+/* Bottom footer line */
+.footer-line {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-soft);
+}
+.footer-line .fl-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--primary);
+  letter-spacing: 3px;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+.footer-line .fl-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.8;
+  letter-spacing: 1px;
+  flex: 1;
+}
+.footer-line .fl-text .hl { color: var(--accent); }
+
+/* Decorative corner marks */
+.corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  z-index: 2;
+}
+.corner-tl { top: 32px; left: 32px; border-top: 1px solid var(--primary); border-left: 1px solid var(--primary); }
+.corner-tr { top: 32px; right: 32px; border-top: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+.corner-bl { bottom: 32px; left: 32px; border-bottom: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+.corner-br { bottom: 32px; right: 32px; border-bottom: 1px solid var(--primary); border-right: 1px solid var(--primary); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="top-bar">
+      <div class="left-meta">
+        <span class="dot"></span>
+        <span>OPEN SOURCE · MANIFESTO</span>
+        <span style="opacity:0.4">|</span>
+        <span>CHAPTER TRANSITION</span>
+      </div>
+      <div class="right-meta">SYS://NEXT.ERA // LOADING…</div>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="chapter-tag">
+          <span class="tag-line"></span>
+          <span>CHAPTER TWO · 章 节 序 幕</span>
+        </div>
+        <div class="big-number">02</div>
+        <div class="title-cn">第二章 · <span class="accent">新造王者</span></div>
+        <div class="subtitle">
+          <span class="bar"></span>
+          <span>开源格局的重塑与新生</span>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="glow-orb"></div>
+        <div class="glow-ring r3"></div>
+        <div class="glow-ring"></div>
+        <div class="glow-ring r2"></div>
+        <div class="crown-wrap">
+          <div class="crown">
+            <div class="crown-point p1"><div class="top-gem"></div></div>
+            <div class="crown-point p2"><div class="top-gem"></div></div>
+            <div class="crown-point p3"><div class="top-gem"></div></div>
+            <div class="crown-point p4"><div class="top-gem"></div></div>
+            <div class="crown-base">
+              <span class="gem"></span>
+              <span class="gem"></span>
+              <span class="gem"></span>
+              <span class="gem"></span>
+              <span class="gem"></span>
+            </div>
+            <div class="crown-inner-base"></div>
+          </div>
+        </div>
+        <div class="crown-caption">
+          <span class="highlight">// NEW CROWN //</span> &nbsp;&nbsp; 王 座 · 更 迭
+        </div>
+        <div class="right-ticks">
+          <span>v2.0</span>
+          <span>REBOOT</span>
+          <span>OPEN</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="points-section">
+      <div class="point-card">
+        <div class="point-num">01</div>
+        <div class="point-body">
+          <div class="point-title"><span class="pt-dot"></span><span>章节定位</span></div>
+          <div class="point-text">在经典黑客伦理之后，新一代开源领袖正重新定义运动的方向。</div>
+        </div>
+      </div>
+      <div class="point-card">
+        <div class="point-num">02</div>
+        <div class="point-body">
+          <div class="point-title"><span class="pt-dot"></span><span>核心议题</span></div>
+          <div class="point-text">谁在引领开源新时代？商业力量与社区精神如何博弈与融合。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-line">
+      <span class="fl-tag">PREAMBLE</span>
+      <div class="fl-text">本章聚焦于<span class="hl">当代开源运动</span>的格局变迁。随着<span class="hl">云计算与AI浪潮</span>的到来，新的<span class="hl">技术权力中心</span>正在形成，开源的定义、治理与商业化路径都面临前所未有的重构。</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
