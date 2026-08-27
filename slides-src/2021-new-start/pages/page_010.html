@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>新征程，共启程</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00E5FF;
+  --neutral: #ECEFF1;
+  --bg-dark: #0a0e1a;
+  --bg-mid: #0f1629;
+  --card-bg: rgba(33, 150, 243, 0.06);
+  --card-border: rgba(0, 229, 255, 0.35);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1600px; height: 900px; overflow: hidden; font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+body { color: var(--neutral); background: var(--bg-dark); }
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(circle at 50% 30%, rgba(33,150,243,0.18) 0%, rgba(10,14,26,0) 50%), var(--bg-dark); }
+#bg canvas { position: absolute; inset: 0; width: 1600px; height: 900px; }
+.grid-lines {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+#ct { position: absolute; inset: 0; z-index: 1; padding: 40px 80px 40px 80px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
+
+.title-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
+.title-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 900px; height: 200px;
+  background: radial-gradient(ellipse at center, rgba(0,229,255,0.22) 0%, rgba(33,150,243,0.10) 40%, transparent 70%);
+  filter: blur(8px);
+  pointer-events: none;
+  z-index: 0;
+}
+.main-title {
+  font-family: 'Roboto Mono', 'Inter', monospace;
+  font-weight: 700;
+  font-size: 76px;
+  letter-spacing: 14px;
+  color: var(--neutral);
+  text-shadow: 0 0 24px rgba(0,229,255,0.7), 0 0 48px rgba(33,150,243,0.5), 0 0 8px rgba(0,229,255,0.4);
+  position: relative;
+  z-index: 2;
+  line-height: 1.1;
+}
+.main-title .accent { color: var(--accent); }
+.subtitle {
+  margin-top: 14px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: var(--accent);
+  position: relative;
+  z-index: 2;
+}
+.subtitle::before, .subtitle::after {
+  content: '';
+  display: inline-block;
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent));
+  vertical-align: middle;
+  margin: 0 18px;
+}
+.subtitle::after { background: linear-gradient(90deg, var(--accent), transparent); }
+
+.divider-line {
+  width: 60%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,229,255,0.5), transparent);
+  margin: 18px 0 14px 0;
+}
+
+.narrative {
+  width: 80%;
+  text-align: center;
+  font-size: 15px;
+  line-height: 2;
+  color: rgba(236,239,241,0.78);
+  letter-spacing: 1.5px;
+  font-weight: 300;
+}
+.narrative .hl { color: var(--accent); font-weight: 500; }
+
+.cards-row {
+  display: flex;
+  gap: 22px;
+  width: 100%;
+  margin-top: 18px;
+}
+.card {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 18px 20px 20px 20px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.7;
+}
+.card::after {
+  content: '';
+  position: absolute; bottom: -30px; right: -30px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(0,229,255,0.15), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.card-icon {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  margin-bottom: 6px;
+}
+.card-title {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--neutral);
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+.card-title .bar { display: inline-block; width: 24px; height: 2px; background: var(--primary); vertical-align: middle; margin-right: 10px; }
+.card-text {
+  font-size: 13px;
+  line-height: 1.85;
+  color: rgba(236,239,241,0.72);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.kpi-row {
+  display: flex;
+  gap: 22px;
+  width: 100%;
+  margin-top: 16px;
+}
+.kpi {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 24px;
+  border: 1px solid rgba(33,150,243,0.28);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.08), rgba(0,229,255,0.03));
+  position: relative;
+}
+.kpi::before {
+  content: '';
+  position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(0,229,255,0.6);
+}
+.kpi-num {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--accent);
+  text-shadow: 0 0 14px rgba(0,229,255,0.5);
+  min-width: 150px;
+  letter-spacing: 1px;
+}
+.kpi-meta { display: flex; flex-direction: column; }
+.kpi-label { font-size: 14px; font-weight: 600; color: var(--neutral); margin-bottom: 4px; letter-spacing: 1px; }
+.kpi-desc { font-size: 12px; color: rgba(236,239,241,0.55); letter-spacing: 0.5px; font-weight: 300; }
+
+.footer-deco {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.footer-deco .dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.footer-deco .dot.small { width: 3px; height: 3px; opacity: 0.6; box-shadow: none; }
+.footer-deco .line { width: 40px; height: 1px; background: rgba(0,229,255,0.4); }
+.footer-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: rgba(0,229,255,0.5);
+  letter-spacing: 6px;
+}
+
+.corner {
+  position: absolute;
+  width: 50px; height: 50px;
+  border: 1px solid rgba(0,229,255,0.4);
+  pointer-events: none;
+}
+.corner.tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+.corner.tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+.corner.bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+.corner.br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <canvas id="particles"></canvas>
+    <div class="grid-lines"></div>
+  </div>
+  <div id="ct">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <div class="title-wrap">
+      <div class="title-glow"></div>
+      <div class="main-title"><span>新</span>征<span class="accent">程</span>，共<span class="accent">启</span>程</div>
+      <div class="subtitle"><span>2022年 · 让我们继续在开源中相遇</span></div>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <p class="narrative">
+      开源是一段<span class="hl">没有终点</span>的旅程。2021年的记录画上句点，2022年的征程已经开始。
+      愿这份记录成为你启程路上的<span class="hl">火把</span>，也期待在下一个开源活动中与你<span class="hl">相遇</span>。
+    </p>
+
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-icon">/ 01</div>
+        <div class="card-title"><span class="bar"></span>感恩同行</div>
+        <div class="card-text">感谢每一位贡献者、读者与伙伴，让开源之路不再孤独。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">/ 02</div>
+        <div class="card-title"><span class="bar"></span>保持热爱</div>
+        <div class="card-text">热爱是最好的驱动力，愿我们在开源中找到持续前行的理由。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">/ 03</div>
+        <div class="card-title"><span class="bar"></span>一起向前</div>
+        <div class="card-text">新的一年，继续分享、继续贡献、继续布道，不见不散。</div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-num">30+</div>
+        <div class="kpi-meta">
+          <div class="kpi-label">2022 目标：30+ 分享</div>
+          <div class="kpi-desc">全年分享计划</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num">每日</div>
+        <div class="kpi-meta">
+          <div class="kpi-label">成长承诺：每日阅读</div>
+          <div class="kpi-desc">持续学习开源知识</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-deco">
+      <div class="line"></div>
+      <div class="dot small"></div>
+      <div class="dot"></div>
+      <div class="dot small"></div>
+      <div class="footer-text"><span>END · 2022 · SEE YOU AGAIN</span></div>
+      <div class="dot small"></div>
+      <div class="dot"></div>
+      <div class="dot small"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 1600; canvas.height = 900;
+
+  const particles = [];
+  const COUNT = 120;
+  for(let i=0;i<COUNT;i++){
+    particles.push({
+      x: Math.random()*1600,
+      y: Math.random()*900,
+      vx: (Math.random()-0.5)*0.3,
+      vy: (Math.random()-0.5)*0.3,
+      r: Math.random()*1.8+0.4,
+      a: Math.random()*0.6+0.2,
+      hue: Math.random()>0.5 ? '0,229,255' : '33,150,243'
+    });
+  }
+
+  // Convergence rays around title
+  const rays = [];
+  for(let i=0;i<24;i++){
+    rays.push({
+      angle: (i/24)*Math.PI*2,
+      len: 100 + Math.random()*60,
+      speed: 0.3 + Math.random()*0.5,
+      offset: Math.random()*400
+    });
+  }
+
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0,0,1600,900);
+
+    // Radial rays from center-top
+    const cx = 800, cy = 150;
+    rays.forEach(r=>{
+      const a = r.angle;
+      const dist = (r.len + r.offset) % (r.len + 400);
+      const x1 = cx + Math.cos(a)*80;
+      const y1 = cy + Math.sin(a)*80;
+      const x2 = cx + Math.cos(a)*dist;
+      const y2 = cy + Math.sin(a)*dist;
+      const grd = ctx.createLinearGradient(x1,y1,x2,y2);
+      grd.addColorStop(0,'rgba(0,229,255,0.25)');
+      grd.addColorStop(1,'rgba(0,229,255,0)');
+      ctx.strokeStyle = grd;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x1,y1);
+      ctx.lineTo(x2,y2);
+      ctx.stroke();
+      r.offset += r.speed;
+    });
+
+    // Particles
+    particles.forEach(p=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.x<0) p.x=1600;
+      if(p.x>1600) p.x=0;
+      if(p.y<0) p.y=900;
+      if(p.y>900) p.y=0;
+      const pulse = 0.7 + 0.3*Math.sin(t*0.02 + p.x*0.01);
+      ctx.fillStyle = `rgba(${p.hue},${p.a*pulse})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fill();
+    });
+
+    // Connection lines for close particles
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < 80){
+          ctx.strokeStyle = `rgba(0,229,255,${0.08*(1-dist/80)})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二章 · 行动指南</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{
+  --bg:#0d0f14;
+  --bg-2:#12141b;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --text:#e6eaf2;
+  --text-dim:#8a93a6;
+  --line:#1f2a3d;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:#000;}
+body{font-family:'Inter',sans-serif;color:var(--text);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:52px 72px 48px 72px;}
+
+/* Background layers */
+.bg-glow{position:absolute;width:1400px;height:900px;left:100px;top:0;
+  background:radial-gradient(ellipse at 78% 50%, rgba(33,150,243,0.28) 0%, rgba(0,229,255,0.10) 30%, rgba(0,0,0,0) 60%);
+  filter:blur(20px);}
+.bg-glow-2{position:absolute;width:900px;height:600px;left:-200px;top:200px;
+  background:radial-gradient(ellipse at 50% 50%, rgba(0,229,255,0.14) 0%, rgba(0,0,0,0) 60%);
+  filter:blur(30px);}
+.bg-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at 70% 40%, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 70%);}
+.bg-lines{position:absolute;inset:0;}
+
+/* Header */
+.top-meta{display:flex;justify-content:space-between;align-items:center;font-family:'Roboto Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;}
+.top-meta .left{color:var(--accent);}
+.top-meta .right{display:flex;gap:24px;}
+.top-meta .right span::before{content:'//';color:var(--primary);margin-right:6px;}
+
+.divider{margin:18px 0 24px 0;height:1px;background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 40%,rgba(33,150,243,0) 100%);}
+
+/* Title block */
+.title-block{margin-left:8px;position:relative;}
+.title-block .ch-no{font-family:'Roboto Mono',monospace;font-size:15px;color:var(--accent);letter-spacing:4px;margin-bottom:8px;}
+.title-block h1{font-family:'Roboto Mono',monospace;font-weight:700;font-size:82px;color:var(--text);line-height:1;letter-spacing:2px;
+  text-shadow:0 0 30px rgba(33,150,243,0.45);}
+.title-block h1 .accent{color:var(--primary);}
+.title-block .subtitle{margin-top:20px;font-size:20px;color:var(--text-dim);letter-spacing:2px;font-weight:300;}
+
+/* Arrow visual */
+.arrow-visual{position:absolute;right:60px;top:120px;width:420px;height:260px;pointer-events:none;}
+.arrow-visual .ring{position:absolute;border-radius:50%;border:1px solid rgba(0,229,255,0.25);}
+.arrow-visual .ring.r1{width:260px;height:260px;right:80px;top:0;}
+.arrow-visual .ring.r2{width:180px;height:180px;right:130px;top:40px;border-color:rgba(33,150,243,0.35);}
+.arrow-visual .ring.r3{width:100px;height:100px;right:180px;top:80px;border-color:var(--accent);box-shadow:0 0 20px rgba(0,229,255,0.4), inset 0 0 20px rgba(0,229,255,0.2);}
+.arrow-visual .core{position:absolute;right:215px;top:115px;width:30px;height:30px;border-radius:50%;background:var(--accent);box-shadow:0 0 30px var(--accent),0 0 60px var(--primary);}
+.arrow-visual svg{position:absolute;inset:0;width:100%;height:100%;}
+
+/* Narrative */
+.narrative{margin:30px 0 22px 8px;font-size:16px;line-height:1.9;color:#b0b8cc;max-width:1200px;font-weight:300;}
+.narrative .hl{color:var(--accent);font-weight:500;}
+.narrative .hl2{color:var(--primary);font-weight:500;}
+
+/* Cards */
+.cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;margin:0 8px 20px 8px;}
+.card{position:relative;padding:26px 24px 24px 24px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(33,150,243,0.08) 0%,rgba(13,15,20,0.95) 60%);border-radius:4px;overflow:hidden;min-height:190px;}
+.card::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.card .num{font-family:'Roboto Mono',monospace;font-size:36px;font-weight:700;color:var(--primary);letter-spacing:1px;
+  text-shadow:0 0 18px rgba(33,150,243,0.5);}
+.card .num .slash{color:var(--text-dim);font-size:18px;margin-left:8px;letter-spacing:2px;}
+.card .name{margin-top:6px;font-family:'Roboto Mono',monospace;font-size:22px;color:var(--text);font-weight:500;letter-spacing:1px;}
+.card .desc{margin-top:12px;font-size:13.5px;line-height:1.75;color:var(--text-dim);font-weight:300;}
+.card .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+.card .tag{font-family:'Roboto Mono',monospace;font-size:11px;padding:3px 10px;border:1px solid rgba(0,229,255,0.35);color:var(--accent);border-radius:2px;letter-spacing:1px;}
+.card .corner{position:absolute;right:12px;top:12px;font-family:'Roboto Mono',monospace;font-size:11px;color:rgba(0,229,255,0.4);letter-spacing:2px;}
+
+/* Bottom KPIs */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:0 8px;}
+.kpi{position:relative;padding:18px 22px;border:1px solid var(--line);background:rgba(18,20,27,0.7);border-radius:3px;display:flex;align-items:center;gap:20px;overflow:hidden;}
+.kpi::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:60%;background:linear-gradient(90deg,var(--primary),var(--accent));}
+.kpi .kpi-num{font-family:'Roboto Mono',monospace;font-size:48px;font-weight:700;color:var(--accent);line-height:1;
+  text-shadow:0 0 20px rgba(0,229,255,0.4);}
+.kpi .kpi-num .unit{font-size:20px;color:var(--text-dim);margin-left:4px;font-weight:400;}
+.kpi .kpi-info{flex:1;}
+.kpi .kpi-label{font-family:'Roboto Mono',monospace;font-size:14px;color:var(--text);letter-spacing:2px;font-weight:500;}
+.kpi .kpi-desc{margin-top:6px;font-size:12.5px;color:var(--text-dim);letter-spacing:1px;font-weight:300;}
+
+/* Footer */
+.footer{position:absolute;bottom:20px;left:72px;right:72px;display:flex;justify-content:space-between;align-items:center;font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:3px;}
+.footer .brand{color:var(--accent);}
+.footer .dots{display:flex;gap:6px;}
+.footer .dots span{width:6px;height:6px;border-radius:50%;background:var(--line);display:inline-block;}
+.footer .dots span.active{background:var(--accent);box-shadow:0 0 8px var(--accent);}
+
+/* Path lines svg background */
+.path-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.5;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-glow"></div>
+    <svg class="path-bg" viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="pathGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#2196F3" stop-opacity="0"/>
+          <stop offset="0.5" stop-color="#2196F3" stop-opacity="0.6"/>
+          <stop offset="1" stop-color="#00E5FF" stop-opacity="0.8"/>
+        </linearGradient>
+        <linearGradient id="pathGrad2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#00E5FF" stop-opacity="0.5"/>
+          <stop offset="1" stop-color="#2196F3" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- forward arrow path -->
+      <path d="M 120 500 Q 500 500 700 380 T 1300 200 L 1450 200" stroke="url(#pathGrad)" stroke-width="1.5" fill="none"/>
+      <path d="M 120 620 Q 500 620 750 500 T 1400 320" stroke="url(#pathGrad2)" stroke-width="1" fill="none" stroke-dasharray="4 6"/>
+      <path d="M 120 720 Q 550 720 800 640 T 1400 500" stroke="rgba(33,150,243,0.25)" stroke-width="1" fill="none"/>
+      <path d="M 120 260 Q 500 260 700 200 T 1400 80" stroke="rgba(0,229,255,0.2)" stroke-width="1" fill="none"/>
+      <!-- arrow head -->
+      <path d="M 1430 185 L 1470 200 L 1430 215" stroke="#00E5FF" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- nodes -->
+      <circle cx="300" cy="510" r="3" fill="#2196F3"/>
+      <circle cx="550" cy="450" r="2.5" fill="#2196F3"/>
+      <circle cx="800" cy="370" r="3.5" fill="#00E5FF"/>
+      <circle cx="1050" cy="270" r="2.5" fill="#2196F3"/>
+      <circle cx="1300" cy="200" r="4" fill="#00E5FF"/>
+      <circle cx="400" cy="640" r="2" fill="#2196F3" opacity="0.6"/>
+      <circle cx="900" cy="560" r="2" fill="#2196F3" opacity="0.6"/>
+    </svg>
+  </div>
+
+  <div id="ct">
+    <div class="top-meta">
+      <div class="left"><span>CHAPTER 02</span></div>
+      <div class="right">
+        <span>OPEN SOURCE</span>
+        <span>2022 ROADMAP</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="title-block">
+      <div class="ch-no">/ CH 02 — ACTION GUIDE</div>
+      <h1>第二章 <span class="accent">·</span> 行动指南</h1>
+      <div class="subtitle">从思考到实践，让开源成为日常</div>
+    </div>
+
+    <div class="arrow-visual">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+      <div class="core"></div>
+      <svg viewBox="0 0 420 260">
+        <defs>
+          <linearGradient id="arrGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#2196F3" stop-opacity="0.1"/>
+            <stop offset="1" stop-color="#00E5FF" stop-opacity="0.9"/>
+          </linearGradient>
+        </defs>
+        <path d="M 40 160 L 260 160" stroke="url(#arrGrad)" stroke-width="1.5" fill="none"/>
+        <path d="M 250 150 L 268 160 L 250 170" stroke="#00E5FF" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M 80 200 L 240 200" stroke="rgba(33,150,243,0.4)" stroke-width="1" fill="none" stroke-dasharray="3 5"/>
+        <path d="M 120 120 L 260 120" stroke="rgba(33,150,243,0.3)" stroke-width="1" fill="none" stroke-dasharray="3 5"/>
+      </svg>
+    </div>
+
+    <div class="narrative">
+      第二章<span class="hl">转向行动指南</span>。回顾是为了更好地出发，我们将分享经过<span class="hl2">实践验证</span>的开源协作方法，并<span class="hl">展望未来一年</span>的目标与方向。
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="corner">STRATEGY</div>
+        <div class="num">01<span class="slash">/ 03</span></div>
+        <div class="name">实践策略</div>
+        <div class="desc">如何选择项目、如何贡献、如何持续参与，建立从入门到深入的完整行动路径。</div>
+        <div class="tags">
+          <span class="tag">SELECT</span>
+          <span class="tag">CONTRIBUTE</span>
+          <span class="tag">PERSIST</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="corner">PRINCIPLE</div>
+        <div class="num">02<span class="slash">/ 03</span></div>
+        <div class="name">协作原则</div>
+        <div class="desc">高效沟通、规范提交、尊重他人，让团队协作既流畅又有秩序。</div>
+        <div class="tags">
+          <span class="tag">COMMUNICATE</span>
+          <span class="tag">COMMIT</span>
+          <span class="tag">RESPECT</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="corner">FUTURE</div>
+        <div class="num">03<span class="slash">/ 03</span></div>
+        <div class="name">未来规划</div>
+        <div class="desc">2022 年开源目标与个人成长路线图，把每一步都走得更踏实。</div>
+        <div class="tags">
+          <span class="tag">GOAL 2022</span>
+          <span class="tag">GROWTH</span>
+          <span class="tag">ROADMAP</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-num">04<span class="unit">条</span></div>
+        <div class="kpi-info">
+          <div class="kpi-label">核心原则</div>
+          <div class="kpi-desc">协作与贡献准则 / Core Collaboration Principles</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num">Q1<span class="unit">—Q4</span></div>
+        <div class="kpi-info">
+          <div class="kpi-label">行动计划</div>
+          <div class="kpi-desc">四季度分步规划 / Quarterly Action Plan</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="brand">// OPEN SOURCE JOURNEY</div>
+      <div class="dots">
+        <span></span><span class="active"></span><span></span><span></span><span></span>
+      </div>
+      <div>CH.02 / 05</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源实践最佳实践</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#0A1628;
+  --bg-card:#101F36;
+  --bg-card-2:#0D1A30;
+  --primary:#2196F3;
+  --cyan:#00E5FF;
+  --text-main:#E8EEF7;
+  --text-muted:#8FA5C4;
+  --line:#1B2E4E;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  color:var(--text-main);
+  background:var(--bg-deep);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background:
+  radial-gradient(1200px 700px at 10% -10%, #0F2647 0%, transparent 55%),
+  radial-gradient(1000px 600px at 110% 110%, #0A2038 0%, transparent 50%),
+  var(--bg-deep);
+}
+#bg::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, black 40%, transparent 90%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 顶部 */
+.top{display:flex;flex-direction:column;gap:14px;margin-bottom:22px;}
+.title-row{display:flex;align-items:center;gap:20px;}
+.title-tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:13px;font-weight:500;
+  color:var(--cyan);
+  border:1px solid rgba(0,229,255,0.45);
+  padding:5px 12px;border-radius:4px;
+  letter-spacing:1.5px;
+  background:rgba(0,229,255,0.06);
+}
+.page-num{margin-left:auto;font-family:'Roboto Mono',monospace;font-size:13px;color:var(--text-muted);letter-spacing:2px;}
+h1{
+  font-family:'Roboto Mono',monospace;
+  font-size:42px;font-weight:700;
+  color:var(--text-main);
+  letter-spacing:1px;
+}
+h1 .accent{color:var(--primary);}
+h1 .accent2{color:var(--cyan);}
+h1::after{
+  content:"";display:inline-block;width:60px;height:3px;margin-left:18px;vertical-align:middle;
+  background:linear-gradient(90deg,var(--primary),var(--cyan));border-radius:2px;
+}
+.intro{
+  font-size:14.5px;line-height:1.7;color:var(--text-muted);
+  max-width:1200px;
+  border-left:2px solid var(--primary);
+  padding:2px 0 2px 16px;
+}
+
+/* 主体两栏 */
+.main{display:grid;grid-template-columns:1fr 1fr;gap:34px;flex:1;min-height:0;}
+
+/* 左栏 */
+.left{display:flex;flex-direction:column;gap:12px;}
+.col-head{display:flex;align-items:center;gap:10px;margin-bottom:2px;}
+.col-head .dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan);}
+.col-head h2{font-family:'Roboto Mono',monospace;font-size:16px;font-weight:600;color:var(--text-main);letter-spacing:1px;}
+.col-head .en{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-muted);margin-left:auto;letter-spacing:2px;}
+
+.principles{display:flex;flex-direction:column;gap:10px;}
+.pcard{
+  display:flex;align-items:flex-start;gap:14px;
+  background:linear-gradient(135deg,var(--bg-card) 0%,var(--bg-card-2) 100%);
+  border:1px solid var(--line);
+  border-left:3px solid var(--primary);
+  border-radius:8px;
+  padding:12px 16px;
+  position:relative;
+  transition:none;
+}
+.pcard:nth-child(2){border-left-color:#42A5F5;}
+.pcard:nth-child(3){border-left-color:#00E5FF;}
+.pcard:nth-child(4){border-left-color:#64B5F6;}
+.pnum{
+  font-family:'Roboto Mono',monospace;
+  font-size:26px;font-weight:700;
+  color:var(--primary);
+  line-height:1;
+  min-width:40px;
+  padding-top:2px;
+  text-shadow:0 0 18px rgba(33,150,243,0.4);
+}
+.pcard:nth-child(3) .pnum{color:var(--cyan);text-shadow:0 0 18px rgba(0,229,255,0.4);}
+.pbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.ptitle{font-size:16px;font-weight:700;color:var(--text-main);letter-spacing:0.5px;}
+.ptitle .tag{font-family:'Roboto Mono',monospace;font-size:10px;font-weight:400;color:var(--cyan);margin-left:8px;letter-spacing:1px;vertical-align:middle;padding:2px 6px;border:1px solid rgba(0,229,255,0.3);border-radius:3px;}
+.ptext{font-size:12.5px;line-height:1.6;color:var(--text-muted);}
+.ptext b{color:var(--text-main);font-weight:600;}
+
+/* 右栏 */
+.right{display:flex;flex-direction:column;gap:12px;}
+
+.codeblock{
+  background:#08111F;
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+}
+.codebar{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;
+  background:#0C1A30;
+  border-bottom:1px solid var(--line);
+  font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-muted);
+}
+.codebar .cb-dot{width:9px;height:9px;border-radius:50%;}
+.codebar .cb-dot:nth-child(1){background:#FF5F57;}
+.codebar .cb-dot:nth-child(2){background:#FEBC2E;}
+.codebar .cb-dot:nth-child(3){background:#28C840;}
+.codebar .cb-title{margin-left:10px;color:var(--text-muted);letter-spacing:0.5px;}
+.codebar .cb-right{margin-left:auto;color:var(--cyan);font-size:10px;}
+.codebody{
+  padding:12px 16px 10px;
+  font-family:'Roboto Mono',monospace;
+  font-size:11.5px;line-height:1.65;
+  color:var(--text-main);
+}
+.codebody .kw{color:#C792EA;}
+.codebody .fn{color:#82AAFF;}
+.codebody .str{color:#C3E88D;}
+.codebody .cm{color:#546E8A;font-style:italic;}
+.codebody .num{color:#F78C6C;}
+.codebody .var{color:var(--cyan);}
+
+.chat-box{
+  display:flex;flex-direction:column;gap:8px;
+  background:linear-gradient(135deg,var(--bg-card) 0%,var(--bg-card-2) 100%);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px 14px;
+}
+.chat-head{display:flex;align-items:center;gap:8px;font-family:'Roboto Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:1px;margin-bottom:2px;}
+.chat-head .ico{
+  width:18px;height:18px;border:1px solid var(--cyan);border-radius:4px;
+  display:inline-flex;align-items:center;justify-content:center;color:var(--cyan);font-size:10px;
+}
+.chat-head .right-meta{margin-left:auto;font-size:10px;color:var(--text-muted);letter-spacing:1px;}
+.bubble{
+  font-size:12px;line-height:1.5;
+  padding:7px 12px;border-radius:10px;
+  max-width:92%;
+  color:var(--text-main);
+}
+.bubble.left{background:#15263F;border:1px solid var(--line);border-bottom-left-radius:3px;align-self:flex-start;}
+.bubble.left .name{color:var(--primary);font-weight:600;font-size:11px;font-family:'Roboto Mono',monospace;margin-right:6px;}
+.bubble.right{background:rgba(33,150,243,0.15);border:1px solid rgba(33,150,243,0.35);border-bottom-right-radius:3px;align-self:flex-end;}
+.bubble.right .name{color:var(--cyan);font-weight:600;font-size:11px;font-family:'Roboto Mono',monospace;margin-right:6px;}
+
+/* KPI 卡片 */
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.kpi{
+  background:linear-gradient(135deg,#0D1E38 0%,#0A1628 100%);
+  border:1px solid var(--line);
+  border-top:2px solid var(--primary);
+  border-radius:8px;
+  padding:12px 14px 12px;
+  position:relative;
+  overflow:hidden;
+}
+.kpi:nth-child(2){border-top-color:var(--cyan);}
+.kpi::before{
+  content:"";position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.18) 0%, transparent 70%);
+}
+.kpi:nth-child(2)::before{background:radial-gradient(circle, rgba(0,229,255,0.18) 0%, transparent 70%);}
+.kpi-label{font-size:11px;color:var(--text-muted);letter-spacing:1.5px;font-family:'Roboto Mono',monospace;margin-bottom:6px;position:relative;}
+.kpi-num{font-family:'Roboto Mono',monospace;font-size:32px;font-weight:700;color:var(--primary);line-height:1;position:relative;text-shadow:0 0 20px rgba(33,150,243,0.45);}
+.kpi:nth-child(2) .kpi-num{color:var(--cyan);text-shadow:0 0 20px rgba(0,229,255,0.45);}
+.kpi-unit{font-size:14px;font-weight:500;margin-left:4px;}
+.kpi-desc{font-size:11px;color:var(--text-muted);line-height:1.5;margin-top:6px;position:relative;}
+
+/* 底部 */
+.footer{
+  display:flex;align-items:center;gap:14px;
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  font-size:12px;color:var(--text-muted);
+  letter-spacing:1px;
+}
+.footer .badge{
+  font-family:'Roboto Mono',monospace;font-size:10px;
+  padding:4px 10px;border-radius:3px;
+  background:rgba(33,150,243,0.12);border:1px solid rgba(33,150,243,0.4);
+  color:var(--primary);letter-spacing:1.5px;
+}
+.footer .tagline{color:var(--text-main);font-weight:500;}
+.footer .tagline .hl{color:var(--cyan);}
+.footer .deco{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);}
+.footer .sig{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+  <div class="top">
+    <div class="title-row">
+      <span class="title-tag">// CHAPTER 09 · BEST PRACTICES</span>
+      <span class="page-num">P.09 / 12</span>
+    </div>
+    <h1>开源<span class="accent">实践</span>最佳<span class="accent2">实践</span></h1>
+    <p class="intro">在实践中总结出的最佳实践，是无数开源贡献者踩过坑后留下的经验。遵循这些原则，你的开源之旅将更加顺畅，也会赢得更多尊重与机会。</p>
+  </div>
+
+  <div class="main">
+    <!-- 左栏 -->
+    <div class="left">
+      <div class="col-head">
+        <span class="dot"></span>
+        <h2>四条核心原则</h2>
+        <span class="en">PRINCIPLES · 04</span>
+      </div>
+      <div class="principles">
+
+        <div class="pcard">
+          <div class="pnum">01</div>
+          <div class="pbody">
+            <div class="ptitle">选项目看社区<span class="tag">CHOICE</span></div>
+            <div class="ptext">优质项目的三大信号：<b>活跃的 Issue 讨论</b>、<b>清晰的 Roadmap 路线图</b>、<b>友善包容的社区氛围</b>。选对项目，是开源贡献成功的一半。</div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pnum">02</div>
+          <div class="pbody">
+            <div class="ptitle">提交规范严谨<span class="tag">DISCIPLINE</span></div>
+            <div class="ptext">遵循 <b>Conventional Commits</b> 提交规范，保持 <b>PR 小而聚焦</b>，一个 PR 只解决一个问题——更易被 Review、更易合并、更易回滚。</div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pnum">03</div>
+          <div class="pbody">
+            <div class="ptitle">沟通先礼后兵<span class="tag">COMMUNITY</span></div>
+            <div class="ptext">提问遵循 <b>最小复现原则</b>，<b>先阅读文档再求助</b>，主动提供环境信息。尊重他人的时间，就是尊重自己的求助效率。</div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pnum">04</div>
+          <div class="pbody">
+            <div class="ptitle">长期主义心态<span class="tag">PATIENCE</span></div>
+            <div class="ptext">开源是一场 <b>马拉松</b> 而非百米冲刺。持续小步前进、稳定输出，远比偶尔爆发式提交更有价值，也能建立持久的社区信任。</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 右栏 -->
+    <div class="right">
+      <div class="codeblock">
+        <div class="codebar">
+          <span class="cb-dot"></span><span class="cb-dot"></span><span class="cb-dot"></span>
+          <span class="cb-title">good-practices.sh</span>
+          <span class="cb-right">~/open-source</span>
+        </div>
+        <div class="codebody">
+<span class="cm"># 提交信息示例：遵循 Conventional Commits</span>
+<span class="kw">$</span> git commit -m <span class="str">"fix(auth): handle expired token"</span>
+<br>
+<span class="cm"># 发起聚焦 PR，每个 PR 仅解决一个问题</span>
+<span class="kw">$</span> git checkout -b <span class="var">fix/expired-token</span>
+<span class="kw">$</span> git push origin <span class="var">fix/expired-token</span>
+<br>
+<span class="cm"># 小步快跑 · 社区为本</span>
+<span class="fn">echo</span> <span class="str">"small PRs, big impact."</span>
+        </div>
+      </div>
+
+      <div class="chat-box">
+        <div class="chat-head">
+          <span class="ico">💬</span>
+          <span>COMMUNITY CHAT</span>
+          <span class="right-meta">ISSUE #4127</span>
+        </div>
+        <div class="bubble left"><span class="name">新贡献者</span>你好！我在 Ubuntu 22.04 上用 Node 18 运行时第 42 行报错，日志贴在下附。已经读过 docs/FAQ，没找到解法。</div>
+        <div class="bubble right"><span class="name">维护者</span>谢谢提供环境信息！先试试 <code style="color:var(--cyan);">npm cache clean --force</code>，如果还有问题我可以开 repro branch 复现一下 🙌</div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-label">// PR SIZE</div>
+          <div class="kpi-num">&lt; 150<span class="kpi-unit"> 行</span></div>
+          <div class="kpi-desc">PR 平均大小小于 150 行——小而精的提交更易被 Review 与合并。</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">// RESPONSE</div>
+          <div class="kpi-num">&lt; 24<span class="kpi-unit"> 小时</span></div>
+          <div class="kpi-desc">Review 响应小于 24 小时——保持社区互动活跃度，让贡献者感到被重视。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="badge">// MANIFESTO</span>
+    <span class="tagline">小步快跑 <span class="hl">·</span> 社区为本 <span class="hl">·</span> 长期主义——让每一次提交都成为信任的累积</span>
+    <span class="deco"></span>
+    <span class="sig">OPEN SOURCE · KEEP BUILDING</span>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
