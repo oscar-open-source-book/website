@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Roboto+Mono:wght@300;400;500;600&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --bg-deep:#0a0e1a;
+  --bg-card:#0f1628;
+  --bg-card2:#111c33;
+  --border:#1a3a5c;
+  --glow:rgba(33,150,243,0.35);
+  --glow2:rgba(0,188,212,0.35);
+  --text-main:#e8f0fb;
+  --text-sub:#8ba3c7;
+  --text-dim:#5a7aa0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+
+body{
+  font-family:'Roboto Mono',monospace;
+  color:var(--text-main);
+  background:var(--bg-deep);
+}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 60px 30px 60px;display:flex;flex-direction:column;}
+
+#bg{
+  background:
+    radial-gradient(ellipse 900px 600px at 50% 45%, rgba(33,150,243,0.10), transparent 60%),
+    radial-gradient(ellipse 600px 400px at 15% 90%, rgba(0,188,212,0.08), transparent 60%),
+    radial-gradient(ellipse 500px 350px at 88% 12%, rgba(33,150,243,0.07), transparent 60%),
+    var(--bg-deep);
+}
+
+#bg::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 1200px 700px at 50% 50%, #000 40%, transparent 85%);
+}
+
+#bg::after{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle 1px at 22% 18%, rgba(0,188,212,0.5) 100%, transparent),
+    radial-gradient(circle 1px at 78% 25%, rgba(33,150,243,0.55) 100%, transparent),
+    radial-gradient(circle 1px at 12% 68%, rgba(33,150,243,0.4) 100%, transparent),
+    radial-gradient(circle 1px at 88% 72%, rgba(0,188,212,0.45) 100%, transparent),
+    radial-gradient(circle 1px at 50% 92%, rgba(33,150,243,0.5) 100%, transparent),
+    radial-gradient(circle 1px at 6% 40%, rgba(0,188,212,0.4) 100%, transparent),
+    radial-gradient(circle 1px at 94% 48%, rgba(33,150,243,0.45) 100%, transparent);
+  opacity:0.7;
+}
+
+/* Header */
+.header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:12px;}
+.header h1{
+  font-family:'Inter',sans-serif;
+  font-weight:900;
+  font-size:36px;
+  letter-spacing:2px;
+  background:linear-gradient(90deg,#4fc3f7,#2196F3 40%,#00BCD4 70%,#4dd0e1);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  text-shadow:0 0 30px rgba(33,150,243,0.2);
+  margin-bottom:8px;
+}
+.header .subtitle{
+  font-size:12.5px;
+  line-height:1.75;
+  color:var(--text-sub);
+  max-width:1360px;
+  font-weight:300;
+  text-align:center;
+  padding:0 10px;
+}
+
+/* Radial Layout */
+.radial-area{
+  position:relative;
+  width:100%;
+  height:500px;
+  margin-top:6px;
+  flex:0 0 auto;
+}
+
+/* SVG connection lines */
+.lines{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:1;pointer-events:none;
+}
+
+/* Hub */
+.hub{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:150px;height:150px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(33,150,243,0.45), rgba(33,150,243,0.15) 55%, rgba(10,14,26,0.8) 100%);
+  border:2px solid var(--primary);
+  box-shadow:
+    0 0 30px var(--glow),
+    inset 0 0 20px rgba(33,150,243,0.25),
+    0 0 60px rgba(0,188,212,0.15);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  z-index:5;
+}
+.hub-icon{
+  font-size:38px;
+  filter:drop-shadow(0 0 8px rgba(0,188,212,0.7));
+  margin-bottom:4px;
+}
+.hub-label{
+  font-family:'Inter',sans-serif;
+  font-weight:700;font-size:13px;
+  color:#e8f4ff;
+  letter-spacing:1px;
+}
+.hub-sub{
+  font-size:9.5px;color:var(--text-dim);
+  letter-spacing:1px;
+  margin-top:2px;
+}
+
+.hub-ring{
+  position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:180px;height:180px;
+  border-radius:50%;
+  border:1px dashed rgba(0,188,212,0.35);
+  z-index:4;
+  animation:spin 30s linear infinite;
+}
+.hub-ring2{
+  position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:210px;height:210px;
+  border-radius:50%;
+  border:1px solid rgba(33,150,243,0.18);
+  z-index:4;
+}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+/* Branch nodes */
+.node{
+  position:absolute;
+  width:285px;
+  background:linear-gradient(135deg, var(--bg-card2), var(--bg-card));
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 16px 14px 16px;
+  z-index:6;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5), 0 0 20px rgba(33,150,243,0.08);
+  backdrop-filter:blur(4px);
+}
+.node::before{
+  content:'';
+  position:absolute;left:0;top:14px;bottom:14px;width:3px;
+  border-radius:3px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+}
+.node-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.node-icon{
+  width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  background:linear-gradient(135deg,rgba(33,150,243,0.25),rgba(0,188,212,0.18));
+  border:1px solid rgba(33,150,243,0.4);
+  flex-shrink:0;
+}
+.node-title{
+  font-family:'Inter',sans-serif;
+  font-weight:700;font-size:15px;
+  color:#e8f4ff;
+}
+.node-num{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--accent);
+  letter-spacing:1.5px;
+  margin-bottom:6px;
+}
+.node-desc{
+  font-size:11.5px;
+  line-height:1.65;
+  color:var(--text-sub);
+  font-weight:300;
+}
+
+/* Node positions - 4 corners around hub */
+.node-1{left:20px;top:0;}
+.node-2{right:20px;top:0;}
+.node-3{left:20px;bottom:0;}
+.node-4{right:20px;bottom:0;}
+
+/* Data Cards row */
+.data-row{
+  display:flex;
+  gap:16px;
+  margin-top:8px;
+  flex:0 0 auto;
+}
+.data-card{
+  flex:1;
+  background:linear-gradient(135deg, rgba(33,150,243,0.10), rgba(0,188,212,0.06));
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px 20px;
+  display:flex;align-items:center;gap:18px;
+  position:relative;
+  overflow:hidden;
+}
+.data-card::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+}
+.data-card-glow{
+  position:absolute;right:-40px;top:-40px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(33,150,243,0.18),transparent 70%);
+}
+.dc-value{
+  font-family:'Inter',sans-serif;
+  font-weight:800;font-size:30px;
+  background:linear-gradient(90deg,#4fc3f7,#00BCD4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1;
+}
+.dc-unit{
+  font-family:'Inter',sans-serif;
+  font-weight:600;font-size:14px;
+  color:var(--accent);
+  margin-left:2px;
+}
+.dc-text{
+  font-size:12px;
+  color:var(--text-sub);
+  line-height:1.55;
+  font-weight:300;
+}
+.dc-tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:9px;color:var(--accent);
+  letter-spacing:1.5px;
+  margin-bottom:3px;
+  opacity:0.85;
+}
+
+/* Corner decor */
+.corner-deco{
+  position:absolute;
+  font-family:'Roboto Mono',monospace;
+  font-size:9px;
+  color:var(--text-dim);
+  letter-spacing:2px;
+  z-index:2;
+}
+.corner-deco-tl{left:20px;top:8px;}
+.corner-deco-tr{right:20px;top:8px;}
+.corner-deco-bl{left:20px;bottom:8px;}
+.corner-deco-br{right:20px;bottom:8px;}
+
+.deco-line{
+  position:absolute;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  z-index:2;
+}
+.deco-line-1{left:20px;top:28px;width:200px;}
+.deco-line-2{right:20px;top:28px;width:200px;}
+</style>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="corner-deco corner-deco-tl">SYS // GOVERNANCE.MODULE.01</div>
+    <div class="corner-deco corner-deco-tr">STATUS: ACTIVE &nbsp;|&nbsp; v3.7.2</div>
+    <div class="deco-line deco-line-1"></div>
+    <div class="deco-line deco-line-2"></div>
+
+    <div class="header">
+      <h1>开源协作的治理机制</h1>
+      <div class="subtitle">
+        开源社区之所以能高效运转，关键在于它建立了一套精巧的治理机制——声誉资本替代金钱激励，行为准则替代法律合同，社区宪章替代公司章程。这些社会机制以极低成本实现大规模协作，完美回应科斯的交易成本命题。
+      </div>
+    </div>
+
+    <div class="radial-area">
+
+      <svg class="lines" viewBox="0 0 1480 500" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#2196F3" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#00BCD4" stop-opacity="0.2"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0%" stop-color="#2196F3" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#00BCD4" stop-opacity="0.2"/>
+          </linearGradient>
+          <linearGradient id="lg3" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#2196F3" stop-opacity="0.15"/>
+          </linearGradient>
+          <linearGradient id="lg4" x1="1" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#2196F3" stop-opacity="0.15"/>
+          </linearGradient>
+        </defs>
+        <!-- TL to hub -->
+        <path d="M 320 100 Q 520 180 740 250" stroke="url(#lg1)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        <!-- TR to hub -->
+        <path d="M 1160 100 Q 960 180 740 250" stroke="url(#lg2)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        <!-- BL to hub -->
+        <path d="M 320 400 Q 520 320 740 250" stroke="url(#lg3)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        <!-- BR to hub -->
+        <path d="M 1160 400 Q 960 320 740 250" stroke="url(#lg4)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        <!-- Nodes on lines (dots) -->
+        <circle cx="530" cy="195" r="3" fill="#00BCD4" opacity="0.7"/>
+        <circle cx="950" cy="195" r="3" fill="#2196F3" opacity="0.7"/>
+        <circle cx="530" cy="305" r="3" fill="#2196F3" opacity="0.7"/>
+        <circle cx="950" cy="305" r="3" fill="#00BCD4" opacity="0.7"/>
+      </svg>
+
+      <div class="hub-ring2"></div>
+      <div class="hub-ring"></div>
+
+      <div class="hub">
+        <div class="hub-icon">◈</div>
+        <div class="hub-label">治理枢纽</div>
+        <div class="hub-sub">GOV HUB</div>
+      </div>
+
+      <div class="node node-1">
+        <div class="node-num">MODULE // 01</div>
+        <div class="node-header">
+          <div class="node-icon">★</div>
+          <div class="node-title">声誉资本</div>
+        </div>
+        <div class="node-desc">贡献者的代码质量与社区声望直接关联职业机会与社会地位，无形声誉成为驱动协作的核心资本。</div>
+      </div>
+
+      <div class="node node-2">
+        <div class="node-num">MODULE // 02</div>
+        <div class="node-header">
+          <div class="node-icon">◐</div>
+          <div class="node-title">治理模型</div>
+        </div>
+        <div class="node-desc">从 BDFL 仁慈独裁者到委员会再到基金会治理，机制持续演进成熟，适配不同规模社区需求。</div>
+      </div>
+
+      <div class="node node-3">
+        <div class="node-num">MODULE // 03</div>
+        <div class="node-header">
+          <div class="node-icon">⇋</div>
+          <div class="node-title">贡献激励</div>
+        </div>
+        <div class="node-desc">企业雇佣开源贡献者、个人积累技术品牌，形成"贡献—认可—再贡献"的正反馈循环。</div>
+      </div>
+
+      <div class="node node-4">
+        <div class="node-num">MODULE // 04</div>
+        <div class="node-header">
+          <div class="node-icon">☰</div>
+          <div class="node-title">规范替代</div>
+        </div>
+        <div class="node-desc">行为准则、贡献者协议、社区宪章等社会契约替代传统商业合同，以共识降低协作摩擦。</div>
+      </div>
+
+    </div>
+
+    <div class="data-row">
+      <div class="data-card">
+        <div class="data-card-glow"></div>
+        <div>
+          <div class="dc-value">60<span class="dc-unit">%+</span></div>
+        </div>
+        <div>
+          <div class="dc-tag">DATA // CODE_OF_CONDUCT</div>
+          <div class="dc-text">大型开源项目中有行为准则的项目占比超过 60%，规范成为社区基石。</div>
+        </div>
+      </div>
+      <div class="data-card">
+        <div class="data-card-glow"></div>
+        <div>
+          <div class="dc-value">5<span class="dc-unit">种</span></div>
+        </div>
+        <div>
+          <div class="dc-tag">DATA // GOV_MODELS</div>
+          <div class="dc-text">主流治理模型共 5 种，涵盖 BDFL、委员会、基金会等，覆盖全生命周期。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="corner-deco corner-deco-bl">◂ DATA STREAM // ACTIVE</div>
+    <div class="corner-deco corner-deco-br">▸ END OF PAGE_019</div>
+
+  </div>
+</div>
+</body>
+</html>

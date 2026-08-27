@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源布道与阅读分享</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #ECEFF1;
+  --bg-dark: #050B1A;
+  --bg-mid: #0A1628;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1600px;
+  height: 900px;
+  overflow: hidden;
+  font-family: 'Roboto Mono', monospace;
+  color: var(--neutral);
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #030815 0%, #061226 45%, #030815 100%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 竖向光束 */
+.beam {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent 0%, rgba(33,150,243,0.18) 30%, rgba(33,150,243,0.10) 70%, transparent 100%);
+  z-index: 1;
+}
+.beam.b1 { left: 120px; }
+.beam.b2 { left: 360px; }
+.beam.b3 { left: 640px; }
+.beam.b4 { left: 940px; }
+.beam.b5 { left: 1260px; }
+.beam.b6 { left: 1480px; }
+
+/* 数字网格线 */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0, transparent 59px, rgba(33,150,243,0.045) 59px, rgba(33,150,243,0.045) 60px),
+    repeating-linear-gradient(90deg, transparent 0, transparent 59px, rgba(0,188,212,0.035) 59px, rgba(0,188,212,0.035) 60px);
+  pointer-events: none;
+}
+
+/* 左侧主视觉 */
+.hero-area {
+  position: absolute;
+  left: 40px;
+  top: 190px;
+  width: 900px;
+  height: 520px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-frame {
+  position: relative;
+  width: 880px;
+  height: 500px;
+  border: 1px solid rgba(33,150,243,0.35);
+  box-shadow: 0 0 60px rgba(33,150,243,0.12), inset 0 0 60px rgba(0,188,212,0.06);
+  overflow: hidden;
+}
+.hero-frame::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px; right: -1px; bottom: -1px;
+  border: 1px solid rgba(0,188,212,0.2);
+  pointer-events: none;
+}
+.hero-frame .corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--accent);
+}
+.hero-frame .corner.tl { top: 4px; left: 4px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+.hero-frame .corner.tr { top: 4px; right: 4px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+.hero-frame .corner.bl { bottom: 4px; left: 4px; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+.hero-frame .corner.br { bottom: 4px; right: 4px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+.hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 顶部标 */
+.top-tag {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  z-index: 3;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: rgba(33,150,243,0.7);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.top-tag .dot {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+.top-tag .line {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.top-tag-right {
+  position: absolute;
+  right: 50px;
+  top: 50px;
+  z-index: 3;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(236,239,241,0.4);
+  text-align: right;
+}
+.top-tag-right .num {
+  color: var(--accent);
+  font-size: 13px;
+}
+
+/* 右侧文字 */
+.text-area {
+  position: absolute;
+  right: 60px;
+  top: 140px;
+  width: 600px;
+  z-index: 4;
+  text-align: right;
+}
+.kicker {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--accent);
+  margin-bottom: 18px;
+  font-weight: 400;
+}
+.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 58px;
+  line-height: 1.08;
+  letter-spacing: -1px;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+}
+.main-title .accent {
+  color: var(--primary);
+}
+.title-line {
+  width: 80px;
+  height: 2px;
+  margin: 0 0 20px 0;
+  margin-left: auto;
+  background: linear-gradient(90deg, transparent, var(--accent));
+}
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.5;
+  color: rgba(236,239,241,0.85);
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
+}
+.subtitle-strong {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+.subtitle-strong .accent {
+  color: var(--accent);
+}
+
+/* 三组要点 */
+.points {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.point {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 12px 16px;
+  border-right: 2px solid var(--primary);
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.05));
+}
+.point .label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 3px;
+}
+.point .desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  color: rgba(236,239,241,0.75);
+  line-height: 1.5;
+  letter-spacing: 0.3px;
+}
+
+/* 底部数据网格 */
+.bottom-bar {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 38px;
+  height: 44px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid rgba(33,150,243,0.3);
+  padding-top: 12px;
+}
+.bottom-bar .grid-ticks {
+  flex: 1;
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 22px;
+  margin: 0 24px;
+}
+.bottom-bar .grid-ticks .tick {
+  width: 2px;
+  background: rgba(33,150,243,0.35);
+}
+.bottom-bar .label-left {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(33,150,243,0.6);
+}
+.bottom-bar .label-right {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(236,239,241,0.4);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="grid-overlay"></div>
+  <div class="beam b1"></div>
+  <div class="beam b2"></div>
+  <div class="beam b3"></div>
+  <div class="beam b4"></div>
+  <div class="beam b5"></div>
+  <div class="beam b6"></div>
+
+  <div id="ct">
+    <div class="top-tag">
+      <span class="dot"></span>
+      <span class="line"></span>
+      <span>OPEN SOURCE · READING NOTES</span>
+    </div>
+    <div class="top-tag-right">
+      <span class="num">2023.02</span><br>
+      <span style="color:rgba(236,239,241,0.3);">SUI · SHI SERIES</span>
+    </div>
+
+    <div class="hero-area">
+      <div class="hero-frame">
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
+        <img src="../images/page_001_hero.png" alt="深色科技风企鹅剪影主视觉">
+      </div>
+    </div>
+
+    <div class="text-area">
+      <div class="kicker"><span>OPEN · SOURCE · EVANGELISM</span></div>
+      <h1 class="main-title"><span>开源布道</span><br>与<span class="accent">阅读分享</span></h1>
+      <div class="title-line"></div>
+      <div class="subtitle">《Coase的企鹅》</div>
+      <div class="subtitle-strong">2023 年 <span class="accent">2</span> 月读书札记</div>
+
+      <div class="points">
+        <div class="point">
+          <span class="label"><span>主题溯源</span></span>
+          <span class="desc"><span>从罗纳德·科斯的交易成本理论出发，审视开源生态的经济逻辑</span></span>
+        </div>
+        <div class="point">
+          <span class="label"><span>核心隐喻</span></span>
+          <span class="desc"><span>以 Linux 企鹅为符号，追问为何免费软件能重塑产业格局</span></span>
+        </div>
+        <div class="point">
+          <span class="label"><span>记录时间</span></span>
+          <span class="desc"><span>2023 年 2 月阅读札记，开源之道·适兕栏目分享</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span class="label-left"><span>DATA GRID · 001</span></span>
+      <div class="grid-ticks">
+        <span class="tick" style="height:8px;"></span>
+        <span class="tick" style="height:14px;"></span>
+        <span class="tick" style="height:6px;"></span>
+        <span class="tick" style="height:18px;"></span>
+        <span class="tick" style="height:10px;"></span>
+        <span class="tick" style="height:20px;"></span>
+        <span class="tick" style="height:5px;"></span>
+        <span class="tick" style="height:16px;"></span>
+        <span class="tick" style="height:9px;"></span>
+        <span class="tick" style="height:22px;"></span>
+        <span class="tick" style="height:7px;"></span>
+        <span class="tick" style="height:13px;"></span>
+        <span class="tick" style="height:19px;"></span>
+        <span class="tick" style="height:11px;"></span>
+        <span class="tick" style="height:6px;"></span>
+        <span class="tick" style="height:17px;"></span>
+        <span class="tick" style="height:8px;"></span>
+        <span class="tick" style="height:21px;"></span>
+        <span class="tick" style="height:10px;"></span>
+        <span class="tick" style="height:15px;"></span>
+        <span class="tick" style="height:5px;"></span>
+        <span class="tick" style="height:18px;"></span>
+        <span class="tick" style="height:9px;"></span>
+        <span class="tick" style="height:12px;"></span>
+        <span class="tick" style="height:20px;"></span>
+        <span class="tick" style="height:7px;"></span>
+        <span class="tick" style="height:14px;"></span>
+        <span class="tick" style="height:6px;"></span>
+        <span class="tick" style="height:16px;"></span>
+        <span class="tick" style="height:10px;"></span>
+        <span class="tick" style="height:22px;"></span>
+        <span class="tick" style="height:8px;"></span>
+        <span class="tick" style="height:13px;"></span>
+        <span class="tick" style="height:19px;"></span>
+        <span class="tick" style="height:11px;"></span>
+        <span class="tick" style="height:5px;"></span>
+        <span class="tick" style="height:17px;"></span>
+        <span class="tick" style="height:9px;"></span>
+        <span class="tick" style="height:15px;"></span>
+        <span class="tick" style="height:20px;"></span>
+      </div>
+      <span class="label-right"><span>TX-COST × PENGUIN · SIGNAL</span></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

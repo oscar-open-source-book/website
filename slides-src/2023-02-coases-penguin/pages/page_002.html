@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一章：科斯之问</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Roboto+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --text-main: #ECEFF1;
+  --text-dim: #90A4AE;
+  --bg-deep: #040B1A;
+  --bg-mid: #0A1628;
+  --card-bg: rgba(10, 22, 40, 0.65);
+  --card-border: rgba(33, 150, 243, 0.35);
+  --glow: rgba(33, 150, 243, 0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1600px;
+  height: 900px;
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg .bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 1600px;
+  height: 900px;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(4, 11, 26, 0.92) 0%, rgba(10, 22, 40, 0.75) 45%, rgba(4, 11, 26, 0.95) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header area */
+.header-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.chapter-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--cyan);
+  letter-spacing: 6px;
+  padding: 8px 18px;
+  border: 1px solid var(--cyan);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 14px;
+  background: rgba(0, 188, 212, 0.08);
+}
+
+.title-block {
+  flex: 1;
+}
+
+.title-line {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 76px;
+  line-height: 1.05;
+  color: var(--text-main);
+  letter-spacing: -1px;
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.title-line .accent-bar {
+  display: inline-block;
+  width: 8px;
+  height: 76px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+  flex-shrink: 0;
+  box-shadow: 0 0 20px var(--primary);
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 26px;
+  color: var(--text-dim);
+  margin-top: 18px;
+  letter-spacing: 1px;
+}
+
+.subtitle .q-mark {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Three cards */
+.cards-row {
+  display: flex;
+  gap: 20px;
+  margin-top: 42px;
+}
+
+.card {
+  flex: 1;
+  padding: 24px 26px 26px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  position: relative;
+  backdrop-filter: blur(6px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+
+.card-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.card-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.card-text .hl {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.card-text .hl2 {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* Bottom badges */
+.bottom-area {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.badges {
+  display: flex;
+  gap: 16px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  background: rgba(33, 150, 243, 0.08);
+  border: 1px solid var(--card-border);
+  border-radius: 3px;
+}
+
+.badge-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--cyan);
+  flex-shrink: 0;
+  background: rgba(0, 188, 212, 0.1);
+}
+
+.badge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.badge-text .badge-year {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.badge-text .badge-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.page-mark {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  text-align: right;
+  line-height: 1.8;
+}
+
+.page-mark .mark-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--primary);
+  display: block;
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_002_section_bg.png" alt="深空几何网络背景">
+    <div class="bg-overlay"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header-area">
+      <div class="chapter-tag"><span>CHAPTER · 01</span></div>
+      <div class="title-block">
+        <div class="title-line">
+          <span class="accent-bar"></span>
+          <span><span>第一章：科斯之问</span></span>
+        </div>
+        <div class="subtitle"><span>为什么企业会存在<span class="q-mark">？</span>为什么开源会崛起<span class="q-mark">？</span></span></div>
+      </div>
+    </div>
+
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-num"><span>01 / PROBLEM</span></div>
+        <div class="card-title"><span>企业性质</span></div>
+        <div class="card-text"><span>1937年科斯提出核心问题：市场有效<span class="hl">为何仍需企业组织</span>？资源的配置不应只由价格机制完成。</span></div>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>02 / ANSWER</span></div>
+        <div class="card-title"><span>交易成本</span></div>
+        <div class="card-text"><span>科斯的答案是<span class="hl2">交易成本</span>——协调市场的代价催生了企业边界，降低了重复谈判的摩擦。</span></div>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>03 / MIGRATION</span></div>
+        <div class="card-title"><span>类比迁移</span></div>
+        <div class="card-text"><span>将框架迁移到软件世界：<span class="hl">为何付费软件时代</span>会迎来开源浪潮？一个对等的问题由此诞生。</span></div>
+      </div>
+    </div>
+
+    <div class="bottom-area">
+      <div class="badges">
+        <div class="badge">
+          <div class="badge-icon"><span>1937</span></div>
+          <div class="badge-text">
+            <span class="badge-year"><span>《企业的性质》</span></span>
+            <span class="badge-desc"><span>首次提出交易成本概念，奠定企业理论基石</span></span>
+          </div>
+        </div>
+        <div class="badge">
+          <div class="badge-icon"><span>1991</span></div>
+          <div class="badge-text">
+            <span class="badge-year"><span>诺贝尔经济学奖</span></span>
+            <span class="badge-desc"><span>因企业理论与产权经济学贡献获奖</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="page-mark">
+        <span class="mark-num"><span>01</span></span>
+        <span><span>SECTION TRANSITION</span></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
