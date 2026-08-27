@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源社区应用</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #1E1E2E;
+  --bg-deep: #151521;
+  --bg-card: #252536;
+  --silver: #B0BEC5;
+  --silver-dim: #78909C;
+  --cyan: #00BCD4;
+  --cyan-dim: #00838F;
+  --cyan-glow: rgba(0, 188, 212, 0.15);
+  --text-main: #E0E0E0;
+  --text-dim: #90A4AE;
+  --border: #3A3A4F;
+  --green: #66BB6A;
+  --yellow: #FFB74D;
+  --red: #EF5350;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+  --sans: 'Inter', 'Noto Sans SC', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1600px;
+  height: 900px;
+  font-family: var(--sans);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 600px 400px at 15% 10%, rgba(0,188,212,0.06), transparent 70%),
+    radial-gradient(ellipse 500px 350px at 85% 90%, rgba(0,188,212,0.04), transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部终端装饰条 */
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: var(--red); }
+.terminal-dot.yellow { background: var(--yellow); }
+.terminal-dot.green { background: var(--green); }
+
+.terminal-path {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--silver-dim);
+  margin-left: 12px;
+  letter-spacing: 0.5px;
+}
+
+.terminal-path .dir { color: var(--cyan); }
+.terminal-path .sep { color: var(--silver-dim); margin: 0 4px; }
+.terminal-path .file { color: var(--silver); }
+
+/* 标题区 */
+.header-zone {
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.title-prompt {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--cyan);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.title-prompt .prompt-sym {
+  color: var(--green);
+  margin-right: 6px;
+}
+
+.main-title {
+  font-family: var(--mono);
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--silver);
+  letter-spacing: 4px;
+  line-height: 1.1;
+  text-shadow: 0 0 20px rgba(0,188,212,0.2);
+  margin-left: 4px;
+}
+
+.main-title .accent {
+  color: var(--cyan);
+}
+
+.main-title .cursor-blink {
+  display: inline-block;
+  width: 28px;
+  height: 48px;
+  background: var(--cyan);
+  vertical-align: -8px;
+  margin-left: 6px;
+  animation: blink 1.2s step-end infinite;
+  opacity: 0.85;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0; }
+}
+
+.subtitle {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--silver-dim);
+  line-height: 1.7;
+  margin-top: 14px;
+  margin-left: 4px;
+  max-width: 1380px;
+  letter-spacing: 0.3px;
+}
+
+.subtitle .hl {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* 分隔线 */
+.divider-line {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 8px 0 24px 0;
+}
+
+.divider-line .line-seg {
+  height: 1px;
+  background: var(--border);
+  flex: 1;
+}
+
+.divider-line .line-seg.glow {
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+
+.divider-line .node {
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  margin: 0 8px;
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+/* 主体内容区 */
+.main-content {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* 左侧数据卡片 */
+.left-col {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.data-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--cyan);
+  padding: 18px 22px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.data-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-top: 1px solid var(--cyan);
+  border-right: 1px solid var(--cyan);
+  opacity: 0.4;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.card-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--silver-dim);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.card-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--cyan);
+  border: 1px solid var(--cyan-dim);
+  padding: 2px 8px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+}
+
+.card-title {
+  font-family: var(--mono);
+  font-size: 17px;
+  color: var(--silver);
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.card-value {
+  font-family: var(--mono);
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--cyan);
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(0,188,212,0.3);
+  letter-spacing: 1px;
+}
+
+.card-value .unit {
+  font-size: 16px;
+  color: var(--silver-dim);
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+.card-desc {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.card-bar {
+  margin-top: 12px;
+  height: 3px;
+  background: rgba(0,188,212,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--cyan);
+}
+
+.card-1 .card-bar::after { width: 85%; }
+.card-2 .card-bar::after { width: 70%; }
+
+/* 终端滚动条装饰 */
+.card-scrollbar {
+  position: absolute;
+  right: 6px;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background: rgba(0,188,212,0.08);
+  border-radius: 1px;
+}
+
+.card-scrollbar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  background: var(--cyan);
+  opacity: 0.4;
+  border-radius: 1px;
+}
+
+/* 右侧列表区 */
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.right-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border);
+  margin-bottom: 4px;
+}
+
+.right-header-title {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+}
+
+.right-header-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--silver-dim);
+  letter-spacing: 1px;
+}
+
+.right-header-count .num {
+  color: var(--cyan);
+}
+
+.case-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.case-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: all 0.2s;
+  position: relative;
+  flex: 1;
+}
+
+.case-item:hover {
+  border-color: var(--cyan-dim);
+}
+
+.case-icon {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--cyan);
+  background: rgba(0,188,212,0.08);
+  border: 1px solid var(--cyan-dim);
+  padding: 4px 8px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+
+.case-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.case-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.case-name {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--silver);
+  letter-spacing: 1px;
+}
+
+.case-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--yellow);
+  border: 1px solid rgba(255,183,77,0.3);
+  padding: 1px 6px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+}
+
+.case-desc {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.55;
+  letter-spacing: 0.2px;
+}
+
+.case-desc .kw {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+.case-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--silver-dim);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* 底部区域 */
+.footer-zone {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer-left {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--silver-dim);
+  letter-spacing: 1px;
+}
+
+.footer-left .prompt-sym {
+  color: var(--green);
+  margin-right: 4px;
+}
+
+.footer-keywords {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.footer-keywords .kw-item {
+  color: var(--cyan);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-keywords .kw-item::before {
+  content: '▸';
+  color: var(--cyan);
+  font-size: 10px;
+}
+
+.footer-keywords .kw-sep {
+  color: var(--border);
+  font-size: 14px;
+}
+
+.footer-right {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--silver-dim);
+  letter-spacing: 1px;
+}
+
+.footer-right .exit-code {
+  color: var(--green);
+}
+
+/* 左侧背景装饰字符 */
+.ascii-art {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(0,188,212,0.04);
+  line-height: 1.1;
+  letter-spacing: 0;
+  z-index: 0;
+  pointer-events: none;
+  white-space: pre;
+}
+
+/* 右上角状态装饰 */
+.status-bar {
+  position: absolute;
+  top: 14px;
+  right: 60px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--silver-dim);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 2;
+}
+
+.status-bar .status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 4px;
+  box-shadow: 0 0 4px var(--green);
+}
+
+.status-bar .sep {
+  color: var(--border);
+}
+
+/* 页码 */
+.page-indicator {
+  position: absolute;
+  bottom: 14px;
+  left: 60px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--silver-dim);
+  letter-spacing: 1px;
+  z-index: 2;
+}
+
+.page-indicator .cur {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+/* 扫描线效果 */
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,188,212,0.06), transparent);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scan-line.s1 { top: 25%; }
+.scan-line.s2 { top: 55%; }
+.scan-line.s3 { top: 80%; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="scan-line s1"></div>
+    <div class="scan-line s2"></div>
+    <div class="scan-line s3"></div>
+
+    <div class="status-bar">
+      <span><span class="status-dot"></span>CONNECTED</span>
+      <span class="sep">|</span>
+      <span>REPO: oss-community</span>
+      <span class="sep">|</span>
+      <span>BUILD: v2.4.1</span>
+    </div>
+
+    <div class="terminal-bar">
+      <span class="terminal-dot red"></span>
+      <span class="terminal-dot yellow"></span>
+      <span class="terminal-dot green"></span>
+      <span class="terminal-path">
+        <span class="dir">~/hackers-ethic</span><span class="sep">/</span><span class="file">open_source_community.md</span>
+      </span>
+    </div>
+
+    <div class="header-zone">
+      <div class="title-prompt"><span class="prompt-sym">$</span>git checkout main &amp;&amp; echo "OPEN SOURCE COMMUNITY"</div>
+      <h1 class="main-title"><span class="accent">开源</span>社区<span class="accent">应用</span><span class="cursor-blink"></span></h1>
+      <p class="subtitle">开源社区将黑客伦理转化为具体制度：<span class="hl">开放治理</span>、<span class="hl">代码审查</span>、<span class="hl">行为准则</span>等，确保协作可持续。</p>
+    </div>
+
+    <div class="divider-line">
+      <span class="line-seg"></span>
+      <span class="node"></span>
+      <span class="line-seg glow"></span>
+      <span class="node"></span>
+      <span class="line-seg"></span>
+    </div>
+
+    <div class="main-content">
+
+      <div class="left-col">
+
+        <div class="data-card card-1">
+          <div class="card-scrollbar"></div>
+          <div class="card-header">
+            <span class="card-label">// DATA.01 — KERNEL</span>
+            <span class="card-tag">LIVE</span>
+          </div>
+          <div class="card-title">Linux 贡献者规模</div>
+          <div class="card-value">~2000<span class="unit">/ 版本</span></div>
+          <div class="card-desc">// 内核开发每次大版本发布均有约 2000 名开发者参与提交，体现了开放协作模式的极致规模化。</div>
+          <div class="card-bar"></div>
+        </div>
+
+        <div class="data-card card-2">
+          <div class="card-scrollbar"></div>
+          <div class="card-header">
+            <span class="card-label">// DATA.02 — APACHE</span>
+            <span class="card-tag">INDEXED</span>
+          </div>
+          <div class="card-title">Apache 顶级项目数</div>
+          <div class="card-value">300+<span class="unit">个项目</span></div>
+          <div class="card-desc">// Apache 软件基金会托管超过 300 个顶级开源项目，是社区自治与透明治理的典范。</div>
+          <div class="card-bar"></div>
+        </div>
+
+      </div>
+
+      <div class="right-col">
+        <div class="right-header">
+          <span class="right-header-title">// COMMUNITY PRACTICES — 社区实践案例</span>
+          <span class="right-header-count">total: <span class="num">04</span> / entries</span>
+        </div>
+
+        <div class="case-list">
+
+          <div class="case-item">
+            <span class="case-icon">&gt;_ linux</span>
+            <div class="case-body">
+              <div class="case-title-row">
+                <span class="case-name">Linux 内核</span>
+                <span class="case-tag">OPEN</span>
+              </div>
+              <p class="case-desc">采用<span class="kw">开放协作模式</span>，全球数千开发者参与内核开发、驱动维护与安全补丁编写。</p>
+            </div>
+            <span class="case-num">[01]</span>
+          </div>
+
+          <div class="case-item">
+            <span class="case-icon">&gt;_ apache</span>
+            <div class="case-body">
+              <div class="case-title-row">
+                <span class="case-name">Apache 基金会</span>
+                <span class="case-tag">GOVERN</span>
+              </div>
+              <p class="case-desc">强调<span class="kw">社区治理</span>、共识决策与透明流程，以"meritocracy"机制驱动项目长期演进。</p>
+            </div>
+            <span class="case-num">[02]</span>
+          </div>
+
+          <div class="case-item">
+            <span class="case-icon">&gt;_ git</span>
+            <div class="case-body">
+              <div class="case-title-row">
+                <span class="case-name">Git 协作</span>
+                <span class="case-tag">DISTR</span>
+              </div>
+              <p class="case-desc"><span class="kw">分布式版本控制</span>天然符合去中心化伦理，每个节点独立、平等且可追溯。</p>
+            </div>
+            <span class="case-num">[03]</span>
+          </div>
+
+          <div class="case-item">
+            <span class="case-icon">&gt;_ coc</span>
+            <div class="case-body">
+              <div class="case-title-row">
+                <span class="case-name">行为准则</span>
+                <span class="case-tag">CODE</span>
+              </div>
+              <p class="case-desc">许多项目引入<span class="kw">贡献者公约</span>（Contributor Covenant），维护友善、包容的协作环境。</p>
+            </div>
+            <span class="case-num">[04]</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-zone">
+      <span class="footer-left"><span class="prompt-sym">$</span>echo "hacker_ethic &gt; institution"</span>
+      <div class="footer-keywords">
+        <span class="kw-item">开放治理</span>
+        <span class="kw-sep">·</span>
+        <span class="kw-item">代码审查</span>
+        <span class="kw-sep">·</span>
+        <span class="kw-item">行为准则</span>
+      </div>
+      <span class="footer-right">exit <span class="exit-code">0</span> ✓</span>
+    </div>
+
+  </div>
+
+  <div class="page-indicator"><span class="cur">▌</span>  03 / 03</div>
+</div>
+</body>
+</html>

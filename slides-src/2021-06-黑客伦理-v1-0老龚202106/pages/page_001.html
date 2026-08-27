@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>黑客伦理</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg-dark: #1E1E2E;
+  --silver: #B0BEC5;
+  --cyan: #00BCD4;
+  --cyan-dim: #00838F;
+  --text-dim: #546E7A;
+  --card-bg: #262637;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg-dark);
+  color: var(--silver);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #1E1E2E;
+}
+
+.bg-grid-h {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(0deg, transparent 0px, transparent 49px, rgba(0,188,212,0.04) 49px, rgba(0,188,212,0.04) 50px);
+}
+.bg-grid-v {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(90deg, transparent 0px, transparent 49px, rgba(0,188,212,0.04) 49px, rgba(0,188,212,0.04) 50px);
+}
+.bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(15,15,25,0.75) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px;
+  box-sizing: border-box;
+}
+
+.corner-mark {
+  position: absolute;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+.corner-mark.tl { top: 28px; left: 56px; }
+.corner-mark.tr { top: 28px; right: 56px; }
+.corner-mark.bl { bottom: 28px; left: 56px; }
+.corner-mark.br { bottom: 28px; right: 56px; }
+
+.cover-wrap {
+  display: grid;
+  grid-template-columns: 770px 1fr;
+  grid-template-rows: 1fr;
+  gap: 30px;
+  height: 100%;
+  padding-top: 18px;
+}
+
+.left-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.term-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-bottom: 28px;
+}
+.term-header .cyan { color: var(--cyan); }
+.term-header .dim { color: var(--text-dim); }
+
+.main-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 104px;
+  color: var(--silver);
+  letter-spacing: 14px;
+  line-height: 1.1;
+  margin-bottom: 22px;
+}
+.main-title .ch1 { color: var(--silver); }
+.main-title .ch2 { color: var(--cyan); text-shadow: 0 0 22px rgba(0,188,212,0.5); }
+.main-title .ch3 { color: var(--silver); }
+.main-title .ch4 { color: var(--cyan); text-shadow: 0 0 22px rgba(0,188,212,0.5); }
+
+.title-rule {
+  width: 220px;
+  height: 2px;
+  background: var(--cyan);
+  margin-bottom: 22px;
+  box-shadow: 0 0 12px rgba(0,188,212,0.6);
+}
+
+.subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 19px;
+  color: var(--cyan);
+  letter-spacing: 4px;
+  margin-bottom: 44px;
+  font-weight: 500;
+}
+.subtitle .arrow { color: var(--text-dim); margin-right: 10px; }
+.subtitle .sep { color: var(--text-dim); margin: 0 10px; }
+.subtitle .date { color: var(--silver); }
+
+.term-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(0,188,212,0.22);
+  border-left: 3px solid var(--cyan);
+  padding: 26px 28px 22px;
+  border-radius: 3px;
+  margin-bottom: 28px;
+  box-shadow: 0 0 24px rgba(0,188,212,0.06) inset;
+  position: relative;
+}
+
+.term-card::before {
+  content: 'INFO';
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: var(--cyan);
+  color: var(--bg-dark);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 2px;
+  letter-spacing: 1.5px;
+}
+
+.term-card-row {
+  display: flex;
+  align-items: baseline;
+  padding: 7px 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.term-card-row + .term-card-row {
+  border-top: 1px dashed rgba(176,190,197,0.1);
+}
+
+.term-card-row .prompt {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--cyan);
+  font-weight: 700;
+  margin-right: 14px;
+  white-space: nowrap;
+  font-size: 15px;
+}
+.term-card-row .label {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-dim);
+  margin-right: 14px;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.term-card-row .value {
+  color: var(--silver);
+  font-weight: 500;
+  font-size: 14.5px;
+}
+
+.narration {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  max-width: 720px;
+  letter-spacing: 0.4px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(176,190,197,0.08);
+}
+.narration .tag {
+  color: var(--cyan-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  margin-right: 10px;
+  letter-spacing: 1px;
+}
+.narration .em { color: var(--silver); }
+
+.right-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.hero-frame {
+  width: 720px;
+  height: 440px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-border {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+.hero-border.tl { top: -3px; left: -3px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.hero-border.tr { top: -3px; right: -3px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+.hero-border.bl { bottom: -3px; left: -3px; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.hero-border.br { bottom: -3px; right: -3px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+.hero-img {
+  width: 720px;
+  height: 402px;
+  object-fit: cover;
+  border: 1px solid rgba(0,188,212,0.25);
+  box-shadow: 0 0 30px rgba(0,188,212,0.12);
+}
+
+.hero-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 16px;
+  letter-spacing: 1.5px;
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.hero-caption .dot { color: var(--cyan); }
+.hero-caption .cy { color: var(--cyan); }
+.hero-caption .dim { color: var(--text-dim); }
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background: var(--cyan);
+  vertical-align: -2px;
+  margin-left: 5px;
+  animation: blink 1s step-end infinite;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid-h"></div>
+    <div class="bg-grid-v"></div>
+    <div class="bg-vignette"></div>
+  </div>
+  <div id="ct">
+    <div class="corner-mark tl"><span>// 系统就绪</span></div>
+    <div class="corner-mark tr"><span>// 协议初始化</span></div>
+    <div class="corner-mark bl"><span>[状态：在线]</span></div>
+    <div class="corner-mark br"><span>[渲染：活跃]</span></div>
+
+    <div class="cover-wrap">
+      <div class="left-col">
+        <div class="term-header"><span>$ <span class="cyan">cat</span> <span class="dim">黑客伦理.txt</span> </span><span class="cursor-blink"></span></div>
+
+        <h1 class="main-title">
+          <span class="ch1">黑</span><span class="ch2">客</span><span class="ch3">伦</span><span class="ch4">理</span>
+        </h1>
+        <div class="title-rule"></div>
+
+        <div class="subtitle">
+          <span class="arrow">▶</span><span>开源之书分享</span><span class="sep">·</span><span class="date">2021-06</span>
+        </div>
+
+        <div class="term-card">
+          <div class="term-card-row">
+            <span class="prompt">$</span>
+            <span class="label">share_by</span>
+            <span class="value">老龚，开源之道·适兕</span>
+          </div>
+          <div class="term-card-row">
+            <span class="prompt">$</span>
+            <span class="label">topic</span>
+            <span class="value">从黑客伦理看开源精神的内核</span>
+          </div>
+          <div class="term-card-row">
+            <span class="prompt">$</span>
+            <span class="label">version</span>
+            <span class="value">V1.0，2021年6月制作</span>
+          </div>
+        </div>
+
+        <div class="narration">
+          <span class="tag">// 叙事</span><span>围绕《</span><span class="em">黑客伦理</span><span>》展开，探讨黑客文化如何塑造开源社区的价值观与行动准则，为开发者提供思想底色。</span>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="hero-frame">
+          <div class="hero-border tl"></div>
+          <div class="hero-border tr"></div>
+          <div class="hero-border bl"></div>
+          <div class="hero-border br"></div>
+          <img class="hero-img" src="../images/page_001_hero.png" alt="暗黑终端美学下的抽象代码雨画面，青蓝色发光字符从深空中垂直坠落，银色光束斜穿画面，中心隐约可见发光的命令提示框边框，带有故障艺术质感">
+        </div>
+        <div class="hero-caption">
+          <span><span class="cy">$</span> <span class="dim">vis_mode</span> = <span class="cy">active</span></span>
+          <span><span class="dot">●</span> 2752 × 1536</span>
+          <span><span class="dim">glitch://</span><span class="cy">matrix</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
