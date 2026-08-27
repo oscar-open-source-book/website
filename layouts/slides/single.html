@@ -69,9 +69,6 @@
   width:1280px; max-width:100%; height:720px;
   display:block; margin:0 auto; border:none; border-radius:8px;
   background:#F3EDE0;
-  transform-origin: center top;
-  will-change: transform;
-  transform: scale(0.8);
 }
 #deck-section[data-fs="1"] .slide-iframe {
   transform: none !important;
@@ -179,6 +176,36 @@ document.addEventListener('keydown', e => {
   else if (e.key == 'End') goTo(total);
   else if (e.key == 'Escape' && fs) toggleFS();
 });
+
+// Inject scale CSS into each slide iframe so internal 1600x900 content
+// shrinks to 1280x720 (non-fullscreen). Fullscreen: no scale.
+function scaleIFrameContent() {
+  const fs = document.fullscreenElement || document.webkitFullscreenElement;
+  document.querySelectorAll('.slide-iframe').forEach(ifr => {
+    try {
+      const doc = ifr.contentDocument;
+      if (!doc) return;
+      if (doc.getElementById('os-slide-scale')) {
+        if (fs) doc.getElementById('os-slide-scale').remove();
+        return;
+      }
+      if (!fs) {
+        const st = doc.createElement('style');
+        st.id = 'os-slide-scale';
+        st.textContent = `html,body{margin:0;padding:0;}body{transform-origin:top left;transform:scale(0.8);width:2000px;height:1125px;}`;
+        doc.head.appendChild(st);
+      }
+    } catch(e) {}
+  });
+}
+
+document.querySelectorAll('.slide-iframe').forEach(ifr => {
+  ifr.addEventListener('load', scaleIFrameContent);
+});
+scaleIFrameContent();
+
+document.addEventListener('fullscreenchange', () => { scaleIFrameContent(); });
+document.addEventListener('webkitfullscreenchange', () => { scaleIFrameContent(); });
 
 show(localStorage.getItem('slide-{{ $deckId }}') ? parseInt(localStorage.getItem('slide-{{ $deckId }}')) : 1);
 </script>
