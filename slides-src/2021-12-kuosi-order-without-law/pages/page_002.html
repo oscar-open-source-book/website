@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一章·开源精神的源头</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --gray: #607D8B;
+  --dark-bg: #0a0f1a;
+  --text-main: #e8f0f8;
+  --text-dim: #8fa8bd;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url('../images/page_002_section_bg.png') center/cover no-repeat;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10,15,26,0.72) 0%, rgba(10,15,26,0.55) 40%, rgba(10,15,26,0.68) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.chapter-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(33,150,243,0.25);
+}
+
+.chapter-number {
+  font-family: 'Roboto Mono', 'Inter', monospace;
+  font-weight: 700;
+  font-size: 148px;
+  line-height: 0.9;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -4px;
+  flex-shrink: 0;
+  text-shadow: 0 0 60px rgba(33,150,243,0.3);
+}
+
+.header-text {
+  flex: 1;
+  padding-top: 18px;
+}
+
+.chapter-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--cyan);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+.chapter-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 1.15;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.chapter-subtitle {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  max-width: 720px;
+  letter-spacing: 0.5px;
+}
+
+/* Main body */
+.main-body {
+  flex: 1;
+  display: flex;
+  gap: 48px;
+  padding-top: 32px;
+  padding-bottom: 24px;
+}
+
+.left-col {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stat-block {
+  padding: 18px 22px;
+  border-left: 2px solid var(--primary);
+  background: rgba(33,150,243,0.06);
+  backdrop-filter: blur(4px);
+}
+
+.stat-block .stat-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.stat-block .stat-unit {
+  font-size: 14px;
+  color: var(--cyan);
+  margin-left: 4px;
+}
+
+.stat-block .stat-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+.timeline-bar {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px;
+  border: 1px solid rgba(0,188,212,0.2);
+  background: rgba(0,188,212,0.04);
+}
+
+.timeline-bar .tl-title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+}
+
+.timeline-bar .tl-bar {
+  height: 4px;
+  background: rgba(33,150,243,0.15);
+  position: relative;
+  border-radius: 2px;
+}
+
+.timeline-bar .tl-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 72%;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+  border-radius: 2px;
+}
+
+.timeline-bar .tl-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: 'Roboto Mono', monospace;
+}
+
+.right-col {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 18px;
+}
+
+.point-card {
+  position: relative;
+  padding: 20px 22px;
+  background: rgba(10,15,26,0.55);
+  border: 1px solid rgba(33,150,243,0.18);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.point-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+}
+
+.point-card::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.12) 0%, transparent 70%);
+}
+
+.point-index {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+
+.point-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.3;
+  letter-spacing: 0.3px;
+}
+
+.point-desc {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 0.2px;
+}
+
+.point-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.point-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border: 1px solid rgba(0,188,212,0.3);
+  color: var(--cyan);
+  font-family: 'Roboto Mono', monospace;
+  letter-spacing: 1px;
+  border-radius: 2px;
+}
+
+/* Footer narrative */
+.narrative {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 28px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.1) 0%, rgba(0,188,212,0.05) 100%);
+  border-top: 1px solid rgba(33,150,243,0.2);
+  border-bottom: 1px solid rgba(33,150,243,0.1);
+}
+
+.narrative-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+.narrative-text {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+.narrative-text strong {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Decorative elements */
+.corner-deco {
+  position: absolute;
+  z-index: 1;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: rgba(96,125,139,0.6);
+  letter-spacing: 2px;
+}
+
+.corner-tl { top: 20px; left: 24px; }
+.corner-tr { top: 20px; right: 24px; }
+.corner-br { bottom: 12px; right: 24px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="corner-deco corner-tl">CHAPTER / 01 — OPEN SOURCE ORIGIN</div>
+    <div class="corner-deco corner-tr">// SYSTEM ONLINE</div>
+
+    <div class="chapter-header">
+      <div class="chapter-number"><span>01</span></div>
+      <div class="header-text">
+        <div class="chapter-label">CHAPTER ONE</div>
+        <div class="chapter-title"><span>开源精神的源头</span></div>
+        <div class="chapter-subtitle"><span>从自由软件到开放协作：一场持续三十年的对话</span></div>
+      </div>
+    </div>
+
+    <div class="main-body">
+      <div class="left-col">
+        <div class="stat-block">
+          <div><span class="stat-num">1983</span><span class="stat-unit">起</span></div>
+          <div class="stat-desc">自由软件运动发端，Stallman 创建 GNU 计划</div>
+        </div>
+        <div class="stat-block">
+          <div><span class="stat-num">1998</span><span class="stat-unit">·里程碑</span></div>
+          <div class="stat-desc">开源促进会成立，方法论重塑运动路径</div>
+        </div>
+        <div class="timeline-bar">
+          <div class="tl-title">// TIMELINE</div>
+          <div class="tl-bar"><div class="tl-fill"></div></div>
+          <div class="tl-labels"><span>1983</span><span>2024</span></div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="point-card">
+          <div class="point-index">// 01</div>
+          <div class="point-title"><span>自由与开放的分野</span></div>
+          <div class="point-desc">自由软件强调用户权利，开源软件强调方法论——两者殊途同归，共同构筑了开放生态的价值基石。</div>
+          <div class="point-tags">
+            <span class="point-tag">FSF</span>
+            <span class="point-tag">OSI</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-index">// 02</div>
+          <div class="point-title"><span>GPL 与 Apache 的博弈</span></div>
+          <div class="point-desc">Copyleft 与宽松许可之间的张力，塑造了整个开源生态的许可证格局与商业兼容策略。</div>
+          <div class="point-tags">
+            <span class="point-tag">COPYLEFT</span>
+            <span class="point-tag">PERMISSIVE</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-index">// 03</div>
+          <div class="point-title"><span>社区文化的延续</span></div>
+          <div class="point-desc">从 Linus 的邮件列表到今天的 GitHub Issue，开放协作的基因一脉相承，跨越三代技术人的接力。</div>
+          <div class="point-tags">
+            <span class="point-tag">Mailing List</span>
+            <span class="point-tag">GitHub</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-index">// 04</div>
+          <div class="point-title"><span>中国的开源之路</span></div>
+          <div class="point-desc">中国开发者从追赶到参与再到引领，角色转变标志着全球开源版图的重构与新平衡的形成。</div>
+          <div class="point-tags">
+            <span class="point-tag">CLOUD NATIVE</span>
+            <span class="point-tag">LEAD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="narrative-icon"><span>&#9654;</span></div>
+      <div class="narrative-text">
+        <span>开源运动的起点是<strong>自由软件</strong>，但真正推动其走向大众的，是开源促进会提出的<strong>工程方法论</strong>。三十年间，许可证之争、治理模式之争从未停歇，而<strong>中国力量</strong>正逐渐成为不可忽视的一极。</span>
+      </div>
+    </div>
+
+    <div class="corner-deco corner-br">END OF SECTION HEADER // v1.0</div>
+  </div>
+</div>
+</body>
+</html>

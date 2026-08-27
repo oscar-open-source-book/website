@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源安全与供应链</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --slate:#607D8B;
+  --bg-dark:#0A1628;
+  --bg-card:#0F2038;
+  --bg-card2:#132840;
+  --text-main:#E8EFF7;
+  --text-dim:#94A3B8;
+  --danger:#FF5252;
+  --line:#1E3A5F;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:var(--text-main);background:var(--bg-dark);overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#0A1628 0%,#0E1E36 40%,#0A1628 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(33,150,243,0.08) 0%,transparent 55%),radial-gradient(ellipse at 85% 75%,rgba(0,188,212,0.06) 0%,transparent 50%);}
+#bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(96,125,139,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(96,125,139,0.06) 1px,transparent 1px);background-size:48px 48px;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 56px 40px;display:flex;flex-direction:column;}
+
+.header{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-bar{width:5px;height:52px;background:linear-gradient(180deg,var(--cyan),var(--primary));border-radius:3px;}
+.title-wrap h1{font-family:'Inter',sans-serif;font-weight:800;font-size:38px;letter-spacing:1px;background:linear-gradient(90deg,#E8EFF7 0%,#60BCFF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.title-mono{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:2px;padding:5px 10px;border:1px solid rgba(0,188,212,0.3);border-radius:4px;background:rgba(0,188,212,0.06);}
+.subtitle{font-size:14px;color:var(--text-dim);line-height:1.7;max-width:1360px;font-weight:400;}
+.subtitle strong{color:var(--text-main);font-weight:600;}
+
+.main{flex:1;display:grid;grid-template-columns:600px 1fr;gap:36px;min-height:0;}
+
+/* LEFT */
+.left{display:flex;flex-direction:column;gap:10px;min-height:0;}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;}
+.card{background:linear-gradient(135deg,var(--bg-card) 0%,var(--bg-card2) 100%);border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden;}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary);}
+.card.cyan::before{background:var(--cyan);}
+.card.danger::before{background:var(--danger);}
+.card-num{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--slate);letter-spacing:1.5px;margin-bottom:4px;}
+.card-title{font-size:13.5px;font-weight:700;color:var(--text-main);margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.card-title .dot{width:6px;height:6px;border-radius:50%;background:var(--primary);}
+.card.cyan .card-title .dot{background:var(--cyan);}
+.card.danger .card-title .dot{background:var(--danger);}
+.card-text{font-size:11.5px;color:var(--text-dim);line-height:1.6;font-weight:400;}
+.card-text b{color:var(--text-main);font-weight:600;}
+
+/* DATA */
+.data-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+.data-box{background:linear-gradient(135deg,rgba(33,150,243,0.10) 0%,rgba(0,188,212,0.06) 100%);border:1px solid rgba(33,150,243,0.3);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;}
+.data-box::after{content:"";position:absolute;right:-30px;bottom:-30px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.15),transparent 70%);}
+.data-label{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:1.5px;margin-bottom:6px;}
+.data-value{font-size:32px;font-weight:800;color:var(--primary);line-height:1;font-family:'Inter',sans-serif;}
+.data-value .unit{font-size:16px;font-weight:600;color:var(--cyan);margin-left:4px;}
+.data-desc{font-size:11px;color:var(--text-dim);margin-top:6px;line-height:1.5;}
+
+/* RIGHT */
+.right{display:flex;flex-direction:column;min-height:0;}
+.diagram-wrap{flex:1;background:linear-gradient(135deg,#0B1A2E 0%,#0F2238 100%);border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.diagram-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.diagram-title .lt{display:flex;align-items:center;gap:10px;}
+.diagram-title h3{font-size:14px;font-weight:700;color:var(--text-main);}
+.diagram-title .lt-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);}
+.legend{display:flex;gap:14px;font-size:10.5px;color:var(--text-dim);}
+.legend-item{display:flex;align-items:center;gap:5px;}
+.legend-swatch{width:12px;height:8px;border-radius:2px;}
+.legend-swatch.safe{background:var(--primary);}
+.legend-swatch.warn{background:var(--danger);}
+.legend-swatch.link{background:var(--cyan);height:2px;width:16px;border-radius:1px;}
+.diagram-svg{flex:1;width:100%;}
+
+/* FOOTER */
+.footer{margin-top:18px;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:linear-gradient(90deg,rgba(33,150,243,0.08) 0%,rgba(0,188,212,0.06) 100%);border:1px solid rgba(33,150,243,0.2);border-radius:8px;}
+.footer-left{display:flex;align-items:center;gap:12px;}
+.footer-icon{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#0A1628;}
+.footer-text{font-size:14px;color:var(--text-main);font-weight:500;letter-spacing:0.5px;}
+.footer-text .accent{color:var(--cyan);font-weight:600;}
+.footer-meta{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--slate);letter-spacing:1.5px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"><div id="bg-grid"></div></div>
+<div id="ct">
+
+<div class="header">
+  <div class="title-row">
+    <div class="title-bar"></div>
+    <div class="title-wrap"><h1>开源安全与供应链</h1></div>
+    <span class="title-mono">// OPEN_SOURCE_SECURITY · 2021</span>
+  </div>
+  <p class="subtitle">2021年的两次重大安全事件让"开源安全"从<strong>抽象概念</strong>变成<strong>具体工程需求</strong>——供应链透明化、代码签名和依赖审计从<strong>可选</strong>变成了<strong>必选</strong>。</p>
+</div>
+
+<div class="main">
+
+  <div class="left">
+    <div class="cards">
+      <div class="card danger">
+        <div class="card-num">// 01</div>
+        <div class="card-title"><span class="dot"></span>SolarWinds警钟</div>
+        <div class="card-text">2020年底的<b>SolarWinds供应链攻击</b>让开源依赖链成为<b>国家安全议题</b>，软件供应链被正式纳入国家战略视野。</div>
+      </div>
+      <div class="card danger">
+        <div class="card-num">// 02</div>
+        <div class="card-title"><span class="dot"></span>Log4j零日漏洞</div>
+        <div class="card-text">2021年底<b>Log4Shell</b>漏洞波及全球，暴露了广泛依赖单一组件带来的<b>系统性风险</b>与修复难度。</div>
+      </div>
+      <div class="card cyan">
+        <div class="card-num">// 03</div>
+        <div class="card-title"><span class="dot"></span>SBOM与透明化</div>
+        <div class="card-text"><b>软件物料清单</b>成为标配，让依赖链<b>可见、可审计、可追溯</b>，透明化成为供应链治理的基石。</div>
+      </div>
+      <div class="card">
+        <div class="card-num">// 04</div>
+        <div class="card-title"><span class="dot"></span>Sigstore与签名</div>
+        <div class="card-text"><b>代码签名</b>与供应链验证工具链成熟，<b>"信任但验证"</b>成为新范式，身份与完整性并重。</div>
+      </div>
+    </div>
+
+    <div class="data-row">
+      <div class="data-box">
+        <div class="data-label">// LOG4J_IMPACT</div>
+        <div class="data-value">数亿<span class="unit">系统</span></div>
+        <div class="data-desc">全球受Log4Shell漏洞波及的系统规模</div>
+      </div>
+      <div class="data-box">
+        <div class="data-label">// SBOM_ADOPTION</div>
+        <div class="data-value">27<span class="unit">%</span></div>
+        <div class="data-desc">2021年企业开始采用SBOM的比例</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="diagram-wrap">
+      <div class="diagram-title">
+        <div class="lt">
+          <span class="lt-dot"></span>
+          <h3>软件供应链依赖链示意图</h3>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-swatch safe"></span>安全节点</div>
+          <div class="legend-item"><span class="legend-swatch warn"></span>风险点</div>
+          <div class="legend-item"><span class="legend-swatch link"></span>依赖流</div>
+        </div>
+      </div>
+      <svg class="diagram-svg" viewBox="0 0 860 500" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#2196F3"/>
+          </marker>
+          <marker id="arrowCyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#00BCD4"/>
+          </marker>
+          <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#FF5252"/>
+          </marker>
+          <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glowRed"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- Layer labels -->
+        <text x="20" y="45" fill="#607D8B" font-size="11" font-family="Roboto Mono" letter-spacing="2">LAYER 01 · 上游</text>
+        <text x="20" y="200" fill="#607D8B" font-size="11" font-family="Roboto Mono" letter-spacing="2">LAYER 02 · 构建</text>
+        <text x="20" y="360" fill="#607D8B" font-size="11" font-family="Roboto Mono" letter-spacing="2">LAYER 03 · 分发</text>
+
+        <!-- Layer guides -->
+        <line x1="130" y1="30" x2="840" y2="30" stroke="#1E3A5F" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="130" y1="185" x2="840" y2="185" stroke="#1E3A5F" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="130" y1="345" x2="840" y2="345" stroke="#1E3A5F" stroke-width="1" stroke-dasharray="4 4"/>
+
+        <!-- Arrows LAYER 1 -->
+        <line x1="238" y1="90" x2="298" y2="90" stroke="#FF5252" stroke-width="2" marker-end="url(#arrowRed)" filter="url(#glowRed)"/>
+        <line x1="498" y1="90" x2="558" y2="90" stroke="#FF5252" stroke-width="2" marker-end="url(#arrowRed)" filter="url(#glowRed)"/>
+
+        <!-- Arrows L1 -> L2 -->
+        <path d="M200,120 C200,150 260,150 260,180" stroke="#2196F3" stroke-width="1.8" fill="none" marker-end="url(#arrowBlue)"/>
+        <path d="M400,120 C400,150 370,150 370,180" stroke="#2196F3" stroke-width="1.8" fill="none" marker-end="url(#arrowBlue)"/>
+        <path d="M620,120 C620,150 570,150 570,180" stroke="#2196F3" stroke-width="1.8" fill="none" marker-end="url(#arrowBlue)"/>
+
+        <!-- Arrows LAYER 2 -->
+        <line x1="322" y1="250" x2="382" y2="250" stroke="#2196F3" stroke-width="2" marker-end="url(#arrowBlue)"/>
+        <line x1="502" y1="250" x2="562" y2="250" stroke="#2196F3" stroke-width="2" marker-end="url(#arrowBlue)"/>
+
+        <!-- Arrows L2 -> L3 -->
+        <path d="M400,280 C400,310 260,310 260,345" stroke="#00BCD4" stroke-width="1.8" fill="none" marker-end="url(#arrowCyan)"/>
+        <path d="M400,280 C400,310 400,310 400,345" stroke="#00BCD4" stroke-width="1.8" fill="none" marker-end="url(#arrowCyan)"/>
+        <path d="M620,280 C620,310 540,310 540,345" stroke="#00BCD4" stroke-width="1.8" fill="none" marker-end="url(#arrowCyan)"/>
+        <path d="M740,280 C740,310 740,310 740,345" stroke="#00BCD4" stroke-width="1.8" fill="none" marker-end="url(#arrowCyan)"/>
+
+        <!-- Arrows LAYER 3 -->
+        <line x1="312" y1="410" x2="372" y2="410" stroke="#00BCD4" stroke-width="2" marker-end="url(#arrowCyan)"/>
+        <line x1="492" y1="410" x2="552" y2="410" stroke="#00BCD4" stroke-width="2" marker-end="url(#arrowCyan)"/>
+
+        <!-- NODE LAYER 1: 开源组件 (RED) -->
+        <g filter="url(#glowRed)">
+          <rect x="80" y="60" width="158" height="60" rx="10" fill="#1A1020" stroke="#FF5252" stroke-width="1.8"/>
+        </g>
+        <text x="159" y="82" fill="#FF5252" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">开源组件</text>
+        <text x="159" y="102" fill="#FF8A8A" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">SOLARWINDS · 风险</text>
+
+        <!-- NODE LAYER 1: 第三方库 (RED) -->
+        <g filter="url(#glowRed)">
+          <rect x="300" y="60" width="158" height="60" rx="10" fill="#1A1020" stroke="#FF5252" stroke-width="1.8"/>
+        </g>
+        <text x="379" y="82" fill="#FF5252" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">第三方库</text>
+        <text x="379" y="102" fill="#FF8A8A" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">LOG4J · 风险</text>
+
+        <!-- NODE LAYER 1: 代码仓库 -->
+        <rect x="560" y="60" width="160" height="60" rx="10" fill="#0F2038" stroke="#2196F3" stroke-width="1.5"/>
+        <text x="640" y="82" fill="#E8EFF7" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">代码仓库</text>
+        <text x="640" y="102" fill="#607D8B" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">GITHUB · GERRIT</text>
+
+        <!-- NODE LAYER 1: 贡献者 -->
+        <rect x="740" y="60" width="100" height="60" rx="10" fill="#0F2038" stroke="#2196F3" stroke-width="1.5"/>
+        <text x="790" y="82" fill="#E8EFF7" font-size="12" font-weight="700" font-family="Inter" text-anchor="middle">贡献者</text>
+        <text x="790" y="102" fill="#607D8B" font-size="9" font-family="Roboto Mono" text-anchor="middle">MAINTAINER</text>
+
+        <!-- NODE LAYER 2: 构建系统 -->
+        <rect x="180" y="180" width="142" height="60" rx="10" fill="#0F2038" stroke="#2196F3" stroke-width="1.5"/>
+        <text x="251" y="204" fill="#E8EFF7" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">构建系统</text>
+        <text x="251" y="224" fill="#607D8B" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">MAVEN · GRADLE</text>
+
+        <!-- NODE LAYER 2: 包管理 (RED) -->
+        <g filter="url(#glowRed)">
+          <rect x="380" y="180" width="122" height="60" rx="10" fill="#1A1020" stroke="#FF5252" stroke-width="1.8"/>
+        </g>
+        <text x="441" y="204" fill="#FF5252" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">包仓库</text>
+        <text x="441" y="224" fill="#FF8A8A" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">NPM · PYPI</text>
+
+        <!-- NODE LAYER 2: CI/CD -->
+        <rect x="560" y="180" width="160" height="60" rx="10" fill="#0F2038" stroke="#2196F3" stroke-width="1.5"/>
+        <text x="640" y="204" fill="#E8EFF7" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">CI/CD 流水线</text>
+        <text x="640" y="224" fill="#607D8B" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">GITHUB ACTIONS</text>
+
+        <!-- NODE LAYER 2: 签名验证 -->
+        <rect x="740" y="180" width="100" height="60" rx="10" fill="#0F2038" stroke="#00BCD4" stroke-width="1.5"/>
+        <text x="790" y="202" fill="#00BCD4" font-size="12" font-weight="700" font-family="Inter" text-anchor="middle">签名验证</text>
+        <text x="790" y="224" fill="#607D8B" font-size="9" font-family="Roboto Mono" text-anchor="middle">SIGSTORE</text>
+
+        <!-- NODE LAYER 3: SBOM -->
+        <rect x="180" y="345" width="132" height="60" rx="10" fill="#0F2038" stroke="#00BCD4" stroke-width="1.5"/>
+        <text x="246" y="369" fill="#00BCD4" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">SBOM 清单</text>
+        <text x="246" y="389" fill="#607D8B" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">SPDX · CYCLUS</text>
+
+        <!-- NODE LAYER 3: 分发包 -->
+        <rect x="372" y="345" width="120" height="60" rx="10" fill="#0F2038" stroke="#2196F3" stroke-width="1.5"/>
+        <text x="432" y="369" fill="#E8EFF7" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">分发包</text>
+        <text x="432" y="389" fill="#607D8B" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">CONTAINER · BIN</text>
+
+        <!-- NODE LAYER 3: 部署 -->
+        <rect x="552" y="345" width="120" height="60" rx="10" fill="#0F2038" stroke="#2196F3" stroke-width="1.5"/>
+        <text x="612" y="369" fill="#E8EFF7" font-size="13" font-weight="700" font-family="Inter" text-anchor="middle">部署环境</text>
+        <text x="612" y="389" fill="#607D8B" font-size="9.5" font-family="Roboto Mono" text-anchor="middle">K8S · CLOUD</text>
+
+        <!-- NODE LAYER 3: 运行 -->
+        <rect x="740" y="345" width="100" height="60" rx="10" fill="#0F2038" stroke="#00BCD4" stroke-width="1.5"/>
+        <text x="790" y="369" fill="#00BCD4" font-size="12" font-weight="700" font-family="Inter" text-anchor="middle">运行</text>
+        <text x="790" y="389" fill="#607D8B" font-size="9" font-family="Roboto Mono" text-anchor="middle">RUNTIME</text>
+
+        <!-- End node: 终端 -->
+        <rect x="320" y="445" width="220" height="42" rx="21" fill="#132840" stroke="#00BCD4" stroke-width="1.5"/>
+        <text x="430" y="462" fill="#00BCD4" font-size="11" font-weight="600" font-family="Inter" text-anchor="middle">↓</text>
+        <text x="430" y="478" fill="#E8EFF7" font-size="12" font-weight="600" font-family="Inter" text-anchor="middle">终端用户系统</text>
+        <path d="M430,405 L430,443" stroke="#00BCD4" stroke-width="1.8" fill="none" marker-end="url(#arrowCyan)"/>
+
+        <!-- Floating particles -->
+        <circle cx="50" cy="150" r="2" fill="#2196F3" opacity="0.5"/>
+        <circle cx="820" cy="120" r="1.5" fill="#00BCD4" opacity="0.5"/>
+        <circle cx="100" cy="300" r="2" fill="#00BCD4" opacity="0.4"/>
+        <circle cx="830" cy="300" r="1.5" fill="#2196F3" opacity="0.4"/>
+      </svg>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <div class="footer-icon">✦</div>
+    <span class="footer-text">开源生态正在构建自己的<span class="accent">免疫系统</span>——从透明化到签名验证，从审计到零信任。</span>
+  </div>
+  <span class="footer-meta">SUPPLY_CHAIN_SECURITY · 2021</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

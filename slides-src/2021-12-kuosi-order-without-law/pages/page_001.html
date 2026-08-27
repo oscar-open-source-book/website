@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源布道与阅读分享</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #607D8B;
+  --bg-dark: #060B18;
+  --text-main: #FFFFFF;
+  --text-dim: #B0BEC5;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.bg-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(6,11,24,0.88) 0%, rgba(6,11,24,0.65) 40%, rgba(6,11,24,0.55) 70%, rgba(6,11,24,0.78) 100%);
+}
+.bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(6,11,24,0.55) 90%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--neutral);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.top-bar .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+}
+.headline-wrap {
+  margin-top: 70px;
+  text-align: center;
+  position: relative;
+}
+.issue-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 22px;
+  border: 1px solid rgba(33,150,243,0.35);
+  border-radius: 30px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  background: rgba(33,150,243,0.06);
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+.issue-tag .tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.main-title {
+  font-size: 96px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  line-height: 1.1;
+  background: linear-gradient(180deg, #FFFFFF 0%, #E3F2FD 50%, #90CAF9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  margin-bottom: 24px;
+  position: relative;
+  display: inline-block;
+}
+.title-underline {
+  width: 180px;
+  height: 3px;
+  margin: 0 auto 24px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  border-radius: 2px;
+}
+.subtitle {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-dim);
+  letter-spacing: 4px;
+}
+.subtitle .sep {
+  color: var(--primary);
+  margin: 0 12px;
+  font-weight: 600;
+}
+.subtitle .highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.three-cols {
+  margin-top: auto;
+  margin-bottom: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+}
+.col-card {
+  position: relative;
+  padding: 24px 24px 26px;
+  background: linear-gradient(160deg, rgba(33,150,243,0.08) 0%, rgba(0,188,212,0.04) 100%);
+  border: 1px solid rgba(33,150,243,0.18);
+  border-radius: 4px;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+.col-index {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--neutral);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.col-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.col-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.col-num {
+  position: absolute;
+  right: 16px;
+  bottom: 8px;
+  font-size: 42px;
+  font-weight: 900;
+  color: rgba(33,150,243,0.08);
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.footer-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(96,125,139,0.2);
+}
+.footer-narrative {
+  flex: 1;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--text-dim);
+  font-weight: 300;
+  max-width: 900px;
+}
+.footer-narrative .em {
+  color: var(--primary);
+  font-weight: 500;
+}
+.footer-narrative .em2 {
+  color: var(--accent);
+  font-weight: 500;
+}
+.footer-tag {
+  flex-shrink: 0;
+  text-align: right;
+}
+.footer-tag .vol {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.footer-tag .vol-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--neutral);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.footer-tag .keywords {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 20px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.keywords .k-sep {
+  color: var(--neutral);
+  font-weight: 300;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_001_hero.png" alt="深色背景上的蓝色发光开源网络节点图">
+    <div class="bg-overlay"></div>
+    <div class="bg-vignette"></div>
+  </div>
+  <div id="ct">
+    <div class="top-bar">
+      <div class="brand"><span class="brand-dot"></span><span>开源之道 &nbsp;|&nbsp; OSS WAY</span></div>
+      <div><span>ISSUE 2021 · 12 &nbsp;|&nbsp; COVER</span></div>
+    </div>
+
+    <div class="headline-wrap">
+      <div class="issue-tag"><span class="tag-dot"></span><span>OPEN SOURCE · MONTHLY</span></div>
+      <h1 class="main-title">开源布道与阅读分享</h1>
+      <div class="title-underline"></div>
+      <p class="subtitle">开源之道<span class="sep">·</span>适兕 2021年12月<span class="sep">·</span><span class="highlight">混沌中的秩序</span></p>
+    </div>
+
+    <div class="three-cols">
+      <div class="col-card">
+        <div class="col-index"><span>01</span></div>
+        <div class="col-title"><span>以开源为路径</span></div>
+        <div class="col-desc"><span>透过共读与分享，连接每一位在自由与协作中探索的实践者，让开源精神成为通往技术未来的桥梁。</span></div>
+        <div class="col-num">01</div>
+      </div>
+      <div class="col-card">
+        <div class="col-index"><span>02</span></div>
+        <div class="col-title"><span>混沌与秩序之间</span></div>
+        <div class="col-desc"><span>在无政府式的协作中寻找规则，在无规则的自由中建立信任，探索开源治理的深层逻辑。</span></div>
+        <div class="col-num">02</div>
+      </div>
+      <div class="col-card">
+        <div class="col-index"><span>03</span></div>
+        <div class="col-title"><span>2021年终回望</span></div>
+        <div class="col-desc"><span>回望过去一年开源实践、阅读记录与社区温度，铭记那些推动行业前行的时刻与人物。</span></div>
+        <div class="col-num">03</div>
+      </div>
+    </div>
+
+    <div class="footer-wrap">
+      <p class="footer-narrative">
+        <span>本期开源之道以<span class="em">"秩序与无律"</span>为主题，探讨开源世界如何在<span class="em2">自发协作与显性规则</span>之间找到平衡，记录 2021 年开源社区中值得铭记的时刻与人物。</span>
+      </p>
+      <div class="footer-tag">
+        <div class="vol-label"><span>VOLUME</span></div>
+        <div class="vol">VOL. 2021-12</div>
+        <div class="keywords"><span>混沌</span><span class="k-sep">·</span><span>秩序</span><span class="k-sep">·</span><span>无律</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

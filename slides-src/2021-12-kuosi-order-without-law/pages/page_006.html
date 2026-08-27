@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2021年开源生态数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #607D8B;
+  --bg-dark: #0a0e1a;
+  --bg-card: #10162a;
+  --bg-card-border: rgba(33, 150, 243, 0.25);
+  --text-main: #e8eaf6;
+  --text-sub: #90a4ae;
+  --glow-primary: rgba(33, 150, 243, 0.6);
+  --glow-accent: rgba(0, 188, 212, 0.6);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% 10%, rgba(33, 150, 243, 0.18), transparent 60%),
+    radial-gradient(ellipse 800px 600px at 85% 90%, rgba(0, 188, 212, 0.14), transparent 60%),
+    radial-gradient(ellipse 500px 400px at 60% 45%, rgba(33, 150, 243, 0.06), transparent 70%),
+    linear-gradient(160deg, #060a14 0%, #0a0e1a 40%, #0d1220 100%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 38px 56px 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.title {
+  font-family: 'Roboto Mono', 'Inter', monospace;
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #e8eaf6 0%, #2196F3 50%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(33, 150, 243, 0.3);
+  line-height: 1.1;
+}
+.title-badge {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border: 1px solid rgba(0, 188, 212, 0.5);
+  border-radius: 20px;
+  color: var(--accent);
+  background: rgba(0, 188, 212, 0.08);
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px var(--glow-accent);
+}
+.subtitle {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-sub);
+  max-width: 1380px;
+  padding-left: 4px;
+  border-left: 3px solid var(--primary);
+  padding-left: 16px;
+}
+.subtitle strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Main content */
+.main {
+  display: flex;
+  gap: 22px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* KPI Grid */
+.kpi-grid {
+  width: 680px;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+}
+.kpi-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(16, 22, 42, 0.95), rgba(10, 14, 26, 0.9));
+  border: 1px solid var(--bg-card-border);
+  border-radius: 14px;
+  padding: 18px 20px 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  opacity: 0.8;
+}
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.15), transparent 70%);
+  pointer-events: none;
+}
+.kpi-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--neutral);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  font-family: 'Roboto Mono', monospace;
+}
+.kpi-value {
+  font-family: 'Roboto Mono', 'Inter', monospace;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 0 18px var(--glow-primary);
+  margin-bottom: 6px;
+}
+.kpi-value .unit {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-left: 2px;
+  text-shadow: 0 0 10px var(--glow-accent);
+}
+.kpi-desc {
+  font-size: 11.5px;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+.kpi-tag {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 9px;
+  color: var(--accent);
+  opacity: 0.5;
+  letter-spacing: 0.5px;
+}
+
+/* Chart section */
+.chart-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, rgba(16, 22, 42, 0.85), rgba(10, 14, 26, 0.85));
+  border: 1px solid var(--bg-card-border);
+  border-radius: 14px;
+  padding: 16px 18px 12px;
+  position: relative;
+  overflow: hidden;
+}
+.chart-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--primary), transparent);
+  opacity: 0.7;
+}
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.chart-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chart-title .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--glow-accent);
+}
+.chart-meta {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--neutral);
+  letter-spacing: 0.5px;
+}
+#chart_1 {
+  width: 100%;
+  height: 280px;
+}
+
+/* Bottom tag cloud */
+.tag-cloud {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+.tag-item {
+  position: relative;
+  background: linear-gradient(140deg, rgba(33, 150, 243, 0.08), rgba(0, 188, 212, 0.04));
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-radius: 10px;
+  padding: 12px 14px 11px;
+  overflow: hidden;
+}
+.tag-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow: 0 0 8px var(--glow-primary);
+}
+.tag-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  text-shadow: 0 0 6px var(--glow-accent);
+}
+.tag-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+.tag-desc {
+  font-size: 10.5px;
+  color: var(--text-sub);
+  line-height: 1.55;
+}
+
+/* Decorative elements */
+.deco-line {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(33, 150, 243, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="grid-lines"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title">2021年开源生态数据</div>
+        <div class="title-badge">ANNUAL REPORT · 2021</div>
+      </div>
+      <div class="subtitle">
+        2021 年是开源生态加速分化的关键一年，<strong>AI 开源浪潮</strong>重塑技术格局，<strong>供应链安全焦虑</strong>推动合规工具普及，<strong>中国企业</strong>从使用者转变为建设者，中国力量正在重新定义全球开源版图。
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label"><span>全球贡献者</span></div>
+          <div class="kpi-value"><span>1.5<span class="unit">亿+</span></span></div>
+          <div class="kpi-desc"><span>估计活跃开源贡献者总数，覆盖全球开发者社区</span></div>
+          <div class="kpi-tag"><span>01</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>GitHub 仓库增量</span></div>
+          <div class="kpi-value"><span>200<span class="unit">万+</span></span></div>
+          <div class="kpi-desc"><span>2021 年新增公开仓库数，创历史新高</span></div>
+          <div class="kpi-tag"><span>02</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>AI 模型开源</span></div>
+          <div class="kpi-value"><span>1000<span class="unit">+</span></span></div>
+          <div class="kpi-desc"><span>当年公开的大模型 / 权重项目数量</span></div>
+          <div class="kpi-tag"><span>03</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>中国企业参与率</span></div>
+          <div class="kpi-value"><span>62<span class="unit">%</span></span></div>
+          <div class="kpi-desc"><span>受访企业表示已参与开源项目</span></div>
+          <div class="kpi-tag"><span>04</span></div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <div class="chart-header">
+          <div class="chart-title"><span class="dot"></span><span>开源生态关键指标趋势 (2016–2021)</span></div>
+          <div class="chart-meta"><span>UNIT: 百万</span></div>
+        </div>
+        <div id="chart_1" style="width:100%;height:280px;"></div>
+      </div>
+    </div>
+
+    <div class="tag-cloud">
+      <div class="tag-item">
+        <div class="tag-num"><span>01 / 05</span></div>
+        <div class="tag-name"><span>开发者规模增长</span></div>
+        <div class="tag-desc"><span>全球开源贡献者人数持续增长，中国市场增速显著高于全球平均水平</span></div>
+      </div>
+      <div class="tag-item">
+        <div class="tag-num"><span>02 / 05</span></div>
+        <div class="tag-name"><span>AI 领域开源爆发</span></div>
+        <div class="tag-desc"><span>大模型训练框架与预训练模型权重大规模开源，推动 AI 民主化进程</span></div>
+      </div>
+      <div class="tag-item">
+        <div class="tag-num"><span>03 / 05</span></div>
+        <div class="tag-name"><span>企业开源投入</span></div>
+        <div class="tag-desc"><span>越来越多企业将开源战略纳入核心业务，开源收入占比持续提升</span></div>
+      </div>
+      <div class="tag-item">
+        <div class="tag-num"><span>04 / 05</span></div>
+        <div class="tag-name"><span>开源安全受关注</span></div>
+        <div class="tag-desc"><span>SolarWinds 事件后供应链安全成为行业共识，SBOM 实践加速落地</span></div>
+      </div>
+      <div class="tag-item">
+        <div class="tag-num"><span>05 / 05</span></div>
+        <div class="tag-name"><span>中国基金会崛起</span></div>
+        <div class="tag-desc"><span>中国开源推进联盟与河图矩阵等本土基金会加速推进项目孵化与治理</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor: 'transparent',
+    grid: { left: 50, right: 20, top: 40, bottom: 32 },
+    legend: {
+      data: ['全球贡献者(百万)', 'GitHub新增仓库(万)', '中国贡献者(百万)'],
+      textStyle: { color: '#90a4ae', fontSize: 11, fontFamily: 'Inter, sans-serif' },
+      itemWidth: 14, itemHeight: 8,
+      right: 10, top: 4
+    },
+    tooltip: { trigger: 'axis', backgroundColor: 'rgba(10,14,26,0.95)', borderColor: '#2196F3', textStyle: { color: '#e8eaf6', fontSize: 11 } },
+    xAxis: {
+      type: 'category',
+      data: ['2016', '2017', '2018', '2019', '2020', '2021'],
+      axisLine: { lineStyle: { color: '#607D8B' } },
+      axisLabel: { color: '#90a4ae', fontSize: 11, fontFamily: 'Roboto Mono, monospace' },
+      axisTick: { show: false }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      axisLabel: { color: '#607D8B', fontSize: 10, fontFamily: 'Roboto Mono, monospace' },
+      splitLine: { lineStyle: { color: 'rgba(33,150,243,0.08)', type: 'dashed' } }
+    },
+    series: [
+      {
+        name: '全球贡献者(百万)',
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 8,
+        data: [60, 75, 90, 105, 125, 150],
+        lineStyle: { color: '#2196F3', width: 2.5, shadowColor: 'rgba(33,150,243,0.5)', shadowBlur: 10 },
+        itemStyle: { color: '#2196F3', borderColor: '#fff', borderWidth: 1 },
+        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(33,150,243,0.25)' }, { offset: 1, color: 'rgba(33,150,243,0)' }]) },
+        label: { show: true, color: '#2196F3', fontSize: 9, fontFamily: 'Roboto Mono, monospace', position: 'top' }
+      },
+      {
+        name: 'GitHub新增仓库(万)',
+        type: 'line',
+        smooth: true,
+        symbol: 'diamond',
+        symbolSize: 8,
+        data: [40, 58, 80, 110, 150, 200],
+        lineStyle: { color: '#00BCD4', width: 2.5, shadowColor: 'rgba(0,188,212,0.5)', shadowBlur: 10 },
+        itemStyle: { color: '#00BCD4', borderColor: '#fff', borderWidth: 1 },
+        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(0,188,212,0.2)' }, { offset: 1, color: 'rgba(0,188,212,0)' }]) },
+        label: { show: true, color: '#00BCD4', fontSize: 9, fontFamily: 'Roboto Mono, monospace', position: 'top' }
+      },
+      {
+        name: '中国贡献者(百万)',
+        type: 'line',
+        smooth: true,
+        symbol: 'triangle',
+        symbolSize: 8,
+        data: [8, 12, 17, 24, 33, 45],
+        lineStyle: { color: '#7C4DFF', width: 2, type: 'dashed', shadowColor: 'rgba(124,77,255,0.4)', shadowBlur: 8 },
+        itemStyle: { color: '#7C4DFF', borderColor: '#fff', borderWidth: 1 },
+        label: { show: true, color: '#B388FF', fontSize: 9, fontFamily: 'Roboto Mono, monospace', position: 'bottom' }
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>
