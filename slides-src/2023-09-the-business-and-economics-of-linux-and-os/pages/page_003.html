@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>什么是开源经济学</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#2D3748;
+  --bg-0:#0A1220;
+  --bg-1:#0F1B2E;
+  --bg-2:#132238;
+  --text-main:#E8F1FA;
+  --text-dim:#94A3B8;
+  --border:rgba(33,150,243,0.35);
+  --border-soft:rgba(33,150,243,0.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter','Noto Sans SC',system-ui,sans-serif;
+  color:var(--text-main);
+  background:#050A12;
+  -webkit-font-smoothing:antialiased;
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;
+  margin:0 auto;
+  background:linear-gradient(135deg,#0A1220 0%,#0F1B2E 55%,#0A1220 100%);
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 85% 15%, rgba(0,188,212,0.10) 0%, transparent 55%),
+             radial-gradient(ellipse at 10% 90%, rgba(33,150,243,0.12) 0%, transparent 60%);
+}
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+.bg-corner{
+  position:absolute;
+  border:1px solid rgba(0,188,212,0.25);
+}
+.bg-corner.tl{top:24px;left:24px;width:80px;height:80px;border-right:none;border-bottom:none;}
+.bg-corner.br{bottom:24px;right:24px;width:80px;height:80px;border-left:none;border-top:none;}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:50px 60px;
+  display:flex;flex-direction:column;gap:20px;
+}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;}
+.header-left{flex:1;}
+.tag{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 14px;
+  font-size:12px;letter-spacing:2px;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  border-radius:20px;
+  margin-bottom:12px;
+  font-weight:500;
+}
+.tag::before{
+  content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;
+  box-shadow:0 0 8px var(--accent);
+}
+h1{
+  font-size:54px;font-weight:800;letter-spacing:-1px;line-height:1.05;
+  color:#fff;
+}
+h1 .accent{color:var(--primary);
+  background:linear-gradient(90deg,#2196F3,#00BCD4);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.subtitle{
+  margin-top:8px;
+  font-size:17px;font-weight:300;letter-spacing:0.5px;
+  color:rgba(174,214,241,0.75);
+}
+.subtitle::before{
+  content:'';display:inline-block;width:28px;height:1px;
+  background:var(--accent);vertical-align:middle;margin-right:12px;
+  transform:translateY(-3px);
+}
+.header-meta{
+  text-align:right;
+  font-family:'Inter',monospace;
+  font-size:11px;letter-spacing:1.5px;color:var(--text-dim);
+  line-height:1.7;
+}
+.header-meta .num{color:var(--accent);font-weight:600;}
+.header-meta .divider{width:60px;height:1px;background:var(--border);margin:8px 0 8px auto;}
+
+/* Narrative */
+.narrative{
+  position:relative;
+  padding:16px 22px 16px 24px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.10) 0%, rgba(0,188,212,0.04) 100%);
+  border-left:3px solid var(--primary);
+  border-radius:2px 8px 8px 2px;
+  font-size:14.5px;line-height:1.75;
+  color:#C7D6E8;
+  letter-spacing:0.2px;
+}
+.narrative .k{color:var(--accent);font-weight:600;}
+.narrative .b{color:#fff;font-weight:600;}
+
+/* Main split */
+.main{
+  display:grid;grid-template-columns:55% 45%;gap:28px;
+  flex:1;
+}
+
+/* Cards grid */
+.cards{
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:14px;
+}
+.card{
+  position:relative;
+  background:linear-gradient(145deg, rgba(19,34,56,0.9) 0%, rgba(15,27,46,0.85) 100%);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px 18px 18px 20px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  transition:all .3s;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  opacity:0.7;
+}
+.card::after{
+  content:'';position:absolute;right:-30px;bottom:-30px;width:100px;height:100px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.18) 0%, transparent 70%);
+}
+.card-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:10px;
+}
+.card-num{
+  width:38px;height:38px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg, var(--primary) 0%, #1976D2 100%);
+  color:#fff;font-family:'Inter',monospace;font-weight:700;font-size:17px;
+  border-radius:8px;
+  box-shadow:0 4px 12px rgba(33,150,243,0.4);
+}
+.card-title{
+  font-size:17px;font-weight:700;color:#fff;letter-spacing:0.3px;
+}
+.card-sub{
+  font-size:10.5px;letter-spacing:1.5px;
+  color:var(--accent);font-weight:500;
+  margin-top:2px;font-family:'Inter',monospace;
+}
+.card-body{
+  font-size:13px;line-height:1.7;
+  color:#B7C7DA;
+  position:relative;z-index:1;
+}
+.card-body .hl{color:var(--accent);font-weight:600;}
+.card-body .hl-b{color:var(--primary);font-weight:600;}
+.card-tags{
+  margin-top:auto;padding-top:10px;
+  display:flex;gap:6px;flex-wrap:wrap;
+  position:relative;z-index:1;
+}
+.card-tags span{
+  font-size:10px;padding:2px 8px;
+  border:1px solid rgba(0,188,212,0.4);
+  color:var(--accent);border-radius:3px;
+  letter-spacing:0.5px;
+}
+
+/* Right ring panel */
+.ring-panel{
+  position:relative;
+  background:linear-gradient(180deg, rgba(19,34,56,0.5) 0%, rgba(10,18,32,0.7) 100%);
+  border:1px solid var(--border-soft);
+  border-radius:12px;
+  padding:16px 18px 14px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.ring-panel::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg, transparent 0%, var(--accent) 30%, var(--primary) 70%, transparent 100%);
+  opacity:0.6;
+}
+.ring-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:6px;
+}
+.ring-title{
+  font-size:14px;font-weight:600;color:#fff;letter-spacing:0.5px;
+  display:flex;align-items:center;gap:8px;
+}
+.ring-title::before{
+  content:'';width:8px;height:8px;background:var(--primary);
+  border-radius:50%;box-shadow:0 0 10px var(--primary);
+}
+.ring-label{
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--text-dim);font-family:'Inter',monospace;
+}
+.ring-svg-wrap{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.ring-svg{width:100%;height:100%;max-height:360px;}
+.ring-legend{
+  display:flex;justify-content:space-around;
+  padding-top:8px;
+  border-top:1px dashed rgba(33,150,243,0.25);
+}
+.leg-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  font-size:10px;
+}
+.leg-item .val{color:var(--primary);font-weight:700;font-size:13px;letter-spacing:0.5px;}
+.leg-item .lab{color:var(--text-dim);letter-spacing:1px;}
+
+/* Stats bottom */
+.stats{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:14px;
+}
+.stat{
+  position:relative;
+  padding:14px 20px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.12) 0%, rgba(0,188,212,0.03) 100%);
+  border:1px solid var(--border-soft);
+  border-left:3px solid var(--accent);
+  border-radius:6px;
+  display:flex;align-items:center;gap:16px;
+}
+.stat-num{
+  font-size:34px;font-weight:800;letter-spacing:-1px;
+  background:linear-gradient(90deg,#2196F3,#00BCD4);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  font-family:'Inter',monospace;
+  line-height:1;flex-shrink:0;
+  min-width:110px;
+}
+.stat-num.small{font-size:18px;line-height:1.15;min-width:170px;}
+.stat-info{flex:1;min-width:0;}
+.stat-label{
+  font-size:12px;color:#fff;font-weight:600;letter-spacing:0.5px;margin-bottom:3px;
+}
+.stat-desc{
+  font-size:10.5px;color:var(--text-dim);line-height:1.5;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-corner tl"></div>
+    <div class="bg-corner br"></div>
+  </div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="tag"><span>OPEN SOURCE ECONOMICS · 概念导论</span></div>
+        <h1>什么是 <span class="accent">开源经济学</span></h1>
+        <div class="subtitle">从公共品理论到现代软件协作范式</div>
+      </div>
+      <div class="header-meta">
+        <div>CHAPTER <span class="num">01</span> / FRAMEWORK</div>
+        <div class="divider"></div>
+        <div>PUBLIC GOODS · NETWORK<br>EFFECTS · EXTERNALITIES</div>
+      </div>
+    </div>
+
+    <!-- Narrative -->
+    <div class="narrative">
+      <span class="b">开源经济学</span>并不是一个独立的学科，而是<span class="k">经济学原理</span>在<span class="k">开放协作范式</span>下的应用。它借用<span class="b">公共品理论</span>解释开源软件的天然属性，又借助<span class="b">网络效应</span>与<span class="b">外部性理论</span>说明社区为何能自我强化。<span class="k">许可证体系</span>则是把这套理论固化为可执行规则的关键基础设施。
+    </div>
+
+    <!-- Main split -->
+    <div class="main">
+
+      <!-- Cards 2x2 -->
+      <div class="cards">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-num">01</div>
+            <div>
+              <div class="card-title">公共品属性</div>
+              <div class="card-sub">PUBLIC GOODS</div>
+            </div>
+          </div>
+          <div class="card-body">
+            开源软件具备<span class="hl">非竞争性</span>——一份代码可被无限复用，一人使用不减少他人收益；但通过<span class="hl-b">贡献门槛</span>形成部分排他性，形成"开放使用、门槛准入"的独特结构。
+          </div>
+          <div class="card-tags">
+            <span>Non-rivalrous</span><span>Partial-exclusion</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-num">02</div>
+            <div>
+              <div class="card-title">协作外部性</div>
+              <div class="card-sub">EXTERNALITIES</div>
+            </div>
+          </div>
+          <div class="card-body">
+            每一次<span class="hl">代码贡献</span>都产生<span class="hl">正外部性</span>，惠及整个生态与未来开发者——贡献者的私人回报低于社会收益，构成社区自驱的内生动力。
+          </div>
+          <div class="card-tags">
+            <span>Positive</span><span>Spillover</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-num">03</div>
+            <div>
+              <div class="card-title">网络效应</div>
+              <div class="card-sub">NETWORK EFFECTS</div>
+            </div>
+          </div>
+          <div class="card-body">
+            用户与贡献者规模越大，社区价值呈<span class="hl">指数级增长</span>——遵循<span class="hl-b">梅特卡夫定律</span>，协作密度与生态粘性随规模同步跃升。
+          </div>
+          <div class="card-tags">
+            <span>Metcalfe's Law</span><span>Exponential</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-num">04</div>
+            <div>
+              <div class="card-title">许可证体系</div>
+              <div class="card-sub">LICENSES</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="hl">GPL · MIT · Apache</span> 等许可证构建<span class="hl-b">差异化的商业规则边界</span>，把前述理论固化为可执行的法律契约与协作接口。
+          </div>
+          <div class="card-tags">
+            <span>GPL</span><span>MIT</span><span>Apache-2.0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Collaboration Network Ring -->
+      <div class="ring-panel">
+        <div class="ring-header">
+          <div class="ring-title"><span>协作网络示意环</span></div>
+          <div class="ring-label">COLLABORATION MESH</div>
+        </div>
+
+        <div class="ring-svg-wrap">
+          <svg class="ring-svg" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="nodeGrad" cx="0.35" cy="0.35" r="0.75">
+                <stop offset="0%" stop-color="#63D0FF"/>
+                <stop offset="60%" stop-color="#2196F3"/>
+                <stop offset="100%" stop-color="#0D47A1"/>
+              </radialGradient>
+              <radialGradient id="centerGrad" cx="0.5" cy="0.5" r="0.6">
+                <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.9"/>
+                <stop offset="60%" stop-color="#2196F3" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- background rings -->
+            <circle cx="0" cy="0" r="170" fill="none" stroke="rgba(33,150,243,0.12)" stroke-width="1" stroke-dasharray="3 5"/>
+            <circle cx="0" cy="0" r="140" fill="none" stroke="rgba(33,150,243,0.28)" stroke-width="1.2"/>
+            <circle cx="0" cy="0" r="100" fill="none" stroke="rgba(0,188,212,0.15)" stroke-width="0.8" stroke-dasharray="2 4"/>
+
+            <!-- inner mesh connections (between nodes) -->
+            <g stroke="#00BCD4" stroke-width="1" opacity="0.55" fill="none">
+              <line x1="0" y1="-140" x2="-121.24" y2="-70"/>
+              <line x1="0" y1="-140" x2="121.24" y2="-70"/>
+              <line x1="0" y1="-140" x2="-70" y2="-121.24"/>
+              <line x1="0" y1="-140" x2="70" y2="-121.24"/>
+              <line x1="140" y1="0" x2="121.24" y2="-70"/>
+              <line x1="140" y1="0" x2="121.24" y2="70"/>
+              <line x1="140" y1="0" x2="70" y2="121.24"/>
+              <line x1="140" y1="0" x2="-70" y2="121.24"/>
+              <line x1="140" y1="0" x2="-121.24" y2="-70"/>
+              <line x1="-140" y1="0" x2="-121.24" y2="-70"/>
+              <line x1="-140" y1="0" x2="-121.24" y2="70"/>
+              <line x1="-140" y1="0" x2="-70" y2="-121.24"/>
+              <line x1="-140" y1="0" x2="-70" y2="121.24"/>
+              <line x1="0" y1="140" x2="70" y2="121.24"/>
+              <line x1="0" y1="140" x2="-70" y2="121.24"/>
+              <line x1="0" y1="140" x2="121.24" y2="70"/>
+              <line x1="0" y1="140" x2="-121.24" y2="70"/>
+              <line x1="-70" y1="-121.24" x2="-121.24" y2="-70"/>
+              <line x1="70" y1="-121.24" x2="121.24" y2="-70"/>
+              <line x1="70" y1="121.24" x2="121.24" y2="70"/>
+              <line x1="-70" y1="121.24" x2="-121.24" y2="70"/>
+            </g>
+
+            <!-- highlighted thick connections -->
+            <g stroke="#2196F3" stroke-width="1.6" opacity="0.7" fill="none">
+              <line x1="0" y1="-140" x2="140" y2="0"/>
+              <line x1="-140" y1="0" x2="0" y2="140"/>
+              <line x1="-70" y1="-121.24" x2="70" y2="121.24"/>
+              <line x1="70" y1="-121.24" x2="-70" y2="121.24"/>
+            </g>
+
+            <!-- center halo -->
+            <circle cx="0" cy="0" r="60" fill="url(#centerGrad)"/>
+            <circle cx="0" cy="0" r="42" fill="none" stroke="rgba(0,188,212,0.5)" stroke-width="1" stroke-dasharray="4 3"/>
+            <circle cx="0" cy="0" r="30" fill="rgba(33,150,243,0.12)" stroke="#2196F3" stroke-width="1.4"/>
+
+            <!-- center label -->
+            <text x="0" y="-3" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter, sans-serif" letter-spacing="1">社区价值</text>
+            <text x="0" y="12" text-anchor="middle" fill="#00BCD4" font-size="8" font-family="Inter, sans-serif" letter-spacing="1.5">COMMUNITY VALUE</text>
+
+            <!-- 8 outer nodes -->
+            <g filter="url(#glow)">
+              <circle cx="0" cy="-140" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="70" cy="-121.24" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="121.24" cy="-70" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="140" cy="0" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="121.24" cy="70" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="70" cy="121.24" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="-70" cy="121.24" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="-121.24" cy="70" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="-140" cy="0" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="-121.24" cy="-70" r="9" fill="url(#nodeGrad)"/>
+              <circle cx="-70" cy="-121.24" r="9" fill="url(#nodeGrad)"/>
+            </g>
+
+            <!-- node ring halos -->
+            <g fill="none" stroke="rgba(33,150,243,0.35)" stroke-width="1">
+              <circle cx="0" cy="-140" r="14"/>
+              <circle cx="70" cy="-121.24" r="14"/>
+              <circle cx="121.24" cy="-70" r="14"/>
+              <circle cx="140" cy="0" r="14"/>
+              <circle cx="121.24" cy="70" r="14"/>
+              <circle cx="70" cy="121.24" r="14"/>
+              <circle cx="-70" cy="121.24" r="14"/>
+              <circle cx="-121.24" cy="70" r="14"/>
+              <circle cx="-140" cy="0" r="14"/>
+              <circle cx="-121.24" cy="-70" r="14"/>
+              <circle cx="-70" cy="-121.24" r="14"/>
+            </g>
+
+            <!-- small floating data particles -->
+            <g fill="#00BCD4">
+              <circle cx="60" cy="-80" r="1.8"/>
+              <circle cx="-90" cy="40" r="1.8"/>
+              <circle cx="80" cy="70" r="1.5"/>
+              <circle cx="-40" cy="-90" r="1.5"/>
+              <circle cx="100" cy="-30" r="1.3"/>
+              <circle cx="-100" cy="-30" r="1.3"/>
+              <circle cx="30" cy="100" r="1.5"/>
+              <circle cx="-60" cy="90" r="1.8"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="ring-legend">
+          <div class="leg-item"><span class="val">11</span><span class="lab">节点 NODES</span></div>
+          <div class="leg-item"><span class="val">25+</span><span class="lab">连接 LINKS</span></div>
+          <div class="leg-item"><span class="val">O(n²)</span><span class="lab">协作密度</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">600<span style="font-size:20px;">+</span></div>
+        <div class="stat-info">
+          <div class="stat-label">开源许可证总数</div>
+          <div class="stat-desc">主流分类体系下已登记的开源许可证种类</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-num small">公共品 + 网络效应</div>
+        <div class="stat-info">
+          <div class="stat-label">两大经济支柱</div>
+          <div class="stat-desc">开源价值的双轮驱动范式</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-info">
+          <div class="stat-label">非竞争性复用</div>
+          <div class="stat-desc">代码可被无限并行使用，边际成本趋零</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

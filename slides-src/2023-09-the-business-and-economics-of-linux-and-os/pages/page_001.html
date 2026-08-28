@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源的商业与经济学</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #2196F3;
+    --sky-light: #64B5F6;
+    --sky-glow: #2196F3;
+    --cyan: #00BCD4;
+    --cyan-light: #4DD0E1;
+    --dark: #080D18;
+    --slate: #2D3748;
+    --text-main: #E8EEF7;
+    --text-sub: #8FA0B8;
+    --text-mono: #5C7A9F;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; background: #050810; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', 'SF Pro Display', -apple-system, 'PingFang SC', sans-serif;
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrapper {
+    width: 1600px; height: 900px;
+    position: relative; overflow: hidden;
+    margin: 0 auto;
+    background: #050810;
+  }
+  #bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 1200px 800px at 50% 40%, #0e1a2e 0%, #080d18 45%, #050810 100%);
+  }
+  #bg .grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(33,150,243,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(33,150,243,0.055) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 1400px 900px at 50% 45%, black 30%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse 1400px 900px at 50% 45%, black 30%, transparent 90%);
+  }
+  #bg .grid-overlay-fine {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,188,212,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,188,212,0.03) 1px, transparent 1px);
+    background-size: 16px 16px;
+    mask-image: radial-gradient(ellipse 900px 600px at 50% 45%, black 20%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 900px 600px at 50% 45%, black 20%, transparent 85%);
+  }
+  #bg .horizon-glow {
+    position: absolute;
+    top: 30%; left: 50%;
+    width: 1800px; height: 1800px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0.06) 30%, transparent 60%);
+    filter: blur(20px);
+  }
+  #bg .cyan-glow {
+    position: absolute;
+    top: 12%; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,188,212,0.18) 0%, transparent 60%);
+    filter: blur(30px);
+  }
+  #bg .sky-corner {
+    position: absolute;
+    bottom: -100px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(33,150,243,0.14) 0%, transparent 60%);
+    filter: blur(30px);
+  }
+  #bg .stars {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 15% 22%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 28% 65%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.2px 1.2px at 45% 15%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 62% 78%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1.4px 1.4px at 78% 32%, rgba(255,255,255,0.65), transparent),
+      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.3px 1.3px at 92% 82%, rgba(255,255,255,0.55), transparent),
+      radial-gradient(1px 1px at 8% 88%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1.2px 1.2px at 35% 90%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 55% 48%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1.5px 1.5px at 70% 12%, rgba(33,150,243,0.7), transparent),
+      radial-gradient(1px 1px at 22% 45%, rgba(0,188,212,0.6), transparent);
+  }
+
+  #ct {
+    position: absolute; inset: 0; z-index: 1;
+    padding: 60px 80px;
+  }
+
+  /* Corner frame markers */
+  .frame {
+    position: absolute;
+    width: 46px; height: 46px;
+    border-color: rgba(33,150,243,0.5);
+    z-index: 2;
+  }
+  .frame.tl { top: 42px; left: 42px; border-top: 1.5px solid; border-left: 1.5px solid; }
+  .frame.tr { top: 42px; right: 42px; border-top: 1.5px solid; border-right: 1.5px solid; }
+  .frame.bl { bottom: 42px; left: 42px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+  .frame.br { bottom: 42px; right: 42px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+  /* Top meta bar */
+  .top-meta {
+    position: absolute; top: 52px; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 96px;
+    font-family: 'JetBrains Mono', 'Inter', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--text-mono);
+    z-index: 3;
+  }
+  .top-meta .tm-left, .top-meta .tm-right {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .top-meta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; box-shadow: 0 0 6px var(--cyan); }
+    50% { opacity: 1; box-shadow: 0 0 16px var(--cyan); }
+  }
+  .tm-mid {
+    flex: 1;
+    height: 1px;
+    margin: 0 40px;
+    background: linear-gradient(90deg, transparent, rgba(33,150,243,0.35), transparent);
+  }
+
+  /* Center stack */
+  .center-stack {
+    position: absolute;
+    top: 168px; left: 0; right: 0;
+    text-align: center;
+  }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.45em;
+    color: var(--cyan-light);
+    text-transform: uppercase;
+    margin-bottom: 26px;
+  }
+  .eyebrow .e-line {
+    width: 50px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan));
+  }
+  .eyebrow .e-line.right {
+    background: linear-gradient(90deg, var(--cyan), transparent);
+  }
+
+  .hero-title {
+    font-size: 106px;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    color: var(--text-main);
+    text-shadow: 0 4px 40px rgba(33,150,243,0.25);
+  }
+  .hero-title .accent {
+    background: linear-gradient(135deg, #4FC3F7 0%, #00BCD4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .subtitle-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 22px;
+    margin-top: 30px;
+  }
+  .subtitle-row .line {
+    width: 110px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(33,150,243,0.85));
+  }
+  .subtitle-row .line.right {
+    background: linear-gradient(90deg, rgba(33,150,243,0.85), transparent);
+  }
+  .subtitle {
+    font-size: 20px;
+    font-weight: 300;
+    color: #A9BCD6;
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+  }
+  .subtitle .accent-dot {
+    color: var(--cyan);
+    margin: 0 8px;
+    font-weight: 500;
+  }
+
+  /* Info cards */
+  .info-cards {
+    position: absolute;
+    bottom: 148px; left: 0; right: 0;
+    display: flex; justify-content: center; gap: 22px;
+    padding: 0 100px;
+  }
+  .card {
+    width: 400px;
+    padding: 22px 26px;
+    background: rgba(33, 150, 243, 0.055);
+    border: 1px solid rgba(33, 150, 243, 0.22);
+    border-radius: 4px;
+    backdrop-filter: blur(6px);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 42%; height: 2px;
+    background: linear-gradient(90deg, var(--sky) 0%, var(--cyan) 100%);
+  }
+  .card-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px;
+  }
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border: 1px solid rgba(0, 188, 212, 0.4);
+    border-radius: 2px;
+    font-weight: 500;
+  }
+  .card-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 0.04em;
+  }
+  .card-desc {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: #97A8C0;
+  }
+
+  /* Bottom tagline */
+  .tagline {
+    position: absolute;
+    bottom: 78px; left: 0; right: 0;
+    text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+  }
+  .tagline .dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+  .tagline .text {
+    font-size: 14px;
+    font-weight: 300;
+    color: #7A8FA8;
+    letter-spacing: 0.35em;
+  }
+
+  /* Bottom KPI row */
+  .bottom-kpi {
+    position: absolute;
+    bottom: 34px; left: 0; right: 0;
+    display: flex; justify-content: space-between;
+    padding: 0 96px;
+    z-index: 3;
+  }
+  .kpi {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.22em;
+  }
+  .kpi .kpi-label {
+    color: var(--text-mono);
+  }
+  .kpi .kpi-value {
+    color: var(--cyan-light);
+    font-weight: 500;
+  }
+  .kpi .kpi-sep {
+    color: rgba(33,150,243,0.5);
+  }
+
+  /* Decorative side penguin */
+  .side-penguin {
+    position: absolute;
+    right: 62px; top: 220px;
+    width: 200px;
+    opacity: 0.11;
+    z-index: 2;
+  }
+  .side-penguin svg { width: 100%; height: auto; }
+
+  /* Decorative code particles */
+  .code-particles {
+    position: absolute;
+    left: 42px; top: 220px;
+    width: 130px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(33,150,243,0.35);
+    line-height: 1.9;
+    z-index: 2;
+    letter-spacing: 0.05em;
+  }
+  .code-particles .row { opacity: 0.7; }
+  .code-particles .row.faded { opacity: 0.35; }
+  .code-particles .row.dim { opacity: 0.2; }
+  .code-particles .k { color: rgba(0,188,212,0.5); }
+
+  /* Small floating particles */
+  .float-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .fp {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+  }
+  .fp.p1 { top: 250px; right: 300px; width: 5px; height: 5px; opacity: 0.7; }
+  .fp.p2 { top: 420px; left: 240px; width: 3px; height: 3px; background: var(--sky); box-shadow: 0 0 8px var(--sky); opacity: 0.6; }
+  .fp.p3 { top: 620px; right: 180px; width: 4px; height: 4px; opacity: 0.5; }
+  .fp.p4 { top: 180px; left: 400px; width: 3px; height: 3px; background: var(--sky); box-shadow: 0 0 8px var(--sky); opacity: 0.5; }
+  .fp.p5 { bottom: 300px; left: 140px; width: 4px; height: 4px; background: var(--cyan-light); box-shadow: 0 0 10px var(--cyan-light); opacity: 0.6; }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-overlay"></div>
+    <div class="grid-overlay-fine"></div>
+    <div class="horizon-glow"></div>
+    <div class="cyan-glow"></div>
+    <div class="sky-corner"></div>
+    <div class="stars"></div>
+  </div>
+
+  <div id="ct">
+    <!-- Corner frames -->
+    <div class="frame tl"></div>
+    <div class="frame tr"></div>
+    <div class="frame bl"></div>
+    <div class="frame br"></div>
+
+    <!-- Top meta bar -->
+    <div class="top-meta">
+      <div class="tm-left">
+        <span class="dot"></span>
+        <span>SENSENOVA · 开源布道</span>
+      </div>
+      <div class="tm-mid"></div>
+      <div class="tm-right">
+        <span>Cover / 封面</span>
+        <span class="sep">/</span>
+        <span>2023.09</span>
+      </div>
+    </div>
+
+    <!-- Decorative penguin -->
+    <div class="side-penguin">
+      <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="pgrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2196F3"/>
+            <stop offset="100%" stop-color="#00BCD4"/>
+          </linearGradient>
+        </defs>
+        <g fill="url(#pgrad)">
+          <!-- Head -->
+          <ellipse cx="100" cy="58" rx="44" ry="52"/>
+          <!-- Body -->
+          <ellipse cx="100" cy="160" rx="72" ry="82"/>
+          <!-- Feet -->
+          <ellipse cx="70" cy="238" rx="26" ry="10"/>
+          <ellipse cx="130" cy="238" rx="26" ry="10"/>
+          <!-- Tail -->
+          <path d="M168 195 Q198 220 188 246 Q170 230 156 216 Z"/>
+        </g>
+        <g fill="rgba(232,238,247,0.95)">
+          <!-- Belly -->
+          <ellipse cx="100" cy="172" rx="42" ry="62"/>
+          <!-- Face white -->
+          <ellipse cx="82" cy="58" rx="14" ry="18"/>
+          <ellipse cx="118" cy="58" rx="14" ry="18"/>
+        </g>
+        <g fill="#080D18">
+          <!-- Eyes -->
+          <circle cx="82" cy="56" r="4.5"/>
+          <circle cx="118" cy="56" r="4.5"/>
+        </g>
+        <g fill="#FF8A3D">
+          <!-- Beak -->
+          <path d="M92 68 L108 68 L100 80 Z"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Decorative code particles (left side) -->
+    <div class="code-particles">
+      <div class="row dim">&lt;/open-source&gt;</div>
+      <div class="row"><span class="k">sudo</span> make world</div>
+      <div class="row">&gt; init 5</div>
+      <div class="row faded">chmod 777 freedom</div>
+      <div class="row dim">git commit -m "</div>
+      <div class="row faded">&nbsp;&nbsp;collaborate"</div>
+      <div class="row">git push --all</div>
+      <div class="row dim">// fork &amp; share</div>
+    </div>
+
+    <!-- Floating particles -->
+    <div class="float-particles">
+      <div class="fp p1"></div>
+      <div class="fp p2"></div>
+      <div class="fp p3"></div>
+      <div class="fp p4"></div>
+      <div class="fp p5"></div>
+    </div>
+
+    <!-- Center hero stack -->
+    <div class="center-stack">
+      <div class="eyebrow">
+        <span class="e-line"></span>
+        <span>OPEN SOURCE · 2023 SHARE</span>
+        <span class="e-line right"></span>
+      </div>
+      <h1 class="hero-title">
+        开源的<span class="accent">商业</span>与<span class="accent">经济学</span>
+      </h1>
+      <div class="subtitle-row">
+        <div class="line"></div>
+        <div class="subtitle">2023 · 09<span class="accent-dot">·</span>Linux 与开源软件的价值重塑</div>
+        <div class="line right"></div>
+      </div>
+    </div>
+
+    <!-- Info cards -->
+    <div class="info-cards">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num">01</span>
+          <span class="card-title">开源之书记录</span>
+        </div>
+        <div class="card-desc">本次分享基于 2023 年 9 月的开源布道资料整理，忠实呈现一手行业观察与案例切片。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num">02</span>
+          <span class="card-title">主题聚焦</span>
+        </div>
+        <div class="card-desc">探索 Linux 与开源软件背后的商业模型与经济学逻辑，拆解其价值创造机制。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num">03</span>
+          <span class="card-title">分享脉络</span>
+        </div>
+        <div class="card-desc">从历史演进、商业模式、生态价值到未来趋势，逐层展开完整的叙事脉络。</div>
+      </div>
+    </div>
+
+    <!-- Bottom tagline -->
+    <div class="tagline">
+      <div class="dot"></div>
+      <div class="text">穿越开源软件的历史长廊，重新理解全球数字基础设施的价值逻辑</div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Bottom KPI -->
+    <div class="bottom-kpi">
+      <div class="kpi">
+        <span class="kpi-label">分享时间</span>
+        <span class="kpi-sep">▸</span>
+        <span class="kpi-value">2023 年 9 月</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">核心主题</span>
+        <span class="kpi-sep">▸</span>
+        <span class="kpi-value">Linux 与 OSS 经济学</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
