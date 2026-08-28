@@ -1,422 +1,543 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>开源商业化数据</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --cyan:#00BCD4;
-  --blue:#2196F3;
-  --neutral:#ECEFF1;
-  --dark-1:#0A1628;
-  --dark-2:#0F1E36;
-  --dark-3:#152A45;
-  --grid-line:rgba(0,188,212,0.08);
-  --card-bg:linear-gradient(135deg,#0F2A44 0%,#0B1D33 100%);
-  --glow:0 0 20px rgba(0,188,212,0.35);
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:1600px;height:900px;overflow:hidden;}
-body{
-  font-family:'Inter','Source Code Pro',sans-serif;
-  background:var(--dark-1);
-  color:var(--neutral);
-}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
-#bg{position:absolute;inset:0;z-index:0;}
-#ct{position:absolute;inset:0;z-index:1;padding:38px 50px 30px 50px;box-sizing:border-box;display:flex;flex-direction:column;}
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-/* Background decoration */
-.bg-grid{
-  position:absolute;inset:0;
+:root {
+  --primary: #00BCD4;
+  --accent: #2196F3;
+  --text: #ECEFF1;
+  --text-dim: #90A4AE;
+  --bg-dark: #0A1628;
+  --bg-card: #122038;
+  --border: rgba(0, 188, 212, 0.25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
   background-image:
-    linear-gradient(rgba(0,188,212,0.06) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,188,212,0.06) 1px,transparent 1px);
-  background-size:48px 48px;
-}
-.bg-radial{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 600px 300px at 80% 10%,rgba(33,150,243,0.12),transparent 70%),
-    radial-gradient(ellipse 500px 300px at 10% 90%,rgba(0,188,212,0.10),transparent 70%);
-}
-.bg-bar-left{
-  position:absolute;left:0;top:0;bottom:0;width:6px;
-  background:linear-gradient(180deg,var(--cyan),var(--blue) 60%,transparent);
-}
-.bg-corner-tr{
-  position:absolute;top:18px;right:18px;width:60px;height:60px;
-  border-top:2px solid rgba(0,188,212,0.4);
-  border-right:2px solid rgba(0,188,212,0.4);
-}
-.bg-corner-br{
-  position:absolute;bottom:18px;right:18px;width:60px;height:60px;
-  border-bottom:2px solid rgba(0,188,212,0.4);
-  border-right:2px solid rgba(0,188,212,0.4);
-}
-.bg-corner-bl{
-  position:absolute;bottom:18px;left:18px;width:60px;height:60px;
-  border-bottom:2px solid rgba(0,188,212,0.4);
-  border-left:2px solid rgba(0,188,212,0.4);
+    linear-gradient(rgba(0,188,212,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-/* Title area */
-.title-area{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:6px 0 10px 0;
-}
-.title-area h1{
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;
-  font-size:42px;
-  letter-spacing:8px;
-  background:linear-gradient(90deg,#00BCD4 0%,#2196F3 50%,#00BCD4 100%);
-  background-size:200% 100%;
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  text-shadow:0 0 30px rgba(0,188,212,0.2);
-}
-.title-area .subtitle{
-  font-size:12px;
-  color:#90A4AE;
-  margin-top:8px;
-  text-align:center;
-  max-width:1200px;
-  line-height:1.6;
-  letter-spacing:0.5px;
-}
-.title-accent-line{
-  width:120px;height:2px;margin-top:10px;
-  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+.bg-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.12) 0%, transparent 70%);
+  top: -200px;
+  right: -100px;
 }
 
-/* KPI cards */
-.kpi-row{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
-  margin-top:14px;
-}
-.kpi-card{
-  background:var(--card-bg);
-  border:1px solid rgba(0,188,212,0.2);
-  border-radius:8px;
-  padding:14px 12px;
-  position:relative;
-  overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
-  min-height:130px;
-}
-.kpi-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
-}
-.kpi-card .kpi-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--cyan);
-  box-shadow:0 0 8px var(--cyan);
-  margin-bottom:8px;
-}
-.kpi-card .kpi-num{
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;
-  font-size:28px;
-  background:linear-gradient(180deg,#4DD0E1 0%,#00BCD4 45%,#0097A7 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  text-shadow:0 0 25px rgba(0,188,212,0.5);
-  line-height:1.1;
-}
-.kpi-card .kpi-label{
-  font-size:11px;
-  font-weight:600;
-  color:#B0BEC5;
-  margin-top:6px;
-  letter-spacing:1px;
-}
-.kpi-card .kpi-sub{
-  font-family:'Source Code Pro',monospace;
-  font-size:9.5px;
-  color:#546E7A;
-  margin-top:4px;
-  line-height:1.5;
+.bg-glow-2 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.1) 0%, transparent 70%);
+  bottom: -150px;
+  left: -100px;
 }
 
-/* Bullet points row */
-.bullets-row{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
-  margin-top:12px;
-}
-.bullet-card{
-  background:rgba(15,30,54,0.6);
-  border-left:2px solid var(--cyan);
-  padding:8px 10px;
-  border-radius:0 4px 4px 0;
-}
-.bullet-card .b-head{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:10.5px;font-weight:600;
-  color:var(--cyan);
-  letter-spacing:1px;
-  margin-bottom:3px;
-}
-.bullet-card .b-body{
-  font-size:9.5px;
-  color:#90A4AE;
-  line-height:1.45;
+.bg-line-1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.6;
 }
 
-/* Bottom row: chart + quadrant */
-.bottom-row{
-  display:grid;grid-template-columns:1fr 1fr;gap:14px;
-  margin-top:12px;
-  flex:1;
-  min-height:0;
-}
-.panel{
-  background:rgba(15,30,54,0.5);
-  border:1px solid rgba(0,188,212,0.15);
-  border-radius:8px;
-  padding:12px 14px;
-  position:relative;
-  display:flex;flex-direction:column;
-}
-.panel-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:12px;font-weight:600;
-  color:var(--cyan);
-  letter-spacing:1.5px;
-  display:flex;align-items:center;gap:8px;
-  margin-bottom:6px;
-}
-.panel-title .dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--cyan);box-shadow:0 0 6px var(--cyan);
+.bg-line-2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.6;
 }
 
-#chart_1{flex:1;width:100%;min-height:0;}
-
-/* Quadrant grid */
-.quadrant-grid{
-  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;
-  flex:1;
-}
-.quad-item{
-  background:linear-gradient(135deg,rgba(0,188,212,0.08) 0%,rgba(33,150,243,0.05) 100%);
-  border:1px solid rgba(0,188,212,0.18);
-  border-radius:6px;
-  padding:10px 12px;
-  display:flex;align-items:center;gap:10px;
-  transition:transform 0.2s;
-}
-.quad-icon{
-  width:38px;height:38px;
-  border-radius:8px;
-  background:rgba(0,188,212,0.12);
-  border:1px solid rgba(0,188,212,0.3);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:14px;font-weight:700;
-  color:var(--cyan);
-}
-.quad-text .q-title{
-  font-size:11px;font-weight:600;color:#ECEFF1;
-  letter-spacing:0.5px;
-}
-.quad-text .q-desc{
-  font-size:9px;color:#78909C;margin-top:2px;line-height:1.4;
+.header {
+  margin-bottom: 24px;
 }
 
-/* Closing line */
-.closing-line{
-  margin-top:10px;
-  text-align:center;
-  font-size:11px;
-  color:#78909C;
-  letter-spacing:1px;
-  padding:8px 20px;
-  border-top:1px solid rgba(0,188,212,0.12);
-  border-bottom:1px solid rgba(0,188,212,0.12);
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
 }
-.closing-line .hl{color:var(--cyan);font-weight:600;}
+
+.title-accent-bar {
+  width: 6px;
+  height: 48px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 3px;
+  box-shadow: 0 0 12px rgba(0,188,212,0.6);
+}
+
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), #4FC3F7, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 3px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 1280px;
+  padding-left: 22px;
+  border-left: 2px solid rgba(0,188,212,0.3);
+}
+
+.main {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 18px;
+  height: 430px;
+}
+
+.left-panel {
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kpi-top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  height: 213px;
+}
+
+.kpi-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  height: 203px;
+}
+
+.kpi-card {
+  background: linear-gradient(135deg, rgba(18,32,56,0.95), rgba(10,22,40,0.95));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  box-shadow: 0 0 8px rgba(0,188,212,0.5);
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.08) 0%, transparent 70%);
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.8px;
+}
+
+.kpi-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00BCD4, #4FC3F7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(0,188,212,0.5));
+  line-height: 1.1;
+}
+
+.kpi-card.wide .kpi-value {
+  font-size: 36px;
+}
+
+.kpi-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.right-panel {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(18,32,56,0.95), rgba(10,22,40,0.95));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(0,188,212,0.2);
+}
+
+.quadrant {
+  flex: 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.quad-cell {
+  border: 1px solid rgba(0,188,212,0.18);
+  border-radius: 8px;
+  padding: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.quad-cell.q1 { background: linear-gradient(135deg, rgba(0,188,212,0.12), rgba(33,150,243,0.05)); }
+.quad-cell.q2 { background: linear-gradient(135deg, rgba(33,150,243,0.08), rgba(0,188,212,0.04)); }
+.quad-cell.q3 { background: linear-gradient(135deg, rgba(0,188,212,0.05), rgba(33,150,243,0.12)); }
+.quad-cell.q4 { background: linear-gradient(135deg, rgba(33,150,243,0.05), rgba(0,188,212,0.08)); }
+
+.quad-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  box-shadow: 0 0 10px rgba(0,188,212,0.4);
+  color: #fff;
+}
+
+.quad-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.quad-desc {
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.3;
+}
+
+.quad-axis-x {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+}
+
+.quad-axis-y {
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-size: 9px;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.trend-mini {
+  height: 54px;
+  position: relative;
+  border-top: 1px dashed rgba(0,188,212,0.2);
+  padding-top: 8px;
+}
+
+.trend-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.trend-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 32px;
+}
+
+.trend-bar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--primary), rgba(0,188,212,0.2));
+  border-radius: 1px;
+  border-top: 1px solid rgba(0,188,212,0.6);
+}
+
+.trend-bar.b2 { background: linear-gradient(180deg, var(--accent), rgba(33,150,243,0.2)); border-top-color: rgba(33,150,243,0.6); }
+
+.info-bars {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.info-bar {
+  background: rgba(18,32,56,0.7);
+  border-left: 3px solid var(--primary);
+  padding: 10px 12px;
+  border-radius: 0 6px 6px 0;
+  position: relative;
+}
+
+.info-bar:nth-child(2) { border-left-color: var(--accent); }
+.info-bar:nth-child(3) { border-left-color: #00BCD4; }
+.info-bar:nth-child(4) { border-left-color: var(--accent); }
+.info-bar:nth-child(5) { border-left-color: #26C6DA; }
+
+.info-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--primary);
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.info-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.info-desc {
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.summary {
+  background: linear-gradient(90deg, rgba(0,188,212,0.1), rgba(33,150,243,0.06), rgba(0,188,212,0.1));
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 0.8px;
+  position: relative;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
     <div class="bg-grid"></div>
-    <div class="bg-radial"></div>
-    <div class="bg-bar-left"></div>
-    <div class="bg-corner-tr"></div>
-    <div class="bg-corner-br"></div>
-    <div class="bg-corner-bl"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-line-1"></div>
+    <div class="bg-line-2"></div>
   </div>
   <div id="ct">
-
-    <div class="title-area">
-      <h1>开 源 商 业 化 数 据</h1>
-      <div class="subtitle">开源已从理想主义运动成长为成熟且巨大的商业生态，从硅谷巨头到中国创新企业都在持续验证商业模式</div>
-      <div class="title-accent-line"></div>
+    <div class="header">
+      <div class="title-row">
+        <div class="title-accent-bar"></div>
+        <h1><span>开源商业化数据</span></h1>
+      </div>
+      <p class="subtitle"><span>开源已经不再是一个理想主义的运动，而是一个成熟且巨大的商业生态，从硅谷到中国的创新企业，开源商业模式正被不断验证和迭代。</span></p>
     </div>
 
-    <div class="kpi-row">
-      <div class="kpi-card">
-        <div class="kpi-dot"></div>
-        <div class="kpi-num">$280亿</div>
-        <div class="kpi-label">MongoDB 市值</div>
-        <div class="kpi-sub">2023年 · 开源数据库独角兽</div>
+    <div class="main">
+      <div class="left-panel">
+        <div class="kpi-top">
+          <div class="kpi-card">
+            <div class="kpi-label"><span>MONGODB 市值 · 2023</span></div>
+            <div class="kpi-value"><span>$280 亿</span></div>
+            <div class="kpi-desc"><span>MongoDB 已成为开源领域市值最高的上市公司之一</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><span>全球开源融资 · 2023</span></div>
+            <div class="kpi-value"><span>$100 亿+</span></div>
+            <div class="kpi-desc"><span>全球范围开源领域年度融资总额突破百亿美元</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><span>企业开源采用率</span></div>
+            <div class="kpi-value"><span>73%</span></div>
+            <div class="kpi-desc"><span>商业软件中包含开源组件的企业比例</span></div>
+          </div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-card wide">
+            <div class="kpi-label"><span>LINUX 间接收入 · 2023 估算</span></div>
+            <div class="kpi-value"><span>$600 亿+</span></div>
+            <div class="kpi-desc"><span>基于 Linux 的企业级产品与服务间接商业价值</span></div>
+          </div>
+          <div class="kpi-card wide">
+            <div class="kpi-label"><span>APACHE 软件基金会</span></div>
+            <div class="kpi-value"><span>370+ 项目</span></div>
+            <div class="kpi-desc"><span>覆盖 19 个专业领域 · 全球最大开源项目孵化平台</span></div>
+          </div>
+        </div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-dot"></div>
-        <div class="kpi-num">$100亿+</div>
-        <div class="kpi-label">全球开源融资</div>
-        <div class="kpi-sub">2023年度 · AI方向占主导</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-dot"></div>
-        <div class="kpi-num">73%</div>
-        <div class="kpi-label">企业采用率</div>
-        <div class="kpi-sub">商业软件含开源组件</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-dot"></div>
-        <div class="kpi-num">$600亿+</div>
-        <div class="kpi-label">Linux 间接收入</div>
-        <div class="kpi-sub">2023年估算 · 生态级价值</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-dot"></div>
-        <div class="kpi-num">370+</div>
-        <div class="kpi-label">Apache 项目</div>
-        <div class="kpi-sub">覆盖19个专业领域</div>
-      </div>
-    </div>
 
-    <div class="bullets-row">
-      <div class="bullet-card">
-        <div class="b-head"><span>开源企业崛起</span></div>
-        <div class="b-body"><span>MongoDB、Elastic等开源企业估值超数十亿美元，证明开源商业价值</span></div>
-      </div>
-      <div class="bullet-card">
-        <div class="b-head"><span>融资持续</span></div>
-        <div class="b-body"><span>2023年开源领域全球融资超百亿美元、AI方向占主导</span></div>
-      </div>
-      <div class="bullet-card">
-        <div class="b-head"><span>商业模式</span></div>
-        <div class="b-body"><span>SaaS化部署、云托管服务、开源+商业双轨制成为主流变现路径</span></div>
-      </div>
-      <div class="bullet-card">
-        <div class="b-head"><span>许可证创新</span></div>
-        <div class="b-body"><span>Source Available许可等新模式开辟差异化收入来源</span></div>
-      </div>
-      <div class="bullet-card">
-        <div class="b-head"><span>中国商业化</span></div>
-        <div class="b-body"><span>国内开源项目通过SaaS化模式探索中国特色商业化路径</span></div>
-      </div>
-    </div>
-
-    <div class="bottom-row">
-      <div class="panel">
-        <div class="panel-title"><span class="dot"></span><span>开源企业融资与市值增长趋势</span></div>
-        <div id="chart_1"></div>
-      </div>
-      <div class="panel">
-        <div class="panel-title"><span class="dot"></span><span>开源商业模式 · 四象限</span></div>
-        <div class="quadrant-grid">
-          <div class="quad-item">
-            <div class="quad-icon">SaaS</div>
-            <div class="quad-text">
-              <div class="q-title">SaaS 化部署</div>
-              <div class="q-desc">云端托管即服务</div>
-            </div>
+      <div class="right-panel">
+        <div class="panel-title"><span>开源商业模式象限 · QUADRANT MAP</span></div>
+        <div class="quadrant">
+          <div class="quad-cell q1">
+            <div class="quad-icon"><span>S</span></div>
+            <div class="quad-name"><span>SaaS</span></div>
+            <div class="quad-desc"><span>云托管 / 订阅付费</span></div>
           </div>
-          <div class="quad-item">
-            <div class="quad-icon">SUB</div>
-            <div class="quad-text">
-              <div class="q-title">订阅服务</div>
-              <div class="q-desc">付费版本与企业版</div>
-            </div>
+          <div class="quad-cell q2">
+            <div class="quad-icon"><span>$</span></div>
+            <div class="quad-name"><span>订阅</span></div>
+            <div class="quad-desc"><span>企业级功能解锁</span></div>
           </div>
-          <div class="quad-item">
-            <div class="quad-icon">CON</div>
-            <div class="quad-text">
-              <div class="q-title">咨询支持</div>
-              <div class="q-desc">技术服务与定制</div>
-            </div>
+          <div class="quad-cell q3">
+            <div class="quad-icon"><span>★</span></div>
+            <div class="quad-name"><span>咨询</span></div>
+            <div class="quad-desc"><span>技术服务 / 培训</span></div>
           </div>
-          <div class="quad-item">
-            <div class="quad-icon">SPO</div>
-            <div class="quad-text">
-              <div class="q-title">赞助模式</div>
-              <div class="q-desc">基金会与企业赞助</div>
-            </div>
+          <div class="quad-cell q4">
+            <div class="quad-icon"><span>♥</span></div>
+            <div class="quad-name"><span>赞助</span></div>
+            <div class="quad-desc"><span>基金会 / 企业捐赠</span></div>
+          </div>
+          <span class="quad-axis-x">收入规模 →</span>
+          <span class="quad-axis-y">技术深度 →</span>
+        </div>
+        <div class="trend-mini">
+          <div class="trend-label"><span>融资 &amp; 市值增长趋势 (2019–2023)</span></div>
+          <div class="trend-bars">
+            <div class="trend-bar" style="height:35%"></div>
+            <div class="trend-bar b2" style="height:48%"></div>
+            <div class="trend-bar" style="height:62%"></div>
+            <div class="trend-bar b2" style="height:78%"></div>
+            <div class="trend-bar" style="height:95%"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="closing-line">
-      <span class="hl">开源商业模式正被不断验证和迭代</span>，为开发者和技术创业者提供独特的价值实现路径
+    <div class="info-bars">
+      <div class="info-bar">
+        <div class="info-num"><span>01 / INSIGHT</span></div>
+        <div class="info-title"><span>开源企业崛起</span></div>
+        <div class="info-desc"><span>MongoDB、Elastic 等估值超数十亿美元，证明开源商业价值</span></div>
+      </div>
+      <div class="info-bar">
+        <div class="info-num"><span>02 / FUNDING</span></div>
+        <div class="info-title"><span>融资持续</span></div>
+        <div class="info-desc"><span>2023 年开源领域全球融资超百亿美元，AI 方向占主导</span></div>
+      </div>
+      <div class="info-bar">
+        <div class="info-num"><span>03 / MODEL</span></div>
+        <div class="info-title"><span>商业模式</span></div>
+        <div class="info-desc"><span>SaaS 化部署、云托管服务、开源加商业双轨制成为主流变现路径</span></div>
+      </div>
+      <div class="info-bar">
+        <div class="info-num"><span>04 / LICENSE</span></div>
+        <div class="info-title"><span>许可证创新</span></div>
+        <div class="info-desc"><span>Source Available 许可等新模式开辟差异化收入来源</span></div>
+      </div>
+      <div class="info-bar">
+        <div class="info-num"><span>05 / CHINA</span></div>
+        <div class="info-title"><span>中国商业化</span></div>
+        <div class="info-desc"><span>国内开源项目通过 SaaS 化模式探索中国特色路径</span></div>
+      </div>
     </div>
 
+    <div class="summary">
+      <span>开源已从社区理想走向商业现实，数据证明其巨大价值与持续增长潜力</span>
+    </div>
   </div>
 </div>
-
-<script src="../assets/echarts.min.js"></script>
-<script>(function(){
-  const el = document.getElementById('chart_1');
-  const chart = echarts.init(el, null, {renderer:'svg'});
-  chart.setOption({
-    backgroundColor:'transparent',
-    tooltip:{trigger:'axis',backgroundColor:'#0F1E36',borderColor:'#00BCD4',textStyle:{color:'#ECEFF1'}},
-    legend:{
-      data:['融资额(亿美元)','上市市值(亿美元)'],
-      textStyle:{color:'#90A4AE',fontSize:10},
-      top:0,right:0,
-      itemWidth:12,itemHeight:6
-    },
-    grid:{left:42,right:14,top:28,bottom:26},
-    xAxis:{
-      type:'category',
-      data:['2018','2019','2020','2021','2022','2023'],
-      axisLine:{lineStyle:{color:'#263238'}},
-      axisLabel:{color:'#78909C',fontSize:10},
-      axisTick:{show:false}
-    },
-    yAxis:{
-      type:'value',
-      name:'亿美元',
-      nameTextStyle:{color:'#546E7A',fontSize:9},
-      axisLine:{show:false},
-      splitLine:{lineStyle:{color:'rgba(0,188,212,0.08)'}},
-      axisLabel:{color:'#78909C',fontSize:10}
-    },
-    series:[
-      {
-        name:'融资额(亿美元)',
-        type:'line',
-        smooth:true,
-        data:[28,42,55,72,88,102],
-        lineStyle:{color:'#00BCD4',width:2.5,shadowColor:'rgba(0,188,212,0.5)',shadowBlur:8},
-        itemStyle:{color:'#00BCD4',borderColor:'#4DD0E1',borderWidth:1},
-        areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(0,188,212,0.35)'},{offset:1,color:'rgba(0,188,212,0.02)'}]}},
-        symbol:'circle',symbolSize:5
-      },
-      {
-        name:'上市市值(亿美元)',
-        type:'line',
-        smooth:true,
-        data:[52,78,135,198,250,280],
-        lineStyle:{color:'#2196F3',width:2.5,shadowColor:'rgba(33,150,243,0.5)',shadowBlur:8},
-        itemStyle:{color:'#2196F3',borderColor:'#64B5F6',borderWidth:1},
-        areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(33,150,243,0.22)'},{offset:1,color:'rgba(33,150,243,0.02)'}]}},
-        symbol:'diamond',symbolSize:5
-      }
-    ]
-  });
-  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
-})();</script>
 </body>
 </html>
