@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>功利主义的激励论证</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F5F5;
+    --text: #000000;
+    --muted: #888888;
+    --border: #DDDDDD;
+    --rule: #E5E5E5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; }
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+  #bg { position: absolute; inset: 0; z-index: 0; }
+  #bg::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, #FAFAFA 0%, #F5F5F5 40%, #EFEFEF 100%);
+  }
+  #bg::after {
+    content: ''; position: absolute; left: -100px; top: -100px;
+    width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(0,0,0,0.04), transparent 70%);
+    pointer-events: none;
+  }
+  #ct {
+    position: absolute; inset: 0; z-index: 1;
+    padding: 48px 60px 40px; box-sizing: border-box;
+    display: flex; flex-direction: column;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #000;
+    margin-bottom: 22px;
+  }
+  .title-block { display: flex; align-items: baseline; gap: 16px; }
+  .title-num {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 13px; color: var(--muted); letter-spacing: 0.25em;
+  }
+  .title-main {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 36px; font-weight: 700; letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .title-meta {
+    font-size: 12px; color: var(--muted);
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+
+  /* ── Statement ── */
+  .statement {
+    font-size: 15.5px; color: #000; line-height: 1.75;
+    margin-bottom: 22px; max-width: 1420px;
+  }
+  .statement strong { font-weight: 700; color: #000; }
+  .statement .muted { color: var(--muted); }
+  .statement .quote-mark {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 28px; color: #000; line-height: 0;
+    position: relative; top: 6px; margin-right: 4px; font-weight: 700;
+  }
+
+  /* ── Comparison: 激励 vs 代价 ── */
+  .compare {
+    margin-bottom: 24px; padding: 18px 24px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: grid; grid-template-columns: 130px 1fr;
+    gap: 24px; align-items: center;
+  }
+  .compare-axis {
+    border-right: 1px solid var(--rule);
+    padding-right: 20px; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; gap: 10px;
+  }
+  .axis-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 12px; color: var(--muted); letter-spacing: 0.35em;
+  }
+  .axis-note { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+  .compare-mid {
+    display: grid; grid-template-columns: 1fr 60px 1fr;
+    gap: 14px; align-items: center;
+  }
+  .direction {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .dir-header {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 4px;
+  }
+  .dir-label {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 22px; font-weight: 700; line-height: 1;
+  }
+  .dir-arrow {
+    font-size: 20px; line-height: 1; font-weight: 700;
+  }
+  .dir-arrow.right { color: var(--muted); }
+  .dir-desc { font-size: 12.5px; color: var(--muted); }
+
+  .compare-scale { position: relative; height: 60px; }
+  .scale-line {
+    position: absolute; left: 0; right: 0; top: 28px;
+    height: 1px; background: #BBB;
+  }
+  .scale-tick {
+    position: absolute; top: 20px; width: 1px; height: 18px; background: #BBB;
+  }
+  .scale-tick.left  { left: 0; }
+  .scale-tick.center { left: 50%; }
+  .scale-tick.right  { right: 0; }
+  .scale-fulcrum {
+    position: absolute; left: 50%; top: 26px;
+    width: 12px; height: 12px; background: #000;
+    transform: translate(-50%, 0) rotate(45deg);
+  }
+  .scale-bar {
+    position: absolute; top: 14px; height: 26px;
+    display: flex; align-items: center; padding: 0 8px;
+    font-size: 10.5px; font-weight: 700; color: #FFF;
+    letter-spacing: 0.05em;
+  }
+  .scale-bar.long { left: 14%; right: 0; background: #000; }
+  .scale-bar.short { left: 0; right: 62%; background: var(--muted); }
+
+  /* ── Four-dimension cards ── */
+  .section-head {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 16px;
+  }
+  .section-head-line { flex: 1; height: 1px; background: var(--rule); }
+  .section-head-label {
+    font-size: 11.5px; letter-spacing: 0.35em; color: var(--muted);
+    font-family: 'Noto Sans SC', sans-serif; font-weight: 500;
+  }
+
+  .cards {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin-bottom: 22px;
+  }
+  .card {
+    background: #FFF; border: 1px solid var(--border);
+    padding: 20px 20px 18px;
+    display: flex; flex-direction: column; gap: 12px;
+    position: relative; min-height: 195px;
+  }
+  .card-accent {
+    position: absolute; left: 0; top: 0; width: 42px; height: 3px;
+    background: #000;
+  }
+  .card-num {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.28em; font-weight: 500;
+  }
+  .card-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px; font-weight: 700; line-height: 1.35;
+    color: #000;
+  }
+  .card-divider { width: 28px; height: 2px; background: #000; }
+  .card-body {
+    font-size: 13.5px; color: #333; line-height: 1.7;
+    flex: 1;
+  }
+  .card-body strong { font-weight: 700; color: #000; }
+
+  /* ── Bottom labels ── */
+  .bottom-labels {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .blabel {
+    padding: 16px 22px;
+    border-top: 2px solid #000;
+    background: #EEE;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .blabel-tag {
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.3em;
+    font-weight: 500;
+  }
+  .blabel-text {
+    font-size: 17px; line-height: 1.4;
+  }
+  .blabel-text .k { font-weight: 700; color: #000; }
+  .blabel-text .d { color: #000; font-weight: 400; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="page-header">
+      <div class="title-block">
+        <span class="title-num">/ 01</span>
+        <h1 class="title-main">功利主义的激励论证</h1>
+      </div>
+      <span class="title-meta">IP · 激励逻辑 · 论证</span>
+    </div>
+
+    <div class="statement">
+      <span class="quote-mark">"</span><strong>功利主义</strong>把知识产权视为一场<span class="muted">"社会实验"</span>——<strong>短期独占换长期繁荣</strong>；数据上看，专利与版权登记的确与产业增长同步，但<strong>代价同样清晰可见</strong>；这也为<span class="muted">"开源"</span>的开放激励提供了对照——当作者为<strong>声誉、社群与影响力</strong>创作时，激励并不必然需要独占来驱动。
+    </div>
+
+    <div class="compare">
+      <div class="compare-axis">
+        <div class="axis-title">对 照</div>
+        <div class="axis-note">激励 与<br>代价</div>
+      </div>
+      <div class="compare-mid">
+        <div class="direction">
+          <div class="dir-header">
+            <span class="dir-arrow right">←</span>
+            <span class="dir-label">代价</span>
+          </div>
+          <div class="dir-desc">可及性受限 · 创新路径受阻 · 净福利被侵蚀</div>
+        </div>
+        <div class="compare-scale">
+          <div class="scale-line"></div>
+          <div class="scale-tick left"></div>
+          <div class="scale-tick center"></div>
+          <div class="scale-tick right"></div>
+          <div class="scale-fulcrum"></div>
+          <div class="scale-bar long">激励</div>
+          <div class="scale-bar short">代价</div>
+        </div>
+        <div class="direction">
+          <div class="dir-header">
+            <span class="dir-label">激励</span>
+            <span class="dir-arrow">→</span>
+          </div>
+          <div class="dir-desc">作品增多 · 产业扩张 · 社会福利净增</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <span class="section-head-label">论证的四个维度</span>
+      <div class="section-head-line"></div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-accent"></div>
+        <div class="card-num">01</div>
+        <div class="card-title">论点结构</div>
+        <div class="card-divider"></div>
+        <div class="card-body"><strong>独占激励</strong>→ 作品增多 → 社会受益，故保护期<strong>"净收益"</strong>为正</div>
+      </div>
+      <div class="card">
+        <div class="card-accent"></div>
+        <div class="card-num">02</div>
+        <div class="card-title">经验支持</div>
+        <div class="card-divider"></div>
+        <div class="card-body">专利数据库、版权登记与<strong>产业规模</strong>在制度建立后显著扩张</div>
+      </div>
+      <div class="card">
+        <div class="card-accent"></div>
+        <div class="card-num">03</div>
+        <div class="card-title">代价与反例</div>
+        <div class="card-divider"></div>
+        <div class="card-body"><strong>专利丛林</strong>、软件锁定、公共知识封锁，激励与可及性常相互挤压</div>
+      </div>
+      <div class="card">
+        <div class="card-accent"></div>
+        <div class="card-num">04</div>
+        <div class="card-title">政策含义</div>
+        <div class="card-divider"></div>
+        <div class="card-body"><strong>保护期限</strong>、<strong>例外条款</strong>、<strong>强制许可</strong>成为平衡激励与共享的核心工具</div>
+      </div>
+    </div>
+
+    <div class="bottom-labels">
+      <div class="blabel">
+        <div class="blabel-tag">激励侧</div>
+        <div class="blabel-text"><span class="k">专利激励模型：</span><span class="d">短期独占 → 长期繁荣</span></div>
+      </div>
+      <div class="blabel">
+        <div class="blabel-tag">代价侧</div>
+        <div class="blabel-text"><span class="k">典型副作用：</span><span class="d">专利丛林 · 知识封锁</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书·十月共读</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg: #000000;
+  --fg: #ffffff;
+  --muted: #888888;
+  --divider: #333333;
+  --hairline: #2a2a2a;
+  --serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #000;
+  color: var(--fg);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: #000000;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* 装饰层：细横线、四角十字、垂直细线 */
+.corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+}
+.corner::before, .corner::after {
+  content: "";
+  position: absolute;
+  background: var(--hairline);
+}
+.corner::before { left: 0; top: 13px; width: 28px; height: 1px; }
+.corner::after  { left: 13px; top: 0; width: 1px; height: 28px; }
+.c-tl { top: 60px; left: 60px; }
+.c-tr { top: 60px; right: 60px; transform: scaleX(-1); }
+.c-bl { bottom: 60px; left: 60px; transform: scaleY(-1); }
+.c-br { bottom: 60px; right: 60px; transform: scale(-1,-1); }
+
+/* 顶部细线 */
+.top-line {
+  position: absolute;
+  top: 92px;
+  left: 120px;
+  right: 120px;
+  height: 1px;
+  background: var(--hairline);
+}
+.bot-line {
+  position: absolute;
+  bottom: 92px;
+  left: 120px;
+  right: 120px;
+  height: 1px;
+  background: var(--hairline);
+}
+
+/* 顶部与底部两端的小圆点 */
+.dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.d1 { top: 89px; left: 120px; }
+.d2 { top: 89px; right: 120px; }
+.d3 { bottom: 89px; left: 120px; }
+.d4 { bottom: 89px; right: 120px; }
+
+/* 侧边小标签 */
+.side-tag {
+  position: absolute;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  color: var(--muted);
+  writing-mode: vertical-rl;
+}
+.side-l { left: 82px; top: 200px; }
+.side-r { right: 82px; bottom: 200px; }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+}
+
+.header {
+  position: absolute;
+  top: 110px;
+  left: 120px;
+  right: 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.4em;
+  color: var(--muted);
+}
+.header .h-left, .header .h-right { display: flex; align-items: center; gap: 14px; }
+.header .bar {
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  background: var(--muted);
+}
+
+/* 中央标题区 */
+.center {
+  position: absolute;
+  top: 218px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: 0.6em;
+  color: var(--muted);
+  margin-bottom: 46px;
+  font-weight: 400;
+}
+
+.eyebrow .diamond {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--fg);
+  transform: rotate(45deg);
+  margin: 0 18px 2px;
+  vertical-align: middle;
+}
+
+.title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 108px;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+  color: var(--fg);
+  margin: 0;
+}
+
+.title .dotmark {
+  color: var(--muted);
+  font-weight: 400;
+  margin: 0 6px;
+}
+
+.title-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: 0.32em;
+  color: var(--muted);
+  margin-top: 32px;
+  font-weight: 400;
+}
+
+.subtitle {
+  font-family: var(--sans);
+  font-size: 15px;
+  letter-spacing: 0.5em;
+  color: var(--fg);
+  margin-top: 22px;
+  font-weight: 300;
+}
+.subtitle .sep {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--muted);
+  vertical-align: middle;
+  margin: 0 20px 3px;
+}
+
+/* 三条导语 */
+.intro {
+  position: absolute;
+  left: 220px;
+  right: 220px;
+  top: 620px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 44px;
+}
+.intro-item {
+  border-top: 1px solid var(--divider);
+  padding-top: 18px;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--muted);
+  font-weight: 300;
+  position: relative;
+}
+.intro-item .idx {
+  display: block;
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--fg);
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+/* 底部元信息 */
+.footer {
+  position: absolute;
+  bottom: 118px;
+  left: 120px;
+  right: 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.footer-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-block .lbl {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.45em;
+  color: var(--muted);
+}
+.footer-block .val {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--fg);
+  letter-spacing: 0.08em;
+  font-weight: 400;
+}
+.footer-center {
+  text-align: center;
+}
+.footer-center .month {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--fg);
+  letter-spacing: 0.35em;
+  font-weight: 400;
+}
+.footer-center .caption {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.45em;
+  margin-top: 6px;
+}
+
+.bottom-tag {
+  position: absolute;
+  bottom: 52px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  color: var(--muted);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="corner c-tl"></div>
+    <div class="corner c-tr"></div>
+    <div class="corner c-bl"></div>
+    <div class="corner c-br"></div>
+    <div class="top-line"></div>
+    <div class="bot-line"></div>
+    <div class="dot d1"></div>
+    <div class="dot d2"></div>
+    <div class="dot d3"></div>
+    <div class="dot d4"></div>
+    <div class="side-tag side-l">SENSENOVA · OPEN SOURCE</div>
+    <div class="side-tag side-r">JUBU · SHARED READING</div>
+  </div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="h-left">
+        <span class="bar"></span>
+        <span>NO. 10 · OPEN-BOOK</span>
+      </div>
+      <div class="h-right">
+        <span>CIRCLE OPENED</span>
+        <span class="bar"></span>
+      </div>
+    </div>
+
+    <div class="center">
+      <div class="eyebrow">
+        <span>A SHARED READING</span><span class="diamond"></span><span>2023 · OCTOBER</span>
+      </div>
+      <h1 class="title">开<span class="dotmark">·</span>源之<span class="dotmark">·</span>书</h1>
+      <div class="title-en">Justifying&nbsp;&nbsp;Intellectual&nbsp;&nbsp;Property</div>
+      <div class="subtitle">
+        <span>十 月 共 读</span>
+        <span class="sep"></span>
+        <span>适兕 分享</span>
+      </div>
+    </div>
+
+    <div class="intro">
+      <div class="intro-item">
+        <span class="idx">Ⅰ &nbsp;正当性</span>
+        一场关于"正当性"的追问——权利并非天然存在，它需要哲学、法律与社会实践的共同担保。
+      </div>
+      <div class="intro-item">
+        <span class="idx">Ⅱ &nbsp;坐标</span>
+        从知识产权到开源——以经典 IP 理论为坐标，重新审视开源软件为何能被称作"作品"。
+      </div>
+      <div class="intro-item">
+        <span class="idx">Ⅲ &nbsp;记录</span>
+        2023-10 · 开源之道——适兕读书会共读，记录思路、争议与未尽之问。
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-block">
+        <span class="lbl">周期</span>
+        <span class="val">2023 &nbsp;·&nbsp; 10</span>
+      </div>
+      <div class="footer-block footer-center">
+        <div class="month">2023 — 10</div>
+        <div class="caption">MONTHLY · READING · CIRCLE</div>
+      </div>
+      <div class="footer-block" style="align-items:flex-end;">
+        <span class="lbl">议 题</span>
+        <span class="val">IP 正 当 性</span>
+      </div>
+      <div class="footer-block" style="align-items:flex-end;">
+        <span class="lbl">角 色</span>
+        <span class="val">开源之道 · 适兕</span>
+      </div>
+    </div>
+
+    <div class="bottom-tag">SENOVA · OPEN BOOK SERIES · AUTUMN 2023</div>
+  </div>
+</div>
+</body>
+</html>
