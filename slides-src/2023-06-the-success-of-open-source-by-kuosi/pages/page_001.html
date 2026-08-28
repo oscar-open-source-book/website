@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之道的成功</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+:root{
+  --cyan:#00BCD4;
+  --blue:#2196F3;
+  --text:#ECEFF1;
+  --dim:#90A4AE;
+  --bg-dark:#0A0E17;
+  --bg-mid:#0F1626;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  width:1600px;height:900px;
+  font-family:'Inter','JetBrains Mono',monospace;
+  color:var(--text);
+  background:var(--bg-dark);
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:var(--bg-dark);
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 70% 30%, rgba(0,188,212,0.08) 0%, transparent 50%),
+             radial-gradient(ellipse at 20% 80%, rgba(33,150,243,0.06) 0%, transparent 55%),
+             #0A0E17;
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:55px 60px;
+  box-sizing:border-box;
+}
+
+/* subtle grid overlay */
+.grid-layer{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.04) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+
+/* top decoration bar */
+.top-bar{
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg, transparent 0%, var(--cyan) 30%, var(--blue) 70%, transparent 100%);
+  z-index:5;
+}
+
+/* corner brackets */
+.corner{
+  position:absolute;width:28px;height:28px;
+  border-color:var(--cyan);
+  z-index:5;
+}
+.corner-tl{top:20px;left:20px;border-top:1px solid var(--cyan);border-left:1px solid var(--cyan);}
+.corner-tr{top:20px;right:20px;border-top:1px solid var(--cyan);border-right:1px solid var(--cyan);}
+.corner-bl{bottom:20px;left:20px;border-bottom:1px solid var(--cyan);border-left:1px solid var(--cyan);}
+.corner-br{bottom:20px;right:20px;border-bottom:1px solid var(--cyan);border-right:1px solid var(--cyan);}
+
+/* header row */
+.header{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--dim);
+  letter-spacing:2px;
+  padding-bottom:14px;
+  border-bottom:1px solid rgba(0,188,212,0.15);
+}
+.header-left{display:flex;align-items:center;gap:10px;}
+.header-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);
+  animation:blink 2s infinite;
+}
+@keyframes blink{
+  0%,100%{opacity:1;}
+  50%{opacity:0.3;}
+}
+.header-right{display:flex;gap:20px;}
+.header-right span{color:var(--cyan);}
+
+/* main layout */
+.main{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  margin-top:28px;
+  height:500px;
+}
+
+/* left column */
+.left-col{
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;
+}
+
+.tag-row{
+  display:flex;align-items:center;gap:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--cyan);
+  letter-spacing:3px;
+  margin-bottom:20px;
+}
+.tag-row .line{
+  width:40px;height:1px;background:var(--cyan);
+  box-shadow:0 0 4px var(--cyan);
+}
+.tag-row .tag{
+  padding:4px 10px;border:1px solid rgba(0,188,212,0.4);
+  border-radius:3px;font-size:10px;
+}
+
+.main-title{
+  font-family:'Space Grotesk','Inter',sans-serif;
+  font-weight:700;
+  font-size:72px;
+  line-height:1.08;
+  letter-spacing:-1px;
+  color:var(--text);
+  margin-bottom:18px;
+}
+.main-title .accent{
+  color:var(--cyan);
+  text-shadow:0 0 20px rgba(0,188,212,0.5);
+}
+.main-title .line2{
+  display:block;
+  font-size:60px;
+  color:var(--blue);
+  text-shadow:0 0 15px rgba(33,150,243,0.4);
+}
+
+.subtitle{
+  font-family:'Inter',sans-serif;
+  font-weight:300;
+  font-size:20px;
+  color:var(--dim);
+  letter-spacing:1px;
+  margin-bottom:24px;
+  line-height:1.5;
+}
+.subtitle .hl{color:var(--cyan);font-weight:400;}
+
+.meta-row{
+  display:flex;gap:24px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--dim);
+  letter-spacing:1px;
+}
+.meta-row .item{
+  display:flex;flex-direction:column;gap:4px;
+  padding-left:12px;border-left:2px solid var(--cyan);
+}
+.meta-row .item .label{font-size:9px;color:var(--cyan);letter-spacing:2px;}
+.meta-row .item .value{color:var(--text);font-size:13px;}
+
+/* right column - network graphic */
+.right-col{
+  position:relative;
+  border:1px solid rgba(0,188,212,0.12);
+  border-radius:4px;
+  overflow:hidden;
+  background:linear-gradient(135deg, rgba(15,22,38,0.9) 0%, rgba(10,14,23,0.95) 100%);
+}
+
+.node-canvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+}
+
+.right-overlay{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%, transparent 30%, rgba(10,14,23,0.6) 100%);
+  pointer-events:none;
+}
+
+.right-corner-label{
+  position:absolute;top:12px;left:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--cyan);
+  letter-spacing:2px;
+  z-index:3;
+}
+.right-corner-label .dot{
+  display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 6px var(--cyan);
+  margin-right:6px;vertical-align:middle;
+}
+
+.right-bottom-label{
+  position:absolute;bottom:12px;left:14px;right:14px;
+  display:flex;justify-content:space-between;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--dim);
+  letter-spacing:1px;
+  z-index:3;
+}
+.right-bottom-label .stat{color:var(--cyan);}
+
+/* floating code snippets */
+.code-float{
+  position:absolute;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:rgba(0,188,212,0.35);
+  white-space:pre;
+  z-index:2;
+}
+.code-float.f1{top:14px;right:14px;}
+.code-float.f2{bottom:40px;right:14px;}
+
+/* center emblem in right area */
+.center-emblem{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  z-index:4;
+  text-align:center;
+  font-family:'Space Grotesk',sans-serif;
+  pointer-events:none;
+}
+.center-emblem .brand{
+  font-size:13px;letter-spacing:6px;
+  color:var(--cyan);
+  text-shadow:0 0 10px rgba(0,188,212,0.6);
+  font-weight:600;
+}
+.center-emblem .year{
+  font-size:38px;font-weight:700;
+  color:var(--text);
+  margin-top:4px;
+  letter-spacing:3px;
+  text-shadow:0 0 20px rgba(0,188,212,0.3);
+}
+
+/* bottom section */
+.bottom{
+  margin-top:22px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:18px;
+  padding-top:18px;
+  border-top:1px solid rgba(0,188,212,0.12);
+}
+
+.info-card{
+  position:relative;
+  padding:16px 18px 16px 22px;
+  background:rgba(15,22,38,0.5);
+  border:1px solid rgba(0,188,212,0.08);
+  border-radius:3px;
+}
+.info-card::before{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--cyan) 0%, var(--blue) 100%);
+}
+.info-card .num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--cyan);
+  letter-spacing:3px;
+  margin-bottom:6px;
+}
+.info-card .title{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;
+  font-size:16px;
+  color:var(--text);
+  margin-bottom:8px;
+}
+.info-card .desc{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  line-height:1.6;
+  color:var(--dim);
+}
+
+/* footer bar */
+.footer-bar{
+  position:absolute;bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg, transparent 0%, var(--cyan) 50%, var(--blue) 100%);
+  opacity:0.6;
+  z-index:5;
+}
+
+/* glow particles */
+.particles{
+  position:absolute;inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:0;
+}
+.particle{
+  position:absolute;
+  width:2px;height:2px;
+  background:var(--cyan);
+  border-radius:50%;
+  box-shadow:0 0 6px var(--cyan);
+  animation:float-p 6s infinite ease-in-out;
+  opacity:0.4;
+}
+@keyframes float-p{
+  0%,100%{transform:translateY(0) translateX(0);opacity:0.3;}
+  50%{transform:translateY(-15px) translateX(8px);opacity:0.8;}
+}
+
+.particle.p1{top:15%;left:38%;animation-delay:0s;}
+.particle.p2{top:35%;left:62%;animation-delay:1s;}
+.particle.p3{top:70%;left:45%;animation-delay:2s;}
+.particle.p4{top:25%;left:80%;animation-delay:1.5s;}
+.particle.p5{top:80%;left:72%;animation-delay:0.5s;}
+.particle.p6{top:50%;left:88%;animation-delay:3s;}
+.particle.p7{top:10%;left:55%;animation-delay:2.5s;}
+.particle.p8{top:60%;left:35%;animation-delay:1.8s;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="grid-layer"></div>
+  <div class="top-bar"></div>
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <div class="particles">
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
+    <div class="particle p6"></div>
+    <div class="particle p7"></div>
+    <div class="particle p8"></div>
+  </div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="header-left">
+        <span class="header-dot"></span>
+        <span>OPEN SOURCE // 开源杂志 · 适兕系列</span>
+      </div>
+      <div class="header-right">
+        <span>VOL.2023</span>
+        <span>ISSUE 01</span>
+        <span>2023.06</span>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="tag-row">
+          <span class="line"></span>
+          <span>OPEN SOURCE APOLOGIA</span>
+          <span class="tag">CONFIDENTIAL</span>
+        </div>
+        <h1 class="main-title">
+          <span class="accent">开源之道</span>
+          <span class="line2">的成功</span>
+        </h1>
+        <p class="subtitle">
+          2023年<span class="hl">开源布道</span>与<span class="hl">阅读分享</span>实录
+        </p>
+        <div class="meta-row">
+          <div class="item">
+            <span class="label">DATE</span>
+            <span class="value">2023.06</span>
+          </div>
+          <div class="item">
+            <span class="label">HOST</span>
+            <span class="value">适兕开源杂志</span>
+          </div>
+          <div class="item">
+            <span class="label">TYPE</span>
+            <span class="value">阅读分享会</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="right-corner-label">
+          <span class="dot"></span>NODE NETWORK // OPEN SOURCE ECOSYSTEM
+        </div>
+
+        <div class="code-float f1">{
+  nodes: 2048,
+  links: 4096,
+  state: "active"
+}</div>
+
+        <div class="code-float f2">// collaborative mesh
+  protocol: open
+  fork: free
+  merge: trust</div>
+
+        <svg class="node-canvas" viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#00BCD4" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="nodeGlowBlue" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- concentric rings -->
+          <circle cx="350" cy="250" r="120" fill="none" stroke="#00BCD4" stroke-opacity="0.1" stroke-width="1"/>
+          <circle cx="350" cy="250" r="180" fill="none" stroke="#00BCD4" stroke-opacity="0.08" stroke-width="1"/>
+          <circle cx="350" cy="250" r="240" fill="none" stroke="#2196F3" stroke-opacity="0.06" stroke-width="1" stroke-dasharray="4 8"/>
+          <circle cx="350" cy="250" r="90" fill="none" stroke="#00BCD4" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="2 6"/>
+
+          <!-- connection lines -->
+          <g stroke="#00BCD4" stroke-width="0.8" opacity="0.35" filter="url(#glow)">
+            <line x1="350" y1="250" x2="180" y2="140"/>
+            <line x1="350" y1="250" x2="520" y2="120"/>
+            <line x1="350" y1="250" x2="600" y2="220"/>
+            <line x1="350" y1="250" x2="560" y2="380"/>
+            <line x1="350" y1="250" x2="380" y2="440"/>
+            <line x1="350" y1="250" x2="140" y2="320"/>
+            <line x1="350" y1="250" x2="100" y2="200"/>
+            <line x1="350" y1="250" x2="280" y2="100"/>
+            <line x1="180" y1="140" x2="280" y2="100"/>
+            <line x1="520" y1="120" x2="600" y2="220"/>
+            <line x1="600" y1="220" x2="560" y2="380"/>
+            <line x1="380" y1="440" x2="140" y2="320"/>
+            <line x1="100" y1="200" x2="180" y2="140"/>
+            <line x1="280" y1="100" x2="520" y2="120"/>
+            <line x1="140" y1="320" x2="100" y2="200"/>
+            <line x1="560" y1="380" x2="380" y2="440"/>
+          </g>
+          <g stroke="#2196F3" stroke-width="0.5" opacity="0.25" stroke-dasharray="3 5">
+            <line x1="180" y1="140" x2="520" y2="120"/>
+            <line x1="140" y1="320" x2="560" y2="380"/>
+            <line x1="280" y1="100" x2="380" y2="440"/>
+            <line x1="600" y1="220" x2="100" y2="200"/>
+          </g>
+
+          <!-- central hub -->
+          <circle cx="350" cy="250" r="25" fill="url(#nodeGlow)"/>
+          <circle cx="350" cy="250" r="8" fill="#00BCD4" filter="url(#glow)"/>
+          <circle cx="350" cy="250" r="4" fill="#ECEFF1"/>
+
+          <!-- outer nodes -->
+          <g filter="url(#glow)">
+            <circle cx="180" cy="140" r="4" fill="#00BCD4"/>
+            <circle cx="520" cy="120" r="4" fill="#00BCD4"/>
+            <circle cx="600" cy="220" r="5" fill="#00BCD4"/>
+            <circle cx="560" cy="380" r="4" fill="#2196F3"/>
+            <circle cx="380" cy="440" r="4" fill="#00BCD4"/>
+            <circle cx="140" cy="320" r="5" fill="#2196F3"/>
+            <circle cx="100" cy="200" r="4" fill="#00BCD4"/>
+            <circle cx="280" cy="100" r="4" fill="#2196F3"/>
+          </g>
+          <!-- node halos -->
+          <g>
+            <circle cx="180" cy="140" r="14" fill="url(#nodeGlow)" opacity="0.4"/>
+            <circle cx="520" cy="120" r="14" fill="url(#nodeGlow)" opacity="0.4"/>
+            <circle cx="600" cy="220" r="16" fill="url(#nodeGlow)" opacity="0.4"/>
+            <circle cx="560" cy="380" r="14" fill="url(#nodeGlowBlue)" opacity="0.4"/>
+            <circle cx="380" cy="440" r="14" fill="url(#nodeGlow)" opacity="0.4"/>
+            <circle cx="140" cy="320" r="16" fill="url(#nodeGlowBlue)" opacity="0.4"/>
+            <circle cx="100" cy="200" r="14" fill="url(#nodeGlow)" opacity="0.4"/>
+            <circle cx="280" cy="100" r="14" fill="url(#nodeGlowBlue)" opacity="0.4"/>
+          </g>
+
+          <!-- secondary nodes -->
+          <g fill="#00BCD4" opacity="0.5">
+            <circle cx="230" cy="180" r="2"/>
+            <circle cx="440" cy="160" r="2"/>
+            <circle cx="500" cy="290" r="2"/>
+            <circle cx="460" cy="350" r="2"/>
+            <circle cx="320" cy="380" r="2"/>
+            <circle cx="220" cy="380" r="2"/>
+            <circle cx="170" cy="270" r="2"/>
+            <circle cx="260" cy="220" r="2"/>
+            <circle cx="400" cy="200" r="2"/>
+            <circle cx="490" cy="200" r="2"/>
+          </g>
+          <g fill="#2196F3" opacity="0.4">
+            <circle cx="200" cy="240" r="1.5"/>
+            <circle cx="420" cy="300" r="1.5"/>
+            <circle cx="340" cy="150" r="1.5"/>
+            <circle cx="540" cy="280" r="1.5"/>
+            <circle cx="240" cy="350" r="1.5"/>
+            <circle cx="430" cy="100" r="1.5"/>
+          </g>
+
+          <!-- data pulse dots -->
+          <g>
+            <circle cx="350" cy="250" r="2" fill="#ECEFF1">
+              <animate attributeName="cx" values="350;520;350" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="250;120;250" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="1;0;1" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="350" cy="250" r="2" fill="#ECEFF1">
+              <animate attributeName="cx" values="350;140;350" dur="4s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="250;320;250" dur="4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="350" cy="250" r="1.5" fill="#2196F3">
+              <animate attributeName="cx" values="350;600;350" dur="5s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="250;220;250" dur="5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.8;0;0.8" dur="5s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+
+          <!-- small text labels near nodes -->
+          <g font-family="JetBrains Mono, monospace" font-size="8" fill="#00BCD4" opacity="0.5">
+            <text x="155" y="125">fork</text>
+            <text x="500" y="105">merge</text>
+            <text x="605" y="215">push</text>
+            <text x="545" y="400">pull</text>
+            <text x="370" y="460">commit</text>
+            <text x="105" y="340">branch</text>
+            <text x="70" y="195">clone</text>
+            <text x="260" y="88">patch</text>
+          </g>
+        </svg>
+
+        <div class="center-emblem">
+          <div class="brand">OSS · NETWORK</div>
+          <div class="year">2023</div>
+        </div>
+
+        <div class="right-bottom-label">
+          <span>NODES: 2048 · LINKS: 4096</span>
+          <span class="stat">STATUS: ACTIVE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="info-card">
+        <div class="num">// 01</div>
+        <div class="title">主题与背景</div>
+        <div class="desc">2023年6月由适兕开源杂志策划并举办的开源布道分享活动实录，记录一场关于技术与思想碰撞的线上聚会。</div>
+      </div>
+      <div class="info-card">
+        <div class="num">// 02</div>
+        <div class="title">开源价值主张</div>
+        <div class="desc">探讨开源技术、社区文化与商业模式如何深度重塑全球软件行业，构建开放、协作、共享的下一代数字基础设施。</div>
+      </div>
+      <div class="info-card">
+        <div class="num">// 03</div>
+        <div class="title">记录与传播</div>
+        <div class="desc">以图文并茂的演示方式完整记录一场真实而深刻的开源阅读分享会，让思想在文字与代码之间自由流动。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar"></div>
+</div>
+</body>
+</html>

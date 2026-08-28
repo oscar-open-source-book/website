@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>布道者视角</title>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap');
+<style>
+:root {
+  --cyan: #00BCD4;
+  --blue: #2196F3;
+  --light: #ECEFF1;
+  --dark-bg: #0A1628;
+  --dark-surface: #0F2138;
+  --dark-card: #122A45;
+  --accent-glow: rgba(0, 188, 212, 0.35);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Source Code Pro', sans-serif;
+  background: var(--dark-bg);
+  color: var(--light);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0A1628 0%, #0D1F38 40%, #0A1628 70%, #081220 100%);
+}
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(0,188,212,0.12) 0%, transparent 60%);
+  border-radius: 50%;
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -250px;
+  left: -150px;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(33,150,243,0.10) 0%, transparent 60%);
+  border-radius: 50%;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  opacity: 0.8;
+  padding-bottom: 8px;
+}
+.top-bar .left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.top-bar .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+}
+.top-bar .right {
+  display: flex;
+  gap: 30px;
+}
+
+/* Header section with title */
+.header-area {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+/* Book decoration */
+.book-deco {
+  position: relative;
+  width: 200px;
+  height: 160px;
+  flex-shrink: 0;
+}
+.book-deco .book-page-left,
+.book-deco .book-page-right {
+  position: absolute;
+  top: 20px;
+  width: 80px;
+  height: 110px;
+  border: 2px solid var(--cyan);
+  border-radius: 3px;
+  background: rgba(0, 188, 212, 0.05);
+}
+.book-deco .book-page-left {
+  left: 10px;
+  transform: skewY(-8deg) skewX(-3deg);
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+  box-shadow: inset -20px 0 30px rgba(0,188,212,0.08);
+}
+.book-deco .book-page-right {
+  right: 10px;
+  transform: skewY(8deg) skewX(3deg);
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  box-shadow: inset 20px 0 30px rgba(0,188,212,0.08);
+}
+.book-deco .spine {
+  position: absolute;
+  top: 18px;
+  left: 95px;
+  width: 4px;
+  height: 116px;
+  background: linear-gradient(180deg, var(--cyan), var(--blue));
+  border-radius: 2px;
+  box-shadow: 0 0 15px var(--cyan);
+}
+.book-deco .glow {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  height: 130px;
+  background: radial-gradient(ellipse at center, rgba(0,188,212,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.book-deco .page-lines-left {
+  position: absolute;
+  top: 45px;
+  left: 20px;
+  width: 50px;
+  height: 1px;
+  background: rgba(0,188,212,0.3);
+  box-shadow:
+    0 12px 0 rgba(0,188,212,0.2),
+    0 24px 0 rgba(0,188,212,0.2),
+    0 36px 0 rgba(0,188,212,0.15),
+    0 48px 0 rgba(0,188,212,0.15);
+}
+.book-deco .page-lines-right {
+  position: absolute;
+  top: 45px;
+  right: 20px;
+  width: 50px;
+  height: 1px;
+  background: rgba(33,150,243,0.3);
+  box-shadow:
+    0 12px 0 rgba(33,150,243,0.2),
+    0 24px 0 rgba(33,150,243,0.2),
+    0 36px 0 rgba(33,150,243,0.15),
+    0 48px 0 rgba(33,150,243,0.15);
+}
+
+/* Title area */
+.title-block {
+  flex: 1;
+}
+.chapter-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  color: var(--cyan);
+  letter-spacing: 6px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.chapter-label .line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+.main-title {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 78px;
+  font-weight: 700;
+  line-height: 1.05;
+  background: linear-gradient(135deg, var(--light) 0%, var(--cyan) 60%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  text-shadow: 0 0 40px rgba(0,188,212,0.2);
+}
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--light);
+  opacity: 0.85;
+  letter-spacing: 8px;
+  padding-left: 6px;
+  border-left: 3px solid var(--cyan);
+  padding-left: 16px;
+}
+
+/* Globe network decoration on the right */
+.globe-deco {
+  position: relative;
+  width: 180px;
+  height: 160px;
+  flex-shrink: 0;
+}
+.globe-deco .globe-ring {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  width: 120px;
+  height: 120px;
+  border: 1.5px solid var(--cyan);
+  border-radius: 50%;
+  opacity: 0.6;
+}
+.globe-deco .globe-ring-2 {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--blue);
+  border-radius: 50%;
+  opacity: 0.4;
+  transform: rotateY(60deg);
+}
+.globe-deco .globe-ellipse {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  width: 160px;
+  height: 40px;
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 50%;
+}
+.globe-deco .globe-ellipse-2 {
+  position: absolute;
+  top: 80px;
+  left: 5px;
+  width: 170px;
+  height: 30px;
+  border: 1px solid rgba(33,150,243,0.3);
+  border-radius: 50%;
+}
+.globe-deco .node {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--cyan);
+}
+.globe-deco .node-1 { top: 30px; left: 45px; }
+.globe-deco .node-2 { top: 40px; left: 130px; }
+.globe-deco .node-3 { top: 70px; left: 35px; background: var(--blue); box-shadow: 0 0 8px var(--blue);}
+.globe-deco .node-4 { top: 95px; left: 145px; }
+.globe-deco .node-5 { top: 105px; left: 80px; background: var(--blue); box-shadow: 0 0 8px var(--blue);}
+.globe-deco .node-6 { top: 60px; left: 110px; }
+
+/* Narrative paragraph */
+.narrative {
+  margin-top: 26px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--light);
+  opacity: 0.78;
+  max-width: 1360px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+}
+.narrative .hl {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* Divider */
+.divider {
+  margin: 24px auto 0;
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.5;
+  position: relative;
+}
+.divider::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+/* Three columns */
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  margin-top: 28px;
+  flex: 1;
+}
+.col-card {
+  background: linear-gradient(160deg, rgba(18,42,69,0.85) 0%, rgba(15,33,56,0.65) 100%);
+  border: 1px solid rgba(0,188,212,0.2);
+  border-radius: 12px;
+  padding: 26px 28px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue));
+  opacity: 0.7;
+}
+.col-card::after {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(0,188,212,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.col-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(0,188,212,0.12);
+  border: 1px solid rgba(0,188,212,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.col-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.col-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--light);
+  letter-spacing: 2px;
+}
+.col-index {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.col-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--light);
+  opacity: 0.75;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+.col-tags {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.col-tag {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 4px;
+  padding: 4px 10px;
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+/* Bottom bar */
+.bottom-bar {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  color: rgba(0,188,212,0.5);
+  letter-spacing: 3px;
+}
+.bottom-bar .grid-deco {
+  display: flex;
+  gap: 4px;
+}
+.bottom-bar .grid-deco span {
+  width: 14px;
+  height: 2px;
+  background: var(--cyan);
+  opacity: 0.4;
+}
+.bottom-bar .grid-deco span:nth-child(2) { opacity: 0.6; }
+.bottom-bar .grid-deco span:nth-child(3) { opacity: 0.8; }
+.bottom-bar .grid-deco span:nth-child(4) { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="left">
+        <span class="dot"></span>
+        <span>CHAPTER 06 / 开源布道</span>
+      </div>
+      <div class="right">
+        <span>// OPEN-SOURCE · ADVOCACY</span>
+        <span>// 2024</span>
+      </div>
+    </div>
+
+    <div class="header-area">
+
+      <div class="book-deco">
+        <div class="glow"></div>
+        <div class="book-page-left">
+          <div class="page-lines-left"></div>
+        </div>
+        <div class="book-page-right">
+          <div class="page-lines-right"></div>
+        </div>
+        <div class="spine"></div>
+      </div>
+
+      <div class="title-block">
+        <div class="chapter-label">
+          <span class="line"></span>
+          <span>CHAPTER · 06</span>
+        </div>
+        <div class="main-title">布道者视角</div>
+        <div class="subtitle">开源社区建设与文化传承</div>
+      </div>
+
+      <div class="globe-deco">
+        <div class="globe-ring"></div>
+        <div class="globe-ring-2"></div>
+        <div class="globe-ellipse"></div>
+        <div class="globe-ellipse-2"></div>
+        <div class="node node-1"></div>
+        <div class="node node-2"></div>
+        <div class="node node-3"></div>
+        <div class="node node-4"></div>
+        <div class="node node-5"></div>
+        <div class="node node-6"></div>
+      </div>
+
+    </div>
+
+    <div class="narrative">
+      开源布道者的角色不仅在于<span class="hl">传播开源技术</span>，更在于培育一种<span class="hl">开放协作的文化</span>——通过持续的内容输出、社区互动与线下活动，让开源从一个概念，真正变成一种<span class="hl">生活方式</span>。
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="columns">
+
+      <div class="col-card">
+        <div class="col-header">
+          <div class="col-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.5">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>
+            </svg>
+          </div>
+          <div>
+            <div class="col-index">01 / BRIDGE</div>
+            <div class="col-title">布道意义</div>
+          </div>
+        </div>
+        <div class="col-desc">
+          开源布道是连接前沿技术、开源社区与商业产业的重要沟通桥梁，让创新思想跨越组织边界，在更广阔的生态中生根发芽。
+        </div>
+        <div class="col-tags">
+          <span class="col-tag"># 连接</span>
+          <span class="col-tag"># 桥梁</span>
+          <span class="col-tag"># 生态</span>
+        </div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-header">
+          <div class="col-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.5">
+              <path d="M4 6h12a2 2 0 012 2v6a2 2 0 01-2 2H9l-5 3V8a2 2 0 011-2z"/>
+              <path d="M16 10h4v4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="col-index">02 / CULTURE</div>
+            <div class="col-title">分享文化</div>
+          </div>
+        </div>
+        <div class="col-desc">
+          开源之道以电子杂志、播客节目、线下技术活动等多元形式传播开源理念，构建可持续的知识分享与协作文化体系。
+        </div>
+        <div class="col-tags">
+          <span class="col-tag"># 电子杂志</span>
+          <span class="col-tag"># 播客</span>
+          <span class="col-tag"># 线下活动</span>
+        </div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-header">
+          <div class="col-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.5">
+              <path d="M4 4h7v16H4zM13 4h7v16h-7z"/>
+              <path d="M6 8h3M6 11h3M15 8h3M15 11h3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="col-index">03 / READING</div>
+            <div class="col-title">阅读与思考</div>
+          </div>
+        </div>
+        <div class="col-desc">
+          深度阅读经典著作与优质文章是理解开源精神内核与商业逻辑的有效途径，在字里行间把握行业脉搏与思想前沿。
+        </div>
+        <div class="col-tags">
+          <span class="col-tag"># 经典著作</span>
+          <span class="col-tag"># 深度阅读</span>
+          <span class="col-tag"># 思考</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-bar">
+      <span>// SECTION TRANSITION · OPEN SOURCE ADVOCACY</span>
+      <div class="grid-deco">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <span>06 / 09</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

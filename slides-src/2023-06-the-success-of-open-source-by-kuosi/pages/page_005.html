@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源商业化数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#00BCD4;
+  --blue:#2196F3;
+  --neutral:#ECEFF1;
+  --dark-1:#0A1628;
+  --dark-2:#0F1E36;
+  --dark-3:#152A45;
+  --grid-line:rgba(0,188,212,0.08);
+  --card-bg:linear-gradient(135deg,#0F2A44 0%,#0B1D33 100%);
+  --glow:0 0 20px rgba(0,188,212,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','Source Code Pro',sans-serif;
+  background:var(--dark-1);
+  color:var(--neutral);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:38px 50px 30px 50px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Background decoration */
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,188,212,0.06) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+.bg-radial{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 600px 300px at 80% 10%,rgba(33,150,243,0.12),transparent 70%),
+    radial-gradient(ellipse 500px 300px at 10% 90%,rgba(0,188,212,0.10),transparent 70%);
+}
+.bg-bar-left{
+  position:absolute;left:0;top:0;bottom:0;width:6px;
+  background:linear-gradient(180deg,var(--cyan),var(--blue) 60%,transparent);
+}
+.bg-corner-tr{
+  position:absolute;top:18px;right:18px;width:60px;height:60px;
+  border-top:2px solid rgba(0,188,212,0.4);
+  border-right:2px solid rgba(0,188,212,0.4);
+}
+.bg-corner-br{
+  position:absolute;bottom:18px;right:18px;width:60px;height:60px;
+  border-bottom:2px solid rgba(0,188,212,0.4);
+  border-right:2px solid rgba(0,188,212,0.4);
+}
+.bg-corner-bl{
+  position:absolute;bottom:18px;left:18px;width:60px;height:60px;
+  border-bottom:2px solid rgba(0,188,212,0.4);
+  border-left:2px solid rgba(0,188,212,0.4);
+}
+
+/* Title area */
+.title-area{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:6px 0 10px 0;
+}
+.title-area h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:42px;
+  letter-spacing:8px;
+  background:linear-gradient(90deg,#00BCD4 0%,#2196F3 50%,#00BCD4 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 30px rgba(0,188,212,0.2);
+}
+.title-area .subtitle{
+  font-size:12px;
+  color:#90A4AE;
+  margin-top:8px;
+  text-align:center;
+  max-width:1200px;
+  line-height:1.6;
+  letter-spacing:0.5px;
+}
+.title-accent-line{
+  width:120px;height:2px;margin-top:10px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+}
+
+/* KPI cards */
+.kpi-row{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
+  margin-top:14px;
+}
+.kpi-card{
+  background:var(--card-bg);
+  border:1px solid rgba(0,188,212,0.2);
+  border-radius:8px;
+  padding:14px 12px;
+  position:relative;
+  overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  min-height:130px;
+}
+.kpi-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+}
+.kpi-card .kpi-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);
+  margin-bottom:8px;
+}
+.kpi-card .kpi-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  background:linear-gradient(180deg,#4DD0E1 0%,#00BCD4 45%,#0097A7 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 25px rgba(0,188,212,0.5);
+  line-height:1.1;
+}
+.kpi-card .kpi-label{
+  font-size:11px;
+  font-weight:600;
+  color:#B0BEC5;
+  margin-top:6px;
+  letter-spacing:1px;
+}
+.kpi-card .kpi-sub{
+  font-family:'Source Code Pro',monospace;
+  font-size:9.5px;
+  color:#546E7A;
+  margin-top:4px;
+  line-height:1.5;
+}
+
+/* Bullet points row */
+.bullets-row{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+  margin-top:12px;
+}
+.bullet-card{
+  background:rgba(15,30,54,0.6);
+  border-left:2px solid var(--cyan);
+  padding:8px 10px;
+  border-radius:0 4px 4px 0;
+}
+.bullet-card .b-head{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:10.5px;font-weight:600;
+  color:var(--cyan);
+  letter-spacing:1px;
+  margin-bottom:3px;
+}
+.bullet-card .b-body{
+  font-size:9.5px;
+  color:#90A4AE;
+  line-height:1.45;
+}
+
+/* Bottom row: chart + quadrant */
+.bottom-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  margin-top:12px;
+  flex:1;
+  min-height:0;
+}
+.panel{
+  background:rgba(15,30,54,0.5);
+  border:1px solid rgba(0,188,212,0.15);
+  border-radius:8px;
+  padding:12px 14px;
+  position:relative;
+  display:flex;flex-direction:column;
+}
+.panel-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:12px;font-weight:600;
+  color:var(--cyan);
+  letter-spacing:1.5px;
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:6px;
+}
+.panel-title .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 6px var(--cyan);
+}
+
+#chart_1{flex:1;width:100%;min-height:0;}
+
+/* Quadrant grid */
+.quadrant-grid{
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;
+  flex:1;
+}
+.quad-item{
+  background:linear-gradient(135deg,rgba(0,188,212,0.08) 0%,rgba(33,150,243,0.05) 100%);
+  border:1px solid rgba(0,188,212,0.18);
+  border-radius:6px;
+  padding:10px 12px;
+  display:flex;align-items:center;gap:10px;
+  transition:transform 0.2s;
+}
+.quad-icon{
+  width:38px;height:38px;
+  border-radius:8px;
+  background:rgba(0,188,212,0.12);
+  border:1px solid rgba(0,188,212,0.3);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:14px;font-weight:700;
+  color:var(--cyan);
+}
+.quad-text .q-title{
+  font-size:11px;font-weight:600;color:#ECEFF1;
+  letter-spacing:0.5px;
+}
+.quad-text .q-desc{
+  font-size:9px;color:#78909C;margin-top:2px;line-height:1.4;
+}
+
+/* Closing line */
+.closing-line{
+  margin-top:10px;
+  text-align:center;
+  font-size:11px;
+  color:#78909C;
+  letter-spacing:1px;
+  padding:8px 20px;
+  border-top:1px solid rgba(0,188,212,0.12);
+  border-bottom:1px solid rgba(0,188,212,0.12);
+}
+.closing-line .hl{color:var(--cyan);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-radial"></div>
+    <div class="bg-bar-left"></div>
+    <div class="bg-corner-tr"></div>
+    <div class="bg-corner-br"></div>
+    <div class="bg-corner-bl"></div>
+  </div>
+  <div id="ct">
+
+    <div class="title-area">
+      <h1>开 源 商 业 化 数 据</h1>
+      <div class="subtitle">开源已从理想主义运动成长为成熟且巨大的商业生态，从硅谷巨头到中国创新企业都在持续验证商业模式</div>
+      <div class="title-accent-line"></div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-dot"></div>
+        <div class="kpi-num">$280亿</div>
+        <div class="kpi-label">MongoDB 市值</div>
+        <div class="kpi-sub">2023年 · 开源数据库独角兽</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-dot"></div>
+        <div class="kpi-num">$100亿+</div>
+        <div class="kpi-label">全球开源融资</div>
+        <div class="kpi-sub">2023年度 · AI方向占主导</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-dot"></div>
+        <div class="kpi-num">73%</div>
+        <div class="kpi-label">企业采用率</div>
+        <div class="kpi-sub">商业软件含开源组件</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-dot"></div>
+        <div class="kpi-num">$600亿+</div>
+        <div class="kpi-label">Linux 间接收入</div>
+        <div class="kpi-sub">2023年估算 · 生态级价值</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-dot"></div>
+        <div class="kpi-num">370+</div>
+        <div class="kpi-label">Apache 项目</div>
+        <div class="kpi-sub">覆盖19个专业领域</div>
+      </div>
+    </div>
+
+    <div class="bullets-row">
+      <div class="bullet-card">
+        <div class="b-head"><span>开源企业崛起</span></div>
+        <div class="b-body"><span>MongoDB、Elastic等开源企业估值超数十亿美元，证明开源商业价值</span></div>
+      </div>
+      <div class="bullet-card">
+        <div class="b-head"><span>融资持续</span></div>
+        <div class="b-body"><span>2023年开源领域全球融资超百亿美元、AI方向占主导</span></div>
+      </div>
+      <div class="bullet-card">
+        <div class="b-head"><span>商业模式</span></div>
+        <div class="b-body"><span>SaaS化部署、云托管服务、开源+商业双轨制成为主流变现路径</span></div>
+      </div>
+      <div class="bullet-card">
+        <div class="b-head"><span>许可证创新</span></div>
+        <div class="b-body"><span>Source Available许可等新模式开辟差异化收入来源</span></div>
+      </div>
+      <div class="bullet-card">
+        <div class="b-head"><span>中国商业化</span></div>
+        <div class="b-body"><span>国内开源项目通过SaaS化模式探索中国特色商业化路径</span></div>
+      </div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="panel">
+        <div class="panel-title"><span class="dot"></span><span>开源企业融资与市值增长趋势</span></div>
+        <div id="chart_1"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title"><span class="dot"></span><span>开源商业模式 · 四象限</span></div>
+        <div class="quadrant-grid">
+          <div class="quad-item">
+            <div class="quad-icon">SaaS</div>
+            <div class="quad-text">
+              <div class="q-title">SaaS 化部署</div>
+              <div class="q-desc">云端托管即服务</div>
+            </div>
+          </div>
+          <div class="quad-item">
+            <div class="quad-icon">SUB</div>
+            <div class="quad-text">
+              <div class="q-title">订阅服务</div>
+              <div class="q-desc">付费版本与企业版</div>
+            </div>
+          </div>
+          <div class="quad-item">
+            <div class="quad-icon">CON</div>
+            <div class="quad-text">
+              <div class="q-title">咨询支持</div>
+              <div class="q-desc">技术服务与定制</div>
+            </div>
+          </div>
+          <div class="quad-item">
+            <div class="quad-icon">SPO</div>
+            <div class="quad-text">
+              <div class="q-title">赞助模式</div>
+              <div class="q-desc">基金会与企业赞助</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="closing-line">
+      <span class="hl">开源商业模式正被不断验证和迭代</span>，为开发者和技术创业者提供独特的价值实现路径
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const el = document.getElementById('chart_1');
+  const chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    tooltip:{trigger:'axis',backgroundColor:'#0F1E36',borderColor:'#00BCD4',textStyle:{color:'#ECEFF1'}},
+    legend:{
+      data:['融资额(亿美元)','上市市值(亿美元)'],
+      textStyle:{color:'#90A4AE',fontSize:10},
+      top:0,right:0,
+      itemWidth:12,itemHeight:6
+    },
+    grid:{left:42,right:14,top:28,bottom:26},
+    xAxis:{
+      type:'category',
+      data:['2018','2019','2020','2021','2022','2023'],
+      axisLine:{lineStyle:{color:'#263238'}},
+      axisLabel:{color:'#78909C',fontSize:10},
+      axisTick:{show:false}
+    },
+    yAxis:{
+      type:'value',
+      name:'亿美元',
+      nameTextStyle:{color:'#546E7A',fontSize:9},
+      axisLine:{show:false},
+      splitLine:{lineStyle:{color:'rgba(0,188,212,0.08)'}},
+      axisLabel:{color:'#78909C',fontSize:10}
+    },
+    series:[
+      {
+        name:'融资额(亿美元)',
+        type:'line',
+        smooth:true,
+        data:[28,42,55,72,88,102],
+        lineStyle:{color:'#00BCD4',width:2.5,shadowColor:'rgba(0,188,212,0.5)',shadowBlur:8},
+        itemStyle:{color:'#00BCD4',borderColor:'#4DD0E1',borderWidth:1},
+        areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(0,188,212,0.35)'},{offset:1,color:'rgba(0,188,212,0.02)'}]}},
+        symbol:'circle',symbolSize:5
+      },
+      {
+        name:'上市市值(亿美元)',
+        type:'line',
+        smooth:true,
+        data:[52,78,135,198,250,280],
+        lineStyle:{color:'#2196F3',width:2.5,shadowColor:'rgba(33,150,243,0.5)',shadowBlur:8},
+        itemStyle:{color:'#2196F3',borderColor:'#64B5F6',borderWidth:1},
+        areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(33,150,243,0.22)'},{offset:1,color:'rgba(33,150,243,0.02)'}]}},
+        symbol:'diamond',symbolSize:5
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

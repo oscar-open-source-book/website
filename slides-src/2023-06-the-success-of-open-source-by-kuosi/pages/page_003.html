@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2023开源生态概览</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#00BCD4;
+  --blue:#2196F3;
+  --neutral:#ECEFF1;
+  --bg-deep:#070B14;
+  --bg-card:rgba(255,255,255,0.03);
+  --border:rgba(0,188,212,0.18);
+  --text-muted:#90A4AE;
+  --glow:0 0 24px rgba(0,188,212,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter',-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
+  color:var(--neutral);
+  background:var(--bg-deep);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(33,150,243,0.12), transparent 60%),
+    radial-gradient(900px 500px at -5% 110%, rgba(0,188,212,0.10), transparent 60%),
+    var(--bg-deep);
+}
+#bg::after{content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.045) 1px, transparent 1px);
+  background-size:48px 48px, 48px 48px;
+  mask-image:radial-gradient(ellipse at center, black 40%, transparent 90%);
+  -webkit-mask-image:radial-gradient(ellipse at center, black 40%, transparent 90%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 40px 60px;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;flex-direction:column;gap:10px;}
+.title-row{display:flex;align-items:baseline;gap:18px;}
+.title{font-family:'Space Grotesk','Inter',sans-serif;font-weight:700;font-size:40px;letter-spacing:1px;color:var(--neutral);
+  background:linear-gradient(90deg,#FFFFFF 0%, var(--cyan) 60%, var(--blue) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.title-badge{font-family:'Space Grotesk',sans-serif;font-size:12px;color:var(--cyan);
+  border:1px solid var(--cyan);padding:4px 10px;border-radius:4px;letter-spacing:2px;text-transform:uppercase;
+  box-shadow:var(--glow);}
+.subtitle{font-size:14px;line-height:1.65;color:var(--text-muted);max-width:1400px;font-weight:300;}
+.subtitle .hl{color:var(--neutral);font-weight:500;}
+.subtitle .cy{color:var(--cyan);}
+
+/* Timeline */
+.timeline{margin:14px 0 16px 0;position:relative;height:34px;display:flex;align-items:center;}
+.timeline-line{position:absolute;left:0;right:0;top:50%;height:1px;
+  background:linear-gradient(90deg, transparent, var(--cyan) 8%, var(--blue) 50%, var(--cyan) 92%, transparent);}
+.timeline-glow{position:absolute;left:0;right:0;top:50%;height:2px;transform:translateY(-1px);
+  background:linear-gradient(90deg, transparent, rgba(0,188,212,0.5) 30%, rgba(33,150,243,0.5) 70%, transparent);
+  filter:blur(1px);}
+.tn{position:relative;width:22px;height:22px;border-radius:50%;
+  background:var(--bg-deep);border:1.5px solid var(--cyan);margin:0 auto;
+  display:flex;align-items:center;justify-content:center;}
+.tn::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.tn-label{position:absolute;top:26px;left:50%;transform:translateX(-50%);font-family:'Space Grotesk',sans-serif;
+  font-size:11px;color:var(--text-muted);letter-spacing:1.5px;white-space:nowrap;}
+.timeline-track{position:relative;flex:1;display:flex;justify-content:space-between;}
+
+/* Main grid */
+.main{flex:1;display:grid;grid-template-columns:480px 1fr;gap:24px;min-height:0;}
+
+.col{display:flex;flex-direction:column;gap:12px;min-height:0;}
+
+/* KPI cards */
+.kpi{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:16px 22px;border:1px solid var(--border);border-radius:10px;
+  background:linear-gradient(135deg, rgba(0,188,212,0.06), rgba(33,150,243,0.02));
+  overflow:hidden;}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--cyan), var(--blue));box-shadow:0 0 12px rgba(0,188,212,0.5);}
+.kpi::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle, rgba(0,188,212,0.12), transparent 70%);pointer-events:none;}
+.kpi-tag{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;}
+.kpi-num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:38px;line-height:1.05;
+  color:var(--cyan);text-shadow:0 0 18px rgba(0,188,212,0.45);margin:4px 0 2px 0;}
+.kpi-num .unit{font-size:20px;color:var(--neutral);text-shadow:none;margin-left:4px;}
+.kpi-title{font-size:14px;font-weight:500;color:var(--neutral);margin-bottom:2px;}
+.kpi-desc{font-size:11px;color:var(--text-muted);line-height:1.5;}
+
+/* Info cards */
+.info{position:relative;flex:1;padding:10px 18px;border:1px solid var(--border);border-radius:8px;
+  background:var(--bg-card);display:flex;align-items:center;gap:16px;overflow:hidden;transition:none;}
+.info::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--cyan);opacity:0.6;}
+.info-no{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:var(--cyan);
+  opacity:0.7;min-width:32px;letter-spacing:1px;}
+.info-body{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;}
+.info-head{display:flex;align-items:center;gap:10px;}
+.info-title{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:var(--neutral);}
+.info-key{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--cyan);
+  border:1px solid rgba(0,188,212,0.5);padding:2px 7px;border-radius:3px;letter-spacing:1px;}
+.info-desc{font-size:11.5px;line-height:1.5;color:var(--text-muted);}
+.info-desc .cy{color:var(--cyan);font-weight:500;}
+
+/* Bottom */
+.foot{margin-top:14px;display:flex;align-items:center;gap:18px;justify-content:center;}
+.foot-line{flex:0 0 100px;height:1px;background:linear-gradient(90deg,transparent, var(--cyan));}
+.foot-line.r{background:linear-gradient(90deg, var(--cyan), transparent);}
+.foot-text{font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--cyan);letter-spacing:6px;font-weight:500;}
+.foot-text .dim{color:var(--text-muted);margin:0 4px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <h1 class="title">2023开源生态概览</h1>
+        <span class="title-badge">Open Source · 2023</span>
+      </div>
+      <p class="subtitle">
+        <span class="hl">2023年</span>的开源生态呈现出<span class="cy">技术加速演进</span>与<span class="cy">治理模式深刻变革</span>并行的特征：<span class="hl">AI浪潮</span>将开源推上风口浪尖，<span class="hl">许可证创新</span>带来新讨论，同时<span class="hl">云原生</span>与<span class="hl">安全治理</span>成为不可忽视的议题。
+      </p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-line"></div>
+      <div class="timeline-glow"></div>
+      <div class="timeline-track">
+        <div class="tn"><span class="tn-label">AI与开源</span></div>
+        <div class="tn"><span class="tn-label">许可证</span></div>
+        <div class="tn"><span class="tn-label">基金会</span></div>
+        <div class="tn"><span class="tn-label">云原生</span></div>
+        <div class="tn"><span class="tn-label">安全治理</span></div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="col">
+        <div class="kpi">
+          <span class="kpi-tag">/ 01 Scale</span>
+          <span class="kpi-num">4.7<span class="unit">亿+</span></span>
+          <span class="kpi-title">GitHub 活跃项目</span>
+          <span class="kpi-desc">截至 2023 年，全球代码协作规模持续创新高</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-tag">/ 02 Adoption</span>
+          <span class="kpi-num">73<span class="unit">%</span></span>
+          <span class="kpi-title">企业开源采用率</span>
+          <span class="kpi-desc">商业软件中平均含开源组件的比例</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-tag">/ 03 CNCF</span>
+          <span class="kpi-num">140<span class="unit">+</span></span>
+          <span class="kpi-title">CNCF 已孵化项目</span>
+          <span class="kpi-desc">毕业与孵化期项目累计数量</span>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="info">
+          <span class="info-no">01</span>
+          <div class="info-body">
+            <div class="info-head"><span class="info-title">AI与开源</span><span class="info-key">AI</span></div>
+            <div class="info-desc">大模型时代<span class="cy">开源与闭源</span>之争加剧，<span class="cy">Llama</span> 等开源模型引发行业变革</div>
+          </div>
+        </div>
+        <div class="info">
+          <span class="info-no">02</span>
+          <div class="info-body">
+            <div class="info-head"><span class="info-title">许可证争议</span><span class="info-key">SSPL · BSL</span></div>
+            <div class="info-desc"><span class="cy">SSPL</span>、<span class="cy">BSL</span> 等新型许可证引发社区对开源定义的重新审视与讨论</div>
+          </div>
+        </div>
+        <div class="info">
+          <span class="info-no">03</span>
+          <div class="info-body">
+            <div class="info-head"><span class="info-title">基金会繁荣</span><span class="info-key">CNCF · LF AI</span></div>
+            <div class="info-desc"><span class="cy">CNCF</span>、<span class="cy">LF AI</span> 与数据等基金会加速成熟，企业参与度持续提升</div>
+          </div>
+        </div>
+        <div class="info">
+          <span class="info-no">04</span>
+          <div class="info-body">
+            <div class="info-head"><span class="info-title">云原生主流</span><span class="info-key">Kubernetes</span></div>
+            <div class="info-desc"><span class="cy">Kubernetes</span>、<span class="cy">Prometheus</span> 等项目生态成熟，成为现代基础设施基石</div>
+          </div>
+        </div>
+        <div class="info">
+          <span class="info-no">05</span>
+          <div class="info-body">
+            <div class="info-head"><span class="info-title">安全挑战</span><span class="info-key">OpenSSF</span></div>
+            <div class="info-desc">供应链攻击频发，<span class="cy">OpenSSF</span> 等组织推动开源安全治理体系建立</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="foot-line"></span>
+      <span class="foot-text">技术加速演进<span class="dim">·</span>治理深刻变革</span>
+      <span class="foot-line r"></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
