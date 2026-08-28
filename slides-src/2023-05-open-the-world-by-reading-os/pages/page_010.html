@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>感谢与邀请</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --text-main: #ECEFF1;
+  --text-dim: #90A4AE;
+  --dark-1: #0A1628;
+  --dark-2: #0F2027;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #061220 0%, #0A1E3A 40%, #0F2540 70%, #061220 100%);
+}
+
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.glow.g1 { width: 720px; height: 720px; top: -260px; left: -160px; background: radial-gradient(circle, rgba(33,150,243,0.38) 0%, rgba(33,150,243,0.08) 40%, transparent 70%); }
+.glow.g2 { width: 620px; height: 620px; bottom: -210px; right: -160px; background: radial-gradient(circle, rgba(0,188,212,0.32) 0%, rgba(0,188,212,0.06) 40%, transparent 70%); }
+.glow.g3 { width: 420px; height: 420px; top: 280px; right: 180px; background: radial-gradient(circle, rgba(33,150,243,0.14) 0%, transparent 70%); }
+.glow.g4 { width: 360px; height: 360px; bottom: 180px; left: 130px; background: radial-gradient(circle, rgba(0,188,212,0.13) 0%, transparent 70%); }
+.glow.g5 { width: 260px; height: 260px; top: 120px; left: 50%; transform: translateX(-50%); background: radial-gradient(circle, rgba(33,150,243,0.18) 0%, transparent 70%); }
+
+.grid-overlay {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.5;
+}
+
+.corner-deco {
+  position: absolute;
+  width: 70px; height: 70px;
+  border: 2px solid rgba(33,150,243,0.32);
+  z-index: 1;
+  pointer-events: none;
+}
+.corner-deco.tl { top: 18px; left: 18px; border-right: none; border-bottom: none; }
+.corner-deco.tr { top: 18px; right: 18px; border-left: none; border-bottom: none; }
+.corner-deco.bl { bottom: 18px; left: 18px; border-right: none; border-top: none; }
+.corner-deco.br { bottom: 18px; right: 18px; border-left: none; border-top: none; }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 45px 60px 40px 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dots-deco {
+  position: absolute;
+  top: 22px; right: 60px;
+  display: flex; gap: 8px;
+}
+.dots-deco span { width: 6px; height: 6px; border-radius: 50%; background: rgba(33,150,243,0.5); }
+.dots-deco span:nth-child(2) { background: rgba(0,188,212,0.6); }
+.dots-deco span:nth-child(3) { background: rgba(33,150,243,0.3); }
+.dots-deco span:nth-child(4) { background: rgba(0,188,212,0.3); }
+
+.header { text-align: center; }
+.main-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 76px;
+  font-weight: 800;
+  letter-spacing: 10px;
+  background: linear-gradient(90deg, #64B5F6 0%, #2196F3 35%, #00BCD4 65%, #64B5F6 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 40px rgba(33,150,243,0.25);
+  line-height: 1.1;
+}
+.subtitle {
+  margin-top: 12px;
+  font-size: 19px;
+  font-weight: 300;
+  color: var(--text-dim);
+  letter-spacing: 4px;
+}
+.title-bar {
+  margin: 14px auto 0;
+  width: 130px; height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #2196F3 50%, #00BCD4 100%);
+  border-radius: 2px;
+}
+.title-underline-deco {
+  margin: 6px auto 0;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.title-underline-deco .d { width: 4px; height: 4px; border-radius: 50%; background: #2196F3; }
+.title-underline-deco .d.r { background: #00BCD4; }
+.title-underline-deco .l { width: 40px; height: 1px; background: linear-gradient(90deg, transparent, rgba(33,150,243,0.5)); }
+.title-underline-deco .l.r { background: linear-gradient(90deg, rgba(0,188,212,0.5), transparent); }
+
+.cards {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 26px;
+}
+.card {
+  position: relative;
+  background: rgba(15, 32, 39, 0.62);
+  border: 1px solid rgba(33, 150, 243, 0.32);
+  border-radius: 14px;
+  padding: 22px 22px 20px;
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2196F3, #00BCD4);
+}
+.card-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2196F3;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+.card-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.28), rgba(0,188,212,0.18));
+  border: 1px solid rgba(33,150,243,0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #64B5F6;
+  font-weight: 700;
+}
+.card-title {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+.card-text {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.card-footer {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(33,150,243,0.2);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(33,150,243,0.12);
+  border: 1px solid rgba(33,150,243,0.3);
+  color: #64B5F6;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.card-arrow {
+  margin-left: auto;
+  color: #00BCD4;
+  font-size: 15px;
+}
+
+.narration {
+  margin-top: 18px;
+  text-align: center;
+  padding: 14px 40px;
+  position: relative;
+}
+.narration-text {
+  font-size: 14.5px;
+  line-height: 1.9;
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+.hl { color: #64B5F6; font-weight: 500; }
+.hl2 { color: #00BCD4; font-weight: 500; }
+
+.footer {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 210px 1fr 380px;
+  gap: 26px;
+  align-items: stretch;
+}
+
+.qr-area { display: flex; align-items: center; gap: 12px; }
+.qr-box {
+  width: 130px; height: 130px;
+  border: 2px dashed rgba(33,150,243,0.5);
+  border-radius: 12px;
+  background: rgba(15, 32, 39, 0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: relative;
+}
+.qr-mark {
+  width: 42px; height: 42px;
+  border: 3px solid #2196F3;
+  border-radius: 6px;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.qr-mark::before, .qr-mark::after {
+  content: "";
+  position: absolute;
+  width: 14px; height: 14px;
+  background: #2196F3;
+  border-radius: 3px;
+}
+.qr-mark::before { top: 3px; left: 3px; }
+.qr-mark::after { bottom: 3px; right: 3px; }
+.qr-inner {
+  position: absolute;
+  width: 12px; height: 12px;
+  background: #00BCD4;
+  border-radius: 2px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.qr-label {
+  font-size: 9.5px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+.qr-side { display: flex; flex-direction: column; gap: 5px; }
+.qr-side-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64B5F6;
+  letter-spacing: 1px;
+}
+.qr-side-text {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  font-weight: 300;
+}
+.qr-side-line {
+  width: 30px; height: 2px;
+  background: linear-gradient(90deg, #2196F3, #00BCD4);
+  margin-top: 2px;
+}
+
+.summary {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+.summary-deco {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 10px;
+}
+.summary-deco-line {
+  width: 70px; height: 1px;
+  background: linear-gradient(90deg, transparent, #2196F3);
+}
+.summary-deco-line.r { background: linear-gradient(90deg, #00BCD4, transparent); }
+.summary-deco-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #2196F3;
+  box-shadow: 0 0 10px #2196F3;
+}
+.summary-text {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--text-main);
+  letter-spacing: 2px;
+  line-height: 1.6;
+}
+.accent { color: #00BCD4; }
+
+.next-event {
+  position: relative;
+  background: linear-gradient(135deg, rgba(33,150,243,0.18), rgba(0,188,212,0.08));
+  border: 1px solid rgba(33,150,243,0.4);
+  border-radius: 14px;
+  padding: 16px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+.next-event::before {
+  content: "";
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(0,188,212,0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+.next-badge {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0A1628;
+  background: linear-gradient(90deg, #2196F3, #00BCD4);
+  padding: 4px 12px;
+  border-radius: 10px;
+  letter-spacing: 3px;
+}
+.next-date {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+}
+.next-topic {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.next-hint {
+  font-size: 10.5px;
+  color: #00BCD4;
+  font-weight: 600;
+  letter-spacing: 3px;
+  margin-top: 4px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="glow g3"></div>
+    <div class="glow g4"></div>
+    <div class="glow g5"></div>
+    <div class="grid-overlay"></div>
+  </div>
+  <div class="corner-deco tl"></div>
+  <div class="corner-deco tr"></div>
+  <div class="corner-deco bl"></div>
+  <div class="corner-deco br"></div>
+  <div id="ct">
+    <div class="dots-deco"><span></span><span></span><span></span><span></span></div>
+
+    <div class="header">
+      <h1 class="main-title">感谢与邀请</h1>
+      <p class="subtitle">下一期读书会，期待与你相遇</p>
+      <div class="title-bar"></div>
+      <div class="title-underline-deco">
+        <span class="l"></span>
+        <span class="d"></span>
+        <span class="d r"></span>
+        <span class="d"></span>
+        <span class="l r"></span>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-num">01 / GRATITUDE</div>
+        <div class="card-icon">♥</div>
+        <div class="card-title">感谢每一位</div>
+        <div class="card-text">感谢所有参与、分享与传播的社区伙伴，是你们让阅读有了温度</div>
+        <div class="card-footer">
+          <span class="card-tag">社区伙伴</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-num">02 / FOLLOW</div>
+        <div class="card-icon">◐</div>
+        <div class="card-title">关注开源之道</div>
+        <div class="card-text">关注公众号与社区，第一时间获取下期活动通知与书单推荐</div>
+        <div class="card-footer">
+          <span class="card-tag">公众号 / 社区</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-num">03 / JOIN</div>
+        <div class="card-icon">★</div>
+        <div class="card-title">加入共读计划</div>
+        <div class="card-text">扫描二维码进入30天共读挑战，与志同道合的伙伴一起成长</div>
+        <div class="card-footer">
+          <span class="card-tag">30天共读</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="narration">
+      <p class="narration-text">
+        阅读是最好的<span class="hl">开源精神</span>实践——<span class="hl">开放获取</span>、<span class="hl">自由分享</span>、<span class="hl2">持续迭代</span>。感谢你在<span class="hl">五月</span>的这场精神之旅中陪伴<span class="hl2">开源之道</span>，我们<span class="hl2">六月</span>再见。愿每一位开发者都能在书页间找到属于自己的世界。
+      </p>
+    </div>
+
+    <div class="footer">
+      <div class="qr-area">
+        <div class="qr-box">
+          <div class="qr-mark"><div class="qr-inner"></div></div>
+          <span class="qr-label">扫码加入</span>
+        </div>
+        <div class="qr-side">
+          <span class="qr-side-title">开源之道社区</span>
+          <span class="qr-side-line"></span>
+          <span class="qr-side-text">扫码加入共读<br>挑战与社区</span>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="summary-deco">
+          <span class="summary-deco-line"></span>
+          <span class="summary-deco-dot"></span>
+          <span class="summary-deco-line r"></span>
+        </div>
+        <p class="summary-text">感谢与邀请<span class="accent">——</span>愿你在书页间找到属于自己的世界</p>
+      </div>
+
+      <div class="next-event">
+        <span class="next-badge">下期预告</span>
+        <span class="next-date">2023年6月</span>
+        <span class="next-topic">主题待定 · 敬请期待</span>
+        <span class="next-hint">▸ COMING SOON</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

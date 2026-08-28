@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>嘉宾分享精华</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --text-main:#ECEFF1;
+  --text-dim:#90A4AE;
+  --bg-dark:#0A1628;
+  --bg-card:#0F2037;
+  --border-tech:rgba(33,150,243,0.25);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  color:var(--text-main);
+  background:var(--bg-dark);
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 20% 0%, rgba(33,150,243,0.12) 0%, transparent 50%),
+             radial-gradient(ellipse at 100% 100%, rgba(0,188,212,0.10) 0%, transparent 50%),
+             linear-gradient(180deg, #0A1628 0%, #061224 100%);
+}
+
+#bg::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:50px 60px 40px 60px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* 顶部标题区 */
+.header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.title-block{position:relative;}
+
+.title-tag{
+  display:inline-block;
+  font-size:12px;font-weight:500;
+  letter-spacing:4px;
+  color:var(--accent);
+  padding:4px 14px;
+  border:1px solid rgba(0,188,212,0.4);
+  border-radius:20px;
+  margin-bottom:14px;
+  background:rgba(0,188,212,0.08);
+}
+
+.title-main{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:48px;font-weight:800;
+  background:linear-gradient(135deg, #ECEFF1 0%, #2196F3 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:2px;
+}
+
+.title-line{
+  width:60px;height:3px;
+  background:linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius:2px;
+  margin-top:12px;
+}
+
+.header-deco{
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+  padding-bottom:6px;
+}
+
+.deco-hex{
+  display:flex;gap:4px;
+}
+
+.deco-hex span{
+  width:14px;height:14px;
+  border:1.5px solid var(--accent);
+  transform:rotate(45deg);
+  display:inline-block;
+  opacity:0.7;
+}
+.deco-hex span:nth-child(2){border-color:var(--primary);}
+.deco-hex span:nth-child(3){opacity:0.4;}
+.deco-hex span:nth-child(4){opacity:0.3;border-color:var(--primary);}
+
+.deco-dots{
+  display:flex;gap:5px;align-items:center;
+  font-size:11px;color:var(--text-dim);
+  letter-spacing:1px;
+}
+
+.deco-dots::before{
+  content:'';width:30px;height:1px;background:var(--accent);
+}
+
+/* 叙事文案 */
+.narrative{
+  font-size:14px;line-height:1.8;color:var(--text-dim);
+  padding:14px 22px;
+  border-left:3px solid var(--primary);
+  background:rgba(33,150,243,0.05);
+  border-radius:0 8px 8px 0;
+  margin-bottom:22px;
+  font-weight:300;
+}
+
+.narrative b{color:var(--accent);font-weight:600;}
+
+/* 四宫格 */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:16px;
+  flex:1;
+}
+
+.cell{
+  position:relative;
+  padding:22px 24px;
+  background:linear-gradient(135deg, rgba(15,32,55,0.9) 0%, rgba(10,22,40,0.9) 100%);
+  border:1px solid var(--border-tech);
+  border-radius:12px;
+  display:flex;gap:18px;align-items:flex-start;
+  overflow:hidden;
+  transition:all 0.3s;
+}
+
+.cell::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity:0.6;
+}
+
+.cell::after{
+  content:'';position:absolute;bottom:-40px;right:-40px;
+  width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.15) 0%, transparent 70%);
+}
+
+.cell:nth-child(1)::before{background:linear-gradient(90deg, transparent, #2196F3, transparent);}
+.cell:nth-child(2)::before{background:linear-gradient(90deg, transparent, #00BCD4, transparent);}
+.cell:nth-child(3)::before{background:linear-gradient(90deg, transparent, #2196F3, transparent);}
+.cell:nth-child(4)::before{background:linear-gradient(90deg, transparent, #00BCD4, transparent);}
+
+.cell-num{
+  position:absolute;top:14px;right:18px;
+  font-size:11px;color:var(--text-dim);
+  letter-spacing:2px;font-weight:500;
+}
+
+.icon-wrap{
+  flex-shrink:0;
+  width:70px;height:70px;
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+
+.icon-wrap.blue{
+  background:linear-gradient(135deg, rgba(33,150,243,0.2), rgba(33,150,243,0.05));
+  border:1px solid rgba(33,150,243,0.3);
+}
+.icon-wrap.cyan{
+  background:linear-gradient(135deg, rgba(0,188,212,0.2), rgba(0,188,212,0.05));
+  border:1px solid rgba(0,188,212,0.3);
+}
+
+.icon-wrap svg{width:36px;height:36px;}
+
+.cell-content{flex:1;min-width:0;}
+
+.cell-title{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:20px;font-weight:700;
+  color:var(--text-main);
+  margin-bottom:4px;
+  letter-spacing:1px;
+}
+
+.cell-tag{
+  font-size:11px;color:var(--accent);
+  letter-spacing:2px;margin-bottom:10px;
+  font-weight:500;
+}
+
+.cell-tag.blue-tag{color:var(--primary);}
+
+.cell-divider{
+  width:30px;height:2px;
+  background:var(--primary);
+  border-radius:2px;
+  margin-bottom:10px;
+}
+
+.cell:nth-child(even) .cell-divider{background:var(--accent);}
+
+.cell-text{
+  font-size:13px;line-height:1.7;
+  color:var(--text-dim);
+  font-weight:300;
+}
+
+.cell-text b{color:var(--text-main);font-weight:500;}
+
+/* 底部数据卡 */
+.footer-row{
+  display:flex;gap:16px;
+  margin-top:18px;
+}
+
+.data-card{
+  flex:1;
+  display:flex;align-items:center;gap:16px;
+  padding:14px 20px;
+  background:linear-gradient(135deg, rgba(33,150,243,0.08) 0%, rgba(0,188,212,0.04) 100%);
+  border:1px solid rgba(33,150,243,0.2);
+  border-radius:10px;
+  position:relative;
+  overflow:hidden;
+}
+
+.data-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.data-icon{
+  width:44px;height:44px;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+
+.data-icon.blue-bg{
+  background:rgba(33,150,243,0.15);
+  border:1px solid rgba(33,150,243,0.3);
+}
+
+.data-icon.cyan-bg{
+  background:rgba(0,188,212,0.15);
+  border:1px solid rgba(0,188,212,0.3);
+}
+
+.data-icon svg{width:22px;height:22px;}
+
+.data-info{flex:1;}
+
+.data-value{
+  font-size:22px;font-weight:700;
+  color:var(--text-main);
+  line-height:1.2;
+  font-family:'Inter',sans-serif;
+}
+
+.data-value .unit{font-size:13px;color:var(--accent);font-weight:400;margin-left:4px;}
+
+.data-label{
+  font-size:12px;color:var(--text-dim);
+  margin-top:3px;letter-spacing:1px;
+}
+
+.data-extra{
+  font-size:11px;color:var(--accent);
+  border-left:1px solid rgba(0,188,212,0.3);
+  padding-left:12px;
+  letter-spacing:1px;line-height:1.5;
+  flex-shrink:0;
+}
+
+.data-extra .num{
+  font-size:16px;font-weight:700;color:var(--accent);
+  display:block;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+  <!-- 标题区 -->
+  <div class="header">
+    <div class="title-block">
+      <div class="title-tag"><span>GUEST SHARING HIGHLIGHTS</span></div>
+      <div class="title-main"><span>嘉宾分享精华</span></div>
+      <div class="title-line"></div>
+    </div>
+    <div class="header-deco">
+      <div class="deco-hex">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="deco-dots"><span>TECH · COMMUNITY · INNOVATION</span></div>
+    </div>
+  </div>
+
+  <!-- 叙事文案 -->
+  <div class="narrative">
+    <span>本期嘉宾从<b>系统编程</b>、<b>开源运营</b>、<b>云原生</b>到<b>算法学习</b>四个维度带来了各自的分享，每位讲者都结合了自己的实践经验，用通俗易懂的方式传递了复杂的技术理念，让不同水平的听众都能获得启发。</span>
+  </div>
+
+  <!-- 四宫格 -->
+  <div class="grid">
+
+    <!-- 第一格 -->
+    <div class="cell">
+      <div class="cell-num"><span>01</span></div>
+      <div class="icon-wrap blue">
+        <svg viewBox="0 0 36 36" fill="none" stroke="#2196F3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="18" r="6"/>
+          <ellipse cx="18" cy="18" rx="14" ry="6"/>
+          <ellipse cx="18" cy="18" rx="6" ry="14"/>
+          <line x1="4" y1="18" x2="32" y2="18"/>
+        </svg>
+      </div>
+      <div class="cell-content">
+        <div class="cell-title"><span>系统编程新视角</span></div>
+        <div class="cell-tag blue-tag"><span>SYSTEM PROGRAMMING</span></div>
+        <div class="cell-divider"></div>
+        <div class="cell-text"><span>从<b>Linux 内核</b>到<b>Rust 生态</b>，分享系统层技术的最新演进趋势</span></div>
+      </div>
+    </div>
+
+    <!-- 第二格 -->
+    <div class="cell">
+      <div class="cell-num"><span>02</span></div>
+      <div class="icon-wrap cyan">
+        <svg viewBox="0 0 36 36" fill="none" stroke="#00BCD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="10" r="4"/>
+          <circle cx="26" cy="10" r="4"/>
+          <circle cx="10" cy="26" r="4"/>
+          <circle cx="26" cy="26" r="4"/>
+          <line x1="14" y1="10" x2="22" y2="10"/>
+          <line x1="10" y1="14" x2="10" y2="22"/>
+          <line x1="26" y1="14" x2="26" y2="22"/>
+          <line x1="14" y1="26" x2="22" y2="26"/>
+          <line x1="14" y1="14" x2="22" y2="22"/>
+        </svg>
+      </div>
+      <div class="cell-content">
+        <div class="cell-title"><span>开源项目运营术</span></div>
+        <div class="cell-tag"><span>OPEN SOURCE</span></div>
+        <div class="cell-divider"></div>
+        <div class="cell-text"><span>结合亲身维护经验，讲解<b>社区治理</b>与<b>版本发布</b>的实用方法论</span></div>
+      </div>
+    </div>
+
+    <!-- 第三格 -->
+    <div class="cell">
+      <div class="cell-num"><span>03</span></div>
+      <div class="icon-wrap blue">
+        <svg viewBox="0 0 36 36" fill="none" stroke="#2196F3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="22" width="9" height="9" rx="1"/>
+          <rect x="13.5" y="22" width="9" height="9" rx="1"/>
+          <rect x="23" y="22" width="9" height="9" rx="1"/>
+          <rect x="6" y="14" width="9" height="9" rx="1"/>
+          <rect x="15.5" y="14" width="9" height="9" rx="1"/>
+          <rect x="25" y="14" width="9" height="9" rx="1"/>
+          <path d="M2 4 L34 4 M8 8 L28 8" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="cell-content">
+        <div class="cell-title"><span>云原生落地实践</span></div>
+        <div class="cell-tag blue-tag"><span>CLOUD NATIVE</span></div>
+        <div class="cell-divider"></div>
+        <div class="cell-text"><span>以<b>真实生产案例</b>为基础，揭示<b>容器化转型</b>的关键决策点</span></div>
+      </div>
+    </div>
+
+    <!-- 第四格 -->
+    <div class="cell">
+      <div class="cell-num"><span>04</span></div>
+      <div class="icon-wrap cyan">
+        <svg viewBox="0 0 36 36" fill="none" stroke="#00BCD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 L30 12 L30 24 L18 30 L6 24 L6 12 Z"/>
+          <line x1="18" y1="6" x2="18" y2="30"/>
+          <line x1="6" y1="12" x2="30" y2="24"/>
+          <line x1="30" y1="12" x2="6" y2="24"/>
+        </svg>
+      </div>
+      <div class="cell-content">
+        <div class="cell-title"><span>算法学习的心法</span></div>
+        <div class="cell-tag"><span>ALGORITHM</span></div>
+        <div class="cell-divider"></div>
+        <div class="cell-text"><span>如何用<b>碎片时间</b>构建算法思维，分享高效学习的<b>个人方法论</b></span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部数据卡 -->
+  <div class="footer-row">
+    <div class="data-card">
+      <div class="data-icon blue-bg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="9" r="3.5"/>
+          <circle cx="17" cy="10" r="2.5"/>
+          <path d="M3 21c0-3 2.7-5 6-5s6 2 6 5"/>
+          <path d="M15 18c0-2 1.8-3.5 4-3.5s3.5 1.3 3.5 3"/>
+        </svg>
+      </div>
+      <div class="data-info">
+        <div class="data-value"><span>4</span><span class="unit">位嘉宾</span></div>
+        <div class="data-label"><span>覆盖四个技术领域</span></div>
+      </div>
+      <div class="data-extra">
+        <span class="num">100%</span>
+        <span>领域互补</span>
+      </div>
+    </div>
+
+    <div class="data-card">
+      <div class="data-icon cyan-bg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <polyline points="12 7 12 12 15.5 14.5"/>
+        </svg>
+      </div>
+      <div class="data-info">
+        <div class="data-value"><span>2</span><span class="unit">小时分享</span></div>
+        <div class="data-label"><span>含互动问答环节</span></div>
+      </div>
+      <div class="data-extra">
+        <span class="num">40min</span>
+        <span>互动时间</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
