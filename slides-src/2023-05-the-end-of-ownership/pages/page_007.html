@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>数字与物理的不对称</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --bg-light: #F0F4F8;
+  --text-main: #E8EDF5;
+  --text-muted: #8BA0BC;
+  --card-bg: rgba(20, 32, 56, 0.85);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Roboto', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #000; }
+.wrapper {
+  width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto;
+  background: linear-gradient(180deg, #050810 0%, #0a1226 40%, #0c1830 55%, #0a1226 70%, #080c18 100%);
+}
+#bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+#ct { position: absolute; inset: 0; z-index: 10; padding: 40px 60px; box-sizing: border-box; display: flex; flex-direction: column; }
+
+.particles { position: absolute; inset: 0; pointer-events: none; }
+.particle {
+  position: absolute; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--cyan); box-shadow: 0 0 8px var(--cyan), 0 0 16px var(--cyan); opacity: 0.6;
+}
+.network-line {
+  position: absolute; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.3), transparent);
+}
+.geo-shape {
+  position: absolute; border: 1px solid rgba(33,150,243,0.22);
+  background: rgba(33,150,243,0.04);
+}
+.gradient-divider {
+  position: absolute; left: 0; right: 0; height: 60px;
+  background: linear-gradient(180deg, rgba(33,150,243,0.12) 0%, rgba(0,188,212,0.04) 50%, rgba(33,150,243,0.06) 100%);
+  border-top: 1px solid rgba(33,150,243,0.3);
+  border-bottom: 1px solid rgba(33,150,243,0.3);
+}
+
+.title-section { text-align: center; padding: 5px 0 10px; }
+.title-eyebrow {
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 500;
+  letter-spacing: 6px; color: var(--cyan); margin-bottom: 12px;
+}
+.title-main {
+  font-family: 'Orbitron', sans-serif; font-size: 40px; font-weight: 700;
+  letter-spacing: 4px; color: var(--text-main); margin-bottom: 16px;
+  text-shadow: 0 0 30px rgba(33,150,243,0.4);
+}
+.title-narrative {
+  font-size: 13px; line-height: 1.75; color: var(--text-muted);
+  max-width: 1240px; margin: 0 auto; font-weight: 300;
+}
+.title-narrative strong { color: var(--cyan); font-weight: 500; }
+
+.cards-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  margin-top: 22px; flex: 1;
+}
+.card {
+  background: var(--card-bg); border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 8px; padding: 20px 18px; position: relative;
+  overflow: hidden; backdrop-filter: blur(4px);
+  display: flex; flex-direction: column;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+.card-digital { border-top-color: rgba(0,188,212,0.5); }
+.card-digital::before { background: linear-gradient(90deg, var(--cyan), var(--primary)); }
+.card-index {
+  font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 700;
+  color: var(--primary); line-height: 1; margin-bottom: 10px;
+}
+.card-tag {
+  font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; color: var(--cyan); margin-bottom: 12px;
+}
+.card-title {
+  font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700;
+  color: var(--text-main); margin-bottom: 12px; line-height: 1.3; letter-spacing: 1px;
+}
+.card-desc {
+  font-size: 12.5px; line-height: 1.7; color: var(--text-muted);
+  font-weight: 300;
+}
+.card-icon {
+  position: absolute; top: 18px; right: 16px;
+  font-family: 'Orbitron', sans-serif; font-size: 9px;
+  color: rgba(0,188,212,0.5); letter-spacing: 1px;
+}
+
+.kpi-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
+.kpi-box {
+  background: rgba(15, 22, 42, 0.9); border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 6px; padding: 16px 26px; display: flex; align-items: center; gap: 22px;
+  position: relative; overflow: hidden;
+}
+.kpi-box::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--cyan);
+}
+.kpi-value {
+  font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 700;
+  color: var(--primary); line-height: 1.1; flex-shrink: 0;
+  text-shadow: 0 0 20px rgba(33,150,243,0.3);
+}
+.kpi-info { flex: 1; }
+.kpi-label {
+  font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 600;
+  color: var(--text-main); letter-spacing: 1px; margin-bottom: 4px;
+}
+.kpi-desc { font-size: 11.5px; color: var(--text-muted); font-weight: 300; line-height: 1.4; }
+
+.axis-label {
+  position: absolute; font-family: 'Orbitron', sans-serif; font-size: 9px;
+  letter-spacing: 3px; color: rgba(0,188,212,0.35);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="particles">
+      <div class="particle" style="top:70px;left:120px;"></div>
+      <div class="particle" style="top:45px;left:260px;width:3px;height:3px;"></div>
+      <div class="particle" style="top:100px;left:400px;background:#2196F3;box-shadow:0 0 8px #2196F3,0 0 16px #2196F3;"></div>
+      <div class="particle" style="top:55px;left:640px;width:5px;height:5px;"></div>
+      <div class="particle" style="top:90px;left:800px;"></div>
+      <div class="particle" style="top:40px;left:980px;background:#2196F3;box-shadow:0 0 8px #2196F3,0 0 16px #2196F3;width:3px;height:3px;"></div>
+      <div class="particle" style="top:110px;left:1140px;"></div>
+      <div class="particle" style="top:50px;left:1320px;width:5px;height:5px;"></div>
+      <div class="particle" style="top:130px;left:1460px;background:#2196F3;box-shadow:0 0 8px #2196F3,0 0 16px #2196F3;"></div>
+      <div class="particle" style="top:20px;left:200px;width:3px;height:3px;background:#2196F3;box-shadow:0 0 6px #2196F3;"></div>
+      <div class="particle" style="top:25px;left:540px;"></div>
+      <div class="particle" style="top:145px;left:340px;width:3px;height:3px;background:#2196F3;box-shadow:0 0 6px #2196F3;"></div>
+      <div class="particle" style="top:30px;left:870px;width:3px;height:3px;"></div>
+      <div class="particle" style="top:95px;left:1390px;background:#2196F3;box-shadow:0 0 8px #2196F3,0 0 16px #2196F3;width:3px;height:3px;"></div>
+      <div class="particle" style="top:165px;left:750px;width:3px;height:3px;"></div>
+      <div class="particle" style="top:195px;left:140px;"></div>
+      <div class="particle" style="top:215px;left:1490px;width:3px;height:3px;background:#2196F3;box-shadow:0 0 6px #2196F3;"></div>
+      <div class="particle" style="top:175px;left:1050px;background:#2196F3;box-shadow:0 0 8px #2196F3,0 0 16px #2196F3;width:3px;height:3px;"></div>
+      <div class="particle" style="top:150px;left:200px;width:3px;height:3px;"></div>
+      <div class="particle" style="top:180px;left:1530px;"></div>
+      <div class="particle" style="top:35px;left:1180px;width:3px;height:3px;"></div>
+      <div class="particle" style="top:125px;left:560px;width:3px;height:3px;"></div>
+
+      <div class="network-line" style="top:75px;left:120px;width:140px;transform:rotate(-8deg);"></div>
+      <div class="network-line" style="top:65px;left:380px;width:260px;transform:rotate(5deg);"></div>
+      <div class="network-line" style="top:105px;left:620px;width:180px;transform:rotate(-3deg);"></div>
+      <div class="network-line" style="top:50px;left:930px;width:240px;transform:rotate(6deg);"></div>
+      <div class="network-line" style="top:125px;left:1200px;width:220px;transform:rotate(-5deg);"></div>
+      <div class="network-line" style="top:170px;left:700px;width:160px;transform:rotate(4deg);"></div>
+
+      <div class="geo-shape" style="bottom:70px;left:50px;width:55px;height:55px;transform:rotate(45deg);"></div>
+      <div class="geo-shape" style="bottom:90px;left:72px;width:28px;height:28px;background:rgba(33,150,243,0.08);"></div>
+      <div class="geo-shape" style="bottom:35px;left:210px;width:38px;height:38px;border-radius:50%;"></div>
+      <div class="geo-shape" style="bottom:110px;left:430px;width:22px;height:22px;transform:rotate(30deg);"></div>
+      <div class="geo-shape" style="bottom:50px;left:680px;width:45px;height:45px;transform:rotate(15deg);"></div>
+      <div class="geo-shape" style="bottom:80px;left:960px;width:32px;height:32px;border-radius:50%;"></div>
+      <div class="geo-shape" style="bottom:45px;left:1130px;width:42px;height:42px;transform:rotate(60deg);"></div>
+      <div class="geo-shape" style="bottom:100px;left:1360px;width:18px;height:18px;"></div>
+      <div class="geo-shape" style="bottom:60px;left:1490px;width:28px;height:28px;transform:rotate(45deg);border-radius:50%;"></div>
+      <div class="geo-shape" style="bottom:30px;left:490px;width:16px;height:16px;"></div>
+      <div class="geo-shape" style="bottom:95px;left:1100px;width:20px;height:20px;transform:rotate(20deg);"></div>
+      <div class="geo-shape" style="bottom:15px;left:900px;width:14px;height:14px;border-radius:50%;"></div>
+      <div class="geo-shape" style="bottom:115px;left:260px;width:15px;height:15px;transform:rotate(10deg);"></div>
+    </div>
+
+    <div class="gradient-divider" style="top:235px;"></div>
+
+    <div class="axis-label" style="top:220px;left:30px;">DIGITAL_LAYER</div>
+    <div class="axis-label" style="bottom:35px;right:30px;">PHYSICAL_LAYER</div>
+  </div>
+
+  <div id="ct">
+    <div class="title-section">
+      <div class="title-eyebrow"><span>数字世界 × 物理世界 · 不对称</span></div>
+      <h1 class="title-main"><span>数字与物理的不对称</span></h1>
+      <p class="title-narrative">
+        <span>辛诺夫斯基在文中承认物理世界的所有权消亡会慢一些，但<strong>趋势同样不可逆</strong>。AI 的介入让数字领域的瓦解速度超出他 2013 年的想象，物理领域也在云化与共享化中加速跟进。</span>
+      </p>
+    </div>
+
+    <div class="cards-row">
+      <div class="card card-digital">
+        <div class="card-icon"><span>节点 · 01</span></div>
+        <div class="card-index"><span>01</span></div>
+        <div class="card-tag"><span>数字先行</span></div>
+        <div class="card-title"><span>数字率先消亡</span></div>
+        <div class="card-desc"><span>数字物品复制零边际成本，天然适合订阅化。音乐、软件、游戏是最先跨入"拥有→接入"新范式的领域。</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon"><span>节点 · 02</span></div>
+        <div class="card-index"><span>02</span></div>
+        <div class="card-tag"><span>物理顽固</span></div>
+        <div class="card-title"><span>物理相对顽固</span></div>
+        <div class="card-desc"><span>食品、家具、衣服仍依赖物理拥有，但共享经济正在蚕食汽车、住房等高价值耐用品的所有权边界。</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon"><span>节点 · 03</span></div>
+        <div class="card-index"><span>03</span></div>
+        <div class="card-tag"><span>AI 加速</span></div>
+        <div class="card-title"><span>AI 加速这一进程</span></div>
+        <div class="card-desc"><span>生成式 AI 让"创作"也从拥有资产变为接入服务，进一步瓦解"我有工具"的传统逻辑。</span></div>
+      </div>
+
+      <div class="card card-digital">
+        <div class="card-icon"><span>节点 · 04</span></div>
+        <div class="card-index"><span>04</span></div>
+        <div class="card-tag"><span>未来变量</span></div>
+        <div class="card-title"><span>未来十年关键变量</span></div>
+        <div class="card-desc"><span>Robotaxi、智能家居云化、能源即服务（Energy-as-a-Service）将成为下一波所有权消亡的引爆点。</span></div>
+      </div>
+    </div>
+
+    <div class="kpi-section">
+      <div class="kpi-box">
+        <div class="kpi-value"><span>百亿级</span></div>
+        <div class="kpi-info">
+          <div class="kpi-label"><span>AI 生成内容规模</span></div>
+          <div class="kpi-desc"><span>文本 / 图像 / 视频年产出量级</span></div>
+        </div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-value"><span>约2.8万亿美元</span></div>
+        <div class="kpi-info">
+          <div class="kpi-label"><span>共享经济规模</span></div>
+          <div class="kpi-desc"><span>全球共享平台市场规模</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

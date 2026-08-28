@@ -1,0 +1,207 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第三部分 · 开源视角</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --neutral:#F0F4F8;
+  --deep-blue-1:#0A1628;
+  --deep-blue-2:#0F2440;
+  --deep-blue-3:#061020;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Roboto','Noto Sans SC',sans-serif;color:var(--neutral);background:#061020;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(140deg,#061020 0%,#0A1628 40%,#0F2440 70%,#061020 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 70px 40px 70px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 深空星点 */
+.bg-stars{position:absolute;inset:0;background-image:
+  radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,0.6) 50%,transparent 50%),
+  radial-gradient(1px 1px at 78% 22%,rgba(255,255,255,0.4) 50%,transparent 50%),
+  radial-gradient(1px 1px at 45% 8%,rgba(255,255,255,0.5) 50%,transparent 50%),
+  radial-gradient(1px 1px at 88% 65%,rgba(255,255,255,0.35) 50%,transparent 50%),
+  radial-gradient(1px 1px at 25% 88%,rgba(255,255,255,0.5) 50%,transparent 50%),
+  radial-gradient(1px 1px at 62% 78%,rgba(255,255,255,0.3) 50%,transparent 50%),
+  radial-gradient(1.5px 1.5px at 8% 55%,rgba(0,188,212,0.5) 50%,transparent 50%),
+  radial-gradient(1.5px 1.5px at 92% 38%,rgba(33,150,243,0.5) 50%,transparent 50%),
+  radial-gradient(1px 1px at 35% 45%,rgba(255,255,255,0.35) 50%,transparent 50%),
+  radial-gradient(1px 1px at 70% 50%,rgba(255,255,255,0.4) 50%,transparent 50%);
+}
+
+/* 中心光晕 */
+.bg-glow{position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.18) 0%,rgba(0,188,212,0.08) 35%,transparent 65%);pointer-events:none;}
+
+/* 六边形阵列 */
+.bg-hex{position:absolute;inset:0;opacity:0.14;pointer-events:none;background-image:
+  linear-gradient(120deg, transparent 0 20px, rgba(0,188,212,0.35) 20px 21px, transparent 21px 41px),
+  linear-gradient(60deg, transparent 0 20px, rgba(33,150,243,0.35) 20px 21px, transparent 21px 41px),
+  linear-gradient(0deg, transparent 0 35px, rgba(0,188,212,0.2) 35px 36px, transparent 36px 60px);
+  background-size:60px 42px,60px 42px,60px 60px;
+  background-position:0 0,30px 0,0 21px;
+}
+
+/* 顶部装饰线 */
+.top-bar{position:absolute;top:30px;left:70px;right:70px;height:2px;background:linear-gradient(90deg,transparent,var(--cyan) 30%,var(--primary) 70%,transparent);opacity:0.7;}
+.bottom-bar{position:absolute;bottom:30px;left:70px;right:70px;height:1px;background:linear-gradient(90deg,transparent,rgba(33,150,243,0.4),transparent);opacity:0.6;}
+
+/* 顶部章节标记 */
+.section-tag{display:flex;align-items:center;gap:18px;margin-top:6px;margin-bottom:14px;}
+.section-tag .dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan),0 0 24px rgba(0,188,212,0.5);}
+.section-tag .label{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:20px;letter-spacing:6px;color:var(--cyan);text-transform:uppercase;}
+.section-tag .line{flex:1;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);}
+.section-tag .pageno{font-family:'Rajdhani',sans-serif;font-weight:500;font-size:18px;letter-spacing:3px;color:rgba(240,244,248,0.5);}
+
+/* 主标题区 */
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:8px;margin-bottom:18px;position:relative;}
+.part-num{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:120px;line-height:0.95;background:linear-gradient(180deg,#64B5F6 0%,var(--primary) 50%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:6px;text-shadow:0 0 40px rgba(33,150,243,0.3);position:relative;display:inline-block;}
+.part-num::after{content:'';position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);width:180px;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);box-shadow:0 0 10px var(--cyan);}
+.main-title{font-family:'Inter',sans-serif;font-weight:800;font-size:64px;margin-top:26px;color:var(--neutral);letter-spacing:8px;text-shadow:0 0 30px rgba(33,150,243,0.4);}
+.main-title .glow{color:var(--cyan);text-shadow:0 0 20px rgba(0,188,212,0.7);}
+.subtitle{font-family:'Inter',sans-serif;font-weight:300;font-size:22px;margin-top:16px;color:rgba(240,244,248,0.75);letter-spacing:2px;}
+.subtitle::before,.subtitle::after{content:'"';color:var(--cyan);font-size:26px;margin:0 8px;vertical-align:-2px;opacity:0.7;}
+
+/* 卡片区 */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:22px;margin-bottom:16px;}
+.card{background:linear-gradient(135deg,rgba(15,36,64,0.85) 0%,rgba(10,22,40,0.9) 100%);border:1px solid rgba(33,150,243,0.25);border-radius:14px;padding:22px 26px;position:relative;overflow:hidden;backdrop-filter:blur(4px);}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--primary),transparent);box-shadow:0 0 12px rgba(0,188,212,0.4);}
+.card::after{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.12),transparent 70%);pointer-events:none;}
+.card-hex{position:absolute;top:14px;right:18px;width:28px;height:28px;opacity:0.5;}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.card-head .icon{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:18px;color:#fff;box-shadow:0 0 16px rgba(0,188,212,0.4);}
+.card-head .title{font-family:'Inter',sans-serif;font-weight:600;font-size:20px;color:var(--neutral);letter-spacing:1px;}
+.card-head .title-en{font-family:'Rajdhani',sans-serif;font-weight:500;font-size:13px;color:var(--cyan);letter-spacing:3px;margin-top:2px;}
+.card-body{font-size:15px;line-height:1.75;color:rgba(240,244,248,0.82);padding-left:46px;position:relative;}
+.card-body::before{content:'';position:absolute;left:22px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--cyan),transparent);}
+.card-body strong{color:var(--cyan);font-weight:500;}
+
+/* 叙事段 */
+.narrative{background:linear-gradient(135deg,rgba(33,150,243,0.08) 0%,rgba(0,188,212,0.05) 100%);border-left:3px solid var(--cyan);border-radius:8px;padding:14px 22px;margin-top:10px;position:relative;}
+.narrative .nlabel{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px;color:var(--cyan);letter-spacing:4px;margin-bottom:6px;}
+.narrative p{font-size:14px;line-height:1.7;color:rgba(240,244,248,0.78);}
+.narrative p .hl{color:var(--primary);font-weight:500;}
+.narrative p .hl2{color:var(--cyan);font-weight:500;}
+
+/* 底部 KPI */
+.kpi-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:0 6px;}
+.kpi-block{display:flex;align-items:center;gap:22px;flex:1;}
+.kpi-num{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:52px;line-height:1;background:linear-gradient(180deg,#81D4FA,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.kpi-meta{display:flex;flex-direction:column;gap:4px;}
+.kpi-meta .kpi-label{font-family:'Inter',sans-serif;font-weight:600;font-size:16px;color:var(--neutral);letter-spacing:2px;}
+.kpi-meta .kpi-sub{font-size:12px;color:rgba(240,244,248,0.55);letter-spacing:1px;}
+.kpi-divider{width:1px;height:42px;background:linear-gradient(180deg,transparent,rgba(0,188,212,0.5),transparent);}
+.kpi-tag{display:flex;align-items:center;gap:10px;padding:8px 16px;border:1px solid rgba(33,150,243,0.3);border-radius:20px;background:rgba(10,22,40,0.6);}
+.kpi-tag .tdot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.kpi-tag .ttext{font-family:'Rajdhani',sans-serif;font-weight:500;font-size:14px;color:var(--cyan);letter-spacing:3px;}
+
+/* 侧边装饰 */
+.side-deco-left{position:absolute;left:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;}
+.side-deco-left .sbox{width:4px;height:24px;border-radius:2px;background:rgba(33,150,243,0.3);}
+.side-deco-left .sbox.act{background:var(--cyan);box-shadow:0 0 8px var(--cyan);height:40px;}
+.side-deco-right{position:absolute;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;}
+.side-deco-right .sbox{width:4px;height:24px;border-radius:2px;background:rgba(33,150,243,0.3);}
+.side-deco-right .sbox.act{background:var(--primary);box-shadow:0 0 8px var(--primary);height:40px;}
+
+.hex-mini{width:0;height:0;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+  <div class="bg-stars"></div>
+  <div class="bg-hex"></div>
+  <div class="bg-glow"></div>
+</div>
+<div id="ct">
+
+<div class="top-bar"></div>
+
+<div class="side-deco-left">
+  <div class="sbox"></div>
+  <div class="sbox"></div>
+  <div class="sbox act"></div>
+  <div class="sbox"></div>
+  <div class="sbox"></div>
+</div>
+<div class="side-deco-right">
+  <div class="sbox act"></div>
+  <div class="sbox"></div>
+  <div class="sbox"></div>
+  <div class="sbox"></div>
+  <div class="sbox"></div>
+</div>
+
+<div class="section-tag">
+  <span class="dot"></span>
+  <span class="label">PART 03 · OPEN SOURCE</span>
+  <span class="line"></span>
+  <span class="pageno">P.08 / 章节过渡</span>
+</div>
+
+<div class="hero">
+  <div class="part-num">第三部分</div>
+  <div class="main-title">开<span class="glow">源</span>视角</div>
+  <div class="subtitle">当所有权消亡，开源还剩下什么？</div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <svg class="card-hex" viewBox="0 0 30 26"><polygon points="15,1 28,7 28,19 15,25 2,19 2,7" fill="none" stroke="#00BCD4" stroke-width="1.2"/></svg>
+    <div class="card-head">
+      <div class="icon">01</div>
+      <div>
+        <div class="title">章节定位</div>
+        <div class="title-en">CHAPTER POSITIONING</div>
+      </div>
+    </div>
+    <div class="card-body">
+      从<span>开源社区立场</span>重新审视所有权消亡趋势，<span>辨识机遇与风险</span>——将订阅制的浪潮放入开放协作的历史坐标系中，寻找新的平衡点。
+    </div>
+  </div>
+  <div class="card">
+    <svg class="card-hex" viewBox="0 0 30 26"><polygon points="15,1 28,7 28,19 15,25 2,19 2,7" fill="none" stroke="#2196F3" stroke-width="1.2"/></svg>
+    <div class="card-head">
+      <div class="icon">02</div>
+      <div>
+        <div class="title">关键张力</div>
+        <div class="title-en">KEY TENSION</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <span>开源倡导自由与可拥有性</span>，订阅制却将<span>接入权重新收归平台</span>——两种秩序将如何共处？这是本章最核心的追问。
+    </div>
+  </div>
+</div>
+
+<div class="narrative">
+  <div class="nlabel">叙事串联 · NARRATIVE</div>
+  <p>这篇文章之所以值得<span class="hl">开源社区</span>反复重读，是因为它揭示了一个悖论：<span class="hl2">订阅制</span>在瓦解消费者所有权的同时，也可能让平台<span class="hl2">重新掌控技术</span>，与<span class="hl">开源的自由理想</span>形成新的对抗。</p>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi-block">
+    <div class="kpi-num">超4亿+</div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-meta">
+      <div class="kpi-label">开源项目数</div>
+      <div class="kpi-sub">GitHub 全球公开仓库 · 现实锚点</div>
+    </div>
+  </div>
+  <div class="kpi-tag">
+    <span class="tdot"></span>
+    <span class="ttext">CHAPTER 03 · START</span>
+  </div>
+</div>
+
+<div class="bottom-bar"></div>
+</div>
+</div>
+</body>
+</html>
