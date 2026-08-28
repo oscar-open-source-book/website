@@ -1,198 +1,367 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <title>第一部分：许可证全景</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=Source+Code+Pro:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --primary:#2196F3;
-  --accent:#00BCD4;
-  --text-main:#ECEFF1;
-  --text-dim:#90A4AE;
-  --bg-deep:#060C18;
-  --bg-mid:#0B1628;
-  --card-bg:#0F2038;
-  --card-border:#1B3A5E;
-  --line:#1E3A5F;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #ECEFF1;
+  --text-dim: #90A4AE;
+  --bg-deep: #0A0E1A;
+  --bg-mid: #0F1424;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:1600px;height:900px;overflow:hidden;}
-body{
-  font-family:'Source Code Pro', ui-monospace, monospace;
-  color:var(--text-main);
-  letter-spacing:0.02em;
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', 'PingFang SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-deep);
+  overflow: hidden;
 }
-h1,h2,h3{font-family:'Inter', ui-sans-serif, sans-serif;}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
-  background:radial-gradient(ellipse 1400px 800px at 18% 22%, #0E2440 0%, #07111F 48%, #04080F 100%);
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
 }
-#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
-.grid-layer{position:absolute;inset:0;
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0A0E1A 0%, #0F1B2E 50%, #0A0E1A 100%);
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.08;
   background-image:
-    linear-gradient(rgba(33,150,243,0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(33,150,243,0.07) 1px, transparent 1px);
-  background-size:48px 48px;
-  mask-image:radial-gradient(ellipse 1200px 700px at 30% 50%, #000 0%, transparent 78%);
+    linear-gradient(rgba(33,150,243,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
 }
-.light-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.35;}
-.orb-1{width:520px;height:520px;background:#2196F3;top:-160px;left:-180px;opacity:0.22;}
-.orb-2{width:420px;height:420px;background:#00BCD4;bottom:-140px;right:-100px;opacity:0.20;}
-.orb-3{width:260px;height:260px;background:#2196F3;top:380px;left:540px;opacity:0.12;}
-.scan-line{position:absolute;left:0;right:0;height:1px;
-  background:linear-gradient(90deg, transparent 0%, rgba(0,188,212,0.55) 40%, rgba(33,150,243,0.6) 60%, transparent 100%);
+
+.glow-orb-1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.12) 0%, transparent 70%);
+  top: -200px;
+  left: -100px;
+  z-index: 0;
+  pointer-events: none;
 }
-.scan-1{top:138px;}
-.scan-2{top:782px;}
-.hairline{position:absolute;left:60px;right:60px;height:1px;background:linear-gradient(90deg, transparent, rgba(33,150,243,0.4) 30%, rgba(0,188,212,0.4) 70%, transparent);}
-.hair-1{top:798px;}
-.hair-2{top:158px;}
-.circuit-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);}
-.dot-a{top:200px;left:140px;}
-.dot-b{top:238px;left:170px;background:var(--primary);box-shadow:0 0 12px var(--primary);}
-.dot-c{top:680px;left:100px;}
-.dot-d{top:720px;left:130px;background:var(--primary);box-shadow:0 0 12px var(--primary);}
-.vline{position:absolute;top:150px;bottom:160px;left:420px;width:1px;background:linear-gradient(180deg, transparent, rgba(33,150,243,0.35) 20%, rgba(0,188,212,0.35) 80%, transparent);}
 
-#ct{position:absolute;inset:0;z-index:1;padding:60px;box-sizing:border-box;display:flex;flex-direction:column;}
+.glow-orb-2 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.10) 0%, transparent 70%);
+  bottom: -150px;
+  right: -100px;
+  z-index: 0;
+  pointer-events: none;
+}
 
-.topbar{display:flex;justify-content:space-between;align-items:center;font-family:'Source Code Pro', monospace;font-size:12px;color:var(--text-dim);letter-spacing:0.22em;}
-.topbar .lhs{display:flex;gap:24px;align-items:center;}
-.topbar .tag{padding:4px 12px;border:1px solid var(--line);color:var(--accent);}
-.topbar .rhs{display:flex;gap:24px;align-items:center;}
-.topbar .chip{display:flex;align-items:center;gap:8px;}
-.topbar .chip::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);}
+.light-streak {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.6) 30%, rgba(0,188,212,0.6) 70%, transparent 100%);
+  z-index: 0;
+  pointer-events: none;
+}
 
-.main{display:flex;flex:1;margin-top:34px;gap:48px;}
+.streak-1 { top: 120px; left: 0; width: 45%; }
+.streak-2 { top: 780px; left: 0; width: 100%; }
 
-.left{width:520px;display:flex;flex-direction:column;justify-content:center;position:relative;}
-.left-tag{font-family:'Source Code Pro', monospace;font-size:12px;letter-spacing:0.32em;color:var(--accent);margin-bottom:8px;}
-.zero{font-family:'Inter', sans-serif;font-weight:900;font-size:340px;line-height:0.85;letter-spacing:-0.04em;
-  background:linear-gradient(135deg, #4FC3F7 0%, #2196F3 40%, #00BCD4 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  text-shadow:0 0 60px rgba(33,150,243,0.25);
-  position:relative;}
-.zero-frame{position:absolute;left:-8px;top:-18px;right:-8px;bottom:0;border:1px solid rgba(33,150,243,0.18);pointer-events:none;}
-.zero-frame::before,.zero-frame::after{content:"";position:absolute;width:18px;height:18px;border:1px solid var(--accent);}
-.zero-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
-.zero-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
-.left-meta{display:flex;gap:32px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line);}
-.meta-cell{flex:1;}
-.meta-cell .k{font-size:11px;letter-spacing:0.24em;color:var(--text-dim);}
-.meta-cell .v{font-family:'Inter',sans-serif;font-size:18px;font-weight:500;color:var(--text-main);margin-top:6px;}
-.meta-cell .v.accent{color:var(--accent);}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
 
-.right{flex:1;display:flex;flex-direction:column;justify-content:center;padding-left:12px;}
-.right .head-deco{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
-.right .head-deco .bar{width:56px;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent));}
-.right .head-deco .label{font-size:12px;letter-spacing:0.32em;color:var(--accent);font-family:'Source Code Pro',monospace;}
-.title{font-family:'Inter',sans-serif;font-weight:900;font-size:62px;line-height:1.06;color:var(--text-main);letter-spacing:-0.01em;}
-.title .accent{color:var(--accent);}
-.title .glow{background:linear-gradient(90deg,#4FC3F7,#00BCD4);-webkit-background-clip:text;background-clip:text;color:transparent;}
-.subtitle{margin-top:18px;font-family:'Source Code Pro',monospace;font-size:15px;line-height:1.7;color:var(--text-dim);max-width:680px;}
-.subtitle .hi{color:var(--text-main);}
+.main-area {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  flex: 1;
+  padding-top: 20px;
+}
 
-.cards{display:flex;gap:16px;margin-top:26px;}
-.card{flex:1;background:linear-gradient(180deg,rgba(15,32,56,0.9) 0%,rgba(11,22,40,0.9) 100%);border:1px solid var(--card-border);padding:16px 16px 18px;position:relative;overflow:hidden;}
-.card::before{content:"";position:absolute;left:0;top:0;width:3px;height:30px;background:linear-gradient(180deg,var(--primary),var(--accent));}
-.card .idx{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:0.24em;color:var(--accent);margin-bottom:8px;display:flex;justify-content:space-between;}
-.card .idx .dot{color:var(--text-dim);}
-.card h3{font-family:'Inter',sans-serif;font-weight:700;font-size:17px;color:var(--text-main);margin-bottom:8px;}
-.card p{font-family:'Source Code Pro',monospace;font-size:12px;line-height:1.65;color:var(--text-dim);}
-.card p .k{color:var(--text-main);}
+/* Left: Giant 01 */
+.num-block {
+  width: 38%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
 
-.badges{display:flex;gap:14px;margin-top:20px;}
-.badge{flex:1;display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px dashed rgba(33,150,243,0.45);background:rgba(11,22,40,0.6);}
-.badge .bidx{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:0.18em;color:var(--accent);}
-.badge .btxt{font-family:'Source Code Pro',monospace;font-size:12px;color:var(--text-main);}
-.badge .btxt .dim{color:var(--text-dim);}
+.chapter-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
 
-.footer{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:0.24em;color:var(--text-dim);font-family:'Source Code Pro',monospace;}
-.footer .progress{display:flex;gap:6px;align-items:center;}
-.footer .progress .seg{width:34px;height:3px;background:rgba(33,150,243,0.18);}
-.footer .progress .seg.on{background:linear-gradient(90deg,var(--primary),var(--accent));box-shadow:0 0 10px rgba(0,188,212,0.5);}
-.footer .progress .seg.mid{background:rgba(33,150,243,0.45);}
+.bignum {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.85;
+  background: linear-gradient(135deg, #2196F3 0%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -20px;
+  position: relative;
+}
+
+.bignum-outline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.85;
+  letter-spacing: -20px;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(33,150,243,0.15);
+  background: none;
+  pointer-events: none;
+  transform: translate(6px, 6px);
+}
+
+.bignum-glow {
+  position: absolute;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.85;
+  letter-spacing: -20px;
+  color: transparent;
+  -webkit-text-stroke: 0.5px rgba(33,150,243,0.08);
+  transform: scale(1.05);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+/* Right: Title area */
+.title-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.divider-line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  margin-bottom: 28px;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 6px;
+  margin-bottom: 14px;
+}
+
+.chapter-title {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.chapter-title .accent {
+  color: var(--primary);
+}
+
+.chapter-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  color: var(--text-dim);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: 1px;
+  margin-bottom: 40px;
+  max-width: 620px;
+}
+
+/* Three key points */
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 680px;
+}
+
+.point {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.point-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  white-space: nowrap;
+  padding: 4px 10px;
+  border: 1px solid rgba(0,188,212,0.35);
+  border-radius: 2px;
+  min-width: 88px;
+  text-align: center;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.point-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.point-text .em {
+  color: var(--text-main);
+  font-weight: 400;
+}
+
+/* Footer decorative */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.footer-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.4) 20%, rgba(0,188,212,0.4) 80%, transparent 100%);
+  margin: 0 20px;
+}
+
+.footer-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  opacity: 0.6;
+}
+
+.corner-mark {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  opacity: 0.5;
+  z-index: 2;
+}
+
+.corner-mark-bl {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  opacity: 0.5;
+  z-index: 2;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <div class="grid-layer"></div>
-    <div class="light-orb orb-1"></div>
-    <div class="light-orb orb-2"></div>
-    <div class="light-orb orb-3"></div>
-    <div class="scan-line scan-1"></div>
-    <div class="scan-line scan-2"></div>
-    <div class="hairline hair-1"></div>
-    <div class="hairline hair-2"></div>
-    <div class="vline"></div>
-    <div class="circuit-dot dot-a"></div>
-    <div class="circuit-dot dot-b"></div>
-    <div class="circuit-dot dot-c"></div>
-    <div class="circuit-dot dot-d"></div>
+    <div class="grid-overlay"></div>
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+    <div class="light-streak streak-1"></div>
+    <div class="light-streak streak-2"></div>
   </div>
 
   <div id="ct">
-    <div class="topbar">
-      <div class="lhs">
-        <span class="tag"><span>PART&nbsp;01&nbsp;/&nbsp;OPEN&nbsp;SOURCE&nbsp;LICENSE</span></span>
-        <span>SYSTEM&nbsp;//&nbsp;LICENSE-LANDSCAPE</span>
-      </div>
-      <div class="rhs">
-        <span class="chip"><span>NODE&nbsp;A-01</span></span>
-        <span>v1.0&nbsp;·&nbsp;2024</span>
-      </div>
-    </div>
+    <div class="corner-mark">SRC / LICENSE / 01</div>
 
-    <div class="main">
-      <div class="left">
-        <div class="left-tag"><span>SECTION&nbsp;·&nbsp;章节编号</span></div>
-        <div class="zero">01<div class="zero-frame"></div></div>
-        <div class="left-meta">
-          <div class="meta-cell"><div class="k"><span>CHAPTER</span></div><div class="v"><span>许可证全景</span></div></div>
-          <div class="meta-cell"><div class="k"><span>SECTION&nbsp;ID</span></div><div class="v accent"><span>SEC / 01</span></div></div>
-          <div class="meta-cell"><div class="k"><span>TYPE</span></div><div class="v"><span>封面 · COVER</span></div></div>
+    <div class="main-area">
+      <div class="num-block">
+        <div class="chapter-tag">// CHAPTER OPENING</div>
+        <div style="position:relative; display:inline-block;">
+          <div class="bignum-glow">01</div>
+          <div class="bignum-outline">01</div>
+          <div class="bignum">01</div>
         </div>
       </div>
 
-      <div class="right">
-        <div class="head-deco"><div class="bar"></div><div class="label"><span>PART&nbsp;ONE&nbsp;·&nbsp;OVERVIEW</span></div></div>
-        <div class="title">第一部分：<span class="glow">许可证全景</span></div>
-        <div class="subtitle">为何需要开源许可证？<span class="hi">它的角色与边界在哪里</span>。<br>如果没有许可证，任何代码在法律上都默认受到版权法完整保护——开源许可证，本质上是版权人主动放弃部分权利、赋予公众使用自由的<span class="hi">法律工具</span>。</div>
-
-        <div class="cards">
-          <div class="card">
-            <div class="idx"><span>01 · INTRO</span><span class="dot">●</span></div>
-            <h3><span>问题引入</span></h3>
-            <p><span class="k">代码自由分发不等于法律自由</span>，版权法默认保护所有创作。</p>
-          </div>
-          <div class="card">
-            <div class="idx"><span>02 · ROLE</span><span class="dot">●</span></div>
-            <h3><span>角色定位</span></h3>
-            <p>许可证是<span class="k">版权人向公众授予</span>使用、修改、分发权利的<span class="k">契约工具</span>。</p>
-          </div>
-          <div class="card">
-            <div class="idx"><span>03 · BOUNDARY</span><span class="dot">●</span></div>
-            <h3><span>边界说明</span></h3>
-            <p>许可证<span class="k">不创设新权利</span>，仅是对既有版权进行有条件释放。</p>
-          </div>
+      <div class="title-block">
+        <div class="divider-line"></div>
+        <div class="section-label">PART ONE — 01</div>
+        <div class="chapter-title">
+          <span class="accent">第一部分</span>：许可证全景
+        </div>
+        <div class="chapter-subtitle">
+          为何需要开源许可证？<br>
+          它的角色与边界在哪里
         </div>
 
-        <div class="badges">
-          <div class="badge"><span class="bidx">◆ 01</span><span class="btxt">默认状态：<span class="dim">全版权保留</span></span></div>
-          <div class="badge"><span class="bidx">◆ 02</span><span class="btxt">许可作用：<span class="dim">权利有条件释放</span></span></div>
-          <div class="badge"><span class="bidx">◆ 03</span><span class="btxt">适用对象：<span class="dim">所有源代码与文档</span></span></div>
+        <div class="points">
+          <div class="point">
+            <span class="point-tag">问题引入</span>
+            <span class="point-text">代码自由分发 <span class="em">不等于</span> 法律自由，版权法默认保护所有创作</span>
+          </div>
+          <div class="point">
+            <span class="point-tag">角色定位</span>
+            <span class="point-text">许可证是版权人向公众 <span class="em">授予使用、修改、分发权利</span> 的契约工具</span>
+          </div>
+          <div class="point">
+            <span class="point-tag">边界说明</span>
+            <span class="point-text">许可证 <span class="em">不创设</span> 新权利，仅是对既有版权进行有条件释放</span>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="footer">
-      <span class="progress">
-        <span class="seg on"></span><span class="seg mid"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span>
-      </span>
-      <span><span>END&nbsp;OF&nbsp;COVER&nbsp;·&nbsp;PRESS&nbsp;TO&nbsp;CONTINUE</span></span>
-      <span>PAGE&nbsp;01&nbsp;/&nbsp;01</span>
+      <span class="footer-text">— OVERVIEW —</span>
+      <span class="footer-line"></span>
+      <span class="footer-text">01 / 03 — OPEN SOURCE LICENSE</span>
     </div>
+
+    <div class="corner-mark-bl">// PRESS TO BEGIN</div>
   </div>
 </div>
 </body>

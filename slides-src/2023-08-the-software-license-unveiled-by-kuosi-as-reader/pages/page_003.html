@@ -5,281 +5,390 @@
 <head>
 <meta charset="UTF-8">
 <title>核心概念：四个自由</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600;700&display=swap');
-:root{
-  --primary:#2196F3;
-  --accent:#00BCD4;
-  --text:#ECEFF1;
-  --dim:#90A4AE;
-  --bg1:#060b14;
-  --bg2:#0b1220;
-  --card:#0c1626;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:1600px;height:900px;overflow:hidden;}
-body{
-  font-family:'Source Code Pro','Courier New',monospace;
-  color:var(--text);
-  background:var(--bg1);
-}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
-#bg{position:absolute;inset:0;z-index:0;}
-#bg .bg-photo{position:absolute;inset:0;width:100%;height:100%;background:
-  radial-gradient(1000px 600px at 50% 55%, rgba(33,150,243,0.10), transparent 70%),
-  radial-gradient(700px 500px at 20% 10%, rgba(0,188,212,0.08), transparent 70%),
-  linear-gradient(160deg,#050a12 0%,#0b1220 55%,#050a12 100%);}
-#bg .grid-lines{position:absolute;inset:0;background-image:
-  linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
-  background-size:40px 40px;
-  mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%);}
-#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+  :root{
+    --bg-0:#050B18;
+    --bg-1:#0A1428;
+    --bg-2:#0F1E36;
+    --primary:#2196F3;
+    --accent:#00BCD4;
+    --neutral:#ECEFF1;
+    --muted:#78909C;
+    --card-bg:rgba(15,30,54,0.72);
+    --line:rgba(33,150,243,0.35);
+    --glow:0 0 24px rgba(33,150,243,0.25);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:1600px;height:900px;overflow:hidden;background:var(--bg-0);}
+  body{
+    font-family:'Source Code Pro','Inter',sans-serif;
+    color:var(--neutral);
+    font-size:16px;
+    line-height:1.5;
+  }
+  .wrapper{
+    width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+    background:linear-gradient(135deg,#050B18 0%,#0A1428 50%,#050B18 100%);
+  }
+  #bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+  /* grid texture */
+  .bg-grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(33,150,243,0.06) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(33,150,243,0.06) 1px,transparent 1px);
+    background-size:48px 48px;
+  }
+  .bg-glow-1{
+    position:absolute;top:-200px;left:-160px;width:640px;height:640px;
+    background:radial-gradient(circle,rgba(33,150,243,0.28) 0%,rgba(33,150,243,0) 65%);
+    filter:blur(20px);
+  }
+  .bg-glow-2{
+    position:absolute;bottom:-220px;right:-180px;width:700px;height:700px;
+    background:radial-gradient(circle,rgba(0,188,212,0.22) 0%,rgba(0,188,212,0) 65%);
+    filter:blur(20px);
+  }
+  .bg-orbit{
+    position:absolute;top:50%;left:50%;width:1400px;height:1400px;
+    transform:translate(-50%,-50%);
+    border:1px dashed rgba(33,150,243,0.12);
+    border-radius:50%;
+    pointer-events:none;
+  }
+  .bg-orbit.b{
+    width:1000px;height:1000px;
+    border-color:rgba(0,188,212,0.10);
+  }
+  #ct{position:absolute;inset:0;z-index:1;padding:48px 72px 40px 72px;}
 
-.head{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
-.head .kicker{font-family:'Source Code Pro',monospace;font-size:13px;letter-spacing:0.32em;color:var(--accent);text-transform:uppercase;}
-.head .kicker::before{content:'';display:inline-block;width:28px;height:2px;background:var(--accent);vertical-align:middle;margin-right:12px;box-shadow:0 0 10px var(--accent);}
-.head h1{
-  font-family:'Inter',sans-serif;font-weight:900;font-size:52px;letter-spacing:0.5px;
-  background:linear-gradient(90deg,#ECEFF1 0%, #2196F3 70%, #00BCD4 100%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  text-shadow:0 0 40px rgba(33,150,243,0.25);
-}
-.head .lead{
-  font-size:14.5px;line-height:1.75;color:#B0BEC5;max-width:1380px;font-weight:400;
-}
-.head .lead .hl{color:var(--accent);font-weight:600;}
-.head .lead .hl2{color:var(--primary);font-weight:600;}
+  /* header */
+  .header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;}
+  .title-wrap{max-width:1080px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'Source Code Pro',monospace;font-size:13px;
+    color:var(--accent);letter-spacing:3px;margin-bottom:12px;
+  }
+  .eyebrow::before{
+    content:'';width:32px;height:2px;background:var(--accent);
+    box-shadow:0 0 8px var(--accent);
+  }
+  h1{
+    font-family:'Inter',sans-serif;font-weight:800;
+    font-size:46px;line-height:1.1;letter-spacing:-0.5px;
+    color:var(--neutral);
+  }
+  h1 .hl{
+    background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .subtitle{
+    font-family:'Source Code Pro',monospace;font-size:13px;
+    color:var(--muted);letter-spacing:1px;margin-top:10px;
+  }
+  .tag-box{
+    text-align:right;font-family:'Source Code Pro',monospace;
+    color:var(--muted);font-size:12px;letter-spacing:2px;
+  }
+  .tag-box .fsf{
+    display:inline-block;padding:6px 12px;
+    border:1px solid var(--line);border-radius:4px;
+    color:var(--accent);background:rgba(33,150,243,0.06);
+    margin-bottom:8px;letter-spacing:3px;font-weight:600;
+  }
 
-.stage{
-  flex:1;
-  position:relative;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:1fr 1fr;
-  gap:22px;
-  margin:8px 30px 8px 30px;
-}
-/* 十字连接线 */
-.stage::before{
-  content:'';
-  position:absolute;left:22px;right:22px;top:50%;height:2px;
-  background:linear-gradient(90deg, transparent 0%, var(--primary) 25%, var(--accent) 50%, var(--primary) 75%, transparent 100%);
-  box-shadow:0 0 16px rgba(33,150,243,0.6);
-  z-index:2;
-}
-.stage::after{
-  content:'';
-  position:absolute;top:22px;bottom:22px;left:50%;width:2px;
-  background:linear-gradient(180deg, transparent 0%, var(--primary) 25%, var(--accent) 50%, var(--primary) 75%, transparent 100%);
-  box-shadow:0 0 16px rgba(33,150,243,0.6);
-  z-index:2;
-}
-.center-node{
-  position:absolute;left:50%;top:50%;width:22px;height:22px;margin-left:-11px;margin-top:-11px;
-  border-radius:50%;background:radial-gradient(circle,#00BCD4 0%, #2196F3 60%, #0b1220 100%);
-  box-shadow:0 0 24px var(--accent), 0 0 8px #fff inset;
-  z-index:3;
-}
+  /* narrative */
+  .narrative{
+    background:linear-gradient(90deg,rgba(33,150,243,0.08),rgba(0,188,212,0.04) 70%,transparent);
+    border-left:3px solid var(--primary);
+    padding:14px 20px;margin-bottom:22px;
+    font-family:'Source Code Pro',monospace;
+    font-size:13.5px;line-height:1.7;color:var(--neutral);
+    max-width:1440px;
+  }
+  .narrative b{color:var(--accent);font-weight:600;}
+  .narrative code{
+    color:var(--primary);font-family:'Source Code Pro',monospace;
+    background:rgba(33,150,243,0.1);padding:1px 6px;border-radius:3px;
+  }
 
-.card{
-  position:relative;
-  background:linear-gradient(135deg,#0c1626 0%, #0a1220 100%);
-  border:1px solid #1e3a5f;
-  border-left:3px solid var(--primary);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.04),
-    0 0 0 1px rgba(33,150,243,0.08),
-    0 10px 30px rgba(0,0,0,0.4),
-    0 0 40px rgba(33,150,243,0.12);
-  padding:20px 22px 18px 22px;
-  display:grid;
-  grid-template-columns:130px 1fr 120px;
-  grid-template-rows:auto 1fr auto;
-  gap:6px 18px;
-  align-items:center;
-  overflow:hidden;
-}
-.card::before{
-  content:'';position:absolute;top:0;right:0;width:80px;height:80px;
-  background:radial-gradient(circle at top right, rgba(33,150,243,0.18), transparent 70%);
-  pointer-events:none;
-}
-.card::after{
-  content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;
-  background:linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-  opacity:0.55;
-}
-.card .num{
-  font-family:'Source Code Pro',monospace;font-weight:700;font-size:72px;line-height:1;
-  color:var(--primary);
-  text-shadow:0 0 20px rgba(33,150,243,0.6), 0 0 4px rgba(33,150,243,0.4);
-  grid-row:1 / span 3;
-  align-self:center;
-  text-align:center;
-  border-right:1px solid rgba(33,150,243,0.25);
-  padding-right:14px;
-}
-.card .meta{
-  display:flex;flex-direction:column;gap:4px;grid-column:2;
-}
-.card .meta .fno{
-  font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:0.28em;color:var(--accent);font-weight:600;
-}
-.card .meta .fname{
-  font-family:'Inter',sans-serif;font-weight:700;font-size:26px;color:#fff;letter-spacing:0.5px;
-}
-.card .desc{
-  grid-column:2;grid-row:3;font-size:13.2px;line-height:1.7;color:#B0BEC5;font-weight:400;
-}
-.card .kw{
-  grid-column:3;grid-row:1 / span 3;align-self:center;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-}
-.card .kw .kw-box{
-  font-family:'Inter',sans-serif;font-weight:900;font-size:15px;letter-spacing:0.12em;
-  color:#fff;background:linear-gradient(135deg,var(--primary),var(--accent));
-  padding:10px 8px;border-radius:6px;
-  box-shadow:0 0 18px rgba(0,188,212,0.4);
-  writing-mode:vertical-rl;text-orientation:mixed;
-  min-height:78px;
-  display:flex;align-items:center;justify-content:center;
-}
-.card .kw .kw-tag{
-  font-family:'Source Code Pro',monospace;font-size:10px;color:var(--accent);letter-spacing:0.2em;
-}
-.card .kw .kw-arrows{
-  font-family:'Source Code Pro',monospace;font-size:11px;color:#546E7A;letter-spacing:0.1em;
-}
+  /* grid */
+  .grid-wrap{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:28px;
+    height:520px;
+    padding:6px;
+  }
+  /* central cross connectors */
+  .cross-h{
+    position:absolute;top:50%;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent 0%,var(--line) 15%,var(--accent) 50%,var(--line) 85%,transparent 100%);
+    transform:translateY(-1px);
+    z-index:1;
+  }
+  .cross-v{
+    position:absolute;left:50%;top:0;bottom:0;width:2px;
+    background:linear-gradient(180deg,transparent 0%,var(--line) 15%,var(--accent) 50%,var(--line) 85%,transparent 100%);
+    transform:translateX(-1px);
+    z-index:1;
+  }
+  .cross-center{
+    position:absolute;top:50%;left:50%;
+    width:56px;height:56px;transform:translate(-50%,-50%);
+    border:1px solid var(--accent);
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(0,188,212,0.25) 0%,rgba(15,30,54,0.9) 70%);
+    box-shadow:0 0 20px rgba(0,188,212,0.5),inset 0 0 12px rgba(0,188,212,0.4);
+    display:flex;align-items:center;justify-content:center;
+    z-index:3;
+  }
+  .cross-center::before{
+    content:'FSF';font-family:'Source Code Pro',monospace;
+    font-size:12px;font-weight:700;color:var(--accent);letter-spacing:2px;
+  }
+  .cross-center::after{
+    content:'';position:absolute;inset:-8px;border:1px dashed rgba(0,188,212,0.4);
+    border-radius:50%;
+  }
 
-/* 象限标签 */
-.quad-label{
-  position:absolute;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:0.24em;
-  color:var(--accent);z-index:4;
-}
-.q1{top:8px;left:8px;}
-.q2{top:8px;right:8px;}
-.q3{bottom:8px;left:8px;}
-.q4{bottom:8px;right:8px;}
+  .card{
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:22px 24px 20px 24px;
+    overflow:hidden;
+    backdrop-filter:blur(4px);
+    display:flex;flex-direction:column;
+    z-index:2;
+    box-shadow:0 4px 24px rgba(0,0,0,0.35),0 0 0 1px rgba(33,150,243,0.05);
+  }
+  .card::before{
+    content:'';position:absolute;top:0;left:0;width:60px;height:2px;
+    background:linear-gradient(90deg,var(--primary),var(--accent));
+  }
+  .card::after{
+    content:'';position:absolute;bottom:0;right:0;width:80px;height:80px;
+    background:radial-gradient(circle,rgba(33,150,243,0.15) 0%,transparent 70%);
+    pointer-events:none;
+  }
 
-.footer{
-  margin-top:8px;
-  padding:12px 24px;
-  border:1px solid rgba(33,150,243,0.35);
-  border-left:4px solid var(--accent);
-  background:linear-gradient(90deg, rgba(33,150,243,0.08), rgba(0,188,212,0.04));
-  font-family:'Source Code Pro',monospace;
-  font-size:14px;
-  color:var(--text);
-  letter-spacing:0.05em;
-  display:flex;align-items:center;gap:14px;
-}
-.footer .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);flex-shrink:0;}
-.footer .txt .em{color:var(--accent);font-weight:700;}
+  .card-head{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    margin-bottom:14px;
+  }
+  .card-title-block{display:flex;align-items:baseline;gap:14px;}
+  .card-num{
+    font-family:'Inter',sans-serif;font-weight:900;
+    font-size:56px;line-height:0.9;
+    background:linear-gradient(180deg,var(--primary) 0%,var(--accent) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    letter-spacing:-2px;
+    text-shadow:0 0 30px rgba(33,150,243,0.4);
+  }
+  .card-name{
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .card-zh{
+    font-family:'Inter',sans-serif;font-weight:700;
+    font-size:22px;color:var(--neutral);line-height:1.1;
+  }
+  .card-en{
+    font-family:'Source Code Pro',monospace;
+    font-size:13px;color:var(--accent);letter-spacing:2px;
+    text-transform:uppercase;font-weight:600;
+  }
+  .card-badge{
+    font-family:'Source Code Pro',monospace;
+    font-size:11px;color:var(--muted);letter-spacing:2px;
+    padding:4px 8px;border:1px solid var(--line);border-radius:3px;
+    background:rgba(15,30,54,0.6);
+  }
+  .card-desc{
+    font-family:'Source Code Pro',monospace;
+    font-size:13.5px;line-height:1.7;color:var(--neutral);
+    opacity:0.9;
+    padding-left:14px;
+    border-left:2px solid rgba(0,188,212,0.35);
+  }
+  .card-desc .k{color:var(--accent);font-weight:600;}
 
-/* 顶部角标装饰 */
-.corner-tl,.corner-tr,.corner-bl,.corner-br{
-  position:absolute;width:36px;height:36px;z-index:5;pointer-events:none;
-}
-.corner-tl{top:16px;left:16px;border-top:2px solid var(--accent);border-left:2px solid var(--accent);}
-.corner-tr{top:16px;right:16px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);}
-.corner-bl{bottom:16px;left:16px;border-bottom:2px solid var(--primary);border-left:2px solid var(--primary);}
-.corner-br{bottom:16px;right:16px;border-bottom:2px solid var(--primary);border-right:2px solid var(--primary);}
+  .card-footer{
+    margin-top:auto;padding-top:12px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Source Code Pro',monospace;font-size:11px;
+    color:var(--muted);letter-spacing:1.5px;
+  }
+  .card-footer .dot{
+    display:inline-block;width:6px;height:6px;border-radius:50%;
+    background:var(--accent);margin-right:6px;
+    box-shadow:0 0 8px var(--accent);
+    vertical-align:middle;
+  }
 
-/* 顶部右侧标识 */
-.brand{
-  position:absolute;top:34px;right:60px;z-index:5;
-  font-family:'Source Code Pro',monospace;font-size:11px;color:var(--dim);letter-spacing:0.28em;
-}
-.brand .brand-tag{color:var(--accent);font-weight:600;}
+  /* corner ticks */
+  .corner-tl,.corner-br{position:absolute;width:14px;height:14px;border-color:var(--accent);}
+  .corner-tl{top:8px;left:8px;border-top:1.5px solid;border-left:1.5px solid;}
+  .corner-br{bottom:8px;right:8px;border-bottom:1.5px solid;border-right:1.5px solid;}
+
+  /* bottom strip */
+  .footer{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:14px 72px;
+    display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid rgba(33,150,243,0.15);
+    background:linear-gradient(180deg,transparent,rgba(5,11,24,0.5));
+    font-family:'Source Code Pro',monospace;font-size:12px;
+    color:var(--muted);letter-spacing:2px;
+  }
+  .footer .closing{
+    color:var(--neutral);font-weight:500;
+    display:flex;align-items:center;gap:12px;
+  }
+  .footer .closing .brk{
+    color:var(--accent);font-weight:700;
+  }
+  .footer .meta{
+    display:flex;gap:20px;align-items:center;
+  }
+  .footer .meta span::before{
+    content:'▸';color:var(--accent);margin-right:6px;
+  }
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <div class="bg-photo"></div>
-    <div class="grid-lines"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-orbit"></div>
+    <div class="bg-orbit b"></div>
   </div>
-  <div class="corner-tl"></div>
-  <div class="corner-tr"></div>
-  <div class="corner-bl"></div>
-  <div class="corner-br"></div>
-  <div class="brand"><span>FSF</span> · <span class="brand-tag">FOUR FREEDOMS</span></div>
 
   <div id="ct">
-    <div class="head">
-      <div class="kicker"><span>FREEDOM 0 / 1 / 2 / 3</span></div>
-      <h1>核心概念：四个自由</h1>
-      <p class="lead">自由软件基金会（<span class="hl">Free Software Foundation</span>）提出的「四个自由」，是衡量一款软件是否为「自由软件」、以及判断一份开源许可证是否合规的<span class="hl2">核心标尺</span>。它强调：用户应当对所用软件拥有最基本的<span class="hl">控制权</span>——自由地运行、研究、修改与分享；而一份许可证的严格程度，恰恰体现在它对这四项自由的<span class="hl2">保留程度与附加条件</span>之上。</p>
+    <div class="header">
+      <div class="title-wrap">
+        <div class="eyebrow"><span>CORE CONCEPT · 04 FREEDOMS</span></div>
+        <h1>核心概念：<span class="hl">四个自由</span></h1>
+        <div class="subtitle">// The Four Freedoms — 衡量开源许可证的核心标尺</div>
+      </div>
+      <div class="tag-box">
+        <div class="fsf">FSF · GNU</div>
+        <div>OPEN-SOURCE LICENSING</div>
+      </div>
     </div>
 
-    <div class="stage">
-      <div class="center-node"></div>
+    <div class="narrative">
+      自由软件基金会（<b>FSF</b>）提出的 <code>"四个自由"</code> 是衡量开源许可证的核心标尺 —— 它们并非无限放权，而是强调用户对软件应有基本控制权：<b>运行 · 研究 · 修改 · 分享</b>。许可证的严格程度体现在对这四项自由的保留与附加条件上，构成了后续分类的基础坐标。
+    </div>
+
+    <div class="grid-wrap">
+      <div class="cross-h"></div>
+      <div class="cross-v"></div>
+      <div class="cross-center"></div>
 
       <div class="card">
-        <div class="quad-label q1"><span>Ⅰ · RUN</span></div>
-        <div class="num"><span>0</span></div>
-        <div class="meta">
-          <div class="fno"><span>自由零 / FREEDOM 0</span></div>
-          <div class="fname"><span>运行自由</span></div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-head">
+          <div class="card-title-block">
+            <div class="card-num">0</div>
+            <div class="card-name">
+              <div class="card-zh">运行自由</div>
+              <div class="card-en">RUN · The Freedom To Run</div>
+            </div>
+          </div>
+          <div class="card-badge">FREEDOM #0</div>
         </div>
-        <div class="desc"><span>用户可以出于<span style="color:var(--accent);">任何目的</span>运行程序，不受使用场景、用途或商业与非商业属性的限制。</span></div>
-        <div class="kw">
-          <div class="kw-tag"><span>KEYWORD</span></div>
-          <div class="kw-box"><span>RUN</span></div>
-          <div class="kw-arrows"><span>▶ 0x00</span></div>
+        <div class="card-desc">
+          用户可以出于<span class="k">任何目的</span>运行程序，不受<span class="k">场景</span>或<span class="k">用途</span>限制——个人学习、商业部署、教育研究皆可。
+        </div>
+        <div class="card-footer">
+          <span><span class="dot"></span>RUN · PURPOSE-AGNOSTIC</span>
+          <span>0 / 3</span>
         </div>
       </div>
 
       <div class="card">
-        <div class="quad-label q2"><span>Ⅱ · STUDY</span></div>
-        <div class="num"><span>1</span></div>
-        <div class="meta">
-          <div class="fno"><span>自由一 / FREEDOM 1</span></div>
-          <div class="fname"><span>研究自由</span></div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-head">
+          <div class="card-title-block">
+            <div class="card-num">1</div>
+            <div class="card-name">
+              <div class="card-zh">研究自由</div>
+              <div class="card-en">STUDY · The Freedom To Study</div>
+            </div>
+          </div>
+          <div class="card-badge">FREEDOM #1</div>
         </div>
-        <div class="desc"><span>用户可以<span style="color:var(--accent);">获取源码</span>并研究程序逻辑，以此理解其工作原理与内部机制。</span></div>
-        <div class="kw">
-          <div class="kw-tag"><span>KEYWORD</span></div>
-          <div class="kw-box"><span>STUDY</span></div>
-          <div class="kw-arrows"><span>▶ 0x01</span></div>
+        <div class="card-desc">
+          用户可以获取<span class="k">源码</span>、研究程序逻辑，以理解其<span class="k">工作原理</span>——透明性是研究自由的前提。
         </div>
-      </div>
-
-      <div class="card">
-        <div class="quad-label q3"><span>Ⅲ · MODIFY</span></div>
-        <div class="num"><span>2</span></div>
-        <div class="meta">
-          <div class="fno"><span>自由二 / FREEDOM 2</span></div>
-          <div class="fname"><span>修改自由</span></div>
-        </div>
-        <div class="desc"><span>用户可根据自身需求<span style="color:var(--accent);">修改源码</span>，并对修改后的版本拥有完整权利。</span></div>
-        <div class="kw">
-          <div class="kw-tag"><span>KEYWORD</span></div>
-          <div class="kw-box"><span>MODIFY</span></div>
-          <div class="kw-arrows"><span>▶ 0x10</span></div>
+        <div class="card-footer">
+          <span><span class="dot"></span>STUDY · SOURCE-ACCESSIBLE</span>
+          <span>1 / 3</span>
         </div>
       </div>
 
       <div class="card">
-        <div class="quad-label q4"><span>Ⅳ · REDISTRIBUTE</span></div>
-        <div class="num"><span>3</span></div>
-        <div class="meta">
-          <div class="fno"><span>自由三 / FREEDOM 3</span></div>
-          <div class="fname"><span>分发自由</span></div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-head">
+          <div class="card-title-block">
+            <div class="card-num">2</div>
+            <div class="card-name">
+              <div class="card-zh">修改自由</div>
+              <div class="card-en">MODIFY · The Freedom To Modify</div>
+            </div>
+          </div>
+          <div class="card-badge">FREEDOM #2</div>
         </div>
-        <div class="desc"><span>用户可自由分发原始版与修改版，前提是<span style="color:var(--accent);">遵守许可证附加条件</span>。</span></div>
-        <div class="kw">
-          <div class="kw-tag"><span>KEYWORD</span></div>
-          <div class="kw-box"><span>RE-DIST</span></div>
-          <div class="kw-arrows"><span>▶ 0x11</span></div>
+        <div class="card-desc">
+          用户可根据自身需求<span class="k">修改源码</span>，并对修改后的版本拥有<span class="k">完整权利</span>——包括私有使用和内部部署。
+        </div>
+        <div class="card-footer">
+          <span><span class="dot"></span>MODIFY · FULL RIGHTS</span>
+          <span>2 / 3</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-head">
+          <div class="card-title-block">
+            <div class="card-num">3</div>
+            <div class="card-name">
+              <div class="card-zh">分发自由</div>
+              <div class="card-en">REDISTRIBUTE · The Freedom To Share</div>
+            </div>
+          </div>
+          <div class="card-badge">FREEDOM #3</div>
+        </div>
+        <div class="card-desc">
+          用户可自由<span class="k">分发</span>原始版和修改版，前提是<span class="k">遵守许可证</span>附加条件——这是各许可证差异化的关键。
+        </div>
+        <div class="card-footer">
+          <span><span class="dot"></span>REDISTRIBUTE · LICENSE-GATED</span>
+          <span>3 / 3</span>
         </div>
       </div>
     </div>
 
     <div class="footer">
-      <div class="dot"></div>
-      <div class="txt"><span>FOUR FREEDOMS · </span><span class="em">四项自由是开源许可证分类的基础坐标，缺一不可。</span></div>
+      <div class="closing">
+        <span class="brk">▍</span>
+        <span>四个自由构成开源生态的<span style="color:var(--accent);font-weight:600;">基本坐标系</span></span>
+      </div>
+      <div class="meta">
+        <span>FSF / GNU PROJECT</span>
+        <span>R · S · M · D</span>
+      </div>
     </div>
   </div>
 </div>
