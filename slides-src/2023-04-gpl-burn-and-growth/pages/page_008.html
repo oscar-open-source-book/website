@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>GPL生态的成长</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500;600&display=swap');
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --bg-dark:#070d1a;
+  --bg-mid:#0c1a32;
+  --card-bg:rgba(10,26,52,0.85);
+  --card-border:rgba(33,150,243,0.35);
+  --text-main:#e8f2ff;
+  --text-sub:#8ba9d6;
+  --glow:rgba(33,150,243,0.4);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1600px;height:900px;overflow:hidden;background:var(--bg-dark)}
+body{font-family:'Roboto Mono',monospace;color:var(--text-main)}
+h1,h2,h3{font-family:'Inter',sans-serif}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:radial-gradient(ellipse at 50% 40%, #0e2246 0%, #070d1a 65%, #04081a 100%)}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 60px;box-sizing:border-box;display:flex;flex-direction:column}
+
+.bg-grid{position:absolute;inset:0;background-image:
+  linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(ellipse at 50% 50%, black 40%, transparent 90%);
+}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.5}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,var(--primary),transparent 70%);top:-100px;left:-100px}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,var(--cyan),transparent 70%);bottom:-100px;right:-80px;opacity:0.35}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,var(--primary),transparent 70%);top:40%;left:35%;opacity:0.25}
+.bg-circuit{position:absolute;inset:0;opacity:0.08}
+
+/* Header */
+.header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px}
+.title-block{flex:1;max-width:1100px}
+.title-main{font-family:'Inter',sans-serif;font-weight:800;font-size:52px;line-height:1.1;background:linear-gradient(135deg,#fff 0%,#2196F3 60%,#00BCD4 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:14px}
+.title-main .accent{color:var(--cyan);-webkit-text-fill-color:var(--cyan)}
+.title-sub{font-family:'Roboto Mono',monospace;font-size:13px;line-height:1.65;color:var(--text-sub);max-width:900px;letter-spacing:0.2px}
+.title-sub .hl{color:var(--cyan)}
+.title-sub .hl2{color:var(--primary)}
+.meta-badge{display:flex;gap:12px;align-items:center;padding:10px 18px;border:1px solid var(--card-border);border-radius:24px;background:rgba(33,150,243,0.06);font-size:11px;color:var(--text-sub);letter-spacing:1px;text-transform:uppercase}
+.meta-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.meta-badge .sep{color:rgba(139,169,214,0.4)}
+
+/* Center area */
+.center-area{flex:1;position:relative;margin-top:10px}
+.svg-layer{position:absolute;inset:0;z-index:1}
+.cards-layer{position:absolute;inset:0;z-index:2}
+
+/* Cards */
+.card{position:absolute;width:330px;height:180px;border:1px solid var(--card-border);border-radius:14px;background:var(--card-bg);backdrop-filter:blur(8px);padding:18px 20px;box-shadow:0 4px 30px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.05);transition:transform 0.3s}
+.card:hover{transform:translateY(-2px)}
+.card-tl{top:0;left:0}
+.card-tr{top:0;right:0}
+.card-bl{bottom:0;left:0}
+.card-br{bottom:0;right:0}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.card-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 15px rgba(33,150,243,0.3)}
+.card-icon svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2}
+.card-title{font-family:'Inter',sans-serif;font-weight:700;font-size:17px;color:#fff;letter-spacing:-0.3px}
+.card-tag{font-size:10px;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.card-body{font-size:12px;line-height:1.7;color:var(--text-sub)}
+.card-body .k{color:var(--primary);font-weight:600}
+.card-foot{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.tag{font-size:10px;padding:3px 8px;border-radius:4px;border:1px solid rgba(33,150,243,0.25);color:var(--text-sub);background:rgba(33,150,243,0.05);font-family:'Roboto Mono',monospace}
+.tag.accent{color:var(--cyan);border-color:rgba(0,188,212,0.4);background:rgba(0,188,212,0.08)}
+
+/* KPI bars */
+.kpi-section{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:18px 22px;border:1px solid var(--card-border);border-radius:14px;background:var(--card-bg);position:relative}
+.kpi-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),var(--cyan),transparent)}
+.kpi{display:flex;flex-direction:column;gap:6px}
+.kpi-label{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-sub);letter-spacing:1px;text-transform:uppercase;font-family:'Roboto Mono',monospace}
+.kpi-label .val{color:#fff;font-weight:600;font-family:'Inter',sans-serif;font-size:14px;letter-spacing:0}
+.kpi-bar{height:6px;border-radius:3px;background:rgba(33,150,243,0.1);overflow:hidden;position:relative}
+.kpi-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--primary),var(--cyan));box-shadow:0 0 12px var(--glow);position:relative}
+.kpi-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:20px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6));border-radius:3px}
+.kpi-desc{font-size:11px;color:var(--text-sub);line-height:1.5;margin-top:2px}
+.kpi-desc .em{color:var(--cyan)}
+
+/* Corner decorations */
+.corner{position:absolute;width:16px;height:16px;border-color:var(--primary);opacity:0.6}
+.corner-tl{top:14px;left:14px;border-top:2px solid;border-left:2px solid}
+.corner-tr{top:14px;right:14px;border-top:2px solid;border-right:2px solid}
+.corner-bl{bottom:14px;left:14px;border-bottom:2px solid;border-left:2px solid}
+.corner-br{bottom:14px;right:14px;border-bottom:2px solid;border-right:2px solid}
+
+/* Flow particles */
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+
+/* Node dots on connecting lines */
+.node-dot{fill:var(--cyan)}
+.node-ring{fill:none;stroke:var(--cyan);stroke-width:1;opacity:0.4}
+
+.footer-bar{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:8px 0;font-size:10px;color:rgba(139,169,214,0.5);letter-spacing:1.5px;text-transform:uppercase;font-family:'Roboto Mono',monospace}
+.footer-bar .line{flex:1;height:1px;margin:0 16px;background:linear-gradient(90deg,transparent,rgba(33,150,243,0.3),transparent)}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-orb orb1"></div>
+    <div class="bg-orb orb2"></div>
+    <div class="bg-orb orb3"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="title-block">
+        <h1 class="title-main">GPL<span class="accent">生态</span>的成长</h1>
+        <p class="title-sub">在合规争议的火焰之外，GPL生态展现出顽强的成长力，从<span class="hl2">操作系统</span>到<span class="hl2">数据库</span>，从<span class="hl">开发工具</span>到<span class="hl">基础设施</span>，GPL软件已深入现代技术的每一个角落。</p>
+      </div>
+      <div class="meta-badge">
+        <span class="dot"></span>
+        <span>Ecosystem Report</span>
+        <span class="sep">|</span>
+        <span>2024</span>
+      </div>
+    </div>
+
+    <div class="center-area">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+
+      <div class="svg-layer">
+        <svg viewBox="0 0 1480 560" width="1480" height="560" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="trunkGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.9"/>
+              <stop offset="50%" stop-color="#2196F3" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#64b5f6" stop-opacity="0.6"/>
+            </linearGradient>
+            <linearGradient id="rootGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#00BCD4" stop-opacity="0.2"/>
+            </linearGradient>
+            <linearGradient id="branchGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#64b5f6" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0.9"/>
+            </linearGradient>
+            <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.4"/>
+              <stop offset="60%" stop-color="#2196F3" stop-opacity="0.1"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.1"/>
+              <stop offset="50%" stop-color="#2196F3" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#00BCD4" stop-opacity="0.9"/>
+            </linearGradient>
+            <marker id="arrowEnd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#00BCD4"/>
+            </marker>
+            <marker id="arrowStart" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 10 0 L 0 5 L 10 10 z" fill="#00BCD4" opacity="0.6"/>
+            </marker>
+          </defs>
+
+          <!-- Center glow behind tree -->
+          <circle cx="740" cy="280" r="200" fill="url(#centerGlow)"/>
+          <circle cx="740" cy="280" r="130" fill="rgba(33,150,243,0.04)"/>
+
+          <!-- Outer ring decorations -->
+          <circle cx="740" cy="280" r="180" fill="none" stroke="rgba(33,150,243,0.12)" stroke-width="1" stroke-dasharray="2 4"/>
+          <circle cx="740" cy="280" r="140" fill="none" stroke="rgba(0,188,212,0.08)" stroke-width="1" stroke-dasharray="1 6"/>
+
+          <!-- ROOTS - code character based -->
+          <g font-family="'Roboto Mono',monospace" font-size="9" fill="rgba(0,188,212,0.55)" text-anchor="middle">
+            <!-- main root lines -->
+            <path d="M 740 400 Q 720 440 690 470" stroke="url(#rootGrad)" stroke-width="2.5" fill="none"/>
+            <path d="M 740 400 Q 760 440 790 470" stroke="url(#rootGrad)" stroke-width="2.5" fill="none"/>
+            <path d="M 740 400 Q 700 450 660 490" stroke="url(#rootGrad)" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M 740 400 Q 780 450 820 490" stroke="url(#rootGrad)" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M 740 400 Q 740 450 740 495" stroke="url(#rootGrad)" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+            <!-- root code chars -->
+            <text x="700" y="430">{ }</text>
+            <text x="720" y="445">&lt;/&gt;</text>
+            <text x="760" y="445">=&gt;</text>
+            <text x="780" y="430"># !</text>
+            <text x="680" y="465">$ </text>
+            <text x="660" y="485">/bin</text>
+            <text x="800" y="465">./</text>
+            <text x="820" y="485">git</text>
+            <text x="735" y="465">01</text>
+            <text x="745" y="480">10</text>
+            <text x="740" y="498">/* */</text>
+
+            <!-- tiny root tips -->
+            <text x="640" y="495" font-size="7" opacity="0.4">$ _</text>
+            <text x="840" y="495" font-size="7" opacity="0.4">&gt; _</text>
+            <text x="610" y="510" font-size="7" opacity="0.3">;;</text>
+            <text x="870" y="510" font-size="7" opacity="0.3">;;</text>
+          </g>
+
+          <!-- TRUNK - main vertical line with code chars -->
+          <g>
+            <path d="M 740 395 Q 735 340 740 280" stroke="url(#trunkGrad)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M 740 380 Q 740 330 740 280" stroke="#fff" stroke-width="0.5" fill="none" opacity="0.3"/>
+          </g>
+          <g font-family="'Roboto Mono',monospace" font-size="10" fill="rgba(100,181,246,0.7)" text-anchor="middle">
+            <text x="730" y="378">{</text>
+            <text x="752" y="378">}</text>
+            <text x="732" y="358">&lt;</text>
+            <text x="752" y="358">/</text>
+            <text x="732" y="340">[</text>
+            <text x="752" y="340">]</text>
+            <text x="730" y="322">(</text>
+            <text x="752" y="322">)</text>
+            <text x="732" y="305">&amp;</text>
+            <text x="752" y="305">*</text>
+            <text x="735" y="290">+</text>
+            <text x="752" y="290">=</text>
+          </g>
+
+          <!-- BRANCHES -->
+          <g stroke="url(#branchGrad)" fill="none" stroke-linecap="round">
+            <path d="M 740 280 Q 700 240 660 200" stroke-width="2.5"/>
+            <path d="M 740 280 Q 780 240 820 200" stroke-width="2.5"/>
+            <path d="M 720 250 Q 690 220 650 190" stroke-width="1.5" opacity="0.7"/>
+            <path d="M 760 250 Q 790 220 830 190" stroke-width="1.5" opacity="0.7"/>
+            <path d="M 740 265 Q 730 230 715 200" stroke-width="1.5"/>
+            <path d="M 740 265 Q 750 230 765 200" stroke-width="1.5"/>
+            <path d="M 740 260 Q 740 220 740 190" stroke-width="1.2" opacity="0.5"/>
+            <path d="M 740 290 Q 710 260 680 230" stroke-width="1.2" opacity="0.5"/>
+            <path d="M 740 290 Q 770 260 800 230" stroke-width="1.2" opacity="0.5"/>
+          </g>
+
+          <!-- Branch code chars -->
+          <g font-family="'Roboto Mono',monospace" font-size="9" fill="rgba(100,181,246,0.65)" text-anchor="middle">
+            <text x="660" y="205">()</text>
+            <text x="820" y="205">[]</text>
+            <text x="650" y="195">//</text>
+            <text x="830" y="195">/*</text>
+            <text x="715" y="205">fn</text>
+            <text x="765" y="205">if</text>
+            <text x="740" y="192">for</text>
+            <text x="680" y="230">while</text>
+            <text x="800" y="230">else</text>
+            <text x="670" y="180" font-size="7" opacity="0.5">return</text>
+            <text x="810" y="180" font-size="7" opacity="0.5">var</text>
+            <text x="700" y="250" font-size="7" opacity="0.5">let</text>
+            <text x="780" y="250" font-size="7" opacity="0.5">const</text>
+          </g>
+
+          <!-- Crown / canopy glow -->
+          <g>
+            <ellipse cx="740" cy="175" rx="80" ry="35" fill="rgba(33,150,243,0.08)"/>
+            <ellipse cx="740" cy="175" rx="50" ry="20" fill="rgba(0,188,212,0.1)"/>
+            <text x="740" y="170" font-family="'Inter',sans-serif" font-size="11" font-weight="700" fill="#fff" text-anchor="middle" opacity="0.9">GPL</text>
+            <text x="740" y="183" font-family="'Roboto Mono',monospace" font-size="7" fill="rgba(0,188,212,0.7)" text-anchor="middle" letter-spacing="2">ECOSYSTEM</text>
+          </g>
+
+          <!-- CONNECTING LINES WITH ARROWS -->
+          <!-- Center: 740,280 -->
+          <!-- TL card center approx: 165, 90 -->
+          <g fill="none" stroke-width="1.5" opacity="0.8">
+            <line x1="740" y1="280" x2="740" y2="200" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+            <line x1="580" y1="200" x2="350" y2="200" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+            <line x1="350" y1="200" x2="350" y2="120" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+
+            <line x1="740" y1="280" x2="900" y2="200" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+            <line x1="900" y1="200" x2="1130" y2="200" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+            <line x1="1130" y1="200" x2="1130" y2="120" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+
+            <line x1="740" y1="280" x2="580" y2="380" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+            <line x1="580" y1="380" x2="350" y2="380" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+            <line x1="350" y1="380" x2="350" y2="440" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+
+            <line x1="740" y1="280" x2="900" y2="380" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+            <line x1="900" y1="380" x2="1130" y2="380" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+            <line x1="1130" y1="380" x2="1130" y2="440" stroke="url(#lineGrad)" stroke-dasharray="4 4" marker-end="url(#arrowEnd)"/>
+          </g>
+
+          <!-- Node dots on lines -->
+          <circle cx="350" cy="200" r="4" fill="#2196F3" class="node-dot"/>
+          <circle cx="350" cy="200" r="8" fill="none" stroke="#00BCD4" stroke-width="0.5" opacity="0.4"/>
+          <circle cx="1130" cy="200" r="4" fill="#2196F3" class="node-dot"/>
+          <circle cx="1130" cy="200" r="8" fill="none" stroke="#00BCD4" stroke-width="0.5" opacity="0.4"/>
+          <circle cx="350" cy="380" r="4" fill="#2196F3" class="node-dot"/>
+          <circle cx="350" cy="380" r="8" fill="none" stroke="#00BCD4" stroke-width="0.5" opacity="0.4"/>
+          <circle cx="1130" cy="380" r="4" fill="#2196F3" class="node-dot"/>
+          <circle cx="1130" cy="380" r="8" fill="none" stroke="#00BCD4" stroke-width="0.5" opacity="0.4"/>
+          <circle cx="740" cy="200" r="4" fill="#2196F3" class="node-dot"/>
+          <circle cx="580" cy="200" r="3" fill="#2196F3" class="node-dot" opacity="0.7"/>
+          <circle cx="900" cy="200" r="3" fill="#2196F3" class="node-dot" opacity="0.7"/>
+          <circle cx="580" cy="380" r="3" fill="#2196F3" class="node-dot" opacity="0.7"/>
+          <circle cx="900" cy="380" r="3" fill="#2196F3" class="node-dot" opacity="0.7"/>
+
+          <!-- Floating code chars in background -->
+          <g font-family="'Roboto Mono',monospace" font-size="8" fill="rgba(33,150,243,0.15)" text-anchor="middle">
+            <text x="120" y="510">$ make install</text>
+            <text x="240" y="520">import *</text>
+            <text x="1340" y="510">git commit</text>
+            <text x="1200" y="520">./configure</text>
+            <text x="500" y="525">#include</text>
+            <text x="1000" y="525">def main():</text>
+            <text x="120" y="535">package.json</text>
+            <text x="1200" y="535">Makefile</text>
+          </g>
+
+          <!-- Decorative hex nodes -->
+          <g fill="none" stroke="rgba(33,150,243,0.2)" stroke-width="0.8">
+            <polygon points="740,270 748,275 748,285 740,290 732,285 732,275"/>
+            <polygon points="600,200 608,205 608,215 600,220 592,215 592,205"/>
+            <polygon points="880,200 888,205 888,215 880,220 872,215 872,205"/>
+            <polygon points="600,380 608,385 608,395 600,400 592,395 592,385"/>
+            <polygon points="880,380 888,385 888,395 880,400 872,395 872,385"/>
+          </g>
+
+          <!-- Section labels on lines -->
+          <g font-family="'Roboto Mono',monospace" font-size="8" fill="rgba(0,188,212,0.6)" text-anchor="middle" letter-spacing="1">
+            <text x="545" y="192">INFRA</text>
+            <text x="935" y="192">DATA</text>
+            <text x="545" y="372">EDU</text>
+            <text x="935" y="372">GLOBAL</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="cards-layer">
+        <div class="card card-tl">
+          <div class="card-head">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <div>
+              <div class="card-title">基础设施基石</div>
+              <div class="card-tag">Infrastructure</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="k">Linux</span>、<span class="k">Git</span>、<span class="k">GCC</span> 等 GPL 核心项目构成现代计算基础设施的底层基石，支撑起全球服务器的运转。
+          </div>
+          <div class="card-foot">
+            <span class="tag">Linux</span>
+            <span class="tag">Git</span>
+            <span class="tag">GCC</span>
+            <span class="tag accent">GPL v2/v3</span>
+          </div>
+        </div>
+
+        <div class="card card-tr">
+          <div class="card-head">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4z"/><path d="M4 10h16v4H4z"/><path d="M4 16h16v4H4z"/><circle cx="7" cy="6" r="0.8" fill="#fff"/><circle cx="7" cy="12" r="0.8" fill="#fff"/><circle cx="7" cy="18" r="0.8" fill="#fff"/></svg>
+            </div>
+            <div>
+              <div class="card-title">数据库新势力</div>
+              <div class="card-tag">Database Rising</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="k">MariaDB</span>、<span class="k">Redis</span> 等 GPL/AGPL 数据库项目在企业级场景中持续壮大市场份额，成为开源数据层的核心力量。
+          </div>
+          <div class="card-foot">
+            <span class="tag">MariaDB</span>
+            <span class="tag">Redis</span>
+            <span class="tag">AGPL</span>
+            <span class="tag accent">Enterprise</span>
+          </div>
+        </div>
+
+        <div class="card card-bl">
+          <div class="card-head">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><path d="M2 7l10-4 10 4-10 4L2 7z"/><path d="M6 9v5c0 2 3 4 6 4s6-2 6-4V9"/><path d="M22 7v6"/></svg>
+            </div>
+            <div>
+              <div class="card-title">开发者教育</div>
+              <div class="card-tag">Dev Education</div>
+            </div>
+          </div>
+          <div class="card-body">
+            开源基金会和大学课程推广 GPL 知识，<span class="k">新一代开发者</span>对许可证意识的提升，为生态输送源源不断的活力。
+          </div>
+          <div class="card-foot">
+            <span class="tag">Foundation</span>
+            <span class="tag">University</span>
+            <span class="tag accent">Awareness</span>
+          </div>
+        </div>
+
+        <div class="card card-br">
+          <div class="card-head">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+            </div>
+            <div>
+              <div class="card-title">全球社区网络</div>
+              <div class="card-tag">Global Network</div>
+            </div>
+          </div>
+          <div class="card-body">
+            GPL 项目的全球社区网络日益紧密，<span class="k">中文社区</span>、<span class="k">非洲社区</span>等新兴市场活跃度增强，协作边界不断拓展。
+          </div>
+          <div class="card-foot">
+            <span class="tag">CN Community</span>
+            <span class="tag">Africa</span>
+            <span class="tag accent">Emerging</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-section">
+      <div class="kpi">
+        <div class="kpi-label">
+          <span>Linux 服务器操作系统市场份额</span>
+          <span class="val">90%+</span>
+        </div>
+        <div class="kpi-bar">
+          <div class="kpi-fill" style="width:92%"></div>
+        </div>
+        <div class="kpi-desc">全球超 <span class="em">90%</span> 的服务器运行 Linux 内核，GPL 协议塑造了现代云计算的底层架构</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">
+          <span>MariaDB 企业替代 MySQL 采用趋势</span>
+          <span class="val">↑ Growing</span>
+        </div>
+        <div class="kpi-bar">
+          <div class="kpi-fill" style="width:68%"></div>
+        </div>
+        <div class="kpi-desc">作为 MySQL 的替代方案，MariaDB 在企业中的采用持续扩大，<span class="em">增长显著</span></div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>GPL Ecosystem</span>
+      <span class="line"></span>
+      <span>成长 · Growth</span>
+      <span class="line"></span>
+      <span>Open Source</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

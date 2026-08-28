@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>燃烧之后是新生</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --gray: #B0BEC5;
+  --bg-dark: #0a0e1a;
+  --bg-card: rgba(15, 25, 45, 0.85);
+  --glow-blue: rgba(33, 150, 243, 0.4);
+  --glow-cyan: rgba(0, 188, 212, 0.5);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: #e0e0e0;
+  background: #0a0e1a;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: radial-gradient(ellipse at 50% 30%, #0d1a2e 0%, #060a14 60%, #030508 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+  box-shadow: 0 0 6px var(--glow-cyan);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+  50% { transform: translateY(-20px) scale(1.3); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.8; }
+  25% { opacity: 0.4; }
+  50% { opacity: 1; }
+  75% { opacity: 0.6; }
+}
+
+@keyframes sproutGrow {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.08); }
+}
+
+@keyframes emberRise {
+  0% { transform: translateY(0) scale(1); opacity: 0.8; }
+  100% { transform: translateY(-60px) scale(0.3); opacity: 0; }
+}
+
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at 50% 50%, transparent 0%, black 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.title-main {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 46px;
+  background: linear-gradient(135deg, #2196F3 0%, #00BCD4 50%, #4fc3f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 6px;
+  text-shadow: 0 0 40px rgba(33,150,243,0.3);
+  position: relative;
+  display: inline-block;
+}
+
+.title-main::before, .title-main::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent));
+}
+.title-main::before { right: calc(100% + 20px); }
+.title-main::after { left: calc(100% + 20px); background: linear-gradient(90deg, var(--accent), transparent); }
+
+.subtitle {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--gray);
+  margin-top: 10px;
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+/* Central Visual */
+.center-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 130px;
+  margin: 0 auto 16px;
+}
+
+.sprout-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Fire base */
+.flame {
+  position: absolute;
+  bottom: 0;
+  width: 80px;
+  height: 50px;
+  border-radius: 50% 50% 45% 45%;
+  background: radial-gradient(ellipse at 50% 100%, #ff6d00 0%, #ff9800 30%, rgba(255,152,0,0.4) 60%, transparent 100%);
+  animation: flicker 0.8s ease-in-out infinite;
+  filter: blur(1px);
+}
+
+.flame-inner {
+  position: absolute;
+  bottom: 5px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50% 50% 45% 45%;
+  background: radial-gradient(ellipse at 50% 80%, #fff9c4 0%, #ffeb3b 30%, #ff9800 60%, transparent 100%);
+  animation: flicker 0.5s ease-in-out infinite reverse;
+}
+
+/* Sprout */
+.sprout {
+  position: absolute;
+  bottom: 25px;
+  width: 4px;
+  height: 55px;
+  background: linear-gradient(180deg, #00e676 0%, #00BCD4 100%);
+  border-radius: 2px;
+  animation: sproutGrow 3s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(0,230,118,0.6);
+}
+
+.leaf-left {
+  position: absolute;
+  bottom: 40px;
+  left: -18px;
+  width: 22px;
+  height: 12px;
+  background: linear-gradient(135deg, #00e676 0%, #00BCD4 100%);
+  border-radius: 0 20px 20px 0;
+  box-shadow: 0 0 10px rgba(0,230,118,0.5);
+  transform-origin: right center;
+  animation: sproutGrow 3s ease-in-out infinite;
+}
+
+.leaf-right {
+  position: absolute;
+  bottom: 50px;
+  right: -20px;
+  width: 24px;
+  height: 14px;
+  background: linear-gradient(-45deg, #00e676 0%, #00BCD4 100%);
+  border-radius: 20px 0 0 20px;
+  box-shadow: 0 0 10px rgba(0,230,118,0.5);
+  transform-origin: left center;
+  animation: sproutGrow 3s ease-in-out infinite 0.5s;
+}
+
+.sprout-top {
+  position: absolute;
+  bottom: 76px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00e676 0%, #00BCD4 100%);
+  box-shadow: 0 0 15px rgba(0,230,118,0.8);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Embers */
+.ember {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ff9800;
+  box-shadow: 0 0 6px #ff6d00;
+  animation: emberRise 3s ease-out infinite;
+}
+
+/* Orbit ring */
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  margin-top: -90px;
+  margin-left: -90px;
+  border: 1px solid rgba(0,188,212,0.2);
+  border-radius: 50%;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.orbit::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.orbit2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 240px;
+  height: 240px;
+  margin-top: -120px;
+  margin-left: -120px;
+  border: 1px dashed rgba(33,150,243,0.15);
+  border-radius: 50%;
+}
+
+/* Three Cards */
+.cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 12px;
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.card-index {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  color: var(--primary);
+  opacity: 0.4;
+  position: absolute;
+  top: 10px;
+  right: 16px;
+}
+
+.card-tag {
+  display: inline-block;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.card-body {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  color: var(--gray);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+/* Data Row */
+.data-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 14px;
+}
+
+.data-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  background: rgba(33,150,243,0.08);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 20px;
+}
+
+.data-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.data-chip-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 1px;
+}
+
+.data-chip-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+/* Footer Narrative */
+.footer {
+  margin-top: 14px;
+  text-align: center;
+  position: relative;
+}
+
+.footer-divider {
+  width: 200px;
+  height: 1px;
+  margin: 0 auto 12px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.narrative {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--gray);
+  line-height: 1.9;
+  font-weight: 300;
+  max-width: 1100px;
+  margin: 0 auto;
+  letter-spacing: 0.5px;
+}
+
+.signature {
+  margin-top: 12px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #2196F3, #00BCD4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.signature-sub {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 3px;
+  margin-top: 6px;
+  font-weight: 300;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-lines"></div>
+    <div class="particles">
+      <div class="particle" style="left:8%;top:15%;width:3px;height:3px;background:#2196F3;animation-delay:0s;"></div>
+      <div class="particle" style="left:15%;top:78%;width:2px;height:2px;background:#00BCD4;animation-delay:1s;"></div>
+      <div class="particle" style="left:25%;top:20%;width:4px;height:4px;background:#2196F3;animation-delay:0.5s;"></div>
+      <div class="particle" style="left:35%;top:85%;width:2px;height:2px;background:#00BCD4;animation-delay:2s;"></div>
+      <div class="particle" style="left:45%;top:10%;width:3px;height:3px;background:#2196F3;animation-delay:1.5s;"></div>
+      <div class="particle" style="left:55%;top:90%;width:2px;height:2px;background:#00BCD4;animation-delay:0.8s;"></div>
+      <div class="particle" style="left:65%;top:18%;width:4px;height:4px;background:#2196F3;animation-delay:2.5s;"></div>
+      <div class="particle" style="left:72%;top:75%;width:3px;height:3px;background:#00BCD4;animation-delay:1.2s;"></div>
+      <div class="particle" style="left:80%;top:30%;width:2px;height:2px;background:#2196F3;animation-delay:0.3s;"></div>
+      <div class="particle" style="left:88%;top:12%;width:3px;height:3px;background:#00BCD4;animation-delay:1.8s;"></div>
+      <div class="particle" style="left:92%;top:65%;width:4px;height:4px;background:#2196F3;animation-delay:2.2s;"></div>
+      <div class="particle" style="left:5%;top:50%;width:2px;height:2px;background:#00BCD4;animation-delay:0.7s;"></div>
+      <div class="particle" style="left:12%;top:35%;width:3px;height:3px;background:#2196F3;animation-delay:1.4s;"></div>
+      <div class="particle" style="left:48%;top:55%;width:2px;height:2px;background:#00BCD4;animation-delay:2.8s;"></div>
+      <div class="particle" style="left:62%;top:50%;width:3px;height:3px;background:#2196F3;animation-delay:0.9s;"></div>
+      <div class="particle" style="left:78%;top:45%;width:2px;height:2px;background:#00BCD4;animation-delay:2.1s;"></div>
+      <div class="particle" style="left:85%;top:88%;width:3px;height:3px;background:#2196F3;animation-delay:1.6s;"></div>
+      <div class="particle" style="left:30%;top:60%;width:2px;height:2px;background:#00BCD4;animation-delay:3s;"></div>
+      <div class="particle" style="left:52%;top:32%;width:4px;height:4px;background:#2196F3;animation-delay:0.4s;"></div>
+      <div class="particle" style="left:68%;top:8%;width:2px;height:2px;background:#00BCD4;animation-delay:2.6s;"></div>
+    </div>
+  </div>
+
+  <div id="ct">
+    <!-- Header -->
+    <div class="header">
+      <div class="title-main"><span>燃烧之后是新生</span></div>
+      <div class="subtitle"><span>GPL精神指引下的开源未来 —— 开源之书记录 · 2023年4月</span></div>
+    </div>
+
+    <!-- Central Visual -->
+    <div class="center-visual">
+      <div class="orbit2"></div>
+      <div class="orbit"></div>
+      <div class="sprout-container">
+        <div class="sprout-top"></div>
+        <div class="leaf-left"></div>
+        <div class="leaf-right"></div>
+        <div class="sprout"></div>
+        <div class="flame"></div>
+        <div class="flame-inner"></div>
+        <div class="ember" style="left:30px;bottom:30px;animation-delay:0s;"></div>
+        <div class="ember" style="left:50px;bottom:25px;animation-delay:1s;"></div>
+        <div class="ember" style="left:40px;bottom:35px;animation-delay:2s;"></div>
+      </div>
+    </div>
+
+    <!-- Three Cards -->
+    <div class="cards-row">
+      <div class="card">
+        <span class="card-index">01</span>
+        <span class="card-tag">DISPUTE</span>
+        <div class="card-title"><span>争议即活力</span></div>
+        <div class="card-body"><span>GPL 的持续争议恰恰证明它仍然是开源生态中最具生命力的许可证，而非过时的法律文本。争论本身，即是它不可替代地位的明证。</span></div>
+      </div>
+      <div class="card">
+        <span class="card-index">02</span>
+        <span class="card-tag">GROWTH</span>
+        <div class="card-title"><span>成长不可逆</span></div>
+        <div class="card-body"><span>无论合规冲突如何激烈，GPL 软件在全球基础设施中的渗透率将持续上升，开源已成不可逆转的技术潮流，无人能逆转时间之河。</span></div>
+      </div>
+      <div class="card">
+        <span class="card-index">03</span>
+        <span class="card-tag">ACTION</span>
+        <div class="card-title"><span>行动呼吁</span></div>
+        <div class="card-body"><span>让我们以开源之道为指引，在合规中前行、在贡献中成长、在布道中传递开源的火种。每一次 Commit，都是对未来的投票。</span></div>
+      </div>
+    </div>
+
+    <!-- Data Row -->
+    <div class="data-row">
+      <div class="data-chip">
+        <span class="data-chip-dot"></span>
+        <span class="data-chip-label">记录期</span>
+        <span class="data-chip-value">2023-04</span>
+      </div>
+      <div class="data-chip">
+        <span class="data-chip-dot" style="background:#2196F3;box-shadow:0 0 8px #2196F3;"></span>
+        <span class="data-chip-label">角色</span>
+        <span class="data-chip-value">开源之道 · 适兕</span>
+      </div>
+      <div class="data-chip">
+        <span class="data-chip-dot"></span>
+        <span class="data-chip-label">定位</span>
+        <span class="data-chip-value">开源布道与阅读分享</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-divider"></div>
+      <div class="narrative"><span>GPL 的燃烧与成长是一枚硬币的两面：没有对自由的坚持就没有燃烧，没有燃烧的淬炼就没有真正的成长。开源之书的记录仍在继续，期待每一位读者的参与。</span></div>
+      <div class="signature"><span>开源之书 · 2023 · APRIL</span></div>
+      <div class="signature-sub"><span>RECORD · EVOLVE · IGNITE</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

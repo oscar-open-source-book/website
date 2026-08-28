@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>GPL合规的火焰</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --secondary:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#0A1628;
+  --bg-card:rgba(15,30,55,0.72);
+  --border:rgba(33,150,243,0.22);
+  --flame-red:#FF3D00;
+  --flame-orange:#FF9800;
+  --flame-yellow:#FFD54F;
+  --flame-deep:#1A3A6B;
+  --text-main:#E3F2FD;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Roboto Mono',monospace;
+  color:var(--text-main);
+  background:var(--bg-dark);
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 1200px 700px at 20% 30%, rgba(33,150,243,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 900px 600px at 85% 80%, rgba(0,188,212,0.08) 0%, transparent 60%),
+    #0A1628;
+}
+
+#bg::after{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 39px, rgba(33,150,243,0.04) 39px 40px),
+    repeating-linear-gradient(90deg, transparent 0 39px, rgba(0,188,212,0.03) 39px 40px);
+  pointer-events:none;
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:48px 56px 40px 56px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ---- Header ---- */
+.head{
+  display:flex;flex-direction:column;gap:10px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:22px;
+}
+
+.head .tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;
+  letter-spacing:3px;
+  color:var(--secondary);
+  text-transform:uppercase;
+}
+
+.head h1{
+  font-family:'Inter',sans-serif;
+  font-weight:800;
+  font-size:46px;
+  letter-spacing:1px;
+  background:linear-gradient(90deg, var(--primary) 0%, var(--secondary) 55%, #FFD54F 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  line-height:1.1;
+}
+
+.head .lead{
+  font-family:'Roboto Mono',monospace;
+  font-size:13.5px;
+  line-height:1.7;
+  color:var(--neutral);
+  max-width:1380px;
+}
+
+/* ---- Main split ---- */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:40% 60%;
+  gap:28px;
+  min-height:0;
+}
+
+/* ---- Left column ---- */
+.left{
+  display:flex;flex-direction:column;
+  gap:16px;
+  min-height:0;
+}
+
+.flame-box{
+  flex:1;
+  position:relative;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:linear-gradient(160deg, rgba(33,150,243,0.06) 0%, rgba(10,22,40,0.6) 100%);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  min-height:0;
+}
+
+.flame-box::before{
+  content:"";
+  position:absolute;
+  top:-40%;left:50%;
+  transform:translateX(-50%);
+  width:300px;height:300px;
+  background:radial-gradient(circle, rgba(255,61,0,0.18) 0%, transparent 70%);
+  filter:blur(20px);
+  pointer-events:none;
+}
+
+.flame-box .corner{
+  position:absolute;
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;
+  color:var(--secondary);
+  letter-spacing:2px;
+  opacity:0.7;
+}
+.flame-box .corner.tl{top:10px;left:12px;}
+.flame-box .corner.tr{top:10px;right:12px;}
+.flame-box .corner.bl{bottom:10px;left:12px;}
+.flame-box .corner.br{bottom:10px;right:12px;}
+
+.flame-svg{width:280px;height:260px;position:relative;z-index:1;}
+
+.flame-caption{
+  position:absolute;
+  bottom:14px;left:0;right:0;
+  text-align:center;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--secondary);
+  z-index:2;
+}
+
+.data-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  flex-shrink:0;
+}
+
+.data-card{
+  border:1px solid var(--border);
+  border-left:3px solid var(--flame-orange);
+  border-radius:10px;
+  padding:12px 14px;
+  background:var(--bg-card);
+}
+
+.data-card:nth-child(2){border-left-color:var(--secondary);}
+
+.data-card .dc-label{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;
+  letter-spacing:2px;
+  color:var(--secondary);
+  margin-bottom:4px;
+}
+
+.data-card .dc-value{
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:var(--text-main);
+  line-height:1.3;
+  margin-bottom:3px;
+}
+
+.data-card .dc-desc{
+  font-family:'Roboto Mono',monospace;
+  font-size:10.5px;
+  color:var(--neutral);
+  line-height:1.5;
+}
+
+/* ---- Right column ---- */
+.right{
+  display:flex;flex-direction:column;
+  gap:12px;
+  min-height:0;
+}
+
+.dispute-card{
+  display:grid;
+  grid-template-columns:52px 1fr;
+  gap:16px;
+  padding:14px 18px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--bg-card);
+  align-items:center;
+  position:relative;
+  flex:1;
+  min-height:0;
+}
+
+.dispute-card::before{
+  content:"";
+  position:absolute;
+  left:0;top:14px;bottom:14px;
+  width:3px;
+  border-radius:2px;
+  background:linear-gradient(180deg, var(--primary), var(--secondary));
+}
+
+.dc-icon{
+  width:48px;height:48px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:rgba(33,150,243,0.08);
+  display:flex;align-items:center;justify-content:center;
+}
+
+.dc-text{display:flex;flex-direction:column;gap:5px;min-width:0;}
+
+.dc-title{
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:var(--text-main);
+  display:flex;align-items:center;gap:10px;
+}
+
+.dc-title .badge{
+  font-family:'Roboto Mono',monospace;
+  font-size:9.5px;
+  padding:2px 7px;
+  border-radius:4px;
+  background:rgba(0,188,212,0.15);
+  color:var(--secondary);
+  letter-spacing:1px;
+  border:1px solid rgba(0,188,212,0.3);
+}
+
+.dc-desc{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;
+  line-height:1.65;
+  color:var(--neutral);
+}
+
+/* ---- Footer ---- */
+.footer{
+  margin-top:16px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+.footer .closing{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;
+  color:var(--neutral);
+  letter-spacing:1px;
+}
+
+.footer .closing .accent{color:var(--secondary);}
+
+.footer .meta{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;
+  color:var(--neutral);
+  letter-spacing:2px;
+  opacity:0.6;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="head">
+      <span class="tag">// OPEN_SOURCE_LAW · COMPLIANCE_RISK</span>
+      <h1>GPL合规的火焰</h1>
+      <p class="lead">GPL的"火焰"并非来自其哲学本身，而是来自实践中的模糊地带：什么算"派生作品"？网络服务是否算"分发"？这些问题在2023年仍然悬而未决。</p>
+    </div>
+
+    <div class="main">
+
+      <div class="left">
+
+        <div class="flame-box">
+          <span class="corner tl">◢ FLAME</span>
+          <span class="corner tr">SVG · v1.0</span>
+          <span class="corner bl">// RISK_MODEL</span>
+          <span class="corner br">01001011</span>
+
+          <svg class="flame-svg" viewBox="0 0 280 260" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#1A3A6B"/>
+                <stop offset="30%" stop-color="#2196F3"/>
+                <stop offset="55%" stop-color="#FFD54F"/>
+                <stop offset="78%" stop-color="#FF9800"/>
+                <stop offset="100%" stop-color="#FF3D00"/>
+              </linearGradient>
+              <linearGradient id="flameGrad2" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#0A1628"/>
+                <stop offset="40%" stop-color="#2196F3"/>
+                <stop offset="70%" stop-color="#FFD54F"/>
+                <stop offset="100%" stop-color="#FF9800"/>
+              </linearGradient>
+              <linearGradient id="flameCore" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#1A3A6B"/>
+                <stop offset="60%" stop-color="#FFD54F"/>
+                <stop offset="100%" stop-color="#FFFFFF"/>
+              </linearGradient>
+              <radialGradient id="glowGrad" cx="50%" cy="85%" r="60%">
+                <stop offset="0%" stop-color="rgba(255,61,0,0.35)"/>
+                <stop offset="100%" stop-color="rgba(255,61,0,0)"/>
+              </radialGradient>
+              <filter id="flameGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3"/>
+              </filter>
+            </defs>
+
+            <ellipse cx="140" cy="230" rx="120" ry="22" fill="url(#glowGrad)"/>
+
+            <path d="M140,30
+                     C 130,60 100,70 90,100
+                     C 78,128 88,148 70,168
+                     C 55,185 50,210 70,228
+                     C 88,245 120,245 140,245
+                     C 160,245 192,245 210,228
+                     C 230,210 225,185 210,168
+                     C 192,148 202,128 190,100
+                     C 180,70 150,60 140,30 Z"
+                  fill="url(#flameGrad)" opacity="0.95" filter="url(#flameGlow)"/>
+
+            <path d="M140,60
+                     C 132,85 112,95 106,118
+                     C 98,140 108,156 96,172
+                     C 84,188 82,208 98,222
+                     C 114,235 132,235 140,235
+                     C 148,235 166,235 182,222
+                     C 198,208 196,188 184,172
+                     C 172,156 182,140 174,118
+                     C 168,95 148,85 140,60 Z"
+                  fill="url(#flameGrad2)" opacity="0.85"/>
+
+            <path d="M140,95
+                     C 135,112 122,118 118,135
+                     C 113,152 122,165 114,178
+                     C 107,190 108,205 120,215
+                     C 130,223 138,223 140,223
+                     C 142,223 150,223 160,215
+                     C 172,205 173,190 166,178
+                     C 158,165 167,152 162,135
+                     C 158,118 145,112 140,95 Z"
+                  fill="url(#flameCore)" opacity="0.9"/>
+
+            <circle cx="140" cy="100" r="4" fill="#FFFFFF" opacity="0.9"/>
+            <circle cx="130" cy="120" r="2.5" fill="#FFD54F" opacity="0.8"/>
+            <circle cx="150" cy="130" r="2" fill="#FF9800" opacity="0.7"/>
+            <circle cx="125" cy="150" r="2" fill="#FF3D00" opacity="0.6"/>
+
+            <line x1="20" y1="248" x2="260" y2="248" stroke="#2196F3" stroke-width="1" opacity="0.4"/>
+            <line x1="30" y1="254" x2="250" y2="254" stroke="#00BCD4" stroke-width="0.5" opacity="0.3" stroke-dasharray="4 4"/>
+
+            <text x="140" y="20" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="9" fill="#00BCD4" letter-spacing="2" opacity="0.6">GPL_COMPLIANCE</text>
+          </svg>
+
+          <div class="flame-caption">▣ 合 规 之 火 · 模 糊 之 带 ▣</div>
+        </div>
+
+        <div class="data-cards">
+          <div class="data-card">
+            <div class="dc-label">// CASE_COUNT</div>
+            <div class="dc-value">多起著名合规诉讼</div>
+            <div class="dc-desc">Docker / Citrix 等案例，反映 GPL 传染条款在商业实践中的持续争议。</div>
+          </div>
+          <div class="data-card">
+            <div class="dc-label">// VIOLATION_RATE</div>
+            <div class="dc-value">嵌入式违规率偏高</div>
+            <div class="dc-desc">IoT 行业普遍问题，固件内含 GPL 代码却未提供源代码。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="right">
+
+        <div class="dispute-card">
+          <div class="dc-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M4 8 L20 8 M4 16 L20 16 M8 4 L8 8 L8 16 L8 20 M16 4 L16 8 L16 16 L16 20" stroke="#00BCD4" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 4 L10 8 L14 8 Z M12 16 L10 20 L14 20 Z" fill="#2196F3"/>
+            </svg>
+          </div>
+          <div class="dc-text">
+            <div class="dc-title"><span>静态链接争议</span><span class="badge">STILL_LINKING</span></div>
+            <div class="dc-desc">闭源商业软件静态链接 GPL 库是否触发传染条款，业界仍无统一司法共识。</div>
+          </div>
+        </div>
+
+        <div class="dispute-card">
+          <div class="dc-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="6" width="18" height="12" rx="2" stroke="#2196F3" stroke-width="1.5"/>
+              <line x1="3" y1="11" x2="21" y2="11" stroke="#00BCD4" stroke-width="1"/>
+              <rect x="6" y="14" width="4" height="3" fill="#FF9800" opacity="0.8"/>
+              <rect x="12" y="14" width="3" height="3" fill="#FFD54F" opacity="0.7"/>
+              <circle cx="18" cy="15.5" r="1.2" fill="#00BCD4"/>
+              <path d="M8 4 L8 6 M16 4 L16 6" stroke="#2196F3" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="dc-text">
+            <div class="dc-title"><span>Docker 合规案</span><span class="badge">CONTAINER</span></div>
+            <div class="dc-desc">Mirantis 曾面临 GPL 合规诉讼，反映容器化部署中 GPL 代码分发的边界模糊。</div>
+          </div>
+        </div>
+
+        <div class="dispute-card">
+          <div class="dc-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="6" width="16" height="10" rx="1" stroke="#2196F3" stroke-width="1.5"/>
+              <line x1="4" y1="10" x2="20" y2="10" stroke="#00BCD4" stroke-width="1"/>
+              <circle cx="8" cy="13" r="1" fill="#FF9800"/>
+              <circle cx="12" cy="13" r="1" fill="#FFD54F"/>
+              <circle cx="16" cy="13" r="1" fill="#00BCD4"/>
+              <path d="M8 18 L16 18 M10 20 L14 20 M12 16 L12 18" stroke="#2196F3" stroke-width="1.2"/>
+              <path d="M2 22 L22 22" stroke="#00BCD4" stroke-width="0.8" opacity="0.5" stroke-dasharray="2 2"/>
+            </svg>
+          </div>
+          <div class="dc-text">
+            <div class="dc-title"><span>嵌入式领域</span><span class="badge">IOT_DEVICE</span></div>
+            <div class="dc-desc">IoT 设备厂商常忽视 GPL 合规要求，固件中包含 GPL 代码却不提供源代码。</div>
+          </div>
+        </div>
+
+        <div class="dispute-card">
+          <div class="dc-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="#2196F3" stroke-width="1.5"/>
+              <ellipse cx="12" cy="12" rx="4" ry="9" stroke="#00BCD4" stroke-width="1"/>
+              <line x1="3" y1="12" x2="21" y2="12" stroke="#00BCD4" stroke-width="1"/>
+              <path d="M5 7 L19 7 M5 17 L19 17" stroke="#2196F3" stroke-width="0.8" opacity="0.5"/>
+              <circle cx="12" cy="5" r="1.2" fill="#FFD54F"/>
+            </svg>
+          </div>
+          <div class="dc-text">
+            <div class="dc-title"><span>法律不确定性</span><span class="badge">JURISDICTION</span></div>
+            <div class="dc-desc">不同司法管辖区对 GPL 条款的解释差异，增加了跨国企业的合规成本。</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="closing">火焰之外：<span class="accent">GPL 的合规边界仍待司法共识</span></div>
+      <div class="meta">GPL · COMPLIANCE · 2023</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
