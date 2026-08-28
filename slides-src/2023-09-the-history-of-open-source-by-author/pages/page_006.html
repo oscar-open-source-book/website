@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Linux：数据看影响力</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lato:wght@300;400;700;900&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --wine:#880E4F;
+  --bg:#F5F5F5;
+  --paper:#FFFFFF;
+  --ink:#1a1a1a;
+  --muted:#6b6b6b;
+  --rule:#d9d9d9;
+  --font-serif:"Playfair Display","Noto Serif SC",Georgia,serif;
+  --font-sans:"Lato","Noto Sans SC","PingFang SC",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:#e8e8e8;font-family:var(--font-sans);color:var(--ink);font-size:16px;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 40px 60px;box-sizing:border-box;}
+
+/* background decorations */
+.bg-mark{position:absolute;top:32px;right:60px;font-family:var(--font-serif);font-style:italic;color:var(--wine);opacity:.55;font-size:14px;letter-spacing:.18em;}
+.bg-issue{position:absolute;top:32px;left:60px;font-family:var(--font-sans);font-weight:700;color:var(--navy);font-size:12px;letter-spacing:.32em;}
+.bg-line-top{position:absolute;left:60px;right:60px;top:60px;height:1px;background:var(--navy);}
+.bg-line-bot{position:absolute;left:60px;right:60px;bottom:34px;height:1px;background:var(--navy);}
+.bg-num{position:absolute;left:60px;bottom:44px;font-family:var(--font-serif);font-style:italic;color:var(--navy);font-size:14px;letter-spacing:.12em;}
+.bg-foot{position:absolute;right:60px;bottom:44px;font-family:var(--font-sans);color:var(--muted);font-size:12px;letter-spacing:.24em;text-transform:uppercase;}
+
+/* header */
+.header{position:relative;padding-top:20px;padding-bottom:8px;}
+.eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.eyebrow .bar{width:44px;height:3px;background:var(--wine);}
+.eyebrow .txt{font-family:var(--font-sans);font-weight:700;color:var(--wine);font-size:12px;letter-spacing:.34em;text-transform:uppercase;}
+.h1{font-family:var(--font-serif);font-weight:900;color:var(--navy);font-size:64px;line-height:1.02;letter-spacing:-.01em;}
+.h1 em{font-style:italic;color:var(--wine);font-weight:400;}
+.sub{margin-top:14px;font-family:var(--font-serif);font-style:italic;color:var(--navy);font-size:20px;line-height:1.4;max-width:1100px;}
+.sub b{font-style:normal;font-weight:700;color:var(--wine);border-bottom:2px solid var(--wine);padding-bottom:1px;}
+
+/* KPI grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;margin-top:20px;height:410px;}
+.card{position:relative;background:var(--paper);border:1px solid #e4e4e4;padding:20px 24px 18px 24px;overflow:hidden;box-shadow:0 2px 0 rgba(13,33,55,.06);}
+.card .num-tag{position:absolute;top:14px;right:20px;font-family:var(--font-serif);font-style:italic;color:var(--wine);font-size:14px;letter-spacing:.16em;}
+.card .icon{position:absolute;right:20px;bottom:16px;opacity:.10;color:var(--navy);}
+.card .cat{font-family:var(--font-sans);font-weight:700;color:var(--wine);font-size:11px;letter-spacing:.32em;text-transform:uppercase;}
+.card .cat-bar{width:32px;height:2px;background:var(--wine);margin:6px 0 10px 0;}
+.card .big{font-family:var(--font-serif);font-weight:900;color:var(--navy);line-height:.95;letter-spacing:-.02em;}
+.card .big .n{font-size:96px;}
+.card .big .u{font-size:36px;color:var(--wine);margin-left:4px;font-style:italic;}
+.card .label{margin-top:8px;font-family:var(--font-sans);color:var(--ink);font-size:15px;line-height:1.45;font-weight:500;}
+.card .label b{color:var(--navy);font-weight:700;}
+.card .src{margin-top:10px;padding-top:8px;border-top:1px dashed #cccccc;font-family:var(--font-sans);color:var(--muted);font-size:11px;letter-spacing:.06em;line-height:1.4;}
+.card .src em{font-style:italic;color:var(--wine);font-weight:700;}
+
+/* timeline strip */
+.strip{margin-top:18px;background:var(--navy);color:#fff;padding:16px 28px;display:flex;align-items:center;gap:26px;position:relative;}
+.strip .stamp{font-family:var(--font-serif);font-style:italic;color:#fff;font-size:22px;line-height:1.1;letter-spacing:.02em;flex-shrink:0;}
+.strip .stamp .y{color:var(--wine);background:#fff;padding:2px 10px;font-weight:900;font-style:normal;display:inline-block;letter-spacing:0;}
+.strip .stamp .s{display:block;color:rgba(255,255,255,.65);font-size:12px;letter-spacing:.2em;margin-top:4px;font-family:var(--font-sans);font-weight:700;text-transform:uppercase;}
+.vline{width:1px;height:52px;background:rgba(255,255,255,.25);flex-shrink:0;}
+.bullet{display:flex;align-items:flex-start;gap:12px;flex:1;}
+.bullet .dot{width:10px;height:10px;background:var(--wine);margin-top:8px;flex-shrink:0;border-radius:50%;}
+.bullet .b-txt{font-family:var(--font-sans);color:#fff;font-size:14px;line-height:1.5;}
+.bullet .b-txt b{font-family:var(--font-serif);font-style:italic;color:#f5c7dd;font-size:16px;font-weight:700;}
+.bullet .b-txt .m{color:rgba(255,255,255,.72);font-size:12px;letter-spacing:.05em;}
+.tag-mini{display:inline-block;background:var(--wine);color:#fff;font-size:10px;padding:2px 8px;letter-spacing:.2em;font-weight:700;margin-right:6px;}
+
+/* small icon svgs */
+.ico-cloud{width:120px;height:80px;}
+.ico-phone{width:70px;height:110px;}
+.ico-chip{width:110px;height:100px;}
+.ico-ppl{width:120px;height:90px;}
+
+.footer-note{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-sans);color:var(--muted);font-size:10px;letter-spacing:.24em;text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+  <div class="bg-issue">DATA &nbsp;·&nbsp; 影响力特辑</div>
+  <div class="bg-mark">— The Silent Backbone —</div>
+  <div class="bg-line-top"></div>
+  <div class="bg-line-bot"></div>
+  <div class="bg-num">No. 03 / Influence</div>
+  <div class="bg-foot">Linux · A Data Story</div>
+</div>
+<div id="ct">
+
+  <div class="header">
+    <div class="eyebrow">
+      <div class="bar"></div>
+      <div class="txt">LINUX · BY THE NUMBERS</div>
+    </div>
+    <div class="h1">Linux：<em>数据</em>看影响力</div>
+    <div class="sub">它<b>几乎支撑了互联网上所有计算</b>，却几乎从不署名——</div>
+  </div>
+
+  <div class="grid">
+    <!-- Card 1: Cloud -->
+    <div class="card">
+      <div class="num-tag">01 / Cloud</div>
+      <svg class="icon ico-cloud" viewBox="0 0 120 80" fill="none">
+        <path d="M30 62 C14 62 6 52 6 42 C6 30 16 22 28 22 C30 12 40 4 52 4 C66 4 76 14 78 26 C88 24 98 28 102 38 C110 40 114 48 114 54 C114 62 106 66 98 66 L34 66 Z" fill="currentColor"/>
+      </svg>
+      <div class="cat">云基础设施</div>
+      <div class="cat-bar"></div>
+      <div class="big"><span class="n">96</span><span class="u">%+</span></div>
+      <div class="label">全球公有云基础设施中，<b>Linux 是绝对底座</b>——AWS、Azure、GCP 的主力节点无一例外。</div>
+      <div class="src"><em>Source</em> &nbsp;Gartner, Public Cloud Infrastructure Forecast, 2023</div>
+    </div>
+
+    <!-- Card 2: Android -->
+    <div class="card">
+      <div class="num-tag">02 / Mobile</div>
+      <svg class="icon ico-phone" viewBox="0 0 70 110" fill="none">
+        <rect x="4" y="4" width="62" height="102" rx="8" fill="currentColor"/>
+        <rect x="10" y="12" width="50" height="82" fill="#F5F5F5"/>
+        <circle cx="35" cy="101" r="2.5" fill="currentColor"/>
+        <rect x="28" y="7" width="14" height="1.6" fill="currentColor"/>
+      </svg>
+      <div class="cat">Android 装机量</div>
+      <div class="cat-bar"></div>
+      <div class="big"><span class="n">30</span><span class="u">亿+</span></div>
+      <div class="label">全球 Android 设备均运行 <b>Linux 内核</b>——每 3 人中就有 2 台 Linux 在你口袋里。</div>
+      <div class="src"><em>Source</em> &nbsp;StatCounter / Counterpoint, Mobile OS Market, 2024</div>
+    </div>
+
+    <!-- Card 3: Supercomputer -->
+    <div class="card">
+      <div class="num-tag">03 / HPC</div>
+      <svg class="icon ico-chip" viewBox="0 0 110 100" fill="none">
+        <rect x="20" y="20" width="70" height="60" rx="3" fill="currentColor"/>
+        <rect x="32" y="32" width="46" height="36" fill="#F5F5F5"/>
+        <text x="55" y="55" font-family="Playfair Display" font-size="18" fill="currentColor" text-anchor="middle" font-weight="900">TC</text>
+        <g fill="currentColor">
+          <rect x="10" y="28" width="10" height="4"/><rect x="10" y="42" width="10" height="4"/><rect x="10" y="56" width="10" height="4"/><rect x="10" y="70" width="10" height="4"/>
+          <rect x="90" y="28" width="10" height="4"/><rect x="90" y="42" width="10" height="4"/><rect x="90" y="56" width="10" height="4"/><rect x="90" y="70" width="10" height="4"/>
+          <rect x="30" y="10" width="4" height="10"/><rect x="44" y="10" width="4" height="10"/><rect x="62" y="10" width="4" height="10"/><rect x="76" y="10" width="4" height="10"/>
+          <rect x="30" y="80" width="4" height="10"/><rect x="44" y="80" width="4" height="10"/><rect x="62" y="80" width="4" height="10"/><rect x="76" y="80" width="4" height="10"/>
+        </g>
+      </svg>
+      <div class="cat">TOP500 超算</div>
+      <div class="cat-bar"></div>
+      <div class="big"><span class="n">100</span><span class="u">%</span></div>
+      <div class="label">全球 <b>TOP 500 超级计算机全部运行 Linux</b>，前 10 名无一例外——算力之巅只有它。</div>
+      <div class="src"><em>Source</em> &nbsp;TOP500 List, June 2024 · Linux Foundation</div>
+    </div>
+
+    <!-- Card 4: Contributors -->
+    <div class="card">
+      <div class="num-tag">04 / Code</div>
+      <svg class="icon ico-ppl" viewBox="0 0 120 90" fill="none">
+        <circle cx="24" cy="34" r="12" fill="currentColor"/>
+        <path d="M6 82 C6 66 14 56 24 56 C34 56 42 66 42 82 Z" fill="currentColor"/>
+        <circle cx="60" cy="28" r="14" fill="currentColor" opacity=".7"/>
+        <path d="M40 82 C40 64 49 52 60 52 C71 52 80 64 80 82 Z" fill="currentColor" opacity=".7"/>
+        <circle cx="96" cy="34" r="12" fill="currentColor" opacity=".5"/>
+        <path d="M78 82 C78 66 86 56 96 56 C106 56 114 66 114 82 Z" fill="currentColor" opacity=".5"/>
+      </svg>
+      <div class="cat">内核贡献者</div>
+      <div class="cat-bar"></div>
+      <div class="big"><span class="n">2</span><span class="u">万+</span></div>
+      <div class="label">累计开发者约 <b>3000 万行 C 代码</b>——三十年众包协作，一部开放世界的操作系统史诗。</div>
+      <div class="src"><em>Source</em> &nbsp;Open Hub / kernel.org, Historical Contributors, 1991–2024</div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="stamp"><span class="y">1991·09·17</span><br>Linux 0.01<span class="s">First Public Announcement</span></div>
+    <div class="vline"></div>
+    <div class="bullet">
+      <div class="dot"></div>
+      <div class="b-txt">
+        Linus Torvalds 在 comp.os.minix 上发出公告：<b>"I'm doing a (free) operating system — just a hobby, won't be big and serious"</b><br>
+        <span class="m">— 一句玩笑话，开启了互联网时代最庞大的开源项目。</span>
+      </div>
+    </div>
+    <div class="vline"></div>
+    <div class="bullet">
+      <div class="dot"></div>
+      <div class="b-txt">
+        <span class="tag-mini">100+</span>主流发行版超过 <b>一百个</b>，<b>Debian</b> 与 <b>RHEL</b>（Red Hat）两大分支占据生态主力，衍生出 Ubuntu、Fedora、openSUSE 等主流家族。
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
