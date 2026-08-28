@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源生态数据速览</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --klein:#002FA7;
+  --klein-soft:#0A4ED9;
+  --orange:#FF7043;
+  --gray:#F5F5F5;
+  --gray-dark:#E6E8EE;
+  --text-main:#14141A;
+  --text-sub:#5B5B6E;
+  --line:#DDE0E8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:var(--text-main);}
+body{background:#FFFFFF;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,#FFFFFF 0%,#F5F5F5 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 72px 40px 72px;display:flex;flex-direction:column;box-sizing:border-box;}
+
+/* Decorative bg elements */
+.bg-deco-1{position:absolute;top:-120px;right:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,47,167,0.06) 0%,rgba(0,47,167,0) 70%);z-index:0;}
+.bg-deco-2{position:absolute;bottom:-80px;left:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,112,67,0.08) 0%,rgba(255,112,67,0) 70%);z-index:0;}
+
+/* HEADER */
+.header{display:flex;flex-direction:column;gap:14px;margin-bottom:22px;}
+.header-top{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:56px;background:var(--klein);border-radius:2px;}
+.title-main{font-size:42px;font-weight:800;color:var(--klein);letter-spacing:0.5px;line-height:1.1;}
+.header-dots{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--klein);}
+.dot.o{background:var(--orange);}
+.dot.g{background:var(--gray-dark);border:1.5px solid var(--line);}
+.sub-title{font-size:14px;color:var(--text-sub);font-weight:500;letter-spacing:2px;text-transform:uppercase;}
+.subtitle-text{font-size:14px;color:var(--text-sub);line-height:1.7;max-width:1300px;font-weight:400;}
+.subtitle-text strong{color:var(--klein);font-weight:600;}
+.subtitle-text em{font-style:normal;color:var(--orange);font-weight:600;}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;margin-bottom:22px;}
+.kpi-card{background:var(--gray);border:1px solid var(--line);border-radius:14px;padding:22px 26px 20px 26px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px;height:210px;}
+.kpi-card::before{content:"";position:absolute;left:0;top:0;width:4px;height:100%;background:var(--klein);}
+.kpi-head{display:flex;align-items:center;justify-content:space-between;}
+.kpi-index{font-size:12px;color:var(--text-sub);font-weight:600;letter-spacing:1px;}
+.kpi-tag{font-size:11px;color:var(--orange);font-weight:700;background:rgba(255,112,67,0.12);padding:4px 10px;border-radius:10px;letter-spacing:0.5px;}
+.kpi-num{font-size:62px;font-weight:900;color:var(--klein);line-height:1;letter-spacing:-1px;font-family:'Inter',sans-serif;display:flex;align-items:baseline;}
+.kpi-num .unit{font-size:30px;font-weight:800;margin-left:6px;color:var(--klein);}
+.kpi-label{font-size:15px;font-weight:700;color:var(--text-main);margin-top:4px;}
+.kpi-desc{font-size:12px;color:var(--text-sub);line-height:1.6;font-weight:400;}
+.kpi-divider{height:1px;background:var(--line);margin:2px 0 0 0;}
+
+/* BULLETS */
+.bullet-section{display:flex;flex-direction:column;gap:12px;}
+.bullet-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.bullet-item{background:#FFFFFF;border:1px solid var(--line);border-radius:10px;padding:14px 18px 14px 22px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;min-height:76px;position:relative;}
+.bullet-num{width:34px;height:34px;border-radius:8px;background:var(--klein);color:#FFFFFF;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;flex-shrink:0;}
+.bullet-text{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.bullet-title{font-size:14px;font-weight:700;color:var(--klein);letter-spacing:0.3px;}
+.bullet-desc{font-size:12px;color:var(--text-sub);line-height:1.55;font-weight:400;}
+.badge{width:56px;height:56px;border-radius:10px;background:rgba(255,112,67,0.1);border:1.5px solid rgba(255,112,67,0.4);color:var(--orange);font-size:16px;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;flex-shrink:0;font-family:'Inter',sans-serif;}
+.badge .lbl{font-size:9px;font-weight:600;margin-top:3px;letter-spacing:0.5px;color:var(--orange);opacity:0.9;}
+.badge.k{background:rgba(0,47,167,0.08);border-color:rgba(0,47,167,0.35);color:var(--klein);}
+.badge.k .lbl{color:var(--klein);}
+
+/* FOOTER */
+.footer{margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 4px;}
+.footer-line{flex:1;height:2px;background:linear-gradient(90deg,var(--klein) 0%,var(--klein-soft) 40%,var(--orange) 100%);margin:0 18px;border-radius:2px;}
+.footer-tag{font-size:11px;color:var(--text-sub);font-weight:600;letter-spacing:1.5px;}
+.footer-tag .o{color:var(--orange);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="bg-deco-1"></div>
+  <div class="bg-deco-2"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-top">
+        <div class="title-bar"></div>
+        <div class="title-main"><span>开源生态数据速览</span></div>
+        <div class="header-dots">
+          <div class="dot"></div>
+          <div class="dot o"></div>
+          <div class="dot g"></div>
+        </div>
+      </div>
+      <div class="sub-title"><span>OPEN SOURCE ECOSYSTEM AT A GLANCE · 2024</span></div>
+      <div class="subtitle-text"><span>开源已从边缘实验成长为数字世界的<strong>基石</strong>，无论是用户规模、项目数量还是商业渗透率，数据都指向同一个趋势——<strong>开源不再是选择而是默认</strong>。理解这些数字，有助于我们在阅读中锚定<em>现实坐标</em>。</span></div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <div class="kpi-index"><span>01 / GLOBAL DEVELOPERS</span></div>
+          <div class="kpi-tag"><span>开发者规模</span></div>
+        </div>
+        <div class="kpi-num"><span>1</span><span class="unit">亿+</span></div>
+        <div class="kpi-label"><span>全球开发者</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc"><span>对应 GitHub 全球活跃开发者规模，中文区增长最快速。</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <div class="kpi-index"><span>02 / OPEN REPOSITORIES</span></div>
+          <div class="kpi-tag"><span>项目生态</span></div>
+        </div>
+        <div class="kpi-num"><span>4</span><span class="unit">亿+</span></div>
+        <div class="kpi-label"><span>开源仓库总数</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc"><span>全球 GitHub 平台累计，覆盖所有主流编程语言与技术栈。</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <div class="kpi-index"><span>03 / ENTERPRISE ADOPTION</span></div>
+          <div class="kpi-tag"><span>商业渗透</span></div>
+        </div>
+        <div class="kpi-num"><span>95</span><span class="unit">%+</span></div>
+        <div class="kpi-label"><span>企业采用率</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc"><span>技术栈含开源组件的企业比例，开源已成为事实标准。</span></div>
+      </div>
+    </div>
+
+    <div class="bullet-section">
+      <div class="bullet-row">
+        <div class="bullet-item">
+          <div class="bullet-num"><span>01</span></div>
+          <div class="bullet-text">
+            <div class="bullet-title"><span>用户规模</span></div>
+            <div class="bullet-desc"><span>全球 GitHub 活跃开发者已突破一亿，中文区活跃用户持续增长，社区参与深度不断扩展。</span></div>
+          </div>
+          <div class="badge k"><span>1亿+</span><span class="lbl">DEVS</span></div>
+        </div>
+        <div class="bullet-item">
+          <div class="bullet-num"><span>02</span></div>
+          <div class="bullet-text">
+            <div class="bullet-title"><span>项目生态</span></div>
+            <div class="bullet-desc"><span>GitHub 上开源仓库总数超过四亿，涵盖所有主流编程语言与技术栈，成为开发者首选的代码家园。</span></div>
+          </div>
+          <div class="badge k"><span>4亿+</span><span class="lbl">REPOS</span></div>
+        </div>
+      </div>
+      <div class="bullet-row">
+        <div class="bullet-item">
+          <div class="bullet-num"><span>03</span></div>
+          <div class="bullet-text">
+            <div class="bullet-title"><span>许可分布</span></div>
+            <div class="bullet-desc"><span>MIT 与 Apache 2.0 合计占据开源许可证选择总量的半壁江山，成为事实上的许可标准。</span></div>
+          </div>
+          <div class="badge"><span>50%</span><span class="lbl">SHARE</span></div>
+        </div>
+        <div class="bullet-item">
+          <div class="bullet-num"><span>04</span></div>
+          <div class="bullet-text">
+            <div class="bullet-title"><span>商业认可</span></div>
+            <div class="bullet-desc"><span>超过 95% 的企业技术栈包含至少一个开源组件，开源已成为数字时代的基础设施层。</span></div>
+          </div>
+          <div class="badge"><span>95%+</span><span class="lbl">ADOPT</span></div>
+        </div>
+      </div>
+      <div class="bullet-row">
+        <div class="bullet-item">
+          <div class="bullet-num"><span>05</span></div>
+          <div class="bullet-text">
+            <div class="bullet-title"><span>贡献结构</span></div>
+            <div class="bullet-desc"><span>头部项目贡献高度集中，少数核心贡献者支撑了绝大部分代码产出，社区治理面临长尾失衡。</span></div>
+          </div>
+          <div class="badge"><span>2%</span><span class="lbl">CORE</span></div>
+        </div>
+        <div class="bullet-item">
+          <div class="bullet-num"><span>06</span></div>
+          <div class="bullet-text">
+            <div class="bullet-title"><span>人才趋势</span></div>
+            <div class="bullet-desc"><span>开源经历已成为技术招聘中的高权重加分项，企业越来越看重候选人的社区活跃度与影响力。</span></div>
+          </div>
+          <div class="badge k"><span>HR+</span><span class="lbl">WEIGHT</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-tag"><span>SOURCE · GITHUB / CHAOS MESH / CNCF</span></div>
+      <div class="footer-line"></div>
+      <div class="footer-tag"><span class="o">■</span><span> 2024 DATA SNAPSHOT</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

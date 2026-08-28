@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --blue:#002FA7;
+  --blue-deep:#001F72;
+  --blue-light:#E8ECFA;
+  --gray:#F5F5F5;
+  --gray-mid:#D0D0D0;
+  --amber:#FF7043;
+  --text:#1A1A2E;
+  --text-soft:#555566;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:var(--text);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--gray);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:0;}
+
+/* ===== 背景装饰层 ===== */
+.bg-topline{position:absolute;top:0;left:0;right:0;height:6px;background:var(--blue);}
+.bg-botline{position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue) 0%,var(--amber) 50%,var(--blue) 100%);}
+
+/* 左上角几何 */
+.geo-tl{position:absolute;top:60px;left:60px;width:120px;height:120px;border:2px solid var(--blue);border-right:none;border-bottom:none;opacity:.85;}
+.geo-tl-dot{position:absolute;top:60px;left:60px;width:14px;height:14px;background:var(--amber);border-radius:50%;}
+
+/* 右上角几何 */
+.geo-tr{position:absolute;top:50px;right:50px;display:flex;align-items:center;gap:8px;}
+.geo-tr-line{width:140px;height:2px;background:var(--blue);}
+.geo-tr-circ{width:38px;height:38px;border:2px solid var(--blue);border-radius:50%;position:relative;}
+.geo-tr-circ::after{content:"";position:absolute;top:50%;left:50%;width:10px;height:10px;background:var(--blue);border-radius:50%;transform:translate(-50%,-50%);}
+
+/* 左侧竖排小标签 */
+.side-label{position:absolute;left:60px;top:240px;writing-mode:vertical-rl;font-size:11px;letter-spacing:6px;color:var(--blue);font-weight:500;}
+
+/* 左下角装饰：同心圆 */
+.geo-bl{position:absolute;bottom:60px;left:60px;display:flex;align-items:center;gap:0;}
+.geo-bl-ring1{width:90px;height:90px;border:2px solid var(--blue);border-radius:50%;opacity:.9;}
+.geo-bl-ring2{width:50px;height:50px;border:2px solid var(--amber);border-radius:50%;margin-left:-25px;margin-top:-25px;}
+.geo-bl-ring3{width:18px;height:18px;background:var(--blue);border-radius:50%;margin-left:-10px;margin-top:-10px;}
+
+/* 右下角编号 */
+.geo-br{position:absolute;bottom:70px;right:80px;font-size:13px;color:var(--text-soft);letter-spacing:3px;font-weight:500;text-align:right;}
+.geo-br-num{display:block;font-size:48px;font-weight:800;color:var(--blue);letter-spacing:0;line-height:1;margin-top:6px;}
+
+/* 右侧垂直装饰线条组 */
+.geo-right{position:absolute;top:160px;right:120px;display:flex;flex-direction:column;gap:14px;}
+.geo-right-bar{width:3px;height:30px;background:var(--blue);}
+.geo-right-bar:nth-child(2){background:var(--amber);height:50px;}
+.geo-right-bar:nth-child(3){height:18px;}
+.geo-right-bar:nth-child(4){background:var(--blue);height:40px;opacity:.4;}
+.geo-right-bar:nth-child(5){height:22px;opacity:.6;}
+
+/* 中线分隔装饰 */
+.geo-midline{position:absolute;top:490px;left:80px;right:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gray-mid) 10%,var(--gray-mid) 90%,transparent);}
+.geo-midline-dot{position:absolute;width:8px;height:8px;background:var(--amber);border-radius:50%;top:486px;left:50%;transform:translateX(-50%);}
+
+/* 抽象流动曲线 */
+.flow-svg{position:absolute;top:0;right:0;width:700px;height:900px;pointer-events:none;opacity:.9;}
+
+/* ===== 内容区 ===== */
+.content{position:absolute;top:0;left:0;width:1600px;height:900px;display:flex;flex-direction:column;align-items:center;padding:70px 160px 70px 160px;}
+
+/* 顶部小标签 */
+.tag-row{display:flex;align-items:center;gap:20px;margin-bottom:30px;}
+.tag-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1.5px solid var(--blue);color:var(--blue);font-size:12px;font-weight:600;letter-spacing:3px;border-radius:2px;}
+.tag-pill.amber{border-color:var(--amber);color:var(--amber);}
+.tag-divider{width:60px;height:1px;background:var(--blue);opacity:.5;}
+
+/* 主标题 */
+.main-title{font-size:112px;font-weight:800;color:var(--blue);letter-spacing:12px;text-align:center;line-height:1.1;}
+.main-title-en{font-size:16px;font-weight:400;color:var(--text-soft);letter-spacing:14px;text-align:center;margin-top:18px;text-transform:uppercase;}
+
+/* 副标题 */
+.subtitle-wrap{margin-top:28px;display:flex;align-items:center;justify-content:center;gap:18px;}
+.subtitle-bar{width:48px;height:2px;background:var(--amber);}
+.subtitle{font-size:22px;font-weight:500;color:var(--text);letter-spacing:4px;}
+
+/* 三个要点卡片 */
+.points{display:flex;justify-content:center;align-items:stretch;gap:28px;margin-top:38px;width:100%;max-width:1300px;}
+.point-card{flex:1;background:#fff;border:1px solid var(--gray-mid);padding:22px 22px 20px 22px;position:relative;min-height:150px;}
+.point-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--blue);}
+.point-card:nth-child(2)::before{background:var(--amber);}
+.point-card:nth-child(3)::before{background:var(--blue-deep);}
+.point-num{font-size:13px;font-weight:700;color:var(--blue);letter-spacing:2px;}
+.point-card:nth-child(2) .point-num{color:var(--amber);}
+.point-card:nth-child(3) .point-num{color:var(--blue-deep);}
+.point-label{font-size:15px;font-weight:700;color:var(--text);margin-top:8px;letter-spacing:1px;}
+.point-text{font-size:13px;color:var(--text-soft);line-height:1.7;margin-top:8px;font-weight:400;}
+
+/* 数据标签区 */
+.data-row{display:flex;justify-content:center;align-items:center;gap:0;margin-top:28px;}
+.data-item{display:flex;align-items:center;gap:14px;padding:0 40px;}
+.data-item + .data-item{border-left:1px solid var(--gray-mid);}
+.data-key{font-size:11px;color:var(--text-soft);letter-spacing:3px;font-weight:500;}
+.data-val{font-size:17px;color:var(--blue);font-weight:700;letter-spacing:2px;margin-top:4px;}
+.data-val.amber{color:var(--amber);}
+
+/* 底部收束语 */
+.footnote{margin-top:32px;text-align:center;max-width:1000px;font-size:14px;color:var(--text-soft);line-height:1.9;letter-spacing:1px;font-weight:400;}
+.footnote-mark{display:inline-block;width:24px;height:1px;background:var(--amber);vertical-align:middle;margin:0 14px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-topline"></div>
+    <div class="bg-botline"></div>
+
+    <div class="geo-tl"></div>
+    <div class="geo-tl-dot"></div>
+
+    <div class="geo-tr">
+      <div class="geo-tr-circ"></div>
+      <div class="geo-tr-line"></div>
+    </div>
+
+    <div class="side-label"><span>OPEN SOURCE · 2023 · JULY</span></div>
+
+    <div class="geo-bl">
+      <div class="geo-bl-ring1"></div>
+      <div class="geo-bl-ring2"></div>
+      <div class="geo-bl-ring3"></div>
+    </div>
+
+    <div class="geo-br">
+      <span>VOLUME / 01</span>
+      <span class="geo-br-num">03</span>
+    </div>
+
+    <div class="geo-right">
+      <div class="geo-right-bar"></div>
+      <div class="geo-right-bar"></div>
+      <div class="geo-right-bar"></div>
+      <div class="geo-right-bar"></div>
+      <div class="geo-right-bar"></div>
+    </div>
+
+    <div class="geo-midline"></div>
+    <div class="geo-midline-dot"></div>
+
+    <svg class="flow-svg" viewBox="0 0 700 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M650 100 C500 200, 550 350, 400 400 C250 450, 350 600, 200 680 C100 730, 50 800, 0 850" stroke="#002FA7" stroke-width="1.5" stroke-dasharray="4 8" opacity="0.35"/>
+      <path d="M680 200 C550 280, 580 420, 440 470 C300 520, 380 650, 250 720 C150 770, 80 820, 20 870" stroke="#FF7043" stroke-width="1" stroke-dasharray="2 6" opacity="0.3"/>
+      <circle cx="400" cy="400" r="6" fill="#002FA7" opacity="0.6"/>
+      <circle cx="200" cy="680" r="4" fill="#FF7043" opacity="0.5"/>
+      <circle cx="650" cy="100" r="3" fill="#002FA7" opacity="0.4"/>
+      <circle cx="250" cy="720" r="5" fill="#002FA7" opacity="0.3"/>
+      <line x1="350" y1="300" x2="500" y2="300" stroke="#002FA7" stroke-width="1" opacity="0.2"/>
+      <line x1="380" y1="550" x2="480" y2="550" stroke="#002FA7" stroke-width="1" opacity="0.2"/>
+      <line x1="300" y1="620" x2="420" y2="620" stroke="#FF7043" stroke-width="1" opacity="0.2"/>
+    </svg>
+  </div>
+
+  <div id="ct">
+    <div class="content">
+
+      <div class="tag-row">
+        <span class="tag-pill">BOOK · READING</span>
+        <span class="tag-divider"></span>
+        <span class="tag-pill amber">JULY · 2023</span>
+      </div>
+
+      <div class="main-title"><span>开源之书记录</span></div>
+      <div class="main-title-en"><span>OPEN SOURCE · BOOK · CHRONICLES</span></div>
+
+      <div class="subtitle-wrap">
+        <span class="subtitle-bar"></span>
+        <span class="subtitle">2023年7月 · 发现开源三部曲阅读分享</span>
+        <span class="subtitle-bar"></span>
+      </div>
+
+      <div class="points">
+        <div class="point-card">
+          <div class="point-num"><span>01 / 主题聚焦</span></div>
+          <div class="point-label"><span>认知 · 路径</span></div>
+          <div class="point-text"><span>围绕开源之道三部曲系列，梳理从认知到共建的完整路径。</span></div>
+        </div>
+        <div class="point-card">
+          <div class="point-num"><span>02 / 分享形式</span></div>
+          <div class="point-label"><span>读书会 · 深度讨论</span></div>
+          <div class="point-text"><span>以读书会形式逐篇解读，结合真实项目案例展开深度讨论。</span></div>
+        </div>
+        <div class="point-card">
+          <div class="point-num"><span>03 / 面向对象</span></div>
+          <div class="point-label"><span>开源爱好者 · 技术从业者</span></div>
+          <div class="point-text"><span>开源爱好者、技术从业者及对开源文化感兴趣的读者群体。</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="data-item">
+          <div>
+            <div class="data-key"><span>SHARE · THEME</span></div>
+            <div class="data-val"><span>发现开源三部曲</span></div>
+          </div>
+        </div>
+        <div class="data-item">
+          <div>
+            <div class="data-key"><span>HOST · ROLE</span></div>
+            <div class="data-val amber"><span>开源之道 · 适兕</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">
+        <span class="footnote-mark"></span>
+        <span>本期聚焦发现开源三部曲系列，以阅读分享会方式带领参与者重新审视开源精神与社区实践，串联认知、实践与共建三段旅程。</span>
+        <span class="footnote-mark"></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
