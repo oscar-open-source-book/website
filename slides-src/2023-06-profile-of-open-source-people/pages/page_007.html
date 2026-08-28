@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>技能画像与工具栈</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0a1628;
+  --bg-card: #0f1e36;
+  --bg-card2: #13294a;
+  --border-glow: rgba(33, 150, 243, 0.45);
+  --text-main: #E8F0FB;
+  --text-dim: #90A4C4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 10%, rgba(33,150,243,0.12) 0%, transparent 50%),
+              radial-gradient(ellipse at 85% 90%, rgba(0,188,212,0.10) 0%, transparent 50%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px 40px 60px;
+  box-sizing: border-box;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #2196F3 0%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(33,150,243,0.3);
+}
+
+.header .subtitle {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--text-dim);
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+}
+
+.main-area {
+  display: flex;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.left-col {
+  width: 560px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.radar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 14px;
+  padding: 18px 16px 12px 16px;
+  box-shadow: 0 0 24px rgba(33,150,243,0.15), inset 0 0 30px rgba(33,150,243,0.05);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.radar-card .card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.radar-card .card-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+#chart_1 {
+  width: 520px;
+  height: 400px;
+  margin: 0 auto;
+}
+
+.radar-legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: -8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--neutral);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+  flex: 1;
+}
+
+.info-card {
+  background: linear-gradient(135deg, var(--bg-card2) 0%, var(--bg-card) 100%);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 12px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 0 12px var(--primary);
+}
+
+.info-card .card-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.info-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-card h3 .icon-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.info-card p {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--neutral);
+}
+
+.kpi-row {
+  display: flex;
+  gap: 14px;
+}
+
+.kpi-block {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(33,150,243,0.10) 0%, rgba(0,188,212,0.06) 100%);
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 12px;
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,188,212,0.08);
+}
+
+.kpi-block::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.15), transparent 70%);
+}
+
+.kpi-block .kpi-num {
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.kpi-block .kpi-label {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.footer-line {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  font-weight: 500;
+  position: relative;
+}
+
+.footer-line::before,
+.footer-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent));
+}
+
+.footer-line::before { left: calc(50% - 220px); }
+.footer-line::after {
+  right: calc(50% - 220px);
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <h1>技能画像与工具栈</h1>
+      <p class="subtitle">现代开源贡献者的技能画像正从单一编程能力向工程化全栈方向演进，版本控制、自动化流水线、容器化部署等工程化能力已成为标配。</p>
+    </div>
+
+    <div class="main-area">
+      <div class="left-col">
+        <div class="radar-card">
+          <div class="card-title"><span>开源贡献者多维能力画像</span></div>
+          <div class="card-sub"><span>基于社区调研数据的五维技能分布</span></div>
+          <div id="chart_1" style="width:520px;height:400px;"></div>
+          <div class="radar-legend">
+            <div class="legend-item">
+              <span class="legend-dot" style="background: #2196F3;"></span>
+              <span>现代开源贡献者</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot" style="background: #00BCD4;"></span>
+              <span>传统开发者</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="cards-grid">
+          <div class="info-card">
+            <div class="card-num"><span>01</span></div>
+            <h3><span class="icon-dot"></span><span>编程语言</span></h3>
+            <p>多数贡献者精通至少两种语言，Python 与 JavaScript 是入门与主流选择，多语言能力已成为社区活跃的基础门槛。</p>
+          </div>
+          <div class="info-card">
+            <div class="card-num"><span>02</span></div>
+            <h3><span class="icon-dot"></span><span>版本控制</span></h3>
+            <p>Git 是必备技能，分支管理、代码审查与协作流程是日常基本功，掌握 rebase、merge 策略决定贡献效率上限。</p>
+          </div>
+          <div class="info-card">
+            <div class="card-num"><span>03</span></div>
+            <h3><span class="icon-dot"></span><span>自动化工程</span></h3>
+            <p>CI/CD、容器化、云原生工具链使用率逐年攀升，从 GitHub Actions 到 Kubernetes，工程化能力成为新门槛。</p>
+          </div>
+          <div class="info-card">
+            <div class="card-num"><span>04</span></div>
+            <h3><span class="icon-dot"></span><span>软技能提升</span></h3>
+            <p>代码审查沟通、文档写作、跨文化协作等软技能同样被高度重视，社区影响力 = 技术力 × 表达力。</p>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-block">
+            <div class="kpi-num"><span>2+</span></div>
+            <div class="kpi-label"><span>平均精通语言数 · 多数贡献者掌握多种编程语言</span></div>
+          </div>
+          <div class="kpi-block">
+            <div class="kpi-num"><span>↑ 攀升</span></div>
+            <div class="kpi-label"><span>CI/CD 使用率持续攀升 · 工程化能力成为新门槛</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-line"><span>从代码工匠到工程全栈，开源贡献者的能力边界正在被重新定义</span></div>
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { show: false },
+    radar: {
+      indicator: [
+        { name: '编程语言', max: 100 },
+        { name: 'Git版本控制', max: 100 },
+        { name: '自动化工程', max: 100 },
+        { name: '文档写作', max: 100 },
+        { name: '协作沟通', max: 100 }
+      ],
+      shape: 'polygon',
+      radius: '68%',
+      center: ['50%', '54%'],
+      splitNumber: 4,
+      axisName: {
+        color: '#B0BEC5',
+        fontSize: 13,
+        fontWeight: 500,
+        fontFamily: 'Inter'
+      },
+      splitLine: {
+        lineStyle: { color: 'rgba(33,150,243,0.25)', width: 1 }
+      },
+      splitArea: {
+        areaStyle: { color: ['rgba(33,150,243,0.03)', 'rgba(33,150,243,0.06)'] }
+      },
+      axisLine: { lineStyle: { color: 'rgba(33,150,243,0.3)' } }
+    },
+    series: [
+      {
+        name: '现代开源贡献者',
+        type: 'radar',
+        symbol: 'circle',
+        symbolSize: 7,
+        lineStyle: { color: '#2196F3', width: 2.5, shadowColor: 'rgba(33,150,243,0.6)', shadowBlur: 8 },
+        areaStyle: { color: 'rgba(33,150,243,0.30)' },
+        itemStyle: { color: '#2196F3', borderColor: '#fff', borderWidth: 1.5 },
+        data: [{ value: [90, 92, 78, 72, 85] }]
+      },
+      {
+        name: '传统开发者',
+        type: 'radar',
+        symbol: 'diamond',
+        symbolSize: 6,
+        lineStyle: { color: '#00BCD4', width: 2, type: 'dashed' },
+        areaStyle: { color: 'rgba(0,188,212,0.15)' },
+        itemStyle: { color: '#00BCD4' },
+        data: [{ value: [88, 55, 35, 45, 50] }]
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>
