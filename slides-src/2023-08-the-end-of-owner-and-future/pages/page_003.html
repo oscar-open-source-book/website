@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Owner 模式的荣光与困境</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #002FA7;
+  --accent: #00BCD4;
+  --bg: #1A1E2E;
+  --bg-deep: #12152a;
+  --card-bg: #1E2238;
+  --card-border: #2A2F4A;
+  --text-main: #E8ECF5;
+  --text-sub: #A0A8C0;
+  --text-dim: #6B7290;
+  --line: #2A2F4A;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 800px 500px at 15% 10%, rgba(0,47,167,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 400px at 90% 90%, rgba(0,188,212,0.10) 0%, transparent 70%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 64px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top header section */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.tag-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.tag-dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent);
+}
+.tag-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.tag-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--accent) 0%, var(--line) 100%);
+  opacity: 0.5;
+}
+.main-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  line-height: 1.15;
+}
+.main-title .accent-word {
+  color: var(--accent);
+}
+.narrative-quote {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-sub);
+  max-width: 1380px;
+  border-left: 2px solid var(--primary);
+  padding-left: 18px;
+  margin-top: 6px;
+}
+.narrative-quote .em {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Main split area */
+.main-area {
+  display: flex;
+  gap: 36px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Left column */
+.left-col {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-left: 20px;
+  border-left: 3px solid var(--primary);
+  position: relative;
+}
+.left-col::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 0;
+  width: 3px;
+  height: 60px;
+  background: var(--accent);
+  box-shadow: 0 0 16px var(--accent);
+}
+.left-quote-mark {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--primary);
+  opacity: 0.5;
+  line-height: 0.5;
+  margin-bottom: 4px;
+}
+.left-section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+.left-section-sub {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.left-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--primary);
+  margin: 4px 0;
+}
+.left-body {
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--text-sub);
+}
+.left-body p {
+  margin-bottom: 12px;
+}
+.left-body .highlight {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* Left bottom mini stat blocks */
+.left-stats {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 14px;
+}
+.mini-stat {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 12px 10px;
+  text-align: center;
+}
+.mini-stat .num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.mini-stat .label {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Right column */
+.right-col {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.point-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+  padding: 11px 16px;
+  flex: 1;
+  min-height: 0;
+  transition: none;
+}
+.point-card .bullet {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+  margin-top: 9px;
+  box-shadow: 0 0 8px rgba(0,47,167,0.6);
+}
+.point-card .point-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.point-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.point-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(0,47,167,0.15);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+.point-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.point-tag {
+  font-size: 10px;
+  color: var(--accent);
+  padding: 2px 8px;
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+.point-desc {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-sub);
+}
+.point-desc .kw {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Bottom highlight bar */
+.bottom-bar {
+  margin-top: 16px;
+  background: linear-gradient(to right, rgba(0,47,167,0.25) 0%, rgba(0,188,212,0.10) 60%, transparent 100%);
+  border: 1px solid rgba(0,47,167,0.3);
+  border-left: 4px solid var(--accent);
+  border-radius: 4px;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.bottom-bar .stat-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  text-shadow: 0 0 24px rgba(0,188,212,0.3);
+  flex-shrink: 0;
+}
+.bottom-bar .stat-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+.bottom-bar .stat-text {
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.6;
+  font-weight: 400;
+}
+.bottom-bar .stat-text .em {
+  color: var(--accent);
+  font-weight: 600;
+}
+.bottom-bar .stat-divider {
+  width: 1px;
+  height: 44px;
+  background: var(--card-border);
+  flex-shrink: 0;
+}
+.bottom-bar .stat-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.bottom-bar .meta-tag {
+  font-size: 10px;
+  color: var(--primary);
+  background: rgba(0,47,167,0.2);
+  padding: 3px 10px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  align-self: flex-start;
+}
+.bottom-bar .meta-source {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Footer line */
+.footer-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+}
+.footer-line .fl-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-line .fl-dot {
+  width: 4px; height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="tag-row">
+        <span class="tag-dot"></span>
+        <span class="tag-text"><span>OPEN SOURCE · GOVERNANCE</span></span>
+        <span class="tag-line"></span>
+        <span class="tag-text"><span>01 / OWNER</span></span>
+      </div>
+      <h1 class="main-title"><span>Owner 模式的<span class="accent-word">荣光</span>与<span class="accent-word">困境</span></span></h1>
+      <p class="narrative-quote">
+        <span>Owner 模式并非天生有缺陷，它曾是<span class="em">开源社区最成功的组织方式</span>。但随着项目规模与复杂度的增长，个人承载能力与系统性需求之间的矛盾日益尖锐，<span class="em">"一个人的开源"</span>正在遭遇结构性天花板。</span>
+      </p>
+    </div>
+
+    <div class="main-area">
+
+      <div class="left-col">
+        <div class="left-quote-mark"><span>"</span></div>
+        <div>
+          <div class="left-section-sub"><span>STRUCTURAL NARRATIVE</span></div>
+          <div class="left-section-title"><span>从个人英雄到<br>系统性天花板</span></div>
+        </div>
+        <div class="left-divider"></div>
+        <div class="left-body">
+          <p><span>Owner 模式塑造了开源世界最闪亮的星辰——<span class="highlight">Linus、Guido、Torvalds</span> 等名字本身就是一座座丰碑。它以极简的治理结构，催生了改变世界的技术基础设施。</span></p>
+          <p><span>但当社区跨越临界点，<span class="highlight">"一人主导"</span>的浪漫叙事便与治理需求正面碰撞：知识单点、决策瓶颈、继任真空——这些结构性隐患正在悄然累积。</span></p>
+          <p><span>荣光仍在，但天花板已至。理解困境，方能寻找出路。</span></p>
+        </div>
+        <div class="left-stats">
+          <div class="mini-stat">
+            <div class="num"><span>3</span></div>
+            <div class="label"><span>核心矛盾</span></div>
+          </div>
+          <div class="mini-stat">
+            <div class="num"><span>4</span></div>
+            <div class="label"><span>关键洞察</span></div>
+          </div>
+          <div class="mini-stat">
+            <div class="num"><span>∞</span></div>
+            <div class="label"><span>待解之题</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+
+        <div class="point-card">
+          <span class="bullet"></span>
+          <div class="point-content">
+            <div class="point-head">
+              <span class="point-num"><span>01</span></span>
+              <span class="point-title"><span>个人英雄时代</span></span>
+              <span class="point-tag"><span>荣光</span></span>
+            </div>
+            <div class="point-desc"><span><span class="kw">Linux、Python、Git</span> 等项目因创始人愿景与执行力而茁壮成长，凝聚起全球社区，成为开源精神的标杆。</span></div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <span class="bullet"></span>
+          <div class="point-content">
+            <div class="point-head">
+              <span class="point-num"><span>02</span></span>
+              <span class="point-title"><span>决策效率优势</span></span>
+              <span class="point-tag"><span>荣光</span></span>
+            </div>
+            <div class="point-desc"><span>Owner 集中式决策能<span class="kw">快速回应社区需求</span>，避免繁文缛节，在项目早期保持演进活力与方向一致性。</span></div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <span class="bullet"></span>
+          <div class="point-content">
+            <div class="point-head">
+              <span class="point-num"><span>03</span></span>
+              <span class="point-title"><span>隐性风险积累</span></span>
+              <span class="point-tag"><span>困境</span></span>
+            </div>
+            <div class="point-desc"><span><span class="kw">知识集中、决策路径单一、继任机制缺失</span>，使得项目高度依赖个人状态，任何变故都可能引发系统性震荡。</span></div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <span class="bullet"></span>
+          <div class="point-content">
+            <div class="point-head">
+              <span class="point-num"><span>04</span></span>
+              <span class="point-title"><span>倦怠与脱离</span></span>
+              <span class="point-tag"><span>困境</span></span>
+            </div>
+            <div class="point-desc"><span>长期<span class="kw">无偿贡献</span>带来的身心耗竭，让许多 owner 选择退出或大幅降低参与度，项目维护面临断档危机。</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div>
+        <div class="stat-num"><span>&gt;50%</span></div>
+        <div class="stat-label"><span>开源维护者报告感到倦怠或压力</span></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-text"><span>超过 <span class="em">50%</span> 的开源维护者报告感到倦怠或压力——当热情的火焰被日复一日的无偿劳动逐渐消耗，开源生态最核心的引擎正在发出警示信号。</span></div>
+      <div class="stat-meta">
+        <span class="meta-tag"><span>KEY DATA</span></span>
+        <span class="meta-source"><span>来源：Stack Overflow Survey</span></span>
+      </div>
+    </div>
+
+    <div class="footer-line">
+      <div class="fl-left">
+        <span class="fl-dot"></span>
+        <span><span>OPEN SOURCE GOVERNANCE STUDY</span></span>
+      </div>
+      <div>
+        <span><span>PAGE 01 / OWNER PARADOX</span></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

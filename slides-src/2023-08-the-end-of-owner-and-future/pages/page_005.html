@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>核心议题：权力转移</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1A1E2E;
+  --kblue:#002FA7;
+  --cyan:#00BCD4;
+  --text-main:#E8ECF5;
+  --text-dim:#8892A8;
+  --text-accent:#C4CCE0;
+  --line-cyan:rgba(0,188,212,0.45);
+  --kblue-glow:rgba(0,47,167,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--text-main);
+  background:var(--bg);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 700px 500px at 85% 15%, rgba(0,47,167,0.18), transparent 70%),
+    radial-gradient(ellipse 600px 400px at 10% 90%, rgba(0,188,212,0.08), transparent 70%),
+    var(--bg);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 80px;display:flex;flex-direction:column;}
+
+/* 顶部装饰条 */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.top-bar .left{display:flex;align-items:center;gap:14px;}
+.top-bar .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);}
+.top-bar .label{font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;}
+.top-bar .page-tag{font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:3px;color:var(--text-dim);}
+
+/* 章节主区 */
+.header-zone{position:relative;display:flex;align-items:flex-start;gap:48px;padding:18px 0 26px 0;}
+.section-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:210px;
+  font-weight:500;
+  line-height:0.85;
+  color:transparent;
+  -webkit-text-stroke:2.5px var(--kblue);
+  text-shadow:0 0 40px rgba(0,47,167,0.35);
+  letter-spacing:-4px;
+  flex-shrink:0;
+  position:relative;
+}
+.section-num::after{
+  content:'';
+  position:absolute;
+  left:-6px;bottom:-10px;
+  width:60px;height:3px;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+}
+.header-text{display:flex;flex-direction:column;justify-content:center;flex:1;padding-top:30px;}
+.chapter-tag{font-family:'Space Grotesk',sans-serif;font-size:13px;letter-spacing:6px;color:var(--cyan);margin-bottom:14px;}
+.main-title{font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:600;color:var(--text-main);letter-spacing:1px;line-height:1.15;}
+.main-title .accent{color:var(--cyan);}
+.sub-title{margin-top:14px;font-size:15px;color:var(--text-dim);letter-spacing:1.5px;line-height:1.6;max-width:680px;}
+
+/* 三栏区 */
+.columns{display:flex;align-items:stretch;gap:0;margin-top:8px;position:relative;}
+.col{
+  flex:1;
+  padding:20px 26px 18px 26px;
+  position:relative;
+  display:flex;flex-direction:column;
+  min-height:200px;
+}
+.col + .col{border-left:1px solid var(--line-cyan);position:relative;}
+.col + .col::before{
+  content:'';
+  position:absolute;
+  left:-1px;top:0;
+  width:2px;height:40px;
+  background:var(--cyan);
+  box-shadow:0 0 10px var(--cyan);
+}
+.col-num{font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--kblue);font-weight:600;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.col-num .bar{width:24px;height:2px;background:var(--kblue);}
+.col-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:var(--text-main);margin-bottom:6px;}
+.col-en{font-size:11px;color:var(--text-dim);letter-spacing:3px;margin-bottom:14px;text-transform:uppercase;}
+.col-divider{width:36px;height:2px;background:var(--cyan);margin-bottom:14px;box-shadow:0 0 8px var(--cyan);}
+.col-text{font-size:13px;line-height:1.75;color:var(--text-accent);font-weight:300;}
+.col-keywords{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;}
+.col-keywords .kw{font-size:11px;padding:4px 10px;border:1px solid var(--line-cyan);border-radius:2px;color:var(--cyan);letter-spacing:1px;font-weight:400;}
+
+/* 底部叙事区 */
+.bottom-zone{margin-top:auto;padding-top:18px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:flex-start;gap:24px;}
+.summary-icon{
+  flex-shrink:0;width:44px;height:44px;
+  border:1.5px solid var(--kblue);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:16px;color:var(--cyan);
+  position:relative;
+}
+.summary-icon::after{
+  content:'';position:absolute;inset:-4px;border:1px solid rgba(0,188,212,0.3);
+}
+.summary-body{flex:1;display:flex;flex-direction:column;gap:10px;}
+.summary-text{font-size:13px;line-height:1.7;color:var(--text-accent);font-weight:300;max-width:1240px;}
+.summary-text .hl{color:var(--cyan);font-weight:500;}
+.summary-text .quote{color:var(--text-main);font-style:italic;}
+.goal-row{display:flex;align-items:center;gap:12px;margin-top:2px;}
+.goal-label{
+  font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:3px;color:var(--kblue);
+  padding:5px 12px;border:1px solid var(--kblue);
+  white-space:nowrap;
+}
+.goal-text{font-size:12px;color:var(--text-dim);letter-spacing:1px;}
+.goal-text .em{color:var(--text-main);}
+
+/* 几何点缀 */
+.geo{position:absolute;z-index:0;pointer-events:none;}
+.geo-1{top:24px;right:80px;width:60px;height:60px;border:1px solid rgba(0,188,212,0.25);transform:rotate(45deg);}
+.geo-2{top:50px;right:60px;width:20px;height:20px;border:1px solid rgba(0,47,167,0.6);}
+.geo-3{bottom:20px;left:30px;width:40px;height:1px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.geo-4{bottom:20px;left:80px;width:1px;height:40px;background:var(--kblue);}
+.geo-5{top:46%;right:20px;width:8px;height:8px;background:var(--cyan);border-radius:50%;box-shadow:0 0 12px var(--cyan);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <div class="geo geo-1"></div>
+  <div class="geo geo-2"></div>
+  <div class="geo geo-3"></div>
+  <div class="geo geo-4"></div>
+  <div class="geo geo-5"></div>
+
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="left">
+        <span class="dot"></span>
+        <span class="label">Section Transition</span>
+      </div>
+      <div class="page-tag">05 / 12</div>
+    </div>
+
+    <div class="header-zone">
+      <div class="section-num">02</div>
+      <div class="header-text">
+        <div class="chapter-tag">CHAPTER 02 · CORE AGENDA</div>
+        <div class="main-title">核心议题：<span class="accent">权力转移</span></div>
+        <div class="sub-title">所有权、治理权与社区共识 —— 三重维度的再平衡</div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="col">
+        <div class="col-num"><span class="bar"></span>维度一</div>
+        <div class="col-title">法律层面</div>
+        <div class="col-en">Legal · Ownership</div>
+        <div class="col-divider"></div>
+        <div class="col-text">代码版权归属、CLA / DCO 机制、商标持有等法律问题，直接影响项目的 ownership 认定。</div>
+        <div class="col-keywords">
+          <span class="kw">代码版权</span>
+          <span class="kw">CLA / DCO</span>
+          <span class="kw">商标持有</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-num"><span class="bar"></span>维度二</div>
+        <div class="col-title">治理层面</div>
+        <div class="col-en">Governance · Decision</div>
+        <div class="col-divider"></div>
+        <div class="col-text">谁有决策权、谁有否决权、分歧如何仲裁——治理结构的清晰度，决定项目的寿命。</div>
+        <div class="col-keywords">
+          <span class="kw">决策权</span>
+          <span class="kw">否决权</span>
+          <span class="kw">仲裁机制</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-num"><span class="bar"></span>维度三</div>
+        <div class="col-title">文化层面</div>
+        <div class="col-en">Culture · Community</div>
+        <div class="col-divider"></div>
+        <div class="col-text">贡献者认同感、社区归属感、开源精神传承，构成项目可持续的隐性基础设施。</div>
+        <div class="col-keywords">
+          <span class="kw">认同感</span>
+          <span class="kw">归属感</span>
+          <span class="kw">开源精神</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-zone">
+      <div class="summary-icon">§</div>
+      <div class="summary-body">
+        <div class="summary-text">
+          <span class="hl">所有权</span>从来不只是代码仓库中的 admin 权限，它涉及<span class="hl">法律归属</span>、<span class="hl">治理架构</span>和<span class="hl">社区文化</span>的多层结构。理解 <span class="quote">"The End of Owner"</span>，需要从这三个维度同时切入，才能找到真正可行的解决方案。
+        </div>
+        <div class="goal-row">
+          <span class="goal-label">本节目标</span>
+          <span class="goal-text">从<span class="em">法律</span>、<span class="em">治理</span>、<span class="em">文化</span>三个维度拆解 <span class="em">"Owner 终结"</span> 的真正含义与可行路径。</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

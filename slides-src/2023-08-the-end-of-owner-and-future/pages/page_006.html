@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>数据透视：维护者危机</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1A1E2E;
+  --bg-2:#141828;
+  --klein:#002FA7;
+  --klein-light:#1E5EE0;
+  --cyan:#00BCD4;
+  --cyan-dim:#008aa3;
+  --text-main:#E8ECF5;
+  --text-dim:#8A93AD;
+  --border:rgba(0,188,212,0.18);
+  --card-bg:rgba(255,255,255,0.03);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1600px;height:900px;overflow:hidden;background:var(--bg);color:var(--text-main);font-family:'Inter',sans-serif;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 12% -10%, rgba(0,47,167,0.35), transparent 55%),radial-gradient(ellipse at 95% 110%, rgba(0,188,212,0.18), transparent 55%),var(--bg);}
+#ct{position:absolute;inset:0;z-index:1;padding:38px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 顶部标题区 */
+.head{position:relative;}
+.head .brand{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:0.32em;color:var(--cyan);font-weight:500;margin-bottom:14px;text-transform:uppercase;}
+.head h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:44px;letter-spacing:-0.5px;color:#fff;line-height:1.1;}
+.head h1 .accent{color:var(--cyan);}
+.head .sub{font-size:13.5px;line-height:1.75;color:var(--text-dim);max-width:1360px;margin-top:12px;font-weight:300;}
+.head .sub .hl{color:var(--text-main);font-weight:500;}
+.head .rule{position:absolute;top:0;right:0;width:280px;height:2px;background:linear-gradient(90deg, transparent, var(--cyan));opacity:0.6;}
+
+/* 中部区 */
+.middle{display:flex;gap:24px;margin-top:20px;height:320px;}
+.kpi-col{flex:0 0 760px;display:flex;flex-direction:column;gap:12px;}
+.kpi-row-1{display:flex;gap:12px;height:148px;}
+.kpi-row-2{display:flex;gap:12px;height:148px;}
+.kpi{flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--klein-light);}
+.kpi.cyan::before{background:var(--cyan);}
+.kpi .num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;line-height:1;color:#fff;letter-spacing:-0.5px;}
+.kpi.cyan .num{color:var(--cyan);}
+.kpi.klein .num{color:var(--klein-light);}
+.kpi .label{font-size:11.5px;color:var(--text-main);font-weight:500;margin-top:6px;line-height:1.35;}
+.kpi .note{font-size:10.5px;color:var(--text-dim);line-height:1.5;margin-top:6px;font-weight:300;}
+.kpi .tag{position:absolute;right:10px;top:10px;font-size:9px;letter-spacing:0.18em;color:var(--text-dim);font-family:'Inter',sans-serif;}
+
+.chart-col{flex:1;height:100%;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;}
+.chart-col .ch-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.chart-col .ch-title{font-size:12px;color:var(--text-main);font-weight:600;letter-spacing:0.02em;}
+.chart-col .ch-sub{font-size:10px;color:var(--text-dim);}
+#chart_1{flex:1;width:100%;height:268px;}
+
+/* 底部卡片 */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;height:262px;}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:16px 18px;position:relative;display:flex;flex-direction:column;gap:6px;overflow:hidden;}
+.card::before{content:"";position:absolute;left:0;top:0;height:2px;width:60px;background:var(--cyan);}
+.card.klein::before{background:var(--klein-light);}
+.card .no{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--cyan);letter-spacing:0.2em;font-weight:600;}
+.card.klein .no{color:var(--klein-light);}
+.card h3{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#fff;letter-spacing:-0.3px;}
+.card p{font-size:11.5px;line-height:1.6;color:var(--text-dim);font-weight:300;}
+.card .ic{position:absolute;right:14px;top:14px;width:22px;height:22px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--cyan);}
+.card.klein .ic{color:var(--klein-light);}
+
+/* 收束语 */
+.footer{margin-top:16px;display:flex;justify-content:space-between;align-items:center;}
+.footer .closing{font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--text-main);font-weight:500;letter-spacing:0.04em;}
+.footer .closing .cy{color:var(--cyan);}
+.footer .meta{font-size:10px;color:var(--text-dim);letter-spacing:0.16em;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="head">
+      <div class="rule"></div>
+      <div class="brand">OPEN-SOURCE &nbsp;/&nbsp; MAINTAINER CRISIS &nbsp;/&nbsp; 2025</div>
+      <h1>数据透视：<span class="accent">维护者危机</span></h1>
+      <p class="sub">数据揭示了开源生态中普遍存在的结构性问题：<span class="hl">维护者危机不是个别现象，而是系统性挑战</span>——从贡献者衰减到安全债务，每一个数据点都在提醒我们，"Owner 终结"不是终点，而是重构的起点。</p>
+    </div>
+
+    <div class="middle">
+      <div class="kpi-col">
+        <div class="kpi-row-1">
+          <div class="kpi">
+            <div class="tag">01</div>
+            <div class="num">80%+</div>
+            <div>
+              <div class="label">Top 2% 贡献者产出代码占比</div>
+              <div class="note">开源项目贡献分布呈极端幂律</div>
+            </div>
+          </div>
+          <div class="kpi cyan">
+            <div class="tag">02</div>
+            <div class="num">&gt;50%</div>
+            <div>
+              <div class="label">维护者报告倦怠比例</div>
+              <div class="note">多项调研显示过半维护者感到耗竭</div>
+            </div>
+          </div>
+          <div class="kpi klein">
+            <div class="tag">03</div>
+            <div class="num">Log4j</div>
+            <div>
+              <div class="label">关键项目安全响应案例</div>
+              <div class="note">暴露无人维护项目的安全脆弱性</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-row-2">
+          <div class="kpi cyan">
+            <div class="tag">04</div>
+            <div class="num">数周~月</div>
+            <div>
+              <div class="label">典型 PR 等待时间</div>
+              <div class="note">头部项目审查瓶颈日益突出</div>
+            </div>
+          </div>
+          <div class="kpi">
+            <div class="tag">05</div>
+            <div class="num">&lt;30%</div>
+            <div>
+              <div class="label">新贡献者留存率</div>
+              <div class="note">首次贡献后能持续参与的比率偏低</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-col">
+        <div class="ch-head">
+          <div>
+            <div class="ch-title">贡献者产出 · 幂律分布</div>
+            <div class="ch-sub">头部贡献者与长尾贡献者的产出差距</div>
+          </div>
+        </div>
+        <div id="chart_1" style="width:100%;height:268px;"></div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="ic">01</div>
+        <div class="no">FACT 01</div>
+        <h3>贡献者衰减</h3>
+        <p>多数开源项目呈现幂律分布，少数人贡献绝大部分代码，社区深度不足。</p>
+      </div>
+      <div class="card klein">
+        <div class="ic">02</div>
+        <div class="no">FACT 02</div>
+        <h3>审查瓶颈</h3>
+        <p>PR 响应时间持续延长，维护者被 issue 和 review 淹没，新贡献者难以融入。</p>
+      </div>
+      <div class="card">
+        <div class="ic">03</div>
+        <div class="no">FACT 03</div>
+        <h3>继任真空</h3>
+        <p>关键项目缺乏明确的继任计划，owner 一旦退出项目即面临停滞风险。</p>
+      </div>
+      <div class="card klein">
+        <div class="ic">04</div>
+        <div class="no">FACT 04</div>
+        <h3>商业依赖</h3>
+        <p>企业赞助成为主要运维资金源，但商业利益与社区利益之间冲突加剧。</p>
+      </div>
+      <div class="card">
+        <div class="ic">05</div>
+        <div class="no">FACT 05</div>
+        <h3>倦怠循环</h3>
+        <p>贡献者从热情到疲惫再到退出，新贡献者不断涌入但留存率极低。</p>
+      </div>
+      <div class="card klein">
+        <div class="ic">06</div>
+        <div class="no">FACT 06</div>
+        <h3>安全债务</h3>
+        <p>Log4j 事件后暴露出大量项目无人维护安全更新，单个漏洞影响面巨大。</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="closing"><span class="cy">▍</span> 系统性挑战，需要系统性解法</div>
+      <div class="meta">MAINTAINER CRISIS · SYSTEMIC VIEW</div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:44,right:18,top:20,bottom:30},
+    tooltip:{show:false},
+    xAxis:{
+      type:'category',
+      data:['Top 2%','Top 5%','Top 10%','Top 25%','Top 50%','50%-100%'],
+      axisLine:{lineStyle:{color:'#3a4258'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#8A93AD',fontSize:10,fontFamily:'Inter'}
+    },
+    yAxis:{
+      type:'value',
+      max:100,
+      axisLine:{show:false},
+      axisTick:{show:false},
+      splitLine:{lineStyle:{color:'rgba(255,255,255,0.05)'}},
+      axisLabel:{color:'#8A93AD',fontSize:10,fontFamily:'Inter',formatter:'{value}%'}
+    },
+    series:[
+      {
+        name:'代码产出占比',
+        type:'bar',
+        data:[80,55,35,22,12,5],
+        barWidth:'52%',
+        itemStyle:{
+          color:{
+            type:'linear',x:0,y:0,x2:0,y2:1,
+            colorStops:[
+              {offset:0,color:'#00BCD4'},
+              {offset:1,color:'#002FA7'}
+            ]
+          },
+          borderRadius:[4,4,0,0]
+        },
+        label:{
+          show:true,position:'top',color:'#E8ECF5',fontSize:11,fontFamily:'Space Grotesk',fontWeight:600,
+          formatter:'{c}%'
+        }
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>
