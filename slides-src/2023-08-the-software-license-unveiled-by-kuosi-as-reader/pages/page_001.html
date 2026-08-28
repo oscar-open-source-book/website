@@ -2,348 +2,412 @@
 
 <!DOCTYPE html>
 <html lang="zh-Hans">
-<head>
+><head>
 <meta charset="UTF-8">
 <title>开源之书·许可证揭秘</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Source+Code+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --primary:#2196F3;
-  --cyan:#00BCD4;
-  --bg-dark:#060B18;
-  --bg-mid:#0B1428;
-  --text-main:#E8F0FE;
-  --text-dim:#7B93B5;
-  --accent-glow:rgba(33,150,243,0.35);
-  --cyan-glow:rgba(0,188,212,0.25);
-  --card-bg:rgba(11,20,40,0.72);
-  --border-subtle:rgba(33,150,243,0.22);
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --text: #ECEFF1;
+  --bg-dark: #0a0e1a;
+  --bg-card: #111827;
+  --border: #1e3a5f;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:1600px;height:900px;overflow:hidden;}
-body{
-  font-family:'Source Code Pro',ui-monospace,monospace;
-  color:var(--text-main);
-  background:var(--bg-dark);
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--text);
+  background: var(--bg-dark);
+  overflow: hidden;
 }
-.wrapper{
-  width:1600px;height:900px;position:relative;overflow:hidden;
-  margin:0 auto;
-  background:radial-gradient(ellipse at 20% 10%, rgba(33,150,243,0.10) 0%, transparent 50%),
-             radial-gradient(ellipse at 85% 90%, rgba(0,188,212,0.08) 0%, transparent 55%),
-             linear-gradient(160deg,#060B18 0%,#0A1628 50%,#060B18 100%);
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
 }
-#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
-#ct{position:absolute;inset:0;z-index:1;padding:0;box-sizing:border-box;}
-
-/* Grid lines background */
-.grid-lines{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
-  background-size:60px 60px;
-  animation:gridMove 20s linear infinite;
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 30% 20%, #0d1b33 0%, #070b14 70%);
 }
-@keyframes gridMove{
-  0%{background-position:0 0;}
-  100%{background-position:60px 60px;}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Diagonal accent lines */
-.diag-line{
-  position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(33,150,243,0.4),transparent);
+/* Code rain particles */
+.code-rain {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 380px;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.5;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--cyan);
+  pointer-events: none;
 }
-.diag-line.l1{top:140px;left:0;width:100%;transform:rotate(-8deg);}
-.diag-line.l2{bottom:280px;left:0;width:100%;transform:rotate(5deg);}
-.diag-line.l3{top:720px;left:-100px;width:120%;transform:rotate(-3deg);opacity:0.5;}
+.code-rain .col {
+  position: absolute;
+  top: -100px;
+  animation: rainFall 6s linear infinite;
+  white-space: nowrap;
+}
+.code-rain .col:nth-child(1) { left: 20px; animation-delay: 0s; opacity: 0.3; }
+.code-rain .col:nth-child(2) { left: 70px; animation-delay: -2s; animation-duration: 8s; opacity: 0.5; }
+.code-rain .col:nth-child(3) { left: 130px; animation-delay: -1s; animation-duration: 5.5s; opacity: 0.25; }
+.code-rain .col:nth-child(4) { left: 200px; animation-delay: -3s; animation-duration: 7s; opacity: 0.4; }
+.code-rain .col:nth-child(5) { left: 270px; animation-delay: -4s; animation-duration: 9s; opacity: 0.2; }
+.code-rain .col:nth-child(6) { left: 330px; animation-delay: -1.5s; animation-duration: 6.5s; opacity: 0.35; }
 
-/* Glow orbs */
-.glow-orb{
-  position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;
-}
-.glow-orb.g1{width:400px;height:400px;background:rgba(33,150,243,0.18);top:60px;left:380px;}
-.glow-orb.g2{width:350px;height:350px;background:rgba(0,188,212,0.12);top:200px;right:200px;}
-.glow-orb.g3{width:300px;height:300px;background:rgba(33,150,243,0.10);bottom:100px;left:500px;}
-
-/* Code rain top right */
-.code-rain{
-  position:absolute;top:0;right:0;width:340px;height:340px;
-  overflow:hidden;opacity:0.35;pointer-events:none;
-  font-family:'Source Code Pro',monospace;font-size:13px;line-height:1.6;
-  color:var(--cyan);
-}
-.code-rain .col{
-  position:absolute;top:-40px;white-space:pre;
-  animation:rain 6s linear infinite;
-  letter-spacing:1px;
-}
-.code-rain .col:nth-child(1){left:10px;animation-delay:0s;color:var(--primary);}
-.code-rain .col:nth-child(2){left:60px;animation-delay:1.2s;}
-.code-rain .col:nth-child(3){left:120px;animation-delay:0.6s;color:var(--primary);}
-.code-rain .col:nth-child(4){left:180px;animation-delay:2.4s;}
-.code-rain .col:nth-child(5){left:240px;animation-delay:1.8s;color:var(--primary);}
-.code-rain .col:nth-child(6){left:300px;animation-delay:3.2s;}
-@keyframes rain{
-  0%{transform:translateY(-100%);}
-  100%{transform:translateY(400px);}
+@keyframes rainFall {
+  0% { transform: translateY(-100px); }
+  100% { transform: translateY(500px); }
 }
 
-/* Corner brackets */
-.corner{position:absolute;width:60px;height:60px;border:2px solid var(--primary);opacity:0.5;}
-.corner.tl{top:40px;left:40px;border-right:none;border-bottom:none;}
-.corner.tr{top:40px;right:40px;border-left:none;border-bottom:none;}
-.corner.bl{bottom:40px;left:40px;border-right:none;border-top:none;}
-.corner.br{bottom:40px;right:40px;border-left:none;border-top:none;}
-
-/* Main title area */
-.hero{
-  position:absolute;top:90px;left:0;right:0;text-align:center;z-index:2;
-}
-.hero .pre-tag{
-  display:inline-block;font-family:'Source Code Pro',monospace;
-  font-size:13px;color:var(--cyan);letter-spacing:6px;margin-bottom:24px;
-  padding:6px 20px;border:1px solid rgba(0,188,212,0.3);border-radius:2px;
-  background:rgba(0,188,212,0.06);
-}
-.hero h1{
-  font-family:'Inter','Source Code Pro',sans-serif;
-  font-weight:900;font-size:96px;letter-spacing:4px;
-  line-height:1.1;color:var(--text-main);
-  text-shadow:0 0 40px rgba(33,150,243,0.5),0 0 80px rgba(33,150,243,0.2);
-  position:relative;display:inline-block;
-}
-.hero h1 .accent{color:var(--primary);}
-.hero h1 .dot{color:var(--cyan);}
-.hero .underline-glow{
-  width:520px;height:3px;margin:24px auto 0;
-  background:linear-gradient(90deg,transparent,var(--primary) 20%,var(--cyan) 50%,var(--primary) 80%,transparent);
-  border-radius:2px;box-shadow:0 0 12px var(--accent-glow);
-}
-.hero .subtitle{
-  margin-top:20px;font-family:'Inter',sans-serif;font-weight:300;
-  font-size:20px;color:var(--text-dim);letter-spacing:3px;
-}
-.hero .subtitle .sep{color:var(--cyan);margin:0 12px;}
-
-/* Info cards */
-.cards{
-  position:absolute;top:470px;left:80px;right:80px;
-  display:flex;gap:24px;justify-content:center;z-index:2;
-}
-.card{
-  flex:1;max-width:440px;padding:24px 24px 22px;
-  background:var(--card-bg);
-  border:1px solid var(--border-subtle);
-  border-radius:6px;position:relative;
-  backdrop-filter:blur(8px);
-  transition:all 0.3s;
-}
-.card::before{
-  content:'';position:absolute;top:0;left:0;width:4px;height:100%;
-  background:linear-gradient(180deg,var(--primary),var(--cyan));
-  border-radius:2px 0 0 2px;
-}
-.card .card-num{
-  font-family:'Inter',sans-serif;font-weight:700;font-size:14px;
-  color:var(--cyan);letter-spacing:2px;margin-bottom:8px;
-}
-.card .card-title{
-  font-family:'Inter',sans-serif;font-weight:700;font-size:18px;
-  color:var(--text-main);margin-bottom:10px;letter-spacing:1px;
-}
-.card .card-text{
-  font-family:'Source Code Pro',monospace;font-size:12.5px;
-  color:var(--text-dim);line-height:1.7;letter-spacing:0.5px;
-}
-.card .card-text .hl{color:var(--primary);}
-
-/* Narrative bar */
-.narrative{
-  position:absolute;bottom:130px;left:80px;right:80px;z-index:2;
-  text-align:center;
-}
-.narrative .label{
-  font-family:'Source Code Pro',monospace;font-size:11px;
-  color:var(--cyan);letter-spacing:4px;margin-bottom:12px;
-}
-.narrative .label::before,.narrative .label::after{
-  content:'─── ';color:rgba(0,188,212,0.4);
-}
-.narrative .label::after{content:' ───';}
-.narrative p{
-  font-family:'Source Code Pro',monospace;font-size:13px;
-  color:var(--text-dim);line-height:1.8;max-width:1200px;margin:0 auto;
-  letter-spacing:0.5px;
-}
-.narrative p .accent-text{color:var(--primary);}
-.narrative p .cyan-text{color:var(--cyan);}
-
-/* Bottom tags */
-.tags{
-  position:absolute;bottom:56px;left:0;right:0;z-index:2;
-  display:flex;justify-content:center;gap:36px;
-}
-.tag{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 22px;
-  background:rgba(11,20,40,0.8);
-  border:1px solid var(--border-subtle);
-  border-radius:30px;
-}
-.tag .tag-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--primary);
-  box-shadow:0 0 8px var(--primary);
-  animation:pulse 2s ease-in-out infinite;
-}
-.tag:nth-child(2) .tag-dot{background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
-.tag:nth-child(3) .tag-dot{background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
-@keyframes pulse{
-  0%,100%{opacity:1;transform:scale(1);}
-  50%{opacity:0.5;transform:scale(0.8);}
-}
-.tag .tag-label{
-  font-family:'Source Code Pro',monospace;font-size:11px;
-  color:var(--text-dim);letter-spacing:2px;
-}
-.tag .tag-value{
-  font-family:'Inter',sans-serif;font-weight:600;font-size:14px;
-  color:var(--text-main);letter-spacing:1px;
+/* Glow ring behind title */
+.glow-ring {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 780px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(33,150,243,0.18) 0%, rgba(33,150,243,0.08) 40%, transparent 70%);
+  z-index: 0;
+  filter: blur(4px);
 }
 
-/* Floating hex decorations */
-.hex{position:absolute;opacity:0.15;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--primary);letter-spacing:1px;z-index:1;}
-.hex.h1{top:200px;left:60px;}
-.hex.h2{top:300px;right:80px;color:var(--cyan);}
-.hex.h3{bottom:200px;left:80px;color:var(--cyan);}
-.hex.h4{bottom:220px;right:60px;}
+/* Header area */
+.header-zone {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.title-deco {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 8px;
+  margin-bottom: 18px;
+  opacity: 0.85;
+}
+.title-deco .bracket { color: var(--primary); }
+
+h1.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 82px;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #64b5f6 0%, #2196F3 40%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  position: relative;
+  display: inline-block;
+}
+
+h1.main-title .dot {
+  -webkit-text-fill-color: var(--cyan);
+  color: var(--cyan);
+  margin: 0 8px;
+}
+
+.title-glow-outer {
+  position: relative;
+  display: inline-block;
+}
+.title-glow-outer::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: -40px;
+  right: -40px;
+  bottom: -30px;
+  background: radial-gradient(ellipse at center, rgba(33,150,243,0.22) 0%, transparent 65%);
+  z-index: -1;
+  border-radius: 20px;
+}
+
+.subtitle-line {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 3px;
+  margin-top: 18px;
+  opacity: 0.92;
+}
+.subtitle-line .sep {
+  color: var(--primary);
+  margin: 0 14px;
+}
+.subtitle-line .accent {
+  color: var(--cyan);
+}
+
+/* Divider */
+.divider {
+  width: 360px;
+  height: 2px;
+  margin: 14px auto 18px;
+  background: linear-gradient(90deg, transparent 0%, var(--primary) 30%, var(--cyan) 70%, transparent 100%);
+  opacity: 0.7;
+  position: relative;
+}
+.divider::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+/* Cards row */
+.cards-row {
+  display: flex;
+  gap: 22px;
+  margin-top: 4px;
+  margin-bottom: 14px;
+}
+.card {
+  flex: 1;
+  background: linear-gradient(160deg, #13203a 0%, #0d1426 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px 16px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 70%);
+}
+.card .card-tag {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.card .card-tag .num {
+  color: var(--primary);
+  font-weight: 600;
+}
+.card h3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.card h3 .accent {
+  color: var(--primary);
+}
+.card p {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.7;
+  opacity: 0.88;
+}
+
+/* Narrative */
+.narrative {
+  text-align: center;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text);
+  opacity: 0.85;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.narrative .highlight {
+  color: var(--cyan);
+  font-weight: 600;
+}
+.narrative .accent {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Meta tags */
+.meta-tags {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  margin-top: 14px;
+  padding-bottom: 6px;
+}
+.meta-tag {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  color: var(--text);
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(33,150,243,0.06);
+  letter-spacing: 1px;
+}
+.meta-tag .key {
+  color: var(--cyan);
+  margin-right: 8px;
+}
+.meta-tag .val {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Side decorations */
+.side-bar-left, .side-bar-right {
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, rgba(33,150,243,0.3) 50%, transparent 100%);
+  z-index: 0;
+}
+.side-bar-left { left: 30px; }
+.side-bar-right { right: 30px; }
+
+.top-frame, .bottom-frame {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.25) 50%, transparent 100%);
+  z-index: 0;
+}
+.top-frame { top: 24px; left: 60px; right: 60px; }
+.bottom-frame { bottom: 24px; left: 60px; right: 60px; }
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.p1 { top: 80px; left: 100px; width: 4px; height: 4px; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); animation: pulse 3s ease-in-out infinite; }
+.p2 { top: 320px; left: 60px; width: 3px; height: 3px; background: var(--primary); box-shadow: 0 0 6px var(--primary); animation: pulse 4s ease-in-out infinite 1s; }
+.p3 { top: 600px; left: 80px; width: 5px; height: 5px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: pulse 3.5s ease-in-out infinite 0.5s; }
+.p4 { top: 100px; right: 80px; width: 4px; height: 4px; background: var(--primary); box-shadow: 0 0 6px var(--primary); animation: pulse 4s ease-in-out infinite 2s; }
+.p5 { bottom: 200px; right: 100px; width: 3px; height: 3px; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); animation: pulse 3s ease-in-out infinite 1.5s; }
+.p6 { bottom: 120px; left: 150px; width: 4px; height: 4px; background: var(--primary); box-shadow: 0 0 6px var(--primary); animation: pulse 3.2s ease-in-out infinite 0.8s; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="grid-lines"></div>
-    <div class="diag-line l1"></div>
-    <div class="diag-line l2"></div>
-    <div class="diag-line l3"></div>
-    <div class="glow-orb g1"></div>
-    <div class="glow-orb g2"></div>
-    <div class="glow-orb g3"></div>
-    <div class="code-rain">
-      <div class="col">#!/usr/bin/env python3
-import open_source
-def license():
-  return GPL
-if __name__ == "__main__":
-  print(license())
-# MIT License
-# SPDX-License</div>
-      <div class="col">/* Copyright (C)
-   * This program is
-   * free software:
-   * you can redistribute
-   * it under the terms
-   * of the GNU General
-   * Public License */
-01011010 11010101
-00110011 10100101</div>
-      <div class="col">npm install ossl
-git clone github.com
-make build
-chmod +x run
-./start --perm
-$ echo "free code"
-&gt;&gt; /dev/null
-license.txt
-COPYING</div>
-      <div class="col">01001000 01100101
-01101100 01101100
-01101101 01101001
-01101110 01100011
-01110011
-AGPL v3
-LGPL v2.1
-Apache 2.0
-BSD-3-Clause
-MIT</div>
-      <div class="col">BEGIN LICENSE
-Permissive: yes
-Copyleft: partial
-Patent: granted
-Network: covered
-END LICENSE
-&gt; sudo apt install freedom
-&gt; apt-get source ossl
-&gt; dpkg -i *.deb</div>
-      <div class="col">1010101010
-0101010101
-1100110011
-0011001100
-1010101010
-OSS::License
-.open()
-.read()
-.parse()
-.apply()</div>
-    </div>
-    <div class="corner tl"></div>
-    <div class="corner tr"></div>
-    <div class="corner bl"></div>
-    <div class="corner br"></div>
-    <div class="hex h1">// 0x2196F3 &lt;-- primary</div>
-    <div class="hex h2">01001111 01010100</div>
-    <div class="hex h3">$ cat LICENSE</div>
-    <div class="hex h4">// SPDX: MIT</div>
+  <div id="bg"></div>
+
+  <div class="top-frame"></div>
+  <div class="bottom-frame"></div>
+  <div class="side-bar-left"></div>
+  <div class="side-bar-right"></div>
+
+  <div class="code-rain">
+    <div class="col">01001011<br/>01100001<br/>01010011<br/>01110100<br/>01000001<br/>01110011<br/>01010011<br/>01101100<br/>01000101<br/>01101110<br/>01000101<br/>01110011<br/>01000101<br/>01100011</div>
+    <div class="col">import License<br/>from open.<br/>source<br/><br/>class GFDL:<br/>  freedom = True<br/>  share_alike = True<br/><br/>def comply():<br/>  return True</div>
+    <div class="col">01110100<br/>01100101<br/>01110010<br/>01101101<br/>01101001<br/>01101110<br/>01100001<br/>01101100<br/>01100011<br/>01110100<br/>01110011<br/>00101011<br/>01010100</div>
+    <div class="col">/* LICENSE */<br/>* Redistributions<br/>* must retain this<br/>* copyright notice.<br/>* Software provided<br/>* "as is" without<br/>* warranty.<br/>*/</div>
+    <div class="col">01001001<br/>01101110<br/>01001100<br/>01001110<br/>01000001<br/>01101100<br/>01010101<br/>01101000<br/>01110100<br/>01100001<br/>01101100<br/>01100011<br/>01100101</div>
+    <div class="col">MIT &amp; GPL<br/>LGPL / AFL<br/>Apache-2.0<br/>BSD-2-Clause<br/>BSL-1.0<br/>Unlicense<br/>WTFPL<br/>zlib<br/>libpng<br/>ISC<br/>CC-BY-SA</div>
   </div>
 
+  <div class="glow-ring"></div>
+
+  <div class="particle p1"></div>
+  <div class="particle p2"></div>
+  <div class="particle p3"></div>
+  <div class="particle p4"></div>
+  <div class="particle p5"></div>
+  <div class="particle p6"></div>
+
   <div id="ct">
-    <div class="hero">
-      <div class="pre-tag">&lt;/ OPEN-SOURCE &gt;</div>
-      <h1><span>开源</span><span class="dot">·</span><span class="accent">之书</span><span class="dot">·</span><span>许可证揭秘</span></h1>
-      <div class="underline-glow"></div>
-      <div class="subtitle"><span>2023-08 阅读分享</span><span class="sep">|</span><span>开源之道·适兕</span></div>
+    <div class="header-zone">
+      <div class="title-deco"><span class="bracket">/*</span> OPEN SOURCE READING <span class="bracket">*/</span></div>
+      <div class="title-glow-outer">
+        <h1 class="main-title">开源之书<span class="dot">·</span>许可证揭秘</h1>
+      </div>
+      <div class="subtitle-line">
+        <span>2023-08 阅读分享</span>
+        <span class="sep">|</span>
+        <span class="accent">开源之道·适兕</span>
+      </div>
+      <div class="divider"></div>
     </div>
 
-    <div class="cards">
+    <div class="cards-row">
       <div class="card">
-        <div class="card-num">// 01 — POSITIONING</div>
-        <div class="card-title">主题定位</div>
-        <div class="card-text">以<span class="hl">阅读分享</span>的形式解读软件开源许可证的核心机制与实践意义，从文本走向理解。</div>
+        <div class="card-tag"><span class="num">[01]</span> TOPIC</div>
+        <h3><span class="accent">主题</span>定位</h3>
+        <p>以阅读分享的形式解读软件开源许可证的核心机制与实践意义</p>
       </div>
       <div class="card">
-        <div class="card-num">// 02 — SPEAKER</div>
-        <div class="card-title">讲者身份</div>
-        <div class="card-text"><span class="hl">适兕</span>，开源之道社区布道者，致力于推动许可证知识普及，连接法律与工程。</div>
+        <div class="card-tag"><span class="num">[02]</span> SPEAKER</div>
+        <h3><span class="accent">讲者</span>身份</h3>
+        <p>适兕，开源之道社区布道者，致力于推动许可证知识普及</p>
       </div>
       <div class="card">
-        <div class="card-num">// 03 — AGENDA</div>
-        <div class="card-title">核心议题</div>
-        <div class="card-text">从<span class="hl">法律文本</span>走向<span class="hl">工程实践</span>，厘清开源许可证的价值与边界，构建认知体系。</div>
+        <div class="card-tag"><span class="num">[03]</span> AGENDA</div>
+        <h3><span class="accent">核心</span>议题</h3>
+        <p>从法律文本走向工程实践，厘清开源许可证的价值与边界</p>
       </div>
     </div>
 
     <div class="narrative">
-      <div class="label">NARRATIVE INTRODUCTION</div>
-      <p>本期<span class="accent-text">开源之道</span>阅读分享由<span class="cyan-text">适兕</span>主讲，聚焦<span class="accent-text">软件开源许可证</span>这一开源世界的基石话题，将拆解许可证的<span class="cyan-text">分类逻辑</span>、<span class="cyan-text">法律效力</span>与<span class="cyan-text">选型方法</span>，帮助开发者建立系统化的认知框架。</p>
+      <span class="accent">本期开源之道阅读分享</span>由 <span class="highlight">适兕</span> 主讲，聚焦 <span class="accent">软件开源许可证</span> 这一开源世界的基石话题。我们将拆解许可证的 <span class="highlight">分类逻辑、法律效力与选型方法</span>，帮助开发者建立系统化的认知框架，让许可证从"挡路的法律条款"变成"可信赖的协作契约"。
     </div>
 
-    <div class="tags">
-      <div class="tag">
-        <span class="tag-dot"></span>
-        <span class="tag-label">分享期次</span>
-        <span class="tag-value">2023-08</span>
-      </div>
-      <div class="tag">
-        <span class="tag-dot"></span>
-        <span class="tag-label">分享人</span>
-        <span class="tag-value">适兕</span>
-      </div>
-      <div class="tag">
-        <span class="tag-dot"></span>
-        <span class="tag-label">社区</span>
-        <span class="tag-value">开源之道</span>
-      </div>
+    <div class="meta-tags">
+      <div class="meta-tag"><span class="key">分享期次</span><span class="val">2023-08</span></div>
+      <div class="meta-tag"><span class="key">分享人</span><span class="val">适兕</span></div>
+      <div class="meta-tag"><span class="key">社区</span><span class="val">开源之道</span></div>
     </div>
   </div>
 </div>
