@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>GNU 与自由软件宣言</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D2137;
+    --navy-soft: #1E3A5F;
+    --wine: #880E4F;
+    --wine-soft: #A83568;
+    --gray: #F5F5F5;
+    --gray-mid: #E8E8E8;
+    --gray-text: #6B7280;
+    --gray-line: #D1D5DB;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1600px; height: 900px; overflow: hidden;
+    font-family: 'Lato', 'Noto Sans SC', sans-serif;
+    color: var(--navy);
+  }
+  .wrapper {
+    width: 1600px; height: 900px;
+    position: relative; overflow: hidden;
+    background: var(--gray);
+    margin: 0 auto;
+  }
+  #bg { position: absolute; inset: 0; z-index: 0; }
+  #bg .paper-tint {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #F5F5F5 0%, #EDEEEE 100%);
+  }
+  #bg .rule-top, #bg .rule-bottom {
+    position: absolute; left: 0; right: 0; height: 1px;
+    background: var(--navy);
+  }
+  #bg .rule-top { top: 32px; }
+  #bg .rule-bottom { bottom: 32px; }
+  #bg .rule-mid {
+    position: absolute; left: 60px; right: 60px;
+    height: 1px; background: var(--gray-line); top: 176px;
+  }
+  #bg .corner-tl, #bg .corner-br {
+    position: absolute; width: 44px; height: 44px;
+  }
+  #bg .corner-tl { top: 48px; left: 48px; border-top: 2px solid var(--wine); border-left: 2px solid var(--wine); }
+  #bg .corner-br { bottom: 48px; right: 48px; border-bottom: 2px solid var(--wine); border-right: 2px solid var(--wine); }
+  #bg .side-dots {
+    position: absolute; right: 22px; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  #bg .side-dots span { display: block; width: 4px; height: 4px; border-radius: 50%; background: var(--navy); opacity: .35; }
+
+  #ct {
+    position: absolute; inset: 0; z-index: 1;
+    padding: 60px;
+  }
+
+  /* ============ HEADER ============ */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 22px;
+  }
+  .header-left { max-width: 1080px; }
+  .kicker {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px; letter-spacing: 6px; font-weight: 700;
+    color: var(--wine);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .kicker .k-mark {
+    display: inline-block; width: 30px; height: 2px;
+    background: var(--wine);
+  }
+  .kicker .k-en {
+    color: var(--gray-text); font-weight: 400; letter-spacing: 4px; font-size: 11px;
+  }
+  h1.title {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 60px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 19px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--navy-soft);
+    letter-spacing: 0.5px;
+  }
+  .header-right {
+    text-align: right;
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gray-text);
+    font-weight: 700;
+    line-height: 2;
+  }
+  .header-right .h-page {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    color: var(--wine);
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ============ MAIN COLUMNS ============ */
+  .columns {
+    display: grid;
+    grid-template-columns: 640px 1fr;
+    gap: 50px;
+    height: 384px;
+    margin-bottom: 22px;
+  }
+
+  /* Left: Emblem + Pullquote */
+  .col-left {
+    display: flex; flex-direction: column;
+    gap: 26px;
+  }
+  .emblem {
+    display: flex; align-items: center; gap: 24px;
+    padding: 20px 24px;
+    border: 1px solid var(--navy);
+    background: var(--white);
+    position: relative;
+  }
+  .emblem-badge {
+    width: 132px; height: 132px; border-radius: 50%;
+    background: var(--navy);
+    color: var(--white);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 6px 6px 0 var(--wine);
+  }
+  .emblem-badge::before {
+    content: '';
+    position: absolute; inset: 8px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+  }
+  .emblem-badge .eb-top {
+    font-family: 'Lato', sans-serif;
+    font-size: 9px; letter-spacing: 4px; font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 6px;
+  }
+  .emblem-badge .eb-gnu {
+    font-family: 'Playfair Display', serif;
+    font-size: 46px; font-weight: 900;
+    line-height: 1; letter-spacing: 4px;
+    color: var(--white);
+  }
+  .emblem-badge .eb-fsf {
+    font-family: 'Lato', sans-serif;
+    font-size: 9px; letter-spacing: 5px; font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    margin-top: 8px;
+  }
+  .emblem-badge .eb-year {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 10px;
+    color: var(--wine-soft);
+    margin-top: 4px;
+  }
+  .emblem-meta {
+    display: flex; flex-direction: column;
+    gap: 6px;
+  }
+  .emblem-meta .eyebrow {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px; letter-spacing: 4px; font-weight: 700;
+    color: var(--wine);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .emblem-meta .eyebrow::before {
+    content: ''; display: inline-block;
+    width: 14px; height: 2px; background: var(--wine);
+  }
+  .emblem-meta .e-title {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 30px; font-weight: 700;
+    color: var(--navy); line-height: 1.2;
+    margin: 4px 0 6px;
+  }
+  .emblem-meta .e-desc {
+    font-size: 12px; line-height: 1.7;
+    color: var(--gray-text);
+    max-width: 380px;
+  }
+
+  /* Pullquote */
+  .pullquote {
+    position: relative;
+    padding: 22px 30px 22px 44px;
+    background: var(--white);
+    border-left: 4px solid var(--wine);
+  }
+  .pullquote .pq-mark {
+    position: absolute;
+    top: -22px; left: 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 130px;
+    color: var(--wine);
+    line-height: 1;
+    font-weight: 900;
+    opacity: 0.18;
+  }
+  .pullquote .pq-text {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 19px; line-height: 1.75;
+    color: var(--navy);
+    font-weight: 400;
+    position: relative; z-index: 2;
+  }
+  .pullquote .pq-text .hl {
+    color: var(--wine);
+    font-weight: 700;
+  }
+  .pullquote .pq-attr {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    color: var(--gray-text);
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--gray-line);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .pullquote .pq-attr::before {
+    content: ''; display: inline-block;
+    width: 24px; height: 2px; background: var(--wine);
+  }
+
+  /* Right: Timeline */
+  .col-right {
+    position: relative;
+    padding: 0;
+  }
+  .tl-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--navy);
+  }
+  .tl-header .th-en {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--navy);
+    font-style: italic;
+  }
+  .tl-header .th-meta {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px; letter-spacing: 3px; font-weight: 700;
+    color: var(--wine);
+  }
+  .timeline {
+    position: relative;
+    padding: 4px 0 0 66px;
+    display: flex; flex-direction: column;
+    gap: 18px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 44px; top: 22px; bottom: 12px;
+    width: 1px; background: var(--navy);
+    opacity: 0.35;
+  }
+  .tl-node {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  .tl-node .tl-dot {
+    position: absolute;
+    left: -30px; top: 14px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--white);
+    border: 3px solid var(--navy);
+    box-sizing: content-box;
+  }
+  .tl-node::before {
+    content: '';
+    position: absolute;
+    left: -12px; top: 20px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--wine);
+  }
+  .tl-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1;
+    letter-spacing: -1px;
+    padding-top: 2px;
+    min-width: 62px;
+  }
+  .tl-content {
+    flex: 1;
+  }
+  .tl-title {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .tl-title .t-tag {
+    display: inline-block;
+    font-family: 'Lato', sans-serif;
+    font-size: 9px; letter-spacing: 3px;
+    color: var(--white);
+    background: var(--wine);
+    padding: 3px 8px;
+    font-weight: 700;
+    margin-right: 8px;
+    vertical-align: middle;
+    border-radius: 1px;
+  }
+  .tl-desc {
+    font-size: 12px; line-height: 1.65;
+    color: var(--gray-text);
+  }
+
+  /* ============ KPI ROW ============ */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .kpi {
+    background: var(--navy);
+    color: var(--white);
+    padding: 16px 18px;
+    position: relative;
+    height: 84px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+  .kpi::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--wine);
+  }
+  .kpi .k-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px; letter-spacing: 3px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .kpi .k-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+  }
+  .kpi .k-desc {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.3;
+  }
+
+  /* ============ SUMMARY ============ */
+  .summary {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 22px 14px 22px;
+    border-top: 2px solid var(--navy);
+    border-bottom: 2px solid var(--navy);
+    background: var(--white);
+    height: 58px;
+    gap: 24px;
+  }
+  .summary .s-quote {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 16px;
+    color: var(--navy);
+    font-style: italic;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .summary .s-quote .s-hl {
+    color: var(--wine);
+    font-weight: 700;
+    font-style: normal;
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  }
+  .summary .s-sign {
+    font-family: 'Playfair Display', serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: var(--wine);
+    font-weight: 700;
+    text-align: right;
+    line-height: 1.4;
+    flex-shrink: 0;
+    border-left: 1px solid var(--gray-line);
+    padding-left: 20px;
+  }
+  .summary .s-sign .s-en {
+    font-family: 'Lato', sans-serif;
+    color: var(--gray-text);
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="paper-tint"></div>
+    <div class="rule-top"></div>
+    <div class="rule-bottom"></div>
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="side-dots">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <div id="ct">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <div class="kicker"><span>第 01 章</span><span class="k-en">FOUNDATIONS · 制度奠基</span></div>
+        <h1 class="title">GNU 与自由软件宣言</h1>
+        <div class="subtitle">从宣言到许可证：自由软件运动的制度奠基</div>
+      </div>
+      <div class="header-right">
+        <span class="h-page">01</span>
+        <span>GNU PROJECT · 1983–1991</span><br>
+        <span>MANIFESTO &amp; COPELEFT</span>
+      </div>
+    </header>
+
+    <!-- MAIN TWO COLUMNS -->
+    <div class="columns">
+
+      <!-- LEFT: EMBLEM + PULLQUOTE -->
+      <section class="col-left">
+        <div class="emblem">
+          <div class="emblem-badge">
+            <span class="eb-top">GNU</span>
+            <span class="eb-gnu">g</span>
+            <span class="eb-fsf">FSF</span>
+            <span class="eb-year">— 1983 —</span>
+          </div>
+          <div class="emblem-meta">
+            <span class="eyebrow">自由软件基金会</span>
+            <span class="e-title">GNU Project</span>
+            <span class="e-desc">
+              吉尼斯内普斯实用程序（GNU's Not Unix）——Richard Stallman 发起的项目，致力于重建一套完全自由的操作系统。
+            </span>
+          </div>
+        </div>
+
+        <div class="pullquote">
+          <span class="pq-mark">&ldquo;</span>
+          <p class="pq-text">
+            GNU 把 <span class="hl">「共享」</span> 升级为 <span class="hl">「权利」</span>：不只是可以复制，而是必须保持自由。GPL 用法律工具把协作精神制度化，这是开源史上最重要的制度创新之一。
+          </p>
+          <div class="pq-attr">— GNU MANIFESTO · 节选</div>
+        </div>
+      </section>
+
+      <!-- RIGHT: TIMELINE -->
+      <section class="col-right">
+        <div class="tl-header">
+          <span class="th-en">Timeline · 制度演进</span>
+          <span class="th-meta">1983 → 1991 · 8 YEARS</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-node">
+            <span class="tl-dot"></span>
+            <span class="tl-year">1983</span>
+            <div class="tl-content">
+              <div class="tl-title"><span class="t-tag">宣言</span>GNU Manifesto 发布</div>
+              <div class="tl-desc">Richard Stallman 于 MIT 发布 GNU 宣言，宣告软件自由理念，开启自由软件运动。</div>
+            </div>
+          </div>
+          <div class="tl-node">
+            <span class="tl-dot"></span>
+            <span class="tl-year">1985</span>
+            <div class="tl-content">
+              <div class="tl-title"><span class="t-tag">组织</span>FSF 成立</div>
+              <div class="tl-desc">Free Software Foundation 成为 GNU 项目的组织载体，正式推动开源与自由软件协作。</div>
+            </div>
+          </div>
+          <div class="tl-node">
+            <span class="tl-dot"></span>
+            <span class="tl-year">1989</span>
+            <div class="tl-content">
+              <div class="tl-title"><span class="t-tag">许可证</span>GPL v1 发布</div>
+              <div class="tl-desc">首次为自由软件定义可传染的许可证，copyleft 概念落地，用法律手段保护共享精神。</div>
+            </div>
+          </div>
+          <div class="tl-node">
+            <span class="tl-dot"></span>
+            <span class="tl-year">1991</span>
+            <div class="tl-content">
+              <div class="tl-title"><span class="t-tag">关键缺口</span>Linux 补上内核</div>
+              <div class="tl-desc">直到 1991 年 GNU 仍缺一个可用的内核，Linus Torvalds 的 Linux 补上了这块拼图。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- KPI ROW -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <span class="k-label">01 · PROJECT</span>
+        <div class="k-value">1983</div>
+        <span class="k-desc">GNU 项目启动</span>
+      </div>
+      <div class="kpi">
+        <span class="k-label">02 · FOUNDATION</span>
+        <div class="k-value">1985</div>
+        <span class="k-desc">FSF 成立</span>
+      </div>
+      <div class="kpi">
+        <span class="k-label">03 · LICENSE</span>
+        <div class="k-value">1989</div>
+        <span class="k-desc">GPL v1 发布</span>
+      </div>
+      <div class="kpi">
+        <span class="k-label">04 · COVERAGE</span>
+        <div class="k-value">99%+</div>
+        <span class="k-desc">GNU 用户级工具覆盖</span>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+      <div class="s-quote">
+        从 <span class="s-hl">宣言</span> 到 <span class="s-hl">许可证</span>——自由软件运动把「共享」写进法律，让协作成为一种不可撤销的权利。
+      </div>
+      <div class="s-sign">
+        GNU · FSF · COPELEFT
+        <span class="s-en">— The Institutional Foundation —</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
