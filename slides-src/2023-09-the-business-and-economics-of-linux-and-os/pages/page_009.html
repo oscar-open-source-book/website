@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第三部分 · 开源布道与阅读</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --blue: #2196F3;
+  --cyan: #00BCD4;
+  --dark: #0B1220;
+  --dark-2: #0F1A2E;
+  --neutral: #2D3748;
+  --text-main: #E8EEF7;
+  --text-dim: #8FA0B8;
+  --line: rgba(33,150,243,0.22);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family: 'Inter', 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #050912;
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  background: linear-gradient(135deg, #050912 0%, #0B1220 45%, #0F1A2E 100%);
+}
+
+#bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
+
+.bg-glow-1{
+  position:absolute;
+  left:-160px;
+  top:-120px;
+  width:640px;
+  height:640px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.28) 0%, rgba(33,150,243,0) 65%);
+  filter: blur(20px);
+}
+.bg-glow-2{
+  position:absolute;
+  right:-180px;
+  bottom:-180px;
+  width:640px;
+  height:640px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.18) 0%, rgba(0,188,212,0) 65%);
+  filter: blur(24px);
+}
+
+.bg-grid{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 65%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 65%, rgba(0,0,0,0) 100%);
+}
+
+.bg-dots{
+  position:absolute;
+  inset:0;
+  background-image: radial-gradient(rgba(0,188,212,0.18) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity:0.35;
+}
+
+#ct{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  padding: 56px 72px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+/* 顶部导航条 */
+.top-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.top-bar .brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.brand-dot{
+  width:10px;height:10px;
+  border-radius:50%;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  box-shadow: 0 0 12px rgba(33,150,243,0.8);
+}
+.brand-name{
+  font-weight:600;
+  color: var(--text-main);
+  letter-spacing:3px;
+}
+.top-right{
+  display:flex;
+  align-items:center;
+  gap:22px;
+}
+.progress{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.pip{
+  width:28px;height:3px;border-radius:2px;
+  background: rgba(255,255,255,0.14);
+}
+.pip.active{
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  box-shadow: 0 0 8px rgba(33,150,243,0.7);
+}
+.top-code{
+  color: var(--cyan);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+}
+
+/* 主体两栏 */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns: 520px 1fr;
+  gap: 44px;
+  margin-top: 32px;
+  min-height: 0;
+}
+
+/* 左侧大数字区 */
+.hero-num{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.chapter-label{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  color: var(--cyan);
+  font-size:13px;
+  letter-spacing:6px;
+  font-weight:500;
+  margin-bottom: 8px;
+}
+.chapter-label::before{
+  content:'';
+  display:inline-block;
+  width:38px;
+  height:1px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+
+.big-num{
+  font-family: 'Inter', 'SF Pro Display', sans-serif;
+  font-size: 380px;
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -18px;
+  background: linear-gradient(160deg, #6FC3FF 0%, #2196F3 45%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position:relative;
+  filter: drop-shadow(0 0 42px rgba(33,150,243,0.45));
+  margin-left: -8px;
+}
+.big-num::after{
+  content:'03';
+  position:absolute;
+  inset:0;
+  color: rgba(255,255,255,0.04);
+  -webkit-text-fill-color: rgba(255,255,255,0.04);
+  transform: translate(6px, 4px);
+  z-index:-1;
+  letter-spacing: -18px;
+  background: none;
+}
+
+.growth-svg{
+  position:absolute;
+  left: 40px;
+  bottom: -30px;
+  width: 520px;
+  height: 200px;
+  pointer-events:none;
+}
+
+.hero-caption{
+  position:absolute;
+  left: 0;
+  bottom: 30px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  color: var(--text-dim);
+  font-size:12px;
+  letter-spacing:3px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.hero-caption .arrow-up{
+  color: var(--cyan);
+  font-size:14px;
+}
+
+/* 右侧内容 */
+.right-col{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  padding-top: 6px;
+}
+
+.kicker{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+.kicker-tag{
+  padding: 5px 12px;
+  border:1px solid var(--line);
+  border-radius: 4px;
+  font-size: 11px;
+  letter-spacing:2px;
+  color: var(--cyan);
+  background: rgba(33,150,243,0.08);
+}
+.kicker-line{
+  flex:1;
+  height:1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+h1.title{
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+h1.title .accent{
+  background: linear-gradient(90deg, #6FC3FF, var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle{
+  font-size: 20px;
+  color: var(--text-dim);
+  font-weight: 400;
+  margin-bottom: 22px;
+  letter-spacing: 0.3px;
+}
+
+.narrative{
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: rgba(232,238,247,0.82);
+  padding: 18px 22px;
+  border-left: 2px solid var(--blue);
+  background: linear-gradient(90deg, rgba(33,150,243,0.09), rgba(33,150,243,0));
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 26px;
+}
+
+/* 三张卡片 */
+.cards{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.card{
+  border:1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 16px 16px;
+  background: linear-gradient(180deg, rgba(33,150,243,0.06), rgba(11,18,32,0.4));
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:100%;
+  height:2px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+.card-num{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--cyan);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+.card-num .dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+.card-title{
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  line-height:1.35;
+}
+.card-title .kw{
+  color: var(--blue);
+}
+.card-detail{
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+/* 底部数据标签 */
+.footer-tags{
+  display:flex;
+  gap: 12px;
+  align-items:stretch;
+  margin-top:auto;
+}
+.tag{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding: 12px 18px;
+  border:1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(15,26,46,0.55);
+  font-size: 12.5px;
+}
+.tag-icon{
+  width:34px;height:34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.25), rgba(0,188,212,0.15));
+  border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: var(--cyan);
+  flex-shrink:0;
+}
+.tag-body{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:0;
+}
+.tag-head{
+  color: var(--text-main);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.tag-detail{
+  color: var(--text-dim);
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+}
+.tag-arrow{
+  margin-left:auto;
+  color: var(--cyan);
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-dots"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+  </div>
+
+  <div id="ct">
+    <!-- 顶部导航条 -->
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <span class="brand-name">DEVELOPER JOURNEY</span>
+      </div>
+      <div class="top-right">
+        <span class="top-code">// SECTION 03 / 04</span>
+        <div class="progress">
+          <div class="pip"></div>
+          <div class="pip"></div>
+          <div class="pip active"></div>
+          <div class="pip"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主体 -->
+    <div class="main">
+      <!-- 左侧巨大数字 03 -->
+      <div class="hero-num">
+        <div class="chapter-label"><span>SECTION 03</span></div>
+        <div class="big-num">03</div>
+
+        <!-- 成长曲线 SVG -->
+        <svg class="growth-svg" viewBox="0 0 520 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lineGrad" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.2"/>
+              <stop offset="50%" stop-color="#2196F3" stop-opacity="0.95"/>
+              <stop offset="100%" stop-color="#00BCD4" stop-opacity="1"/>
+            </linearGradient>
+            <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.28"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="glowLine" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge>
+                <feMergeNode in="b"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- 面积填充 -->
+          <path d="M 10 180 L 80 160 L 150 145 L 220 118 L 290 90 L 360 60 L 430 38 L 500 18 L 500 200 L 10 200 Z"
+                fill="url(#fillGrad)"/>
+
+          <!-- 网格参考线 -->
+          <line x1="10" y1="60" x2="500" y2="60" stroke="rgba(33,150,243,0.12)" stroke-dasharray="3 5"/>
+          <line x1="10" y1="120" x2="500" y2="120" stroke="rgba(33,150,243,0.12)" stroke-dasharray="3 5"/>
+
+          <!-- 主曲线 -->
+          <path d="M 10 180 L 80 160 L 150 145 L 220 118 L 290 90 L 360 60 L 430 38 L 500 18"
+                stroke="url(#lineGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"
+                filter="url(#glowLine)"/>
+
+          <!-- 节点 -->
+          <circle cx="10" cy="180" r="3" fill="#2196F3"/>
+          <circle cx="80" cy="160" r="3.2" fill="#2196F3"/>
+          <circle cx="150" cy="145" r="3.4" fill="#2196F3"/>
+          <circle cx="220" cy="118" r="3.6" fill="#40B0FA"/>
+          <circle cx="290" cy="90" r="3.8" fill="#40B0FA"/>
+          <circle cx="360" cy="60" r="4" fill="#00BCD4"/>
+          <circle cx="430" cy="38" r="4.2" fill="#00BCD4"/>
+          <circle cx="500" cy="18" r="6" fill="#00BCD4">
+            <animate attributeName="r" values="6;9;6" dur="2.4s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="500" cy="18" r="12" fill="none" stroke="#00BCD4" stroke-opacity="0.35"/>
+
+          <!-- 阶段标签 -->
+          <text x="10" y="197" fill="#8FA0B8" font-size="9" font-family="monospace" letter-spacing="1">USER</text>
+          <text x="140" y="197" fill="#8FA0B8" font-size="9" font-family="monospace" letter-spacing="1">LEARNER</text>
+          <text x="280" y="197" fill="#8FA0B8" font-size="9" font-family="monospace" letter-spacing="1">CONTRIBUTOR</text>
+          <text x="430" y="197" fill="#00BCD4" font-size="9" font-family="monospace" letter-spacing="1">MAINTAINER</text>
+
+          <!-- 箭头头部装饰 -->
+          <path d="M 490 10 L 505 18 L 490 26" stroke="#00BCD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+
+        <div class="hero-caption">
+          <span class="arrow-up">↗</span>
+          <span>GROWTH · CONTRIBUTION · IMPACT</span>
+        </div>
+      </div>
+
+      <!-- 右侧内容 -->
+      <div class="right-col">
+        <div class="kicker">
+          <span class="kicker-tag">PART 03 / OPEN-SOURCE EVANGELISM</span>
+          <span class="kicker-line"></span>
+        </div>
+
+        <h1 class="title">第三部分 · <span class="accent">开源布道与阅读</span></h1>
+        <div class="subtitle">从被动使用到主动贡献的开发者路径</div>
+
+        <div class="narrative">
+          第三部分把镜头拉回分享者本人。开源布道不是单向宣讲，而是把商业价值与开发者路径重新连接。对开发者而言，理解开源经济学能帮助他们做出更明智的选型与贡献；对社区而言，更多愿意深度阅读源码的开发者，会让整个生态持续繁荣。
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-num"><span class="dot"></span>01 · EVANGELISM</div>
+            <div class="card-title"><span class="kw">布道定义</span>——理念、实践与工具的推广</div>
+            <div class="card-detail">把开源理念、实践与工具推广到更多开发者，形成可复用的价值传递链。</div>
+          </div>
+          <div class="card">
+            <div class="card-num"><span class="dot"></span>02 · READING</div>
+            <div class="card-title"><span class="kw">阅读方法</span>——进阶三条腿</div>
+            <div class="card-detail">精读源码、复盘提交历史、参与 issue 讨论，构成深度理解的三角支点。</div>
+          </div>
+          <div class="card">
+            <div class="card-num"><span class="dot"></span>03 · CONTRIBUTION</div>
+            <div class="card-title"><span class="kw">贡献路径</span>——循序渐进建立影响力</div>
+            <div class="card-detail">从文档、测试到核心代码，一步一步建立个人在开源社区中的可见度。</div>
+          </div>
+        </div>
+
+        <div class="footer-tags">
+          <div class="tag">
+            <div class="tag-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"/><path d="M7 15l4-4 4 3 5-7"/>
+              </svg>
+            </div>
+            <div class="tag-body">
+              <div class="tag-head">第三部分 · 3 个层次</div>
+              <div class="tag-detail">布道 · 阅读 · 贡献</div>
+            </div>
+            <span class="tag-arrow">→ 3 LAYERS</span>
+          </div>
+          <div class="tag">
+            <div class="tag-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/><path d="M13 5l7 7-7 7"/>
+              </svg>
+            </div>
+            <div class="tag-body">
+              <div class="tag-head">进阶路径 · 深度递进</div>
+              <div class="tag-detail">文档 → 测试 → 核心</div>
+            </div>
+            <span class="tag-arrow">→ DEEPEN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

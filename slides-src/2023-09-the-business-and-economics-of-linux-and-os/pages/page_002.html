@@ -5,255 +5,263 @@
 <head>
 <meta charset="UTF-8">
 <title>第一部分 · 开源经济学背景</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-  :root {
-    --blue: #2196F3;
-    --teal: #00BCD4;
-    --slate: #2D3748;
-    --dark: #0B1424;
-    --text-main: #EAF2FB;
-    --text-mid: #A8B8CC;
-    --text-dim: #7A8DA3;
-    --hair: rgba(33, 150, 243, 0.55);
-    --hair-soft: rgba(33, 150, 243, 0.22);
-  }
+:root {
+  --primary: #2196F3;
+  --accent:  #00BCD4;
+  --neutral: #2D3748;
+  --text-main: #FFFFFF;
+  --text-dim: rgba(255,255,255,0.72);
+  --text-mute: rgba(255,255,255,0.55);
+  --line:    rgba(255,255,255,0.14);
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; }
 
-  html, body {
-    width: 1600px; height: 900px;
-    font-family: 'Inter', 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    color: var(--text-main);
-    background: var(--dark);
-    overflow: hidden;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 16px;
+  color: var(--text-main);
+  background: #050912;
+  -webkit-font-smoothing: antialiased;
+}
 
-  .wrapper {
-    width: 1600px;
-    height: 900px;
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto;
-  }
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
 
-  #bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: var(--dark);
-  }
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #050912;
+}
 
-  #bg .bg-photo {
-    position: absolute;
-    top: 0; left: 0;
-    width: 1600px; height: 900px;
-    object-fit: cover;
-    object-position: center;
-  }
+.bg-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
-  #bg .bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(11,20,36,0.18) 0%, rgba(11,20,36,0.55) 100%);
-  }
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    rgba(5,9,18,0.15) 0%,
+    rgba(5,9,18,0.30) 38%,
+    rgba(5,9,18,0.62) 72%,
+    rgba(5,9,18,0.85) 100%);
+}
 
-  #ct {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    padding: 60px;
-    box-sizing: border-box;
-  }
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 80px;
+}
 
-  /* Giant chapter number, anchored to right */
-  .ch-num-wrap {
-    position: absolute;
-    right: 30px;
-    top: 70px;
-    line-height: 0.82;
-  }
-  .ch-num {
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
-    font-size: 400px;
-    line-height: 0.82;
-    letter-spacing: -0.05em;
-    color: rgba(33, 150, 243, 0.11);
-    -webkit-text-stroke: 2px rgba(33, 150, 243, 0.85);
-    text-stroke: 2px rgba(33, 150, 243, 0.85);
-    text-shadow: 0 0 60px rgba(33, 150, 243, 0.22);
-    user-select: none;
-  }
-  .ch-num-tag {
-    position: absolute;
-    top: 30px;
-    right: 8px;
-    font-size: 13px;
-    letter-spacing: 0.42em;
-    color: var(--teal);
-    font-weight: 500;
-    text-transform: uppercase;
-  }
+/* 顶部小徽章 */
+.badge {
+  position: absolute;
+  top: 62px;
+  right: 80px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 20px;
+  background: rgba(33,150,243,0.08);
+  border: 1px solid rgba(33,150,243,0.45);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.82);
+}
 
-  /* Title block */
-  .title-block {
-    position: absolute;
-    left: 60px;
-    top: 140px;
-    width: 960px;
-  }
-  .title-block .top-line,
-  .title-block .bot-line {
-    width: 100%;
-    height: 1px;
-    background: var(--hair);
-  }
-  .title-block .top-line {
-    background: linear-gradient(90deg, var(--blue) 0%, var(--hair) 30%, transparent 100%);
-    height: 2px;
-    opacity: 0.9;
-  }
-  .title-block .bot-line {
-    background: linear-gradient(90deg, var(--hair-soft) 0%, transparent 100%);
-    margin-top: 0;
-  }
-  .title-block .title-inner {
-    padding: 26px 0 24px 0;
-  }
-  .chapter-eyebrow {
-    font-size: 14px;
-    letter-spacing: 0.5em;
-    color: var(--teal);
-    font-weight: 600;
-    margin-bottom: 22px;
-    text-transform: uppercase;
-  }
-  .chapter-title {
-    font-size: 72px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: var(--text-main);
-    line-height: 1.1;
-    margin-bottom: 22px;
-    text-shadow: 0 2px 24px rgba(11,20,36,0.6);
-  }
-  .chapter-sub {
-    font-size: 22px;
-    font-weight: 400;
-    color: var(--text-mid);
-    letter-spacing: 0.02em;
-    line-height: 1.5;
-  }
+.badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+}
 
-  /* Cards row */
-  .cards-row {
-    position: absolute;
-    left: 60px;
-    top: 460px;
-    width: 1480px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-  }
-  .card {
-    padding: 26px 28px 26px 30px;
-    border-left: 2px solid var(--blue);
-    background: linear-gradient(90deg, rgba(33,150,243,0.07) 0%, rgba(33,150,243,0) 60%);
-    position: relative;
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    width: 52px;
-    height: 2px;
-    background: var(--teal);
-  }
-  .card-idx {
-    font-size: 11px;
-    letter-spacing: 0.42em;
-    color: var(--teal);
-    font-weight: 600;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-  }
-  .card-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--text-main);
-    margin-bottom: 10px;
-    letter-spacing: 0.02em;
-  }
-  .card-desc {
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--text-mid);
-    line-height: 1.65;
-  }
+/* 主视觉行 */
+.main-row {
+  position: absolute;
+  top: 240px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 68px;
+}
 
-  /* Narrative */
-  .narrative {
-    position: absolute;
-    left: 60px;
-    top: 680px;
-    width: 1150px;
-    font-size: 15px;
-    line-height: 1.9;
-    color: #C5D2E2;
-    font-weight: 300;
-    letter-spacing: 0.02em;
-  }
-  .narrative strong {
-    color: var(--text-main);
-    font-weight: 500;
-  }
-  .narrative .accent {
-    color: var(--teal);
-    font-weight: 500;
-  }
+/* 超大号 01 */
+.num-wrap {
+  position: relative;
+  width: 420px;
+  height: 400px;
+  flex-shrink: 0;
+}
 
-  /* Footer meta */
-  .footer {
-    position: absolute;
-    left: 60px;
-    bottom: 40px;
-    right: 60px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-  .footer-tag {
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 16px;
-    border: 1px solid var(--blue);
-    color: var(--blue);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.28em;
-    background: rgba(33,150,243,0.08);
-    text-transform: uppercase;
-  }
-  .footer-sub {
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.42em;
-    text-transform: uppercase;
-  }
-  .footer-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--hair-soft) 0%, transparent 100%);
-    margin-left: 4px;
-  }
-  .footer-idx {
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.35em;
-  }
+.num {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 400px;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, #4FC3F7 0%, #2196F3 50%, #0288D1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 100px rgba(33,150,243,0.25);
+}
+
+/* 竖向分割线 */
+.divider {
+  width: 2px;
+  height: 320px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(33,150,243,0.05) 12%,
+    rgba(33,150,243,0.9) 50%,
+    rgba(0,188,212,0.55) 88%,
+    transparent 100%);
+  flex-shrink: 0;
+  box-shadow: 0 0 18px rgba(33,150,243,0.45);
+}
+
+/* 右侧标题区 */
+.text-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--accent);
+  margin: 0 0 22px 0;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.18;
+  color: var(--text-main);
+  margin: 0 0 26px 0;
+  letter-spacing: -0.005em;
+}
+
+.title-underline {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  border-radius: 2px;
+  margin: 0 0 26px 0;
+}
+
+.subtitle {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-dim);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* 三栏要点 */
+.list-row {
+  position: absolute;
+  bottom: 90px;
+  left: 80px;
+  right: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 6px 0;
+  letter-spacing: 0.10em;
+}
+
+.item-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-mute);
+  margin: 0;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* 底部装饰 */
+.footer-line {
+  position: absolute;
+  bottom: 46px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+}
+
+.footer-line .rule {
+  flex: 1;
+  height: 1px;
+  margin: 0 22px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 20%, rgba(255,255,255,0.18) 80%, transparent 100%);
+}
 </style>
 </head>
 <body>
@@ -262,52 +270,70 @@
     <img class="bg-photo" src="../images/page_002_hero.png" alt="">
     <div class="bg-overlay"></div>
   </div>
+
   <div id="ct">
-
-    <div class="ch-num-wrap">
-      <div class="ch-num-tag">Chapter</div>
-      <div class="ch-num">01</div>
+    <div class="badge">
+      <span class="dot"></span>
+      <span>第一部分 / 3 个核心问题 / 背景 · 机制 · 价值</span>
     </div>
 
-    <div class="title-block">
-      <div class="top-line"></div>
-      <div class="title-inner">
-        <div class="chapter-eyebrow">Part 01 &nbsp;·&nbsp; Background</div>
-        <h1 class="chapter-title">开源经济学背景</h1>
-        <p class="chapter-sub">为什么开源值得从商业角度重新审视</p>
+    <div class="main-row">
+      <div class="num-wrap">
+        <div class="num">01</div>
       </div>
-      <div class="bot-line"></div>
-    </div>
 
-    <div class="cards-row">
-      <div class="card">
-        <div class="card-idx">01 &nbsp;/&nbsp; REFRAME</div>
-        <div class="card-title">认知纠偏</div>
-        <div class="card-desc">开源不等于免费，也不等于没有商业模式。</div>
-      </div>
-      <div class="card">
-        <div class="card-idx">02 &nbsp;/&nbsp; REVALUE</div>
-        <div class="card-title">价值重构</div>
-        <div class="card-desc">从许可证、协作机制到网络效应的经济学解读。</div>
-      </div>
-      <div class="card">
-        <div class="card-idx">03 &nbsp;/&nbsp; RECONTEXT</div>
-        <div class="card-title">产业视角</div>
-        <div class="card-desc">全球科技巨头均深度嵌入开源生态。</div>
+      <div class="divider"></div>
+
+      <div class="text-wrap">
+        <p class="eyebrow">PART ONE / OPEN-SOURCE ECONOMICS</p>
+        <h1 class="title">第一部分 · 开源经济学背景</h1>
+        <div class="title-underline"></div>
+        <p class="subtitle">为什么开源值得从商业角度重新审视</p>
       </div>
     </div>
 
-    <div class="narrative">
-      进入第一部分之前，我们需要打破一个常见误区：<strong>开源并非慈善行为，而是一套经过市场验证的价值创造机制。</strong>本部分将回答三个问题——<span class="accent">什么是开源经济学、它如何运转、以及为什么商业世界离不开它。</span>
+    <div class="list-row">
+      <div class="list-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="#2196F3" stroke-width="1.5"/>
+          <path d="M4.5 12h15M12 4.5v15" stroke="#00BCD4" stroke-width="1.5"/>
+        </svg>
+        <div class="item-text">
+          <p class="item-title">认知纠偏</p>
+          <p class="item-desc">开源不等于免费，也不等于没有商业模式</p>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none">
+          <polygon points="12,3 21,12 12,21 3,12" stroke="#2196F3" stroke-width="1.5" fill="none"/>
+          <circle cx="12" cy="12" r="2.5" fill="#00BCD4"/>
+        </svg>
+        <div class="item-text">
+          <p class="item-title">价值重构</p>
+          <p class="item-desc">从许可证、协作机制到网络效应的经济学解读</p>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="8" height="8" stroke="#2196F3" stroke-width="1.5" fill="none"/>
+          <rect x="13" y="3" width="8" height="8" stroke="#00BCD4" stroke-width="1.5" fill="none"/>
+          <rect x="3" y="13" width="8" height="8" stroke="#00BCD4" stroke-width="1.5" fill="none"/>
+          <rect x="13" y="13" width="8" height="8" stroke="#2196F3" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="item-text">
+          <p class="item-title">产业视角</p>
+          <p class="item-desc">全球科技巨头均深度嵌入开源生态</p>
+        </div>
+      </div>
     </div>
 
-    <div class="footer">
-      <span class="footer-tag">第一部分 · 3 个核心问题</span>
-      <span class="footer-sub">背景 · 机制 · 价值</span>
-      <span class="footer-line"></span>
-      <span class="footer-idx">SECTION 01 &nbsp;/&nbsp; OPEN-SOURCE ECONOMICS</span>
+    <div class="footer-line">
+      <span>SECTION TRANSITION</span>
+      <div class="rule"></div>
+      <span>01 / OPEN-SOURCE ECONOMICS</span>
     </div>
-
   </div>
 </div>
 </body>

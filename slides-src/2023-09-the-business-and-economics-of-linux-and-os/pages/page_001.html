@@ -1,612 +1,383 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>开源的商业与经济学 · 封面</title>
+<title>开源的商业与经济学</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
   :root {
-    --primary: #2196F3;
-    --accent: #00BCD4;
-    --dark: #2D3748;
-    --deep-bg: #050B1A;
-    --deep-bg2: #0A1530;
-    --text-main: #E6F0FA;
-    --text-muted: #7B8FA6;
-    --text-dim: #4A5B72;
-    --line: rgba(33, 150, 243, 0.15);
+    --bg: #2D3748;
+    --bg-deep: #1A202C;
+    --accent: #2196F3;
+    --accent-light: #4FC3F7;
+    --cyan: #00BCD4;
+    --cyan-light: #4DD0E1;
+    --text-main: #F7FAFC;
+    --text-muted: #A0AEC0;
+    --text-dim: #718096;
+    --grid-line: rgba(33, 150, 243, 0.10);
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Inter', 'Noto Sans SC', 'SF Pro Display', -apple-system, sans-serif;
-    color: var(--text-main);
-    background: var(--deep-bg);
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1600px;
+    height: 900px;
     overflow: hidden;
+    font-family: 'Inter', 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: var(--text-main);
+    background: var(--bg-deep);
   }
-
   .wrapper {
     width: 1600px;
     height: 900px;
     position: relative;
     overflow: hidden;
     margin: 0 auto;
-    background: radial-gradient(ellipse at 30% 40%, #0d1f3d 0%, #050B1A 55%, #02060F 100%);
+    background: radial-gradient(ellipse at 30% 20%, #384860 0%, #2D3748 45%, #1A202C 100%);
   }
-
   #bg { position: absolute; inset: 0; z-index: 0; }
   #ct { position: absolute; inset: 0; z-index: 1; padding: 60px; box-sizing: border-box; }
 
-  /* Grid overlay */
-  .grid-layer {
-    position: absolute; inset: 0;
+  /* 菱形几何网格 */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
     background-image:
-      linear-gradient(rgba(33, 150, 243, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(33, 150, 243, 0.06) 1px, transparent 1px);
-    background-size: 60px 60px;
-    background-position: center;
-    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0) 90%);
-    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0) 90%);
+      repeating-linear-gradient(45deg, transparent 0, transparent 39px, var(--grid-line) 39px, var(--grid-line) 40px),
+      repeating-linear-gradient(-45deg, transparent 0, transparent 39px, var(--grid-line) 39px, var(--grid-line) 40px);
   }
-
-  /* Diagonal accent grid */
-  .diag-layer {
-    position: absolute; inset: 0;
-    opacity: 0.35;
+  .grid-halo {
+    position: absolute;
+    width: 1100px;
+    height: 1100px;
+    right: -260px;
+    top: -340px;
+    background: radial-gradient(circle, rgba(33,150,243,0.16) 0%, rgba(33,150,243,0.05) 40%, transparent 70%);
     pointer-events: none;
   }
 
-  /* Nebula glow */
-  .glow-1 {
+  /* 左上角 header */
+  .header {
     position: absolute;
-    width: 900px; height: 900px;
-    left: -200px; top: -300px;
-    background: radial-gradient(circle, rgba(33, 150, 243, 0.18) 0%, rgba(33, 150, 243, 0) 60%);
-    filter: blur(20px);
-  }
-  .glow-2 {
-    position: absolute;
-    width: 700px; height: 700px;
-    right: -150px; bottom: -200px;
-    background: radial-gradient(circle, rgba(0, 188, 212, 0.15) 0%, rgba(0, 188, 212, 0) 60%);
-    filter: blur(20px);
-  }
-
-  /* Corner crosshairs */
-  .crosshair {
-    position: absolute;
-    width: 30px; height: 30px;
-    border-color: var(--primary);
-    opacity: 0.7;
-  }
-  .ch-tl { top: 30px; left: 30px; border-top: 1.5px solid; border-left: 1.5px solid; }
-  .ch-tr { top: 30px; right: 30px; border-top: 1.5px solid; border-right: 1.5px solid; }
-  .ch-bl { bottom: 30px; left: 30px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
-  .ch-br { bottom: 30px; right: 30px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
-
-  /* Header strip */
-  .header-strip {
-    position: absolute;
-    top: 50px; left: 60px; right: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 3;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2.5px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-  }
-  .header-strip .brand {
-    display: flex; align-items: center; gap: 12px;
-  }
-  .brand-dot {
-    width: 8px; height: 8px;
-    background: var(--primary);
-    border-radius: 50%;
-    box-shadow: 0 0 12px var(--primary);
-  }
-  .brand-line {
-    width: 40px; height: 1px;
-    background: linear-gradient(90deg, var(--primary), transparent);
-  }
-
-  /* Main title area */
-  .main-stage {
-    position: absolute;
-    top: 130px;
+    top: 60px;
     left: 60px;
-    right: 60px;
-    height: 380px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    z-index: 2;
+    gap: 22px;
   }
-
-  .title-block {
-    text-align: center;
-    position: relative;
-  }
-
-  .title-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    letter-spacing: 8px;
-    color: var(--accent);
-    margin-bottom: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-  .title-eyebrow .ebar {
-    width: 60px; height: 1px;
-    background: var(--accent);
-    opacity: 0.7;
-  }
-
-  .main-title {
-    font-family: 'Noto Sans SC', 'Inter', sans-serif;
-    font-weight: 800;
-    font-size: 108px;
-    line-height: 1.05;
-    letter-spacing: -2px;
-    color: var(--text-main);
-    background: linear-gradient(180deg, #FFFFFF 0%, #A8CFFF 60%, #4D8FD6 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 22px;
-  }
-
-  .title-underline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    margin-bottom: 22px;
-  }
-  .title-underline .ul-line {
-    width: 120px; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
-  }
-  .title-underline .ul-dot {
-    width: 6px; height: 6px;
-    background: var(--primary);
-    transform: rotate(45deg);
-    box-shadow: 0 0 10px var(--primary);
-  }
-
-  .subtitle {
-    font-family: 'Noto Sans SC', 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 22px;
-    color: #B5CDE6;
-    letter-spacing: 4px;
-  }
-  .subtitle .sep {
-    color: var(--accent);
-    margin: 0 12px;
-    font-weight: 400;
-  }
-
-  /* Three waypoints (left column) */
-  .waypoints {
-    position: absolute;
-    left: 60px;
-    bottom: 100px;
-    width: 640px;
-    z-index: 2;
-  }
-  .wp-header {
+  .brand-mark {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 20px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 14px;
+    font-weight: 700;
     letter-spacing: 3px;
-    color: var(--accent);
+    color: var(--accent-light);
   }
-  .wp-header .wp-num {
-    padding: 2px 8px;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    border-radius: 2px;
+  .brand-mark .dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 14px var(--accent);
   }
-
-  .wp-list {
-    display: flex;
-    gap: 14px;
+  .header-sep {
+    width: 1px;
+    height: 22px;
+    background: var(--text-dim);
   }
-  .wp-item {
-    flex: 1;
-    background: rgba(45, 55, 72, 0.35);
-    border: 1px solid rgba(33, 150, 243, 0.2);
-    padding: 18px 16px;
-    border-radius: 4px;
-    position: relative;
-    backdrop-filter: blur(4px);
-  }
-  .wp-item::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 30px; height: 2px;
-    background: var(--primary);
-  }
-  .wp-num-big {
+  .header-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-  }
-  .wp-title-cn {
-    font-family: 'Noto Sans SC', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-main);
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-  }
-  .wp-desc {
-    font-family: 'Noto Sans SC', sans-serif;
-    font-size: 11.5px;
-    line-height: 1.65;
+    font-size: 12px;
     color: var(--text-muted);
-    font-weight: 300;
+    letter-spacing: 2px;
   }
 
-  /* Right side - Linux penguin + code particles */
-  .right-stage {
+  /* 顶部装饰：代码字符粒子 */
+  .code-particle {
     position: absolute;
-    right: 60px;
-    top: 145px;
-    width: 380px;
-    height: 420px;
-    z-index: 2;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    opacity: 0.4;
+    user-select: none;
+    font-weight: 600;
   }
 
-  .penguin-frame {
+  /* 标题块 */
+  .title-block {
     position: absolute;
-    right: 0; top: 0;
-    width: 240px; height: 240px;
-    border: 1px solid rgba(33, 150, 243, 0.3);
-    border-radius: 4px;
+    top: 178px;
+    left: 60px;
+    right: 480px;
+  }
+  .eyebrow {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba(33, 150, 243, 0.05) 0%, rgba(0, 188, 212, 0.02) 100%);
-  }
-  .penguin-frame .corner {
-    position: absolute;
-    width: 14px; height: 14px;
-    border-color: var(--primary);
-  }
-  .pc-tl { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
-  .pc-tr { top: -1px; right: -1px; border-top: 2px solid; border-right: 2px solid; }
-  .pc-bl { bottom: -1px; left: -1px; border-bottom: 2px solid; border-left: 2px solid; }
-  .pc-br { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; }
-
-  .penguin-label {
-    position: absolute;
-    right: 0;
-    top: 250px;
+    gap: 14px;
+    margin-bottom: 34px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--text-muted);
-    text-align: right;
+    color: var(--cyan);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 4px;
   }
-  .penguin-label .pl-line {
-    display: block;
-    width: 40px; height: 1px;
-    background: var(--accent);
-    margin-left: auto;
-    margin-top: 6px;
+  .eyebrow .ebar {
+    width: 46px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
   }
-
-  /* Code particles floating */
-  .code-particles {
-    position: absolute;
-    right: 0; top: 280px;
-    width: 240px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    line-height: 1.9;
-    text-align: right;
-  }
-  .code-particles .c-line {
-    display: block;
-    opacity: 0.75;
-  }
-  .code-particles .c-line .hl { color: var(--accent); }
-  .code-particles .c-line .hl2 { color: var(--primary); }
-
-  /* Bottom-right badges */
-  .badges {
-    position: absolute;
-    right: 60px;
-    bottom: 100px;
-    display: flex;
-    gap: 16px;
-    z-index: 3;
-  }
-  .badge {
-    background: rgba(45, 55, 72, 0.5);
-    border: 1px solid rgba(33, 150, 243, 0.35);
-    padding: 14px 18px;
-    border-radius: 3px;
-    min-width: 175px;
-    backdrop-filter: blur(4px);
+  .main-title {
+    font-size: 104px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: 14px;
+    color: var(--text-main);
+    text-shadow: 0 4px 40px rgba(33, 150, 243, 0.22);
     position: relative;
   }
-  .badge-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 2.5px;
-    color: var(--accent);
-    margin-bottom: 8px;
-    text-transform: uppercase;
+  .main-title .hl {
+    color: var(--accent-light);
   }
-  .badge-value {
-    font-family: 'Noto Sans SC', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-main);
-    letter-spacing: 1px;
+  .title-divider-wrap {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
-  .badge-sub {
-    font-family: 'Noto Sans SC', sans-serif;
-    font-size: 10px;
+  .divider {
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--cyan), transparent);
+  }
+  .divider-mark {
+    width: 10px;
+    height: 10px;
+    background: var(--cyan);
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px var(--cyan);
+  }
+  .subtitle {
+    margin-top: 24px;
+    font-size: 22px;
+    font-weight: 400;
     color: var(--text-muted);
-    margin-top: 4px;
-    font-weight: 300;
-    letter-spacing: 1px;
+    letter-spacing: 6px;
   }
-  .badge::before {
-    content: '';
-    position: absolute;
-    top: -1px; right: -1px;
-    width: 10px; height: 10px;
-    background: var(--primary);
+  .subtitle .dot-sep {
+    color: var(--accent);
+    margin: 0 12px;
+    font-weight: 700;
   }
 
-  /* Bottom strip */
-  .footer-strip {
+  /* 右侧装饰：大圆 + 企鹅 */
+  .deco-circle {
     position: absolute;
-    bottom: 50px; left: 60px; right: 60px;
+    width: 300px;
+    height: 300px;
+    right: 40px;
+    top: 90px;
+    border-radius: 50%;
+    border: 1px solid rgba(33, 150, 243, 0.35);
+    box-shadow: inset 0 0 60px rgba(33, 150, 243, 0.15);
+  }
+  .deco-circle::before {
+    content: '';
+    position: absolute;
+    inset: 32px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0, 188, 212, 0.28);
+  }
+  .deco-circle::after {
+    content: '';
+    position: absolute;
+    inset: 62px;
+    border-radius: 50%;
+    border: 1px solid rgba(33, 150, 243, 0.18);
+  }
+
+  .penguin-wrap {
+    position: absolute;
+    right: 175px;
+    top: 250px;
+    width: 220px;
+    height: 280px;
+  }
+  .penguin-glow {
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(circle at 50% 60%, rgba(33, 150, 243, 0.28) 0%, transparent 60%);
+    filter: blur(14px);
+  }
+
+  /* 底部 */
+  .footer {
+    position: absolute;
+    left: 60px;
+    right: 60px;
+    bottom: 54px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    z-index: 3;
+    align-items: flex-end;
+    gap: 40px;
+  }
+  .meta-cards {
+    display: flex;
+    gap: 18px;
+  }
+  .meta-card {
+    padding: 18px 24px;
+    background: rgba(26, 32, 44, 0.55);
+    border: 1px solid rgba(33, 150, 243, 0.35);
+    border-left: 3px solid var(--accent);
+    min-width: 260px;
+  }
+  .meta-card.alt {
+    border-left-color: var(--cyan);
+  }
+  .meta-card .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    letter-spacing: 2.5px;
-    color: var(--text-dim);
   }
-  .footer-strip .f-left {
-    display: flex; align-items: center; gap: 10px;
+  .meta-card .value {
+    font-size: 14px;
+    color: var(--text-main);
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 1.5;
   }
-  .footer-strip .f-dot {
-    width: 5px; height: 5px;
-    background: var(--accent);
-    border-radius: 50%;
+  .trace {
+    width: 380px;
+    padding-left: 22px;
+    border-left: 2px solid rgba(33, 150, 243, 0.35);
+    position: relative;
   }
-  .footer-strip .f-mid {
-    display: flex; align-items: center; gap: 14px;
+  .trace .trace-title {
+    font-size: 11px;
+    color: var(--accent-light);
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .trace .trace-item {
+    font-size: 12px;
     color: var(--text-muted);
+    line-height: 1.75;
+    display: flex;
+    gap: 10px;
   }
-  .footer-strip .f-bar {
-    width: 24px; height: 1px;
-    background: var(--primary);
-    opacity: 0.6;
-  }
-  .footer-strip .f-right {
-    color: var(--text-muted);
+  .trace .trace-item .n {
+    color: var(--cyan);
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
   }
 
-  /* Floating dots scattered */
-  .dots {
-    position: absolute; inset: 0;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .dots span {
+  .bottom-line {
     position: absolute;
-    width: 3px; height: 3px;
-    background: var(--primary);
-    border-radius: 50%;
-    box-shadow: 0 0 6px var(--primary);
+    bottom: 32px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    font-family: 'JetBrains Mono', monospace;
   }
-
 </style>
 </head>
 <body>
 <div class="wrapper">
-
-  <!-- Background decorations -->
   <div id="bg">
-    <div class="grid-layer"></div>
-    <div class="glow-1"></div>
-    <div class="glow-2"></div>
-
-    <!-- Diagonal lines -->
-    <svg class="diag-layer" viewBox="0 0 1600 900" preserveAspectRatio="none">
-      <line x1="0" y1="200" x2="600" y2="0" stroke="rgba(33,150,243,0.15)" stroke-width="1"/>
-      <line x1="200" y1="900" x2="1200" y2="300" stroke="rgba(0,188,212,0.1)" stroke-width="1"/>
-      <line x1="1600" y1="700" x2="1000" y2="900" stroke="rgba(33,150,243,0.12)" stroke-width="1"/>
-    </svg>
-
-    <!-- Scattered dots -->
-    <div class="dots">
-      <span style="left: 120px; top: 220px;"></span>
-      <span style="left: 220px; top: 480px; opacity: 0.5;"></span>
-      <span style="left: 380px; top: 700px; opacity: 0.6;"></span>
-      <span style="left: 900px; top: 180px; opacity: 0.7;"></span>
-      <span style="left: 1440px; top: 540px;"></span>
-      <span style="left: 1350px; top: 200px; opacity: 0.5;"></span>
-      <span style="left: 1150px; top: 620px; opacity: 0.6;"></span>
-      <span style="left: 60px; top: 620px; opacity: 0.4;"></span>
-    </div>
-
-    <!-- Corner crosshairs -->
-    <div class="crosshair ch-tl"></div>
-    <div class="crosshair ch-tr"></div>
-    <div class="crosshair ch-bl"></div>
-    <div class="crosshair ch-br"></div>
+    <div class="grid-bg"></div>
+    <div class="grid-halo"></div>
   </div>
 
-  <!-- Content layer -->
   <div id="ct">
+    <div class="header">
+      <div class="brand-mark"><span class="dot"></span><span>OPEN · SOURCE</span></div>
+      <div class="header-sep"></div>
+      <div class="header-tag">SHARE · 2023 · 09</div>
+    </div>
 
-    <!-- Header strip -->
-    <div class="header-strip">
-      <div class="brand">
-        <span class="brand-dot"></span>
-        <span>OPEN SOURCE · MANIFESTO</span>
-        <span class="brand-line"></span>
-        <span style="color: var(--text-dim);">v2023.09</span>
+    <div class="title-block">
+      <div class="eyebrow"><span class="ebar"></span><span>THE BUSINESS &amp; ECONOMICS</span></div>
+      <h1 class="main-title">开源的商业<span class="hl">与</span>经济学</h1>
+      <div class="title-divider-wrap">
+        <span class="divider-mark"></span>
+        <span class="divider"></span>
       </div>
-      <div>
-        <span style="color: var(--accent);">●</span>&nbsp;&nbsp;READING SESSION&nbsp;&nbsp;·&nbsp;&nbsp;COVER 01
+      <div class="subtitle"><span>2023-09</span><span class="dot-sep">·</span><span>Linux 与开源软件的价值重塑</span></div>
+    </div>
+
+    <div class="deco-circle"></div>
+
+    <div class="penguin-wrap">
+      <div class="penguin-glow"></div>
+      <svg viewBox="0 0 220 280" width="220" height="280" xmlns="http://www.w3.org/2000/svg">
+        <!-- 身体 -->
+        <ellipse cx="110" cy="180" rx="85" ry="95" fill="#1A202C" stroke="#2196F3" stroke-width="1.6"/>
+        <!-- 头部 -->
+        <ellipse cx="110" cy="58" rx="58" ry="52" fill="#1A202C" stroke="#2196F3" stroke-width="1.6"/>
+        <!-- 白色腹部 -->
+        <ellipse cx="110" cy="188" rx="56" ry="76" fill="#F7FAFC" opacity="0.95"/>
+        <!-- 翅膀 -->
+        <ellipse cx="30" cy="180" rx="18" ry="58" fill="#1A202C" stroke="#2196F3" stroke-width="1.4" transform="rotate(-14 30 180)"/>
+        <ellipse cx="190" cy="180" rx="18" ry="58" fill="#1A202C" stroke="#2196F3" stroke-width="1.4" transform="rotate(14 190 180)"/>
+        <!-- 双脚 -->
+        <ellipse cx="75" cy="266" rx="24" ry="10" fill="#00BCD4" opacity="0.85"/>
+        <ellipse cx="145" cy="266" rx="24" ry="10" fill="#00BCD4" opacity="0.85"/>
+        <!-- 眼睛 -->
+        <circle cx="90" cy="48" r="10" fill="#F7FAFC"/>
+        <circle cx="130" cy="48" r="10" fill="#F7FAFC"/>
+        <circle cx="92" cy="50" r="4.5" fill="#1A202C"/>
+        <circle cx="132" cy="50" r="4.5" fill="#1A202C"/>
+        <circle cx="94" cy="48" r="1.6" fill="#F7FAFC"/>
+        <circle cx="134" cy="48" r="1.6" fill="#F7FAFC"/>
+        <!-- 嘴巴 -->
+        <path d="M 98 66 Q 110 78 122 66" fill="#00BCD4"/>
+      </svg>
+    </div>
+
+    <!-- 代码粒子 -->
+    <div class="code-particle" style="top:112px; right:410px; font-size:22px; opacity:0.55;">{ }</div>
+    <div class="code-particle" style="top:172px; right:360px; font-size:16px; color:var(--cyan);">01</div>
+    <div class="code-particle" style="top:262px; right:640px; font-size:28px;">&lt;/&gt;</div>
+    <div class="code-particle" style="top:432px; right:560px; font-size:18px; color:var(--cyan-light);">0 1</div>
+    <div class="code-particle" style="top:498px; right:300px; font-size:22px;">{ }</div>
+    <div class="code-particle" style="top:590px; right:560px; font-size:20px; color:var(--cyan);">&lt;/&gt;</div>
+    <div class="code-particle" style="top:650px; left:80px; font-size:14px; opacity:0.32;">01</div>
+    <div class="code-particle" style="top:692px; left:210px; font-size:12px; opacity:0.26; color:var(--cyan);">{ }</div>
+    <div class="code-particle" style="top:132px; left:1290px; font-size:20px; opacity:0.5;">&lt;/&gt;</div>
+
+    <div class="footer">
+      <div class="meta-cards">
+        <div class="meta-card">
+          <div class="label"><span>SHARE DATE</span></div>
+          <div class="value"><span>分享时间：2023 年 9 月 · 开源之书记录档期</span></div>
+        </div>
+        <div class="meta-card alt">
+          <div class="label"><span>CORE THEME</span></div>
+          <div class="value"><span>核心主题：Linux 与 OSS 经济学 · 商业视角解读</span></div>
+        </div>
+      </div>
+      <div class="trace">
+        <div class="trace-title"><span>SHARE · TRACE</span></div>
+        <div class="trace-item"><span class="n">01</span><span>本次分享基于 2023 年 9 月开源布道资料整理</span></div>
+        <div class="trace-item"><span class="n">02</span><span>聚焦 Linux 与开源软件背后的商业模型与经济学逻辑</span></div>
+        <div class="trace-item"><span class="n">03</span><span>内容从历史演进、商业模式、生态价值到未来趋势逐层展开</span></div>
       </div>
     </div>
 
-    <!-- Main title -->
-    <div class="main-stage">
-      <div class="title-block">
-        <div class="title-eyebrow">
-          <span class="ebar"></span>
-          <span>THE BUSINESS &amp; ECONOMICS OF LINUX AND OSS</span>
-          <span class="ebar"></span>
-        </div>
-        <h1 class="main-title">开源的商业与经济学</h1>
-        <div class="title-underline">
-          <span class="ul-line"></span>
-          <span class="ul-dot"></span>
-          <span class="ul-line"></span>
-        </div>
-        <div class="subtitle">
-          2023-09
-          <span class="sep">◆</span>
-          Linux 与开源软件的价值重塑
-        </div>
-      </div>
+    <div class="bottom-line">
+      <span><span>SENSNIOVA · OPEN-SOURCE · COVER</span></span>
+      <span><span>穿越开源软件的历史长廊 · 理解数字基础设施的中流砥柱</span></span>
     </div>
-
-    <!-- Right stage: Penguin + code particles -->
-    <div class="right-stage">
-      <div class="penguin-frame">
-        <span class="corner pc-tl"></span>
-        <span class="corner pc-tr"></span>
-        <span class="corner pc-bl"></span>
-        <span class="corner pc-br"></span>
-        <!-- Linux Penguin SVG -->
-        <svg width="150" height="180" viewBox="0 0 150 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Body -->
-          <ellipse cx="75" cy="105" rx="52" ry="60" fill="#0F1B2D" stroke="#2196F3" stroke-width="1.5"/>
-          <!-- Belly (white) -->
-          <ellipse cx="75" cy="115" rx="34" ry="46" fill="#E6F0FA"/>
-          <!-- Head -->
-          <ellipse cx="75" cy="55" rx="34" ry="32" fill="#0F1B2D" stroke="#2196F3" stroke-width="1.5"/>
-          <!-- Face patch -->
-          <ellipse cx="75" cy="60" rx="22" ry="20" fill="#E6F0FA"/>
-          <!-- Eyes -->
-          <circle cx="65" cy="55" r="4" fill="#0F1B2D"/>
-          <circle cx="85" cy="55" r="4" fill="#0F1B2D"/>
-          <circle cx="66" cy="54" r="1.2" fill="#FFFFFF"/>
-          <circle cx="86" cy="54" r="1.2" fill="#FFFFFF"/>
-          <!-- Beak -->
-          <path d="M68 63 L75 68 L82 63 L78 66 L72 66 Z" fill="#FFB300"/>
-          <path d="M68 63 L75 68 L82 63" stroke="#E65100" stroke-width="0.6" fill="none"/>
-          <!-- Feet -->
-          <ellipse cx="58" cy="163" rx="14" ry="6" fill="#FFB300"/>
-          <ellipse cx="92" cy="163" rx="14" ry="6" fill="#FFB300"/>
-          <!-- Wings -->
-          <ellipse cx="30" cy="105" rx="10" ry="30" fill="#0F1B2D" stroke="#2196F3" stroke-width="1.5" transform="rotate(-10 30 105)"/>
-          <ellipse cx="120" cy="105" rx="10" ry="30" fill="#0F1B2D" stroke="#2196F3" stroke-width="1.5" transform="rotate(10 120 105)"/>
-          <!-- Accent glow ring -->
-          <circle cx="75" cy="105" r="60" fill="none" stroke="rgba(33,150,243,0.15)" stroke-width="0.5" stroke-dasharray="3 3"/>
-        </svg>
-      </div>
-      <div class="penguin-label">
-        TUX · KERNEL 2.6.12+
-        <span class="pl-line"></span>
-      </div>
-
-      <div class="code-particles">
-        <span class="c-line">/&gt; <span class="hl">module</span> economics;</span>
-        <span class="c-line">/&gt; <span class="hl2">export</span> { network_effect };</span>
-        <span class="c-line">/&gt; const cost = <span class="hl">0</span>;</span>
-        <span class="c-line">/&gt; <span class="hl2">deploy</span> @global.scale;</span>
-      </div>
-    </div>
-
-    <!-- Three waypoints (left column) -->
-    <div class="waypoints">
-      <div class="wp-header">
-        <span class="wp-num">01</span>
-        <span>SHARE MAP · 分享脉络指引</span>
-      </div>
-      <div class="wp-list">
-        <div class="wp-item">
-          <div class="wp-num-big">— 01</div>
-          <div class="wp-title-cn">开源之书记录</div>
-          <div class="wp-desc">本次分享基于 2023 年 9 月的开源布道资料整理而成，忠实还原原始脉络。</div>
-        </div>
-        <div class="wp-item">
-          <div class="wp-num-big">— 02</div>
-          <div class="wp-title-cn">主题聚焦</div>
-          <div class="wp-desc">探索 Linux 与开源软件背后的商业模型与经济学逻辑，解构其价值创造。</div>
-        </div>
-        <div class="wp-item">
-          <div class="wp-num-big">— 03</div>
-          <div class="wp-title-cn">分享脉络</div>
-          <div class="wp-desc">从历史演进、商业模式、生态价值到未来趋势，逐层展开的完整叙事。</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom-right badges -->
-    <div class="badges">
-      <div class="badge">
-        <div class="badge-label">Sharing Time</div>
-        <div class="badge-value">2023.09</div>
-        <div class="badge-sub">开源之书记录档期</div>
-      </div>
-      <div class="badge">
-        <div class="badge-label">Core Topic</div>
-        <div class="badge-value">Linux × OSS</div>
-        <div class="badge-sub">经济学 · 商业视角解读</div>
-      </div>
-    </div>
-
-    <!-- Footer strip -->
-    <div class="footer-strip">
-      <div class="f-left">
-        <span class="f-dot"></span>
-        <span>OSS READING CLUB</span>
-      </div>
-      <div class="f-mid">
-        <span class="f-bar"></span>
-        <span>HISTORY · MODEL · ECOSYSTEM · FUTURE</span>
-        <span class="f-bar"></span>
-      </div>
-      <div class="f-right">
-        // 开源布道 · 阅读分享
-      </div>
-    </div>
-
   </div>
 </div>
 </body>

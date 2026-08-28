@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源生态的隐形收益</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2196F3;
+    --primary-soft: rgba(33, 150, 243, 0.14);
+    --accent: #00BCD4;
+    --accent-soft: rgba(0, 188, 212, 0.14);
+    --neutral: #2D3748;
+    --bg-deep: #050B1E;
+    --bg-mid: #0A1836;
+    --text-main: #F0F6FF;
+    --text-mid: #A9B8CE;
+    --text-dim: #7890AE;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow: hidden; }
+  body {
+    font-family: 'Inter', 'SF Pro Display', 'Noto Sans SC', -apple-system, 'PingFang SC', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-main);
+  }
+  .wrapper {
+    width: 1600px; height: 900px;
+    position: relative; overflow: hidden;
+    margin: 0 auto;
+  }
+  #bg { position: absolute; inset: 0; z-index: 0; background: linear-gradient(155deg, #0A1F42 0%, #061029 52%, #030711 100%); }
+  .bg-layer { position: absolute; inset: 0; pointer-events: none; }
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(33,150,243,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(33,150,243,0.055) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0.9), rgba(0,0,0,0.2) 65%, transparent 100%);
+            mask-image: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0.9), rgba(0,0,0,0.2) 65%, transparent 100%);
+  }
+  .bg-glow-tl {
+    background: radial-gradient(circle at 12% 8%, rgba(33,150,243,0.30), transparent 55%);
+  }
+  .bg-glow-br {
+    background: radial-gradient(circle at 90% 92%, rgba(0,188,212,0.24), transparent 58%);
+  }
+  .bg-stars {
+    background-image:
+      radial-gradient(1px 1px at 15% 22%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 34% 68%, rgba(0,188,212,0.55), transparent),
+      radial-gradient(1.5px 1.5px at 58% 15%, rgba(255,255,255,0.55), transparent),
+      radial-gradient(1px 1px at 76% 84%, rgba(33,150,243,0.6), transparent),
+      radial-gradient(1px 1px at 88% 30%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.2px 1.2px at 25% 88%, rgba(0,188,212,0.5), transparent),
+      radial-gradient(1px 1px at 66% 55%, rgba(255,255,255,0.45), transparent),
+      radial-gradient(1px 1px at 8% 55%, rgba(255,255,255,0.45), transparent);
+    opacity: 0.9;
+  }
+
+  #ct {
+    position: absolute; inset: 0; z-index: 1;
+    padding: 60px;
+    box-sizing: border-box;
+    display: flex; flex-direction: column;
+    gap: 30px;
+  }
+
+  .corner {
+    position: absolute; width: 60px; height: 60px;
+    border: 2px solid var(--primary); opacity: 0.55;
+  }
+  .corner.tl { top: 26px; left: 26px; border-right: none; border-bottom: none; }
+  .corner.tr { top: 26px; right: 26px; border-left: none; border-bottom: none; }
+  .corner.bl { bottom: 26px; left: 26px; border-right: none; border-top: none; }
+  .corner.br { bottom: 26px; right: 26px; border-left: none; border-top: none; }
+
+  .header {
+    position: relative;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center;
+    font-size: 12px; letter-spacing: 3.6px;
+    color: var(--accent); font-weight: 600;
+    padding: 6px 14px;
+    border: 1px solid rgba(0,188,212,0.45);
+    border-radius: 3px;
+    background: rgba(0,188,212,0.08);
+    margin-bottom: 18px;
+  }
+  .eyebrow::before {
+    content: ''; display: inline-block; width: 6px; height: 6px;
+    background: var(--accent); margin-right: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+  }
+  .title-row {
+    display: flex; align-items: center; gap: 26px;
+  }
+  .title-glow {
+    display: flex; flex-direction: column;
+    gap: 6px; width: 8px;
+    padding: 6px 0;
+    position: relative;
+  }
+  .title-glow .bar1 {
+    width: 8px; height: 88px;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+    box-shadow: 0 0 18px rgba(33,150,243,0.85);
+  }
+  .title-glow .bar2 {
+    width: 8px; height: 18px;
+    background: var(--accent); opacity: 0.5;
+  }
+  .title-main {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  h1 {
+    font-size: 60px; font-weight: 800;
+    letter-spacing: 3px;
+    line-height: 1.08;
+    color: var(--text-main);
+  }
+  h1 .highlight {
+    background: linear-gradient(120deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    font-size: 19px; color: var(--text-mid);
+    font-weight: 400; letter-spacing: 1.4px;
+  }
+  .subtitle .dot {
+    display: inline-block; width: 5px; height: 5px;
+    background: var(--accent); border-radius: 50%;
+    vertical-align: middle;
+    margin: 0 12px 3px;
+    box-shadow: 0 0 6px var(--accent);
+  }
+  .header-line {
+    position: absolute; top: 82px; right: 0;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--text-dim);
+    font-size: 11px; letter-spacing: 3px;
+  }
+  .header-line .h-line {
+    width: 180px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(33,150,243,0.6));
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    flex: 1;
+    min-height: 0;
+  }
+  .card {
+    position: relative;
+    padding: 32px 26px 26px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(20,36,68,0.68), rgba(10,20,44,0.92));
+    border: 1px solid rgba(33,150,243,0.20);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, var(--primary) 50%, transparent 100%);
+    opacity: 0.65;
+  }
+  .card::after {
+    content: ''; position: absolute;
+    top: -50px; right: -50px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(33,150,243,0.22), transparent 70%);
+    pointer-events: none;
+  }
+  .card.card-accent {
+    background: linear-gradient(180deg, rgba(33,150,243,0.18) 0%, rgba(0,188,212,0.10) 45%, rgba(10,20,44,0.92) 100%);
+    border-color: rgba(0,188,212,0.42);
+    box-shadow:
+      0 0 32px rgba(33,150,243,0.18),
+      inset 0 0 0 1px rgba(255,255,255,0.03);
+  }
+  .card.card-accent::before {
+    background: linear-gradient(90deg, transparent, var(--accent) 30%, var(--primary) 70%, transparent);
+    opacity: 1;
+  }
+  .card.card-accent::after {
+    background: radial-gradient(circle, rgba(0,188,212,0.28), transparent 70%);
+  }
+
+  .card-num {
+    position: absolute;
+    top: 20px; right: 22px;
+    font-size: 46px; font-weight: 900;
+    color: rgba(33,150,243,0.09);
+    letter-spacing: -2px;
+    line-height: 1;
+    font-family: 'Inter', sans-serif;
+    z-index: 0;
+  }
+  .card.accent .card-num { color: rgba(0,188,212,0.18); }
+
+  .icon-wrap {
+    position: relative;
+    width: 96px; height: 96px;
+    margin-bottom: 22px;
+    z-index: 1;
+  }
+  .icon-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    background: radial-gradient(circle at 50% 50%, rgba(33,150,243,0.45) 0%, transparent 65%);
+    border-radius: 50%;
+  }
+  .card.accent .icon-wrap::before {
+    background: radial-gradient(circle at 50% 50%, rgba(0,188,212,0.55) 0%, transparent 65%);
+  }
+  .icon-wrap svg {
+    position: relative;
+    width: 100%; height: 100%;
+  }
+
+  .card-title {
+    position: relative; z-index: 1;
+    font-size: 23px; font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .card-title-en {
+    position: relative; z-index: 1;
+    font-size: 11px; font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 3.2px;
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+  .card-divider {
+    position: relative; z-index: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(0,188,212,0.55), transparent);
+    margin-bottom: 18px;
+  }
+  .card-desc {
+    position: relative; z-index: 1;
+    font-size: 15px; line-height: 1.75;
+    color: var(--text-mid);
+    margin-bottom: 22px;
+    letter-spacing: 0.4px;
+  }
+  .card-stats {
+    margin-top: auto;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative; z-index: 1;
+  }
+  .stat-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px;
+    background: linear-gradient(90deg, rgba(0,188,212,0.14), rgba(33,150,243,0.08));
+    border-left: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 3px;
+  }
+  .stat-label::before {
+    content: ''; width: 5px; height: 5px;
+    background: var(--accent); border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent);
+  }
+
+  .footer {
+    position: relative;
+    padding: 16px 22px;
+    border-left: 3px solid var(--primary);
+    background: linear-gradient(90deg, rgba(33,150,243,0.12), rgba(33,150,243,0) 85%);
+    border-radius: 0 6px 6px 0;
+  }
+  .quote {
+    font-size: 15px; line-height: 1.7;
+    color: var(--text-mid);
+    letter-spacing: 0.5px;
+  }
+  .quote .q-mark {
+    color: var(--primary);
+    font-family: 'Inter', serif;
+    font-size: 22px; font-weight: 900;
+    margin: 0 6px 0 0;
+    vertical-align: -3px;
+  }
+  .quote .q-mark.r { margin-left: 6px; margin-right: 0; vertical-align: -8px; }
+  .quote strong {
+    color: var(--accent);
+    font-weight: 700;
+    border-bottom: 1px dashed rgba(0,188,212,0.55);
+    padding-bottom: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-layer bg-glow-tl"></div>
+    <div class="bg-layer bg-grid"></div>
+    <div class="bg-layer bg-glow-br"></div>
+    <div class="bg-layer bg-stars"></div>
+  </div>
+
+  <div id="ct">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <div class="header">
+      <span class="eyebrow"><span>OPEN SOURCE ECONOMICS · 隐形资产</span></span>
+      <div class="title-row">
+        <div class="title-glow"><span class="bar1"></span><span class="bar2"></span></div>
+        <div class="title-main">
+          <h1><span>开源生态的</span><span class="highlight">隐形收益</span></h1>
+          <div class="subtitle">
+            <span>标准</span><span class="dot"></span><span>安全</span><span class="dot"></span><span>供应链韧性</span><span style="margin:0 10px;color:var(--text-dim);">·</span><span>带来的长期回报</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-line">
+        <span class="h-line"></span><span>INVISIBLE · COMPOUNDING · STRUCTURAL</span>
+      </div>
+    </div>
+
+    <div class="cards">
+
+      <div class="card accent">
+        <div class="card-num">01</div>
+        <div class="icon-wrap">
+          <svg viewBox="0 0 64 64" fill="none">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2196F3"/>
+                <stop offset="1" stop-color="#00BCD4"/>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="26" stroke="url(#g1)" stroke-width="1.6" stroke-dasharray="3 3"/>
+            <path d="M18 40 L28 30 L36 38 L46 24" stroke="url(#g1)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="18" cy="40" r="3" fill="#00BCD4"/>
+            <circle cx="46" cy="24" r="3" fill="#2196F3"/>
+            <circle cx="32" cy="32" r="34" stroke="rgba(0,188,212,0.25)" stroke-width="0.8"/>
+          </svg>
+        </div>
+        <div class="card-title"><span>标准话语权</span></div>
+        <div class="card-title-en"><span>STANDARD POWER</span></div>
+        <div class="card-divider"></div>
+        <div class="card-desc"><span>控制 Kube、gRPC、OpenSSL 等核心项目，即定义未来技术标准的边界与演进方向。</span></div>
+        <div class="card-stats">
+          <span class="stat-label"><span>标准话语权 · 定义未来</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">02</div>
+        <div class="icon-wrap">
+          <svg viewBox="0 0 64 64" fill="none">
+            <defs>
+              <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2196F3"/>
+                <stop offset="1" stop-color="#00BCD4"/>
+              </linearGradient>
+            </defs>
+            <path d="M32 6 L52 14 V32 C52 44 43 52 32 58 C21 52 12 44 12 32 V14 Z" stroke="url(#g2)" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M22 32 L29 39 L43 25" stroke="#00BCD4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 12 L46 18 V32 C46 40 40 46 32 50" stroke="rgba(33,150,243,0.35)" stroke-width="1.2" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div class="card-title"><span>安全众源化</span></div>
+        <div class="card-title-en"><span>CROWD SECURITY</span></div>
+        <div class="card-divider"></div>
+        <div class="card-desc"><span>CVE 漏洞由全球开发者共同修复，响应速度远超任何单一厂商的封闭团队。</span></div>
+        <div class="card-stats">
+          <span class="stat-label"><span>CVE 响应 · 众源加速</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">03</div>
+        <div class="icon-wrap">
+          <svg viewBox="0 0 64 64" fill="none">
+            <defs>
+              <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2196F3"/>
+                <stop offset="1" stop-color="#00BCD4"/>
+              </linearGradient>
+            </defs>
+            <path d="M32 8 L54 20 L32 32 L10 20 Z" stroke="url(#g3)" stroke-width="2.2" stroke-linejoin="round" fill="rgba(33,150,243,0.10)"/>
+            <path d="M10 32 L32 44 L54 32" stroke="url(#g3)" stroke-width="2.2" stroke-linejoin="round" fill="rgba(33,150,243,0.07)"/>
+            <path d="M10 44 L32 56 L54 44" stroke="url(#g3)" stroke-width="2.2" stroke-linejoin="round" fill="rgba(0,188,212,0.08)"/>
+            <circle cx="32" cy="8" r="2.4" fill="#00BCD4"/>
+            <circle cx="54" cy="20" r="2.4" fill="#2196F3"/>
+            <circle cx="10" cy="20" r="2.4" fill="#2196F3"/>
+            <circle cx="32" cy="56" r="2.4" fill="#00BCD4"/>
+          </svg>
+        </div>
+        <div class="card-title"><span>供应链韧性</span></div>
+        <div class="card-title-en"><span>SUPPLY RESILIENCE</span></div>
+        <div class="card-divider"></div>
+        <div class="card-desc"><span>多发行版、多发行商体系天然构建冗余，显著降低单一断供与地缘风险敞口。</span></div>
+        <div class="card-stats">
+          <span class="stat-label"><span>供应链 · 多发行商冗余</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">04</div>
+        <div class="icon-wrap">
+          <svg viewBox="0 0 64 64" fill="none">
+            <defs>
+              <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2196F3"/>
+                <stop offset="1" stop-color="#00BCD4"/>
+              </linearGradient>
+            </defs>
+            <circle cx="20" cy="26" r="6" stroke="url(#g4)" stroke-width="2"/>
+            <path d="M10 46 C10 38 14 34 20 34 C26 34 30 38 30 46" stroke="url(#g4)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="44" cy="26" r="6" stroke="url(#g4)" stroke-width="2"/>
+            <path d="M34 46 C34 38 38 34 44 34 C50 34 54 38 54 46" stroke="url(#g4)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="32" cy="16" r="5" stroke="#00BCD4" stroke-width="2"/>
+            <path d="M22 52 C22 46 26 42 32 42 C38 42 42 46 42 52" stroke="#00BCD4" stroke-width="2" stroke-linecap="round"/>
+            <path d="M32 26 L26 24 M32 26 L38 24" stroke="rgba(0,188,212,0.6)" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="card-title"><span>人才虹吸</span></div>
+        <div class="card-title-en"><span>TALENT MAGNETISM</span></div>
+        <div class="card-divider"></div>
+        <div class="card-desc"><span>开源社区成为顶尖开发者聚集地，人才自然向生态中心汇聚并长期沉淀。</span></div>
+        <div class="card-stats">
+          <span class="stat-label"><span>人才池 · 持续虹吸</span></span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="quote">
+        <span class="q-mark">「</span>开源经济学最重要的启示，就是把这类外部性——<strong>标准制定权、安全响应效率、供应链韧性与人才集聚</strong>——纳入企业战略考量。<span class="q-mark r">」</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
