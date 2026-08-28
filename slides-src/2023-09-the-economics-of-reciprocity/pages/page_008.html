@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>对中国开源生态的启示</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Georgia&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
+:root{
+  --navy:#0D2137;
+  --gold:#B08D57;
+  --cream:#F7F5F0;
+  --card:#FFFDF8;
+  --card-alt:#F2EEE4;
+  --line:#E8E1D0;
+  --text-body:#4A5363;
+  --text-mute:#7A7D82;
+  --font-serif:'Noto Serif SC','Georgia',serif;
+  --font-sans:'Noto Sans SC','Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{
+  font-family:var(--font-sans);
+  color:var(--text-body);
+  background:#E9E4D6;
+  display:flex;justify-content:center;align-items:center;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{
+  content:'';position:absolute;left:80px;top:80px;width:70px;height:1px;background:var(--gold);opacity:.7;
+}
+#bg::after{
+  content:'';position:absolute;right:80px;bottom:80px;width:70px;height:1px;background:var(--gold);opacity:.7;
+}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 80px 50px 80px;}
+.header{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:20px;}
+.title-area{display:flex;align-items:flex-start;gap:22px;flex:1;}
+.title-bar{width:5px;height:80px;background:var(--gold);flex-shrink:0;margin-top:8px;}
+.title-content{display:flex;flex-direction:column;gap:8px;flex:1;}
+h1.title{font-family:var(--font-serif);font-size:38px;font-weight:700;color:var(--navy);letter-spacing:2px;line-height:1.15;}
+p.subtitle{font-family:var(--font-sans);font-size:14px;color:var(--text-mute);line-height:1.6;max-width:960px;}
+.section-tag{text-align:right;padding-bottom:4px;flex-shrink:0;}
+.section-tag .tag-label{font-family:var(--font-sans);font-size:11px;color:var(--gold);letter-spacing:4px;margin-bottom:4px;}
+.section-tag .tag-num{font-family:var(--font-serif);font-size:26px;color:var(--navy);font-weight:700;letter-spacing:1px;}
+.narrative{
+  padding:14px 22px 14px 22px;
+  background:#FBF7EA;
+  border-left:3px solid var(--gold);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  margin-bottom:18px;
+  font-family:var(--font-serif);
+  font-size:15px;
+  color:var(--navy);
+  line-height:1.6;
+  letter-spacing:0.5px;
+}
+.narrative strong{color:var(--gold);font-weight:600;}
+.cards-grid{
+  display:grid;
+  grid-template-columns:1fr 60px 1fr;
+  grid-template-rows:repeat(5, 78px);
+  gap:14px 0;
+  margin-bottom:16px;
+}
+.card{
+  grid-column:1;
+  display:grid;
+  grid-template-columns:52px 1fr;
+  align-items:center;
+  padding:10px 20px 10px 16px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-left:3px solid var(--gold);
+  height:78px;
+  box-shadow:0 1px 2px rgba(13,33,55,0.04);
+}
+.card .badge{
+  width:44px;height:44px;
+  border-radius:50%;
+  background:var(--gold);
+  color:#FFFDF8;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-serif);
+  font-size:19px;font-weight:700;
+  letter-spacing:0;
+  box-shadow:0 1px 4px rgba(176,141,87,0.4);
+  flex-shrink:0;
+}
+.card .info{display:flex;flex-direction:column;gap:3px;padding-left:2px;min-width:0;}
+.card .info .head{font-family:var(--font-serif);font-size:16px;font-weight:700;color:var(--gold);letter-spacing:1px;line-height:1.2;}
+.card .info .detail{font-family:var(--font-sans);font-size:12.5px;color:var(--text-body);line-height:1.4;}
+.arrow-col{
+  grid-column:2;
+  grid-row:1 / span 5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+}
+.arrow-col .arr-line{width:1px;flex:1;background:linear-gradient(to bottom,transparent,var(--gold) 20%,var(--gold) 80%,transparent);}
+.arrow-col .arr-tip{
+  width:0;height:0;
+  border-top:6px solid transparent;
+  border-bottom:6px solid transparent;
+  border-left:11px solid var(--gold);
+  margin-bottom:-4px;
+}
+.arrow-col .arr-label{font-family:var(--font-serif);font-size:11px;color:var(--gold);letter-spacing:3px;writing-mode:vertical-rl;text-orientation:upright;margin:6px 0;}
+.side-note{
+  grid-column:3;
+  grid-row:1 / span 5;
+  padding:22px 24px;
+  background:linear-gradient(135deg, rgba(255,253,248,0.7) 0%, rgba(232,225,208,0.4) 100%);
+  border:1px solid var(--line);
+  border-top:3px solid var(--navy);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.side-note .sn-quote{
+  font-family:var(--font-serif);
+  font-size:13.5px;
+  color:var(--navy);
+  line-height:1.7;
+  font-style:italic;
+  letter-spacing:0.3px;
+}
+.side-note .sn-quote-mark{
+  font-family:var(--font-serif);
+  font-size:56px;
+  color:var(--gold);
+  line-height:0.4;
+  display:block;
+  margin-bottom:14px;
+  opacity:0.5;
+}
+.side-note .sn-refs{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.side-note .sn-ref-row{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text-body);line-height:1.4;}
+.side-note .sn-ref-tag{
+  display:inline-block;
+  padding:3px 10px;
+  font-family:var(--font-serif);
+  font-size:11px;
+  background:var(--navy);
+  color:#FFFDF8;
+  letter-spacing:1px;
+  flex-shrink:0;
+}
+.side-note .sn-footer{
+  border-top:1px dashed var(--line);
+  padding-top:12px;
+  font-family:var(--font-serif);
+  font-size:11.5px;
+  color:var(--text-mute);
+  line-height:1.5;
+  letter-spacing:0.5px;
+}
+.data-strip{
+  display:grid;
+  grid-template-columns:1fr 1px 1fr 1px 1fr;
+  align-items:stretch;
+  padding:14px 32px;
+  background:var(--card-alt);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  height:86px;
+  gap:20px;
+}
+.data-divider{background:var(--line);width:1px;}
+.data-item{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4px 8px;
+}
+.data-item .di-label{
+  font-family:var(--font-sans);
+  font-size:10.5px;
+  color:var(--navy);
+  letter-spacing:4px;
+  margin-bottom:6px;
+  font-weight:600;
+}
+.data-item .di-body{
+  display:flex;align-items:baseline;gap:10px;
+  font-family:var(--font-serif);
+  font-size:16px;
+  color:var(--navy);
+  line-height:1.35;
+}
+.data-item .di-key{
+  color:var(--gold);
+  font-weight:700;
+  font-size:20px;
+  letter-spacing:0.5px;
+}
+.data-item .di-desc{color:var(--text-mute);font-family:var(--font-sans);font-size:12px;font-weight:400;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="title-area">
+    <div class="title-bar"><span></span></div>
+    <div class="title-content">
+      <h1 class="title"><span>对中国开源生态的启示</span></h1>
+      <p class="subtitle"><span>中国开源起步较晚，但互惠机制具有普适性——缺的不是动机，而是把互惠显性化的制度设计</span></p>
+    </div>
+  </div>
+  <div class="section-tag">
+    <div class="tag-label"><span>IMPLICATIONS</span></div>
+    <div class="tag-num"><span>05</span></div>
+  </div>
+</div>
+
+<div class="narrative"><span>开源之道社区持续倡导的方向，是建立<strong>清晰的贡献记录</strong>、<strong>可查的声誉</strong>与<strong>可继承的规范</strong>——让贡献者看见、被看见、被传承。</span></div>
+
+<div class="cards-grid">
+  <div class="card">
+    <div class="badge"><span>01</span></div>
+    <div class="info">
+      <div class="head"><span>声誉体系</span></div>
+      <div class="detail"><span>建立可查的贡献记录与开源奖项，让隐性互惠变成显性凭证</span></div>
+    </div>
+  </div>
+  <div class="arrow-col">
+    <div class="arr-line"></div>
+    <div class="arr-tip"></div>
+  </div>
+  <div class="side-note">
+    <div>
+      <div class="sn-quote-mark"><span>&ldquo;</span></div>
+      <div class="sn-quote"><span>互惠的可持续性，取决于机制设计的成熟度，而非参与者的道德自觉。</span></div>
+    </div>
+    <div class="sn-refs">
+      <div class="sn-ref-row"><span class="sn-ref-tag"><span>学术</span></span><span>基于开源社区机制研究的理论推演</span></div>
+      <div class="sn-ref-row"><span class="sn-ref-tag"><span>参照</span></span><span>开源之道（OSWA）与 Apache 基金会实践</span></div>
+    </div>
+    <div class="sn-footer"><span>本页内容以制度设计为主线，兼顾社区、企业与高校的三方角色。</span></div>
+  </div>
+
+  <div class="card">
+    <div class="badge"><span>02</span></div>
+    <div class="info">
+      <div class="head"><span>本土规范</span></div>
+      <div class="detail"><span>推动中文社区形成明确行为准则，降低新人的互惠学习成本</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge"><span>03</span></div>
+    <div class="info">
+      <div class="head"><span>企业开放</span></div>
+      <div class="detail"><span>鼓励企业把内部贡献者的开源成果作为绩效考核维度</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge"><span>04</span></div>
+    <div class="info">
+      <div class="head"><span>人才培养</span></div>
+      <div class="detail"><span>高校课程引入开源实践，让互惠意识从校园开始建立</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge"><span>05</span></div>
+    <div class="info">
+      <div class="head"><span>跨生态协作</span></div>
+      <div class="detail"><span>打破 GitHub / Gitee / 自建平台壁垒，让互惠关系可跨项目延续</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="data-strip">
+  <div class="data-item">
+    <div class="di-label"><span>关 键 差 距</span></div>
+    <div class="di-body"><span class="di-key"><span>显性化不足</span></span><span class="di-desc"><span>（声誉凭证碎片化）</span></span></div>
+  </div>
+  <div class="data-divider"></div>
+  <div class="data-item">
+    <div class="di-label"><span>推 动 主 体</span></div>
+    <div class="di-body"><span class="di-key"><span>企业 + 高校 + 基金会</span></span><span class="di-desc"><span>（多方协同）</span></span></div>
+  </div>
+  <div class="data-divider"></div>
+  <div class="data-item">
+    <div class="di-label"><span>目 标 周 期</span></div>
+    <div class="di-body"><span class="di-key"><span>3 - 5 年</span></span><span class="di-desc"><span>（制度建设的合理时长）</span></span></div>
+  </div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

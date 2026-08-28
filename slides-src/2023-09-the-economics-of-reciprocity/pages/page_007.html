@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>企业参与开源的互惠动因</title>
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --ink: #0D2137;
+    --accent: #B08D57;
+    --ink-soft: #4A5567;
+    --ink-mute: #7A8190;
+    --rule: #D8D2C5;
+    --card-bg: #FFFFFF;
+    --paper: #FBF8F2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Helvetica Neue", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+  #bg { position: absolute; inset: 0; z-index: 0; }
+  #ct {
+    position: absolute; inset: 0; z-index: 1;
+    padding: 44px 60px 36px 60px;
+    display: flex; flex-direction: column;
+  }
+
+  /* subtle background decoration */
+  #bg { background: var(--bg); }
+  #bg::before {
+    content: "";
+    position: absolute;
+    right: -180px; top: -180px;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(176,141,87,0.10) 0%, rgba(176,141,87,0) 70%);
+    pointer-events: none;
+  }
+  #bg::after {
+    content: "";
+    position: absolute;
+    left: -140px; bottom: -140px;
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(13,33,55,0.06) 0%, rgba(13,33,55,0) 70%);
+    pointer-events: none;
+  }
+
+  /* header */
+  .header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1.5px solid var(--ink);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .header-left { max-width: 1100px; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: 0.32em; color: var(--accent);
+    font-weight: 600; margin-bottom: 8px;
+  }
+  h1 {
+    font-family: "Georgia", "Noto Serif SC", serif;
+    font-size: 34px;
+    margin: 0 0 10px 0;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .intro {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    max-width: 1080px;
+    margin: 0;
+  }
+  .header-right {
+    text-align: right;
+    padding-left: 32px;
+    border-left: 1px solid var(--rule);
+    min-width: 200px;
+  }
+  .header-right .ref-num {
+    font-family: "Georgia", serif;
+    font-size: 36px;
+    color: var(--accent);
+    line-height: 1;
+    font-weight: 600;
+  }
+  .header-right .ref-label {
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 0.22em;
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* stats row */
+  .stats {
+    display: flex;
+    margin-bottom: 16px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    border-radius: 2px;
+  }
+  .stat {
+    flex: 1;
+    padding: 10px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .stat + .stat { border-left: 1px solid var(--rule); }
+  .stat-num {
+    font-family: "Helvetica Neue", "Noto Sans SC", sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    font-weight: 700;
+    line-height: 1;
+    min-width: 78px;
+  }
+  .stat-num small { font-size: 12px; margin-left: 3px; font-weight: 400; color: var(--ink-soft); }
+  .stat-text { flex: 1; }
+  .stat-label {
+    font-size: 13.5px; color: var(--ink); font-weight: 600; margin-bottom: 2px;
+    letter-spacing: 0.02em;
+  }
+  .stat-desc { font-size: 11.5px; color: var(--ink-mute); line-height: 1.5; }
+
+  /* four quadrant cards */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    padding: 18px 22px 18px 22px;
+    position: relative;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0;
+    width: 3px; height: 46px;
+    background: var(--accent);
+  }
+  .card::after {
+    content: "";
+    position: absolute;
+    right: -1px; top: -1px;
+    width: 26px; height: 26px;
+    border-top: 1.5px solid var(--accent);
+    border-right: 1.5px solid var(--accent);
+  }
+  .card-icon {
+    width: 50px; height: 50px;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+    font-family: "Georgia", serif;
+    font-size: 22px;
+    font-weight: 600;
+    flex-shrink: 0;
+    background: var(--paper);
+  }
+  .card-body { flex: 1; min-width: 0; }
+  .card-head {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 4px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .card-num {
+    font-family: "Georgia", serif;
+    color: var(--accent);
+    font-size: 13px;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+  .card-title {
+    font-family: "Noto Serif SC", "Georgia", serif;
+    font-size: 19px;
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .card-loc {
+    margin-left: auto;
+    font-size: 10.5px;
+    color: var(--ink-mute);
+    letter-spacing: 0.16em;
+    font-weight: 400;
+  }
+  .card-en {
+    font-size: 10.5px;
+    color: var(--ink-mute);
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .card-desc {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+
+  /* supplementary strip */
+  .supp {
+    display: flex; align-items: center;
+    background: linear-gradient(90deg, #0D2137 0%, #162A40 100%);
+    color: #F7F5F0;
+    padding: 12px 22px;
+    gap: 20px;
+    margin-bottom: 12px;
+    position: relative;
+    border-radius: 2px;
+  }
+  .supp-tag {
+    color: var(--accent);
+    font-family: "Georgia", serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .supp-divider {
+    width: 1px; height: 34px;
+    background: rgba(176,141,87,0.55);
+    flex-shrink: 0;
+  }
+  .supp-body { display: flex; align-items: center; gap: 14px; flex: 1; }
+  .supp-label {
+    font-family: "Noto Serif SC", "Georgia", serif;
+    font-size: 17px;
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+  .supp-text {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: rgba(247,245,240,0.88);
+  }
+  .supp-attr {
+    font-family: "Georgia", serif;
+    font-style: italic;
+    font-size: 10.5px;
+    color: rgba(247,245,240,0.55);
+    text-align: right;
+    flex-shrink: 0;
+    letter-spacing: 0.04em;
+  }
+
+  /* footer */
+  .footer {
+    display: flex;
+    gap: 16px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    margin-top: auto;
+  }
+  .cite-card {
+    flex: 1.35;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    position: relative;
+  }
+  .cite-tag {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .cite-text {
+    font-family: "Georgia", "Noto Serif SC", serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .cite-ref {
+    font-size: 10.5px;
+    color: var(--ink-mute);
+    letter-spacing: 0.05em;
+    margin-top: 5px;
+    font-style: normal;
+    font-family: "Helvetica Neue", "Noto Sans SC", sans-serif;
+  }
+  .keycard {
+    flex: 1;
+    padding: 10px 16px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    position: relative;
+  }
+  .keycard-title {
+    font-family: "Noto Serif SC", serif;
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 3px;
+  }
+  .keycard-desc {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  .keycard-desc .k { color: var(--accent); font-weight: 600; font-style: italic; font-family: "Georgia", serif; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow">OPEN SOURCE STRATEGY · 互惠循环 · MUTUAL BENEFIT</div>
+        <h1>企业参与开源的互惠动因</h1>
+        <p class="intro">企业投入开源并不仅是为自家产品。更普遍的动因是互惠——帮助社区、建立声誉、吸引工程师、反向受益，构成一条长期、非现金、非契约的循环。理解这条链条，方能设计合理的开源战略，而非把它简化成市场公关。</p>
+      </div>
+      <div class="header-right">
+        <div class="ref-num">05</div>
+        <div class="ref-label">MOTIVATIONS</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">5<small>类</small></div>
+        <div class="stat-text">
+          <div class="stat-label">常见动因分类</div>
+          <div class="stat-desc">人才吸引 / 标准影响 / 问题回流 / 社区关系 / 声誉</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">≠0<small>显著</small></div>
+        <div class="stat-text">
+          <div class="stat-label">短期 ROI 常不显著</div>
+          <div class="stat-desc">企业常低估长期价值，误判开源投入的财务回报周期</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">Apache<small> 委员会</small></div>
+        <div class="stat-text">
+          <div class="stat-label">代表案例</div>
+          <div class="stat-desc">Apache Software Foundation — 多家公司工程师联合的贡献机制</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">❦</div>
+        <div class="card-body">
+          <div class="card-head">
+            <span class="card-num">Ⅰ</span>
+            <span class="card-title">人才吸引</span>
+            <span class="card-loc">左上 · Ⅰ</span>
+          </div>
+          <div class="card-en">Talent Attraction</div>
+          <div class="card-desc">参与关键开源项目成为高端工程师的简历加分项；雇主借此获得人才红利，形成"贡献—声誉—招募"的正向循环。</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚖</div>
+        <div class="card-body">
+          <div class="card-head">
+            <span class="card-num">Ⅱ</span>
+            <span class="card-title">标准影响</span>
+            deus
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
