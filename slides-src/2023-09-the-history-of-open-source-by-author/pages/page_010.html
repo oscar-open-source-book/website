@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>把开源读下去</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=Lato:wght@300;400;700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --wine:#880E4F;
+  --bg:#F5F5F5;
+  --ink:#0D2137;
+  --ink-soft:#3B4859;
+  --muted:#6B7480;
+  --hair:#0D2137;
+  --hair-thin:rgba(13,33,55,0.18);
+  --accent:#880E4F;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;overflow:hidden;background:var(--bg);}
+body{font-family:'Lato','Noto Sans SC',sans-serif;color:var(--navy);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:52px 96px 40px 96px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* background decorative */
+#bg::before{
+  content:"";
+  position:absolute;top:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,var(--navy) 0%,var(--navy) 62%,var(--wine) 62%,var(--wine) 78%,var(--navy) 78%);
+}
+#bg::after{
+  content:"FIN.";
+  position:absolute;right:64px;top:36px;
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:14px;letter-spacing:2px;color:rgba(13,33,55,0.28);
+}
+
+/* masthead */
+.masthead{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--hair-thin);}
+.mast-left{display:flex;align-items:baseline;gap:14px;}
+.mast-mark{font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:var(--wine);letter-spacing:1px;}
+.mast-issue{font-family:'Lato','Noto Sans SC',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.mast-right{font-family:'Lato','Noto Sans SC',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.mast-right .dot{display:inline-block;width:5px;height:5px;background:var(--wine);border-radius:50%;margin:0 8px 2px 8px;vertical-align:middle;}
+
+/* hero title */
+.hero{margin-top:36px;text-align:center;position:relative;}
+.hero-eyebrow{
+  font-family:'Lato','Noto Sans SC',sans-serif;
+  font-size:12px;letter-spacing:6px;text-transform:uppercase;color:var(--wine);
+  margin-bottom:14px;
+}
+.hero-eyebrow .bar{display:inline-block;width:36px;height:1px;background:var(--wine);vertical-align:middle;margin:0 12px 4px 12px;}
+.hero-title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:700;
+  font-size:108px;
+  line-height:1.02;
+  letter-spacing:-1px;
+  color:var(--navy);
+}
+.hero-title .serif-cn{font-family:'Noto Serif SC',serif;font-weight:900;letter-spacing:2px;}
+.hero-title .amp{font-style:italic;font-weight:400;color:var(--wine);padding:0 6px;}
+.hero-sub{
+  margin-top:22px;
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:19px;color:var(--ink-soft);letter-spacing:2px;
+}
+.hero-sub .sep{color:var(--wine);padding:0 10px;font-weight:700;}
+.hero-rule{
+  width:60px;height:2px;background:var(--navy);
+  margin:22px auto 0 auto;
+}
+
+/* narrative */
+.narrative{
+  margin-top:34px;
+  max-width:1080px;
+  margin-left:auto;margin-right:auto;
+  text-align:center;
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:20px;
+  line-height:1.85;
+  color:var(--navy);
+  position:relative;
+  padding:0 30px;
+}
+.narrative .drop{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-weight:700;
+  color:var(--wine);
+}
+.narrative::before,.narrative::after{
+  content:"";
+  position:absolute;top:50%;
+  width:70px;height:1px;background:var(--hair-thin);
+}
+.narrative::before{left:-30px;}
+.narrative::after{right:-30px;}
+
+/* divider between narrative and columns */
+.midline{
+  margin-top:34px;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+}
+.midline .ln{width:120px;height:1px;background:var(--hair-thin);}
+.midline .lbl{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:13px;letter-spacing:4px;color:var(--wine);text-transform:uppercase;
+}
+
+/* three columns */
+.columns{
+  margin-top:26px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:0;
+  flex:1;
+  min-height:0;
+}
+.col{
+  padding:0 34px;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.col + .col{border-left:1px solid var(--hair-thin);}
+.col-head{
+  display:flex;align-items:baseline;gap:10px;
+  padding-bottom:14px;
+  border-bottom:2px solid var(--navy);
+  margin-bottom:18px;
+}
+.col-num{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:22px;color:var(--wine);font-weight:700;
+}
+.col-title{
+  font-family:'Noto Serif SC',serif;font-weight:700;
+  font-size:22px;color:var(--navy);letter-spacing:1px;
+}
+.col-eyebrow{
+  font-family:'Lato','Noto Sans SC',sans-serif;
+  font-size:11px;letter-spacing:3px;color:var(--muted);
+  text-transform:uppercase;margin-left:auto;
+}
+
+/* col 1 books */
+.book-list{list-style:none;display:flex;flex-direction:column;gap:14px;}
+.book-item{
+  display:flex;gap:14px;align-items:flex-start;
+  font-family:'Noto Serif SC',serif;
+}
+.book-roman{
+  font-family:'Playfair Display',serif;font-style:italic;
+  color:var(--wine);font-size:15px;
+  padding-top:3px;min-width:22px;font-weight:700;
+}
+.book-body{flex:1;}
+.book-name{
+  font-size:15px;color:var(--navy);font-weight:600;
+  line-height:1.35;letter-spacing:0.5px;
+}
+.book-name .en{
+  font-family:'Playfair Display',serif;font-style:italic;
+  color:var(--ink-soft);font-weight:400;
+}
+.book-by{
+  font-family:'Lato','Noto Sans SC',sans-serif;
+  font-size:11px;color:var(--muted);
+  letter-spacing:1px;margin-top:3px;
+}
+
+/* col 2 steps */
+.steps{display:flex;flex-direction:column;gap:14px;}
+.step{
+  display:flex;gap:14px;align-items:flex-start;
+}
+.step-idx{
+  font-family:'Playfair Display',serif;font-weight:700;
+  color:var(--wine);font-size:14px;
+  min-width:30px;
+  padding:6px 8px;
+  border:1px solid var(--navy);
+  text-align:center;
+  letter-spacing:1px;
+  font-style:italic;
+}
+.step-body{flex:1;padding-top:1px;}
+.step-title{
+  font-family:'Noto Serif SC',serif;font-weight:700;
+  font-size:16px;color:var(--navy);line-height:1.4;
+}
+.step-desc{
+  font-family:'Lato','Noto Sans SC',sans-serif;
+  font-size:12.5px;color:var(--muted);
+  margin-top:4px;line-height:1.55;letter-spacing:0.3px;
+}
+.step-desc .kw{color:var(--wine);font-weight:700;}
+.step-arrow{
+  text-align:left;color:var(--hair-thin);
+  font-size:14px;padding-left:14px;margin:-6px 0 -6px 14px;
+  font-family:'Playfair Display',serif;
+}
+
+/* col 3 teaser */
+.teaser-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 16px;
+  background:var(--navy);color:#F5F5F5;
+  font-family:'Noto Serif SC',serif;font-weight:700;
+  font-size:16px;letter-spacing:2px;
+  align-self:flex-start;
+  margin-bottom:16px;
+}
+.teaser-tag .pill-dot{width:6px;height:6px;background:var(--wine);border-radius:50%;}
+.teaser-tag .en{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-weight:400;font-size:12px;color:rgba(245,245,245,0.7);
+  letter-spacing:1px;
+}
+.license-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;
+  margin-top:6px;
+}
+.lic{
+  display:flex;flex-direction:column;
+  padding:9px 12px;
+  border-left:2px solid var(--wine);
+  background:rgba(255,255,255,0.55);
+}
+.lic-name{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:14px;color:var(--navy);letter-spacing:0.5px;
+}
+.lic-hint{
+  font-family:'Lato','Noto Sans SC',sans-serif;
+  font-size:11px;color:var(--muted);
+  margin-top:2px;letter-spacing:0.5px;
+}
+.lic.full{grid-column:1 / -1;background:var(--navy);border-left-color:var(--wine);}
+.lic.full .lic-name{color:#F5F5F5;}
+.lic.full .lic-hint{color:rgba(245,245,245,0.75);}
+.teaser-foot{
+  margin-top:14px;
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:12px;color:var(--muted);letter-spacing:1px;
+}
+.teaser-foot::before{
+  content:"→ ";color:var(--wine);font-style:normal;
+}
+
+/* footer */
+.footer{
+  margin-top:20px;
+  padding-top:14px;
+  border-top:1px solid var(--hair-thin);
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Lato','Noto Sans SC',sans-serif;
+  font-size:12px;letter-spacing:2px;color:var(--muted);
+}
+.footer .left{display:flex;align-items:center;gap:14px;}
+.footer .brand{
+  font-family:'Playfair Display',serif;font-style:italic;
+  color:var(--navy);font-weight:700;letter-spacing:2px;
+}
+.footer .mid{
+  font-family:'Playfair Display',serif;font-style:italic;
+  color:var(--wine);letter-spacing:3px;
+}
+.footer .right{display:flex;align-items:center;gap:14px;}
+.footer .right .badge{
+  padding:4px 10px;border:1px solid var(--hair-thin);
+  color:var(--navy);letter-spacing:2px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="masthead">
+      <div class="mast-left">
+        <span class="mast-mark">开源之书记录</span>
+        <span class="mast-issue">OASIS NOTES · ISSUE 09 / 2023</span>
+      </div>
+      <div class="mast-right">
+        <span>SHARE N° 10</span><span class="dot"></span><span>END OF SHARE</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-eyebrow"><span class="bar"></span>A NOTE TO CLOSE<span class="bar"></span></div>
+      <div class="hero-title">
+        <span class="serif-cn">把开源</span><span class="amp">·</span><span class="serif-cn">读下去</span>
+      </div>
+      <div class="hero-sub">
+        <span>开源之书记录</span><span class="sep">·</span><span>2023 年 9 月</span><span class="sep">·</span><span>适兕</span>
+      </div>
+      <div class="hero-rule"></div>
+    </div>
+
+    <div class="narrative">
+      <span>分享的最后，我们回到 <span class="drop">「读」</span> 这个动作。开源史本身就是一批读者变成作者的故事 —— 读到某段代码时产生疑问，然后自己 <span class="drop">fork</span> 一份去改。希望这份 10 页提纲，能成为一个入口。</span>
+    </div>
+
+    <div class="midline">
+      <span class="ln"></span>
+      <span class="lbl">— Closing Notes —</span>
+      <span class="ln"></span>
+    </div>
+
+    <div class="columns">
+
+      <div class="col">
+        <div class="col-head">
+          <span class="col-num">I.</span>
+          <span class="col-title">本期延伸阅读</span>
+          <span class="col-eyebrow">Further Reading</span>
+        </div>
+        <ul class="book-list">
+          <li class="book-item">
+            <span class="book-roman">i</span>
+            <div class="book-body">
+              <div class="book-name">《开源：来自边缘的承诺》</div>
+              <div class="book-by">Benjamin M._pkay · <span class="en" style="font-family:'Playfair Display',serif;font-style:italic;">Open Source: A Promising Path</span></div>
+            </div>
+          </li>
+          <li class="book-item">
+            <span class="book-roman">ii</span>
+            <div class="book-body">
+              <div class="book-name">《大教堂与集市》</div>
+              <div class="book-by">Eric S. Raymond · <span class="en" style="font-family:'Playfair Display',serif;font-style:italic;">The Cathedral and the Bazaar</span></div>
+            </div>
+          </li>
+          <li class="book-item">
+            <span class="book-roman">iii</span>
+            <div class="book-body">
+              <div class="book-name">《How Linux Works》</div>
+              <div class="book-by">Brian Ward · <span class="en" style="font-family:'Playfair Display',serif;font-style:italic;">Understanding the Power of Linux</span></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <div class="col-head">
+          <span class="col-num">II.</span>
+          <span class="col-title">参与开源三步走</span>
+          <span class="col-eyebrow">Get Involved</span>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-idx">01</div>
+            <div class="step-body">
+              <div class="step-title">找一个熟悉的仓库</div>
+              <div class="step-desc">从你日常已经在用的工具切入 —— 熟悉比兴趣更重要。</div>
+            </div>
+          </div>
+          <div class="step-arrow">↓</div>
+          <div class="step">
+            <div class="step-idx">02</div>
+            <div class="step-body">
+              <div class="step-title">修一个 <span style="font-family:'Playfair Display',serif;font-style:italic;color:var(--wine);">typo</span></div>
+              <div class="step-desc">让第一次贡献足够小，小到只需要一次 review 就能合并。</div>
+            </div>
+          </div>
+          <div class="step-arrow">↓</div>
+          <div class="step">
+            <div class="step-idx">03</div>
+            <div class="step-body">
+              <div class="step-title">提一份有测试的 PR</div>
+              <div class="step-desc">让改动配上测试用例 —— 这是被社区长期接受的最小诚意。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="col-head">
+          <span class="col-num">III.</span>
+          <span class="col-title">下期预告</span>
+          <span class="col-eyebrow">Next Issue</span>
+        </div>
+        <div class="teaser-tag">
+          <span class="pill-dot"></span>
+          <span>许可证对比</span>
+          <span class="en">— Licensing 101</span>
+        </div>
+        <div class="license-grid">
+          <div class="lic"><div class="lic-name">MIT</div><div class="lic-hint">宽松 · 最小约束</div></div>
+          <div class="lic"><div class="lic-name">Apache-2.0</div><div class="lic-hint">宽松 · 附专利条款</div></div>
+          <div class="lic"><div class="lic-name">GPL</div><div class="lic-hint">强 Copyleft</div></div>
+          <div class="lic"><div class="lic-name">AGPL</div><div class="lic-hint">网络服务延伸</div></div>
+          <div class="lic full"><div class="lic-name">SSPL</div><div class="lic-hint">Service Side · 商用条款边界</div></div>
+        </div>
+        <div class="teaser-foot">Issue 10 / 2023 · 我们下期见</div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="left">
+        <span class="brand">开源之书记录</span>
+        <span>·</span>
+        <span>2023-09</span>
+      </div>
+      <div class="mid">— fin —</div>
+      <div class="right">
+        <span>SHARE 10 / 10</span>
+        <span class="badge">END</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
