@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>从上游到上游优先</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --bg:#1A1A2E;
+  --bg-deep:#0F0F1A;
+  --text-main:#E8ECF5;
+  --text-dim:#8892A8;
+  --card-bg:rgba(33,150,243,0.06);
+  --card-border:rgba(0,229,255,0.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  color:var(--text-main);
+  background:var(--bg);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,#0F0F1A 0%,#1A1A2E 45%,#16213E 100%);
+}
+#bg::before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(33,150,243,0.045) 1px,transparent 1px);
+  background-size:48px 48px;
+  background-position:100% 0;
+  opacity:0.7;
+  -webkit-mask-image:linear-gradient(270deg,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.3) 45%,rgba(0,0,0,0) 70%);
+          mask-image:linear-gradient(270deg,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.3) 45%,rgba(0,0,0,0) 70%);
+}
+#bg::after{
+  content:"";
+  position:absolute;
+  right:-120px;top:140px;
+  width:680px;height:680px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,229,255,0.10) 0%,rgba(33,150,243,0.06) 40%,transparent 70%);
+  pointer-events:none;
+}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 72px;box-sizing:border-box;display:flex;flex-direction:column;}
+/* Top bar */
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:4px 0 0 0;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{
+  width:36px;height:36px;position:relative;
+  border:1.5px solid var(--accent);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+}
+.brand-mark::before{
+  content:"";position:absolute;inset:5px;border:1px solid rgba(0,229,255,0.45);border-radius:4px;
+}
+.brand-mark span{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--accent);position:relative;}
+.brand-text{font-family:'Inter',sans-serif;font-size:13px;letter-spacing:0.28em;color:var(--text-dim);font-weight:500;}
+.top-meta{display:flex;align-items:center;gap:24px;font-size:12px;letter-spacing:0.2em;color:var(--text-dim);}
+.top-meta .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);display:inline-block;margin-right:8px;vertical-align:middle;}
+
+/* Hero */
+.hero{margin-top:28px;position:relative;padding-left:8px;}
+.hero-eyebrow{
+  display:flex;align-items:center;gap:14px;
+  font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;
+  letter-spacing:0.36em;color:var(--accent);
+  margin-bottom:20px;
+}
+.hero-eyebrow .line{width:56px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);}
+.hero-eyebrow .num{color:var(--text-dim);font-size:12px;letter-spacing:0.3em;}
+.hero-title{
+  font-family:'Space Grotesk','PingFang SC',sans-serif;
+  font-weight:700;
+  font-size:108px;
+  line-height:1.02;
+  letter-spacing:0.02em;
+  color:#FFFFFF;
+  text-shadow:
+    0 0 24px rgba(33,150,243,0.55),
+    0 0 48px rgba(33,150,243,0.30),
+    0 0 80px rgba(0,229,255,0.18);
+  position:relative;
+  display:inline-block;
+}
+.hero-title .glow{color:var(--accent);text-shadow:0 0 28px rgba(0,229,255,0.7),0 0 56px rgba(0,229,255,0.4);}
+.hero-title::after{
+  content:"";position:absolute;left:0;bottom:-18px;width:180px;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--primary),transparent);
+  border-radius:2px;
+}
+.hero-sub{
+  margin-top:38px;
+  font-family:'Inter',sans-serif;
+  font-size:20px;font-weight:400;
+  color:var(--text-dim);
+  letter-spacing:0.06em;
+  line-height:1.5;
+  max-width:900px;
+}
+.hero-sub .em{color:var(--text-main);font-weight:500;}
+
+/* Cards row */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px;}
+.card{
+  position:relative;
+  padding:22px 22px 20px 24px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:10px;
+  backdrop-filter:blur(4px);
+  overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--accent),var(--primary));
+  box-shadow:0 0 12px rgba(0,229,255,0.5);
+}
+.card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.card-icon{
+  width:30px;height:30px;border-radius:6px;
+  border:1px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--accent);
+  background:rgba(0,229,255,0.06);
+}
+.card-label{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.24em;color:var(--accent);}
+.card-num{margin-left:auto;font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-dim);letter-spacing:0.2em;}
+.card-title{
+  font-family:'Space Grotesk','PingFang SC',sans-serif;
+  font-size:18px;font-weight:600;color:#FFFFFF;
+  margin-bottom:8px;
+  line-height:1.35;
+}
+.card-text{font-size:12.5px;color:var(--text-dim);line-height:1.65;font-weight:300;letter-spacing:0.02em;}
+.card-text .hl{color:var(--text-main);font-weight:400;}
+.card-tag{margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:var(--accent);letter-spacing:0.2em;font-family:'Space Grotesk',sans-serif;}
+.card-tag::before{content:"▸";font-size:9px;}
+
+/* Bottom meta bar */
+.meta-bar{
+  margin-top:auto;
+  display:flex;align-items:stretch;gap:0;
+  border:1px solid rgba(0,229,255,0.18);
+  border-radius:8px;
+  background:rgba(15,15,26,0.6);
+  overflow:hidden;
+}
+.meta-item{
+  flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:12px 20px;
+  border-right:1px solid rgba(0,229,255,0.14);
+}
+.meta-item:last-child{border-right:none;}
+.meta-item .k{font-family:'Space Grotesk',sans-serif;font-size:10.5px;font-weight:500;letter-spacing:0.28em;color:var(--text-dim);margin-bottom:5px;}
+.meta-item .v{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#FFFFFF;letter-spacing:0.04em;}
+.meta-item .v .accent{color:var(--accent);}
+
+/* Flowing light band */
+.light-band{
+  position:absolute;left:0;right:0;bottom:0;height:2px;z-index:2;
+  background:linear-gradient(90deg,transparent 0%,var(--accent) 25%,var(--primary) 50%,var(--accent) 75%,transparent 100%);
+  box-shadow:0 0 16px rgba(0,229,255,0.6),0 0 32px rgba(33,150,243,0.4);
+  animation:band 3.5s ease-in-out infinite;
+  background-size:200% 100%;
+}
+@keyframes band{
+  0%,100%{background-position:0% 0;}
+  50%{background-position:100% 0;}
+}
+.light-band2{
+  position:absolute;left:0;right:0;bottom:6px;height:1px;z-index:2;
+  background:linear-gradient(90deg,transparent,var(--primary) 30%,transparent 70%);
+  opacity:0.5;
+}
+
+/* Floating particles */
+.particles{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.particle{position:absolute;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+.p1{width:3px;height:3px;top:120px;right:220px;opacity:0.7;}
+.p2{width:2px;height:2px;top:260px;right:100px;opacity:0.5;}
+.p3{width:4px;height:4px;top:520px;right:340px;opacity:0.6;}
+.p4{width:2px;height:2px;top:780px;right:60px;opacity:0.4;}
+.p5{width:3px;height:3px;top:420px;left:40px;opacity:0.5;}
+
+/* Right decorative panel */
+.right-panel{
+  position:absolute;right:72px;top:130px;width:280px;height:360px;
+  z-index:0;pointer-events:none;
+  border:1px solid rgba(0,229,255,0.12);
+  border-radius:8px;
+  background:linear-gradient(180deg,rgba(33,150,243,0.04),rgba(0,229,255,0.02));
+  padding:16px 18px;
+}
+.right-panel .rp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.right-panel .rp-title{font-family:'Space Grotesk',sans-serif;font-size:10.5px;font-weight:500;letter-spacing:0.24em;color:var(--accent);}
+.right-panel .rp-status{font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:0.16em;color:var(--text-dim);}
+.right-panel .rp-status::before{content:"● ";color:var(--accent);font-size:7px;vertical-align:middle;}
+.right-panel .rp-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;margin-top:6px;}
+.rp-row{display:flex;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-size:10.5px;color:var(--text-dim);}
+.rp-row .v{color:#FFFFFF;font-weight:500;}
+.rp-bars{margin-top:14px;display:flex;flex-direction:column;gap:7px;}
+.rp-bar{height:4px;background:rgba(33,150,243,0.12);border-radius:2px;overflow:hidden;position:relative;}
+.rp-bar-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:2px;}
+.rp-bar1 .rp-bar-fill{width:82%;}
+.rp-bar2 .rp-bar-fill{width:64%;}
+.rp-bar3 .rp-bar-fill{width:91%;}
+.rp-bar4 .rp-bar-fill{width:47%;}
+.rp-bar5 .rp-bar-fill{width:73%;}
+.rp-bars-label{margin-top:10px;display:flex;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:0.2em;color:var(--text-dim);}
+
+/* Corner accents */
+.corner{position:absolute;width:28px;height:28px;z-index:2;}
+.corner::before,.corner::after{content:"";position:absolute;background:var(--accent);}
+.corner-tl{top:36px;left:36px;}
+.corner-tl::before{left:0;top:0;width:20px;height:1px;}
+.corner-tl::after{left:0;top:0;width:1px;height:20px;}
+.corner-tr{top:36px;right:36px;}
+.corner-tr::before{right:0;top:0;width:20px;height:1px;}
+.corner-tr::after{right:0;top:0;width:1px;height:20px;}
+.corner-bl{bottom:24px;left:36px;}
+.corner-bl::before{left:0;bottom:0;width:20px;height:1px;}
+.corner-bl::after{left:0;bottom:0;width:1px;height:20px;}
+.corner-br{bottom:24px;right:36px;}
+.corner-br::before{right:0;bottom:0;width:20px;height:1px;}
+.corner-br::after{right:0;bottom:0;width:1px;height:20px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="particles">
+      <span class="particle p1"></span>
+      <span class="particle p2"></span>
+      <span class="particle p3"></span>
+      <span class="particle p4"></span>
+      <span class="particle p5"></span>
+    </div>
+
+    <div class="right-panel">
+      <div class="rp-head">
+        <span class="rp-title">TELEMETRY</span>
+        <span class="rp-status">LIVE</span>
+      </div>
+      <div class="rp-grid">
+        <div class="rp-row"><span>UPLINK</span><span class="v">0x2196</span></div>
+        <div class="rp-row"><span>NODE</span><span class="v">upstream</span></div>
+        <div class="rp-row"><span>BATCH</span><span class="v">2023·07</span></div>
+        <div class="rp-row"><span>MODE</span><span class="v">FIRST</span></div>
+      </div>
+      <div class="rp-bars">
+        <div class="rp-bar rp-bar1"><div class="rp-bar-fill"></div></div>
+        <div class="rp-bar rp-bar2"><div class="rp-bar-fill"></div></div>
+        <div class="rp-bar rp-bar3"><div class="rp-bar-fill"></div></div>
+        <div class="rp-bar rp-bar4"><div class="rp-bar-fill"></div></div>
+        <div class="rp-bar rp-bar5"><div class="rp-bar-fill"></div></div>
+      </div>
+      <div class="rp-bars-label">
+        <span>SIGNAL</span><span>STREAM</span>
+      </div>
+    </div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-mark"><span>OSS</span></div>
+        <span class="brand-text">OPEN SOURCE JOURNAL</span>
+      </div>
+      <div class="top-meta">
+        <span><span class="dot"></span>VOL. 2023 · 07</span>
+        <span>// COVER</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-eyebrow">
+        <span class="line"></span>
+        <span>UPSTREAM FIRST</span>
+        <span class="num">№ 07 / 2023</span>
+      </div>
+      <h1 class="hero-title">
+        从上游到<span class="glow">上游优先</span>
+      </h1>
+      <p class="hero-sub">
+        <span class="em">2023·07 开源之书记录</span> · 开源布道与阅读分享
+      </p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">01</div>
+          <span class="card-label">定位</span>
+          <span class="card-num">/ ROLE</span>
+        </div>
+        <div class="card-title">主题定位</div>
+        <div class="card-text">围绕开源生态中<span class="hl">"上游"</span>概念，解读从参与上游到<span class="hl">"上游优先"</span>的范式转变。</div>
+        <span class="card-tag">UPSTREAM · SHIFT</span>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">02</div>
+          <span class="card-label">来源</span>
+          <span class="card-num">/ SOURCE</span>
+        </div>
+        <div class="card-title">分享来源</div>
+        <div class="card-text">基于<span class="hl">开源之道</span>系列读书笔记，聚焦<span class="hl">适兕</span>对开源哲学的思考与总结。</div>
+        <span class="card-tag">READING · NOTES</span>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">03</div>
+          <span class="card-label">人群</span>
+          <span class="card-num">/ AUDIENCE</span>
+        </div>
+        <div class="card-title">适用人群</div>
+        <div class="card-text">面向<span class="hl">开源贡献者</span>、<span class="hl">技术布道师</span>以及关注<span class="hl">社区治理</span>的开发者。</div>
+        <span class="card-tag">COMMUNITY · DEV</span>
+      </div>
+    </div>
+
+    <div class="meta-bar">
+      <div class="meta-item">
+        <span class="k">分享期</span>
+        <span class="v"><span class="accent">2023</span> · 07</span>
+      </div>
+      <div class="meta-item">
+        <span class="k">系列</span>
+        <span class="v">开源之道</span>
+      </div>
+      <div class="meta-item">
+        <span class="k">角色</span>
+        <span class="v">适兕</span>
+      </div>
+      <div class="meta-item">
+        <span class="k">类型</span>
+        <span class="v">布道 · 阅读</span>
+      </div>
+    </div>
+
+    <div class="light-band"></div>
+    <div class="light-band2"></div>
+
+    <span class="corner corner-tl"></span>
+    <span class="corner corner-tr"></span>
+    <span class="corner corner-bl"></span>
+    <span class="corner corner-br"></span>
+
+  </div>
+</div>
+</body>
+</html>
