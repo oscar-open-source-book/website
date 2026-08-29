@@ -1,0 +1,618 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源许可证使用分布</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --klein: #002FA7;
+    --klein-2: #1A4FB8;
+    --klein-3: #3E7BC0;
+    --klein-4: #7FA5D0;
+    --klein-5: #B0C4D8;
+    --accent: #FF7043;
+    --accent-soft: #FFE0D1;
+    --accent-soft-bg: #FFF4EC;
+    --bg: #F5F5F5;
+    --surface: #FFFFFF;
+    --text-main: #0A1428;
+    --text-sub: #4A5568;
+    --text-light: #8593A8;
+    --border: #E5E7EB;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--bg);
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(135deg, #F5F5F5 0%, #EEF1F8 100%);
+  }
+
+  .bg-deco-1 {
+    position: absolute;
+    top: -140px;
+    right: -140px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,47,167,0.06) 0%, rgba(0,47,167,0) 70%);
+    z-index: 0;
+  }
+
+  .bg-deco-2 {
+    position: absolute;
+    bottom: -180px;
+    left: -120px;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,112,67,0.05) 0%, rgba(255,112,67,0) 70%);
+    z-index: 0;
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 52px 64px 44px;
+  }
+
+  .header {
+    margin-bottom: 32px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--klein);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .eyebrow .bar {
+    width: 36px;
+    height: 2px;
+    background: var(--klein);
+    display: inline-block;
+  }
+
+  .title {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text-sub);
+    max-width: 1280px;
+    font-weight: 400;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 700px 1fr;
+    gap: 52px;
+    margin-bottom: 26px;
+  }
+
+  .chart-card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 32px 30px 26px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0,47,167,0.05);
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .chart-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.005em;
+  }
+
+  .chart-sub {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 0.04em;
+  }
+
+  .chart-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 0;
+  }
+
+  .legend-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+    padding: 14px 4px 12px;
+    border-top: 1px solid #EEF0F5;
+  }
+
+  .legend-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  .legend-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+  }
+
+  .legend-pct {
+    font-size: 10.5px;
+    color: var(--text-sub);
+    font-weight: 500;
+  }
+
+  .ai-box {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 20px;
+    background: var(--accent-soft-bg);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    margin-top: 12px;
+  }
+
+  .ai-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 800;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+    box-shadow: 0 4px 12px rgba(255,112,67,0.35);
+  }
+
+  .ai-body { flex: 1; min-width: 0; }
+
+  .ai-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #B04A20;
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+
+  .ai-desc {
+    font-size: 12.5px;
+    color: #8B5A3B;
+    line-height: 1.55;
+  }
+
+  .panel { display: flex; flex-direction: column; }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .kpi {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 26px 26px 24px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,47,167,0.04);
+  }
+
+  .kpi-blue { border-top: 4px solid var(--klein); }
+  .kpi-orange { border-top: 4px solid var(--accent); }
+
+  .kpi-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .kpi-number {
+    font-size: 78px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--text-main);
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+  }
+
+  .kpi-number .unit {
+    font-size: 30px;
+    font-weight: 700;
+    margin-left: 1px;
+    letter-spacing: -0.02em;
+  }
+
+  .kpi-blue .kpi-number { color: var(--klein); }
+  .kpi-orange .kpi-number { color: var(--accent); }
+
+  .kpi-sub {
+    font-size: 12.5px;
+    color: var(--text-sub);
+    margin-top: 10px;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  .points {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .point {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px 18px 15px;
+    border: 1px solid var(--border);
+    position: relative;
+    border-left: 3px solid var(--klein);
+    box-shadow: 0 2px 10px rgba(0,47,167,0.03);
+  }
+
+  .point.orange { border-left-color: var(--accent); }
+
+  .point-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+  }
+
+  .point-num {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--klein);
+    letter-spacing: 0.14em;
+  }
+
+  .point.orange .point-num { color: var(--accent); }
+
+  .point-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.005em;
+    line-height: 1.25;
+  }
+
+  .point-body {
+    font-size: 12.5px;
+    color: var(--text-sub);
+    line-height: 1.55;
+    margin-bottom: 9px;
+  }
+
+  .point-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10.5px;
+    padding: 3px 9px;
+    background: #EEF1F8;
+    color: var(--klein);
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .tag.orange {
+    background: var(--accent-soft);
+    color: #B04A20;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--klein);
+    border-radius: 12px;
+    color: white;
+    font-size: 14.5px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    box-shadow: 0 6px 20px rgba(0,47,167,0.22);
+  }
+
+  .footer .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: middle;
+  }
+
+  .footer .num {
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.02em;
+  }
+
+  .footer .ai-highlight {
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  .footer .meta {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-deco-1"></div>
+    <div class="bg-deco-2"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="eyebrow"><span class="bar"></span><span>DATA · OSS LICENSING 2014–2024</span></div>
+      <h1 class="title">开源许可证使用分布</h1>
+      <p class="subtitle">从近十年 GitHub 与 Google Code 的抽样数据看，宽松许可与 Copyleft 各占半壁——开发者追求低门槛分发，核心基础设施则依赖强 Copyleft 防止闭源化；AI 模型的出现，使这一格局开始出现新的裂隙。</p>
+    </div>
+
+    <div class="main">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">五大类许可证占比</div>
+          <div class="chart-sub">GitHub &amp; Google Code 抽样 · 近十年估算</div>
+        </div>
+        <div class="chart-wrap">
+          <div id="chart_1" style="width:300px;height:300px;"></div>
+        </div>
+        <div class="legend-row">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#002FA7"></div>
+            <div class="legend-name">MIT</div>
+            <div class="legend-pct">≈ 43%</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#1A4FB8"></div>
+            <div class="legend-name">Apache 2.0</div>
+            <div class="legend-pct">≈ 19%</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#3E7BC0"></div>
+            <div class="legend-name">GPL / AGPL</div>
+            <div class="legend-pct">≈ 11%</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#7FA5D0"></div>
+            <div class="legend-name">BSD 家族</div>
+            <div class="legend-pct">≈ 8%</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#B0C4D8"></div>
+            <div class="legend-name">LGPL</div>
+            <div class="legend-pct">≈ 3%</div>
+          </div>
+        </div>
+        <div class="ai-box">
+          <div class="ai-icon">AI</div>
+          <div class="ai-body">
+            <div class="ai-title">AI 模型非标准条款 · 2023 年激增</div>
+            <div class="ai-desc">LLaMA 3 / Mistral 等模型引入"非开源"许可，作为新变量正在撕开格局。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="kpi-row">
+          <div class="kpi kpi-blue">
+            <div class="kpi-label">宽松许可合计</div>
+            <div class="kpi-number">62<span class="unit">%</span></div>
+            <div class="kpi-sub">MIT · Apache 2.0 · BSD</div>
+          </div>
+          <div class="kpi kpi-orange">
+            <div class="kpi-label">AI 新条款</div>
+            <div class="kpi-number">2023<span class="unit"></span></div>
+            <div class="kpi-sub">激增的"非开源"许可</div>
+          </div>
+        </div>
+
+        <div class="points">
+          <div class="point">
+            <div class="point-head">
+              <div class="point-num">01</div>
+              <div class="point-title">宽松许可占多数</div>
+            </div>
+            <div class="point-body">MIT、Apache 2.0、BSD 长期占据 GitHub 热门仓库前 3 位。</div>
+            <div class="point-tags">
+              <span class="tag">MIT</span>
+              <span class="tag">Apache 2.0</span>
+              <span class="tag">GitHub Top 3</span>
+            </div>
+          </div>
+
+          <div class="point">
+            <div class="point-head">
+              <div class="point-num">02</div>
+              <div class="point-title">GPL 阵营稳固</div>
+            </div>
+            <div class="point-body">Linux、WordPress、Git、GIMP 等基石项目仍以 GPL/AGPL 为底线。</div>
+            <div class="point-tags">
+              <span class="tag">Linux</span>
+              <span class="tag">WordPress</span>
+              <span class="tag">Git</span>
+              <span class="tag">GIMP</span>
+            </div>
+          </div>
+
+          <div class="point">
+            <div class="point-head">
+              <div class="point-num">03</div>
+              <div class="point-title">企业偏好 Apache</div>
+            </div>
+            <div class="point-body">专利授权条款让 Apache 2.0 成为科技公司默认选择。</div>
+            <div class="point-tags">
+              <span class="tag">专利授权</span>
+              <span class="tag">企业首选</span>
+            </div>
+          </div>
+
+          <div class="point orange">
+            <div class="point-head">
+              <div class="point-num">04</div>
+              <div class="point-title">AI 时代分化</div>
+            </div>
+            <div class="point-body">LLaMA、Mistral 等新模型引入非标准"开源"条款，Copyleft 面临新争议。</div>
+            <div class="point-tags">
+              <span class="tag orange">LLaMA 3</span>
+              <span class="tag orange">Mistral</span>
+              <span class="tag orange">2023</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>
+        <span class="num">MIT + Apache 合计约 62%</span>
+        <span class="dot"></span>
+        <span class="num">Copyleft 系合计约 14%</span>
+        <span class="dot"></span>
+        <span>剩余空间正被 <span class="ai-highlight">AI 新条款</span>占据</span>
+      </div>
+      <div class="meta">SenseNova · 数据页</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  const chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    animation: false,
+    tooltip: { show: false },
+    series: [{
+      type: 'pie',
+      radius: ['55%', '85%'],
+      center: ['50%', '50%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderColor: '#FFFFFF',
+        borderWidth: 3
+      },
+      label: { show: false },
+      labelLine: { show: false },
+      data: [
+        { value: 43, name: 'MIT', itemStyle: { color: '#002FA7' } },
+        { value: 19, name: 'Apache 2.0', itemStyle: { color: '#1A4FB8' } },
+        { value: 11, name: 'GPL / AGPL', itemStyle: { color: '#3E7BC0' } },
+        { value: 8, name: 'BSD 家族', itemStyle: { color: '#7FA5D0' } },
+        { value: 3, name: 'LGPL', itemStyle: { color: '#B0C4D8' } },
+        { value: 16, name: '其他 / 未标注', itemStyle: { color: '#EDEFF5' } }
+      ]
+    }],
+    graphic: [
+      {
+        type: 'text',
+        left: 'center',
+        top: '37%',
+        style: {
+          text: '62%',
+          fill: '#002FA7',
+          font: '800 42px Inter, "Helvetica Neue", "PingFang SC", sans-serif',
+          textAlign: 'center'
+        }
+      },
+      {
+        type: 'text',
+        left: 'center',
+        top: '58%',
+        style: {
+          text: 'MIT + Apache',
+          fill: '#4A5568',
+          font: '600 15px Inter, "Helvetica Neue", "PingFang SC", sans-serif',
+          textAlign: 'center'
+        }
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>

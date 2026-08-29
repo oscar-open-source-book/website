@@ -1,0 +1,191 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Copyleft 的哲学起源</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root{
+    --blue:#002FA7;
+    --blue-soft:#002FA7;
+    --orange:#FF7043;
+    --bg:#F5F5F5;
+    --card:#FFFFFF;
+    --line:#E3E3E3;
+    --text:#111111;
+    --text-2:#555555;
+    --text-3:#888888;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{font-family:'Inter','Helvetica Neue','PingFang SC','Microsoft YaHei',sans-serif;font-size:16px;color:var(--text);background:#FFFFFF;}
+  .wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+  #bg{position:absolute;inset:0;z-index:0;}
+  #bg .corner{position:absolute;width:220px;height:220px;border-top:1px solid var(--line);border-left:1px solid var(--line);left:-40px;top:-40px;}
+  #bg .corner-r{position:absolute;width:220px;height:220px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);right:-40px;bottom:80px;}
+  #bg .dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--orange);right:120px;top:60px;}
+  #ct{position:absolute;inset:0;z-index:1;padding:56px 72px 40px 72px;}
+
+  /* Header */
+  .head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;}
+  .head .kicker{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+  .head .kicker .bar{width:44px;height:2px;background:var(--blue);}
+  .head .kicker span{font-size:12px;letter-spacing:0.28em;color:var(--blue);font-weight:600;text-transform:uppercase;}
+  .head h1{font-size:52px;font-weight:800;color:var(--text);letter-spacing:-0.01em;line-height:1.05;}
+  .head h1 .accent{color:var(--blue);}
+  .head .meta{text-align:right;font-size:12px;color:var(--text-3);letter-spacing:0.2em;padding-bottom:6px;}
+  .head .meta .no{font-size:34px;color:var(--blue);font-weight:700;letter-spacing:0;line-height:1;margin-bottom:4px;}
+
+  .sub{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;margin-bottom:26px;display:flex;gap:18px;align-items:flex-start;}
+  .sub .mark{flex-shrink:0;width:4px;align-self:stretch;background:var(--blue);}
+  .sub p{font-size:16px;line-height:1.7;color:var(--text-2);font-weight:400;}
+  .sub p b{color:var(--text);font-weight:600;}
+
+  /* Body grid */
+  .body{display:grid;grid-template-columns:40% 55%;gap:5%;height:520px;}
+
+  /* Timeline */
+  .timeline{position:relative;padding-left:14px;}
+  .timeline .tl-title{font-size:13px;letter-spacing:0.24em;color:var(--text-3);font-weight:600;margin-bottom:18px;text-transform:uppercase;}
+  .tl-list{position:relative;padding-left:28px;}
+  .tl-list::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line);}
+  .tl-item{position:relative;margin-bottom:24px;}
+  .tl-item:last-child{margin-bottom:0;}
+  .tl-item .dot{position:absolute;left:-28px;top:8px;width:16px;height:16px;border-radius:50%;background:var(--blue);border:3px solid var(--bg);box-shadow:0 0 0 1px var(--blue);}
+  .tl-item .yr{font-size:34px;font-weight:800;color:var(--blue);line-height:1;letter-spacing:-0.02em;margin-bottom:4px;}
+  .tl-item .tag{display:inline-block;font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
+  .tl-item .tag::before{content:"";display:inline-block;width:14px;height:1px;background:var(--orange);vertical-align:middle;margin-right:8px;}
+  .tl-item .note{font-size:12px;color:var(--text-3);margin-bottom:6px;letter-spacing:0.05em;}
+  .tl-item .desc{font-size:13px;color:var(--text-2);line-height:1.55;}
+
+  /* Right column */
+  .right{display:flex;flex-direction:column;gap:16px;}
+  .quote{position:relative;background:var(--card);border:1px solid var(--line);padding:22px 28px 22px 76px;height:210px;overflow:hidden;}
+  .quote .qm{position:absolute;left:20px;top:0;font-family:Georgia,serif;font-size:120px;line-height:1;color:var(--blue);opacity:0.18;font-weight:700;}
+  .quote p{font-size:18px;line-height:1.55;color:var(--text);font-weight:500;letter-spacing:-0.005em;}
+  .quote p .hl{color:var(--blue);font-weight:700;}
+  .quote .cite{margin-top:14px;display:flex;align-items:center;justify-content:space-between;}
+  .quote .cite .who{font-size:13px;color:var(--text-2);font-weight:500;}
+  .quote .cite .who b{color:var(--text);font-weight:700;}
+  .quote .cite .badge{font-size:10px;letter-spacing:0.24em;color:var(--orange);font-weight:700;padding:4px 10px;border:1px solid var(--orange);}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;}
+  .card{background:var(--card);border:1px solid var(--line);padding:0;display:flex;flex-direction:column;}
+  .card .cap{background:var(--blue);color:#fff;font-size:11px;letter-spacing:0.2em;font-weight:700;padding:8px 12px;text-transform:uppercase;}
+  .card .num{position:absolute;}
+  .card .bd{padding:14px 14px 16px 14px;flex:1;display:flex;flex-direction:column;gap:8px;}
+  .card .bd .n{font-size:11px;color:var(--orange);font-weight:700;letter-spacing:0.15em;}
+  .card .bd h3{font-size:14px;font-weight:700;color:var(--text);line-height:1.35;}
+  .card .bd p{font-size:12px;line-height:1.55;color:var(--text-2);}
+
+  /* Footer */
+  .foot{position:absolute;left:72px;right:72px;bottom:22px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:12px;}
+  .foot .txt{font-size:12px;color:var(--text-3);letter-spacing:0.02em;}
+  .foot .txt b{color:var(--blue);font-weight:600;}
+  .foot .pg{font-size:11px;color:var(--text-3);letter-spacing:0.28em;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="corner"></div>
+    <div class="corner-r"></div>
+    <div class="dot"></div>
+  </div>
+  <div id="ct">
+
+    <div class="head">
+      <div>
+        <div class="kicker"><span>PHILOSOPHY · ORIGIN</span><span class="bar"></span></div>
+        <h1>Copyleft 的<span class="accent">哲学起源</span></h1>
+      </div>
+      <div class="meta">
+        <div class="no">01</div>
+        <div>CHAPTER / 1983—1985</div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="mark"></div>
+      <p>Copyleft 起源于 <b>GNU 项目对专有软件的反抗</b>：如果自由只能停留在个人，那么它终将被私有化吞没；因此许可证必须以法律方式 <b>"复制自由"</b>，让每一次再分发都不失其自由。</p>
+    </div>
+
+    <div class="body">
+
+      <div class="timeline">
+        <div class="tl-title">— Milestones / 1983 → 1985</div>
+        <div class="tl-list">
+          <div class="tl-item">
+            <div class="dot"></div>
+            <div class="yr">1983</div>
+            <div class="tag">GNU 项目启动</div>
+            <div class="note">Richard Stallman 宣布</div>
+            <div class="desc">Richard Stallman 发起 GNU 项目，目标是一套完全自由的操作系统，让计算不再是受控的私有工具。</div>
+          </div>
+          <div class="tl-item">
+            <div class="dot"></div>
+            <div class="yr">1984</div>
+            <div class="tag">Copyleft 术语</div>
+            <div class="note">RMS 首次提出</div>
+            <div class="desc">RMS 反讽式借用 Copyright，将"复制须保留自由"写入许可证——让自由随代码一同流转。</div>
+          </div>
+          <div class="tl-item">
+            <div class="dot"></div>
+            <div class="yr">1985</div>
+            <div class="tag">FSF 成立</div>
+            <div class="note">推动自由软件运动</div>
+            <div class="desc">自由软件基金会将 Copyleft 视为唯一能抵御私有化的开源护城河，从此制度化落地。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="quote">
+          <div class="qm">&ldquo;</div>
+          <p>版权 <span class="hl">(Copyright)</span> 让公共领域不断萎缩，因为每个作者都想私有化自己的作品。<br>我则希望公共领域 <span class="hl">扩张</span>，成为一片无人能拥有的广阔海洋。</p>
+          <div class="cite">
+            <div class="who">— <b>Richard M. Stallman</b> · GNU Manifesto, 1985</div>
+            <div class="badge">FREEDOM</div>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="cap">哲学内核</div>
+            <div class="bd">
+              <div class="n">01 / CORE</div>
+              <h3>四自由，而非零成本</h3>
+              <p>自由软件 = 用户修改与再分发的四自由，绝非"零成本"软件。</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="cap">社会承诺</div>
+            <div class="bd">
+              <div class="n">02 / PACT</div>
+              <h3>从个体到社区的契约</h3>
+              <p>许可证不是商业条款，而是把自由从个体扩展到整个社区的道德契约。</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="cap">FSF 的立场</div>
+            <div class="bd">
+              <div class="n">03 / MOAT</div>
+              <h3>抵御私有化的护城河</h3>
+              <p>FSF 将 Copyleft 视为唯一能抵御私有化的开源护城河。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <div class="txt">Copyleft 不是一种开源许可的命名，而是一场把<b>自由写进法律副本</b>的哲学实践。</div>
+      <div class="pg">SENSE NOVA · 01 / PHILOSOPHY</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

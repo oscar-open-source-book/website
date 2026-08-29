@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源布道·Copyleft 与包容权</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root{
+  --klein:#002FA7;
+  --klein-deep:#001F70;
+  --orange:#FF7043;
+  --bg:#F5F5F5;
+  --ink:#111418;
+  --muted:#6B7075;
+  --line:#D9DBDD;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{font-family:'Inter','Helvetica Neue','PingFang SC','Noto Sans SC',sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;background:var(--bg);}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 72px;box-sizing:border-box;}
+
+.frame{
+  position:absolute;inset:40px;
+  border:1px solid var(--line);
+  pointer-events:none;
+}
+.frame-corner{
+  position:absolute;width:12px;height:12px;
+  border:2px solid var(--klein);
+}
+.frame-corner.tl{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.frame-corner.tr{top:-1px;right:-1px;border-left:none;border-bottom:none;}
+.frame-corner.bl{bottom:-1px;left:-1px;border-right:none;border-top:none;}
+.frame-corner.br{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:absolute;top:64px;left:72px;right:72px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11.5px;letter-spacing:.28em;color:var(--muted);
+  font-weight:500;
+}
+.logo{display:flex;align-items:center;gap:14px;}
+.logo-mark{
+  width:22px;height:22px;
+  border:2px solid var(--klein);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.logo-mark::after{
+  content:'';position:absolute;
+  width:8px;height:8px;background:var(--klein);
+  border-radius:50%;
+}
+.logo-text{color:var(--ink);font-weight:600;font-size:12px;letter-spacing:.22em;}
+.issue{font-weight:500;color:var(--muted);font-size:11.5px;letter-spacing:.28em;}
+
+/* ---------- layout ---------- */
+.layout{
+  position:absolute;top:118px;left:72px;right:72px;bottom:60px;
+  display:grid;grid-template-columns:680px 1fr;gap:52px;
+}
+
+.left-col{display:flex;flex-direction:column;justify-content:flex-start;position:relative;padding-top:6px;}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:14px;
+  font-size:11.5px;letter-spacing:.42em;color:var(--klein);font-weight:600;
+  margin-bottom:28px;
+}
+.eyebrow .dot{width:7px;height:7px;background:var(--orange);border-radius:50%;display:inline-block;}
+.eyebrow .line{width:56px;height:1px;background:var(--klein);opacity:.55;display:inline-block;}
+
+.title{
+  font-size:80px;font-weight:900;
+  line-height:1.02;color:var(--klein);
+  letter-spacing:-.015em;
+  margin-bottom:8px;
+}
+.title .amp{
+  color:var(--orange);font-weight:400;
+  font-size:58px;vertical-align:middle;
+  padding:0 4px;
+}
+.title-en{
+  font-size:14px;letter-spacing:.34em;color:var(--muted);
+  font-weight:500;margin-bottom:24px;
+  text-transform:uppercase;
+}
+
+.subtitle{
+  font-size:20px;line-height:1.5;color:var(--ink);
+  font-weight:500;margin-bottom:44px;
+  max-width:640px;
+}
+.subtitle .sep{color:var(--orange);padding:0 8px;font-weight:700;}
+
+.meta{display:flex;flex-direction:column;gap:18px;margin-bottom:auto;padding-bottom:30px;border-top:1px solid var(--line);padding-top:22px;}
+.meta-row{display:flex;gap:20px;align-items:flex-start;font-size:14px;line-height:1.55;}
+.meta-label{
+  color:var(--klein);font-weight:700;
+  font-size:11px;letter-spacing:.24em;
+  min-width:80px;padding-top:3px;flex-shrink:0;
+}
+.meta-value{color:var(--ink);font-weight:400;max-width:540px;}
+.meta-value em{font-style:normal;color:var(--klein);font-weight:600;}
+.meta-value strong{color:var(--orange);font-weight:600;}
+
+/* ---------- right col ---------- */
+.right-col{position:relative;display:flex;flex-direction:column;align-items:flex-start;}
+.hero-frame{
+  position:relative;width:720px;height:404px;
+  border:1px solid var(--line);
+  background:#FAFAFA;
+  padding:14px;
+}
+.hero-frame img{width:100%;height:100%;object-fit:contain;display:block;}
+.hero-tick{
+  position:absolute;width:14px;height:14px;
+  border:2px solid var(--orange);
+}
+.hero-tick.tl{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.hero-tick.br{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+.hero-caption{
+  position:absolute;top:32px;right:30px;
+  font-size:9.5px;letter-spacing:.26em;color:var(--muted);
+  background:rgba(255,255,255,.88);
+  padding:6px 12px;border:1px solid var(--line);
+}
+
+.narrative{
+  margin-top:28px;
+  font-size:14.5px;line-height:1.75;color:var(--ink);
+  font-weight:400;max-width:720px;
+  padding-left:16px;border-left:2px solid var(--klein);
+}
+.narrative .em{color:var(--klein);font-weight:700;}
+.narrative .em-orange{color:var(--orange);font-weight:700;}
+
+/* ---------- footer ---------- */
+.footer{
+  position:absolute;bottom:66px;left:72px;right:72px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11.5px;letter-spacing:.28em;color:var(--muted);
+  font-weight:500;
+}
+.footer-line{
+  position:absolute;bottom:52px;left:72px;right:72px;
+  height:1px;background:var(--line);
+}
+.footer-item{display:flex;align-items:center;gap:12px;}
+.footer-item .marker{width:6px;height:6px;background:var(--klein);border-radius:50%;}
+.footer-item .val{color:var(--ink);font-weight:600;letter-spacing:.2em;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <div id="ct">
+    <div class="frame">
+      <span class="frame-corner tl"></span>
+      <span class="frame-corner tr"></span>
+      <span class="frame-corner bl"></span>
+      <span class="frame-corner br"></span>
+    </div>
+
+    <div class="topbar">
+      <div class="logo">
+        <span class="logo-mark"></span>
+        <span class="logo-text">开源之道 · 适兕 &nbsp;/&nbsp; 开源读者会</span>
+      </div>
+      <div class="issue">Issue № 47 &nbsp;·&nbsp; 2023.11 &nbsp;·&nbsp; Cover</div>
+    </div>
+
+    <div class="layout">
+      <!-- Left -->
+      <div class="left-col">
+        <div class="eyebrow">
+          <span class="dot"></span>
+          <span>OPEN SOURCE READING · ROUND TABLE № 47</span>
+          <span class="line"></span>
+        </div>
+
+        <h1 class="title">
+          开源布道<br>
+          Copyleft <span class="amp">与</span>包容权
+        </h1>
+        <div class="title-en">Copyleft &nbsp;·&nbsp; Right to Include</div>
+
+        <div class="subtitle">
+          2023-11 阅读分享<span class="sep">/</span>从共享精神到包容边界
+        </div>
+
+        <div class="meta">
+          <div class="meta-row">
+            <div class="meta-label">阅读主题</div>
+            <div class="meta-value">回看 <em>Copyleft</em> 的哲学誓言，重访 <em>Right to Include</em> 的当代追问。</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">分享身份</div>
+            <div class="meta-value"><em>开源之道·适兕</em> 主讲，<em>开源读者会</em> 第 47 期。</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">核心问题</div>
+            <div class="meta-value">当开源进入 <strong>AI 时代</strong>，&ldquo;共享代码&rdquo;之外还应守护什么。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="right-col">
+        <div class="hero-frame">
+          <span class="hero-tick tl"></span>
+          <span class="hero-tick br"></span>
+          <img src="../images/page_001_hero.png" alt="几何拼合的开源之环 —— 三圈连续圆环相互交织、其中一环微微断开向内敞开">
+          <div class="hero-caption">Fig. 01 &nbsp;/&nbsp; Open Rings · Three Cycles, One Awaiting Inclusion</div>
+        </div>
+
+        <div class="narrative">
+          以 <span class="em">Copyleft</span> 与 <span class="em">Right to Include</span> 两条线索展开，试图在&ldquo;<span class="em">共享</span>&rdquo;与&ldquo;<span class="em-orange">包容</span>&rdquo;之间重新校准开源社区的价值坐标 —— 一半回望四十余年前 <span class="em">GNU</span> 的诞生誓言，一半直面 <span class="em">2021</span> 年以来 <span class="em-orange">R2I</span> 提出的新议程。
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-line"></div>
+    <div class="footer">
+      <div class="footer-item">
+        <span class="marker"></span>
+        <span>分享期数</span>
+        <span class="val">· 第 47 期</span>
+      </div>
+      <div class="footer-item">
+        <span>时间</span>
+        <span class="val">· 2023 年 11 月</span>
+        <span>圆桌读书会</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

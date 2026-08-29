@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>共享之路，行而不辍</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
+  :root {
+    --blue: #002FA7;
+    --orange: #FF7043;
+    --bg: #F5F5F5;
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --ink-3: #8a8a8a;
+    --line: #d9d9d9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; background: var(--bg); }
+  body {
+    font-family: 'Inter', 'PingFang SC', 'Noto Sans SC', sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+  #bg { position: absolute; inset: 0; z-index: 0; background: var(--bg); }
+  #ct { position: absolute; inset: 0; z-index: 1; padding: 70px 100px; }
+
+  /* 极细几何装饰线 */
+  .corner-tl { position: absolute; top: 60px; left: 100px; width: 40px; height: 1px; background: var(--blue); }
+  .corner-tr { position: absolute; top: 60px; right: 100px; width: 40px; height: 1px; background: var(--blue); }
+  .brand {
+    position: absolute; top: 48px; left: 50%; transform: translateX(-50%);
+    font-size: 11px; letter-spacing: 0.4em; color: var(--ink-3);
+    font-weight: 400;
+  }
+  .brand span.dot { color: var(--orange); }
+
+  /* 中央金句区 */
+  .hero {
+    position: absolute;
+    top: 168px; left: 0; right: 0;
+    text-align: center;
+  }
+  .kicker {
+    font-size: 12px;
+    letter-spacing: 0.5em;
+    color: var(--ink-3);
+    font-weight: 400;
+    margin-bottom: 26px;
+  }
+  .kicker .bar {
+    display: inline-block;
+    width: 24px; height: 1px; background: var(--orange);
+    vertical-align: middle;
+    margin: 0 14px 3px;
+  }
+  .headline {
+    font-size: 78px;
+    font-weight: 300;
+    letter-spacing: 0.14em;
+    color: var(--blue);
+    line-height: 1.15;
+  }
+  .headline .accent { color: var(--orange); font-weight: 400; }
+  .divider {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px;
+    margin: 34px 0 22px;
+  }
+  .divider .line { width: 60px; height: 1px; background: var(--line); }
+  .divider .sym {
+    width: 6px; height: 6px;
+    border: 1px solid var(--blue);
+    transform: rotate(45deg);
+    background: transparent;
+  }
+  .subtitle {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    color: var(--ink-2);
+  }
+
+  /* 三段收束要点 */
+  .points {
+    position: absolute;
+    left: 100px; right: 100px;
+    top: 500px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 60px;
+  }
+  .point .num {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--ink-3);
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+  .point .rule {
+    width: 28px; height: 1px;
+    background: var(--blue);
+    margin-bottom: 16px;
+  }
+  .point .title {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--blue);
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .point .desc {
+    font-size: 12.5px;
+    font-weight: 300;
+    color: var(--ink-2);
+    line-height: 1.75;
+    letter-spacing: 0.03em;
+  }
+
+  /* 底部区域 */
+  .footer {
+    position: absolute;
+    left: 100px; right: 100px;
+    bottom: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+  }
+
+  .qr {
+    display: flex; align-items: center; gap: 18px;
+  }
+  .qr-box {
+    width: 78px; height: 78px;
+    border: 1px solid var(--ink-3);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qr-box::before, .qr-box::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    border: 1px solid var(--ink-3);
+  }
+  .qr-box::before { top: 8px; left: 8px; }
+  .qr-box::after { top: 8px; right: 8px; }
+  .qr-box .inner {
+    width: 18px; height: 18px;
+    border: 1px solid var(--ink-3);
+    position: absolute; bottom: 8px; left: 8px;
+  }
+  .qr-text .label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--ink-3);
+    margin-bottom: 6px;
+  }
+  .qr-text .txt {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+
+  .data {
+    display: flex; gap: 44px;
+  }
+  .data-item {
+    display: flex; flex-direction: column;
+    gap: 8px;
+    max-width: 220px;
+  }
+  .data-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--ink-3);
+    font-weight: 400;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .data-label .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .data-value {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    position: relative;
+    padding-bottom: 6px;
+  }
+  .data-value.underlined::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 32px; height: 1px;
+    background: var(--orange);
+  }
+
+  .sig {
+    text-align: right;
+    padding-bottom: 6px;
+  }
+  .sig .dash {
+    font-size: 12px;
+    color: var(--ink-3);
+    letter-spacing: 0.3em;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .sig .name {
+    font-size: 14px;
+    color: var(--blue);
+    letter-spacing: 0.3em;
+    font-weight: 400;
+  }
+
+  /* 底部极细横线 */
+  .bottom-line {
+    position: absolute;
+    left: 100px; right: 100px;
+    bottom: 52px;
+    height: 1px;
+    background: var(--line);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="corner-tl"></div>
+    <div class="corner-tr"></div>
+    <div class="brand">FOSS READER CLUB <span class="dot">·</span> ISSUE 47</div>
+
+    <div class="hero">
+      <div class="kicker"><span>EP · 47</span><span class="bar"></span><span>结语</span></div>
+      <div class="headline">共享之路，行而不辍</div>
+      <div class="divider">
+        <div class="line"></div>
+        <div class="sym"></div>
+        <div class="line"></div>
+      </div>
+      <div class="subtitle">从自由代码到包容社群</div>
+    </div>
+
+    <div class="points">
+      <div class="point">
+        <div class="num">01 &nbsp; T H E S I S</div>
+        <div class="rule"></div>
+        <div class="title">两条主线合一</div>
+        <div class="desc">Copyleft 守住代码的自由，R2I 拓展人的包容，共同构成开源的完整承诺。</div>
+      </div>
+      <div class="point">
+        <div class="num">02 &nbsp; I N V I T E</div>
+        <div class="rule"></div>
+        <div class="title">对读者的邀请</div>
+        <div class="desc">请把可访问性与多样性条款，写入你的下一次开源贡献——从个人开始。</div>
+      </div>
+      <div class="point">
+        <div class="num">03 &nbsp; N E X T</div>
+        <div class="rule"></div>
+        <div class="title">下一次共读</div>
+        <div class="desc">关注 FOSS 治理、AI 与开源的交叉议题，与我们一同延伸阅读。</div>
+      </div>
+    </div>
+
+    <div class="bottom-line"></div>
+
+    <div class="footer">
+      <div class="qr">
+        <div class="qr-box"><div class="inner"></div></div>
+        <div class="qr-text">
+          <div class="label">C O M M U N I T Y</div>
+          <div class="txt">扫码加入读者社群</div>
+        </div>
+      </div>
+
+      <div class="data">
+        <div class="data-item">
+          <div class="data-label"><span class="dot"></span><span>本 期 主 题</span></div>
+          <div class="data-value underlined">Copyleft + R2I<br><span style="color:var(--ink-3);font-size:11px;letter-spacing:0.16em;">两条主线的对照阅读</span></div>
+        </div>
+        <div class="data-item">
+          <div class="data-label"><span style="width:5px;height:5px;border-radius:50%;border:1px solid var(--blue);display:inline-block;"></span><span>下 期 预 告</span></div>
+          <div class="data-value">FOSS 治理<br><span style="color:var(--ink-3);font-size:11px;letter-spacing:0.16em;">开源读者会 · 第 48 期</span></div>
+        </div>
+      </div>
+
+      <div class="sig">
+        <span class="dash">—— 收 束</span>
+        <span class="name">开 源 读 者 会</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>R2I 与相关项目全景</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#002FA7;
+  --blue-soft:#1A3FB0;
+  --orange:#FF7043;
+  --bg:#F5F5F5;
+  --paper:#FFFFFF;
+  --line:#E4E4E7;
+  --line-strong:#D0D0D5;
+  --text-main:#1A1A1E;
+  --text-sub:#4A4A52;
+  --text-mute:#8A8A92;
+  --gray-block:#D9D9DE;
+  --gray-block-2:#C4C4CB;
+  --font-stack:"Inter","PingFang SC","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{font-family:var(--font-stack);color:var(--text-main);background:var(--bg);-webkit-font-smoothing:antialiased;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 40px 60px;}
+
+/* ===== 背景装饰 ===== */
+#bg{
+  background:
+    linear-gradient(180deg, rgba(0,47,167,0.04) 0%, rgba(0,47,167,0) 220px),
+    var(--bg);
+}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,47,167,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,47,167,0.04) 1px,transparent 1px);background-size:80px 80px;}
+.bg-accent-1{position:absolute;top:60px;right:60px;width:180px;height:180px;border:1px solid var(--line);border-radius:50%;opacity:.6;}
+.bg-accent-2{position:absolute;bottom:80px;left:40px;width:10px;height:10px;background:var(--orange);border-radius:50%;}
+.bg-accent-3{position:absolute;top:120px;left:56px;width:2px;height:60px;background:var(--blue);}
+
+/* ===== 顶部 ===== */
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.title-block{max-width:1100px;}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.24em;color:var(--blue);font-weight:600;margin-bottom:12px;}
+.eyebrow .dot{width:8px;height:8px;background:var(--orange);border-radius:50%;display:inline-block;}
+.eyebrow .bar{width:28px;height:1px;background:var(--blue);}
+h1{font-size:44px;font-weight:800;letter-spacing:-0.01em;color:var(--text-main);line-height:1.1;margin-bottom:12px;}
+h1 .hl{color:var(--blue);}
+h1 .accent{color:var(--orange);}
+.subtitle{font-size:14px;line-height:1.75;color:var(--text-sub);max-width:1120px;font-weight:400;}
+.subtitle .em{color:var(--blue);font-weight:600;}
+.subtitle .em2{color:var(--orange);font-weight:600;}
+
+.meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:11px;letter-spacing:.18em;color:var(--text-mute);text-transform:uppercase;font-weight:500;}
+.meta .badge{padding:5px 10px;border:1px solid var(--line-strong);background:var(--paper);border-radius:2px;}
+.meta .badge.live{border-color:var(--blue);color:var(--blue);}
+
+/* ===== KPI 6 格 ===== */
+.kpi-section{margin-top:22px;}
+.section-label{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.section-label .num{font-size:11px;font-weight:700;color:var(--orange);letter-spacing:.15em;}
+.section-label .name{font-size:13px;font-weight:600;color:var(--text-main);letter-spacing:.02em;}
+.section-label .line{flex:1;height:1px;background:var(--line);}
+.section-label .tag{font-size:11px;color:var(--text-mute);letter-spacing:.12em;}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+.kpi{background:var(--paper);border:1px solid var(--line);padding:16px 14px 14px 14px;position:relative;height:150px;display:flex;flex-direction:column;justify-content:space-between;transition:all .2s;}
+.kpi .idx{position:absolute;top:10px;right:12px;font-size:10px;color:var(--text-mute);letter-spacing:.15em;font-weight:500;}
+.kpi .cap{font-size:10.5px;color:var(--text-mute);letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
+.kpi .num-big{font-size:32px;font-weight:800;color:var(--blue);line-height:1;letter-spacing:-0.02em;}
+.kpi .num-big .u{font-size:14px;color:var(--text-sub);font-weight:600;margin-left:4px;letter-spacing:0;}
+.kpi .kw{font-size:15px;font-weight:700;color:var(--text-main);line-height:1.25;}
+.kpi .kw .sep{color:var(--line-strong);margin:0 4px;font-weight:400;}
+.kpi .desc{font-size:11px;line-height:1.55;color:var(--text-sub);}
+.kpi .foot{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px dashed var(--line);}
+.kpi .foot .tag-mini{font-size:9.5px;color:var(--text-mute);letter-spacing:.1em;}
+.kpi .foot .dot-mini{width:6px;height:6px;background:var(--orange);border-radius:50%;}
+.kpi.highlight{border-color:var(--blue);background:linear-gradient(180deg,#FFFFFF 0%, #F8FAFF 100%);}
+.kpi.highlight .idx{color:var(--blue);}
+
+/* ===== 中间：Logo 墙 + 时间条 ===== */
+.mid{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+
+.logo-wall{background:var(--paper);border:1px solid var(--line);padding:16px 18px;height:220px;position:relative;overflow:hidden;}
+.logo-wall .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.logo-wall .head .t{font-size:13px;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:8px;}
+.logo-wall .head .t .accent-line{width:22px;height:2px;background:var(--blue);display:inline-block;}
+.logo-wall .head .r{font-size:11px;color:var(--text-mute);letter-spacing:.1em;}
+.logo-grid{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:8px;height:160px;}
+.logo-cell{background:var(--gray-block);position:relative;display:flex;align-items:center;justify-content:center;color:#5A5A62;font-size:11px;font-weight:600;letter-spacing:.05em;padding:4px;}
+.logo-cell .name{position:relative;z-index:1;}
+.logo-cell.dim{background:var(--gray-block);color:#6C6C74;}
+.logo-cell.dim2{background:#E4E4E9;color:#7A7A82;}
+.logo-cell.dim3{background:#D0D0D6;color:#5A5A62;}
+.logo-cell.strong{background:#C4C4CB;color:#3A3A44;}
+.logo-cell.flag::before{content:"";position:absolute;top:6px;right:6px;width:5px;height:5px;background:var(--orange);border-radius:50%;}
+.logo-cell .sig{position:absolute;bottom:4px;left:6px;font-size:8px;color:#8A8A92;letter-spacing:.1em;}
+
+/* 时间条 */
+.timeline{background:var(--paper);border:1px solid var(--line);padding:16px 20px 18px 20px;height:220px;position:relative;}
+.timeline .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.timeline .head .t{font-size:13px;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:8px;}
+.timeline .head .t .accent-line{width:22px;height:2px;background:var(--orange);display:inline-block;}
+.timeline .head .r{font-size:11px;color:var(--text-mute);letter-spacing:.1em;}
+.tl-track{position:relative;height:130px;margin-top:6px;padding:0 20px;}
+.tl-line{position:absolute;left:20px;right:20px;top:52px;height:2px;background:var(--line);}
+.tl-line-fill{position:absolute;left:20px;top:52px;height:2px;background:var(--blue);}
+.tl-nodes{position:relative;display:flex;justify-content:space-between;height:100%;padding:0 0;}
+.tl-node{position:relative;width:96px;text-align:center;}
+.tl-node .year{font-size:20px;font-weight:800;color:var(--text-main);line-height:1;letter-spacing:-0.01em;margin-bottom:10px;}
+.tl-node .year.hot{color:var(--blue);}
+.tl-node .year.live{color:var(--orange);}
+.tl-node .year.now{color:var(--orange);}
+.tl-node .marker{width:14px;height:14px;border-radius:50%;background:var(--paper);border:2px solid var(--line-strong);margin:0 auto;position:relative;z-index:2;}
+.tl-node.active .marker{border-color:var(--blue);background:var(--blue);box-shadow:0 0 0 4px rgba(0,47,167,0.12);}
+.tl-node.live .marker{border-color:var(--orange);background:var(--orange);box-shadow:0 0 0 4px rgba(255,112,67,0.15);}
+.tl-node .label{font-size:11px;font-weight:600;color:var(--text-main);margin-top:12px;line-height:1.35;}
+.tl-node .sub{font-size:10px;color:var(--text-mute);margin-top:3px;letter-spacing:.05em;}
+.tl-node .tag{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--text-mute);letter-spacing:.15em;font-weight:600;}
+.tl-node .tag.live{color:var(--orange);}
+.tl-node .tag.past{color:var(--blue);}
+
+/* ===== 底部 5 条要点 ===== */
+.bottom{margin-top:18px;background:var(--paper);border:1px solid var(--line);padding:14px 20px;position:relative;}
+.bottom-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.bottom-head .t{font-size:13px;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:8px;}
+.bottom-head .t .accent-line{width:22px;height:2px;background:var(--orange);display:inline-block;}
+.bottom-head .r{font-size:11px;color:var(--text-mute);letter-spacing:.1em;}
+.points{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.point{padding:10px 12px;border-left:2px solid var(--line-strong);position:relative;}
+.point.hot{border-left-color:var(--blue);}
+.point.warn{border-left-color:var(--orange);}
+.point .pn{font-size:10px;color:var(--text-mute);letter-spacing:.15em;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.point .pn .dot{width:6px;height:6px;background:var(--line-strong);border-radius:50%;}
+.point.hot .pn .dot{background:var(--blue);}
+.point.warn .pn .dot{background:var(--orange);}
+.point .ph{font-size:12px;font-weight:700;color:var(--text-main);margin-bottom:5px;line-height:1.3;}
+.point .pd{font-size:10.5px;color:var(--text-sub);line-height:1.55;}
+.point .pd .k{color:var(--blue);font-weight:600;}
+.point .pd .k2{color:var(--orange);font-weight:600;}
+
+/* 页脚 */
+.footer{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-mute);letter-spacing:.15em;}
+.footer .l{display:flex;gap:14px;align-items:center;}
+.footer .l .sq{width:6px;height:6px;background:var(--blue);display:inline-block;}
+.footer .l .sq.o{background:var(--orange);}
+.footer .r{font-weight:600;color:var(--text-sub);}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-accent-1"></div>
+    <div class="bg-accent-2"></div>
+    <div class="bg-accent-3"></div>
+  </div>
+
+  <div id="ct">
+    <!-- 顶部标题 -->
+    <div class="header">
+      <div class="title-block">
+        <div class="eyebrow"><span class="bar"></span><span>R2I · RESPECTIVE OPENSOURCE LANDSCAPE</span><span class="dot"></span></div>
+        <h1><span class="hl">R2I</span> 与相关项目<span class="accent">全景</span></h1>
+        <div class="subtitle">
+          R2I 的落地仍处于<span class="em">早期</span>——一部分是<span class="em">社区倡导者</span>的理念推广，一部分是<span class="em">基金会</span>的制度试点，还有一部分是<span class="em">开发者</span>对既有 Copyleft 许可证的补丁式扩展；它未必取代 GPL，但正在<span class="em2">改写"什么是开源"的边界</span>。
+        </div>
+      </div>
+      <div class="meta">
+        <div class="badge live">● DASHBOARD · 2024</div>
+        <div class="badge">DATA / OVERVIEW · 01</div>
+        <div>2018 — 2024</div>
+      </div>
+    </div>
+
+    <!-- KPI 6 格 -->
+    <div class="kpi-section">
+      <div class="section-label">
+        <span class="num">01</span>
+        <span class="name">核心指标 · 六维画像</span>
+        <span class="line"></span>
+        <span class="tag">SIX PILLARS</span>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="idx">K · 01</div>
+          <div>
+            <div class="cap">发起年份</div>
+            <div class="num-big">2018<span class="u">年</span></div>
+          </div>
+          <div class="foot"><span class="tag-mini">提案公开讨论</span><span class="dot-mini"></span></div>
+        </div>
+        <div class="kpi highlight">
+          <div class="idx">K · 02</div>
+          <div>
+            <div class="cap">官网上线</div>
+            <div class="num-big">2021<span class="u">年</span></div>
+          </div>
+          <div class="foot"><span class="tag-mini">规范 v1 发布</span><span class="dot-mini"></span></div>
+        </div>
+        <div class="kpi">
+          <div class="idx">K · 03</div>
+          <div>
+            <div class="cap">支持机构</div>
+            <div class="kw">Mozilla<span class="sep">/</span>Wikimedia<span class="sep">/</span>Drupal</div>
+          </div>
+          <div class="foot"><span class="tag-mini">头部基金会</span><span class="dot-mini"></span></div>
+        </div>
+        <div class="kpi">
+          <div class="idx">K · 04</div>
+          <div>
+            <div class="cap">参考标准</div>
+            <div class="kw">WCAG 2.1<span class="sep">/</span>W3C</div>
+          </div>
+          <div class="foot"><span class="tag-mini">可访问性基准</span><span class="dot-mini"></span></div>
+        </div>
+        <div class="kpi">
+          <div class="idx">K · 05</div>
+          <div>
+            <div class="cap">覆盖维度</div>
+            <div class="num-big">4<span class="u">类</span></div>
+          </div>
+          <div class="foot"><span class="tag-mini">可访问 · 多样 · 可持续 · 公正</span><span class="dot-mini"></span></div>
+        </div>
+        <div class="kpi">
+          <div class="idx">K · 06</div>
+          <div>
+            <div class="cap">典型衍生守则</div>
+            <div class="kw">AI 使用<span class="sep">/</span>贡献者<span class="sep">/</span>翻译</div>
+          </div>
+          <div class="foot"><span class="tag-mini">社区衍生</span><span class="dot-mini"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中间：Logo 墙 + 时间条 -->
+    <div class="mid">
+      <div class="logo-wall">
+        <div class="head">
+          <div class="t"><span class="accent-line"></span><span>02 · 支持机构群像</span></div>
+          <div class="r">GRAYSCALE · PARTNERS</div>
+        </div>
+        <div class="logo-grid">
+          <div class="logo-cell strong flag"><span class="name">Mozilla</span><span class="sig">SIG · 21</span></div>
+          <div class="logo-cell strong"><span class="name">Wikimedia</span><span class="sig">SIG · 21</span></div>
+          <div class="logo-cell strong flag"><span class="name">Drupal</span><span class="sig">SIG · 21</span></div>
+          <div class="logo-cell dim"><span class="name">GitLab</span><span class="sig">SIG · 22</span></div>
+          <div class="logo-cell dim"><span class="name">Apache</span><span class="sig">SIG · 22</span></div>
+          <div class="logo-cell dim2"><span class="name">Ethereum</span><span class="sig">SIG · 23</span></div>
+          <div class="logo-cell dim2"><span class="name">KDE</span><span class="sig">SIG · 23</span></div>
+          <div class="logo-cell dim2"><span class="name">GNOME</span><span class="sig">SIG · 23</span></div>
+          <div class="logo-cell dim3"><span class="name">Mastodon</span><span class="sig">SIG · 23</span></div>
+          <div class="logo-cell dim3"><span class="name">GitGuardian</span><span class="sig">SIG · 23</span></div>
+          <div class="logo-cell dim3"><span class="name">SourceForge</span><span class="sig">SIG · 24</span></div>
+          <div class="logo-cell dim3"><span class="name">OpenStack</span><span class="sig">SIG · 24</span></div>
+          <div class="logo-cell dim2"><span class="name">Jenkins</span><span class="sig">SIG · 24</span></div>
+          <div class="logo-cell dim"><span class="name">PostgreSQL</span><span class="sig">SIG · 24</span></div>
+          <div class="logo-cell dim"><span class="name">CouchDB</span><span class="sig">SIG · 24</span></div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="head">
+          <div class="t"><span class="accent-line"></span><span>03 · 关键年份时间条</span></div>
+          <div class="r">TIMELINE · 2018 → 2024</div>
+        </div>
+        <div class="tl-track">
+          <div class="tl-line"></div>
+          <div class="tl-line-fill" style="width:82%;"></div>
+          <div class="tl-nodes">
+            <div class="tl-node active">
+              <div class="year hot">2018</div>
+              <div class="marker"></div>
+              <div class="label">理念发起</div>
+              <div class="sub">R2I Draft v0</div>
+            </div>
+            <div class="tl-node active">
+              <div class="year hot">2019</div>
+              <div class="marker"></div>
+              <div class="label">社区讨论</div>
+              <div class="sub">公开 Call for Comments</div>
+            </div>
+            <div class="tl-node active">
+              <div class="year hot">2021</div>
+              <div class="marker"></div>
+              <div class="label">规范 v1 上线</div>
+              <div class="sub">r2i.org 发布</div>
+            </div>
+            <div class="tl-node active">
+              <div class="year hot">2023</div>
+              <div class="marker"></div>
+              <div class="label">基金会群签</div>
+              <div class="sub">头部机构连续加入</div>
+            </div>
+            <div class="tl-node live">
+              <div class="year live">2024</div>
+              <div class="marker"></div>
+              <div class="label">AI 使用守则落地</div>
+              <div class="sub">衍生守则密集出现</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部 5 条要点 -->
+    <div class="bottom">
+      <div class="bottom-head">
+        <div class="t"><span class="accent-line"></span><span>04 · 收束要点 · 五条精炼</span></div>
+        <div class="r">SUMMARY · FIVE TAKEAWAYS</div>
+      </div>
+      <div class="points">
+        <div class="point hot">
+          <div class="pn"><span class="dot"></span>P · 01</div>
+          <div class="ph">早期倡导者</div>
+          <div class="pd">由 <span class="k">Ethan Marcotte</span>、<span class="k">Jeremy Keith</span>、<span class="k">Aline Chao</span> 等 Web 与设计界人物发起。</div>
+        </div>
+        <div class="point hot">
+          <div class="pn"><span class="dot"></span>P · 02</div>
+          <div class="ph">机构陆续加入</div>
+          <div class="pd"><span class="k">Mozilla / Wikimedia / Drupal / GitLab / Apache</span> 基金会等相继签署支持。</div>
+        </div>
+        <div class="point">
+          <div class="pn"><span class="dot"></span>P · 03</div>
+          <div class="ph">场景渗透</div>
+          <div class="pd">已渗透到 <span class="k">WCAG 条款</span>、<span class="k">贡献者守则</span>、<span class="k">翻译计划</span>、<span class="k">AI 模型使用守则</span>。</div>
+        </div>
+        <div class="point">
+          <div class="pn"><span class="dot"></span>P · 04</div>
+          <div class="ph">数据现状</div>
+          <div class="pd">R2I <span class="k">尚未成为主流许可</span>，但可作为 Copyleft 之上的<span class="k">"包容性叠加层"</span>。</div>
+        </div>
+        <div class="point warn">
+          <div class="pn"><span class="dot"></span>P · 05</div>
+          <div class="ph">社区反思</div>
+          <div class="pd">面临 <span class="k2">"许可疲劳"</span> 与 <span class="k2">"倡议泛化"</span> 的批评，仍在演进之中。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer">
+      <div class="l">
+        <span class="sq"></span><span>RESP · 2024 · DASHBOARD</span>
+        <span class="sq o"></span><span>R2I LANDSCAPE</span>
+      </div>
+      <div class="r">DATA · OVERVIEW · PAGE 01 / 01</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
