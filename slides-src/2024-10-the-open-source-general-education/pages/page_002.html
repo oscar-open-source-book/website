@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>卷一 · 开源哲学</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;500;700;900&family=Source+Sans+3:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
+
+:root {
+  --wine: #880E4F;
+  --wine-deep: #6E0A41;
+  --wine-soft: #A8346B;
+  --gold: #C9A227;
+  --gold-deep: #A8861C;
+  --cream: #F7F3EC;
+  --cream-warm: #EFE8DA;
+  --ink: #2A241E;
+  --ink-soft: #4A4238;
+  --muted: #7C7268;
+  --rule: #D9CDBB;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { width: 1600px; height: 900px; overflow: hidden; background: var(--cream); }
+
+body {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, #FBF8F1 0%, var(--cream) 22%, var(--cream) 78%, #EFE7D8 100%);
+}
+
+#bg .frame-line {
+  position: absolute;
+  left: 60px;
+  right: 60px;
+  height: 1px;
+  background: var(--rule);
+  opacity: .55;
+}
+
+#bg .frame-line.top { top: 42px; }
+#bg .frame-line.bottom { bottom: 42px; }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+/* ===== Header ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--muted);
+  padding: 4px 0 0;
+  margin-top: 2px;
+}
+.header .head-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header .head-mark {
+  width: 9px;
+  height: 9px;
+  background: var(--wine);
+}
+.header .head-right {
+  color: var(--gold-deep);
+  letter-spacing: 3px;
+}
+
+/* ===== Main grid ===== */
+.content {
+  margin-top: 46px;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  height: 748px;
+}
+
+/* ===== Band 1 : anchor + title + quote ===== */
+.band {
+  display: grid;
+  grid-template-columns: 300px 1fr 400px;
+  column-gap: 48px;
+  align-items: center;
+  padding: 12px 0 34px;
+}
+
+.anchor-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.num-label {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--gold-deep);
+  font-weight: 500;
+  padding-left: 6px;
+  margin-bottom: -22px;
+}
+
+.num-label-cn {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--muted);
+  padding-left: 6px;
+  margin-bottom: 14px;
+}
+
+.num-01 {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 380px;
+  line-height: .82;
+  font-weight: 700;
+  color: var(--wine);
+  letter-spacing: -18px;
+  margin-left: -8px;
+}
+
+.anchor-line {
+  width: 260px;
+  height: 3px;
+  background: var(--wine);
+  margin-top: 22px;
+  margin-left: 4px;
+}
+
+.title-col {
+  padding-left: 4px;
+}
+
+.chapter-eyebrow {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--gold-deep);
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.chapter-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 66px;
+  line-height: 1.14;
+  color: var(--wine-deep);
+  letter-spacing: 2px;
+}
+
+.chapter-subtitle {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--ink-soft);
+  line-height: 1.85;
+  margin-top: 24px;
+  letter-spacing: 1.4px;
+  max-width: 560px;
+}
+
+.quote-col {
+  position: relative;
+  padding: 4px 0 4px 26px;
+  border-left: 1px solid var(--rule);
+}
+
+.quote-mark {
+  position: absolute;
+  left: 24px;
+  top: -22px;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 88px;
+  color: var(--gold);
+  line-height: 1;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.quote-text {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 2;
+  color: var(--ink-soft);
+  letter-spacing: .8px;
+}
+
+.quote-attrib {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--gold-deep);
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quote-attrib .attr-line {
+  width: 30px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* ===== Divider ===== */
+.divider-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 26px;
+  padding: 0 6px;
+}
+
+.divider-line {
+  height: 1px;
+  background: var(--rule);
+}
+
+.divider-dots {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.divider-dots .dot {
+  width: 5px;
+  height: 5px;
+  background: var(--wine);
+  border-radius: 50%;
+}
+.divider-dots .dot.mid {
+  background: var(--gold);
+}
+
+/* ===== Catalog ===== */
+.catalog {
+  padding: 28px 6px 4px;
+}
+
+.catalog-row {
+  display: grid;
+  grid-template-columns: 68px 260px 1fr auto;
+  align-items: center;
+  padding: 20px 10px;
+  border-bottom: 1px solid var(--rule);
+  gap: 22px;
+}
+.catalog-row:last-child {
+  border-bottom: none;
+}
+
+.catalog-marker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.catalog-marker .mark-square {
+  width: 10px;
+  height: 10px;
+  background: var(--wine);
+}
+.catalog-marker .mark-num {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 17px;
+  color: var(--gold-deep);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.catalog-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 27px;
+  color: var(--wine-deep);
+  font-weight: 700;
+  letter-spacing: 3px;
+  line-height: 1.2;
+}
+
+.catalog-desc {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  letter-spacing: .8px;
+}
+
+.catalog-page {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 22px;
+  color: var(--gold-deep);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 2px;
+  min-width: 42px;
+  text-align: right;
+}
+
+/* ===== Footer ===== */
+.footer {
+  position: absolute;
+  bottom: 26px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--muted);
+}
+
+.footer .foot-mark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer .foot-mark .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--wine);
+}
+.footer .foot-mark .dot.gold {
+  background: var(--gold);
+}
+
+.footer .foot-page {
+  color: var(--gold-deep);
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-style: italic;
+  letter-spacing: 2px;
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="frame-line top"></div>
+    <div class="frame-line bottom"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="head-left">
+        <span class="head-mark"></span>
+        <span>VOL. I &nbsp;·&nbsp; OPEN SOURCE PHILOSOPHY</span>
+      </div>
+      <div class="head-right">
+        <span>CHAPTER TRANSITION</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="band">
+        <div class="anchor-col">
+          <div class="num-label"><span>CHAPTER</span></div>
+          <div class="num-label-cn"><span>第&nbsp;一&nbsp;卷</span></div>
+          <div class="num-01"><span>01</span></div>
+          <div class="anchor-line"></div>
+        </div>
+
+        <div class="title-col">
+          <div class="chapter-eyebrow"><span>SECTION 01 · CONTENTS</span></div>
+          <h1 class="chapter-title"><span>卷一 · 开源哲学</span></h1>
+          <p class="chapter-subtitle"><span>从代码公共到思想开源，重读这一代人的共同信仰。</span></p>
+        </div>
+
+        <div class="quote-col">
+          <div class="quote-mark"><span>&ldquo;</span></div>
+          <p class="quote-text"><span>卷一开始回到原点：开源不只是技术社区的运动，也是哲学、政治与伦理的现场。本期将邀请你用三本书，重新理解自己为何愿意布道。</span></p>
+          <div class="quote-attrib">
+            <span class="attr-line"></span>
+            <span>EDITOR&rsquo;S NOTE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider-row">
+        <div class="divider-line"></div>
+        <div class="divider-dots">
+          <span class="dot"></span>
+          <span class="dot mid"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="catalog">
+        <div class="catalog-row">
+          <div class="catalog-marker">
+            <span class="mark-square"></span>
+            <span class="mark-num">01</span>
+          </div>
+          <div class="catalog-title"><span>什么是开源</span></div>
+          <div class="catalog-desc"><span>开放不只是许可证，更是一种协作哲学与创作伦理。</span></div>
+          <div class="catalog-page"><span>p. 08</span></div>
+        </div>
+        <div class="catalog-row">
+          <div class="catalog-marker">
+            <span class="mark-square"></span>
+            <span class="mark-num">02</span>
+          </div>
+          <div class="catalog-title"><span>为什么布道</span></div>
+          <div class="catalog-desc"><span>当代码之外还有思想的自由，布道者承担的是启蒙与连接。</span></div>
+          <div class="catalog-page"><span>p. 12</span></div>
+        </div>
+        <div class="catalog-row">
+          <div class="catalog-marker">
+            <span class="mark-square"></span>
+            <span class="mark-num">03</span>
+          </div>
+          <div class="catalog-title"><span>本期脉络</span></div>
+          <div class="catalog-desc"><span>以三本书为经纬，回答开源何以成为生活方式。</span></div>
+          <div class="catalog-page"><span>p. 18</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="foot-mark">
+        <span class="dot"></span>
+        <span class="dot gold"></span>
+        <span>OPEN SOURCE PHILOSOPHY · CHAPTER ONE</span>
+      </div>
+      <div class="foot-page"><span>MMXXV / I</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
