@@ -1,0 +1,590 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开场·开源之问</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --navy-2: #1a3350;
+  --red: #C0392B;
+  --red-2: #A32E22;
+  --cream: #F4F1EA;
+  --cream-2: #ECE7DA;
+  --paper: #EDE7D6;
+  --gold: #B08D57;
+  --ink-soft: #4a5566;
+  --rule: #0D2137;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--navy);
+  background: var(--cream);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 15%, rgba(192,57,43,0.06), transparent 55%), radial-gradient(ellipse at 90% 90%, rgba(13,33,55,0.05), transparent 60%);
+}
+
+/* 极淡的横线暗纹 */
+.bg-lines {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 39px,
+    rgba(13, 33, 55, 0.035) 39px,
+    rgba(13, 33, 55, 0.035) 40px
+  );
+}
+
+/* 右上角装饰性巨大几何圆环 */
+.bg-ring {
+  position: absolute;
+  right: -180px;
+  top: -180px;
+  width: 520px;
+  height: 520px;
+  border: 1px solid rgba(13, 33, 55, 0.12);
+  border-radius: 50%;
+}
+.bg-ring-2 {
+  position: absolute;
+  right: -100px;
+  top: -100px;
+  width: 360px;
+  height: 360px;
+  border: 1px solid rgba(192, 57, 43, 0.18);
+  border-radius: 50%;
+}
+
+/* 左下角对角斜线 */
+.bg-diag {
+  position: absolute;
+  left: -60px;
+  bottom: -60px;
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(13, 33, 55, 0.10);
+  transform: rotate(45deg);
+}
+
+/* 顶部报头 */
+.masthead {
+  position: absolute;
+  top: 44px;
+  left: 64px;
+  right: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+.masthead-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.masthead-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--navy);
+  color: var(--cream);
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.5px;
+}
+.masthead-title {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--navy);
+  font-weight: 600;
+}
+.masthead-sub {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--red);
+  font-weight: 500;
+  margin-top: 2px;
+}
+.masthead-right {
+  font-family: "Source Serif 4", serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--ink-soft);
+}
+.masthead-right .vol {
+  color: var(--red);
+  font-weight: 600;
+  margin-right: 6px;
+}
+.masthead-divider {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  top: 92px;
+  height: 1px;
+  background: var(--navy);
+  z-index: 2;
+}
+.masthead-divider::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 120px;
+  height: 3px;
+  background: var(--red);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 130px 64px 56px 64px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 章节徽章 */
+.chapter-badge {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.badge-num {
+  font-family: "Source Serif 4", serif;
+  font-size: 13px;
+  letter-spacing: 8px;
+  color: var(--red);
+  font-weight: 600;
+}
+.badge-line {
+  flex: 0 0 60px;
+  height: 1px;
+  background: var(--red);
+}
+.badge-cn {
+  font-family: "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 10px;
+  color: var(--navy);
+  font-weight: 500;
+}
+
+/* 主标题区 */
+.title-block {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 14px;
+}
+.main-title {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 128px;
+  font-weight: 600;
+  line-height: 1.0;
+  color: var(--navy);
+  letter-spacing: -1px;
+}
+.main-title .dot {
+  color: var(--red);
+  font-weight: 700;
+  margin: 0 6px;
+}
+.main-title-en {
+  font-family: "Source Serif 4", serif;
+  font-size: 15px;
+  letter-spacing: 8px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  padding-bottom: 18px;
+  text-align: right;
+  white-space: nowrap;
+}
+.main-title-en span {
+  color: var(--red);
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/* 副标题 */
+.subtitle-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+.subtitle-mark {
+  color: var(--red);
+  font-family: "Source Serif 4", serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+.subtitle {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 24px;
+  color: var(--navy);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+/* 分割线 */
+.divider-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 22px 0 30px 0;
+}
+.divider-row .dash {
+  flex: 0 0 48px;
+  height: 2px;
+  background: var(--red);
+}
+.divider-row .line {
+  flex: 1;
+  height: 1px;
+  background: var(--navy);
+  opacity: 0.5;
+}
+.divider-row .glyph {
+  font-family: "Source Serif 4", serif;
+  color: var(--navy);
+  font-size: 18px;
+  letter-spacing: 6px;
+  font-weight: 600;
+}
+.divider-row .glyph .r { color: var(--red); }
+
+/* 内容区 */
+.content {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 70px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* 左侧引言 */
+.intro {
+  position: relative;
+  padding-left: 28px;
+  border-left: 3px solid var(--red);
+}
+.intro-label {
+  font-family: "Source Serif 4", serif;
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--red);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.intro-quote {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 19px;
+  line-height: 1.95;
+  color: var(--navy);
+  font-weight: 400;
+}
+.intro-quote p + p { margin-top: 12px; }
+.intro-quote .em {
+  color: var(--red);
+  font-weight: 600;
+  font-style: italic;
+}
+.intro-quote .hi {
+  background: linear-gradient(transparent 65%, rgba(192,57,43,0.16) 65%);
+  padding: 0 2px;
+}
+.intro-author {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 13px;
+  color: var(--ink-soft);
+  letter-spacing: 2px;
+}
+.intro-author .dash {
+  width: 24px;
+  height: 1px;
+  background: var(--ink-soft);
+}
+
+/* 右侧三要点 */
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.point-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+.point-head .en {
+  font-family: "Source Serif 4", serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.point-head .rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(13,33,55,0.3);
+}
+.points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.point {
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px dashed rgba(13,33,55,0.25);
+}
+.point:last-child { border-bottom: none; }
+.point-num {
+  font-family: "Source Serif 4", serif;
+  font-size: 56px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--red);
+  font-style: italic;
+  border-right: 1px solid rgba(13,33,55,0.2);
+  padding-right: 6px;
+  position: relative;
+}
+.point-num::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  background: var(--cream);
+  border: 1px solid var(--red);
+  border-radius: 50%;
+}
+.point-body { padding-top: 4px; }
+.point-title {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 24px;
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.point-title .en-tag {
+  font-family: "Source Serif 4", serif;
+  font-size: 11px;
+  color: var(--red);
+  letter-spacing: 3px;
+  font-weight: 500;
+  font-style: italic;
+  margin-left: 10px;
+  vertical-align: 3px;
+}
+.point-desc {
+  font-family: "Helvetica Neue", "PingFang SC", sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+.point-desc .key {
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* 底部 */
+.footer {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  bottom: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+.footer-left {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--ink-soft);
+}
+.footer-left .r {
+  color: var(--red);
+  font-weight: 600;
+  margin-right: 8px;
+}
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.footer-arrows {
+  font-family: "Source Serif 4", serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--navy);
+  font-weight: 600;
+}
+.footer-arrows .r { color: var(--red); }
+.footer-page {
+  font-family: "Source Serif 4", serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--ink-soft);
+}
+.footer-page .n {
+  color: var(--red);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 4px;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-lines"></div>
+    <div class="bg-ring"></div>
+    <div class="bg-ring-2"></div>
+    <div class="bg-diag"></div>
+  </div>
+
+  <div class="masthead">
+    <div class="masthead-left">
+      <div class="masthead-mark">开</div>
+      <div>
+        <div class="masthead-title">开 源 之 问 · OPEN&nbsp;SOURCE&nbsp;QUARTERLY</div>
+        <div class="masthead-sub">A&nbsp;SECTION&nbsp;ON&nbsp;GLOBALIZATION&nbsp;&amp;&nbsp;OPEN&nbsp;COLLABORATION</div>
+      </div>
+    </div>
+    <div class="masthead-right">
+      <span class="vol">VOL.&nbsp;07</span> · 章节过渡 · 2025
+    </div>
+  </div>
+  <div class="masthead-divider"></div>
+
+  <div id="ct">
+    <div class="chapter-badge">
+      <div class="badge-num">PART&nbsp;I</div>
+      <div class="badge-line"></div>
+      <div class="badge-cn">第&nbsp;壹&nbsp;章</div>
+    </div>
+
+    <div class="title-block">
+      <h1 class="main-title">开场<span class="dot">·</span>开源之问</h1>
+      <div class="main-title-en"><span>—</span>The&nbsp;Opening&nbsp;Question</div>
+    </div>
+
+    <div class="subtitle-row">
+      <div class="subtitle-mark">§</div>
+      <div class="subtitle">为什么在逆全球化时代，我们仍要谈开源？</div>
+    </div>
+
+    <div class="divider-row">
+      <div class="dash"></div>
+      <div class="glyph"><span class="r">◆</span>&nbsp;&nbsp;◆&nbsp;&nbsp;<span class="r">◆</span></div>
+      <div class="line"></div>
+      <div class="dash"></div>
+    </div>
+
+    <div class="content">
+      <!-- 左侧：叙事性引言 -->
+      <div class="intro">
+        <div class="intro-label">FOREWORD&nbsp;·&nbsp;开 篇 引 言</div>
+        <div class="intro-quote">
+          <p>在全球化遭遇拆解的今天，<span class="hi">开源社区正面临前所未有的分裂压力</span>。本篇开场将引出核心追问：当各国纷纷要求<span class="em">技术自主可控</span>时，开源的开放共享理念<span class="em">如何自处</span>？它是否还有存在空间？</p>
+          <p>本次分享将带着这些问题进入文本——从一篇关于全球化拆解的写作开始，与读者一同重新审视：开源是工具，是信仰，还是一种可被拆解的公共制度？</p>
+        </div>
+        <div class="intro-author">
+          <div class="dash"></div>
+          <span>本期开场 · 编者按</span>
+        </div>
+      </div>
+
+      <!-- 右侧：三要点 -->
+      <div class="points">
+        <div class="point-head">
+          <span class="en">KEY&nbsp;POINTS&nbsp;·&nbsp;三 个 追 问</span>
+          <div class="rule"></div>
+        </div>
+        <div class="points-list">
+          <div class="point">
+            <div class="point-num">01</div>
+            <div class="point-body">
+              <div class="point-title">时代背景<span class="en-tag">Context</span></div>
+              <div class="point-desc">地缘政治摩擦加剧，<span class="key">技术脱钩</span>与<span class="key">软件民族主义</span>抬头。</div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="point-num">02</div>
+            <div class="point-body">
+              <div class="point-title">开源的坚守<span class="en-tag">Stance</span></div>
+              <div class="point-desc">开源不仅是技术协作模式，更是<span class="key">跨文化的公共知识基础设施</span>。</div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="point-num">03</div>
+            <div class="point-body">
+              <div class="point-title">本期切入点<span class="en-tag">Entry</span></div>
+              <div class="point-desc">通过一篇关于<span class="key">全球化拆解</span>的文本，重新追问开源的边界与可能。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left"><span class="r">■</span>OPEN&nbsp;SOURCE&nbsp;QUARTERLY&nbsp;&nbsp;·&nbsp;&nbsp;SECTION&nbsp;TRANSITION</div>
+    <div class="footer-right">
+      <div class="footer-arrows">NEXT&nbsp;&nbsp;<span class="r">▶</span>&nbsp;&nbsp;开 篇 之 后&nbsp;·&nbsp;进 入 正 文</div>
+      <div class="footer-page">PAGE&nbsp;<span class="n">02</span>／&nbsp;16</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
