@@ -1,151 +1,382 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>复杂性：涌现的科学 — 开源布道阅读分享 第14期</title>
+<title>复杂性：涌现的科学 | 开源布道</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Source+Sans+Pro:wght@300;400;600;700&family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#0D2137;
+  --navy-2:#122F4D;
   --gold:#C8A96E;
-  --neutral:#607D8B;
-  --bg:#F2EEE6;
-  --paper:#EFE9DD;
-  --line:#C7B9A0;
-  --text:#0D2137;
-  --muted:#5A6A78;
-  --accent-soft:rgba(200,169,110,0.15);
-  --serif:"Playfair Display","Noto Serif SC",Georgia,serif;
-  --sans:"Source Sans 3","Source Sans Pro","Noto Sans SC",system-ui,sans-serif;
+  --gold-2:#D9BE8B;
+  --mist:#607D8B;
+  --paper:#FBF7EF;
+  --paper-2:#F1ECDF;
+  --paper-3:#ECE4D2;
+  --ink:#0D2137;
+  --ink-mute:#4A5568;
 }
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;background:#111;}
-body{font-family:var(--sans);color:var(--text);-webkit-font-smoothing:antialiased;}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
-#bg{position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,#F5F1E9 0%,#EBE4D4 100%);}
-#bg::before{content:"";position:absolute;top:-140px;right:-140px;width:520px;height:520px;background:radial-gradient(circle at 40% 40%, rgba(200,169,110,0.18) 0%, rgba(200,169,110,0) 68%);pointer-events:none;}
-#bg::after{content:"";position:absolute;left:-120px;bottom:-180px;width:600px;height:600px;background:radial-gradient(circle at 60% 40%, rgba(13,33,55,0.10) 0%, rgba(13,33,55,0) 65%);pointer-events:none;}
-#ct{position:absolute;inset:0;z-index:1;padding:56px 64px 44px 64px;display:flex;flex-direction:column;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  color:var(--navy);
+  background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:#FBF7EF;
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(180deg,#FBF7EF 0%,#F1ECDF 100%);
+}
+#bg::before{
+  content:'';
+  position:absolute;
+  left:120px;top:52px;
+  width:80px;height:80px;
+  border-top:1.5px solid rgba(200,169,110,.55);
+  border-left:1.5px solid rgba(200,169,110,.55);
+}
+#bg::after{
+  content:'';
+  position:absolute;
+  left:120px;bottom:62px;
+  width:64px;height:1.5px;
+  background:var(--gold);
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+}
 
-.masthead{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--line);}
-.masthead-left{display:flex;align-items:center;gap:14px;font-family:var(--serif);}
-.masthead-mark{width:34px;height:34px;border:1.5px solid var(--navy);display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--navy);letter-spacing:0.5px;font-weight:700;}
-.masthead-title{font-size:20px;letter-spacing:6px;color:var(--navy);font-weight:700;}
-.masthead-sep{width:1px;height:20px;background:var(--line);margin:0 4px;}
-.masthead-date{font-family:var(--sans);font-size:13px;color:var(--muted);letter-spacing:2px;font-weight:500;}
-.masthead-issue{display:flex;align-items:baseline;gap:8px;font-family:var(--serif);}
-.masthead-issue-label{font-size:12px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-family:var(--sans);font-weight:600;}
-.masthead-issue-num{font-size:30px;color:var(--gold);font-weight:700;font-style:italic;line-height:1;}
+/* ============ HERO IMAGE (right) ============ */
+.hero{
+  position:absolute;
+  right:0;top:0;
+  width:820px;height:900px;
+  overflow:hidden;
+}
+.hero-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+.hero-fade{
+  position:absolute;
+  top:0;bottom:0;left:0;
+  width:90px;
+  background:linear-gradient(to right, #FBF7EF 0%, rgba(251,247,239,0) 100%);
+  pointer-events:none;
+}
+.hero-issue{
+  position:absolute;
+  left:28px;top:38px;
+  color:var(--gold);
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  letter-spacing:.45em;
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  writing-mode:vertical-rl;
+  opacity:.92;
+}
 
-.main{flex:1;display:grid;grid-template-columns:1fr 780px;gap:56px;padding-top:44px;}
+/* ============ CONTENT (left) ============ */
+.content{
+  position:absolute;
+  left:120px;top:60px;
+  width:770px;
+  height:780px;
+  display:flex;
+  flex-direction:column;
+}
 
-.col-left{display:flex;flex-direction:column;position:relative;}
-.kicker{font-family:var(--sans);font-size:12px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:24px;font-weight:600;}
-.title{font-family:var(--serif);font-size:108px;line-height:1.02;color:var(--navy);font-weight:700;letter-spacing:0px;margin:0;}
-.title-line1{display:block;}
-.title-line2{display:block;position:relative;margin-left:44px;}
-.title-line2::before{content:"";position:absolute;left:0;top:26px;width:28px;height:2px;background:var(--gold);}
-.title .colon{color:var(--gold);font-style:italic;font-weight:400;}
-.subtitle{font-family:var(--sans);font-size:16.5px;line-height:1.85;color:var(--muted);margin-top:26px;max-width:640px;font-weight:400;}
-.subtitle .hl{color:var(--navy);font-weight:600;}
+/* Masthead */
+.masthead{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:12px;
+  letter-spacing:.32em;
+  color:var(--mist);
+  text-transform:uppercase;
+  font-weight:600;
+  padding-bottom:20px;
+  border-bottom:1px solid rgba(200,169,110,.45);
+}
+.mh-mark{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  color:var(--gold);
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:0;
+  line-height:1;
+}
+.mh-title{
+  font-weight:700;
+  color:var(--navy);
+  letter-spacing:.3em;
+}
+.mh-sep{
+  width:32px;height:1px;
+  background:var(--gold);
+  opacity:.75;
+  flex-shrink:0;
+}
+.mh-sub{
+  color:var(--mist);
+  letter-spacing:.24em;
+}
 
-.meta{display:flex;flex-direction:column;gap:10px;margin-top:28px;max-width:620px;}
-.meta-row{display:grid;grid-template-columns:108px 1fr;gap:22px;align-items:center;padding:10px 0;border-top:1px solid var(--line);}
-.meta-row:last-child{border-bottom:1px solid var(--line);}
-.meta-label{font-family:var(--sans);font-size:11px;color:var(--neutral);letter-spacing:4px;font-weight:600;}
-.meta-value{font-family:var(--serif);font-size:16px;color:var(--navy);font-weight:600;letter-spacing:0.3px;}
-.meta-value .small{font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:400;letter-spacing:1px;margin-left:6px;font-style:italic;}
-.meta-value em{color:var(--gold);font-style:italic;font-weight:400;}
+/* Title */
+.title-block{
+  padding-top:30px;
+  padding-bottom:12px;
+}
+.title-top{
+  display:flex;
+  align-items:baseline;
+  gap:16px;
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  font-size:13px;
+  letter-spacing:.55em;
+  color:var(--gold);
+  font-weight:600;
+  margin-bottom:10px;
+}
+.title-num{
+  font-family:'Playfair Display',serif;
+  color:var(--gold);
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:0;
+  line-height:1;
+}
+.title-line{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:900;
+  color:var(--navy);
+  font-size:118px;
+  line-height:1.0;
+  letter-spacing:.02em;
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+}
+.title-line .colon{
+  color:var(--gold);
+  font-weight:900;
+  font-style:italic;
+  font-size:118px;
+  line-height:1;
+}
+.title-bottom{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:900;
+  color:var(--navy);
+  font-size:78px;
+  line-height:1.05;
+  letter-spacing:.02em;
+  margin-top:6px;
+  padding-left:8px;
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+}
+.title-bottom .accent{
+  color:var(--gold);
+  font-weight:900;
+  font-style:italic;
+}
 
-.col-right{position:relative;display:flex;flex-direction:column;justify-content:flex-start;}
-.hero-frame{position:relative;width:720px;height:405px;align-self:flex-end;box-shadow:0 24px 60px rgba(13,33,55,0.28), 0 4px 14px rgba(13,33,55,0.18);}
-.hero-frame img{width:720px;height:405px;display:block;object-fit:cover;}
-.hero-caption{display:flex;justify-content:space-between;align-items:flex-start;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);max-width:720px;align-self:flex-end;}
-.hero-caption-text{font-family:var(--sans);font-size:12px;color:var(--neutral);line-height:1.6;letter-spacing:0.4px;font-style:italic;}
-.hero-caption-text strong{color:var(--navy);font-style:normal;font-weight:700;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;display:block;margin-bottom:3px;}
-.hero-caption-tag{font-family:var(--serif);font-size:22px;color:var(--gold);font-style:italic;font-weight:400;letter-spacing:1px;line-height:1;white-space:nowrap;padding-left:16px;}
+/* Subtitle */
+.subtitle{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-top:22px;
+  font-size:17px;
+  color:var(--navy);
+  font-weight:500;
+  letter-spacing:.18em;
+}
+.sub-bar{
+  width:44px;height:2px;
+  background:var(--gold);
+  flex-shrink:0;
+}
+.sub-text{
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  letter-spacing:.14em;
+}
 
-.footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--line);margin-top:auto;}
-.footer-left{font-family:var(--serif);font-size:12px;color:var(--neutral);letter-spacing:3px;font-style:italic;}
-.footer-left .sep{color:var(--gold);margin:0 8px;font-style:normal;}
-.footer-center{font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:6px;font-weight:500;text-transform:uppercase;}
-.footer-right{font-family:var(--serif);font-size:14px;color:var(--navy);letter-spacing:1px;}
-.footer-right .dot{color:var(--gold);margin:0 6px;font-style:italic;}
+/* Meta cards */
+.meta-row{
+  display:flex;
+  gap:14px;
+  margin-top:26px;
+}
+.meta{
+  flex:1;
+  background:rgba(255,255,255,.72);
+  border-top:2px solid var(--gold);
+  padding:14px 16px 16px;
+  min-height:112px;
+  display:flex;
+  flex-direction:column;
+}
+.meta-label{
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  font-size:10px;
+  letter-spacing:.34em;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+.meta-value{
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:700;
+  color:var(--navy);
+  font-size:15.5px;
+  line-height:1.4;
+  margin-bottom:4px;
+}
+.meta-note{
+  font-size:11.5px;
+  color:var(--mist);
+  line-height:1.5;
+  margin-top:auto;
+  font-weight:400;
+  letter-spacing:.02em;
+}
 
-.corner-ornament{position:absolute;top:0;right:0;width:2px;height:110px;background:var(--gold);}
+/* Editorial blurb */
+.blurb{
+  margin-top:26px;
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  max-width:700px;
+}
+.blurb-mark{
+  font-family:'Playfair Display',serif;
+  color:var(--gold);
+  font-size:56px;
+  line-height:0.75;
+  font-weight:900;
+  padding-top:4px;
+  flex-shrink:0;
+}
+.blurb-text{
+  font-size:15px;
+  line-height:1.8;
+  color:var(--ink-mute);
+  font-weight:400;
+  letter-spacing:.02em;
+  padding-top:2px;
+}
+.blurb-text .em{
+  color:var(--navy);
+  font-weight:700;
+}
+
+/* Footer */
+.footer{
+  position:absolute;
+  left:120px;
+  bottom:28px;
+  right:860px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:11px;
+  letter-spacing:.34em;
+  color:var(--mist);
+  font-weight:600;
+  text-transform:uppercase;
+}
+.foot-line{
+  flex:1;
+  height:1px;
+  background:rgba(96,125,139,.3);
+  margin:0 18px;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-<div id="bg"></div>
-<div id="ct">
-
-  <div class="masthead">
-    <div class="masthead-left">
-      <div class="masthead-mark">布</div>
-      <div class="masthead-title">开源布道 · 阅读分享</div>
-      <div class="masthead-sep"></div>
-      <div class="masthead-date">2024年7月</div>
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="hero">
+      <img class="hero-img" src="../images/page_001_hero.png" alt="复杂网络粒子背景">
+      <div class="hero-fade"></div>
+      <div class="hero-issue"><span>COMPLEXITY · EMERGING SCIENCE</span></div>
     </div>
-    <div class="masthead-issue">
-      <span class="masthead-issue-label">Issue</span>
-      <span class="masthead-issue-num">№ 14</span>
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="col-left">
-      <div class="corner-ornament"></div>
-      <div class="kicker">COVER STORY · 封面专题</div>
-      <h1 class="title">
-        <span class="title-line1">复杂性<span class="colon">：</span></span>
-        <span class="title-line2">涌现的科学</span>
-      </h1>
-      <p class="subtitle">
-        本期开源布道阅读分享聚焦<span class="hl">复杂性科学</span>——一门研究从简单规则中如何涌现出复杂行为的跨学科领域。我们将拆解其核心理论，并探索它与<span class="hl">开源生态</span>的深层共振。
-      </p>
-
-      <div class="meta">
-        <div class="meta-row">
-          <div class="meta-label">分 享 人</div>
-          <div class="meta-value">开源之道 · 适兕</div>
+    <div class="content">
+      <div class="masthead">
+        <span class="mh-mark">N°14</span>
+        <span class="mh-title">开源之道</span>
+        <span class="mh-sep"></span>
+        <span class="mh-sub">READING SHARING · JUL 2024</span>
+      </div>
+      <div class="title-block">
+        <div class="title-top">
+          <span class="title-num">Ⅶ</span>
+          <span>ISSUE 014 · SPECIAL READING</span>
         </div>
-        <div class="meta-row">
-          <div class="meta-label">原 著</div>
-          <div class="meta-value">Complexity: The Emerging Science<span class="small">Melvin M. Vopicki</span></div>
+        <div class="title-line">
+          <span>复杂性</span>
+          <span class="colon">:</span>
         </div>
-        <div class="meta-row">
-          <div class="meta-label">形 式</div>
-          <div class="meta-value">月度阅读分享 <em>·</em> 第 <span style="color:var(--gold);font-style:italic;">14</span> 期</div>
+        <div class="title-bottom">
+          <span>涌现的科学</span>
+        </div>
+      </div>
+      <div class="subtitle">
+        <span class="sub-bar"></span>
+        <span class="sub-text">开源布道 · 阅读分享 | 2024年7月</span>
+      </div>
+      <div class="meta-row">
+        <div class="meta">
+          <div class="meta-label"><span>SPEAKER</span></div>
+          <div class="meta-value"><span>开源之道 · 适兕</span></div>
+          <div class="meta-note"><span>本期主讲人</span></div>
+        </div>
+        <div class="meta">
+          <div class="meta-label"><span>ORIGIN</span></div>
+          <div class="meta-value"><span>Melvin M. Vopicki</span></div>
+          <div class="meta-note"><span>Complexity: The Emerging Science</span></div>
+        </div>
+        <div class="meta">
+          <div class="meta-label"><span>FORMAT</span></div>
+          <div class="meta-value"><span>月度阅读分享</span></div>
+          <div class="meta-note"><span>第 14 期</span></div>
+        </div>
+      </div>
+      <div class="blurb">
+        <div class="blurb-mark">"</div>
+        <div class="blurb-text">
+          <span class="em">复杂性科学</span>是一门研究从<span class="em">简单规则</span>中如何涌现出<span class="em">复杂行为</span>的跨学科领域。本期开源布道阅读分享将拆解其核心理论，并探索它与开源生态的深层共振。
         </div>
       </div>
     </div>
-
-    <div class="col-right">
-      <div class="hero-frame">
-        <img src="../images/page_001_hero.png" alt="复杂性网络粒子图——金色光线在深蓝背景上交织成有机网络，象征从简单中涌现的复杂性">
-      </div>
-      <div class="hero-caption">
-        <div class="hero-caption-text">
-          <strong>Editorial Visual</strong>
-          深蓝底色上金色光线在发光节点间交织成有机网络——复杂性从简单规则中涌现的视觉隐喻。
-        </div>
-        <div class="hero-caption-tag">Complexity</div>
-      </div>
+    <div class="footer">
+      <span>OPEN-SOURCE WAYS</span>
+      <span class="foot-line"></span>
+      <span>EST. 2024</span>
     </div>
   </div>
-
-  <div class="footer">
-    <div class="footer-left">A Reader's Companion to Open Source<span class="sep">·</span>Monthly Journal</div>
-    <div class="footer-center">Reading · Discussing · Emerging</div>
-    <div class="footer-right">Page <span class="dot">·</span> 01</div>
-  </div>
-
-</div>
 </div>
 </body>
 </html>
