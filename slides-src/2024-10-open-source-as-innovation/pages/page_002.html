@@ -1,363 +1,505 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
-<title>章节过渡页 · 开源的诞生与演进</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>开源的诞生与演进 · Chapter 01</title>
+<script src="../assets/echarts.min.js"></script>
 <style>
-  :root {
-    --primary: #2196F3;
-    --accent: #00BCD4;
-    --bg: #2D3748;
-    --bg-deep: #1A202C;
-    --text-main: #F7FAFC;
-    --text-sub: #CBD5E0;
-    --text-mute: #718096;
-    --line: rgba(33, 150, 243, 0.25);
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-base: #1a2233;
+  --bg-neutral: #2D3748;
+  --text-main: #f5f7fa;
+  --text-muted: #a0aec0;
+  --text-dim: #718096;
+  --divider: rgba(33, 150, 243, 0.25);
+}
 
-  html, body {
-    width: 1600px;
-    height: 900px;
-    overflow: hidden;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    color: var(--text-main);
-    background: var(--bg-deep);
-    -webkit-font-smoothing: antialiased;
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .wrapper {
-    width: 1600px;
-    height: 900px;
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto;
-    background: var(--bg);
-  }
+html, body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #0a0e17;
+  color: var(--text-main);
+  overflow: hidden;
+}
 
-  #bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: radial-gradient(ellipse at 15% 30%, rgba(33, 150, 243, 0.12) 0%, rgba(33, 150, 243, 0) 55%),
-                linear-gradient(135deg, #1A202C 0%, #2D3748 50%, #1E2A3A 100%);
-  }
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #0f1626 0%, #1a2233 40%, #2D3748 100%);
+}
 
-  #bg::before {
-    content: '';
-    position: absolute;
-    left: -100px;
-    top: -100px;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(0, 188, 212, 0.08) 0%, rgba(0, 188, 212, 0) 70%);
-    pointer-events: none;
-  }
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
 
-  #bg::after {
-    content: '';
-    position: absolute;
-    right: 20%;
-    bottom: -80px;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(33, 150, 243, 0.06) 0%, rgba(33, 150, 243, 0) 70%);
-    pointer-events: none;
-  }
+.bg-deco {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1000px;
+  height: 900px;
+  background-image: url('../images/page_002_deco.png');
+  background-size: cover;
+  background-position: center;
+}
 
-  #ct {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    padding: 70px 80px;
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: 520px 1fr;
-    grid-template-rows: 1fr auto;
-    column-gap: 40px;
-    row-gap: 0;
-  }
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    rgba(15, 22, 38, 0.98) 0%,
+    rgba(15, 22, 38, 0.92) 30%,
+    rgba(15, 22, 38, 0.55) 48%,
+    rgba(15, 22, 38, 0.15) 65%,
+    rgba(15, 22, 38, 0.05) 100%);
+}
 
-  /* === 顶部品牌行 === */
-  .top-bar {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--line);
-    font-size: 12px;
-    letter-spacing: 0.3em;
-    color: var(--text-mute);
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-  .top-bar .brand { display: flex; align-items: center; gap: 12px; }
-  .top-bar .brand-dot {
-    width: 8px; height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 12px var(--accent);
-  }
-  .top-bar .brand-cn { color: var(--text-sub); letter-spacing: 0.15em; font-weight: 400; }
+.bg-glow {
+  position: absolute;
+  left: -200px;
+  top: -200px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.18) 0%, transparent 70%);
+  filter: blur(20px);
+}
 
-  /* === 左侧：章节编号 + 标题 === */
-  .left-col {
-    grid-column: 1;
-    grid-row: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    padding-top: 30px;
-  }
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33, 150, 243, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
 
-  .chapter-tag {
-    font-size: 12px;
-    letter-spacing: 0.4em;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .chapter-tag::before {
-    content: '';
-    display: inline-block;
-    width: 40px;
-    height: 1px;
-    background: var(--accent);
-  }
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 70px 80px;
+  display: flex;
+  flex-direction: column;
+}
 
-  .chapter-num {
-    font-size: 260px;
-    font-weight: 900;
-    line-height: 0.85;
-    letter-spacing: -0.05em;
-    background: linear-gradient(135deg, #2196F3 0%, #00BCD4 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 10px;
-    position: relative;
-  }
-  .chapter-num::after {
-    content: '';
-    position: absolute;
-    left: 4px;
-    bottom: 18px;
-    width: 120px;
-    height: 3px;
-    background: var(--primary);
-    opacity: 0.5;
-    border-radius: 2px;
-  }
+/* Left content area */
+.left-col {
+  width: 680px;
+  height: 760px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
 
-  .main-title {
-    font-size: 46px;
-    font-weight: 700;
-    color: var(--text-main);
-    line-height: 1.2;
-    margin-top: 20px;
-    letter-spacing: 0.02em;
-  }
+.chapter-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
 
-  .sub-title-en {
-    font-size: 15px;
-    color: var(--text-sub);
-    margin-top: 18px;
-    letter-spacing: 0.18em;
-    font-weight: 400;
-    line-height: 1.6;
-    opacity: 0.85;
-  }
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent);
+}
 
-  .sub-title-cn {
-    font-size: 14px;
-    color: var(--text-mute);
-    margin-top: 6px;
-    letter-spacing: 0.12em;
-    font-weight: 300;
-  }
+.badge-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
 
-  /* === 右侧：装饰图 + caption === */
-  .right-col {
-    grid-column: 2;
-    grid-row: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    padding-top: 30px;
-    padding-right: 10px;
-  }
+.badge-text {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 6px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
 
-  .deco-frame {
-    position: relative;
-    width: 900px;
-    height: 500px;
-  }
+.chapter-number {
+  font-size: 220px;
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -8px;
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.85) 0%, rgba(0, 188, 212, 0.55) 50%, rgba(33, 150, 243, 0.15) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+  font-family: 'Inter', sans-serif;
+}
 
-  .deco-frame::before {
-    content: '';
-    position: absolute;
-    left: -20px;
-    top: -20px;
-    right: 20px;
-    bottom: 20px;
-    border: 1px solid rgba(33, 150, 243, 0.2);
-    border-radius: 4px;
-    pointer-events: none;
-  }
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 10px;
+}
 
-  .deco-frame img {
-    width: 900px;
-    height: 500px;
-    object-fit: cover;
-    display: block;
-    border-radius: 4px;
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
-                0 0 40px rgba(33, 150, 243, 0.15);
-  }
+h1 {
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 2px;
+  line-height: 1.15;
+}
 
-  .deco-caption {
-    margin-top: 18px;
-    align-self: flex-end;
-    font-size: 13px;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .deco-caption::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-  }
+h1 .highlight {
+  color: var(--primary);
+}
 
-  /* === 底部：三个时代节点 + 收束语 === */
-  .bottom-band {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    margin-top: 30px;
-    padding-top: 26px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+.subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+  margin-bottom: 36px;
+}
 
-  .nodes-row {
-    display: grid;
-    grid-template-columns: 1fr 1px 1fr 1px 1fr;
-    gap: 30px;
-    align-items: stretch;
-  }
+.subtitle .cn {
+  color: var(--text-dim);
+  margin-left: 4px;
+  font-size: 14px;
+}
 
-  .node-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+/* Threads list */
+.threads {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 32px;
+}
 
-  .node-label {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    color: var(--accent);
-    font-weight: 600;
-  }
+.threads::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: linear-gradient(180deg,
+    var(--primary) 0%,
+    var(--accent) 50%,
+    rgba(0, 188, 212, 0.2) 100%);
+}
 
-  .node-text {
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--text-sub);
-    font-weight: 400;
-  }
+.thread {
+  position: relative;
+  padding: 10px 0 10px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
 
-  .node-divider {
-    width: 1px;
-    background: linear-gradient(to bottom, transparent 0%, var(--line) 30%, var(--line) 70%, transparent 100%);
-  }
+.thread::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-base);
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.6);
+}
 
-  .closing {
-    font-size: 12px;
-    color: var(--text-mute);
-    line-height: 1.7;
-    letter-spacing: 0.05em;
-    font-weight: 300;
-    padding-left: 14px;
-    border-left: 2px solid var(--primary);
-    opacity: 0.85;
-  }
+.thread .idx {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  min-width: 32px;
+  padding-top: 4px;
+}
+
+.thread .body {
+  flex: 1;
+}
+
+.thread .t-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.thread .t-desc {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  letter-spacing: 0.3px;
+}
+
+.thread .arrow {
+  position: absolute;
+  right: -18px;
+  top: 22px;
+  font-size: 14px;
+  color: var(--divider);
+}
+
+/* Bottom narrative */
+.narrative {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 680px;
+  padding: 18px 20px 0 20px;
+  border-top: 1px solid var(--divider);
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+}
+
+.narrative::before {
+  content: '引言 / EPILOGUE';
+  display: block;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Right column decorative frame */
+.right-frame {
+  position: absolute;
+  right: 60px;
+  top: 60px;
+  bottom: 60px;
+  width: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.side-tick {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  writing-mode: vertical-rl;
+}
+
+.corner-mark {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: var(--primary);
+  border-style: solid;
+  border-width: 0;
+}
+
+.corner-tl {
+  top: 40px;
+  left: 40px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.corner-br {
+  bottom: 40px;
+  right: 40px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+/* Top-right meta */
+.meta-tr {
+  position: absolute;
+  top: 70px;
+  right: 80px;
+  text-align: right;
+  z-index: 3;
+}
+
+.meta-tr .num {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.meta-tr .of {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  margin-top: 4px;
+}
+
+/* Bottom-right chapter marker */
+.chapter-mark {
+  position: absolute;
+  bottom: 70px;
+  right: 80px;
+  text-align: right;
+  z-index: 3;
+}
+
+.chapter-mark .label {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.chapter-mark .val {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.chapter-mark .val span {
+  color: var(--primary);
+}
+
+/* Progress indicator */
+.progress {
+  position: absolute;
+  bottom: 22px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 3;
+}
+
+.progress .p-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+}
+
+.progress .p-bar {
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.progress .p-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 20%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.progress .p-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
 
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg"></div>
+  <div id="bg">
+    <div class="bg-deco"></div>
+    <div class="bg-overlay"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+  </div>
+
   <div id="ct">
+    <!-- Corner marks -->
+    <div class="corner-mark corner-tl"></div>
+    <div class="corner-mark corner-br"></div>
 
-    <div class="top-bar">
-      <div class="brand">
-        <span class="brand-dot"></span>
-        <span>OPEN SOURCE</span>
-        <span class="brand-cn">· 起源与演进</span>
-      </div>
-      <div>CHAPTER TRANSITION · 01 / 06</div>
+    <!-- Top-right meta -->
+    <div class="meta-tr">
+      <div class="num">CH. 01 / 08</div>
+      <div class="of">OPEN SOURCE · HISTORY</div>
     </div>
 
+    <!-- Left content -->
     <div class="left-col">
-      <div class="chapter-tag"><span>CHAPTER</span></div>
-      <div class="chapter-num">01</div>
-      <h1 class="main-title">开源的诞生与演进</h1>
-      <div class="sub-title-en">Chapter 01 · 起源、里程碑与理念</div>
-      <div class="sub-title-cn">Origin · Milestones · Philosophy</div>
+      <div class="chapter-badge">
+        <div class="badge-dot"></div>
+        <div class="badge-line"></div>
+        <span class="badge-text">CHAPTER OPENING</span>
+      </div>
+
+      <div class="chapter-number">01</div>
+
+      <div class="title-row">
+        <h1>开源的<span class="highlight">诞生</span>与演进</h1>
+      </div>
+      <div class="subtitle">Chapter 01 · <span class="cn">起源、里程碑与理念</span></div>
+
+      <div class="threads">
+        <div class="thread">
+          <span class="idx">01</span>
+          <div class="body">
+            <div class="t-title">从 GNU 到 OSS</div>
+            <div class="t-desc">三十年间，一场软件自由运动的展开</div>
+          </div>
+          <span class="arrow">›</span>
+        </div>
+        <div class="thread">
+          <span class="idx">02</span>
+          <div class="body">
+            <div class="t-title">里程碑</div>
+            <div class="t-desc">GPL、Apache、Linux Foundation</div>
+          </div>
+          <span class="arrow">›</span>
+        </div>
+        <div class="thread">
+          <span class="idx">03</span>
+          <div class="body">
+            <div class="t-title">AI 时代</div>
+            <div class="t-desc">模型与数据成为新的开源载体</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="narrative">
+        开源的故事始于 Richard Stallman 对软件自由的呼吁，历经 GPL、Apache License 以及 Linux 内核等里程碑，发展出今天成熟的全球协作生态；进入 2023–2024，AI 模型的开源进一步拓展了开源的边界。
+      </div>
     </div>
 
-    <div class="right-col">
-      <div class="deco-frame">
-        <img src="../images/page_002_deco.png" alt="开源演进抽象节点图">
-      </div>
-      <div class="deco-caption"><span>从 GNU 到 AI：一条流动的开源脉络</span></div>
+    <!-- Bottom-right chapter marker -->
+    <div class="chapter-mark">
+      <div class="label">PROLOGUE</div>
+      <div class="val"><span>01</span> / 起源</div>
     </div>
 
-    <div class="bottom-band">
-      <div class="nodes-row">
-        <div class="node-item">
-          <div class="node-label"><span>1983 · GNU</span></div>
-          <div class="node-text"><span>从 GNU 到 OSS：三十年间，一场软件自由运动的展开</span></div>
-        </div>
-        <div class="node-divider"></div>
-        <div class="node-item">
-          <div class="node-label"><span>MILESTONES</span></div>
-          <div class="node-text"><span>里程碑：GPL、Apache、Linux Foundation</span></div>
-        </div>
-        <div class="node-divider"></div>
-        <div class="node-item">
-          <div class="node-label"><span>2023-24 · AI</span></div>
-          <div class="node-text"><span>AI 时代：模型与数据成为新的开源载体</span></div>
-        </div>
-      </div>
-      <div class="closing">
-        <span>开源的故事始于 Richard Stallman 对软件自由的呼吁，历经 GPL、Apache、Linux 内核等里程碑，直至 2023-2024 年 AI 模型把开源边界再次拓展。</span>
-      </div>
+    <!-- Progress bar -->
+    <div class="progress">
+      <span class="p-label">CHAPTER PROGRESS</span>
+      <div class="p-bar"><div class="p-fill"></div></div>
+      <span class="p-dot"></span>
     </div>
-
   </div>
 </div>
 </body>
