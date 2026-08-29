@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>2023·数据全景</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap');
+:root{
+  --navy:#0D2137;
+  --red:#E53935;
+  --cream:#F7F4EF;
+  --cream-2:#EFEAE0;
+  --ink-2:#3A4A5F;
+  --muted:#7A7A7A;
+  --line:#DCD6CB;
+  --line-2:#E8E3D8;
+  --serif:"Noto Serif SC","Source Han Serif SC",serif;
+  --sans:"Noto Sans SC","Source Han Sans SC",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);color:var(--navy);background:var(--cream)}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream)}
+#bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+#ct{position:absolute;inset:0;z-index:1;padding:55px 80px 40px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px}
+
+/* ===== Decorative background ===== */
+.dot-pattern{position:absolute;top:-70px;right:-70px;width:340px;height:340px;opacity:.20}
+.dot-pattern::before{content:"";position:absolute;inset:0;background-image:radial-gradient(var(--navy) 1.2px,transparent 1.6px);background-size:14px 14px}
+.corner-red{position:absolute;bottom:52px;left:22px;width:6px;height:130px;background:var(--red)}
+.side-rule{position:absolute;top:105px;left:40px;width:1px;height:520px;background:var(--line-2)}
+.top-rule{position:absolute;top:0;left:0;right:0;height:3px;background:var(--red);z-index:2}
+
+/* ===== Header ===== */
+.header{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;padding-bottom:18px;border-bottom:1.4px solid var(--navy)}
+.header .hleft{flex:1}
+.eyebrow{display:flex;align-items:center;gap:14px;font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.34em;color:var(--red);margin-bottom:12px;text-transform:uppercase}
+.eyebrow .line{width:44px;height:2px;background:var(--red)}
+.title{font-family:var(--serif);font-size:60px;font-weight:700;color:var(--navy);letter-spacing:.02em;line-height:1;margin-bottom:14px}
+.title .dot{display:inline-block;width:12px;height:12px;background:var(--red);border-radius:50%;margin:0 8px 10px 4px;vertical-align:middle}
+.subtitle{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--ink-2);letter-spacing:.06em;font-style:italic}
+.hright{display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-bottom:6px}
+.tag-en{font-family:"Times New Roman",var(--serif);font-style:italic;font-size:15px;color:var(--muted);letter-spacing:.16em}
+.tag-cn{font-size:12px;color:var(--muted);letter-spacing:.3em;font-weight:400}
+
+/* ===== KPI Row ===== */
+.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;height:256px}
+.kpi{background:#FBF8F2;border:1px solid var(--line);padding:22px 22px 18px;display:flex;flex-direction:column;justify-content:space-between;position:relative;transition:transform .3s}
+.kpi::before{content:"";position:absolute;top:0;left:0;width:56px;height:3px;background:var(--red)}
+.kpi .no{position:absolute;top:18px;right:20px;font-family:"Times New Roman",var(--serif);font-style:italic;font-size:14px;color:var(--muted);letter-spacing:.1em}
+.kpi .ktitle{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink-2);letter-spacing:.22em;margin-top:10px}
+.kpi .kvalue{font-family:var(--serif);font-size:54px;font-weight:700;color:var(--navy);line-height:1;letter-spacing:-.01em}
+.kpi .kvalue .u{font-size:20px;font-weight:400;color:var(--ink-2);margin-left:6px;letter-spacing:0}
+.kpi .klabel{font-size:12.5px;color:var(--muted);line-height:1.7;letter-spacing:.04em}
+.kpi .klabel .em{color:var(--red);font-weight:600;font-family:var(--sans)}
+
+/* ===== Line Chart ===== */
+.section-label{display:flex;align-items:center;gap:14px;font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:.34em;font-weight:500;text-transform:uppercase;margin-bottom:6px}
+.section-label .num{color:var(--red);font-family:"Times New Roman",var(--serif);font-style:italic;font-size:14px;letter-spacing:0}
+.section-label .rule{flex:1;height:1px;background:var(--line-2)}
+.section-label .en{color:var(--ink-2)}
+
+.comparison{display:flex;flex-direction:column;gap:8px}
+.bullet-row{background:#FBF8F2;border:1px solid var(--line-2);padding:12px 24px;display:grid;grid-template-columns:150px 1fr 90px;gap:24px;align-items:center;height:68px;position:relative}
+.bullet-row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--navy)}
+.bullet-row .bl-lab{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--navy);letter-spacing:.12em}
+.bullet-row .bl-lab .sm{display:block;font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.22em;margin-top:3px}
+.bullet-row .bl-chart{position:relative}
+.bullet-row .delta{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--red);text-align:right;line-height:1}
+.bullet-row .delta .u{font-size:14px;font-weight:400}
+.bullet-row .delta .sub{display:block;font-family:var(--sans);font-size:10px;color:var(--muted);font-weight:400;letter-spacing:.24em;margin-top:5px}
+
+/* ===== Dimstrip ===== */
+.dimstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.dim{border-top:1.6px solid var(--navy);padding:12px 16px 10px 0;position:relative}
+.dim .dot{position:absolute;top:-5px;left:0;width:8px;height:8px;background:var(--red);border-radius:50%}
+.dim .dt{font-family:var(--sans);font-size:11.5px;color:var(--red);letter-spacing:.28em;font-weight:600;margin-bottom:6px}
+.dim .dc{font-size:12.5px;color:var(--ink-2);line-height:1.65}
+.dim .dc b{font-weight:600;color:var(--navy);font-family:var(--serif);font-size:13.5px}
+
+/* ===== Narrative ===== */
+.narrative{background:var(--cream-2);padding:18px 32px 20px 34px;position:relative;font-family:var(--serif);font-size:15.5px;line-height:1.85;color:var(--navy);letter-spacing:.03em}
+.narrative::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red)}
+.narrative b{font-weight:700;color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+  <div class="dot-pattern"></div>
+  <div class="corner-red"></div>
+  <div class="side-rule"></div>
+  <div class="top-rule"></div>
+</div>
+<div id="ct">
+
+  <header class="header">
+    <div class="hleft">
+      <div class="eyebrow"><span class="line"></span><span>ANNUAL DATA · 2023 年度回顾</span></div>
+      <h1 class="title"><span>2023</span><span class="dot"></span><span>数据全景</span></h1>
+      <p class="subtitle">用数字看见一年的共读轨迹</p>
+    </div>
+    <div class="hright">
+      <div class="tag-en">The Reading Trajectory of 2023</div>
+      <div class="tag-cn">数 · 据 · 全 · 景</div>
+    </div>
+  </header>
+
+  <section class="kpi-row">
+    <div class="kpi">
+      <span class="no">01</span>
+      <div class="ktitle">活跃成员</div>
+      <div class="kvalue">426<span class="u">人</span></div>
+      <div class="klabel"><span class="em">同比增长 253%</span><br>较 2022 年 120 人的种子社群扩张</div>
+    </div>
+    <div class="kpi">
+      <span class="no">02</span>
+      <div class="ktitle">共读书目</div>
+      <div class="kvalue">14<span class="u">本</span></div>
+      <div class="klabel"><span class="em">每月一本</span><br>覆盖文学、社科、哲学、科学四域</div>
+    </div>
+    <div class="kpi">
+      <span class="no">03</span>
+      <div class="ktitle">笔记总数</div>
+      <div class="kvalue">3,800<span class="u">篇</span></div>
+      <div class="klabel"><span class="em">人均 8.9 篇 / 年</span><br>持续一年累积的思考痕迹</div>
+    </div>
+    <div class="kpi">
+      <span class="no">04</span>
+      <div class="ktitle">阅读时长</div>
+      <div class="kvalue">42,000<span class="u">小时</span></div>
+      <div class="klabel"><span class="em">总累计</span><br>相当于日均投入 115 小时</div>
+    </div>
+  </section>
+
+  <section class="comparison">
+    <div class="section-label">
+      <span class="num">§ 01</span>
+      <span class="rule"></span>
+      <span>全年参与趋势 · MONTHLY PARTICIPATION</span>
+    </div>
+    <div id="chart_1" style="width:1440px;height:290px;"></div>
+  </section>
+
+  <section class="comparison">
+    <div class="section-label">
+      <span class="num">§ 02</span>
+      <span class="rule"></span>
+      <span>2022 vs 2023 关键指标 · YEAR OVER YEAR</span>
+    </div>
+    <div class="bullet-row">
+      <div class="bl-lab">线下场次<span class="sm">OFFLINE SESSIONS</span></div>
+      <div class="bl-chart"><div id="chart_2"></div></div>
+      <div class="delta">+33<span class="u">%</span><span class="sub">8 场 · 5 城 · 1,240 人次 · 满意度 9.2</span></div>
+    </div>
+    <div class="bullet-row">
+      <div class="bl-lab">留存率<span class="sm">RETENTION RATE</span></div>
+      <div class="bl-chart"><div id="chart_3"></div></div>
+      <div class="delta">+22<span class="u">%</span><span class="sub">72% 活跃至 12 月</span></div>
+    </div>
+    <div class="bullet-row">
+      <div class="bl-lab">日均帖文<span class="sm">DAILY POSTS</span></div>
+      <div class="bl-chart"><div id="chart_4"></div></div>
+      <div class="delta">+40<span class="u">%</span><span class="sub">47 条 · 线上讨论区</span></div>
+    </div>
+  </section>
+
+  <section class="dimstrip">
+    <div class="dim">
+      <span class="dot"></span>
+      <div class="dt">参与规模</div>
+      <div class="dc">全年 <b>426</b> 位活跃成员 · 较 2022 <b>+253%</b> · 留存率 <b>72%</b></div>
+    </div>
+    <div class="dim">
+      <span class="dot"></span>
+      <div class="dt">阅读产出</div>
+      <div class="dc">共读 <b>14</b> 本 · 笔记 <b>3,800</b> 篇 · 阅读 <b>42,000</b> 小时</div>
+    </div>
+    <div class="dim">
+      <span class="dot"></span>
+      <div class="dt">讨论热度</div>
+      <div class="dc">日均帖文 <b>47</b> 条 · 单场峰值同时在线 <b>286</b> 人</div>
+    </div>
+    <div class="dim">
+      <span class="dot"></span>
+      <div class="dt">线下覆盖</div>
+      <div class="dc"><b>8</b> 场 · <b>5</b> 城 · 参会 <b>1,240</b> 人次 · 满意度 <b>9.2</b></div>
+    </div>
+    <div class="dim">
+      <span class="dot"></span>
+      <div class="dt">内容沉淀</div>
+      <div class="dc">年度知识图谱 <b>1</b> 份 · 精选笔记 <b>3</b> 辑 · 视频回顾 <b>6</b> 期</div>
+    </div>
+  </section>
+
+  <div class="narrative">
+    数据背后是一个个具体的人和夜晚。2023 年，我们见证了社群从 <b>12 人种子</b> 到 <b>426 人规模</b> 的跨越式增长；但更重要的是，每个共读节点上都累积下来的思考痕迹——<b>3,800 篇笔记</b> 是 426 个人用一年时间写就的思想地图。
+  </div>
+
+</div>
+</div>
+
+<script>
+(function(){
+  var el = document.getElementById('chart_1');
+  var chart = echarts.init(el, null, {renderer:'svg'});
+  var months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  var data23 = [18,26,32,38,45,52,60,72,86,110,148,153];
+  var data22 = [10,11,12,13,14,15,16,17,18,19,20,22];
+  chart.setOption({
+    grid:{left:52,right:38,top:44,bottom:32,containLabel:true},
+    tooltip:{trigger:'axis',backgroundColor:'#0D2137',borderWidth:0,textStyle:{color:'#F7F4EF',fontFamily:'Noto Sans SC'}},
+    legend:{data:['2023 参与人数','2022 同期'],right:0,top:0,itemWidth:24,itemHeight:8,textStyle:{color:'#3A4A5F',fontSize:12,fontFamily:'Noto Sans SC'}},
+    xAxis:{type:'category',data:months,boundaryGap:false,
+      axisLine:{lineStyle:{color:'#0D2137',width:1}},
+      axisTick:{show:false},
+      axisLabel:{color:'#3A4A5F',fontSize:13,fontFamily:'Noto Sans SC',margin:12}},
+    yAxis:{type:'value',name:'参与人数',nameTextStyle:{color:'#7A7A7A',fontSize:11,padding:[0,0,0,-30],fontFamily:'Noto Sans SC'},
+      axisLine:{show:false},axisTick:{show:false},
+      splitLine:{lineStyle:{color:'#E8E3D8',type:'dashed'}},
+      axisLabel:{color:'#7A7A7A',fontSize:11,fontFamily:'Noto Sans SC'}},
+    series:[
+      {name:'2023 参与人数',type:'line',data:data23,smooth:true,
+        symbol:'circle',symbolSize:8,
+        lineStyle:{color:'#0D2137',width:3},
+        itemStyle:{color:'#0D2137',borderColor:'#F7F4EF',borderWidth:2},
+        areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,
+          colorStops:[{offset:0,color:'rgba(13,33,55,0.22)'},{offset:1,color:'rgba(13,33,55,0)'}]}},
+        markPoint:{symbol:'circle',symbolSize:16,itemStyle:{color:'#E53935'},
+          label:{color:'#FFFFFF',fontSize:10,fontWeight:700,fontFamily:'Noto Sans SC'},
+          data:[{name:'峰值',value:'153',coord:['12月',153]}]}
+      },
+      {name:'2022 同期',type:'line',data:data22,smooth:true,
+        symbol:'circle',symbolSize:5,
+        lineStyle:{color:'#E53935',width:2,type:'dashed'},
+        itemStyle:{color:'#E53935'},
+        z:1}
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+
+function makeBullet(domId, v22, v23, max){
+  var el = document.getElementById(domId);
+  var chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    grid:{left:0,right:0,top:2,bottom:2,containLabel:false},
+    xAxis:{type:'value',max:max,min:0,show:false},
+    yAxis:{type:'category',data:[''],show:false},
+    series:[
+      {name:'基准',type:'bar',data:[max],barWidth:9,itemStyle:{color:'#DCD6CB'},silent:true,z:1},
+      {name:'2022',type:'bar',data:[v22],barWidth:9,itemStyle:{color:'#0D2137'},label:{show:true,position:'left',color:'#7A7A7A',fontSize:11,fontFamily:'Noto Sans SC',formatter:'22: '+v22},z:2},
+      {name:'2023',type:'bar',data:[v23],barWidth:9,itemStyle:{color:'#E53935'},label:{show:true,position:'insideRight',color:'#FFFFFF',fontSize:12,fontWeight:700,fontFamily:'Noto Sans SC',formatter:'23: '+v23},z:3}
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+}
+
+makeBullet('chart_2', 6, 8, 10);
+makeBullet('chart_3', 50, 72, 100);
+makeBullet('chart_4', 34, 47, 60);
+</script>
+</body>
+</html>
