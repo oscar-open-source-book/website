@@ -1,0 +1,510 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>重新定义"开源"</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary: #0D2137;
+  --accent: #E67E22;
+  --neutral: #F5F5F5;
+  --text-main: #0D2137;
+  --text-body: #3A4658;
+  --text-muted: #7A8499;
+  --line: rgba(13, 33, 55, 0.18);
+  --line-light: rgba(13, 33, 55, 0.08);
+  --card-bg: #FFFFFF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  background: #F0F2F5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--neutral);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--neutral);
+  overflow: hidden;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-light) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.5;
+}
+
+.bg-bracket {
+  position: absolute;
+  font-family: 'Inter', monospace;
+  color: var(--primary);
+  opacity: 0.04;
+  font-weight: 300;
+  line-height: 0.9;
+  user-select: none;
+  pointer-events: none;
+}
+
+.bg-bracket.tl {
+  top: 40px;
+  right: 80px;
+  font-size: 320px;
+  letter-spacing: -0.05em;
+}
+
+.bg-bracket.br {
+  bottom: 120px;
+  left: -40px;
+  font-size: 260px;
+  letter-spacing: -0.05em;
+}
+
+.bg-bracket.center {
+  top: 380px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 180px;
+  color: var(--accent);
+  opacity: 0.035;
+}
+
+.bg-circle {
+  position: absolute;
+  border: 1px solid var(--primary);
+  opacity: 0.05;
+  border-radius: 50%;
+}
+
+.bg-circle.c1 { width: 400px; height: 400px; top: -120px; right: -100px; }
+.bg-circle.c2 { width: 260px; height: 260px; bottom: 180px; right: 120px; }
+
+.bg-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.3;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 36px;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.title {
+  font-size: 60px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+}
+
+.title .quote {
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.header-right {
+  max-width: 520px;
+  padding-top: 12px;
+  border-left: 1px solid var(--line);
+  padding-left: 24px;
+}
+
+.intro-label {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.intro-text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-body);
+  font-weight: 400;
+}
+
+.intro-text strong {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.intro-text .hi {
+  background: linear-gradient(transparent 60%, rgba(230, 126, 34, 0.22) 60%);
+  padding: 0 2px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Quadrants */
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 24px;
+}
+
+.card {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  padding: 28px 32px 26px 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 3px;
+  background: var(--primary);
+}
+
+.card-num {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  background: rgba(230, 126, 34, 0.1);
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-family: 'Inter', monospace;
+}
+
+.card-icon {
+  font-size: 28px;
+  margin-bottom: 14px;
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 33, 55, 0.06);
+  border-radius: 6px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.card-title .accent {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.card-desc {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-body);
+  font-weight: 400;
+  flex: 1;
+}
+
+.card-desc .k {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.card-tags {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.tag.hot {
+  color: var(--accent);
+  border-color: rgba(230, 126, 34, 0.4);
+}
+
+/* Data band */
+.data-band {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0;
+  background: var(--primary);
+  color: #FFFFFF;
+  padding: 22px 32px;
+  align-items: center;
+  position: relative;
+}
+
+.data-band::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 120px;
+  height: 3px;
+  background: var(--accent);
+}
+
+.data-item {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 0 8px;
+}
+
+.data-item.right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.data-num {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-family: 'Inter', sans-serif;
+}
+
+.data-num.blue {
+  color: #FFFFFF;
+}
+
+.data-label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.data-label .top {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.data-label .bottom {
+  font-size: 15px;
+  font-weight: 500;
+  color: #FFFFFF;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.data-divider {
+  width: 1px;
+  height: 60%;
+  background: rgba(255, 255, 255, 0.2);
+  align-self: center;
+}
+
+.footer-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.16em;
+  font-weight: 500;
+}
+
+.footer-meta .dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin: 0 8px 2px 8px;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-bracket tl">{}</div>
+    <div class="bg-bracket center">&lt;/&gt;</div>
+    <div class="bg-bracket br">( )</div>
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-dot" style="top: 180px; left: 120px;"></div>
+    <div class="bg-dot" style="top: 320px; right: 240px;"></div>
+    <div class="bg-dot" style="bottom: 240px; left: 200px;"></div>
+  </div>
+
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span>OPEN SOURCE · RETHINK</span></div>
+        <h1 class="title">重新定义<span class="quote">"开源"</span></h1>
+      </div>
+      <div class="header-right">
+        <div class="intro-label"><span>OPENING THOUGHT</span></div>
+        <p class="intro-text">我们不再只问代码是否开放，而要问 <span class="hi">知识是否被当作公共资源来对待</span>。开源不再是一组许可协议，而是一种<span style="color:var(--primary);font-weight:700;">关于共享、透明与信任</span>的思维方式。</p>
+      </div>
+    </div>
+
+    <!-- 2x2 Quadrants -->
+    <div class="grid">
+
+      <div class="card">
+        <span class="card-num">01</span>
+        <div class="card-icon"><span>📜</span></div>
+        <h3 class="card-title">许可 <span class="accent">≠</span> 全部</h3>
+        <p class="card-desc"><span class="k">GPL / Apache</span> 只是外壳，真正内核是<span class="k">共享动机</span>与<span class="k">协作规范</span>。协议文本无法替代社区对"为什么打开"的一致理解。</p>
+        <div class="card-tags">
+          <span class="tag">License</span>
+          <span class="tag hot">Motivation</span>
+          <span class="tag">Norms</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-num">02</span>
+        <div class="card-icon"><span>👁️</span></div>
+        <h3 class="card-title">透明即<span class="accent">默认</span></h3>
+        <p class="card-desc">把<span class="k">决策过程</span>、<span class="k">路线图</span>、甚至<span class="k">失败</span>都公开——这是开源社区的基本协议，而非可选的公关姿态。</p>
+        <div class="card-tags">
+          <span class="tag">Roadmap</span>
+          <span class="tag">Decision Log</span>
+          <span class="tag hot">Post-mortem</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-num">03</span>
+        <div class="card-icon"><span>🤝</span></div>
+        <h3 class="card-title">信任先于<span class="accent">控制</span></h3>
+        <p class="card-desc">信任机制靠<span class="k">代码审查</span>、<span class="k">issue 讨论</span>、<span class="k">维护者治理</span>来建立——先建立可验证的信任，再谈规模与速度。</p>
+        <div class="card-tags">
+          <span class="tag">Code Review</span>
+          <span class="tag">Issues</span>
+          <span class="tag hot">Governance</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-num">04</span>
+        <div class="card-icon"><span>🌐</span></div>
+        <h3 class="card-title">公共性<span class="accent">优先</span></h3>
+        <p class="card-desc">以<span class="k">公共知识</span>为目标，而非单一组织的私有资产。开源是共同维护的<span class="k">公共财</span>，不属于任何一家公司。</p>
+        <div class="card-tags">
+          <span class="tag">Public Good</span>
+          <span class="tag">Commons</span>
+          <span class="tag hot">Non-captive</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Data band -->
+    <div class="data-band">
+      <div class="data-item">
+        <span class="data-num blue">4</span>
+        <div class="data-label">
+          <span class="top">DEFINING DIMENSIONS</span>
+          <span class="bottom">定义维度：4 个</span>
+        </div>
+      </div>
+      <div class="data-divider"></div>
+      <div class="data-item right">
+        <div class="data-label">
+          <span class="top">COMMON MISCONCEPTION</span>
+          <span class="bottom">常见误解：开源 = 免费</span>
+        </div>
+        <span class="data-num">✕</span>
+      </div>
+    </div>
+
+    <div class="footer-meta">
+      <span><span class="dot"></span>RETHINK OPEN SOURCE · 2025</span>
+      <span>CODE · COVENANT · COMMUNITY · COMMONS</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

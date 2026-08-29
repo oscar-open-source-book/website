@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>协作的新范式</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --amber:#E67E22;
+  --bg:#F5F5F5;
+  --card:#FFFFFF;
+  --line:#E5E7EA;
+  --text-main:#0D2137;
+  --text-sub:#5A6472;
+  --text-muted:#8A94A3;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  font-size:16px;
+  color:var(--text-main);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.bg-mark{position:absolute;font-family:'Inter',sans-serif;font-weight:700;color:#EAEDF1;letter-spacing:-2px;user-select:none;}
+.bg-mark.m1{top:60px;right:80px;font-size:280px;line-height:1;}
+.bg-mark.m2{bottom:-40px;left:-20px;font-size:180px;line-height:1;color:#EFEFF2;}
+.bg-rule{position:absolute;left:0;right:0;height:1px;background:#E8EAEE;}
+
+#ct{position:absolute;inset:0;z-index:1;padding:56px 72px;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:22px;border-bottom:1px solid var(--line);}
+.header-left{display:flex;align-items:center;gap:18px;}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--amber);letter-spacing:2px;text-transform:uppercase;}
+.tag::before{content:'';display:inline-block;width:22px;height:2px;background:var(--amber);}
+.page-title{font-size:34px;font-weight:600;color:var(--navy);letter-spacing:-0.5px;line-height:1.1;}
+.page-title em{font-style:normal;color:var(--amber);}
+.header-right{display:flex;align-items:center;gap:28px;font-size:12px;color:var(--text-muted);letter-spacing:1.5px;}
+.header-right .sep{width:24px;height:1px;background:var(--line);}
+
+/* Main grid */
+.main{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:56px;padding-top:34px;padding-bottom:26px;}
+
+/* LEFT: timeline */
+.left-col{position:relative;padding-left:8px;}
+.col-label{font-size:11px;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;margin-bottom:18px;font-weight:500;}
+.timeline{position:relative;padding-left:52px;}
+.timeline::before{content:'';position:absolute;left:19px;top:8px;bottom:8px;width:1px;background:var(--line);}
+
+.step{position:relative;padding-bottom:22px;}
+.step:last-child{padding-bottom:0;}
+.step-num{
+  position:absolute;left:-52px;top:-2px;
+  width:40px;height:40px;border-radius:50%;
+  background:var(--card);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',sans-serif;font-weight:600;font-size:14px;color:var(--navy);
+  z-index:2;
+}
+.step.active .step-num{background:var(--navy);color:#fff;border-color:var(--navy);}
+.step-title{font-size:22px;font-weight:600;color:var(--navy);margin-bottom:6px;letter-spacing:-0.2px;line-height:1.2;}
+.step-title::after{content:'';display:block;width:28px;height:2px;background:var(--amber);margin-top:8px;}
+.step-desc{font-size:13.5px;line-height:1.65;color:var(--text-sub);max-width:520px;}
+
+/* RIGHT: narrative + cards */
+.right-col{display:flex;flex-direction:column;gap:22px;}
+.narrative{
+  background:var(--card);
+  padding:30px 32px;
+  border-left:3px solid var(--navy);
+  position:relative;
+}
+.narrative::before{
+  content:'"';
+  position:absolute;top:-8px;right:24px;
+  font-family:'Inter',serif;font-size:80px;color:#EAEEF3;line-height:1;font-weight:700;
+}
+.narrative-tag{font-size:11px;letter-spacing:3px;color:var(--amber);font-weight:500;margin-bottom:14px;text-transform:uppercase;}
+.narrative p{font-size:16px;line-height:1.75;color:var(--navy);font-weight:400;}
+.narrative p strong{font-weight:600;color:var(--amber);}
+
+.principles{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.principle{background:var(--card);padding:20px 22px;border-top:2px solid var(--line);position:relative;}
+.principle::before{content:'';position:absolute;top:-2px;left:0;width:36px;height:2px;background:var(--amber);}
+.principle-idx{font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:2px;margin-bottom:6px;}
+.principle-k{font-size:11px;color:var(--text-muted);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;}
+.principle-v{font-size:18px;font-weight:600;color:var(--navy);line-height:1.3;}
+.principle-v span{color:var(--amber);}
+.principle-hint{font-size:12px;color:var(--text-sub);margin-top:6px;line-height:1.5;}
+
+/* Footer */
+.footer{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--line);font-size:11px;color:var(--text-muted);letter-spacing:2px;}
+.footer .dots{display:flex;gap:6px;align-items:center;}
+.footer .dot{width:6px;height:6px;border-radius:50%;background:var(--line);}
+.footer .dot.on{background:var(--amber);width:22px;border-radius:3px;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-mark m1">04</div>
+    <div class="bg-rule" style="top:120px;"></div>
+    <div class="bg-rule" style="bottom:80px;"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="header-left">
+        <span class="tag"><span>CONTENT · 04</span></span>
+      </div>
+      <h1 class="page-title"><span>协作的新范式 <em>·</em> Open Source as an Operating Model</span></h1>
+      <div class="header-right">
+        <span>NARRATIVE</span>
+        <span class="sep"></span>
+        <span>CHAPTER 02 / 04</span>
+      </div>
+    </div>
+
+    <div class="main">
+      <!-- LEFT TIMELINE -->
+      <div class="left-col">
+        <div class="col-label">FOUR PARADIGM SHIFTS · 四项范式特征</div>
+        <div class="timeline">
+
+          <div class="step active">
+            <div class="step-num"><span>01</span></div>
+            <div class="step-title"><span>分布式创造</span></div>
+            <div class="step-desc"><span>贡献者分散在时区与行业之间，围绕一个没有明确指挥、却持续演进的产品共同创造，决策权与产出的分布同步展开。</span></div>
+          </div>
+
+          <div class="step active">
+            <div class="step-num"><span>02</span></div>
+            <div class="step-title"><span>异步优先</span></div>
+            <div class="step-desc"><span>邮件、issue 与 pull request 成为沟通主轴，会议退居为必要的补充。语境被留存在版本库中，任何人可随时接入。</span></div>
+          </div>
+
+          <div class="step active">
+            <div class="step-num"><span>03</span></div>
+            <div class="step-title"><span>众包治理</span></div>
+            <div class="step-desc"><span>维护者、贡献者与终端用户共同决定项目的演进方向。路线图不是被下达的，而是被协商出来的。</span></div>
+          </div>
+
+          <div class="step active">
+            <div class="step-num"><span>04</span></div>
+            <div class="step-title"><span>降低进入门槛</span></div>
+            <div class="step-desc"><span>从文档、测试、翻译开始，几乎不需要专业背景就能参与价值创造，贡献者身份在协作中被自然赋予。</span></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT NARRATIVE + CARDS -->
+      <div class="right-col">
+        <div class="narrative">
+          <div class="narrative-tag"><span>THE CORE IDEA · 核心理念</span></div>
+          <p><span>开源协作把传统自上而下的组织逻辑翻转过来——没有唯一领导者、没有固定团队，项目仍能持续演进。这背后是一套被反复验证过的 <strong>社交协议</strong>与<strong>工具链</strong>：版本控制沉淀上下文，Issue 与 PR 承载协商，许可证划定边界。它既是一种工程实践，也是一种社会实验。</span></p>
+        </div>
+
+        <div class="principles">
+          <div class="principle">
+            <div class="principle-k"><span>DATA POINT · 01</span></div>
+            <div class="principle-v"><span>进入门槛</span></div>
+            <div class="principle-hint"><span>可低至文档与翻译，人人皆可为贡献者。</span></div>
+          </div>
+          <div class="principle">
+            <div class="principle-k"><span>DATA POINT · 02</span></div>
+            <div class="principle-v"><span>异步 <span>+</span> 分布式</span></div>
+            <div class="principle-hint"><span>沟通主轴在版本库与工单，会议只是补充。</span></div>
+          </div>
+        </div>
+
+        <div class="principle" style="margin-top:2px;">
+          <div class="principle-idx"><span>03 · OBSERVATION</span></div>
+          <div class="principle-v"><span>没有中心，</span><span style="color:var(--text-sub);font-weight:400;font-size:14px;">却仍有秩序 —— 秩序由协议生成，而非由层级维护。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>OPEN SOURCE · A NEW PARADIGM OF COLLABORATION</span>
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot on"></span>
+        <span class="dot"></span>
+      </div>
+      <span>CHAPTER 02 / 04</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

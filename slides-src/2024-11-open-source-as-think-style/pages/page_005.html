@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>02 · 方法 — 如何在日常实践中做开源</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --navy-mid:#1B3656;
+  --orange:#E67E22;
+  --bg:#F5F5F5;
+  --line:#E0E4EA;
+  --text-muted:#8A93A0;
+  --text-body:#5A6472;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+html,body{width:1600px;height:900px;overflow:hidden;background:#fff;}
+
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei','Hiragino Sans GB',sans-serif;
+  font-size:16px;
+  color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+
+.wrapper{
+  position:relative;
+  width:1600px;height:900px;
+  overflow:hidden;
+  margin:0 auto;
+}
+
+#bg{
+  position:absolute;inset:0;
+  z-index:0;
+  background:#F5F5F5;
+}
+
+#bg::after{
+  content:'';
+  position:absolute;
+  right:-160px;top:-160px;
+  width:520px;height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle at center, rgba(230,126,34,0.09) 0%, rgba(230,126,34,0) 68%);
+}
+
+#ct{
+  position:absolute;inset:0;
+  z-index:1;
+  padding:56px 80px 48px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* 顶部栏 */
+.top-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;letter-spacing:0.32em;
+  color:var(--text-muted);
+  font-weight:500;
+  text-transform:uppercase;
+}
+.top-left{display:flex;align-items:center;gap:14px;}
+.brand-dot{width:8px;height:8px;background:var(--orange);display:inline-block;}
+.top-right{color:#9AA3AF;font-weight:400;}
+
+/* 主体 */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:600px 1fr;
+  gap:64px;
+  padding-top:44px;
+  align-items:start;
+}
+
+.left-col{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+
+.eyebrow{
+  font-size:12px;letter-spacing:0.4em;
+  color:var(--text-muted);
+  font-weight:600;
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:18px;
+}
+.eyebrow::before{
+  content:'';width:28px;height:1px;background:var(--navy);opacity:0.35;
+}
+
+.big-num{
+  font-size:340px;
+  line-height:0.88;
+  font-weight:800;
+  color:var(--navy);
+  letter-spacing:-0.06em;
+  font-family:'Inter',sans-serif;
+  margin-left:-6px;
+}
+
+.chapter-tag{
+  margin-top:14px;
+  font-size:22px;
+  font-weight:600;
+  color:var(--navy);
+  letter-spacing:0.08em;
+  display:flex;align-items:center;gap:12px;
+}
+.chapter-tag .sep{color:var(--orange);}
+.chapter-tag .zh{font-weight:700;letter-spacing:0.16em;}
+
+.subtitle-block{
+  margin-top:34px;
+}
+.orange-line{
+  width:72px;height:3px;background:var(--orange);
+  margin-bottom:16px;
+}
+.subtitle{
+  font-size:30px;
+  font-weight:500;
+  color:var(--navy);
+  line-height:1.45;
+  letter-spacing:0.03em;
+  max-width:520px;
+}
+.subtitle-en{
+  margin-top:10px;
+  font-size:13px;
+  color:var(--text-muted);
+  letter-spacing:0.14em;
+  font-weight:400;
+  font-style:italic;
+}
+
+.right-col{
+  padding-top:38px;
+  display:flex;flex-direction:column;
+  height:100%;
+}
+
+.right-eyebrow{
+  font-size:11px;letter-spacing:0.4em;
+  color:var(--text-muted);
+  font-weight:600;
+  margin-bottom:28px;
+  display:flex;align-items:center;gap:12px;
+  text-transform:uppercase;
+}
+.right-eyebrow::before{content:'';width:6px;height:6px;background:var(--orange);display:inline-block;}
+
+.steps{
+  display:flex;flex-direction:column;
+  gap:24px;
+  position:relative;
+}
+.steps::before{
+  content:'';
+  position:absolute;
+  left:20px;top:22px;bottom:22px;
+  width:1px;
+  background:linear-gradient(180deg,rgba(13,33,55,0.18) 0%,rgba(13,33,55,0.04) 100%);
+}
+
+.step{
+  display:grid;
+  grid-template-columns:56px 1fr;
+  gap:22px;
+  align-items:start;
+}
+.step-marker{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  position:relative;z-index:1;
+}
+.step-idx{
+  width:44px;height:44px;border-radius:50%;
+  background:#F5F5F5;
+  border:1.5px solid var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--navy);
+  font-family:'Inter',sans-serif;
+  letter-spacing:0.04em;
+}
+.step:first-child .step-idx{
+  background:var(--navy);
+  color:#fff;
+  border-color:var(--navy);
+}
+
+.step-body{
+  padding-top:4px;
+}
+.step-title{
+  font-size:24px;font-weight:700;color:var(--navy);
+  letter-spacing:0.06em;
+  margin-bottom:8px;
+  display:flex;align-items:baseline;gap:12px;
+}
+.step-title .en{
+  font-size:11px;letter-spacing:0.28em;
+  color:var(--text-muted);
+  font-weight:500;
+  font-family:'Inter',sans-serif;
+  text-transform:uppercase;
+}
+.step-desc{
+  font-size:14px;line-height:1.7;
+  color:var(--text-body);
+  letter-spacing:0.02em;
+  max-width:520px;
+}
+.step-desc .accent{color:var(--navy);font-weight:600;}
+
+/* 底部收束 */
+.bottom{
+  display:flex;align-items:center;
+  gap:26px;
+  padding-top:30px;
+  border-top:1px solid var(--line);
+}
+.closing-quote{
+  font-size:16px;
+  color:var(--navy);
+  letter-spacing:0.04em;
+  line-height:1.55;
+  flex:1;
+  font-weight:500;
+}
+.closing-quote .quote-mark{
+  color:var(--orange);
+  font-family:'Inter',serif;
+  font-weight:700;
+  font-size:24px;
+  vertical-align:-2px;
+  margin:0 4px;
+}
+.closing-quote .highlight{color:var(--orange);font-weight:600;}
+
+.footer-tag{
+  font-size:10px;letter-spacing:0.32em;
+  color:var(--text-muted);
+  font-weight:600;
+  display:flex;align-items:center;gap:10px;
+  padding-left:26px;
+  border-left:1px solid var(--line);
+  white-space:nowrap;
+  text-transform:uppercase;
+}
+.footer-tag .dot-orange{width:6px;height:6px;background:var(--orange);display:inline-block;border-radius:50%;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="top-left">
+        <span class="brand-dot"></span>
+        <span>开源实践指南 · OPEN SOURCE PRACTICE</span>
+      </div>
+      <div class="top-right">PART 02 / 03 · METHOD</div>
+    </div>
+
+    <div class="main">
+      <!-- 左列 -->
+      <div class="left-col">
+        <div class="eyebrow"><span>PART TWO</span></div>
+        <div class="big-num">02</div>
+        <div class="chapter-tag">
+          <span>PART 02</span>
+          <span class="sep">·</span>
+          <span class="zh">方法</span>
+        </div>
+        <div class="subtitle-block">
+          <div class="orange-line"></div>
+          <h2 class="subtitle">如何在日常实践中做开源</h2>
+          <div class="subtitle-en">Practical playbooks for everyday contributors</div>
+        </div>
+      </div>
+
+      <!-- 右列 -->
+      <div class="right-col">
+        <div class="right-eyebrow">METHOD OVERVIEW · 三步导览</div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker">
+              <div class="step-idx">01</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">选对入口<span class="en">Pick the entry</span></div>
+              <div class="step-desc">
+                文档、测试、翻译、Issue 都是合理起点；<span class="accent">不必从"造轮子"开始</span>，找到与你的技能匹配的门就够了。
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-marker">
+              <div class="step-idx">02</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">遵守规范<span class="en">Respect the rules</span></div>
+              <div class="step-desc">
+                <span class="accent">CLAUDE、CONTRIBUTING、Code of Conduct</span> 值得先读一遍；把项目的默认礼仪当成本能，比什么都重要。
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-marker">
+              <div class="step-idx">03</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">从小开始<span class="en">Start small</span></div>
+              <div class="step-desc">
+                小 PR 更容易被合并，也更利于建立信任；<span class="accent">先积累一次"已合并"</span>，比追求一次惊艳更实在。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部收束 -->
+    <div class="bottom">
+      <div class="closing-quote">
+        <span class="quote-mark">"</span>如果开源是一种<span class="highlight">思维方式</span>，那它就必然对应具体的<span class="highlight">操作手册</span>。<span class="quote-mark">"</span>
+      </div>
+      <div class="footer-tag">
+        <span class="dot-orange"></span>
+        <span>SECTION BREAK · 02</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
