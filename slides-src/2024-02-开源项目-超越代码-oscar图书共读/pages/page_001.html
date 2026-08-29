@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>超越代码·共读 - OSCAR 图书共读会</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-deep:#050B14;
+  --bg-mid:#0A1420;
+  --bg-soft:#0F1D2E;
+  --text-main:#E8F1F8;
+  --text-dim:#78909C;
+  --line:rgba(33,150,243,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Noto Sans SC','Roboto Mono',sans-serif;
+  color:var(--text-main);
+  background:var(--bg-deep);
+  overflow:hidden;
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:
+    linear-gradient(135deg, #050B14 0%, #0A1420 50%, #061019 100%);
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:60px;box-sizing:border-box;}
+
+/* ==== 背景装饰 ==== */
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:60px 60px;
+  opacity:0.6;
+  mask-image: radial-gradient(ellipse at 75% 40%, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at 75% 40%, black 0%, transparent 70%);
+}
+.bg-dots{
+  position:absolute;top:0;right:0;
+  width:800px;height:900px;
+  background-image: radial-gradient(circle, rgba(0,188,212,0.35) 1.2px, transparent 1.5px);
+  background-size:22px 22px;
+  opacity:0.55;
+  mask-image: radial-gradient(ellipse at 70% 30%, black 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 70% 30%, black 20%, transparent 75%);
+}
+.bg-glow{
+  position:absolute;top:-150px;right:-150px;
+  width:700px;height:700px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.18) 0%, transparent 60%);
+  filter: blur(20px);
+}
+.bg-glow-2{
+  position:absolute;bottom:-200px;left:-100px;
+  width:500px;height:500px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.10) 0%, transparent 60%);
+  filter: blur(30px);
+}
+
+/* ==== 右侧几何装饰 ==== */
+.deco-right{
+  position:absolute;
+  top:0;right:0;
+  width:640px;height:900px;
+  pointer-events:none;
+}
+.deco-circle{
+  position:absolute;
+  border-radius:50%;
+  border:1px solid var(--line);
+}
+.deco-circle.c1{ top:80px; right:100px; width:380px; height:380px; border-color:rgba(33,150,243,0.20); }
+.deco-circle.c2{ top:140px; right:160px; width:260px; height:260px; border-color:rgba(0,188,212,0.30); border-style:dashed; }
+.deco-circle.c3{ top:195px; right:215px; width:150px; height:150px; border-color:rgba(33,150,243,0.45); }
+.deco-circle.c4{ top:225px; right:245px; width:90px; height:90px; border:2px solid var(--accent); box-shadow:0 0 30px rgba(0,188,212,0.6);}
+.deco-core{
+  position:absolute;
+  top:262px; right:282px;
+  width:16px; height:16px;
+  background:var(--accent);
+  border-radius:50%;
+  box-shadow:0 0 40px 8px rgba(0,188,212,0.7);
+}
+.deco-line{
+  position:absolute;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(33,150,243,0.5), transparent);
+}
+.deco-line.l1{ top:60px; right:0; width:300px; }
+.deco-line.l2{ top:520px; right:20px; width:220px; }
+.deco-line.l3{ top:780px; right:0; width:280px; background:linear-gradient(90deg, transparent, rgba(0,188,212,0.4), transparent);}
+
+.deco-cross{
+  position:absolute;
+  color:rgba(33,150,243,0.5);
+  font-family:'Roboto Mono',monospace;
+  font-size:14px;
+}
+.deco-cross.x1{ top:200px; right:520px; }
+.deco-cross.x2{ top:600px; right:400px; }
+.deco-cross.x3{ top:720px; right:600px; }
+
+.deco-triangle{
+  position:absolute;
+  top:380px; right:60px;
+  width:0;height:0;
+  border-left:40px solid transparent;
+  border-right:40px solid transparent;
+  border-bottom:60px solid rgba(0,188,212,0.15);
+  transform:rotate(15deg);
+}
+.deco-square{
+  position:absolute;
+  top:480px; right:280px;
+  width:60px;height:60px;
+  border:1px solid rgba(33,150,243,0.4);
+  transform:rotate(45deg);
+}
+.deco-square::after{
+  content:'';
+  position:absolute;
+  top:15px;left:15px;
+  width:30px;height:30px;
+  border:1px solid rgba(0,188,212,0.6);
+}
+
+.deco-tag{
+  position:absolute;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:2px;
+  opacity:0.7;
+}
+.deco-tag.t1{ top:50px; right:60px; }
+.deco-tag.t2{ bottom:60px; right:80px; color:var(--primary); }
+.deco-tag.t3{ top:840px; right:340px; }
+
+/* ==== 内容层 ==== */
+#ct{display:flex;flex-direction:column;}
+
+.brand-bar{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  font-family:'Roboto Mono',monospace;
+  font-size:13px;
+  color:var(--text-dim);
+  letter-spacing:3px;
+}
+.brand-bar .dot{
+  width:8px;height:8px;
+  background:var(--accent);
+  border-radius:50%;
+  box-shadow:0 0 12px var(--accent);
+}
+.brand-bar .sep{
+  width:40px;height:1px;
+  background:var(--line);
+}
+.brand-bar .badge{
+  padding:4px 12px;
+  border:1px solid var(--line);
+  border-radius:2px;
+  color:var(--primary);
+}
+
+.hero{
+  margin-top:56px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:40px;
+}
+.hero-left{
+  flex:0 0 auto;
+  max-width:900px;
+}
+.hero-label{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Roboto Mono',monospace;
+  font-size:14px;
+  color:var(--accent);
+  letter-spacing:4px;
+  margin-bottom:22px;
+}
+.hero-label::before{
+  content:'';
+  width:32px;height:1px;
+  background:var(--accent);
+}
+.hero-title{
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:900;
+  font-size:118px;
+  line-height:1;
+  letter-spacing:-2px;
+  color:var(--text-main);
+  margin-bottom:22px;
+}
+.hero-title .accent{
+  color:var(--primary);
+  text-shadow:0 0 40px rgba(33,150,243,0.5);
+}
+.hero-title .dot-mid{
+  color:var(--accent);
+  margin:0 4px;
+}
+.hero-title-en{
+  font-family:'Roboto Mono',monospace;
+  font-size:18px;
+  color:var(--neutral);
+  letter-spacing:8px;
+  font-weight:300;
+  margin-bottom:30px;
+  opacity:0.75;
+}
+.hero-sub{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:22px;
+  color:var(--neutral);
+  font-weight:400;
+  letter-spacing:2px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.hero-sub .line{
+  width:50px;height:2px;
+  background:var(--primary);
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:22px;
+  margin-top:52px;
+  max-width:1200px;
+}
+.card{
+  position:relative;
+  padding:24px 22px 22px 22px;
+  background:rgba(15,29,46,0.55);
+  border:1px solid var(--line);
+  border-left:2px solid var(--primary);
+  backdrop-filter:blur(4px);
+}
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;right:0;
+  width:30px;height:30px;
+  background:
+    linear-gradient(135deg, transparent 50%, rgba(0,188,212,0.35) 50%);
+}
+.card .idx{
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:2px;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.card .idx .num{
+  font-size:14px;
+  font-weight:700;
+  color:var(--primary);
+}
+.card .head{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--text-main);
+  margin-bottom:12px;
+  letter-spacing:1px;
+}
+.card .divider{
+  width:32px;height:2px;
+  background:var(--accent);
+  margin-bottom:12px;
+}
+.card .detail{
+  font-size:14px;
+  line-height:1.7;
+  color:var(--neutral);
+  font-weight:300;
+}
+
+.footnote{
+  margin-top:auto;
+  padding-top:34px;
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  gap:24px;
+  max-width:1200px;
+}
+.footnote-icon{
+  width:44px;height:44px;
+  border:1px solid var(--primary);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Roboto Mono',monospace;
+  color:var(--primary);
+  font-size:18px;
+  flex-shrink:0;
+  position:relative;
+}
+.footnote-icon::after{
+  content:'';
+  position:absolute;
+  top:-4px;right:-4px;
+  width:8px;height:8px;
+  background:var(--accent);
+}
+.footnote-text{
+  font-size:15px;
+  line-height:1.85;
+  color:var(--text-dim);
+  font-weight:300;
+  letter-spacing:0.5px;
+}
+.footnote-text .highlight{
+  color:var(--primary);
+  font-weight:500;
+}
+
+.corner-mark{
+  position:absolute;
+  top:40px;right:40px;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;
+  color:var(--text-dim);
+  letter-spacing:3px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.corner-mark .line{width:40px;height:1px;background:var(--line);}
+
+.bottom-mark{
+  position:absolute;
+  bottom:32px;left:60px;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;
+  color:var(--text-dim);
+  letter-spacing:3px;
+}
+.bottom-mark .accent{color:var(--accent);}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-dots"></div>
+    <div class="deco-right">
+      <div class="deco-circle c1"></div>
+      <div class="deco-circle c2"></div>
+      <div class="deco-circle c3"></div>
+      <div class="deco-circle c4"></div>
+      <div class="deco-core"></div>
+      <div class="deco-line l1"></div>
+      <div class="deco-line l2"></div>
+      <div class="deco-line l3"></div>
+      <div class="deco-triangle"></div>
+      <div class="deco-square"></div>
+      <div class="deco-cross x1">+</div>
+      <div class="deco-cross x2">+</div>
+      <div class="deco-cross x3">+</div>
+      <div class="deco-tag t1">// OPEN SOURCE</div>
+      <div class="deco-tag t2">// CODE BEYOND</div>
+      <div class="deco-tag t3">◈ OSCAR · 2024</div>
+    </div>
+  </div>
+
+  <div id="ct">
+    <div class="corner-mark">
+      <span class="line"></span>
+      <span>OSC / 2024-02 / COVER</span>
+    </div>
+
+    <div class="brand-bar">
+      <span class="dot"></span>
+      <span>OSCAR · 图书共读会</span>
+      <span class="sep"></span>
+      <span class="badge">2024-02 · 启动仪式</span>
+    </div>
+
+    <div class="hero">
+      <div class="hero-left">
+        <div class="hero-label">CODE BEYOND · BOOK CLUB KICKOFF</div>
+        <h1 class="hero-title">
+          超越代码<span class="dot-mid">·</span><span class="accent">共读</span>
+        </h1>
+        <div class="hero-title-en">CODE BEYOND · SHARED READING SESSION</div>
+        <div class="hero-sub">
+          <span class="line"></span>
+          <span>2024-02 · OSCAR 图书共读会 · 启动仪式</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="idx"><span class="num">01</span><span>TOPIC</span></div>
+        <div class="head">共读主题</div>
+        <div class="divider"></div>
+        <div class="detail">围绕《超越代码》一书，深入探索开源文化的深层逻辑、精神内核与当代意义。</div>
+      </div>
+      <div class="card">
+        <div class="idx"><span class="num">02</span><span>SPEAKER</span></div>
+        <div class="head">分享人</div>
+        <div class="divider"></div>
+        <div class="detail">由开源之道·适兕担任本次主讲与导读，带你穿越代码，理解开源的本质与远方。</div>
+      </div>
+      <div class="card">
+        <div class="idx"><span class="num">03</span><span>FORMAT</span></div>
+        <div class="head">参与形式</div>
+        <div class="divider"></div>
+        <div class="detail">线下共读、章节分享与圆桌讨论相结合，让每一次阅读都成为共同的思想旅程。</div>
+      </div>
+    </div>
+
+    <div class="footnote">
+      <div class="footnote-icon">❖</div>
+      <div class="footnote-text">
+        欢迎来到本次 OSCAR《<span class="highlight">超越代码</span>》图书共读会。我们将从<span class="highlight">书籍定位、作者历程、核心观点到共读启发</span>逐层展开，一起重新理解开源文化的边界与可能。
+      </div>
+    </div>
+
+    <div class="bottom-mark">
+      <span>// OSCAR BOOK CLUB</span> &nbsp;·&nbsp; <span class="accent">SEASON 01</span> &nbsp;·&nbsp; <span>CODE BEYOND</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
