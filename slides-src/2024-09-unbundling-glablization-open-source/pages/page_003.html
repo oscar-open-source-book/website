@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之道 · 超越代码共享的哲学层面</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --navy: #0D2137;
+  --red: #C0392B;
+  --cream: #F4F1EA;
+  --ink: #1a1a1a;
+  --muted: #5b5b5b;
+  --rule: rgba(13,33,55,0.18);
+  --paper-shadow: rgba(13,33,55,0.06);
+  --serif: 'Source Serif 4','Noto Serif SC',Georgia,'Songti SC',serif;
+  --sans: 'Helvetica Neue','Helvetica','PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family: var(--sans);
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings: "kern","liga","onum";
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  background: var(--cream);
+}
+
+/* Paper texture background */
+#bg{
+  position:absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(13,33,55,0.05), transparent 55%),
+    radial-gradient(ellipse at 90% 95%, rgba(192,57,43,0.04), transparent 50%),
+    var(--cream);
+}
+#bg::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(13,33,55,0.025) 1px, transparent 1.5px),
+    radial-gradient(circle at 70% 60%, rgba(13,33,55,0.02) 1px, transparent 1.5px);
+  background-size: 3px 3px, 5px 5px;
+  pointer-events:none;
+  opacity:0.7;
+}
+
+#ct{
+  position:absolute; inset:0; z-index:1;
+  padding: 44px 64px 32px 64px;
+}
+
+/* ---- Header ---- */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: var(--navy);
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid var(--navy);
+  font-weight: 500;
+}
+.h-left{ display:flex; align-items:center; gap:14px;}
+.h-left .h-dot{
+  width:8px; height:8px; border-radius:50%;
+  background: var(--red);
+}
+.h-right{ display:flex; align-items:center; gap:20px; color: var(--muted);}
+.h-right .sep{ color: var(--rule); }
+
+/* ---- Page Title ---- */
+.page-title{
+  display:grid;
+  grid-template-columns: 1fr 1.2fr;
+  align-items:end;
+  gap: 60px;
+  padding: 22px 0 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.t-left .overline{
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: 0.32em;
+  color: var(--red);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.t-left h1{
+  font-family: var(--serif);
+  font-size: 60px;
+  line-height: 0.98;
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.t-left h1 em{
+  font-style: italic;
+  color: var(--navy);
+  font-weight: 600;
+}
+.t-right{
+  border-left: 1px solid var(--rule);
+  padding-left: 30px;
+  padding-bottom: 4px;
+}
+.t-right .pinyin{
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.36em;
+  color: var(--red);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.t-right p{
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.7;
+  color: #333;
+}
+.t-right p::first-letter{
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--red);
+  float: left;
+  line-height: 0.85;
+  margin: 6px 8px 0 0;
+}
+
+/* ---- Main 2-column ---- */
+.main{
+  display:grid;
+  grid-template-columns: 340px 1fr;
+  gap: 44px;
+  margin-top: 24px;
+}
+
+/* ---- Left rail: giant vertical ---- */
+.rail{
+  position:relative;
+  padding: 8px 24px 8px 8px;
+  border-right: 1px solid var(--rule);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  height: 388px;
+}
+.rail::before{
+  content:"";
+  position:absolute;
+  left: 12px; top: 0;
+  width: 1px; height: 40px;
+  background: var(--red);
+}
+.rail-vertical{
+  writing-mode: vertical-rl;
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 112px;
+  line-height: 1.02;
+  letter-spacing: 0.06em;
+  margin-left: 12px;
+  height: 340px;
+}
+.rail-vertical .dot{
+  display:inline-block;
+  color: var(--red);
+  font-size: 42px;
+  margin-bottom: 18px;
+  transform: translateY(-6px);
+}
+.rail-vertical .char{ display:inline-block; }
+.rail-vertical .char:nth-child(3){ color: var(--red); }
+.rail-meta{
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 12px;
+  padding-left: 4px;
+  border-top: 1px solid var(--rule);
+  padding-top: 10px;
+}
+.rail-meta .cite{
+  color: var(--navy);
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Right: cards grid ---- */
+.cards{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  height: 388px;
+}
+.card{
+  background: #FBF8F1;
+  padding: 18px 20px 20px 20px;
+  position:relative;
+  border-top: 2.5px solid var(--navy);
+  display:flex;
+  flex-direction:column;
+  box-shadow: 0 2px 0 var(--paper-shadow);
+}
+.card.spread{
+  grid-column: span 2;
+  background: var(--navy);
+  color: #EDE7D9;
+  border-top-color: var(--red);
+}
+.card.wide{
+  grid-column: span 3;
+  background: transparent;
+  border-top: 1px solid var(--rule);
+  padding: 14px 0 0 0;
+  box-shadow: none;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom: 10px;
+}
+.card-num{
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.card-icon{
+  width: 32px; height: 32px;
+  color: var(--navy);
+  opacity: 0.9;
+}
+.card-title{
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+.card-body{
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #3a3a3a;
+  flex: 1;
+}
+.card.spread .card-num{ color: var(--red); }
+.card.spread .card-title{ color: #F4E9D8; font-size: 22px;}
+.card.spread .card-body{ color: #D8CFBE; font-size: 13px; line-height: 1.7;}
+.card.spread .card-icon{ color: #F4E9D8; opacity: 0.85;}
+.card.spread .card-head{ align-items: center;}
+
+.card.wide .card-num{ font-size: 40px; color: var(--red); min-width: 68px;}
+.card.wide .card-title{ margin-bottom: 0; font-size: 22px;}
+.card.wide .card-body{ color: var(--muted); font-size: 13px; line-height: 1.7;}
+
+/* tags */
+.tags{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.tag{
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border: 1px solid rgba(13,33,55,0.28);
+  color: var(--navy);
+  font-weight: 500;
+}
+.card.spread .tag{
+  border-color: rgba(244,233,216,0.35);
+  color: #EDE7D9;
+}
+
+/* ---- KPI band ---- */
+.kpi-band{
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 2px solid var(--navy);
+  display:grid;
+  grid-template-columns: 200px 1fr 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+.kpi-label{
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  color: var(--red);
+  font-weight: 600;
+  display:flex;
+  align-items:center;
+  padding-right: 12px;
+  border-right: 1px solid var(--rule);
+}
+.kpi-label .en{
+  display:block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--navy);
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+.kpi{
+  padding: 4px 22px;
+  border-right: 1px solid var(--rule);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.kpi:last-child{ border-right: none;}
+.kpi-value{
+  font-family: var(--serif);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  display:flex;
+  align-items:baseline;
+  gap: 4px;
+}
+.kpi-value .kpi-prefix{
+  font-size: 16px;
+  color: var(--red);
+  font-weight: 600;
+  font-family: var(--sans);
+  letter-spacing: 0.05em;
+}
+.kpi-value .kpi-unit{
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--navy);
+  font-weight: 600;
+  margin-left: 4px;
+}
+.kpi-name{
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--navy);
+  font-weight: 600;
+  margin-top: 8px;
+  letter-spacing: 0.02em;
+}
+.kpi-note{
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ---- Footer ---- */
+.footer{
+  position:absolute;
+  left: 64px; right: 64px; bottom: 14px;
+  display:flex;
+  justify-content:space-between;
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+}
+.footer .center{
+  font-family: var(--serif);
+  font-style: italic;
+  letter-spacing: 0.1em;
+  color: var(--navy);
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="h-left">
+        <span class="h-dot"></span>
+        <span>MAGAZINE OF OPEN SOURCE · VOL. 01</span>
+      </div>
+      <div class="h-right">
+        <span>专题 · 哲学篇</span>
+        <span class="sep">/</span>
+        <span>2025 · 秋</span>
+      </div>
+    </div>
+
+    <!-- Page Title -->
+    <div class="page-title">
+      <div class="t-left">
+        <div class="overline">— WHAT IS THE WAY OF OPEN SOURCE</div>
+        <h1>什么是<em>开源</em>之道</h1>
+      </div>
+      <div class="t-right">
+        <div class="pinyin">超越代码共享的哲学层面</div>
+        <p>开源不只是把代码放到公共仓库里，它是一种关于协作、透明与公共利益的社会协议。它关乎谁能阅读、谁能修改、谁能从中获益，以及这一切如何被组织成一个自洽的共同体。</p>
+      </div>
+    </div>
+
+    <!-- Main 2-column -->
+    <div class="main">
+
+      <!-- Left rail -->
+      <div class="rail">
+        <div class="rail-vertical">
+          <span class="dot">·</span><span class="char">开</span><span class="char">源</span><span class="char">之</span><span class="char">道</span>
+        </div>
+        <div class="rail-meta">
+          <span class="cite">A Philosophy of Shared Code</span><br>
+          从 1984 年的自由软件运动<br>
+          到 2025 年的全球公共基础设施
+        </div>
+      </div>
+
+      <!-- Right cards -->
+      <div class="cards">
+
+        <!-- Card 1: spread across 2 cols, dark -->
+        <div class="card spread">
+          <div class="card-head">
+            <span class="card-num">01</span>
+            <svg class="card-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4">
+              <path d="M4 24 L14 14 L20 20 L28 12"/>
+              <path d="M22 12 L28 12 L28 18" />
+              <circle cx="6" cy="22" r="1.4" fill="currentColor"/>
+              <line x1="2" y1="28" x2="30" y2="28"/>
+            </svg>
+          </div>
+          <div class="card-title">开源 ≠ 免费</div>
+          <div class="card-body">
+            开源的核心是"访问权"与"修改权"，而非金钱成本。<br>
+            GPL 协议甚至鼓励商业收费——只要下游保留同样的权利。
+          </div>
+          <div class="tags">
+            <span class="tag">访问权</span>
+            <span class="tag">修改权</span>
+            <span class="tag">GPL 兼容</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">02</span>
+            <svg class="card-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4">
+              <line x1="3" y1="22" x2="29" y2="22"/>
+              <line x1="3" y1="28" x2="29" y2="28"/>
+              <rect x="6" y="14" width="4" height="8"/>
+              <rect x="13" y="10" width="4" height="12"/>
+              <rect x="20" y="17" width="4" height="5"/>
+              <path d="M3 6 L16 3 L29 6"/>
+            </svg>
+          </div>
+          <div class="card-title">公共知识<br>基础设施</div>
+          <div class="card-body">
+            Linux 内核、Apache、Node.js 等已构成现代数字文明的底层公共品——像公路与电力，人人共享。
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">03</span>
+            <svg class="card-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4">
+              <circle cx="16" cy="8" r="3"/>
+              <circle cx="7" cy="23" r="3"/>
+              <circle cx="25" cy="23" r="3"/>
+              <line x1="14" y1="11" x2="9" y2="20"/>
+              <line x1="18" y1="11" x2="23" y2="20"/>
+              <line x1="10" y1="23" x2="22" y2="23"/>
+            </svg>
+          </div>
+          <div class="card-title">社区治理模式</div>
+          <div class="card-body">
+            BDFL 制、Foundation 模式、Meritocracy 三种主流治理结构，各有优劣与代价。
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">04</span>
+            <svg class="card-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4">
+              <line x1="16" y1="4" x2="16" y2="28"/>
+              <path d="M16 12 L6 16 L16 20 Z"/>
+              <path d="M16 12 L26 16 L16 20 Z"/>
+              <line x1="6" y1="16" x2="6" y2="24"/>
+              <line x1="26" y1="16" x2="26" y2="24"/>
+              <circle cx="6" cy="25" r="1.5"/>
+              <circle cx="26" cy="25" r="1.5"/>
+            </svg>
+          </div>
+          <div class="card-title">伦理与商业<br>的张力</div>
+          <div class="card-body">
+            Copyleft 与 Permissive License 之争，折射出开源内部关于"自由"与"实用"的价值分歧。
+          </div>
+        </div>
+
+        <!-- Card 5: wide bottom -->
+        <div class="card wide">
+          <span class="card-num">05</span>
+          <div style="flex:1;">
+            <div class="card-title">中国语境下的开源</div>
+          </div>
+          <div class="card-body" style="flex:2;">
+            从镜像站起步到 OpenAtom 基金会，中国开源社区经历了一条独特的生长路径——不是翻译西方故事，而是自成一体的第二支叙事。
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- KPI Band -->
+    <div class="kpi-band">
+      <div class="kpi-label">
+        <div>
+          数 据 一 览
+          <span class="en">By the Numbers</span>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">
+          <span class="kpi-prefix">&gt;</span>1400<span class="kpi-unit">万人</span>
+        </div>
+        <div class="kpi-name">全球开源贡献者</div>
+        <div class="kpi-note">GitHub 平台注册开发者总量</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">
+          <span class="kpi-prefix">&gt;</span>4.1<span class="kpi-unit">亿个</span>
+        </div>
+        <div class="kpi-name">GitHub 仓库总数</div>
+        <div class="kpi-note">截至 2024 年底累计公开仓库</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">
+          约 11<span class="kpi-unit">%</span>
+        </div>
+        <div class="kpi-name">中国开源项目占比</div>
+        <div class="kpi-note">在中文社区活跃项目中的份额</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span>SENSENOVA EDITORIAL · 2025</span>
+      <span class="center">— 道可道，非常道 —</span>
+      <span>P. 01 / 12</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
