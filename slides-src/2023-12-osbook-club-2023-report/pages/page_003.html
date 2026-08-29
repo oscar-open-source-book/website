@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>共读进度回顾</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --coffee: #795548;
+  --coffee-warm: #8D6E63;
+  --coffee-deep: #4E362A;
+  --beige: #F5F0E6;
+  --beige-2: #EDE5D3;
+  --beige-3: #E6DCC4;
+  --ink: #3A2A20;
+  --ink-soft: #6B5A4E;
+  --line: #C4B29A;
+  --line-light: #D9CBB2;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Noto Sans SC', sans-serif; background: #E8E1D3; }
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; background: var(--beige); }
+#bg { position: absolute; inset: 0; z-index: 0; }
+#ct { position: absolute; inset: 0; z-index: 1; padding: 54px 88px 60px; }
+
+.paper-tex { position: absolute; inset: 0; background: radial-gradient(ellipse at 15% 8%, rgba(137,110,99,0.08), transparent 55%), radial-gradient(ellipse at 88% 92%, rgba(137,110,99,0.06), transparent 55%); }
+.spine-1 { position: absolute; left: 42px; top: 90px; bottom: 90px; width: 1px; background: var(--line); }
+.spine-2 { position: absolute; left: 52px; top: 110px; bottom: 110px; width: 1px; background: var(--line); opacity: 0.5; }
+.spine-right { position: absolute; right: 42px; top: 120px; bottom: 120px; width: 1px; background: var(--line); opacity: 0.6; }
+
+.corner-tr { position: absolute; right: 88px; top: 54px; font-family: 'Noto Serif SC', serif; font-style: italic; color: var(--coffee-warm); font-size: 13px; letter-spacing: 3px; }
+.corner-tl { position: absolute; left: 88px; top: 54px; font-family: 'Noto Sans SC', sans-serif; font-size: 11px; color: var(--coffee-warm); letter-spacing: 6px; }
+.corner-bl { position: absolute; left: 88px; bottom: 30px; font-family: 'Noto Sans SC', sans-serif; font-size: 10px; color: var(--line); letter-spacing: 4px; }
+.corner-br { position: absolute; right: 88px; bottom: 30px; font-family: 'Noto Serif SC', serif; font-style: italic; font-size: 11px; color: var(--line); letter-spacing: 3px; }
+
+.title-area { position: relative; margin-bottom: 30px; padding-top: 20px; }
+.eyebrow { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: var(--coffee-warm); letter-spacing: 8px; font-weight: 400; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
+.eyebrow-line { width: 42px; height: 1px; background: var(--coffee-warm); opacity: 0.6; }
+.title { font-family: 'Noto Serif SC', serif; font-size: 54px; color: var(--coffee); font-weight: 600; letter-spacing: 8px; line-height: 1.1; margin: 0; }
+.title-en { font-family: 'Noto Serif SC', serif; font-size: 13px; color: var(--coffee-warm); letter-spacing: 4px; margin-top: 16px; font-style: italic; font-weight: 400; }
+
+.main { display: flex; gap: 64px; height: 420px; margin-top: 8px; }
+.left-col { width: 40%; display: flex; flex-direction: column; gap: 22px; position: relative; }
+.right-col { width: 60%; padding-left: 40px; border-left: 1px solid var(--line-light); display: flex; flex-direction: column; gap: 20px; }
+
+.kpi-card { flex: 1; padding: 26px 30px 24px; background: var(--beige-2); border-left: 3px solid var(--coffee); position: relative; }
+.kpi-card::after { content: ''; position: absolute; left: 12px; top: 20px; bottom: 20px; width: 1px; background: var(--line); opacity: 0.5; }
+.kpi-label { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: var(--coffee-warm); letter-spacing: 5px; font-weight: 500; margin-bottom: 10px; }
+.kpi-value { font-family: 'Noto Serif SC', serif; font-size: 72px; color: var(--coffee); font-weight: 600; line-height: 1; display: inline-block; }
+.kpi-unit { font-family: 'Noto Serif SC', serif; font-size: 20px; color: var(--coffee-warm); margin-left: 6px; font-weight: 400; }
+.kpi-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: var(--ink-soft); margin-top: 12px; line-height: 1.7; letter-spacing: 1px; }
+.kpi-corner { position: absolute; right: 26px; top: 22px; font-family: 'Noto Serif SC', serif; font-style: italic; font-size: 22px; color: var(--line); font-weight: 400; }
+
+.item { display: flex; gap: 22px; align-items: flex-start; padding: 4px 0; }
+.item-num { font-family: 'Noto Serif SC', serif; font-size: 20px; color: var(--coffee-warm); font-weight: 400; letter-spacing: 2px; padding-top: 2px; min-width: 38px; font-style: italic; }
+.item-content { flex: 1; }
+.item-title { font-family: 'Noto Serif SC', serif; font-size: 20px; color: var(--ink); font-weight: 600; margin-bottom: 6px; letter-spacing: 1px; }
+.item-desc { font-family: 'Noto Sans SC', sans-serif; font-size: 12.5px; color: var(--ink-soft); line-height: 1.75; letter-spacing: 0.5px; }
+.item-divider { height: 1px; background: var(--line-light); margin: 2px 0 2px 60px; opacity: 0.7; }
+
+.quote-area { position: absolute; bottom: 58px; left: 88px; right: 88px; padding: 18px 28px 18px 34px; border-left: 2px solid var(--coffee); }
+.quote-text { font-family: 'Noto Serif SC', serif; font-style: italic; font-size: 14px; color: var(--ink-soft); line-height: 1.85; letter-spacing: 1px; }
+.quote-mark-left { color: var(--coffee-warm); font-size: 20px; font-style: normal; margin-right: 2px; }
+.quote-mark-right { color: var(--coffee-warm); font-size: 20px; font-style: normal; margin-left: 2px; }
+
+.dot-pattern { position: absolute; right: 76px; top: 148px; display: grid; grid-template-columns: repeat(6, 6px); gap: 10px; opacity: 0.35; }
+.dot { width: 3px; height: 3px; background: var(--coffee-warm); border-radius: 50%; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="paper-tex"></div>
+    <div class="spine-1"></div>
+    <div class="spine-2"></div>
+    <div class="spine-right"></div>
+    <div class="dot-pattern">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+  </div>
+  <div id="ct">
+    <div class="corner-tl"><span>CH. 07 · 月度札记</span></div>
+    <div class="corner-tr"><span>Dec · 十二月 · No.12</span></div>
+
+    <div class="title-area">
+      <div class="eyebrow"><span class="eyebrow-line"></span><span>MONTHLY READING · 社群共读</span></div>
+      <h1 class="title"><span>共读进度回顾</span></h1>
+      <div class="title-en"><span>Progress Review of Co-Reading, December</span></div>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="kpi-card">
+          <div class="kpi-corner"><span>Ⅰ</span></div>
+          <div class="kpi-label"><span>读书笔记</span></div>
+          <div><span class="kpi-value">47</span><span class="kpi-unit">篇</span></div>
+          <div class="kpi-sub"><span>月度产出，其中 12 篇入选公开合集</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-corner"><span>Ⅱ</span></div>
+          <div class="kpi-label"><span>共读书目</span></div>
+          <div><span class="kpi-value">2</span><span class="kpi-unit">本</span></div>
+          <div class="kpi-sub"><span>《开源的商业》《开源文化简史》</span></div>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="item">
+          <div class="item-num"><span>01</span></div>
+          <div class="item-content">
+            <div class="item-title"><span>《开源的商业》收官</span></div>
+            <div class="item-desc"><span>第 12 章至尾章精读完成，社群成员围绕开源商业模式展开三次圆桌讨论。</span></div>
+          </div>
+        </div>
+        <div class="item-divider"></div>
+        <div class="item">
+          <div class="item-num"><span>02</span></div>
+          <div class="item-content">
+            <div class="item-title"><span>《开源文化简史》启程</span></div>
+            <div class="item-desc"><span>从 Git 发明讲起的第二轮共读正式启动，聚焦早期社区演化逻辑。</span></div>
+          </div>
+        </div>
+        <div class="item-divider"></div>
+        <div class="item">
+          <div class="item-num"><span>03</span></div>
+          <div class="item-content">
+            <div class="item-title"><span>读书笔记沉淀</span></div>
+            <div class="item-desc"><span>本月共产出 47 篇高质量读书笔记，其中 12 篇被采纳至公开笔记合集。</span></div>
+          </div>
+        </div>
+        <div class="item-divider"></div>
+        <div class="item">
+          <div class="item-num"><span>04</span></div>
+          <div class="item-content">
+            <div class="item-title"><span>跨章联动</span></div>
+            <div class="item-desc"><span>引入《The Cathedral and the Bazaar》对照章节，让成员在双书之间形成互文阅读。</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-area">
+      <div class="quote-text"><span class="quote-mark-left">「</span><span>共读是这个社群最朴素也最核心的仪式。十二月里，我们把两本小书翻得几乎起毛边，用批注、圈画和周会里的争论把纸页上的概念转译成自己的语言。进度不是终点，而是继续走下的理由。</span><span class="quote-mark-right">」</span></div>
+    </div>
+
+    <div class="corner-bl"><span>P. 042 · 手作笔记</span></div>
+    <div class="corner-br"><span>— to be continued —</span></div>
+  </div>
+</div>
+</body>
+</html>
