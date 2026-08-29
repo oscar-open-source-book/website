@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>核心章节解读</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-dark: #1E293B;
+  --bg-darker: #152033;
+  --text-main: #E8EEF7;
+  --text-muted: #94A3B8;
+  --ring1: #00BCD4;
+  --ring2: #2196F3;
+  --ring3: #1565C0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 800px 600px at 20% 30%, rgba(33,150,243,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 500px at 80% 80%, rgba(0,188,212,0.06) 0%, transparent 70%),
+    var(--bg-dark);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
+  box-sizing: border-box;
+}
+
+/* Grid dots decoration */
+#ct::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.section-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.tag-line {
+  flex: 0 0 60px;
+  height: 1px;
+  background: linear-gradient(to right, var(--accent), transparent);
+}
+
+.tag-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.main-area {
+  display: grid;
+  grid-template-columns: 1fr 700px 1fr;
+  align-items: center;
+  gap: 0;
+  margin-top: 4px;
+  height: 560px;
+}
+
+/* Left column */
+.left-col {
+  padding-right: 30px;
+}
+
+.big-number {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 320px;
+  line-height: 0.85;
+  background: linear-gradient(135deg, #2196F3 0%, #00BCD4 50%, #1565C0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -10px;
+  position: relative;
+}
+
+.big-number::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+
+.title-block {
+  margin-top: 36px;
+}
+
+.main-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 900;
+  font-size: 48px;
+  color: var(--text-main);
+  letter-spacing: 6px;
+  line-height: 1.1;
+}
+
+.sub-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-top: 12px;
+  letter-spacing: 2px;
+}
+
+/* Center column - Ring chart */
+.center-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.ring-container {
+  position: relative;
+  width: 520px;
+  height: 520px;
+}
+
+.ring-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.ring-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 220px;
+}
+
+.ring-center-text .ct-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.ring-center-text .ct-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 42px;
+  color: var(--text-main);
+  margin-top: 4px;
+  line-height: 1;
+}
+
+.ring-center-text .ct-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* Ring label badges */
+.ring-badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
+}
+
+.ring-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.badge-r1 {
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,188,212,0.12);
+  border-color: rgba(0,188,212,0.3);
+  color: #4DD0E1;
+}
+.badge-r1 .dot { background: #00BCD4; box-shadow: 0 0 8px #00BCD4; }
+
+.badge-r2 {
+  bottom: 70px;
+  left: -10px;
+  background: rgba(33,150,243,0.12);
+  border-color: rgba(33,150,243,0.3);
+  color: #64B5F6;
+}
+.badge-r2 .dot { background: #2196F3; box-shadow: 0 0 8px #2196F3; }
+
+.badge-r3 {
+  bottom: 70px;
+  right: -10px;
+  background: rgba(21,101,192,0.2);
+  border-color: rgba(33,150,243,0.25);
+  color: #90CAF9;
+}
+.badge-r3 .dot { background: #1565C0; box-shadow: 0 0 8px #2196F3; }
+
+/* Right column */
+.right-col {
+  padding-left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.module-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-left: 3px solid;
+  border-radius: 8px;
+  padding: 16px 18px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.module-card:nth-child(1) { border-left-color: #00BCD4; }
+.module-card:nth-child(2) { border-left-color: #2196F3; }
+.module-card:nth-child(3) { border-left-color: #1565C0; }
+
+.module-card .mc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.mc-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.mc-index {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.mc-desc {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+/* Bottom area */
+.bottom-area {
+  position: absolute;
+  left: 72px;
+  right: 72px;
+  bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.bottom-quote {
+  flex: 1;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+.bottom-quote::before {
+  content: '"';
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  color: var(--primary);
+  margin-right: 4px;
+  line-height: 0;
+  position: relative;
+  top: 6px;
+}
+
+.bottom-label {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.12), rgba(0,188,212,0.08));
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64B5F6;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.bottom-label .bl-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Decorative corner elements */
+.corner-deco {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: rgba(33,150,243,0.3);
+  z-index: 2;
+}
+.corner-deco.tl { top: 24px; left: 24px; border-top: 2px solid; border-left: 2px solid; }
+.corner-deco.tr { top: 24px; right: 24px; border-top: 2px solid; border-right: 2px solid; }
+.corner-deco.bl { bottom: 24px; left: 24px; border-bottom: 2px solid; border-left: 2px solid; }
+.corner-deco.br { bottom: 24px; right: 24px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* Glow line */
+.glow-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(to right, var(--primary), var(--accent), transparent);
+  z-index: 2;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <span class="glow-line"></span>
+    <span class="corner-deco tl"></span>
+    <span class="corner-deco tr"></span>
+    <span class="corner-deco bl"></span>
+    <span class="corner-deco br"></span>
+
+    <div class="header-row">
+      <span class="section-tag">CHAPTER 02</span>
+      <span class="tag-line"></span>
+      <span class="tag-text">SECTION DIVIDER · 章节过渡</span>
+    </div>
+
+    <div class="main-area">
+      <!-- Left Column -->
+      <div class="left-col">
+        <div class="big-number">02</div>
+        <div class="title-block">
+          <div class="main-title">核心章节解读</div>
+          <div class="sub-title">深入拆解字节跳动 OSPO 实战经验</div>
+        </div>
+      </div>
+
+      <!-- Center Column - Ring Chart -->
+      <div class="center-col">
+        <div class="ring-container">
+          <svg class="ring-svg" width="520" height="520" viewBox="0 0 520 520">
+            <defs>
+              <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1565C0"/>
+                <stop offset="100%" stop-color="#0D47A1"/>
+              </linearGradient>
+              <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#2196F3"/>
+                <stop offset="100%" stop-color="#1976D2"/>
+              </linearGradient>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00BCD4"/>
+                <stop offset="100%" stop-color="#00838F"/>
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Outer ring - 价值验证 -->
+            <circle cx="260" cy="260" r="240" fill="none" stroke="rgba(21,101,192,0.15)" stroke-width="1"/>
+            <circle cx="260" cy="260" r="225" fill="none" stroke="url(#grad3)" stroke-width="18" stroke-dasharray="1330 1413" stroke-linecap="round" transform="rotate(-90 260 260)"/>
+            <circle cx="260" cy="260" r="225" fill="none" stroke="rgba(21,101,192,0.2)" stroke-width="18" stroke-dasharray="83 1413" stroke-linecap="round" transform="rotate(280 260 260)"/>
+
+            <!-- Middle ring - 运营实践 -->
+            <circle cx="260" cy="260" r="185" fill="none" stroke="rgba(33,150,243,0.12)" stroke-width="1"/>
+            <circle cx="260" cy="260" r="170" fill="none" stroke="url(#grad2)" stroke-width="18" stroke-dasharray="1015 1068" stroke-linecap="round" transform="rotate(-90 260 260)"/>
+            <circle cx="260" cy="260" r="170" fill="none" stroke="rgba(33,150,243,0.25)" stroke-width="18" stroke-dasharray="53 1068" stroke-linecap="round" transform="rotate(310 260 260)"/>
+
+            <!-- Inner ring - 组织模式 -->
+            <circle cx="260" cy="260" r="120" fill="none" stroke="rgba(0,188,212,0.12)" stroke-width="1"/>
+            <circle cx="260" cy="260" r="108" fill="none" stroke="url(#grad1)" stroke-width="18" stroke-dasharray="679 679" stroke-linecap="round" transform="rotate(-90 260 260)"/>
+
+            <!-- Center circle -->
+            <circle cx="260" cy="260" r="72" fill="rgba(30,41,59,0.9)" stroke="rgba(0,188,212,0.2)" stroke-width="1"/>
+            <circle cx="260" cy="260" r="72" fill="none" stroke="rgba(33,150,243,0.15)" stroke-width="1" stroke-dasharray="3 6"/>
+
+            <!-- Tick marks outer -->
+            <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
+              <line x1="260" y1="15" x2="260" y2="28"/>
+              <line x1="260" y1="492" x2="260" y2="505"/>
+              <line x1="15" y1="260" x2="28" y2="260"/>
+              <line x1="492" y1="260" x2="505" y2="260"/>
+            </g>
+          </svg>
+
+          <div class="ring-center-text">
+            <div class="ct-label">CORE MODULES</div>
+            <div class="ct-value">3</div>
+            <div class="ct-sub">大解读模块</div>
+          </div>
+
+          <div class="ring-badge badge-r1">
+            <span class="dot"></span><span>组织模式</span>
+          </div>
+          <div class="ring-badge badge-r2">
+            <span class="dot"></span><span>运营实践</span>
+          </div>
+          <div class="ring-badge badge-r3">
+            <span class="dot"></span><span>价值验证</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <div class="module-card">
+          <div class="mc-header">
+            <span class="mc-title">组织模式</span>
+            <span class="mc-index">MODULE 01</span>
+          </div>
+          <div class="mc-desc">字节 OSPO 的汇报架构、人员配置与跨部门协作机制的完整还原</div>
+        </div>
+        <div class="module-card">
+          <div class="mc-header">
+            <span class="mc-title">运营实践</span>
+            <span class="mc-index">MODULE 02</span>
+          </div>
+          <div class="mc-desc">从开源项目孵化到社区运营，再到合规审计的全流程实践案例</div>
+        </div>
+        <div class="module-card">
+          <div class="mc-header">
+            <span class="mc-title">价值验证</span>
+            <span class="mc-index">MODULE 03</span>
+          </div>
+          <div class="mc-desc">数据驱动的方式验证开源投入带来的品牌、人才与技术创新回报</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-area">
+      <div class="bottom-quote">
+        本章将聚焦全书最具实操价值的核心内容——字节跳动 OSPO 的组织搭建模式与运营实践，提取可复用的方法论，帮助读者在自己的企业中落地开源治理。
+      </div>
+      <div class="bottom-label">
+        <span class="bl-dot"></span>
+        <span>核心章节 3大模块 组织·运营·价值</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源：从理念到运动</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-dark: #1A1A2E;
+  --bg-card: #16213E;
+  --bg-card-alt: #1a2742;
+  --text-main: #E8EAF6;
+  --text-secondary: #9FA8C4;
+  --text-muted: #6B7A99;
+  --border-line: rgba(33, 150, 243, 0.25);
+  --glow: rgba(33, 150, 243, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 15% 30%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 70%, rgba(0, 188, 212, 0.06) 0%, transparent 50%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-line);
+}
+
+.header-left h1 {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-left .subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-tag {
+  font-size: 11px;
+  padding: 5px 12px;
+  border: 1px solid var(--border-line);
+  border-radius: 20px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+/* Main content */
+.main {
+  display: flex;
+  gap: 40px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Left - Timeline */
+.timeline-section {
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--primary), var(--accent), var(--primary));
+  border-radius: 1px;
+  opacity: 0.5;
+}
+
+.timeline-node {
+  position: relative;
+  padding: 14px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-line);
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.timeline-node::before {
+  content: '';
+  position: absolute;
+  left: -34px;
+  top: 22px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+.timeline-node.accent::before {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+}
+
+.timeline-node .node-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.node-step {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  background: rgba(33, 150, 243, 0.12);
+  border-radius: 4px;
+}
+
+.accent .node-step {
+  color: var(--accent);
+  background: rgba(0, 188, 212, 0.12);
+}
+
+.node-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.node-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* Data highlights */
+.data-highlights {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.data-card {
+  flex: 1;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.12), rgba(0, 188, 212, 0.06));
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.data-card .data-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.data-card:nth-child(2) .data-number {
+  color: var(--accent);
+}
+
+.data-card .data-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* Right - Image */
+.visual-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.visual-frame {
+  width: 620px;
+  height: 460px;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-line);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(33, 150, 243, 0.1);
+}
+
+.visual-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.visual-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, rgba(26, 26, 46, 0.7));
+  pointer-events: none;
+}
+
+.visual-caption {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+  max-width: 560px;
+}
+
+.visual-caption .highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Footer */
+.footer {
+  margin-top: 20px;
+  padding: 14px 24px;
+  background: linear-gradient(90deg, rgba(33, 150, 243, 0.08), rgba(0, 188, 212, 0.04));
+  border-left: 3px solid var(--primary);
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-icon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  flex-shrink: 0;
+}
+
+.footer-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+.footer-text strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <h1>开源：从理念到运动</h1>
+        <div class="subtitle">OPEN SOURCE · FROM PHILOSOPHY TO MOVEMENT</div>
+      </div>
+      <div class="header-right">
+        <span class="header-tag">PART 02</span>
+        <span class="header-tag">CONTENT</span>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <div class="timeline-section">
+
+        <div class="timeline">
+
+          <div class="timeline-node">
+            <div class="node-label">
+              <span class="node-step">STEP 01</span>
+              <span class="node-title">概念起源</span>
+            </div>
+            <div class="node-desc">开源思想植根于自由软件运动，强调源代码的自由获取、修改与再分发权利。</div>
+          </div>
+
+          <div class="timeline-node accent">
+            <div class="node-label">
+              <span class="node-step">STEP 02</span>
+              <span class="node-title">OSI 定义</span>
+            </div>
+            <div class="node-desc">开源促进会于 1998 年正式确立开源定义，明确开放源代码的十条核心标准。</div>
+          </div>
+
+          <div class="timeline-node">
+            <div class="node-label">
+              <span class="node-step">STEP 03</span>
+              <span class="node-title">与自由软件的区别</span>
+            </div>
+            <div class="node-desc">自由软件强调用户自由，开源更侧重协作效率与工程方法，两者精神相通但侧重点不同。</div>
+          </div>
+
+          <div class="timeline-node accent">
+            <div class="node-label">
+              <span class="node-step">STEP 04</span>
+              <span class="node-title">企业接纳</span>
+            </div>
+            <div class="node-desc">从 Linux 到 Apache 再到 Kubernetes，开源已成为企业级软件的主流范式与基础设施。</div>
+          </div>
+
+        </div>
+
+        <div class="data-highlights">
+          <div class="data-card">
+            <span class="data-number">1998 年</span>
+            <span class="data-label">OSI 正式确立开源定义</span>
+          </div>
+          <div class="data-card">
+            <span class="data-number">10 条</span>
+            <span class="data-label">OSI 开源定义核心标准</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="visual-section">
+        <div class="visual-frame">
+          <img src="../images/page_002_side_visual.png" alt="协作网络：发光节点互联的有机网络">
+        </div>
+        <div class="visual-caption">
+          <span class="highlight">协作网络：</span>无数贡献者通过开放代码连接彼此
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span class="footer-icon"></span>
+      <div class="footer-text">
+        <strong>从自由到开放，从理念到运动</strong>——开源不仅是一种代码实践方式，更是一套被全球开发者广泛接受、深刻重塑软件产业格局的协作文明。
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

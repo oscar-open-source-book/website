@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8">
+    <title>第二章 · 集市时代</title>
+    <script src="../assets/echarts.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lato:wght@300;400;700&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700&display=swap');
+
+      :root {
+        --navy: #0D2137;
+        --wine: #880E4F;
+        --neutral: #F5F5F5;
+        --ink: #1A2A3E;
+        --muted: #6B7280;
+        --paper: #FBFAF7;
+        --line: #D9D5CC;
+        --line-soft: #E8E4DA;
+        --accent-soft: #F7E9EE;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        font-family: 'Lato', 'Noto Sans SC', sans-serif;
+        background: #EEEAE2;
+        color: var(--ink);
+      }
+
+      .wrapper {
+        width: 1600px;
+        height: 900px;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        background: var(--paper);
+      }
+
+      #bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: var(--paper);
+      }
+
+      #bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, #FBFAF7 0%, #F7F4EC 100%);
+      }
+
+      /* grid overlay */
+      .grid-overlay {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(to right, rgba(13,33,55,0.04) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(13,33,55,0.04) 1px, transparent 1px);
+        background-size: 80px 80px;
+        pointer-events: none;
+      }
+
+      /* decorative corner marks */
+      .corner {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        border: 1.5px solid var(--navy);
+      }
+      .corner.tl { top: 40px; left: 40px; border-right: none; border-bottom: none; }
+      .corner.tr { top: 40px; right: 40px; border-left: none; border-bottom: none; }
+      .corner.bl { bottom: 40px; left: 40px; border-right: none; border-top: none; }
+      .corner.br { bottom: 40px; right: 40px; border-left: none; border-top: none; }
+
+      #ct {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        padding: 60px 90px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Top masthead */
+      .masthead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 14px;
+        border-bottom: 1.5px solid var(--navy);
+        font-family: 'Lato', sans-serif;
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: var(--navy);
+        text-transform: uppercase;
+      }
+      .masthead .left { display: flex; gap: 28px; align-items: center; }
+      .masthead .dot {
+        width: 8px; height: 8px; background: var(--wine); border-radius: 50%;
+      }
+      .masthead .right { display: flex; gap: 24px; color: var(--muted); }
+
+      /* Hero row */
+      .hero {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 50px;
+        padding: 40px 0 30px;
+        align-items: flex-start;
+      }
+
+      .chapter-num {
+        font-family: 'Playfair Display', 'Noto Serif SC', serif;
+        font-weight: 900;
+        font-size: 300px;
+        line-height: 0.85;
+        color: var(--wine);
+        letter-spacing: -8px;
+        position: relative;
+      }
+      .chapter-num .num-of {
+        position: absolute;
+        bottom: -18px;
+        right: -8px;
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 22px;
+        color: var(--muted);
+        letter-spacing: 1px;
+        font-weight: 400;
+      }
+      .chapter-num .of-total {
+        color: var(--line);
+      }
+
+      .hero-text {
+        padding-top: 24px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-family: 'Lato', sans-serif;
+        font-size: 12px;
+        letter-spacing: 5px;
+        color: var(--wine);
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      .eyebrow .line {
+        width: 42px; height: 1px; background: var(--wine);
+      }
+
+      .title-main {
+        font-family: 'Playfair Display', 'Noto Serif SC', serif;
+        font-weight: 900;
+        font-size: 82px;
+        line-height: 1.02;
+        color: var(--navy);
+        letter-spacing: -1px;
+        margin-bottom: 6px;
+      }
+      .title-main .sep {
+        color: var(--wine);
+        font-weight: 400;
+        margin: 0 8px;
+      }
+      .title-en {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 22px;
+        color: var(--muted);
+        font-weight: 400;
+        letter-spacing: 1px;
+        margin-bottom: 22px;
+      }
+
+      .subtitle-bar {
+        background: var(--neutral);
+        padding: 14px 22px;
+        border-left: 3px solid var(--navy);
+        font-size: 18px;
+        color: var(--ink);
+        line-height: 1.5;
+        max-width: 640px;
+      }
+      .subtitle-bar .yr {
+        font-family: 'Playfair Display', serif;
+        color: var(--wine);
+        font-weight: 700;
+      }
+
+      /* Cards row */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        margin-top: 30px;
+      }
+
+      .card {
+        background: #FFFFFF;
+        border: 1px solid var(--line);
+        padding: 20px 22px 18px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 168px;
+      }
+      .card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 40px; height: 3px;
+        background: var(--wine);
+      }
+      .card .idx {
+        position: absolute;
+        top: 14px;
+        right: 18px;
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 14px;
+        color: var(--line);
+        font-weight: 700;
+      }
+
+      .card-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .icon-box {
+        width: 46px;
+        height: 46px;
+        border: 1.5px solid var(--navy);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--paper);
+        flex-shrink: 0;
+      }
+      .icon-box svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      .card-title {
+        font-family: 'Playfair Display', 'Noto Serif SC', serif;
+        font-weight: 700;
+        font-size: 20px;
+        color: var(--navy);
+        line-height: 1.25;
+      }
+
+      .card-divider {
+        height: 1px;
+        background: var(--line-soft);
+        margin: 2px 0;
+      }
+
+      .card-desc {
+        font-size: 13.5px;
+        line-height: 1.65;
+        color: var(--ink);
+      }
+      .card-desc .em {
+        color: var(--wine);
+        font-weight: 700;
+      }
+      .card-desc .mono {
+        font-family: 'Lato', monospace;
+        background: var(--neutral);
+        padding: 1px 6px;
+        font-size: 12.5px;
+        color: var(--navy);
+        letter-spacing: 0.5px;
+      }
+
+      .card-tag {
+        margin-top: auto;
+        font-family: 'Lato', sans-serif;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--muted);
+        text-transform: uppercase;
+        padding-top: 8px;
+      }
+
+      /* BBS / email line */
+      .mail-strip {
+        margin-top: 20px;
+        border-top: 1px dashed var(--line);
+        border-bottom: 1px dashed var(--line);
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        font-family: 'Lato', monospace;
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.5px;
+      }
+      .mail-strip .cell { display: flex; align-items: center; gap: 8px; }
+      .mail-strip .tag {
+        color: var(--wine);
+        font-weight: 700;
+      }
+
+      /* Bottom narrative */
+      .footer-narrative {
+        margin-top: auto;
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 26px;
+        align-items: flex-start;
+        padding-top: 22px;
+        border-top: 2px solid var(--navy);
+      }
+      .footer-label {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 16px;
+        color: var(--wine);
+        line-height: 1.4;
+        letter-spacing: 0.5px;
+      }
+      .footer-label .yr-line {
+        display: block;
+        font-family: 'Lato', sans-serif;
+        font-style: normal;
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: var(--muted);
+        margin-top: 4px;
+        text-transform: uppercase;
+      }
+      .footer-text {
+        font-size: 14.5px;
+        line-height: 1.75;
+        color: var(--ink);
+      }
+      .footer-text .hl {
+        color: var(--wine);
+        font-weight: 700;
+      }
+      .footer-text .nav {
+        color: var(--navy);
+        font-weight: 700;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div id="bg">
+        <div class="grid-overlay"></div>
+      </div>
+
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+
+      <div id="ct">
+
+        <!-- Masthead -->
+        <div class="masthead">
+          <div class="left">
+            <span class="dot"></span>
+            <span><span>OPEN SOURCE · 开源简史</span></span>
+            <span>EDITORIAL</span>
+          </div>
+          <div class="right">
+            <span>Vol.02 / Chapter 02</span>
+            <span>1991 → 2001</span>
+          </div>
+        </div>
+
+        <!-- Hero -->
+        <div class="hero">
+          <div class="chapter-num">
+            <span>02</span>
+            <span class="num-of">CHAPTER <span class="of-total">/06</span></span>
+          </div>
+
+          <div class="hero-text">
+            <div class="eyebrow"><span class="line"></span><span>THE BAZAAR ERA</span><span class="line"></span></div>
+            <h1 class="title-main">第二章<span class="sep">·</span>集市时代</h1>
+            <div class="title-en">The Cathedral &amp; The Bazaar — 1991 and After</div>
+            <div class="subtitle-bar">
+              <span class="yr">1991 之后</span> 的 Linux、OSI 与商业化的博弈——一场从"大教堂"到"集市"的方法论转向，也在同一时间把慈善项目推上了公司化的快车道。
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="cards">
+
+          <!-- Card 1 -->
+          <div class="card">
+            <div class="idx">01</div>
+            <div class="card-head">
+              <div class="icon-box">
+                <!-- Bazaar tent icon -->
+                <svg viewBox="0 0 32 32" fill="none" stroke="#0D2137" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 14 L16 4 L29 14"/>
+                  <path d="M3 14 Q6.5 12 10 14 Q13 12 16 14 Q19 12 22 14 Q25.5 12 29 14"/>
+                  <path d="M6 14 L6 28 L26 28 L26 14"/>
+                  <path d="M14 28 L14 18 L18 18 L18 28"/>
+                  <circle cx="11" cy="20" r="1.2" fill="#880E4F" stroke="none"/>
+                  <circle cx="21" cy="20" r="1.2" fill="#880E4F" stroke="none"/>
+                </svg>
+              </div>
+              <div class="card-title">集市取代大教堂</div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-desc">
+              Eric S. Raymond 在 1997 年命名这场方法论转向：<span class="em">大教堂</span>是集中、层级、缓慢迭代；<span class="em">集市</span>是分布式、公开、快速反馈——他论证后者的开发效率并不逊于前者。
+            </div>
+            <div class="card-tag">METHODOLOGY · TURNING POINT</div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card">
+            <div class="idx">02</div>
+            <div class="card-head">
+              <div class="icon-box">
+                <!-- Envelope icon -->
+                <svg viewBox="0 0 32 32" fill="none" stroke="#0D2137" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3.5" y="7" width="25" height="18" rx="1"/>
+                  <path d="M3.5 8 L16 17.5 L28.5 8"/>
+                  <path d="M3.5 25 L12 17"/>
+                  <path d="M28.5 25 L20 17"/>
+                  <circle cx="26" cy="10" r="1.4" fill="#880E4F" stroke="none"/>
+                </svg>
+              </div>
+              <div class="card-title">Linux 的诞生</div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-desc">
+              <span class="em">1991 年 8 月 25 日</span>，22 岁的 Linus Torvalds 在 <span class="mono">comp.os.minix</span> 上发出那句著名的公开信：「我打算写一个免费的小 OS——有点像 MINIX，但没有那么大。」
+            </div>
+            <div class="card-tag">AUG · 25 · 1991</div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card">
+            <div class="idx">03</div>
+            <div class="card-head">
+              <div class="icon-box">
+                <!-- Book icon -->
+                <svg viewBox="0 0 32 32" fill="none" stroke="#0D2137" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8 L16 27"/>
+                  <path d="M16 8 C13 6 8 6 4 7.5 L4 25.5 C8 24 13 24 16 26"/>
+                  <path d="M16 8 C19 6 24 6 28 7.5 L28 25.5 C24 24 19 24 16 26"/>
+                  <path d="M7.5 12 L13 12.5" stroke="#880E4F"/>
+                  <path d="M7.5 15.5 L13 16" stroke="#880E4F"/>
+                  <path d="M19 12.5 L24.5 12" stroke="#880E4F"/>
+                  <path d="M19 16 L24.5 15.5" stroke="#880E4F"/>
+                </svg>
+              </div>
+              <div class="card-title">本章阅读</div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-desc">
+              <span class="em">《大教堂与集市》</span> — E. S. Raymond，1998 首版 · <br>
+              <span class="em">《Linux 内幕》第三版</span> — Daniel J. Evans，2000；两本书并置，读懂方法论与工程细节的双重视角。
+            </div>
+            <div class="card-tag">FURTHER READING</div>
+          </div>
+
+        </div>
+
+        <!-- Email / BBS strip -->
+        <div class="mail-strip">
+          <div class="cell"><span class="tag">POSTED BY</span> torvalds@cs.helsinki.fi</div>
+          <div class="cell"><span class="tag">NEWGROUP</span> comp.os.minix</div>
+          <div class="cell"><span class="tag">SUBJECT</span> Anyone into minix?</div>
+          <div class="cell"><span class="tag">DATE</span> 25 Aug 1991</div>
+        </div>
+
+        <!-- Footer narrative -->
+        <div class="footer-narrative">
+          <div class="footer-label">
+            Epilogue
+            <span class="yr-line">1991 → 2001</span>
+          </div>
+          <div class="footer-text">
+            第二章把镜头切换到 <span class="nav">1991 之后</span> 的世界——一个芬兰大学生的邮件列表，如何在十年内变成全球最成功的操作系统内核。方法论上，从集中大教堂走向 <span class="hl">开放集市</span>；商业上，从慈善转向 <span class="hl">双许可与公司化</span>。
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

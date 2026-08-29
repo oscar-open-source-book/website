@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第一部分 · 开源经济学背景</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+
+  :root {
+    --sky: #2196F3;
+    --cyan: #00BCD4;
+    --gray-900: #060A14;
+    --gray-800: #0D1522;
+    --gray-700: #131C2E;
+    --gray-600: #1B2540;
+    --gray-500: #2D3748;
+    --text-100: #F0F5FB;
+    --text-300: #C7D2E0;
+    --text-500: #8A97AB;
+    --text-600: #6E7B90;
+    --divider: rgba(33, 150, 243, 0.55);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--gray-900);
+    color: var(--text-100);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "tnum" on;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--gray-900);
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  #bg .hero-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 800px;
+    height: 900px;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.85) contrast(1.05);
+  }
+
+  #bg .hero-fade {
+    position: absolute;
+    left: 620px;
+    top: 0;
+    width: 280px;
+    height: 900px;
+    background: linear-gradient(to right, rgba(6, 10, 20, 0) 0%, rgba(6, 10, 20, 0.55) 50%, rgba(6, 10, 20, 0.95) 100%);
+  }
+
+  #bg .right-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 900px;
+    height: 900px;
+    background: linear-gradient(135deg, #0B1220 0%, #060A14 100%);
+  }
+
+  #bg .right-grid {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 900px;
+    height: 900px;
+    background-image:
+      linear-gradient(rgba(33, 150, 243, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(33, 150, 243, 0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    background-position: 0 0;
+  }
+
+  #bg .corner-glow {
+    position: absolute;
+    right: -120px;
+    bottom: -120px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 188, 212, 0.18) 0%, rgba(0, 188, 212, 0) 70%);
+    pointer-events: none;
+  }
+
+  #bg .top-glow {
+    position: absolute;
+    right: 180px;
+    top: -160px;
+    width: 460px;
+    height: 460px;
+    background: radial-gradient(circle, rgba(33, 150, 243, 0.16) 0%, rgba(33, 150, 243, 0) 70%);
+    pointer-events: none;
+  }
+
+  #bg .divider {
+    position: absolute;
+    left: 780px;
+    top: 80px;
+    width: 1px;
+    height: 740px;
+    background: linear-gradient(180deg, rgba(33, 150, 243, 0) 0%, rgba(33, 150, 243, 0.75) 15%, rgba(0, 188, 212, 0.65) 85%, rgba(0, 188, 212, 0) 100%);
+    box-shadow: 0 0 14px rgba(33, 150, 243, 0.45);
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  /* 巨型 01 */
+  .mega-num-wrap {
+    position: absolute;
+    left: 90px;
+    top: 220px;
+    width: 520px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mega-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 440px;
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -22px;
+    background: linear-gradient(180deg, #7DD3FC 0%, #2196F3 40%, #00BCD4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 60px rgba(33, 150, 243, 0.4);
+    position: relative;
+    z-index: 2;
+  }
+
+  .mega-num-glow {
+    position: absolute;
+    inset: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 440px;
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -22px;
+    color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: blur(30px);
+    opacity: 0.35;
+    z-index: 1;
+  }
+
+  .mega-num-glow span {
+    color: #2196F3;
+  }
+
+  /* 右上角标 */
+  .corner-badge {
+    position: absolute;
+    top: 50px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 20px;
+    background: rgba(13, 21, 34, 0.65);
+    border: 1px solid rgba(33, 150, 243, 0.4);
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+  }
+
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px rgba(0, 188, 212, 0.9);
+  }
+
+  .badge-text {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--text-300);
+    font-weight: 500;
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  }
+
+  .badge-text .accent {
+    color: var(--cyan);
+    font-weight: 700;
+  }
+
+  /* 顶部 PART 标签 */
+  .part-tag {
+    position: absolute;
+    top: 90px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+    letter-spacing: 8px;
+    color: var(--text-500);
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .part-tag .line {
+    width: 46px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(33,150,243,0) 0%, var(--sky) 100%);
+  }
+
+  /* 主副标题组 */
+  .title-group {
+    position: absolute;
+    right: 60px;
+    top: 175px;
+    width: 700px;
+    text-align: right;
+  }
+
+  .kicker {
+    font-size: 14px;
+    letter-spacing: 6px;
+    color: var(--cyan);
+    font-weight: 700;
+    margin-bottom: 22px;
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  }
+
+  .main-title {
+    font-size: 58px;
+    font-weight: 900;
+    color: var(--text-100);
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+
+  .main-title .part-mark {
+    color: var(--sky);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    margin-right: 14px;
+  }
+
+  .subtitle {
+    font-size: 19px;
+    color: var(--text-300);
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 640px;
+    margin-left: auto;
+  }
+
+  .subtitle .em {
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
+  .subtitle-divider {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--sky), var(--cyan));
+    margin: 30px 0 30px auto;
+    box-shadow: 0 0 12px rgba(0, 188, 212, 0.5);
+  }
+
+  .prompt-line {
+    font-size: 13px;
+    color: var(--text-500);
+    letter-spacing: 1.5px;
+    line-height: 1.7;
+    max-width: 620px;
+    margin-left: auto;
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  }
+
+  .prompt-line .q {
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
+  /* 章节纲要三点 */
+  .keypoints {
+    position: absolute;
+    right: 60px;
+    bottom: 60px;
+    width: 700px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  .kp {
+    background: rgba(19, 28, 46, 0.55);
+    border: 1px solid rgba(33, 150, 243, 0.22);
+    border-radius: 6px;
+    padding: 18px 16px 18px 16px;
+    position: relative;
+    backdrop-filter: blur(6px);
+    min-height: 118px;
+  }
+
+  .kp::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 3px;
+    height: 22px;
+    background: linear-gradient(180deg, var(--sky), var(--cyan));
+    border-radius: 0 2px 2px 0;
+  }
+
+  .kp .num {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--cyan);
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .kp .title {
+    font-size: 18px;
+    color: var(--text-100);
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .kp .desc {
+    font-size: 12px;
+    color: var(--text-500);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* 左下小标注 */
+  .foot-tag {
+    position: absolute;
+    left: 90px;
+    bottom: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--text-600);
+    font-weight: 500;
+  }
+
+  .foot-tag .bar {
+    width: 40px;
+    height: 1px;
+    background: var(--sky);
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div id="bg">
+    <img class="hero-img" src="../images/page_002_hero.png" alt="暗色未来感章节分隔背景，电路走线与发光连接节点">
+    <div class="hero-fade"></div>
+    <div class="right-panel"></div>
+    <div class="right-grid"></div>
+    <div class="corner-glow"></div>
+    <div class="top-glow"></div>
+    <div class="divider"></div>
+  </div>
+
+  <div id="ct">
+
+    <div class="mega-num-wrap">
+      <div class="mega-num-glow"><span>01</span></div>
+      <div class="mega-num">01</div>
+    </div>
+
+    <div class="corner-badge">
+      <span class="badge-dot"></span>
+      <span class="badge-text">PART <span class="accent">01</span> &nbsp;·&nbsp; 3 个核心问题（背景 · 机制 · 价值）</span>
+    </div>
+
+    <div class="part-tag">
+      <span class="line"></span>
+      <span>SECTION TRANSITION</span>
+    </div>
+
+    <div class="title-group">
+      <div class="kicker">PART 01 · OPEN SOURCE ECONOMICS</div>
+      <h1 class="main-title">
+        <span class="part-mark">Part 01</span>开源经济学<br>背景
+      </h1>
+      <div class="subtitle">
+        为什么开源值得从<span class="em">商业角度</span>重新审视 ——<br>
+        它并非慈善行为，而是一套经过市场验证的价值创造机制。
+      </div>
+      <div class="subtitle-divider"></div>
+      <div class="prompt-line">
+        本部分回答三个核心问题：<br>
+        <span class="q">Q1</span> 什么是开源经济学 &nbsp;·&nbsp;
+        <span class="q">Q2</span> 它如何运转 &nbsp;·&nbsp;
+        <span class="q">Q3</span> 为什么商业世界离不开它
+      </div>
+    </div>
+
+    <div class="keypoints">
+      <div class="kp">
+        <span class="num">01 · INSIGHT</span>
+        <div class="title">认知纠偏</div>
+        <div class="desc">开源不等于免费，也不等于没有商业模式；它是一套被验证的价值交换逻辑。</div>
+      </div>
+      <div class="kp">
+        <span class="num">02 · MECHANISM</span>
+        <div class="title">价值重构</div>
+        <div class="desc">从许可证设计、协作机制到网络效应，用经济学语言解读开源的运转方式。</div>
+      </div>
+      <div class="kp">
+        <span class="num">03 · INDUSTRY</span>
+        <div class="title">产业视角</div>
+        <div class="desc">全球科技巨头均深度嵌入开源生态，开源已成为核心基础设施与竞争壁垒。</div>
+      </div>
+    </div>
+
+    <div class="foot-tag">
+      <span class="bar"></span>
+      <span>OPEN · SOURCE · ECONOMICS</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

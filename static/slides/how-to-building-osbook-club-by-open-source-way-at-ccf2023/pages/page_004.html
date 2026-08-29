@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源哲学与阅读</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+:root{
+  --navy:#0D2137;
+  --navy-mid:#1e3a5c;
+  --red:#C0392B;
+  --red-deep:#8e2a20;
+  --gray-bg:#F5F5F5;
+  --ink:#20282e;
+  --muted:#6a737d;
+  --rule:#d6d2ca;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--navy);background:var(--gray-bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--gray-bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+.bg-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 15%, rgba(13,33,55,0.05), transparent 55%), radial-gradient(ellipse at 85% 90%, rgba(192,57,43,0.05), transparent 60%);}
+.bg-dots{position:absolute;inset:0;opacity:0.45;}
+.bg-dots::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(13,33,55,0.05) 1px, transparent 1.5px);background-size:26px 26px;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 40px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* HEADER */
+.page-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid rgba(13,33,55,0.16);position:relative;}
+.page-header::after{content:'';position:absolute;left:0;bottom:-1px;width:110px;height:3px;background:var(--red);}
+.brand{display:flex;align-items:center;gap:14px;}
+.brand-mark{width:46px;height:46px;background:var(--navy);color:#fff;font-family:'Playfair Display',serif;font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center;letter-spacing:0.5px;}
+.brand-text{display:flex;flex-direction:column;line-height:1.25;}
+.brand-cn{font-family:'Noto Serif SC',serif;font-weight:600;font-size:18px;color:var(--navy);letter-spacing:0.5px;}
+.brand-en{font-family:'Playfair Display',serif;font-style:italic;font-size:11px;color:var(--muted);letter-spacing:1.2px;margin-top:2px;}
+.page-id{display:flex;align-items:center;gap:12px;color:var(--muted);font-family:'Playfair Display',serif;font-size:12px;letter-spacing:2px;}
+.page-id .red-dot{width:6px;height:6px;background:var(--red);border-radius:50%;}
+.page-id .page-num{font-family:'Playfair Display',serif;font-weight:700;font-size:26px;color:var(--navy);letter-spacing:1px;line-height:1;}
+
+/* INTRO */
+.intro{display:grid;grid-template-columns:1fr 300px;gap:44px;padding:20px 0 18px;}
+.title-block{position:relative;padding-left:24px;}
+.title-block::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--red);}
+.title-eyebrow{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:var(--red);letter-spacing:3px;margin-bottom:6px;}
+h1.page-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:72px;font-weight:800;color:var(--navy);line-height:1.02;letter-spacing:-0.5px;}
+h1.page-title .accent{color:var(--red);font-style:italic;}
+.intro-text{margin-top:16px;font-family:'Noto Sans SC',sans-serif;font-size:16px;line-height:1.8;color:var(--ink);max-width:780px;}
+.intro-text em{color:var(--red);font-style:normal;font-weight:500;padding:0 2px;border-bottom:1px dashed rgba(192,57,43,0.5);}
+.tag-row{display:flex;gap:8px;margin-top:14px;}
+.tag{padding:4px 10px;border:1px solid var(--rule);font-family:'Noto Sans SC',sans-serif;font-size:10.5px;color:var(--navy-mid);letter-spacing:1.5px;background:#fff;}
+.tag.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* QUOTE COLUMN */
+.quote-col{position:relative;padding:2px 0 0 26px;border-left:1px solid rgba(13,33,55,0.15);display:flex;flex-direction:column;}
+.quote-mark{font-family:'Playfair Display',serif;font-size:68px;color:var(--red);line-height:0.7;margin-top:0;margin-bottom:8px;font-weight:600;}
+.quote-aside{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--navy-mid);line-height:1.7;}
+.quote-aside em{color:var(--red);font-style:italic;font-weight:600;}
+.quote-byline{font-family:'Noto Sans SC',sans-serif;font-size:10.5px;color:var(--muted);letter-spacing:2px;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);}
+.quote-vline{flex:1;min-height:40px;width:1px;margin:14px 0 0 auto;background:linear-gradient(to bottom, var(--red) 0%, var(--red) 30%, rgba(13,33,55,0.15) 100%);}
+
+/* QUAD */
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;flex:1;}
+.card{background:#fff;padding:14px 20px 14px 24px;position:relative;border:1px solid rgba(13,33,55,0.08);box-shadow:0 1px 0 rgba(13,33,55,0.03);display:grid;grid-template-columns:78px 1fr;grid-template-rows:auto auto 1fr;column-gap:18px;align-items:start;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);}
+.card-num{grid-row:1/3;font-family:'Playfair Display',serif;font-size:54px;font-weight:700;color:var(--navy);line-height:0.9;letter-spacing:-1px;}
+.card-num span{font-size:14px;font-weight:500;color:var(--red);margin-left:2px;letter-spacing:2px;}
+.card-header{grid-column:2;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+.card-title{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;color:var(--navy);letter-spacing:1px;}
+.card-en{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:var(--red);letter-spacing:1px;}
+.card-body{grid-column:2;font-family:'Noto Sans SC',sans-serif;font-size:13.5px;line-height:1.7;color:var(--ink);margin-top:10px;}
+.card-body strong{color:var(--red);font-weight:600;}
+.card-icon{position:absolute;right:20px;top:14px;color:rgba(13,33,55,0.15);font-size:22px;}
+.card-icon svg{width:24px;height:24px;display:block;stroke:currentColor;fill:none;stroke-width:1.4;}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+.kpi{background:var(--navy);color:#fff;padding:12px 24px;display:grid;grid-template-columns:auto 1fr;column-gap:20px;align-items:center;position:relative;overflow:hidden;}
+.kpi:nth-child(2){background:#fff;color:var(--navy);border-left:3px solid var(--red);}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);}
+.kpi-label{display:flex;flex-direction:column;line-height:1.1;}
+.kpi-cn{font-family:'Noto Serif SC',serif;font-weight:600;font-size:15px;letter-spacing:1.5px;color:#fff;}
+.kpi-en{font-family:'Playfair Display',serif;font-style:italic;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.55);margin-top:4px;}
+.kpi-value{font-family:'Playfair Display','Noto Serif SC',serif;font-size:36px;font-weight:700;color:var(--red);letter-spacing:1px;line-height:1;}
+.kpi-sub{font-family:'Noto Sans SC',sans-serif;font-size:10.5px;color:rgba(255,255,255,0.7);margin-top:6px;letter-spacing:0.5px;line-height:1.4;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+<div class="bg-vignette"></div>
+<div class="bg-dots"></div>
+</div>
+<div id="ct">
+
+<header class="page-header">
+  <div class="brand">
+    <div class="brand-mark"><span style="font-style:italic;">O</span></div>
+    <div class="brand-text">
+      <div class="brand-cn">开放阅读实验室</div>
+      <div class="brand-en">The Open Reading Lab</div>
+    </div>
+  </div>
+  <div class="page-id">
+    <span>CHAPTER</span>
+    <span class="red-dot"></span>
+    <span class="page-num">04</span>
+    <span>·&nbsp;PHILOSOPHY</span>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="title-block">
+    <div class="title-eyebrow">OPEN&nbsp;SOURCE · READING PHILOSOPHY</div>
+    <h1 class="page-title">开源哲学<br>与<span class="accent">阅读</span></h1>
+    <p class="intro-text">将开源哲学的核心原则——<em>透明</em>、<em>协作</em>、<em>自由</em>与<em>持续进化</em>——映射到阅读与知识传播领域，可以让优质内容突破出版周期限制，让读者从被动接收者转变为主动参与者。</p>
+    <div class="tag-row">
+      <span class="tag active">透明</span>
+      <span class="tag active">协作</span>
+      <span class="tag active">自由</span>
+      <span class="tag active">进化</span>
+    </div>
+  </div>
+  <aside class="quote-col">
+    <div class="quote-mark">"</div>
+    <p class="quote-aside">让知识成为可以共同书写的<em>活文档</em>，而非被封存的静态文本。</p>
+    <div class="quote-byline">EDITORIAL NOTE · 编者按</div>
+    <div class="quote-vline"></div>
+  </aside>
+</section>
+
+<section class="quad-grid">
+  <article class="card">
+    <div class="card-num">01<span>／04</span></div>
+    <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
+    <div class="card-header">
+      <h3 class="card-title">透明与可追溯</h3>
+      <span class="card-en">Transparency &amp; Traceability</span>
+    </div>
+    <p class="card-body">每一处修改都有记录，知识的演化过程对所有人开放，增强<strong>信任与学术诚信</strong>。</p>
+  </article>
+  <article class="card">
+    <div class="card-num">02<span>／04</span></div>
+    <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3.5"/><circle cx="16" cy="9" r="3.5"/><path d="M2 20c0-3 2.5-5 6-5s6 2 6 5"/><path d="M10 20c0-3 2.5-5 6-5s6 2 6 5"/></svg></div>
+    <div class="card-header">
+      <h3 class="card-title">协作而非竞争</h3>
+      <span class="card-en">Collaboration over Competition</span>
+    </div>
+    <p class="card-body">鼓励社区成员共同完善内容，用 <strong>Pull Request 与讨论</strong>推动质量提升，而非构筑知识壁垒。</p>
+  </article>
+  <article class="card">
+    <div class="card-num">03<span>／04</span></div>
+    <div class="card-icon"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="1.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+    <div class="card-header">
+      <h3 class="card-title">自由与责任</h3>
+      <span class="card-en">Freedom &amp; Responsibility</span>
+    </div>
+    <p class="card-body">自由使用与再创作的同时，要求<strong>署名与相同协议共享</strong>，保障原作者权益。</p>
+  </article>
+  <article class="card">
+    <div class="card-num">04<span>／04</span></div>
+    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></div>
+    <div class="card-header">
+      <h3 class="card-title">持续进化</h3>
+      <span class="card-en">Continuous Evolution</span>
+    </div>
+    <p class="card-body">书籍不再是静态产物，而是随技术发展不断迭代的<strong>活文档</strong>，始终保持时效性。</p>
+  </article>
+</section>
+
+<section class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-label">
+      <div class="kpi-cn">迭代速度</div>
+      <div class="kpi-en">ITERATION SPEED</div>
+    </div>
+    <div>
+      <div class="kpi-value">数周</div>
+      <div class="kpi-sub">对比传统出版 12–18 个月周期 · 效率跃升 60 倍</div>
+    </div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">
+      <div class="kpi-cn" style="color:var(--navy);">贡献者激励</div>
+      <div class="kpi-en" style="color:var(--muted);">CONTRIBUTOR CREDIT</div>
+    </div>
+    <div>
+      <div class="kpi-value">署名权</div>
+      <div class="kpi-sub" style="color:var(--muted);">每位贡献者均在版本记录中永久留名</div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+</body>
+</html>

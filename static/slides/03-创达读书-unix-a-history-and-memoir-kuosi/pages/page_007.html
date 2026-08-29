@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>贝尔实验室与AT&T角色</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00E5FF;
+  --text-main: #E0E6ED;
+  --text-sub: #9AA7B5;
+  --bg-dark: #0A0F1C;
+  --bg-card: #111927;
+  --bg-card-2: #0F1726;
+  --border-color: #1E3A5F;
+  --glow-blue: rgba(33, 150, 243, 0.35);
+  --glow-cyan: rgba(0, 229, 255, 0.25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(33, 150, 243, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 90%, rgba(0, 229, 255, 0.08) 0%, transparent 45%),
+    linear-gradient(160deg, #080C16 0%, #0A0F1C 40%, #0B1220 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 64px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* subtle AT&T dark pattern overlay */
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0, transparent 60px, rgba(33, 150, 243, 0.018) 60px, rgba(33, 150, 243, 0.018) 61px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 60px, rgba(33, 150, 243, 0.015) 60px, rgba(33, 150, 243, 0.015) 61px);
+  pointer-events: none;
+}
+
+/* ===== TITLE ===== */
+.header {
+  text-align: center;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.header h1 {
+  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #FFFFFF 0%, #7FCAF5 50%, #00E5FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+}
+
+.title-underline {
+  width: 180px;
+  height: 3px;
+  margin: 10px auto 0;
+  background: linear-gradient(90deg, transparent, #2196F3, #00E5FF, #2196F3, transparent);
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--glow-blue);
+}
+
+/* ===== NARRATIVE ===== */
+.narrative {
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-sub);
+  max-width: 1120px;
+  margin: 14px auto 18px;
+  padding: 14px 28px;
+  position: relative;
+  background: linear-gradient(135deg, rgba(17, 25, 39, 0.85) 0%, rgba(15, 23, 38, 0.65) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.narrative::before,
+.narrative::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px var(--glow-cyan);
+}
+.narrative::before { left: -4px; }
+.narrative::after { right: -4px; }
+
+.narrative .hl {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  flex: 1;
+  display: flex;
+  gap: 28px;
+  margin-top: 4px;
+}
+
+/* ---- LEFT: 3 DATA CARDS ---- */
+.left-col {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.data-card {
+  flex: 1;
+  position: relative;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, #111927 0%, #0E1623 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.data-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #2196F3, #00E5FF);
+  box-shadow: 0 0 12px var(--glow-blue);
+}
+
+.data-card::after {
+  content: '';
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.card-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-label .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--glow-cyan);
+}
+
+.card-value {
+  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.card-note {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+
+.card-note .hl-name {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ---- DIVIDER ---- */
+.divider {
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--border-color) 30%, var(--border-color) 70%, transparent);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  background: var(--bg-dark);
+  box-shadow: 0 0 10px var(--glow-blue);
+}
+
+/* ---- RIGHT: 4 POINTS ---- */
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.point-item {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  padding: 14px 18px;
+  background: linear-gradient(90deg, rgba(17, 25, 39, 0.7) 0%, rgba(15, 23, 38, 0.4) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  align-items: center;
+}
+
+.point-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(33, 150, 243, 0.3), transparent);
+}
+
+.point-num {
+  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--primary);
+  min-width: 52px;
+  text-align: center;
+  line-height: 1;
+  flex-shrink: 0;
+  text-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+}
+
+.point-body {
+  flex: 1;
+}
+
+.point-title {
+  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.point-title .tag {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--accent);
+  padding: 2px 8px;
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.point-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+.point-desc .key {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  margin-top: 16px;
+  padding: 12px 20px;
+  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--accent);
+  position: relative;
+  background: linear-gradient(90deg, transparent 0%, rgba(33, 150, 243, 0.08) 30%, rgba(0, 229, 255, 0.10) 50%, rgba(33, 150, 243, 0.08) 70%, transparent 100%);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.footer .symbol {
+  color: var(--primary);
+  margin: 0 8px;
+  font-weight: 700;
+}
+
+.footer .end {
+  color: #FFFFFF;
+  font-weight: 700;
+  margin-left: 12px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <h1>贝尔实验室与AT&amp;T角色</h1>
+      <div class="title-underline"></div>
+    </div>
+
+    <div class="narrative">
+      贝尔实验室之于<span class="hl">UNIX</span>，就像硅谷之于互联网。它的独特之处在于：既拥有<span class="hl">世界级的科研人才</span>，又享有<span class="hl">垄断保护的稳定环境</span>。正是这种看似矛盾的组合，孕育了一个<span class="hl">改变世界的操作系统</span>。
+    </div>
+
+    <div class="main">
+
+      <div class="left-col">
+
+        <div class="data-card">
+          <div class="card-label"><span class="dot"></span><span>关键人才</span></div>
+          <div class="card-value">3人核心</div>
+          <div class="card-note"><span class="hl-name">Ritchie</span> · <span class="hl-name">Thompson</span> · <span class="hl-name">Kernighan</span></div>
+        </div>
+
+        <div class="data-card">
+          <div class="card-label"><span class="dot"></span><span>免费传播期</span></div>
+          <div class="card-value">1969-1982</div>
+          <div class="card-note">13年高校广泛使用</div>
+        </div>
+
+        <div class="data-card">
+          <div class="card-label"><span class="dot"></span><span>商业化起点</span></div>
+          <div class="card-value">1983年</div>
+          <div class="card-note">System III/V发布</div>
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="right-col">
+
+        <div class="point-item">
+          <div class="point-num">01</div>
+          <div class="point-body">
+            <div class="point-title"><span>组织土壤</span><span class="tag">CULTURE</span></div>
+            <div class="point-desc">贝尔实验室独特的宽松科研文化，允许工程师用<span class="key">20%时间</span>做感兴趣的事</div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <div class="point-num">02</div>
+          <div class="point-body">
+            <div class="point-title"><span>垄断地位</span><span class="tag">MONOPOLY</span></div>
+            <div class="point-desc">AT&amp;T受反垄断保护，无需靠UNIX盈利，使其<span class="key">长期免费传播于高校</span></div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <div class="point-num">03</div>
+          <div class="point-body">
+            <div class="point-title"><span>人才聚集</span><span class="tag">TALENT</span></div>
+            <div class="point-desc">Ritchie、Thompson、Kernighan等<span class="key">顶尖人才</span>在同一屋檐下协作十余年</div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <div class="point-num">04</div>
+          <div class="point-body">
+            <div class="point-title"><span>历史转折</span><span class="tag">TURNING</span></div>
+            <div class="point-desc">1982年最高法院判决后，AT&amp;T被迫进入商业市场，UNIX<span class="key">走向商业化</span></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span>人才</span><span class="symbol">×</span><span>环境</span><span class="symbol">×</span><span>时代</span><span class="symbol">，</span><span class="end">三者交汇成就 UNIX 传奇</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

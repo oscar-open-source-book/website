@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>上游的层级结构</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{
+--primary:#2196F3;
+--accent:#00E5FF;
+--bg:#1A1A2E;
+--bg2:#16213E;
+--card:#1E2A45;
+--text:#E8EAF6;
+--text-dim:#90A4C7;
+--line:#2C3E60;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;
+background:radial-gradient(ellipse at 20% 10%, rgba(33,150,243,0.12) 0%, transparent 55%),
+radial-gradient(ellipse at 80% 90%, rgba(0,229,255,0.08) 0%, transparent 50%),
+var(--bg);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;box-sizing:border-box;}
+
+/* 同心圆装饰 */
+.ring-deco{position:absolute;right:-160px;top:-160px;width:520px;height:520px;border-radius:50%;
+border:1px solid rgba(33,150,243,0.15);z-index:0;pointer-events:none;}
+.ring-deco.r2{right:-240px;top:-240px;width:680px;height:680px;border-color:rgba(33,150,243,0.08);}
+.ring-deco.r3{right:-330px;top:-330px;width:860px;height:860px;border-color:rgba(33,150,243,0.04);}
+
+/* 左侧金字塔光点 */
+.pyramid-deco{position:absolute;left:-40px;bottom:-40px;width:300px;height:300px;z-index:0;pointer-events:none;}
+.pyramid-deco .row{position:absolute;left:0;width:100%;display:flex;justify-content:center;gap:14px;}
+.pyramid-deco .row.r1{bottom:0px;}
+.pyramid-deco .row.r2{bottom:36px;}
+.pyramid-deco .row.r3{bottom:72px;}
+.pyramid-deco .row.r4{bottom:108px;}
+.pyramid-deco .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);opacity:0.15;}
+.pyramid-deco .row.r1 .dot{opacity:0.08;}
+.pyramid-deco .row.r2 .dot{opacity:0.15;}
+.pyramid-deco .row.r3 .dot{opacity:0.25;}
+.pyramid-deco .row.r4 .dot{opacity:0.4;}
+
+/* 顶部标题区 */
+.head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px;}
+.title-block h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:42px;color:var(--text);letter-spacing:1px;line-height:1.1;}
+.title-block .subtitle{font-size:14px;color:var(--accent);margin-top:8px;letter-spacing:4px;font-weight:500;}
+.title-tag{font-size:12px;color:var(--text-dim);letter-spacing:2px;padding:6px 14px;border:1px solid var(--line);border-radius:20px;background:rgba(30,42,69,0.5);}
+
+.divider{height:2px;background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 40%,transparent 100%);margin:18px 0 18px 0;border-radius:2px;}
+
+/* 叙述段落 */
+.intro{font-size:14.5px;line-height:1.75;color:var(--text-dim);max-width:1420px;}
+.intro .hl{color:var(--accent);font-weight:500;}
+.intro .hl2{color:var(--primary);font-weight:500;}
+
+/* 卡片区 */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:22px;}
+.card{position:relative;background:linear-gradient(160deg,rgba(30,42,69,0.9) 0%,rgba(22,33,62,0.9) 100%);
+border:1px solid var(--line);border-radius:12px;padding:20px 18px 22px 18px;height:300px;
+overflow:hidden;display:flex;flex-direction:column;}
+.card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:var(--primary);border-radius:12px 0 0 12px;}
+.card.c1::before{background:linear-gradient(180deg,var(--accent),var(--primary));}
+.card.c2::before{background:linear-gradient(180deg,var(--primary),#5C6BC0);}
+.card.c3::before{background:linear-gradient(180deg,#5C6BC0,#7E57C2);}
+.card.c4::before{background:linear-gradient(180deg,#7E57C2,var(--accent));}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.card-num{font-family:'Space Grotesk',sans-serif;font-size:12px;color:var(--accent);letter-spacing:2px;font-weight:600;}
+.card-level{font-size:10px;color:var(--text-dim);padding:3px 8px;border:1px solid var(--line);border-radius:10px;letter-spacing:1px;}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.card-en{font-size:11px;color:var(--text-dim);letter-spacing:1px;margin-bottom:14px;}
+.card-desc{font-size:12.5px;line-height:1.7;color:var(--text-dim);flex:1;}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);}
+.card-tags span{font-size:10px;color:var(--primary);padding:3px 8px;border:1px solid rgba(33,150,243,0.3);border-radius:8px;letter-spacing:0.5px;}
+
+.card-glow{position:absolute;width:120px;height:120px;border-radius:50%;
+background:radial-gradient(circle,rgba(0,229,255,0.15) 0%,transparent 70%);right:-40px;top:-40px;pointer-events:none;}
+.card.c1 .card-glow{background:radial-gradient(circle,rgba(0,229,255,0.18) 0%,transparent 70%);}
+.card.c2 .card-glow{background:radial-gradient(circle,rgba(33,150,243,0.18) 0%,transparent 70%);}
+.card.c3 .card-glow{background:radial-gradient(circle,rgba(92,107,192,0.18) 0%,transparent 70%);}
+.card.c4 .card-glow{background:radial-gradient(circle,rgba(126,87,194,0.18) 0%,transparent 70%);}
+
+/* 底部数据条 */
+.data-bar{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding:16px 24px;
+background:linear-gradient(90deg,rgba(33,150,243,0.12) 0%,rgba(0,229,255,0.06) 50%,rgba(33,150,243,0.08) 100%);
+border:1px solid var(--line);border-radius:10px;}
+.data-item{display:flex;align-items:center;gap:14px;}
+.data-icon{width:40px;height:40px;border-radius:8px;background:rgba(33,150,243,0.15);display:flex;align-items:center;justify-content:center;
+border:1px solid rgba(33,150,243,0.3);}
+.data-icon svg{width:20px;height:20px;}
+.data-text .label{font-size:11px;color:var(--text-dim);letter-spacing:1.5px;margin-bottom:3px;}
+.data-text .value{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:var(--text);}
+.data-text .value .accent{color:var(--accent);}
+.data-divider{width:1px;height:36px;background:var(--line);}
+.data-projects{display:flex;align-items:center;gap:10px;}
+.project-tag{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--accent);padding:6px 14px;
+border:1px solid rgba(0,229,255,0.4);border-radius:6px;background:rgba(0,229,255,0.05);letter-spacing:1px;}
+
+.footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:10px;color:var(--text-dim);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="ring-deco r3"></div>
+<div class="ring-deco r2"></div>
+<div class="ring-deco"></div>
+
+<div class="pyramid-deco">
+<div class="row r4"><div class="dot"></div></div>
+<div class="row r3"><div class="dot"></div><div class="dot"></div></div>
+<div class="row r2"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="row r1"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+</div>
+
+<!-- 顶部标题 -->
+<div class="head">
+<div class="title-block">
+<h1><span>上游的层级结构</span></h1>
+<div class="subtitle"><span>UPSTREAM HIERARCHY</span></div>
+</div>
+<div class="title-tag"><span>STRUCTURE · 02</span></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 叙述段落 -->
+<p class="intro">
+<span>上游并非一个<span class="hl">二元概念</span>，而是一个<span class="hl2">层层递进的结构</span>——从最核心的代码仓库到最终的终端用户，中间经过<span class="hl">发行版</span>、<span class="hl2">集成商</span>、<span class="hl">社区维护者</span>等多个层级。理解自己身处哪个层级，才能判断在何处投入精力最有可能产生最大影响。</span>
+</p>
+
+<!-- 四张卡片 -->
+<div class="cards">
+
+<div class="card c1">
+<div class="card-glow"></div>
+<div class="card-head">
+<div class="card-num"><span>L1 · CORE</span></div>
+<div class="card-level"><span>第 1 层</span></div>
+</div>
+<div class="card-title"><span>核心上游</span></div>
+<div class="card-en"><span>Original Source & Governance</span></div>
+<div class="card-desc"><span>最原始的项目仓库、核心维护者、技术委员会与治理规则所在之处。这是创新的真正源头。</span></div>
+<div class="card-tags">
+<span>代码仓库</span><span>核心维护者</span><span>技术委员会</span><span>治理规则</span>
+</div>
+</div>
+
+<div class="card c2">
+<div class="card-glow"></div>
+<div class="card-head">
+<div class="card-num"><span>L2 · DISTRO</span></div>
+<div class="card-level"><span>第 2 层</span></div>
+</div>
+<div class="card-title"><span>中间层</span></div>
+<div class="card-en"><span>Adapters & Distributions</span></div>
+<div class="card-desc"><span>各大发行版、集成平台、企业级发行版对上游做适配和封装，桥接核心与用户。</span></div>
+<div class="card-tags">
+<span>发行版</span><span>集成平台</span><span>企业发行版</span><span>适配封装</span>
+</div>
+</div>
+
+<div class="card c3">
+<div class="card-glow"></div>
+<div class="card-head">
+<div class="card-num"><span>L3 · END USER</span></div>
+<div class="card-level"><span>第 3 层</span></div>
+</div>
+<div class="card-title"><span>下游用户</span></div>
+<div class="card-en"><span>End Users & Consumers</span></div>
+<div class="card-desc"><span>直接使用发行版或商业产品的终端用户，通常不接触源代码，是价值的最终接收端。</span></div>
+<div class="card-tags">
+<span>终端用户</span><span>商业产品</span><span>开箱即用</span><span>低门槛</span>
+</div>
+</div>
+
+<div class="card c4">
+<div class="card-glow"></div>
+<div class="card-head">
+<div class="card-num"><span>L1↔L3 · GREY</span></div>
+<div class="card-level"><span>跨层角色</span></div>
+</div>
+<div class="card-title"><span>灰色地带</span></div>
+<div class="card-en"><span>The Grey Zone</span></div>
+<div class="card-desc"><span>既有下游属性又有上游贡献的中间角色，如社区集成者和维护者，往往影响最大。</span></div>
+<div class="card-tags">
+<span>社区集成</span><span>维护者</span><span>跨层贡献</span><span>桥梁角色</span>
+</div>
+</div>
+
+</div>
+
+<!-- 底部数据条 -->
+<div class="data-bar">
+<div class="data-item">
+<div class="data-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+</div>
+<div class="data-text">
+<div class="label"><span>HIERARCHY DEPTH</span></div>
+<div class="value"><span>层级数 <span class="accent">3-4 层</span></span></div>
+</div>
+</div>
+<div class="data-divider"></div>
+<div class="data-item">
+<div class="data-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+</div>
+<div class="data-text">
+<div class="label"><span>TYPICAL PROJECTS</span></div>
+<div class="value"><span>典型项目</span></div>
+</div>
+</div>
+<div class="data-projects">
+<div class="project-tag"><span>LINUX</span></div>
+<div class="project-tag"><span>GCC</span></div>
+<div class="project-tag"><span>LLVM</span></div>
+</div>
+</div>
+
+<div class="footer">
+<span>UPSTREAM · HIERARCHY · OVERVIEW</span>
+<span>2024 · INSIGHTS</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

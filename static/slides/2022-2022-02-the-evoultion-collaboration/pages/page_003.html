@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源协作简史</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap');
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg: #F5F7FA;
+  --text-main: #1A2332;
+  --text-sub: #4A5568;
+  --text-light: #7A8899;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1600px; height:900px; overflow:hidden; }
+body { font-family: 'Roboto Mono', monospace; color: var(--text-main); }
+.wrapper { width:1600px; height:900px; position:relative; overflow:hidden; margin:0 auto; background: var(--bg); }
+#bg { position:absolute; inset:0; z-index:0; overflow:hidden; }
+#ct { position:absolute; inset:0; z-index:1; padding:46px 70px 40px; box-sizing:border-box; display:flex; flex-direction:column; }
+.bg-grid { position:absolute; inset:0; background-image: linear-gradient(to right, rgba(33,150,243,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(33,150,243,0.06) 1px, transparent 1px); background-size: 42px 42px; }
+.bg-glow { position:absolute; width:620px; height:620px; border-radius:50%; filter: blur(130px); opacity:0.32; }
+.bg-glow.g1 { top:-220px; right:-180px; background: var(--primary); }
+.bg-glow.g2 { bottom:-240px; left:-180px; background: var(--accent); }
+.bg-line { position:absolute; left:0; right:0; height:1px; background: linear-gradient(90deg, transparent, rgba(33,150,243,0.15), transparent); }
+.bg-line.l1 { top:300px; }
+.bg-line.l2 { top:780px; }
+
+.header { text-align:center; }
+.header .badge { display:inline-flex; align-items:center; gap:10px; padding:8px 22px; border:1px solid rgba(33,150,243,0.3); border-radius:30px; background: rgba(33,150,243,0.05); margin-bottom:16px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; color: var(--primary); letter-spacing:2px; }
+.header .badge .dot { width:8px; height:8px; border-radius:50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+.header h1 { font-family:'Inter',sans-serif; font-size:56px; font-weight:800; letter-spacing:-1px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom:14px; }
+.header .sub { font-family:'Inter',sans-serif; font-size:15px; font-weight:400; color: var(--text-sub); line-height:1.85; max-width:1180px; margin:0 auto; }
+
+.timeline { margin-top:32px; position:relative; }
+.timeline .rail { position:absolute; top: 62px; left:60px; right:60px; height:2px; background: linear-gradient(90deg, var(--primary), var(--accent)); box-shadow: 0 0 10px rgba(33,150,243,0.4); }
+.timeline .rail-end { position:absolute; top: 58px; width:10px; height:10px; border-radius:50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+.timeline .rail-end.left { left: 54px; }
+.timeline .rail-end.right { right: 54px; }
+
+.nodes { display:grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position:relative; }
+.node { display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
+.node .year { font-family:'Inter',sans-serif; font-size:20px; font-weight:700; color: var(--primary); letter-spacing:1.5px; margin-bottom:12px; }
+.node .icon-wrap { width:58px; height:58px; border-radius:50%; background: white; display:flex; align-items:center; justify-content:center; font-size:22px; color: var(--primary); box-shadow: 0 0 0 5px rgba(33,150,243,0.12), 0 0 26px rgba(33,150,243,0.4); margin-bottom:16px; position:relative; z-index:2; }
+.node.n2 .icon-wrap { color: #42A5F5; box-shadow: 0 0 0 5px rgba(66,165,245,0.12), 0 0 26px rgba(66,165,245,0.4); }
+.node.n3 .icon-wrap { color: var(--accent); box-shadow: 0 0 0 5px rgba(0,188,212,0.12), 0 0 26px rgba(0,188,212,0.4); }
+.node.n4 .icon-wrap { color: #26A69A; box-shadow: 0 0 0 5px rgba(38,166,154,0.12), 0 0 26px rgba(38,166,154,0.4); }
+
+.node-card { background: white; border-radius:12px; padding:18px 16px; box-shadow: 0 4px 22px rgba(33,150,243,0.09); border:1px solid rgba(33,150,243,0.12); width:100%; position:relative; }
+.node-card::before { content:''; position:absolute; top:-7px; left:50%; transform: translateX(-50%) rotate(45deg); width:13px; height:13px; background: white; border-left:1px solid rgba(33,150,243,0.12); border-top:1px solid rgba(33,150,243,0.12); }
+.node-card .stage-num { font-family:'Roboto Mono', monospace; font-size:10px; color: var(--text-light); letter-spacing:2.5px; margin-bottom:6px; font-weight:500; }
+.node-card .stage-name { font-family:'Inter',sans-serif; font-size:17px; font-weight:700; color: var(--text-main); margin-bottom:10px; }
+.node-card .stage-desc { font-size:12px; font-weight:400; color: var(--text-sub); line-height:1.7; }
+.node-card .tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:11px; justify-content:center; }
+.node-card .tag { font-family:'Roboto Mono', monospace; font-size:10px; padding:3px 8px; border-radius:4px; background: rgba(33,150,243,0.08); color: var(--primary); font-weight:500; }
+.node.n3 .node-card .tag { background: rgba(0,188,212,0.1); color: var(--accent); }
+.node.n4 .node-card .tag { background: rgba(38,166,154,0.1); color: #26A69A; }
+.node.n2 .node-card .tag { background: rgba(66,165,245,0.1); color: #42A5F5; }
+
+.milestones { margin-top:26px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.milestone { display:flex; align-items:center; gap:14px; padding:14px 20px; background: white; border-radius:10px; border:1px solid rgba(33,150,243,0.14); box-shadow: 0 3px 14px rgba(33,150,243,0.07); position:relative; overflow:hidden; }
+.milestone::after { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background: linear-gradient(to bottom, var(--primary), var(--accent)); }
+.milestone .ms-year { font-family:'Inter',sans-serif; font-size:24px; font-weight:800; color: var(--primary); min-width:80px; letter-spacing:0.5px; }
+.milestone .ms-divider { width:1px; height:38px; background: linear-gradient(to bottom, transparent, rgba(33,150,243,0.3), transparent); }
+.milestone .ms-body { flex:1; }
+.milestone .ms-title { font-family:'Inter',sans-serif; font-size:14px; font-weight:700; color: var(--text-main); margin-bottom:4px; }
+.milestone .ms-desc { font-size:11px; color: var(--text-sub); line-height:1.6; }
+
+.footer { margin-top:20px; text-align:center; padding:14px 0 0; }
+.footer .quote-wrap { display:inline-flex; flex-direction:column; align-items:center; }
+.footer .quote-mark { font-family:'Inter',sans-serif; font-size:32px; color: var(--primary); opacity:0.45; line-height:0.8; font-weight:800; }
+.footer .quote-text { font-family:'Inter',sans-serif; font-size:15px; font-weight:500; color: var(--text-main); letter-spacing:0.8px; margin-top:6px; }
+.footer .quote-text .hl { color: var(--primary); font-weight:700; }
+.footer .divider { width:80px; height:2px; background: linear-gradient(90deg, var(--primary), var(--accent)); margin: 12px auto 0; border-radius:1px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow g1"></div>
+    <div class="bg-glow g2"></div>
+    <div class="bg-line l1"></div>
+    <div class="bg-line l2"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="badge"><span class="dot"></span><span>OPEN SOURCE COLLABORATION · HISTORY</span></div>
+      <h1>开源协作简史</h1>
+      <p class="sub">开源协作历经四十余年发展，从少数黑客的邮件合遇到如今全球数百万开发者的平台化协同，每一次工具与制度的跃迁都重塑了参与者和社区的关系形态。</p>
+    </div>
+
+    <div class="timeline">
+      <div class="rail"></div>
+      <div class="rail-end left"></div>
+      <div class="rail-end right"></div>
+      <div class="nodes">
+        <div class="node n1">
+          <div class="year">1980s</div>
+          <div class="icon-wrap">✉</div>
+          <div class="node-card">
+            <div class="stage-num">STAGE 01</div>
+            <div class="stage-name">早期探索期</div>
+            <div class="stage-desc">Unix社区与GNU运动确立自由软件理念，协作以邮件列表为核心</div>
+            <div class="tags">
+              <span class="tag">Unix</span>
+              <span class="tag">GNU</span>
+              <span class="tag">邮件列表</span>
+            </div>
+          </div>
+        </div>
+        <div class="node n2">
+          <div class="year">1990s</div>
+          <div class="icon-wrap">⚙</div>
+          <div class="node-card">
+            <div class="stage-num">STAGE 02</div>
+            <div class="stage-name">制度建设期</div>
+            <div class="stage-desc">Linux内核成熟后Linus确立BDFL模式，开放治理雏形开始显现</div>
+            <div class="tags">
+              <span class="tag">Linux</span>
+              <span class="tag">BDFL</span>
+              <span class="tag">开放治理</span>
+            </div>
+          </div>
+        </div>
+        <div class="node n3">
+          <div class="year">2000s</div>
+          <div class="icon-wrap">⬡</div>
+          <div class="node-card">
+            <div class="stage-num">STAGE 03</div>
+            <div class="stage-name">平台化时期</div>
+            <div class="stage-desc">GitHub等代码托管平台降低参与门槛，Pull Request成为主流协作范式</div>
+            <div class="tags">
+              <span class="tag">GitHub</span>
+              <span class="tag">Pull Request</span>
+              <span class="tag">协作范式</span>
+            </div>
+          </div>
+        </div>
+        <div class="node n4">
+          <div class="year">2010s+</div>
+          <div class="icon-wrap">⚐</div>
+          <div class="node-card">
+            <div class="stage-num">STAGE 04</div>
+            <div class="stage-name">生态治理期</div>
+            <div class="stage-desc">CNCF、LF等基金会推动企业间协同治理，开源进入规模化合规时代</div>
+            <div class="tags">
+              <span class="tag">CNCF</span>
+              <span class="tag">Linux Foundation</span>
+              <span class="tag">企业治理</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="milestones">
+      <div class="milestone">
+        <div class="ms-year">1991</div>
+        <div class="ms-divider"></div>
+        <div class="ms-body">
+          <div class="ms-title">Linux 首个版本发布</div>
+          <div class="ms-desc">Linus Torvalds 在新闻组发布内核代码</div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="ms-year">2008</div>
+        <div class="ms-divider"></div>
+        <div class="ms-body">
+          <div class="ms-title">GitHub 成立</div>
+          <div class="ms-desc">代码托管平台化转折之年</div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="ms-year">2015</div>
+        <div class="ms-divider"></div>
+        <div class="ms-body">
+          <div class="ms-title">CNCF 成立</div>
+          <div class="ms-desc">云原生基金会开启企业级治理范式</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="quote-wrap">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">从邮件到<span class="hl">平台</span>，从个人到<span class="hl">生态</span>，开源协作正在重塑软件世界的生产关系。</div>
+        <div class="divider"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

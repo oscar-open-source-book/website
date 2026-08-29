@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>章节过渡 · 开源之书：理念与愿景</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --primary: #0D2137;
+  --accent:  #C0392B;
+  --bg:      #F5F5F5;
+  --text-soft: rgba(13, 33, 55, 0.62);
+  --text-faint: rgba(13, 33, 55, 0.42);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: "Noto Sans SC", "PingFang SC", -apple-system, sans-serif;
+  color: var(--primary);
+  background: var(--bg);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bg-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ------- 左侧竖排装饰锚点 ------- */
+.left-anchor {
+  position: absolute;
+  left: 110px;
+  top: 130px;
+  bottom: 130px;
+  width: 1px;
+  background: var(--primary);
+  opacity: 0.5;
+}
+
+.left-anchor .dot-top {
+  position: absolute;
+  left: -4.5px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.left-anchor .dot-bottom {
+  position: absolute;
+  left: -3px;
+  bottom: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.35;
+}
+
+/* 竖线旁的竖排小标签 */
+.side-label {
+  position: absolute;
+  left: 96px;
+  top: 380px;
+  width: 14px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 8px;
+  color: var(--text-faint);
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+}
+
+/* ------- 页面主内容区 ------- */
+.content {
+  position: absolute;
+  left: 220px;
+  right: 140px;
+  top: 50%;
+  transform: translateY(-52%);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: "Playfair Display", serif;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 6px;
+  color: var(--accent);
+  margin-bottom: 40px;
+}
+
+.eyebrow .dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.eyebrow .bar {
+  display: inline-block;
+  width: 42px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+.title {
+  font-family: "Noto Serif SC", "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 112px;
+  line-height: 1.14;
+  color: var(--primary);
+  letter-spacing: 4px;
+  margin-bottom: 34px;
+}
+
+.title .line-2 {
+  display: block;
+  color: var(--accent);
+  font-weight: 700;
+  font-style: italic;
+  font-family: "Playfair Display", "Noto Serif SC", serif;
+  letter-spacing: 6px;
+  margin-top: 6px;
+}
+
+.subtitle {
+  font-family: "Noto Serif SC", "Playfair Display", serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--text-soft);
+  letter-spacing: 5px;
+  font-style: italic;
+  margin-bottom: 64px;
+}
+
+.divider-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.divider-row .rule {
+  width: 78px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.divider-row .tick {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.narrative {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 17px;
+  line-height: 2.1;
+  color: var(--primary);
+  max-width: 860px;
+  letter-spacing: 1.5px;
+  font-weight: 300;
+}
+
+.narrative .accent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ------- 顶部 & 底部页脚 ------- */
+.top-mark {
+  position: absolute;
+  top: 56px;
+  right: 90px;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--text-soft);
+}
+
+.chapter-mark {
+  position: absolute;
+  right: 90px;
+  bottom: 54px;
+  text-align: right;
+  font-family: "Noto Sans SC", "Playfair Display", sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--text-soft);
+  line-height: 1.9;
+}
+
+.chapter-mark .num {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  margin-right: 10px;
+  letter-spacing: 2px;
+}
+
+.chapter-mark .row-2 {
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 4px;
+  font-style: italic;
+  font-family: "Playfair Display", serif;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_002_background.png" alt="">
+  </div>
+  <div id="ct">
+
+    <div class="left-anchor">
+      <span class="dot-top"></span>
+      <span class="dot-bottom"></span>
+    </div>
+    <div class="side-label">Chapter Two</div>
+
+    <div class="top-mark">OSBook · Edition 02</div>
+
+    <div class="content">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        <span>SECTION&nbsp;II&nbsp;·&nbsp;MANIFESTO</span>
+        <span class="bar"></span>
+      </div>
+
+      <h1 class="title">
+        开源之书
+        <span class="line-2">理念与愿景</span>
+      </h1>
+
+      <div class="subtitle">从开源代码到开源知识，重新定义阅读与分享</div>
+
+      <div class="div

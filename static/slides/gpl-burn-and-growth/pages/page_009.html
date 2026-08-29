@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源布道与实践</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0A1628;
+  --bg-card: #0F2035;
+  --bg-card-alt: #122843;
+  --text-main: #E8F0FE;
+  --text-sub: #B0BEC5;
+  --glow-primary: rgba(33, 150, 243, 0.4);
+  --glow-accent: rgba(0, 188, 212, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+  font-family: 'Roboto Mono', monospace;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 36px 56px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-glow-1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.14) 0%, transparent 70%);
+  top: -220px;
+  left: -120px;
+}
+
+.bg-glow-2 {
+  position: absolute;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.12) 0%, transparent 70%);
+  bottom: -180px;
+  right: -120px;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.18);
+}
+.orb-1 { width: 110px; height: 110px; top: 130px; right: 100px; }
+.orb-2 { width: 56px; height: 56px; bottom: 180px; left: 60px; border-color: rgba(0,188,212,0.22); }
+.orb-3 { width: 72px; height: 72px; top: 420px; left: 24px; border-color: rgba(33,150,243,0.14); }
+
+.bg-deco-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.3), transparent);
+}
+.dl-1 { width: 300px; top: 100px; left: 180px; }
+.dl-2 { width: 260px; bottom: 160px; right: 200px; background: linear-gradient(90deg, transparent, rgba(0,188,212,0.3), transparent); }
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 2;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.title-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  box-shadow: 0 0 18px var(--glow-primary);
+  flex-shrink: 0;
+}
+
+.title-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #E8F0FE 0%, #2196F3 60%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 3px;
+}
+
+.bubbles-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.bubble {
+  position: relative;
+  width: 34px;
+  height: 26px;
+  border-radius: 14px;
+  background: rgba(33,150,243,0.15);
+  border: 1.5px solid var(--primary);
+  box-shadow: 0 0 10px var(--glow-primary);
+}
+
+.bubble.alt {
+  background: rgba(0,188,212,0.12);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--glow-accent);
+}
+
+.bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 9px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--primary);
+}
+
+.bubble.alt::before {
+  border-top-color: var(--accent);
+  left: auto;
+  right: 9px;
+}
+
+.bubble-line {
+  width: 44px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.lead {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-sub);
+  text-align: center;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  border-left: 2px solid var(--primary);
+  border-right: 2px solid var(--accent);
+  background: rgba(33,150,243,0.04);
+  border-radius: 4px;
+}
+
+.lead .hl { color: var(--primary); font-weight: 500; }
+.lead .hl2 { color: var(--accent); font-weight: 500; }
+
+/* ── Main three columns ── */
+.main-content {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.step-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  position: relative;
+}
+
+.step-arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 0 10px var(--glow-accent);
+  font-family: 'Inter', sans-serif;
+}
+
+.col-card {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 12px;
+  padding: 18px 18px 18px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.col-card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.06) 0%, transparent 70%);
+}
+
+.col-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(0,188,212,0.15));
+  border: 1px solid rgba(33,150,243,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.col-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.col-number {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: rgba(33,150,243,0.14);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.col-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.col-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 8.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(33,150,243,0.15);
+  color: var(--primary);
+  border: 1px solid rgba(33,150,243,0.3);
+  letter-spacing: 1px;
+}
+
+.col-divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+  margin: 10px 0 12px;
+}
+
+.col-text {
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: var(--text-sub);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.col-text .key { color: var(--primary); font-weight: 500; }
+.col-text .key2 { color: var(--accent); font-weight: 500; }
+
+.col-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(33,150,243,0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.key-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0,188,212,0.1);
+  color: var(--accent);
+  border: 1px solid rgba(0,188,212,0.3);
+}
+
+/* ── Bottom row: dialogue + closure ── */
+.bottom-row {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.loop-card {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(33,150,243,0.08), rgba(0,188,212,0.06));
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.loop-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--primary));
+}
+
+.loop-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0,188,212,0.22), rgba(33,150,243,0.2));
+  border: 1.5px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px var(--glow-accent);
+}
+
+.loop-icon svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.loop-content {
+  flex: 1;
+}
+
+.loop-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loop-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.loop-text {
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: var(--text-sub);
+}
+
+.loop-text .hl { color: var(--accent); font-weight: 500; }
+.loop-text .hl2 { color: var(--primary); font-weight: 500; }
+
+.loop-closure {
+  width: 150px;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.loop-closure::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.closure-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px var(--glow-primary);
+}
+
+.closure-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.closure-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: center;
+  line-height: 1.4;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <div class="bg-deco-line dl-1"></div>
+    <div class="bg-deco-line dl-2"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="title-row">
+        <div class="title-badge"><span>开</span></div>
+        <div class="title-text">开源布道与实践</div>
+        <div class="title-badge"><span>源</span></div>
+      </div>
+      <div class="bubbles-row">
+        <div class="bubble"></div>
+        <div class="bubble-line"></div>
+        <div class="bubble alt"></div>
+        <div class="bubble-line"></div>
+        <div class="bubble"></div>
+        <div class="bubble-line"></div>
+        <div class="bubble alt"></div>
+        <div class="bubble-line"></div>
+        <div class="bubble"></div>
+      </div>
+      <div class="lead">
+        <span>开源布道的使命不只是推广 <span class="hl">GPL 软件</span>，更在于构建一个理解、尊重并受益于 <span class="hl2">开源精神</span> 的社区文化；实践层面的 <span class="hl">合规能力建设</span> 与 <span class="hl2">社区参与度</span> 同样至关重要。</span>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="col-card">
+        <span class="col-number">01</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="col-title">
+          <span>教育先行</span>
+          <span class="col-tag">EDUCATE</span>
+        </div>
+        <div class="col-divider"></div>
+        <div class="col-text">
+          开源布道应以 <span class="key">教育</span> 为核心，帮助企业和开发者 <span class="key2">理解 GPL 的法律含义</span>，而非制造恐惧。让合规成为可理解、可复用的技能，让开源精神在知识传递中生根发芽，驱动行业认知从"规避风险"转向"主动拥抱"。
+        </div>
+        <div class="col-keys">
+          <span class="key-tag">#知识传递</span>
+          <span class="key-tag">#法律解读</span>
+          <span class="key-tag">#消除误解</span>
+        </div>
+      </div>
+
+      <div class="step-connector">
+        <div class="step-arrow"><span>›</span></div>
+      </div>
+
+      <div class="col-card">
+        <span class="col-number">02</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="col-title">
+          <span>合规最佳实践</span>
+          <span class="col-tag">COMPLY</span>
+        </div>
+        <div class="col-divider"></div>
+        <div class="col-text">
+          建立 <span class="key">SBOM 物料清单</span>、<span class="key">自动化许可证扫描</span>、<span class="key2">定期合规审计</span> 三位一体的企业级合规体系，将开源风险管理从被动应对升级为 <span class="key2">主动治理</span>，让每一次发布都有据可依、有章可循。
+        </div>
+        <div class="col-keys">
+          <span class="key-tag">#SBOM</span>
+          <span class="key-tag">#自动化扫描</span>
+          <span class="key-tag">#定期审计</span>
+        </div>
+      </div>
+
+      <div class="step-connector">
+        <div class="step-arrow"><span>›</span></div>
+      </div>
+
+      <div class="col-card">
+        <span class="col-number">03</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M17 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M16 21v-1.5a3 3 0 0 1 3-3h1"/></svg>
+        </div>
+        <div class="col-title">
+          <span>社区共建</span>
+          <span class="col-tag">CONTRIBUTE</span>
+        </div>
+        <div class="col-divider"></div>
+        <div class="col-text">
+          鼓励企业以 <span class="key">贡献代码</span>、<span class="key">提交 Issue</span>、<span class="key2">参与社区治理</span> 等多元方式回馈 GPL 社区，形成 <span class="key">良性循环</span>。让企业从"消费者"转变为"共建者"，与开源生态共同成长、相互成就。
+        </div>
+        <div class="col-keys">
+          <span class="key-tag">#代码贡献</span>
+          <span class="key-tag">#Issue 反馈</span>
+          <span class="key-tag">#社区治理</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="loop-card">
+        <div class="loop-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg>
+        </div>
+        <div class="loop-content">
+          <div class="loop-title">
+            <span>开放对话</span>
+            <span class="loop-badge">CLOSE THE LOOP</span>
+          </div>
+          <div class="loop-text">
+            推动 <span class="hl">GPL</span> 与 <span class="hl2">商业世界</span> 之间的开放对话，寻找 <span class="hl">法律框架</span> 与 <span class="hl2">技术创新</span> 的平衡点——让教育、合规、社区三方协同共振，构建可持续的开源生态闭环。
+          </div>
+        </div>
+      </div>
+      <div class="loop-closure">
+        <div class="closure-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3.2-6.9"/><path d="M21 4v5h-5"/></svg>
+        </div>
+        <div class="closure-label">闭环<br>生态</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

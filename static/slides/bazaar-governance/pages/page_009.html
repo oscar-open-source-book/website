@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>实践指南</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#0A1628;
+  --bg-mid:#0F2547;
+  --card-bg:rgba(15,37,71,0.65);
+  --border-glow:rgba(33,150,243,0.55);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','Roboto Mono',sans-serif;
+  color:#E0E8F0;
+  background:linear-gradient(135deg,#060E1F 0%,#0A1E3D 45%,#0C2A52 75%,#0A1628 100%);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 600px 400px at 12% 18%, rgba(33,150,243,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 350px at 88% 82%, rgba(0,188,212,0.15) 0%, transparent 70%),
+    radial-gradient(circle at 50% 50%, rgba(33,150,243,0.05) 0%, transparent 60%);
+}
+#bg .grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+#bg .scanline{
+  position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,transparent, rgba(0,188,212,0.7), transparent);
+  animation:scan 6s linear infinite;
+  opacity:0.5;
+}
+@keyframes scan{0%{top:0;}100%{top:900px;}}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 70px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px;}
+.header-left{flex:1;}
+.eyebrow{
+  font-family:'Rajdhani',sans-serif;
+  font-size:18px;font-weight:600;letter-spacing:6px;color:var(--accent);
+  margin-bottom:10px;
+}
+.title{
+  font-family:'Rajdhani',sans-serif;
+  font-size:62px;font-weight:700;color:#FFFFFF;letter-spacing:2px;line-height:1;
+  text-shadow:0 0 30px rgba(33,150,243,0.5);
+}
+.title-accent{color:var(--accent);}
+.subtitle{
+  margin-top:14px;font-size:17px;color:var(--neutral);font-weight:400;
+  max-width:900px;line-height:1.6;letter-spacing:0.5px;
+}
+.header-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  font-family:'Roboto Mono',monospace;font-size:12px;color:var(--neutral);
+  letter-spacing:2px;padding-bottom:6px;
+}
+.tag{
+  padding:5px 14px;border:1px solid var(--border-glow);border-radius:20px;
+  color:var(--accent);background:rgba(33,150,243,0.08);
+  font-size:11px;letter-spacing:2px;
+}
+
+/* divider */
+.divider{
+  height:1px;margin:22px 0 26px 0;
+  background:linear-gradient(90deg,transparent, rgba(33,150,243,0.6) 30%, rgba(0,188,212,0.6) 70%, transparent);
+  position:relative;
+}
+.divider::before{
+  content:"◆";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:#0A1628;padding:0 12px;color:var(--accent);font-size:14px;
+}
+
+/* Steps */
+.steps{
+  display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;
+  position:relative;flex:1;align-items:stretch;
+}
+.step{
+  position:relative;display:flex;flex-direction:column;align-items:center;
+  padding:0 18px;text-align:center;
+}
+.step-icon{
+  width:96px;height:96px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:30px;
+  background:linear-gradient(135deg, rgba(33,150,243,0.25), rgba(0,188,212,0.2));
+  border:2px solid var(--primary);
+  box-shadow:0 0 24px rgba(33,150,243,0.45), inset 0 0 18px rgba(33,150,243,0.2);
+  color:#FFFFFF;position:relative;z-index:2;
+  margin-bottom:16px;
+}
+.step-icon svg{width:44px;height:44px;}
+.step-num{
+  font-family:'Roboto Mono',monospace;font-size:12px;color:var(--accent);
+  letter-spacing:3px;margin-bottom:6px;
+}
+.step-title{
+  font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:600;
+  color:#FFFFFF;margin-bottom:14px;letter-spacing:1px;
+}
+.step-desc{
+  font-size:14px;line-height:1.7;color:var(--neutral);
+  font-family:'Inter',sans-serif;
+  padding:14px 16px;
+  background:var(--card-bg);
+  border:1px solid rgba(33,150,243,0.25);
+  border-radius:8px;
+  backdrop-filter:blur(6px);
+  margin-bottom:14px;
+  width:100%;
+  box-sizing:border-box;
+}
+.step-tags{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+}
+.step-tag{
+  font-family:'Roboto Mono',monospace;font-size:11px;
+  padding:4px 10px;border-radius:3px;
+  background:rgba(0,188,212,0.12);border:1px solid rgba(0,188,212,0.3);
+  color:var(--accent);letter-spacing:1px;
+}
+.step-tag.warn{background:rgba(33,150,243,0.12);border-color:rgba(33,150,243,0.35);color:var(--primary);}
+
+/* Arrows between steps */
+.arrow{
+  position:absolute;top:30px;width:50px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  z-index:3;
+}
+.arrow svg{width:100%;height:100%;}
+.arrow.a1{left:calc(25% - 25px);}
+.arrow.a2{left:calc(50% - 25px);}
+.arrow.a3{left:calc(75% - 25px);}
+
+/* Bottom banner */
+.bottom-banner{
+  margin-top:22px;padding:20px 32px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.15), rgba(0,188,212,0.12) 50%, rgba(33,150,243,0.15));
+  border:1px solid rgba(33,150,243,0.35);
+  border-left:4px solid var(--accent);
+  border-radius:6px;
+  display:flex;align-items:center;gap:20px;
+  box-shadow:0 0 30px rgba(33,150,243,0.15);
+}
+.bottom-icon{
+  width:42px;height:42px;border-radius:50%;
+  border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 0 18px rgba(0,188,212,0.5);
+}
+.bottom-icon svg{width:22px;height:22px;}
+.bottom-text{
+  font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:600;
+  color:#FFFFFF;letter-spacing:1px;line-height:1.4;
+}
+.bottom-text .hl{color:var(--accent);}
+.bottom-text .hl2{color:var(--primary);}
+.bottom-cycle{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Roboto Mono',monospace;font-size:12px;color:var(--accent);
+  letter-spacing:1.5px;margin-top:4px;
+}
+
+/* corner decorations */
+.corner{position:absolute;width:80px;height:80px;border:2px solid var(--accent);opacity:0.4;z-index:0;}
+.corner.tl{top:20px;left:20px;border-right:none;border-bottom:none;}
+.corner.tr{top:20px;right:20px;border-left:none;border-bottom:none;}
+.corner.bl{bottom:20px;left:20px;border-right:none;border-top:none;}
+.corner.br{bottom:20px;right:20px;border-left:none;border-top:none;}
+
+/* subtle dots */
+.dots{
+  position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle, rgba(33,150,243,0.3) 1px, transparent 1px);
+  background-size:40px 40px;
+  mask-image:linear-gradient(90deg, transparent, black 20%, black 80%, transparent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid"></div>
+    <div class="scanline"></div>
+    <div class="dots"></div>
+  </div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span>OPEN SOURCE · READING CLUB</span></div>
+        <div class="title"><span>实践指南</span> <span class="title-accent">//</span> <span>从零落地</span></div>
+        <div class="subtitle"><span>将阅读分享融入日常工作，需要一套可操作的方法。本页提供从零开始举办开源读书会的具体步骤，帮助团队快速落地并形成良性循环。</span></div>
+      </div>
+      <div class="header-right">
+        <span class="tag">GUIDE · v1.0</span>
+        <span>04 STEPS</span>
+        <span style="color:var(--primary);">● ACTIVE</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="steps">
+      <!-- arrows -->
+      <div class="arrow a1">
+        <svg viewBox="0 0 50 36" fill="none">
+          <defs><linearGradient id="ag1" x1="0" y1="0" x2="50" y2="0"><stop offset="0" stop-color="#2196F3" stop-opacity="0.2"/><stop offset="1" stop-color="#00BCD4" stop-opacity="0.9"/></linearGradient></defs>
+          <line x1="2" y1="18" x2="38" y2="18" stroke="url(#ag1)" stroke-width="2" stroke-dasharray="3 3"/>
+          <polygon points="36,12 48,18 36,24" fill="#00BCD4"/>
+        </svg>
+      </div>
+      <div class="arrow a2">
+        <svg viewBox="0 0 50 36" fill="none">
+          <line x1="2" y1="18" x2="38" y2="18" stroke="url(#ag1)" stroke-width="2" stroke-dasharray="3 3"/>
+          <polygon points="36,12 48,18 36,24" fill="#00BCD4"/>
+        </svg>
+      </div>
+      <div class="arrow a3">
+        <svg viewBox="0 0 50 36" fill="none">
+          <line x1="2" y1="18" x2="38" y2="18" stroke="url(#ag1)" stroke-width="2" stroke-dasharray="3 3"/>
+          <polygon points="36,12 48,18 36,24" fill="#00BCD4"/>
+        </svg>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span>STEP 01</span></div>
+        <div class="step-icon">
+          <svg viewBox="0 0 44 44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="22" cy="14" r="6"/>
+            <path d="M10 38c0-7 5-12 12-12s12 5 12 12"/>
+            <circle cx="34" cy="10" r="4" stroke="#00BCD4" stroke-width="1.5"/>
+            <line x1="34" y1="14" x2="34" y2="22" stroke="#00BCD4" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="step-title"><span>发起读书会</span></div>
+        <div class="step-desc"><span>确定主题、招募成员、制定节奏与规则，为整个活动搭建清晰的框架与基调。</span></div>
+        <div class="step-tags">
+          <span class="step-tag">主题</span>
+          <span class="step-tag warn">招募</span>
+          <span class="step-tag">节奏</span>
+          <span class="step-tag">规则</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span>STEP 02</span></div>
+        <div class="step-icon">
+          <svg viewBox="0 0 44 44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 8h22a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H16l-8 6V8z"/>
+            <line x1="12" y1="16" x2="28" y2="16" stroke="#00BCD4" stroke-width="1.5"/>
+            <line x1="12" y1="22" x2="24" y2="22" stroke="#00BCD4" stroke-width="1.5"/>
+            <circle cx="32" cy="34" r="6" fill="rgba(0,188,212,0.3)" stroke="#00BCD4" stroke-width="1.5"/>
+            <text x="32" y="38" text-anchor="middle" font-size="9" fill="#FFFFFF" font-family="Rajdhani" font-weight="700">?</text>
+          </svg>
+        </div>
+        <div class="step-title"><span>引导讨论</span></div>
+        <div class="step-desc"><span>设置开放性问题，鼓励不同视角表达，让每位参与者都能在对话中找到共鸣与启发。</span></div>
+        <div class="step-tags">
+          <span class="step-tag">开放问题</span>
+          <span class="step-tag warn">多元视角</span>
+          <span class="step-tag">共鸣</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span>STEP 03</span></div>
+        <div class="step-icon">
+          <svg viewBox="0 0 44 44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="7" y="6" width="22" height="30" rx="2"/>
+            <line x1="12" y1="14" x2="24" y2="14" stroke="#00BCD4" stroke-width="1.5"/>
+            <line x1="12" y1="20" x2="24" y2="20" stroke="#00BCD4" stroke-width="1.5"/>
+            <line x1="12" y1="26" x2="20" y2="26" stroke="#00BCD4" stroke-width="1.5"/>
+            <rect x="26" y="26" width="12" height="10" rx="1" fill="rgba(0,188,212,0.25)" stroke="#00BCD4" stroke-width="1.5"/>
+            <polygon points="30,30 30,34 35,32" fill="#00BCD4" stroke="none"/>
+          </svg>
+        </div>
+        <div class="step-title"><span>记录沉淀</span></div>
+        <div class="step-desc"><span>将讨论结果整理成文章或视频，扩大影响范围，让一次分享的价值延续到更多人。</span></div>
+        <div class="step-tags">
+          <span class="step-tag">文章</span>
+          <span class="step-tag warn">视频</span>
+          <span class="step-tag">传播</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span>STEP 04</span></div>
+        <div class="step-icon">
+          <svg viewBox="0 0 44 44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="22" cy="22" r="14"/>
+            <path d="M14 24l5 5 11-12" stroke="#00BCD4" stroke-width="2"/>
+            <circle cx="22" cy="22" r="18" stroke="#2196F3" stroke-width="0.8" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div class="step-title"><span>评估反馈</span></div>
+        <div class="step-desc"><span>定期收集参与者反馈，优化活动形式，让每一次迭代都成为下一次更好的起点。</span></div>
+        <div class="step-tags">
+          <span class="step-tag">反馈</span>
+          <span class="step-tag warn">迭代</span>
+          <span class="step-tag">优化</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-banner">
+      <div class="bottom-icon">
+        <svg viewBox="0 0 22 22" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 11a7 7 0 0 1 12.5-4.5L20 9"/>
+          <polyline points="20 4 20 9 15 9"/>
+          <path d="M18 11a7 7 0 0 1-12.5 4.5L2 13"/>
+          <polyline points="2 18 2 13 7 13"/>
+        </svg>
+      </div>
+      <div class="bottom-text">
+        <span>从零起步，形成 <span class="hl">阅读</span> — <span class="hl">分享</span> — <span class="hl2">沉淀</span> — <span class="hl2">反馈</span> 的良性循环</span>
+        <div class="bottom-cycle">
+          <span>⟳ LOOP · CONTINUOUS IMPROVEMENT · TEAM GROWTH</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

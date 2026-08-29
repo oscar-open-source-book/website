@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>数字里的阅读</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAF7F2;
+  --navy:#0D2137;
+  --navy-soft:#162d44;
+  --wine:#880E4F;
+  --wine-soft:#a62063;
+  --ink:#2a2a2a;
+  --ink-2:#5a5a5a;
+  --line:#e4ddd2;
+  --card-bg:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;color:var(--ink);background:var(--bg);}
+h1,h2,h3{font-family:'Playfair Display','Noto Serif SC',serif;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,#FAF7F2 0%,#f3ede3 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:18px;}
+.header-left{display:flex;flex-direction:column;gap:6px;}
+.eyebrow{font-size:12px;letter-spacing:4px;color:var(--wine);font-weight:600;text-transform:uppercase;}
+.main-title{font-size:46px;font-weight:800;color:var(--navy);line-height:1;letter-spacing:1px;}
+.main-title .zh{font-family:'Playfair Display','Noto Serif SC',serif;}
+.main-title .accent{color:var(--wine);}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-bottom:6px;}
+.hr-meta{font-size:11px;letter-spacing:2px;color:var(--ink-2);}
+.hr-tag{font-size:12px;color:var(--navy);font-weight:600;border:1px solid var(--navy);padding:3px 10px;border-radius:2px;}
+
+/* Narrative */
+.narrative{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:13px;line-height:1.65;color:var(--ink-2);max-width:1180px;margin-bottom:16px;}
+.narrative .highlight{color:var(--wine);font-weight:600;}
+.narrative .zh-quote{font-family:'Noto Serif SC',serif;color:var(--navy);font-weight:600;}
+
+/* KPI Row */
+.kpi-row{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:16px;}
+.kpi{background:var(--card-bg);border:1px solid var(--line);border-top:3px solid var(--navy);padding:12px 10px 10px 10px;display:flex;flex-direction:column;gap:4px;position:relative;}
+.kpi:nth-child(3){border-top-color:var(--wine);}
+.kpi:nth-child(6){border-top-color:var(--wine);}
+.kpi-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:800;color:var(--navy);line-height:1.05;letter-spacing:-0.5px;}
+.kpi-num .unit{font-size:14px;font-weight:600;color:var(--wine);margin-left:2px;}
+.kpi-label{font-size:11px;font-weight:600;color:var(--navy);letter-spacing:0.5px;line-height:1.3;}
+.kpi-sub{font-size:10px;color:var(--ink-2);line-height:1.35;}
+.kpi-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--wine);opacity:0.15;}
+.kpi:nth-child(3) .kpi-bar,.kpi:nth-child(6) .kpi-bar{opacity:0.4;}
+
+/* Charts */
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:14px;}
+.chart-card{background:var(--card-bg);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;}
+.chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
+.chart-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:16px;font-weight:700;color:var(--navy);}
+.chart-sub{font-size:10px;color:var(--ink-2);letter-spacing:0.5px;}
+.chart-body{width:100%;height:290px;}
+.chart-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:2px;font-size:10px;color:var(--ink-2);}
+.chart-legend span{display:inline-flex;align-items:center;gap:4px;}
+.chart-legend i{display:inline-block;width:8px;height:8px;border-radius:1px;}
+
+/* Summary */
+.summary{background:var(--navy);color:#fff;padding:14px 20px;display:grid;grid-template-columns:repeat(6,1fr);gap:14px;position:relative;}
+.summary::before{content:"";position:absolute;top:0;left:0;width:80px;height:3px;background:var(--wine);}
+.sum-item{display:flex;flex-direction:column;gap:4px;border-right:1px solid rgba(255,255,255,0.12);padding-right:12px;}
+.sum-item:last-child{border-right:none;}
+.sum-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;color:#fff;line-height:1;}
+.sum-num .wine{color:#f08080;}
+.sum-num .gold{color:#f4c95d;}
+.sum-label{font-size:11px;font-weight:600;color:var(--wine-soft);letter-spacing:0.5px;margin-top:2px;}
+.sum-text{font-size:10.5px;line-height:1.45;color:rgba(255,255,255,0.78);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="eyebrow"><span>READING · IN · NUMBERS</span></div>
+      <h1 class="main-title"><span class="zh">数字</span><span class="accent">·</span><span class="zh">里的阅读</span></h1>
+    </div>
+    <div class="header-right">
+      <div class="hr-tag"><span>ANNUAL REPORT</span></div>
+      <div class="hr-meta"><span>2024 · FULL YEAR · 01</span></div>
+    </div>
+  </div>
+
+  <p class="narrative">
+    数字本身并不性感，但它们忠实地记录了一段持续投入的旅程。<span class="highlight">六百余小时</span>的阅读、<span class="highlight">十五万字</span>的笔记、<span class="highlight">八十余本</span>的书目——这些数字背后是一个开源人对自己<span class="zh-quote">"认知边界"</span>的不断试探与拓展。
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-num">80<span class="unit">+</span></div>
+      <div class="kpi-label">年度书籍总数</div>
+      <div class="kpi-sub">全年累计完本</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">600<span class="unit">h+</span></div>
+      <div class="kpi-label">总阅读时长</div>
+      <div class="kpi-sub">约 1.5 小时/天</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">80<span class="unit">篇</span></div>
+      <div class="kpi-label">读书笔记总数</div>
+      <div class="kpi-sub">平均约 1800 字/篇</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">15<span class="unit">万+</span></div>
+      <div class="kpi-label">笔记总字数</div>
+      <div class="kpi-sub">结构化输出</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">33<span class="unit">%</span></div>
+      <div class="kpi-label">英文原版占比</div>
+      <div class="kpi-sub">约 27 本原版书</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">15<span class="unit">%</span></div>
+      <div class="kpi-label">重读率</div>
+      <div class="kpi-sub">约 12 本经典二次精读</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">60<span class="unit">%+</span></div>
+      <div class="kpi-label">推荐后被跟进率</div>
+      <div class="kpi-sub">社区分享转化</div>
+      <div class="kpi-bar"></div>
+    </div>
+  </div>
+
+  <div class="charts">
+    <div class="chart-card">
+      <div class="chart-head">
+        <div class="chart-title"><span>阅读品类分布</span></div>
+        <div class="chart-sub"><span>占全年完本比例</span></div>
+      </div>
+      <div id="chart_1" class="chart-body" style="width:100%;height:290px;"></div>
+      <div class="chart-legend">
+        <span><i style="background:#0D2137;"></i>技术与工程</span>
+        <span><i style="background:#880E4F;"></i>人文社科</span>
+        <span><i style="background:#162d44;"></i>商业管理</span>
+        <span><i style="background:#a62063;"></i>文学艺术</span>
+        <span><i style="background:#c8b89a;"></i>其他</span>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-head">
+        <div class="chart-title"><span>月度阅读量趋势</span></div>
+        <div class="chart-sub"><span>全年逐月完本数</span></div>
+      </div>
+      <div id="chart_2" class="chart-body" style="width:100%;height:290px;"></div>
+      <div class="chart-legend">
+        <span><i style="background:#0D2137;"></i>完本数（月）</span>
+        <span><i style="background:#880E4F;"></i>平均月值 ≈ 6.7</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="sum-item">
+      <div class="sum-num"><span>600</span><span class="wine">h+</span></div>
+      <div class="sum-label">日均阅读时长</div>
+      <div class="sum-text">全年累计超六百小时，日均近一个半小时持续投入</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-num"><span>35</span><span class="gold">%</span></div>
+      <div class="sum-label">品类分布</div>
+      <div class="sum-text">技术工程占三至四成，人文社科与商管各约两成</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-num"><span>80</span><span class="wine">篇</span></div>
+      <div class="sum-label">结构化笔记</div>
+      <div class="sum-text">共八十篇以上笔记产出，总字数逾十五万字</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-num"><span>33</span><span class="gold">%</span></div>
+      <div class="sum-label">跨语言阅读</div>
+      <div class="sum-text">约三分之一为英文原版，覆盖 CS 与经济学经典</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-num"><span>60</span><span class="wine">%+</span></div>
+      <div class="sum-label">推荐转化率</div>
+      <div class="sum-text">社区分享后被成员跟进阅读的书籍占比超过六成</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-num"><span>15</span><span class="gold">%</span></div>
+      <div class="sum-label">重读比例</div>
+      <div class="sum-text">约 15% 经典书籍二次精读，收获翻倍</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const el = document.getElementById('chart_1');
+  const chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    grid:{left:80,right:40,top:10,bottom:20},
+    tooltip:{show:false},
+    xAxis:{
+      type:'value',
+      max:40,
+      axisLine:{lineStyle:{color:'#ccc'}},
+      axisLabel:{color:'#888',fontSize:10,formatter:'{value}%'},
+      splitLine:{lineStyle:{color:'#eee'}}
+    },
+    yAxis:{
+      type:'category',
+      data:['其他','文学与艺术','商业管理','人文社科','技术与工程'],
+      axisLine:{lineStyle:{color:'#ccc'}},
+      axisLabel:{color:'#0D2137',fontSize:11,fontWeight:600}
+    },
+    series:[{
+      type:'bar',
+      barWidth:18,
+      data:[
+        {value:8, itemStyle:{color:'#c8b89a'}},
+        {value:10, itemStyle:{color:'#a62063'}},
+        {value:20, itemStyle:{color:'#162d44'}},
+        {value:20, itemStyle:{color:'#880E4F'}},
+        {value:37, itemStyle:{color:'#0D2137'}}
+      ],
+      label:{show:true,position:'right',formatter:'{c}%',color:'#0D2137',fontSize:11,fontWeight:700}
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+
+<script>(function(){
+  const el = document.getElementById('chart_2');
+  const chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    grid:{left:40,right:20,top:20,bottom:30},
+    tooltip:{show:false},
+    xAxis:{
+      type:'category',
+      data:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+      axisLine:{lineStyle:{color:'#ccc'}},
+      axisLabel:{color:'#888',fontSize:10}
+    },
+    yAxis:{
+      type:'value',
+      name:'本',
+      nameTextStyle:{color:'#888',fontSize:10},
+      axisLine:{lineStyle:{color:'#ccc'}},
+      axisLabel:{color:'#888',fontSize:10},
+      splitLine:{lineStyle:{color:'#eee'}}
+    },
+    series:[{
+      type:'line',
+      smooth:true,
+      symbol:'circle',
+      symbolSize:7,
+      data:[6,5,7,8,6,5,7,8,6,7,8,7],
+      lineStyle:{color:'#0D2137',width:2.5},
+      itemStyle:{color:'#0D2137'},
+      areaStyle:{color:'rgba(13,33,55,0.08)'},
+      markLine:{
+        symbol:'none',
+        lineStyle:{color:'#880E4F',type:'dashed',width:1.5},
+        label:{color:'#880E4F',fontSize:10,formatter:'平均 6.7'},
+        data:[{yAxis:6.7}]
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

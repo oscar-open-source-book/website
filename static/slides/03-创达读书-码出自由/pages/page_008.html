@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源生态的核心数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --gray:#B0BEC5;
+  --bg-dark:#0A0E1A;
+  --bg-mid:#111827;
+  --card-bg:rgba(20,28,45,0.72);
+  --border:rgba(33,150,243,0.32);
+  --glow:rgba(0,188,212,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','Roboto','Microsoft YaHei',sans-serif;
+  color:#E8EDF5;
+  background:var(--bg-dark);
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;
+  margin:0 auto;
+  background:
+    radial-gradient(1200px 700px at 80% 10%, rgba(33,150,243,0.08), transparent 60%),
+    radial-gradient(900px 600px at 10% 90%, rgba(0,188,212,0.06), transparent 60%),
+    var(--bg-dark);
+}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px) 0 0/80px 80px,
+    linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px) 0 0/80px 80px,
+    linear-gradient(180deg, #080C16 0%, #0B1120 50%, #060912 100%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 60px 30px 60px;box-sizing:border-box;
+  display:flex;flex-direction:column;}
+
+/* header */
+.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.title-block{flex:1;}
+.title{
+  font-family:'Orbitron','Rajdhani',sans-serif;
+  font-weight:900;font-size:42px;letter-spacing:2px;
+  background:linear-gradient(90deg, #64B5F6 0%, #2196F3 40%, #00BCD4 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 30px rgba(33,150,243,0.25);
+  line-height:1.1;
+}
+.title-en{
+  font-family:'Orbitron',sans-serif;font-weight:500;font-size:12px;
+  color:var(--gray);letter-spacing:6px;margin-top:4px;
+}
+.header-badge{
+  width:130px;height:56px;position:relative;
+  border:1px solid var(--border);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Rajdhani',sans-serif;font-weight:600;font-size:11px;
+  color:var(--accent);letter-spacing:2px;
+  background:rgba(33,150,243,0.06);
+}
+.header-badge::before,.header-badge::after{
+  content:'';position:absolute;width:10px;height:10px;border:1px solid var(--accent);
+}
+.header-badge::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.header-badge::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+
+/* quote */
+.quote{
+  position:relative;
+  padding:14px 22px 14px 30px;margin:10px 0 18px 0;
+  background:linear-gradient(90deg, rgba(33,150,243,0.10) 0%, rgba(0,188,212,0.04) 60%, transparent 100%);
+  border-left:3px solid var(--accent);
+  border-top:1px solid rgba(0,188,212,0.15);
+  border-bottom:1px solid rgba(0,188,212,0.15);
+}
+.quote p{font-size:13.5px;line-height:1.7;color:#CFD8E3;letter-spacing:0.3px;}
+.quote .hl{color:var(--accent);font-weight:600;}
+.quote .hl2{color:var(--primary);font-weight:600;}
+
+/* section label */
+.section-label{
+  display:flex;align-items:center;gap:12px;margin:6px 0 10px 0;
+}
+.section-label .label-text{
+  font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;
+  color:var(--primary);letter-spacing:3px;
+}
+.section-label .line{flex:1;height:1px;background:linear-gradient(90deg,var(--primary),transparent);}
+.section-label .meta{font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--gray);letter-spacing:2px;}
+
+/* KPI grid */
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);
+  gap:14px;
+  height:338px;
+  margin-bottom:14px;
+}
+.kpi{
+  position:relative;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 18px 12px 18px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  overflow:hidden;
+  backdrop-filter:blur(4px);
+}
+.kpi::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--primary),var(--accent),transparent);
+  opacity:0.7;
+}
+.kpi::after{
+  content:'';position:absolute;bottom:0;right:0;width:60px;height:60px;
+  background:radial-gradient(circle at 100% 100%, rgba(0,188,212,0.15), transparent 60%);
+  pointer-events:none;
+}
+.kpi-head{display:flex;align-items:center;justify-content:space-between;}
+.kpi-tag{
+  font-family:'Rajdhani',sans-serif;font-weight:600;font-size:10px;
+  color:var(--accent);letter-spacing:2px;
+  padding:2px 8px;border:1px solid rgba(0,188,212,0.4);border-radius:3px;
+}
+.kpi-no{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gray);letter-spacing:2px;}
+.kpi-num{
+  font-family:'Orbitron',sans-serif;font-weight:900;font-size:44px;
+  line-height:1;
+  background:linear-gradient(180deg,#64B5F6 0%,#2196F3 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 20px rgba(33,150,243,0.3);
+  margin:4px 0 2px 0;
+}
+.kpi-label{
+  font-size:13px;font-weight:500;color:#E8EDF5;
+  margin-bottom:2px;
+}
+.kpi-sub{
+  font-size:11px;color:var(--gray);line-height:1.4;
+}
+.kpi-bar{
+  height:3px;background:rgba(33,150,243,0.12);border-radius:2px;
+  margin-top:6px;overflow:hidden;position:relative;
+}
+.kpi-bar span{position:absolute;left:0;top:0;height:100%;
+  background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:2px;
+  box-shadow:0 0 8px var(--glow);}
+
+/* key points */
+.points-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+  height:172px;
+  margin-bottom:10px;
+}
+.point{
+  position:relative;
+  background:linear-gradient(180deg, rgba(20,28,45,0.6) 0%, rgba(10,14,26,0.8) 100%);
+  border:1px solid rgba(33,150,243,0.22);
+  border-radius:6px;
+  padding:12px 12px 10px 12px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.point::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+}
+.point-idx{
+  font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;
+  color:var(--primary);opacity:0.5;letter-spacing:1px;
+}
+.point-title{
+  font-size:12.5px;font-weight:600;color:#E8EDF5;
+  margin:2px 0 6px 0;line-height:1.35;
+}
+.point-desc{
+  font-size:10.5px;color:var(--gray);line-height:1.55;flex:1;
+}
+.point-num{
+  font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;
+  color:var(--accent);margin-top:6px;letter-spacing:0.5px;
+}
+.point-num .unit{font-size:11px;color:var(--gray);font-weight:400;margin-left:3px;}
+
+/* footer */
+.footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;
+  border-top:1px solid rgba(33,150,243,0.18);
+  border-bottom:1px solid rgba(33,150,243,0.12);
+  background:linear-gradient(90deg, rgba(33,150,243,0.05) 0%, rgba(0,188,212,0.03) 50%, rgba(33,150,243,0.05) 100%);
+  border-radius:3px;
+}
+.footer-text{
+  font-size:13px;color:#E8EDF5;letter-spacing:0.5px;font-weight:500;
+}
+.footer-text .em{color:var(--accent);font-weight:600;}
+.footer-text .em2{color:var(--primary);font-weight:600;}
+.footer-meta{
+  font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--gray);
+  letter-spacing:2px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="title">开源生态的核心数据</div>
+        <div class="title-en">CORE DATA OF THE OPEN SOURCE ECOSYSTEM</div>
+      </div>
+      <div class="header-badge">
+        <span>DATA · DASHBOARD</span>
+      </div>
+    </div>
+
+    <div class="quote">
+      <p>从 <span class="hl2">Stallman 1983 年</span>发布 GNU 宣言时的寥寥数人，到如今<span class="hl">数亿开发者</span>参与的全球运动，开源已从理想主义运动变成<span class="hl2">数字经济的基础设施</span>。这些数据背后是<span class="hl">"信息想要自由"</span>这一信念四十年的胜利。</p>
+    </div>
+
+    <div class="section-label">
+      <span class="label-text">关键指标</span>
+      <span class="line"></span>
+      <span class="meta">KEY INDICATORS / 06</span>
+    </div>
+
+    <div class="kpi-grid">
+
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-tag">01 · GITHUB</span>
+          <span class="kpi-no">// KPI_01</span>
+        </div>
+        <div>
+          <div class="kpi-num">1亿+</div>
+          <div class="kpi-label">GitHub 活跃开发者</div>
+          <div class="kpi-sub">全球最大开源协作平台，2021年数据</div>
+        </div>
+        <div class="kpi-bar"><span style="width:100%;"></span></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-tag">02 · PROJECTS</span>
+          <span class="kpi-no">// KPI_02</span>
+        </div>
+        <div>
+          <div class="kpi-num">300万+</div>
+          <div class="kpi-label">全球开源项目</div>
+          <div class="kpi-sub">涵盖各类编程语言与技术栈</div>
+        </div>
+        <div class="kpi-bar"><span style="width:88%;"></span></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-tag">03 · LINUX</span>
+          <span class="kpi-no">// KPI_03</span>
+        </div>
+        <div>
+          <div class="kpi-num">96%</div>
+          <div class="kpi-label">Linux 服务器市场份额</div>
+          <div class="kpi-sub">IDC 2020 权威统计数据</div>
+        </div>
+        <div class="kpi-bar"><span style="width:96%;"></span></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-tag">04 · TOP500</span>
+          <span class="kpi-no">// KPI_04</span>
+        </div>
+        <div>
+          <div class="kpi-num">100%</div>
+          <div class="kpi-label">超算 Top500 占比</div>
+          <div class="kpi-sub">全部基于 Linux 操作系统</div>
+        </div>
+        <div class="kpi-bar"><span style="width:100%;"></span></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-tag">05 · ANDROID</span>
+          <span class="kpi-no">// KPI_05</span>
+        </div>
+        <div>
+          <div class="kpi-num">70%</div>
+          <div class="kpi-label">Android 手机份额</div>
+          <div class="kpi-sub">基于 Linux 内核的移动操作系统</div>
+        </div>
+        <div class="kpi-bar"><span style="width:70%;"></span></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-tag">06 · FORTUNE500</span>
+          <span class="kpi-no">// KPI_06</span>
+        </div>
+        <div>
+          <div class="kpi-num">95%</div>
+          <div class="kpi-label">财富 500 强采用率</div>
+          <div class="kpi-sub">已将开源软件集成至技术栈</div>
+        </div>
+        <div class="kpi-bar"><span style="width:95%;"></span></div>
+      </div>
+
+    </div>
+
+    <div class="section-label">
+      <span class="label-text">维度解读</span>
+      <span class="line"></span>
+      <span class="meta">DIMENSION ANALYSIS / 05</span>
+    </div>
+
+    <div class="points-grid">
+
+      <div class="point">
+        <div class="point-idx">01</div>
+        <div class="point-title">GitHub 活跃用户</div>
+        <div class="point-desc">全球超 1 亿开发者在 GitHub 上协作，形成最大开源社区。</div>
+        <div class="point-num">1亿+<span class="unit">人</span></div>
+      </div>
+
+      <div class="point">
+        <div class="point-idx">02</div>
+        <div class="point-title">开源项目数量</div>
+        <div class="point-desc">全球开源项目超过 300 万个，涵盖所有技术栈。</div>
+        <div class="point-num">300万+<span class="unit">项目</span></div>
+      </div>
+
+      <div class="point">
+        <div class="point-idx">03</div>
+        <div class="point-title">Linux 市场份额</div>
+        <div class="point-desc">服务器市场超 96%，超级计算机 Top500 中占 100%。</div>
+        <div class="point-num">96% / 100%</div>
+      </div>
+
+      <div class="point">
+        <div class="point-idx">04</div>
+        <div class="point-title">Android 全球份额</div>
+        <div class="point-desc">基于 Linux 的 Android 占据全球智能手机市场约 70%。</div>
+        <div class="point-num">~70%<span class="unit">份额</span></div>
+      </div>
+
+      <div class="point">
+        <div class="point-idx">05</div>
+        <div class="point-title">企业采用率</div>
+        <div class="point-desc">约 95% 的财富 500 强企业已将开源软件纳入技术栈。</div>
+        <div class="point-num">95%<span class="unit">企业</span></div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">
+        <span class="em">从理想主义运动</span>
+        <span style="color:var(--gray);">  →  </span>
+        <span class="em2">数字经济基础设施</span>
+        <span style="color:var(--gray);">　·　四十年的信念胜利，正在被写入每一行代码。</span>
+      </div>
+      <div class="footer-meta">END · OPEN SOURCE · 2024</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

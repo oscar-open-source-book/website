@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源社区的运作逻辑</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1A1A2E;
+  --bg-2:#16213E;
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --text-main:#E8EAF6;
+  --text-dim:#90A4C6;
+  --line:rgba(33,150,243,0.35);
+  --glow:rgba(0,188,212,0.45);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(1200px 700px at 15% 10%, rgba(33,150,243,0.14), transparent 60%),
+    radial-gradient(1000px 600px at 85% 90%, rgba(0,188,212,0.10), transparent 60%),
+    var(--bg);
+}
+#bg::after{content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image: radial-gradient(circle at 50% 45%, black 30%, transparent 80%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 56px;display:flex;flex-direction:column;box-sizing:border-box;}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.title-wrap{display:flex;align-items:center;gap:18px;}
+.title-mark{width:6px;height:46px;background:linear-gradient(180deg,var(--accent),var(--primary));border-radius:3px;box-shadow:0 0 18px var(--glow);}
+.title-wrap h1{font-size:34px;font-weight:800;letter-spacing:1px;background:linear-gradient(90deg,#fff 0%,#90CAF9 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.title-meta{font-size:12px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;font-weight:500;}
+.subline{font-size:14.5px;line-height:1.75;color:var(--text-dim);max-width:1380px;margin-bottom:18px;padding:14px 20px;border-left:3px solid var(--primary);background:rgba(33,150,243,0.06);}
+.subline b{color:#E3F2FD;font-weight:600;}
+
+/* Main grid */
+.main{flex:1;display:grid;grid-template-columns:340px 1fr 340px;grid-template-rows:1fr 1fr;gap:20px 30px;align-items:stretch;}
+
+.card{position:relative;border-radius:14px;padding:18px 20px;background:linear-gradient(135deg, rgba(33,150,243,0.12) 0%, rgba(22,33,62,0.6) 100%);
+  border:1px solid rgba(33,150,243,0.35);box-shadow:0 0 24px rgba(33,150,243,0.08) inset, 0 6px 20px rgba(0,0,0,0.3);
+  display:flex;flex-direction:column;gap:8px;overflow:hidden;}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--primary),transparent);opacity:0.85;}
+.card::after{content:"";position:absolute;bottom:-30px;right:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,0.18),transparent 70%);pointer-events:none;}
+.card-head{display:flex;align-items:center;gap:10px;}
+.card-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;
+  background:linear-gradient(135deg,var(--accent),var(--primary));color:#fff;box-shadow:0 0 14px var(--glow);}
+.card-title{font-size:17px;font-weight:700;color:#E3F2FD;letter-spacing:0.5px;}
+.card-tag{margin-left:auto;font-size:10px;color:var(--accent);border:1px solid rgba(0,188,212,0.45);padding:3px 8px;border-radius:10px;letter-spacing:1.5px;font-weight:600;}
+.card-body{font-size:13.2px;line-height:1.7;color:var(--text-dim);}
+.card-body b{color:#B3E5FC;font-weight:600;}
+.card-foot{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+.chip{font-size:10.5px;padding:3px 9px;border-radius:10px;background:rgba(0,188,212,0.12);color:var(--accent);border:1px solid rgba(0,188,212,0.3);font-weight:500;}
+
+/* Center network */
+.network{grid-row:1 / span 2;position:relative;border-radius:14px;
+  background:linear-gradient(135deg, rgba(22,33,62,0.7) 0%, rgba(26,26,46,0.85) 100%);
+  border:1px solid rgba(33,150,243,0.3);overflow:hidden;
+  box-shadow:0 0 40px rgba(33,150,243,0.10) inset, 0 8px 28px rgba(0,0,0,0.4);}
+.network-head{position:absolute;top:0;left:0;right:0;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg, rgba(33,150,243,0.15), transparent);z-index:2;}
+.network-head h3{font-size:15px;font-weight:700;color:#E3F2FD;letter-spacing:1px;}
+.network-head .nh-meta{font-size:10.5px;color:var(--accent);letter-spacing:2px;font-weight:600;}
+.network-svg{position:absolute;top:54px;left:0;right:0;bottom:50px;display:flex;align-items:center;justify-content:center;}
+.network-foot{position:absolute;bottom:0;left:0;right:0;padding:11px 22px;display:flex;justify-content:space-around;
+  background:linear-gradient(0deg, rgba(0,0,0,0.35), transparent);border-top:1px solid rgba(33,150,243,0.18);}
+.nf-item{text-align:center;}
+.nf-num{font-size:18px;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nf-label{font-size:10.5px;color:var(--text-dim);letter-spacing:1px;margin-top:2px;}
+
+/* Node glow animation */
+@keyframes pulse{0%,100%{filter:drop-shadow(0 0 4px rgba(0,188,212,0.6));}50%{filter:drop-shadow(0 0 14px rgba(0,188,212,1));}}
+.node-core{animation:pulse 2.6s ease-in-out infinite;}
+@keyframes dash{to{stroke-dashoffset:-40;}}
+.link{stroke-dasharray:6 6;animation:dash 3s linear infinite;}
+
+/* Bottom bar */
+.bottom{margin-top:16px;height:110px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;}
+.stat{position:relative;border-radius:12px;padding:16px 22px;
+  background:linear-gradient(135deg, rgba(33,150,243,0.10) 0%, rgba(0,188,212,0.06) 100%);
+  border:1px solid rgba(33,150,243,0.30);display:flex;align-items:center;gap:16px;overflow:hidden;}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--accent),var(--primary));box-shadow:0 0 10px var(--glow);}
+.stat-num{font-size:28px;font-weight:800;color:#E3F2FD;line-height:1.1;}
+.stat-num .small{font-size:14px;color:var(--accent);font-weight:600;margin-left:4px;}
+.stat-body{display:flex;flex-direction:column;gap:4px;flex:1;}
+.stat-title{font-size:13px;font-weight:700;color:#B3E5FC;letter-spacing:0.5px;}
+.stat-desc{font-size:11.5px;color:var(--text-dim);line-height:1.5;}
+
+/* Corner decorations */
+.corner{position:absolute;width:80px;height:80px;border:1px solid rgba(0,188,212,0.35);}
+.corner.tl{top:14px;left:14px;border-right:none;border-bottom:none;}
+.corner.tr{top:14px;right:14px;border-left:none;border-bottom:none;}
+.corner.bl{bottom:14px;left:14px;border-right:none;border-top:none;}
+.corner.br{bottom:14px;right:14px;border-left:none;border-top:none;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+  <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+
+  <div class="header">
+    <div class="title-wrap">
+      <span class="title-mark"></span>
+      <h1>开源社区的运作逻辑</h1>
+    </div>
+    <div class="title-meta">Social-Technical System / Open Source Governance</div>
+  </div>
+
+  <div class="subline">
+    开源社区不依赖层级管理，而靠<b>贡献</b>、<b>声誉</b>和<b>共识</b>驱动，<b>代码审查</b>是质量控制的核心手段，<b>许可证</b>则从法律层面保障了开放性的可持续性——这是一套独特的社会技术系统。
+  </div>
+
+  <div class="main">
+
+    <!-- 左上：贡献驱动 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">①</span>
+        <span class="card-title">贡献驱动</span>
+        <span class="card-tag">CONTRIBUTION</span>
+      </div>
+      <div class="card-body">
+        以实际<b>代码贡献</b>作为社区成员的核心身份标识，<b>贡献越大、话语权越强</b>。提交量、Issue 参与度与社区影响力共同构成个人声誉，是进入核心圈的唯一通行证。
+      </div>
+      <div class="card-foot">
+        <span class="chip">Commit</span>
+        <span class="chip">Issue</span>
+        <span class="chip">Reputation</span>
+      </div>
+    </div>
+
+    <!-- 右上：去中心化治理 -->
+    <div class="card" style="grid-column:3;grid-row:1;">
+      <div class="card-head">
+        <span class="card-icon">②</span>
+        <span class="card-title">去中心化治理</span>
+        <span class="card-tag">GOVERNANCE</span>
+      </div>
+      <div class="card-body">
+        多数成熟开源项目采用 <b>Meritocracy</b> 治理模型，<b>核心决策权</b>掌握在活跃贡献者手中。没有固定老板，角色随贡献流动，社区通过异步讨论与投票达成动态共识。
+      </div>
+      <div class="card-foot">
+        <span class="chip">Meritocracy</span>
+        <span class="chip">BDFL</span>
+        <span class="chip">Consensus</span>
+      </div>
+    </div>
+
+    <!-- 左下：代码即信任 -->
+    <div class="card" style="grid-column:1;grid-row:2;">
+      <div class="card-head">
+        <span class="card-icon">③</span>
+        <span class="card-title">代码即信任</span>
+        <span class="card-tag">PEER REVIEW</span>
+      </div>
+      <div class="card-body">
+        所有变更<b>公开可审查</b>，<b>Peer Review</b> 成为质量保障的核心机制。每一行代码都被同行检视，<b>信任建立在透明之上</b>，而非职位或头衔，形成去中心化的质量护城河。
+      </div>
+      <div class="card-foot">
+        <span class="chip">Pull Request</span>
+        <span class="chip">CI/CD</span>
+        <span class="chip">Transparency</span>
+      </div>
+    </div>
+
+    <!-- 右下：许可证框架 -->
+    <div class="card" style="grid-column:3;grid-row:2;">
+      <div class="card-head">
+        <span class="card-icon">④</span>
+        <span class="card-title">许可证框架</span>
+        <span class="card-tag">LICENSE</span>
+      </div>
+      <div class="card-body">
+        <b>GPL / Creative Commons / MIT</b> 等许可证为协作提供<b>法律基础</b>，确保成果<b>不被私有化</b>。许可证在"开源"与"开放"之间划出边界，让共享成为可持续的契约。
+      </div>
+      <div class="card-foot">
+        <span class="chip">GPL</span>
+        <span class="chip">MIT</span>
+        <span class="chip">Apache 2.0</span>
+      </div>
+    </div>
+
+    <!-- 中央网络拓扑 -->
+    <div class="network">
+      <div class="network-head">
+        <h3>社区协作网络拓扑</h3>
+        <span class="nh-meta">CONTRIBUTOR NETWORK</span>
+      </div>
+
+      <div class="network-svg">
+        <svg width="440" height="330" viewBox="0 0 440 330" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00BCD4" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#2196F3" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#1A1A2E" stop-opacity="0.9"/>
+            </radialGradient>
+            <radialGradient id="nodeGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#16213E" stop-opacity="1"/>
+            </radialGradient>
+            <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#00BCD4" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Halo behind core -->
+          <circle cx="220" cy="165" r="100" fill="url(#halo)"/>
+
+          <!-- Links -->
+          <g stroke="#2196F3" stroke-width="1.4" opacity="0.55" fill="none">
+            <line class="link" x1="220" y1="165" x2="220" y2="55"/>
+            <line class="link" x1="220" y1="165" x2="345" y2="95"/>
+            <line class="link" x1="220" y1="165" x2="355" y2="195"/>
+            <line class="link" x1="220" y1="165" x2="300" y2="290"/>
+            <line class="link" x1="220" y1="165" x2="140" y2="290"/>
+            <line class="link" x1="220" y1="165" x2="85" y2="195"/>
+            <line class="link" x1="220" y1="165" x2="95" y2="95"/>
+          </g>
+          <!-- Perimeter connections -->
+          <g stroke="#00BCD4" stroke-width="1" opacity="0.35" fill="none" stroke-dasharray="3 4">
+            <line x1="220" y1="55" x2="345" y2="95"/>
+            <line x1="345" y1="95" x2="355" y2="195"/>
+            <line x1="355" y1="195" x2="300" y2="290"/>
+            <line x1="300" y1="290" x2="140" y2="290"/>
+            <line x1="140" y1="290" x2="85" y2="195"/>
+            <line x1="85" y1="195" x2="95" y2="95"/>
+            <line x1="95" y1="95" x2="220" y2="55"/>
+          </g>
+
+          <!-- Outer nodes -->
+          <g font-family="Inter, sans-serif" font-size="10" fill="#E8EAF6" text-anchor="middle">
+            <circle cx="220" cy="55" r="15" fill="url(#nodeGrad)" stroke="#00BCD4" stroke-width="1.2"/>
+            <text x="220" y="59" font-weight="700" fill="#fff">维护</text>
+            <text x="220" y="35" fill="#90A4C6">核心维护者</text>
+
+            <circle cx="345" cy="95" r="13" fill="url(#nodeGrad)" stroke="#2196F3" stroke-width="1.2"/>
+            <text x="345" y="99" font-weight="700" fill="#fff">审</text>
+            <text x="392" y="82" text-anchor="start" fill="#90A4C6">代码审查者</text>
+
+            <circle cx="355" cy="195" r="13" fill="url(#nodeGrad)" stroke="#2196F3" stroke-width="1.2"/>
+            <text x="355" y="199" font-weight="700" fill="#fff">测</text>
+            <text x="392" y="205" text-anchor="start" fill="#90A4C6">测试贡献者</text>
+
+            <circle cx="300" cy="290" r="13" fill="url(#nodeGrad)" stroke="#2196F3" stroke-width="1.2"/>
+            <text x="300" y="294" font-weight="700" fill="#fff">文</text>
+            <text x="300" y="315" fill="#90A4C6">文档贡献者</text>
+
+            <circle cx="140" cy="290" r="13" fill="url(#nodeGrad)" stroke="#2196F3" stroke-width="1.2"/>
+            <text x="140" y="294" font-weight="700" fill="#fff">用</text>
+            <text x="140" y="315" fill="#90A4C6">用户 / 报告者</text>
+
+            <circle cx="85" cy="195" r="13" fill="url(#nodeGrad)" stroke="#2196F3" stroke-width="1.2"/>
+            <text x="85" y="199" font-weight="700" fill="#fff">新</text>
+            <text x="42" y="205" text-anchor="end" fill="#90A4C6">新晋贡献者</text>
+
+            <circle cx="95" cy="95" r="13" fill="url(#nodeGrad)" stroke="#2196F3" stroke-width="1.2"/>
+            <text x="95" y="99" font-weight="700" fill="#fff">协</text>
+            <text x="48" y="82" text-anchor="end" fill="#90A4C6">社区协调者</text>
+          </g>
+
+          <!-- Core node -->
+          <g>
+            <circle class="node-core" cx="220" cy="165" r="34" fill="url(#coreGrad)" stroke="#00BCD4" stroke-width="1.8"/>
+            <text x="220" y="161" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">OPEN</text>
+            <text x="220" y="178" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">SOURCE</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="network-foot">
+        <div class="nf-item"><div class="nf-num">7</div><div class="nf-label">角色节点</div></div>
+        <div class="nf-item"><div class="nf-num">14</div><div class="nf-label">协作连线</div></div>
+        <div class="nf-item"><div class="nf-num">去中心</div><div class="nf-label">网络拓扑</div></div>
+        <div class="nf-item"><div class="nf-num">24/7</div><div class="nf-label">异步协作</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom">
+    <div class="stat">
+      <div class="stat-num">Meritocracy<span class="small">·</span></div>
+      <div class="stat-body">
+        <span class="stat-title">治理模型</span>
+        <span class="stat-desc">以贡献论英雄，能力与声誉决定决策权归属</span>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Peer Review<span class="small">·</span></div>
+      <div class="stat-body">
+        <span class="stat-title">核心机制</span>
+        <span class="stat-desc">同行评审保障质量，每一行代码都被公开检视</span>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">GPL / MIT<span class="small">·</span></div>
+      <div class="stat-body">
+        <span class="stat-title">代表许可证</span>
+        <span class="stat-desc">法律框架保障开放，确保成果不被私有化</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

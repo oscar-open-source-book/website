@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源经济全景数据</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Roboto:wght@300;400;500&display=swap');
+:root{
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --neutral:#B0BEC5;
+  --bg-0:#050b1a;
+  --bg-1:#0a1428;
+  --card:#0d1c33;
+  --card-line:#163155;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Roboto','PingFang SC','Microsoft YaHei',sans-serif;color:#e8eaf0;background:#000;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;font-family:'Roboto','PingFang SC',sans-serif;}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 50% 0%,#0f2447 0%,#060d1f 55%,#03070f 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 60px 30px;box-sizing:border-box;display:flex;flex-direction:column;}
+#bg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,.05) 1px,transparent 1px);background-size:48px 48px;opacity:.5;}
+#bg::after{content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:1200px;height:600px;background:radial-gradient(ellipse at center,rgba(0,229,255,.10) 0%,transparent 65%);}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;}
+.title-block{flex:1;}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:4px;color:var(--accent);margin-bottom:10px;font-weight:500;}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);}
+.eyebrow .bar{width:30px;height:1px;background:var(--accent);}
+h1{font-family:'Inter',sans-serif;font-weight:800;font-size:40px;letter-spacing:1px;background:linear-gradient(90deg,#ffffff 0%,#90caf9 50%,#00e5ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+h1 .sub{font-size:18px;font-weight:500;color:var(--neutral);-webkit-text-fill-color:var(--neutral);margin-left:14px;}
+.subtitle{font-size:13px;color:var(--neutral);line-height:1.7;max-width:920px;margin-top:10px;}
+.stat-badge{display:flex;gap:10px;font-size:11px;letter-spacing:2px;color:var(--neutral);align-items:center;padding-bottom:6px;}
+.stat-badge .pill{border:1px solid var(--card-line);padding:6px 12px;border-radius:20px;color:var(--accent);}
+
+/* KPI Row */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px;}
+.kpi{position:relative;background:linear-gradient(180deg,rgba(13,28,51,.95) 0%,rgba(8,16,32,.95) 100%);border:1px solid var(--card-line);border-radius:12px;padding:16px 16px 14px;overflow:hidden;}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--primary) 30%,var(--accent) 70%,transparent 100%);}
+.kpi::after{content:"";position:absolute;top:60px;right:-30px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,.18) 0%,transparent 70%);}
+.kpi-label{font-size:11px;color:var(--neutral);letter-spacing:2px;margin-bottom:6px;}
+.kpi-num{font-family:'Inter',sans-serif;font-weight:800;font-size:32px;background:linear-gradient(180deg,#ffffff 0%,#64b5f6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;}
+.kpi-num .unit{font-size:15px;font-weight:600;color:var(--accent);-webkit-text-fill-color:var(--accent);margin-left:2px;}
+.kpi-desc{font-size:11px;color:var(--neutral);line-height:1.55;margin-top:8px;}
+.kpi-trend{display:flex;align-items:center;gap:4px;margin-top:8px;font-size:11px;color:var(--accent);font-weight:500;}
+.kpi-trend .arrow{font-size:14px;}
+.kpi-sparkline{margin-top:8px;height:28px;}
+.kpi-sparkline svg{width:100%;height:100%;}
+
+/* Grid cards */
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;flex:1;}
+.card{position:relative;background:linear-gradient(180deg,rgba(13,28,51,.9) 0%,rgba(8,16,32,.9) 100%);border:1px solid var(--card-line);border-radius:12px;padding:18px 16px;overflow:hidden;display:flex;flex-direction:column;}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent) 0%,var(--primary) 100%);}
+.card-glow{position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.10) 0%,transparent 70%);}
+.card-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,rgba(33,150,243,.25) 0%,rgba(0,229,255,.15) 100%);border:1px solid rgba(0,229,255,.3);display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:var(--accent);}
+.card-title{font-family:'Inter',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:6px;letter-spacing:.5px;}
+.card-num{font-family:'Inter',sans-serif;font-weight:800;font-size:22px;color:var(--accent);margin-bottom:10px;letter-spacing:.5px;}
+.card-desc{font-size:12px;color:var(--neutral);line-height:1.7;flex:1;}
+.card-bar{margin-top:10px;height:3px;background:rgba(33,150,243,.12);border-radius:2px;overflow:hidden;}
+.card-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:2px;}
+.card-footer{margin-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--neutral);letter-spacing:1px;}
+.card-footer .tag{color:var(--accent);border:1px solid rgba(0,229,255,.3);padding:2px 8px;border-radius:10px;}
+
+/* Footer */
+.footer{margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--card-line);position:relative;}
+.footer::before{content:"";position:absolute;top:-1px;left:0;width:120px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);box-shadow:0 0 8px var(--accent);}
+.footer-text{font-family:'Inter',sans-serif;font-weight:600;font-size:15px;color:#fff;letter-spacing:2px;}
+.footer-text .accent{color:var(--accent);}
+.footer-meta{display:flex;gap:18px;font-size:11px;color:var(--neutral);letter-spacing:1.5px;}
+.footer-meta .item{display:flex;align-items:center;gap:6px;}
+.footer-meta .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="title-block">
+    <div class="eyebrow"><span class="dot"></span><span>OPEN SOURCE ECONOMY</span><span class="bar"></span><span>数据看板</span></div>
+    <h1>开源经济全景数据<span class="sub">Panorama Data · Dashboard</span></h1>
+    <p class="subtitle">数据层面的观察最为直接：从市场规模到企业渗透率，从贡献者规模到商业化路径，开源经济已形成一条完整且高速增长的曲线，成为数字时代最重要的商业变量之一。</p>
+  </div>
+  <div class="stat-badge">
+    <span class="pill">LIVE DATA</span>
+    <span>2024 · Q4</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-label">企业采用率</div>
+    <div class="kpi-num">&gt;90<span class="unit">%</span></div>
+    <div class="kpi-desc">大型企业中开源技术使用比例，已渗透至核心生产环境</div>
+    <svg class="kpi-sparkline" viewBox="0 0 160 28" preserveAspectRatio="none">
+      <polyline points="0,22 20,20 40,18 60,14 80,12 100,9 120,7 140,5 160,3" fill="none" stroke="#00E5FF" stroke-width="1.5"/>
+      <polyline points="0,22 20,20 40,18 60,14 80,12 100,9 120,7 140,5 160,3" fill="none" stroke="#2196F3" stroke-width="3" opacity=".3"/>
+    </svg>
+    <div class="kpi-trend"><span class="arrow">▲</span><span>渗透持续加深</span></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">开源市场增速</div>
+    <div class="kpi-num">20<span class="unit">%+</span></div>
+    <div class="kpi-desc">年复合增长率区间，整体市场保持高速增长态势</div>
+    <svg class="kpi-sparkline" viewBox="0 0 160 28" preserveAspectRatio="none">
+      <polyline points="0,24 20,22 40,19 60,17 80,14 100,11 120,9 140,6 160,3" fill="none" stroke="#00E5FF" stroke-width="1.5"/>
+      <polyline points="0,24 20,22 40,19 60,17 80,14 100,11 120,9 140,6 160,3" fill="none" stroke="#2196F3" stroke-width="3" opacity=".3"/>
+    </svg>
+    <div class="kpi-trend"><span class="arrow">▲</span><span>高速增长</span></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Linux 内核贡献</div>
+    <div class="kpi-num">2000<span class="unit">+</span></div>
+    <div class="kpi-desc">企业级贡献者数量，核心基础设施持续壮大</div>
+    <svg class="kpi-sparkline" viewBox="0 0 160 28" preserveAspectRatio="none">
+      <polyline points="0,25 20,23 40,20 60,18 80,15 100,13 120,10 140,7 160,4" fill="none" stroke="#00E5FF" stroke-width="1.5"/>
+      <polyline points="0,25 20,23 40,20 60,18 80,15 100,13 120,10 140,7 160,4" fill="none" stroke="#2196F3" stroke-width="3" opacity=".3"/>
+    </svg>
+    <div class="kpi-trend"><span class="arrow">▲</span><span>生态扩容</span></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">开源组件依赖</div>
+    <div class="kpi-num">75-90<span class="unit">%</span></div>
+    <div class="kpi-desc">现代应用代码中来自开源的比例，已成技术底座</div>
+    <svg class="kpi-sparkline" viewBox="0 0 160 28" preserveAspectRatio="none">
+      <polyline points="0,20 20,18 40,16 60,14 80,12 100,10 120,8 140,6 160,4" fill="none" stroke="#00E5FF" stroke-width="1.5"/>
+      <polyline points="0,20 20,18 40,16 60,14 80,12 100,10 120,8 140,6 160,4" fill="none" stroke="#2196F3" stroke-width="3" opacity=".3"/>
+    </svg>
+    <div class="kpi-trend"><span class="arrow">▲</span><span>深度绑定</span></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">K8s 集群部署</div>
+    <div class="kpi-num">数百万<span class="unit">实例</span></div>
+    <div class="kpi-desc">全球运行中的容器编排实例，云原生进入主流</div>
+    <svg class="kpi-sparkline" viewBox="0 0 160 28" preserveAspectRatio="none">
+      <polyline points="0,26 20,24 40,20 60,17 80,13 100,10 120,7 140,4 160,2" fill="none" stroke="#00E5FF" stroke-width="1.5"/>
+      <polyline points="0,26 20,24 40,20 60,17 80,13 100,10 120,7 140,4 160,2" fill="none" stroke="#2196F3" stroke-width="3" opacity=".3"/>
+    </svg>
+    <div class="kpi-trend"><span class="arrow">▲</span><span>指数增长</span></div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-glow"></div>
+    <div class="card-icon">01</div>
+    <div class="card-title">市场规模</div>
+    <div class="card-num">$84B+</div>
+    <div class="card-desc">全球开源软件市场年规模持续扩张，成为数字经济的底层基础设施。</div>
+    <div class="card-bar"><div class="card-bar-fill" style="width:92%"></div></div>
+    <div class="card-footer"><span>持续扩张</span><span class="tag">CORE</span></div>
+  </div>
+  <div class="card">
+    <div class="card-glow"></div>
+    <div class="card-icon">02</div>
+    <div class="card-title">企业采用率</div>
+    <div class="card-num">&gt;90%</div>
+    <div class="card-desc">超过90%的大型企业已将开源技术纳入核心业务与生产环境。</div>
+    <div class="card-bar"><div class="card-bar-fill" style="width:95%"></div></div>
+    <div class="card-footer"><span>全面渗透</span><span class="tag">TOP</span></div>
+  </div>
+  <div class="card">
+    <div class="card-glow"></div>
+    <div class="card-icon">03</div>
+    <div class="card-title">开发贡献</div>
+    <div class="card-num">2000+</div>
+    <div class="card-desc">开源项目贡献者数量逐年攀升，社区参与度成为项目生命力的核心指标。</div>
+    <div class="card-bar"><div class="card-bar-fill" style="width:78%"></div></div>
+    <div class="card-footer"><span>社区增长</span><span class="tag">ACTIVE</span></div>
+  </div>
+  <div class="card">
+    <div class="card-glow"></div>
+    <div class="card-icon">04</div>
+    <div class="card-title">商业模型</div>
+    <div class="card-num">多元化</div>
+    <div class="card-desc">云托管、商业许可、专业服务与订阅等多元商业模式并存并成熟。</div>
+    <div class="card-bar"><div class="card-bar-fill" style="width:85%"></div></div>
+    <div class="card-footer"><span>模式成熟</span><span class="tag">MIXED</span></div>
+  </div>
+  <div class="card">
+    <div class="card-glow"></div>
+    <div class="card-icon">05</div>
+    <div class="card-title">人才趋势</div>
+    <div class="card-num">加分项</div>
+    <div class="card-desc">开源经验已成为技术岗招聘与晋升评估的重要加分项，推动人才流动。</div>
+    <div class="card-bar"><div class="card-bar-fill" style="width:70%"></div></div>
+    <div class="card-footer"><span>价值认可</span><span class="tag">Talent</span></div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-text">从规模到生态，<span class="accent">数据驱动增长</span></div>
+  <div class="footer-meta">
+    <div class="item"><span class="dot"></span><span>SCALE</span></div>
+    <div class="item"><span class="dot"></span><span>ECOSYSTEM</span></div>
+    <div class="item"><span class="dot"></span><span>GROWTH</span></div>
+  </div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

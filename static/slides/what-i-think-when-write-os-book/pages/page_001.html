@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --primary: #00BCD4;
+  --accent: #FF7043;
+  --text-light: #ECEFF1;
+  --text-dim: #B0BEC5;
+  --dark-base: #0a1628;
+  --dark-mid: #0d1f3c;
+  --glow: rgba(0, 188, 212, 0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--text-light);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg .bg-photo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10,22,40,0.55) 0%, rgba(13,31,60,0.4) 40%, rgba(10,22,40,0.7) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 70px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--primary);
+  letter-spacing: 2px;
+  opacity: 0.85;
+}
+
+.top-bar .left-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-bar .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.top-bar .right-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Title area */
+.title-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 30px 20px 30px;
+  position: relative;
+  margin-top: -10px;
+}
+
+.title-deco-line-left {
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background: linear-gradient(180deg, transparent 0%, var(--primary) 30%, var(--primary) 70%, transparent 100%);
+  box-shadow: 0 0 15px var(--glow);
+  border-radius: 2px;
+}
+
+.main-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 110px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 6px;
+  background: linear-gradient(135deg, #ECEFF1 0%, #00BCD4 50%, #80DEEA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  position: relative;
+  z-index: 2;
+  padding-left: 30px;
+}
+
+.title-glow {
+  position: absolute;
+  left: 20px;
+  top: 40%;
+  width: 500px;
+  height: 200px;
+  background: radial-gradient(ellipse, rgba(0,188,212,0.15) 0%, transparent 70%);
+  z-index: 1;
+  filter: blur(20px);
+}
+
+.subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--text-light);
+  letter-spacing: 3px;
+  margin-top: 30px;
+  margin-left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.subtitle .accent-bar {
+  width: 50px;
+  height: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(255,112,67,0.6);
+  display: inline-block;
+}
+
+.subtitle .accent-text {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Info modules */
+.info-modules {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-top: 50px;
+  margin-left: 30px;
+  margin-right: 0;
+}
+
+.info-card {
+  background: rgba(13, 31, 60, 0.55);
+  border: 1px solid rgba(0, 188, 212, 0.25);
+  border-radius: 12px;
+  padding: 22px 24px;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.info-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+.info-card:nth-child(2)::before {
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(255,112,67,0.5);
+}
+
+.info-card::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.6;
+}
+
+.info-card:nth-child(2)::after {
+  background: var(--accent);
+}
+
+.info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.info-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.info-card:nth-child(2) .info-num {
+  color: var(--accent);
+}
+
+.info-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  padding: 3px 10px;
+  border: 1px solid rgba(236,239,241,0.2);
+  border-radius: 4px;
+}
+
+.info-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.info-desc {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+
+/* Bottom statement */
+.bottom-statement {
+  margin-top: 30px;
+  margin-left: 30px;
+  margin-right: 0;
+  padding: 20px 28px;
+  border-top: 1px solid rgba(0, 188, 212, 0.2);
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.bottom-statement .quote-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 36px;
+  color: var(--primary);
+  line-height: 1;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.bottom-statement .quote-text {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-dim);
+  font-weight: 300;
+  flex: 1;
+}
+
+.bottom-statement .quote-text .highlight {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.bottom-statement .quote-text .accent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Footer */
+.footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  opacity: 0.7;
+  padding-top: 15px;
+  border-top: 1px solid rgba(236,239,241,0.08);
+}
+
+/* Decorative corner brackets */
+.corner-deco {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--primary);
+  opacity: 0.5;
+  z-index: 2;
+}
+
+.corner-deco.tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+.corner-deco.tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+.corner-deco.bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+.corner-deco.br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_001_hero_bg.png" alt="深色科技感背景，青蓝色光效扫过画面，底层电路纹理，右下角几何粒子群">
+    <div class="bg-overlay"></div>
+  </div>
+
+  <div class="corner-deco tl"></div>
+  <div class="corner-deco tr"></div>
+  <div class="corner-deco bl"></div>
+  <div class="corner-deco br"></div>
+
+  <div id="ct">
+    <div class="top-bar">
+      <div class="left-tag">
+        <span class="dot"></span>
+        <span>OPEN SOURCE · CHRONICLE</span>
+      </div>
+      <div class="right-tag">
+        <span>COVER / 01</span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+    <div class="title-area">
+      <div class="title-deco-line-left"></div>
+      <div class="title-glow"></div>
+      <h1 class="main-title">开源之书<br>记录</h1>
+      <div class="subtitle">
+        <span class="accent-bar"></span>
+        <span>2021-10：</span>
+        <span class="accent-text">写开源书时我在想什么</span>
+      </div>
+    </div>
+
+    <div class="info-modules">
+      <div class="info-card">
+        <div class="info-header">
+          <span class="info-num">01</span>
+          <span class="info-label">主题定位</span>
+        </div>
+        <div class="info-title">开源之道 · 写作历程</div>
+        <div class="info-desc">围绕开源之道系列的写作历程与阅读分享，展开的一次系统性记录。</div>
+      </div>
+      <div class="info-card">
+        <div class="info-header">
+          <span class="info-num">02</span>
+          <span class="info-label">时间节点</span>
+        </div>
+        <div class="info-title">2021年10月</div>
+        <div class="info-desc">适兕整理开源书籍编写过程中的思考与经验，沉淀为可分享的图文内容。</div>
+      </div>
+      <div class="info-card">
+        <div class="info-header">
+          <span class="info-num">03</span>
+          <span class="info-label">分享形式</span>
+        </div>
+        <div class="info-title">PPT 图文呈现</div>
+        <div class="info-desc">以PPT形式呈现写作心路、内容组织方法与社区协作模式。</div>
+      </div>
+    </div>
+
+    <div class="bottom-statement">
+      <span class="quote-icon">"</span>
+      <div class="quote-text">
+        在<span class="highlight">开源文化</span>蓬勃发展的时代背景下，一本开源书籍的诞生凝聚着作者对<span class="highlight">知识的渴望</span>与<span class="accent">分享的信念</span>。本页作为开篇，引出本次分享的核心——记录 <span class="highlight">2021年10月</span> 期间编写开源之书时的所思所感，从<span class="highlight">选题</span>、<span class="highlight">写作</span>到<span class="highlight">社区协作</span>的全链路回顾。
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>SHI · OPEN SOURCE WRITING LOG</span>
+      <span>// PRESS START TO BEGIN //</span>
+      <span>2021.10 — RECAP</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>书籍核心主题概览</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1E293B; --bg-deeper:#0F172A; --primary:#2196F3; --accent:#00BCD4;
+  --text:#E2E8F0; --text-muted:#94A3B8; --card-bg:#243447;
+  --border:rgba(33,150,243,0.28);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','Noto Sans SC',sans-serif;color:var(--text);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg-deeper);}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(circle at 22% 18%,rgba(33,150,243,0.10) 0%,transparent 52%),radial-gradient(circle at 82% 84%,rgba(0,188,212,0.08) 0%,transparent 55%),var(--bg-deeper);}
+#ct{position:absolute;inset:0;z-index:1;padding:34px 50px 24px 50px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+header{display:flex;align-items:flex-start;gap:22px;margin-bottom:14px;}
+header .accent-bar{width:4px;min-height:110px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:2px;flex-shrink:0;}
+header .head-text{flex:1;}
+header .tag{font-family:'Inter',sans-serif;font-size:11px;color:var(--accent);letter-spacing:4px;font-weight:600;margin-bottom:6px;}
+header h1{font-family:'Noto Sans SC',sans-serif;font-size:30px;font-weight:700;letter-spacing:1px;margin-bottom:8px;background:linear-gradient(90deg,#fff 0%,#82C7F5 60%,#00BCD4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+header p{font-size:13px;line-height:1.7;color:var(--text-muted);font-family:'Noto Sans SC',sans-serif;max-width:1180px;}
+
+.grid-section{position:relative;height:244px;margin-top:6px;}
+.connector{position:absolute;top:98px;left:40px;right:40px;height:2px;background:linear-gradient(90deg,transparent,rgba(33,150,243,0.5),var(--primary) 50%,rgba(33,150,243,0.5),transparent);z-index:0;}
+.connector::before,.connector::after{content:'';position:absolute;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);}
+.connector::before{left:-5px;}
+.connector::after{right:-5px;}
+.connector .hub{position:absolute;left:50%;top:-8px;width:16px;height:16px;border-radius:50%;background:var(--bg-deeper);border:2px solid var(--primary);box-shadow:0 0 18px rgba(33,150,243,0.6);transform:translateX(-50%);}
+
+.cards{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:18px;z-index:1;height:100%;}
+.card{position:relative;background:linear-gradient(160deg,rgba(36,52,71,0.92),rgba(15,23,42,0.92));border:1px solid var(--border);border-radius:12px;padding:22px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--primary),var(--accent),var(--primary),transparent);}
+.card::after{content:'';position:absolute;bottom:-40px;right:-40px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.10),transparent 70%);}
+.card .num{font-family:'Inter',sans-serif;font-size:11px;color:var(--accent);letter-spacing:3px;font-weight:600;margin-bottom:10px;}
+.card .icon-wrap{width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.22),transparent 72%);display:flex;align-items:center;justify-content:center;margin-bottom:12px;border:1px solid rgba(33,150,243,0.35);box-shadow:0 0 24px rgba(33,150,243,0.15);}
+.card .icon-wrap svg{width:34px;height:34px;stroke:var(--primary);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.card h3{font-family:'Noto Sans SC',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:10px;letter-spacing:0.5px;}
+.card p{font-family:'Noto Sans SC',sans-serif;font-size:12px;line-height:1.65;color:var(--text-muted);}
+
+.bottom-row{display:flex;gap:24px;align-items:stretch;margin-top:14px;height:388px;}
+.data-labels{display:flex;flex-direction:column;gap:16px;width:600px;flex-shrink:0;}
+.label-card{flex:1;background:linear-gradient(135deg,rgba(33,150,243,0.14),rgba(15,23,42,0.6));border:1px solid var(--border);border-radius:10px;padding:18px 22px;display:flex;align-items:center;gap:20px;position:relative;overflow:hidden;}
+.label-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.label-card .metric{font-family:'Inter',sans-serif;font-size:40px;font-weight:700;color:var(--primary);line-height:1;flex-shrink:0;}
+.label-card .metric small{display:block;font-size:11px;color:var(--accent);letter-spacing:2.5px;margin-top:6px;font-weight:600;font-family:'Noto Sans SC',sans-serif;}
+.label-card .divider{width:1px;height:64px;background:rgba(33,150,243,0.25);flex-shrink:0;}
+.label-card .meta{flex:1;}
+.label-card .meta .t{font-family:'Noto Sans SC',sans-serif;font-size:14px;color:#fff;font-weight:600;margin-bottom:6px;letter-spacing:0.5px;}
+.label-card .meta .d{font-family:'Noto Sans SC',sans-serif;font-size:11.5px;color:var(--text-muted);line-height:1.6;}
+
+.image-box{flex:1;background:rgba(15,23,42,0.55);border:1px solid var(--border);border-radius:10px;padding:12px 12px 8px 12px;display:flex;flex-direction:column;position:relative;}
+.image-box::before{content:'VISUAL';position:absolute;top:8px;right:14px;font-family:'Inter',sans-serif;font-size:9px;color:var(--accent);letter-spacing:2px;font-weight:600;opacity:0.7;}
+.image-box .img{flex:1;border-radius:6px;overflow:hidden;background:#0B1220;display:flex;align-items:center;justify-content:center;}
+.image-box .img img{max-width:100%;max-height:100%;width:auto;height:100%;object-fit:contain;display:block;}
+.image-box .cap{text-align:center;margin-top:8px;font-family:'Noto Sans SC',sans-serif;font-size:13px;color:var(--accent);letter-spacing:3px;font-weight:500;}
+.image-box .cap span{color:#82C7F5;}
+
+footer{margin-top:14px;text-align:center;font-family:'Noto Sans SC',sans-serif;font-size:13px;color:#82C7F5;letter-spacing:3px;}
+footer .sep{color:var(--accent);margin:0 8px;font-weight:600;}
+footer .hi{color:#fff;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<header>
+  <div class="accent-bar"></div>
+  <div class="head-text">
+    <div class="tag">CORE THEMES OVERVIEW</div>
+    <h1>书籍核心主题概览</h1>
+    <p>全书围绕五个核心主题层层展开，从开源战略的组织定位出发，拆解 OSPO 团队架构与运营模式，深入社区运营方法论，再到合规管控体系，最终落脚于开源为企业创造的商业与社会价值，形成完整的知识闭环。</p>
+  </div>
+</header>
+
+<div class="grid-section">
+  <div class="connector"><div class="hub"></div></div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="num">01</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>开源战略定位</h3>
+      <p>从被动响应到主动布局，OSPO 如何成为企业技术创新的战略中枢</p>
+    </div>
+
+    <div class="card">
+      <div class="num">02</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M12 7.5v4"/><path d="M12 11.5l-5.5 4"/><path d="M12 11.5l5.5 4"/></svg>
+      </div>
+      <h3>组织架构设计</h3>
+      <p>字节 OSPO 的团队构成、汇报关系与跨部门协作机制的深度拆解</p>
+    </div>
+
+    <div class="card">
+      <div class="num">03</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5"/><path d="M14 20c0-2 1.5-3.5 3.5-3.5s3 1.5 3 3.5"/></svg>
+      </div>
+      <h3>社区运营方法</h3>
+      <p>开源社区建设、开发者生态培育及贡献者激励的全链路实践</p>
+    </div>
+
+    <div class="card">
+      <div class="num">04</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <h3>合规与风险管控</h3>
+      <p>开源许可证合规审计流程、SBOM 管理与供应链安全治理体系</p>
+    </div>
+
+    <div class="card">
+      <div class="num">05</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="6"/><path d="M8 12l3 3 5-6"/></svg>
+      </div>
+      <h3>商业价值实现</h3>
+      <p>开源如何驱动品牌影响力、人才招聘与技术创新飞轮的构建</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="bottom-row">
+  <div class="data-labels">
+    <div class="label-card">
+      <div class="metric">5<small>大维度</small></div>
+      <div class="divider"></div>
+      <div class="meta">
+        <div class="t">战略 · 组织 · 社区 · 合规 · 价值</div>
+        <div class="d">覆盖企业开源体系全链路五大核心维度，层层递进</div>
+      </div>
+    </div>
+    <div class="label-card">
+      <div class="metric">多<small>角色</small></div>
+      <div class="divider"></div>
+      <div class="meta">
+        <div class="t">CTO 到一线工程师</div>
+        <div class="d">面向决策层、管理层与执行层，满足不同角色的阅读诉求</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="image-box">
+    <div class="img">
+      <img src="../images/page_003_icon_grid.png" alt="五大主题图标阵列">
+    </div>
+    <div class="cap">五大主题 <span>·</span> 互联互通</div>
+  </div>
+</div>
+
+<footer>
+  <span class="hi">五大维度</span><span class="sep">·</span><span class="hi">一个闭环</span><span class="sep">·</span><span class="hi">一套可落地的企业开源体系</span>
+</footer>
+
+</div>
+</div>
+</body>
+</html>

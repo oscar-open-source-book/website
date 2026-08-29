@@ -1,0 +1,483 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>生态观察 · 第二章</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #ECEFF1;
+  --text-sub: #B0BEC5;
+  --bg-dark: #0B1220;
+  --bg-card: #111C33;
+  --bg-card-edge: #1A2A47;
+  --border: #1E3255;
+  --glow: rgba(33,150,243,0.35);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg-dark);
+  font-family: 'Inter', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  font-size: 15px;
+}
+
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+
+#bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(1200px 700px at 85% 10%, rgba(33,150,243,0.10), transparent 60%),
+    radial-gradient(900px 600px at 5% 95%, rgba(0,188,212,0.08), transparent 60%),
+    linear-gradient(135deg, #0A1120 0%, #0B1630 50%, #0A1120 100%);
+}
+
+#bg::after {
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(30,50,85,0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,50,85,0.18) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity:0.5;
+}
+
+#ct {
+  position: absolute; inset: 0; z-index: 1;
+  padding: 50px 55px 45px 55px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 620px 1fr;
+  grid-template-rows: 1fr 150px;
+  grid-column-gap: 40px;
+  grid-row-gap: 22px;
+}
+
+/* ============ LEFT COLUMN ============ */
+.left-col {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.chapter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 12px;
+  background: rgba(33,150,243,0.10);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--primary);
+  letter-spacing: 2px;
+  margin-bottom: 26px;
+  width: fit-content;
+}
+.chapter-tag .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.title-cn {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 92px;
+  line-height: 1.05;
+  letter-spacing: 6px;
+  background: linear-gradient(120deg, #ffffff 0%, #2196F3 55%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 60px rgba(33,150,243,0.25);
+  margin-bottom: 14px;
+}
+
+.title-en {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: var(--accent);
+  margin-bottom: 28px;
+  padding-left: 2px;
+}
+
+.divider {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  margin-bottom: 24px;
+  border-radius: 2px;
+}
+
+.narrative {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text-sub);
+  max-width: 560px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(33,150,243,0.3);
+}
+
+.narrative em {
+  color: var(--text-main);
+  font-style: normal;
+  font-weight: 600;
+  border-bottom: 1px dashed rgba(0,188,212,0.6);
+  padding-bottom: 1px;
+}
+
+.left-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+}
+
+.footer-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.5), transparent);
+}
+
+.footer-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+}
+
+/* ============ RIGHT COLUMN — 5 CARDS ============ */
+.right-col {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.card {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-card) 0%, #0D1B34 100%);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 20px 12px 20px;
+  display: grid;
+  grid-template-columns: 56px 1fr 160px;
+  align-items: center;
+  column-gap: 18px;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.card-icon {
+  width: 56px; height: 56px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.18), rgba(0,188,212,0.10));
+  border: 1px solid rgba(33,150,243,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.card-main { display: flex; flex-direction: column; gap: 4px; }
+
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.card-desc {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-sub);
+}
+
+.card-bar {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(33,150,243,0.10);
+  border: 1px solid rgba(33,150,243,0.18);
+  overflow: hidden;
+  grid-column: 1 / span 3;
+  margin-top: 4px;
+}
+.card-bar::before {
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  box-shadow: 0 0 10px var(--glow);
+}
+
+.card .meta {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+}
+
+.meta-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.meta-tag {
+  font-size: 10.5px;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+/* per-card bar widths */
+.c1 .card-bar::before { width: 78%; }
+.c2 .card-bar::before { width: 88%; }
+.c3 .card-bar::before { width: 65%; }
+.c4 .card-bar::before { width: 82%; }
+.c5 .card-bar::before { width: 52%; }
+
+/* ============ BOTTOM — DATA POINTS ============ */
+.data-row {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.kpi {
+  position: relative;
+  background: linear-gradient(135deg, rgba(33,150,243,0.08) 0%, rgba(0,188,212,0.04) 100%);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow: hidden;
+}
+
+.kpi::after {
+  content:"";
+  position: absolute;
+  right: -30px; top: -30px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.18), transparent 70%);
+}
+
+.kpi-num {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+.kpi-num .unit {
+  font-size: 16px;
+  color: var(--accent);
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+.kpi-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+.kpi-note {
+  font-size: 11.5px;
+  color: var(--text-sub);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+.kpi-bar {
+  margin-top: 10px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(33,150,243,0.12);
+  position: relative;
+  overflow: hidden;
+}
+.kpi-bar::before {
+  content:"";
+  position: absolute; left:0; top:0; bottom:0;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+.k1 .kpi-bar::before { width: 60%; }
+.k2 .kpi-bar::before { width: 92%; }
+.k3 .kpi-bar::before { width: 75%; }
+
+/* corner decorations */
+.corner {
+  position: absolute;
+  z-index: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: rgba(176,190,197,0.3);
+  letter-spacing: 2px;
+}
+.corner-tl { top: 18px; left: 20px; }
+.corner-tr { top: 18px; right: 20px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <span class="corner corner-tl">// CH.02 / ECOSYSTEM</span>
+    <span class="corner corner-tr">2022.02 · OBSERVATION</span>
+
+    <!-- LEFT -->
+    <div class="left-col">
+      <div class="chapter-tag">
+        <span class="dot"></span>
+        <span>CHAPTER · 02</span>
+      </div>
+
+      <div class="title-cn">生态观察</div>
+      <div class="title-en">ECOSYSTEM OBSERVATION</div>
+      <div class="divider"></div>
+
+      <p class="narrative">
+        进入<em>第二章</em>，我们从许可证争议、供应链安全、社区可持续性等角度，深入审视 2022 年 2 月开源生态背后的结构性变化。这些议题看似独立，实则共同指向一个问题——<em>开源如何在一个更加商业化的时代，保持其开放精神。</em>
+      </p>
+
+      <div class="left-footer">
+        <span class="footer-tag">§ 02 · L / S / C</span>
+        <span class="footer-line"></span>
+        <span class="footer-tag">LICENSE · SECURITY · COMMUNITY</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: 5 CARDS -->
+    <div class="right-col">
+
+      <div class="card c1">
+        <div class="card-icon">01</div>
+        <div class="card-main">
+          <div class="card-title">BSL 许可证争议</div>
+          <div class="card-desc">MongoDB 与 Elastic 先后采用 BSL 商业源码许可，引发对"开源"定义的重新讨论。</div>
+        </div>
+        <div class="meta">
+          <span class="meta-num">2 项目</span>
+          <span class="meta-tag">LICENSE</span>
+        </div>
+        <div class="card-bar"></div>
+      </div>
+
+      <div class="card c2">
+        <div class="card-icon">02</div>
+        <div class="card-main">
+          <div class="card-title">供应链安全</div>
+          <div class="card-desc">npm 事件余波、GHSA 漏洞库持续扩容，OpenSSF 推动其成为行业第一议题。</div>
+        </div>
+        <div class="meta">
+          <span class="meta-num">4000+</span>
+          <span class="meta-tag">SECURITY</span>
+        </div>
+        <div class="card-bar"></div>
+      </div>
+
+      <div class="card c3">
+        <div class="card-icon">03</div>
+        <div class="card-main">
+          <div class="card-title">开源可持续</div>
+          <div class="card-desc">个人维护者倦怠、基金会托举、赞助模式与企业反哺，共同支撑社区长久运转。</div>
+        </div>
+        <div class="meta">
+          <span class="meta-num">SUSTAIN</span>
+          <span class="meta-tag">COMMUNITY</span>
+        </div>
+        <div class="card-bar"></div>
+      </div>
+
+      <div class="card c4">
+        <div class="card-icon">04</div>
+        <div class="card-main">
+          <div class="card-title">中国开源崛起</div>
+          <div class="card-desc">CNCF 年度调查揭示中国贡献者占比持续攀升，国产开源项目活跃度显著提高。</div>
+        </div>
+        <div class="meta">
+          <span class="meta-num">↑ CN</span>
+          <span class="meta-tag">CNCF · 2022</span>
+        </div>
+        <div class="card-bar"></div>
+      </div>
+
+      <div class="card c5">
+        <div class="card-icon">05</div>
+        <div class="card-main">
+          <div class="card-title">阅读书单</div>
+          <div class="card-desc">本月精选：《Rust 程序设计语言》《Open Source in Practice》——理论、工程、社区三重视角。</div>
+        </div>
+        <div class="meta">
+          <span class="meta-num">2 本</span>
+          <span class="meta-tag">READING</span>
+        </div>
+        <div class="card-bar"></div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM: 3 KPI -->
+    <div class="data-row">
+      <div class="kpi k1">
+        <div class="kpi-num">2<span class="unit">个</span></div>
+        <div class="kpi-label">采用 BSL 的项目</div>
+        <div class="kpi-note">MongoDB · Elasticsearch</div>
+        <div class="kpi-bar"></div>
+      </div>
+      <div class="kpi k2">
+        <div class="kpi-num">4000<span class="unit">+</span></div>
+        <div class="kpi-label">GHSA 已收录漏洞</div>
+        <div class="kpi-note">GitHub 安全公告库累计数量</div>
+        <div class="kpi-bar"></div>
+      </div>
+      <div class="kpi k3">
+        <div class="kpi-num">200<span class="unit">+</span></div>
+        <div class="kpi-label">OpenSSF 成员</div>
+        <div class="kpi-note">供应链安全联盟企业成员数</div>
+        <div class="kpi-bar"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

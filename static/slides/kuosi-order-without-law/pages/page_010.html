@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>在路上，与开源同行</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@500;700&display=swap');
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --neutral:#607D8B;
+  --bg-deep:#050b1a;
+  --bg-mid:#0a1628;
+  --text-main:#eaf2fb;
+  --text-dim:#9fb4c7;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  color:var(--text-main);
+  background:#000;
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:radial-gradient(ellipse at 50% 45%, #0f2244 0%, #08101f 45%, #04080f 80%);
+}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.beam{
+  position:absolute;left:50%;top:42%;
+  width:2600px;height:2600px;
+  transform:translate(-50%,-50%);
+  background:conic-gradient(from 0deg,
+    rgba(33,150,243,0) 0deg,
+    rgba(33,150,243,0.10) 8deg,
+    rgba(33,150,243,0) 18deg,
+    rgba(0,188,212,0.08) 32deg,
+    rgba(33,150,243,0) 45deg,
+    rgba(33,150,243,0.10) 65deg,
+    rgba(33,150,243,0) 78deg,
+    rgba(0,188,212,0.08) 100deg,
+    rgba(33,150,243,0) 115deg,
+    rgba(33,150,243,0.10) 135deg,
+    rgba(33,150,243,0) 150deg,
+    rgba(0,188,212,0.08) 175deg,
+    rgba(33,150,243,0) 195deg,
+    rgba(33,150,243,0.10) 215deg,
+    rgba(33,150,243,0) 230deg,
+    rgba(0,188,212,0.08) 255deg,
+    rgba(33,150,243,0) 270deg,
+    rgba(33,150,243,0.10) 295deg,
+    rgba(33,150,243,0) 310deg,
+    rgba(0,188,212,0.08) 335deg,
+    rgba(33,150,243,0) 360deg);
+  opacity:0.85;
+  filter:blur(2px);
+  pointer-events:none;
+}
+.glow-core{
+  position:absolute;left:50%;top:42%;
+  width:520px;height:520px;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(33,150,243,0.35) 0%, rgba(33,150,243,0.10) 35%, rgba(33,150,243,0) 70%);
+  pointer-events:none;
+}
+.grid-overlay{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;
+}
+.particle{
+  position:absolute;border-radius:50%;
+  background:var(--primary);
+  box-shadow:0 0 12px 3px rgba(33,150,243,0.7);
+}
+.particle.cy{background:var(--cyan);box-shadow:0 0 12px 3px rgba(0,188,212,0.7);}
+.particle.dim{background:rgba(33,150,243,0.4);box-shadow:0 0 8px 2px rgba(33,150,243,0.35);}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:48px 80px 36px;
+  display:flex;flex-direction:column;
+  box-sizing:border-box;
+}
+.top{
+  text-align:center;margin-top:4px;
+}
+.eyebrow{
+  font-family:'Roboto Mono',monospace;
+  font-size:13px;font-weight:500;
+  letter-spacing:6px;
+  color:var(--cyan);
+  margin-bottom:14px;
+}
+.main-title{
+  font-family:'Roboto Mono','Inter',monospace;
+  font-weight:700;
+  font-size:60px;
+  letter-spacing:2px;
+  background:linear-gradient(90deg, #7ec8ff 0%, #2196F3 35%, #00BCD4 65%, #7ec8ff 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 40px rgba(33,150,243,0.35);
+  line-height:1.15;
+}
+.sub-title{
+  font-size:19px;
+  color:var(--text-dim);
+  margin-top:14px;
+  letter-spacing:1px;
+  font-weight:400;
+}
+.divider{
+  width:140px;height:1px;
+  background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+  margin:18px auto 0;
+}
+
+.pillars{
+  display:flex;justify-content:space-between;
+  gap:28px;margin-top:26px;
+}
+.pillar{
+  flex:1;
+  padding:20px 22px 22px;
+  background:linear-gradient(160deg, rgba(33,150,243,0.12) 0%, rgba(33,150,243,0.03) 100%);
+  border:1px solid rgba(33,150,243,0.25);
+  border-radius:12px;
+  position:relative;
+  backdrop-filter:blur(4px);
+}
+.pillar-dot{
+  position:absolute;top:16px;right:18px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 12px 3px rgba(0,188,212,0.75);
+}
+.pillar-num{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;font-weight:500;
+  letter-spacing:3px;color:var(--cyan);
+  margin-bottom:6px;
+}
+.pillar-title{
+  font-size:21px;font-weight:700;
+  color:var(--text-main);
+  margin-bottom:10px;
+  letter-spacing:1px;
+}
+.pillar-line{
+  width:36px;height:2px;
+  background:linear-gradient(90deg,var(--primary),transparent);
+  margin-bottom:10px;
+}
+.pillar-text{
+  font-size:14px;
+  line-height:1.75;
+  color:var(--text-dim);
+  font-weight:400;
+}
+
+.narrative{
+  margin-top:20px;
+  text-align:center;
+  font-size:15px;line-height:1.85;
+  color:var(--text-dim);
+  letter-spacing:0.5px;
+  padding:0 40px;
+}
+.narrative strong{color:var(--text-main);font-weight:600;}
+
+.cards{
+  display:flex;gap:28px;margin-top:18px;
+}
+.card{
+  flex:1;
+  display:flex;align-items:center;gap:14px;
+  padding:14px 20px;
+  background:linear-gradient(135deg, rgba(10,22,40,0.85) 0%, rgba(15,34,68,0.6) 100%);
+  border:1px solid rgba(33,150,243,0.28);
+  border-radius:10px;
+  position:relative;
+  overflow:hidden;
+}
+.card-icon{
+  width:38px;height:38px;flex-shrink:0;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.5) 0%, rgba(33,150,243,0.05) 100%);
+  border:1px solid rgba(33,150,243,0.4);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Roboto Mono',monospace;
+  font-weight:700;font-size:14px;color:var(--cyan);
+}
+.card-body{flex:1;min-width:0;}
+.card-label{
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;letter-spacing:2px;color:var(--cyan);
+  margin-bottom:3px;font-weight:500;
+}
+.card-text{
+  font-size:13.5px;color:var(--text-main);font-weight:500;line-height:1.55;
+}
+
+.footer{
+  margin-top:auto;
+  text-align:center;
+  padding-top:14px;
+  border-top:1px solid rgba(33,150,243,0.18);
+}
+.footer-text{
+  font-size:14px;color:var(--neutral);
+  letter-spacing:6px;
+  font-weight:400;
+}
+.footer-tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;color:var(--cyan);
+  letter-spacing:4px;margin-top:8px;
+  opacity:0.75;
+}
+
+.corner{
+  position:absolute;
+  width:40px;height:40px;
+  border-color:rgba(0,188,212,0.45);
+  pointer-events:none;
+}
+.corner.tl{top:24px;left:24px;border-top:1px solid;border-left:1px solid;}
+.corner.tr{top:24px;right:24px;border-top:1px solid;border-right:1px solid;}
+.corner.bl{bottom:24px;left:24px;border-bottom:1px solid;border-left:1px solid;}
+.corner.br{bottom:24px;right:24px;border-bottom:1px solid;border-right:1px solid;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="beam"></div>
+    <div class="glow-core"></div>
+    <div class="grid-overlay"></div>
+    <div class="particle dim" style="left:6%;top:12%;width:3px;height:3px;"></div>
+    <div class="particle" style="left:14%;top:24%;width:4px;height:4px;"></div>
+    <div class="particle cy dim" style="left:4%;top:40%;width:3px;height:3px;"></div>
+    <div class="particle dim" style="left:18%;top:58%;width:3px;height:3px;"></div>
+    <div class="particle" style="left:8%;top:76%;width:4px;height:4px;"></div>
+    <div class="particle cy" style="left:15%;top:88%;width:3px;height:3px;"></div>
+    <div class="particle dim" style="left:32%;top:6%;width:3px;height:3px;"></div>
+    <div class="particle cy dim" style="left:88%;top:10%;width:3px;height:3px;"></div>
+    <div class="particle" style="left:94%;top:26%;width:4px;height:4px;"></div>
+    <div class="particle dim" style="left:96%;top:44%;width:3px;height:3px;"></div>
+    <div class="particle cy" style="left:90%;top:62%;width:4px;height:4px;"></div>
+    <div class="particle dim" style="left:94%;top:80%;width:3px;height:3px;"></div>
+    <div class="particle" style="left:82%;top:90%;width:4px;height:4px;"></div>
+    <div class="particle cy dim" style="left:66%;top:4%;width:3px;height:3px;"></div>
+    <div class="particle dim" style="left:44%;top:8%;width:3px;height:3px;"></div>
+    <div class="particle" style="left:2%;top:60%;width:3px;height:3px;"></div>
+    <div class="particle cy" style="left:10%;top:92%;width:3px;height:3px;"></div>
+    <div class="particle dim" style="left:28%;top:96%;width:3px;height:3px;"></div>
+    <div class="particle" style="left:72%;top:96%;width:3px;height:3px;"></div>
+    <div class="particle cy dim" style="left:56%;top:96%;width:3px;height:3px;"></div>
+  </div>
+  <div id="ct">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <div class="top">
+      <div class="eyebrow">—— CHAPTER 10 · CODA ——</div>
+      <div class="main-title">在路上，与开源同行</div>
+      <div class="sub-title">秩序生于混沌，自由源于约束，感谢每一位同行的开源人</div>
+      <div class="divider"></div>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-dot"></div>
+        <div class="pillar-num">01 · KEEP READING</div>
+        <div class="pillar-title">保持阅读</div>
+        <div class="pillar-line"></div>
+        <div class="pillar-text">代码会变旧，文档会过时，但对开源精神的思考永远不会过时。</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-dot" style="background:var(--primary);box-shadow:0 0 12px 3px rgba(33,150,243,0.8);"></div>
+        <div class="pillar-num">02 · KEEP SHARING</div>
+        <div class="pillar-title">保持分享</div>
+        <div class="pillar-line"></div>
+        <div class="pillar-text">你写下的每一行代码、每一篇文档，都可能成为他人进入开源世界的入口。</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-dot"></div>
+        <div class="pillar-num">03 · KEEP CONNECTING</div>
+        <div class="pillar-title">保持连接</div>
+        <div class="pillar-line"></div>
+        <div class="pillar-text">关注开源之道，订阅月刊，参与线下活动，与社区保持持续的对话。</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      开源不是一场终点已知的旅程，而是一次<strong>没有终点的同行</strong>。在秩序与无律之间，在混沌与结构之间，<strong>每一位贡献者都是这个生态不可或缺的节点</strong>。感谢阅读，我们下一期再见。
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">→</div>
+        <div class="card-body">
+          <div class="card-label">NEXT ISSUE</div>
+          <div class="card-text">下一期主题：待定，敬请期待 2022 年开源之道系列</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">◈</div>
+        <div class="card-body">
+          <div class="card-label">COMMUNITY</div>
+          <div class="card-text">社区入口：开源之道官网，获取更多阅读与活动信息</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">感 谢 每 一 位 同 行 的 开 源 人</div>
+      <div class="footer-tag">// END · OPENWORLD · 2022</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

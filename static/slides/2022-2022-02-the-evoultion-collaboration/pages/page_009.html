@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>实践中的协作启示</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg: #F5F7FA;
+  --text-main: #1A2332;
+  --text-secondary: #546E7A;
+  --card-bg: #FFFFFF;
+  --border: #E3EAF2;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #F5F7FA 0%, #E8F0F8 100%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+}
+.header {
+  margin-bottom: 24px;
+}
+.page-tag {
+  display: inline-block;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  padding: 4px 12px;
+  background: rgba(33,150,243,0.08);
+  border-left: 3px solid var(--primary);
+}
+.title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+}
+h1 .accent-bar {
+  display: inline-block;
+  width: 6px;
+  height: 36px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  margin-right: 16px;
+  border-radius: 3px;
+}
+.page-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+}
+.lead-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 1340px;
+  line-height: 1.75;
+}
+.lead-text strong {
+  color: var(--text-main);
+  font-weight: 500;
+}
+.main-content {
+  display: flex;
+  gap: 28px;
+  height: 568px;
+}
+.left-col {
+  width: 780px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.insight-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.insight-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+.insight-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+  min-width: 48px;
+  text-align: center;
+  opacity: 0.85;
+}
+.insight-divider {
+  width: 1px;
+  height: 48px;
+  background: var(--border);
+}
+.insight-body {
+  flex: 1;
+}
+.insight-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+.insight-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.insight-tag {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(0,188,212,0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+}
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.loop-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.section-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: inline-block;
+}
+.section-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.loop-svg-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.kpi-row {
+  display: flex;
+  gap: 14px;
+  height: 128px;
+}
+.kpi-card {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle at top right, rgba(33,150,243,0.1) 0%, transparent 70%);
+}
+.kpi-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+.kpi-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.kpi-value .unit {
+  font-size: 15px;
+  font-weight: 600;
+  margin-left: 2px;
+}
+.kpi-note {
+  font-size: 10px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.kpi-note .highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+.footer-bar {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+.footer-close {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 12px;
+}
+.footer-right {
+  letter-spacing: 2px;
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <span class="page-tag">PRACTICE · INSIGHT · 09</span>
+      <div class="title-row">
+        <h1><span class="accent-bar"></span><span>实践中的协作启示</span></h1>
+        <span class="page-num">P.09 / CONTENT</span>
+      </div>
+      <p class="lead-text">
+        从协作演进的视角回看当下，最成功的社区都在做同一件事：<strong>让贡献变得容易、让反馈变得及时、让参与者感到归属</strong>。以下四条启示是布道者可以立刻践行的起点——它们不是理论，而是已经被验证的工程实践。
+      </p>
+    </div>
+
+    <div class="main-content">
+      <div class="left-col">
+
+        <div class="insight-card">
+          <div class="insight-num"><span>01</span></div>
+          <div class="insight-divider"></div>
+          <div class="insight-body">
+            <div class="insight-title"><span>降低参与门槛</span></div>
+            <div class="insight-desc"><span>good first issue、贡献者指南、代码注释规范等，是吸引新人的第一道门。把"我不知道从哪里开始"变成"我可以马上动手"。</span></div>
+            <span class="insight-tag">ONBOARDING</span>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-num"><span>02</span></div>
+          <div class="insight-divider"></div>
+          <div class="insight-body">
+            <div class="insight-title"><span>建立反馈闭环</span></div>
+            <div class="insight-desc"><span>及时回复 Issue、致谢 PR 作者、公开复盘决策，让贡献者感到被看见。反馈不是结束，而是下一次参与的开始。</span></div>
+            <span class="insight-tag">FEEDBACK</span>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-num"><span>03</span></div>
+          <div class="insight-divider"></div>
+          <div class="insight-body">
+            <div class="insight-title"><span>跨项目流动</span></div>
+            <div class="insight-desc"><span>鼓励贡献者在多个项目间流动，形成技能互补与社区网络效应。健康的生态不是孤岛，而是互联的节点。</span></div>
+            <span class="insight-tag">NETWORK</span>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-num"><span>04</span></div>
+          <div class="insight-divider"></div>
+          <div class="insight-body">
+            <div class="insight-title"><span>包容与多元</span></div>
+            <div class="insight-desc"><span>Code of Conduct、无障碍设计、多语言支持共同构建友善的协作环境。多样性不是口号，是持续投入的工程。</span></div>
+            <span class="insight-tag">INCLUSION</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="right-col">
+
+        <div class="loop-section">
+          <div class="section-title"><span>反馈闭环流程图</span></div>
+          <div class="section-subtitle"><span>Issue → Review → Merge → Feedback，循环不息</span></div>
+          <div class="loop-svg-wrap">
+            <svg viewBox="0 0 420 380" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#2196F3"/>
+                  <stop offset="100%" style="stop-color:#00BCD4"/>
+                </linearGradient>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#00BCD4"/>
+                </marker>
+                <radialGradient id="nodeBlue" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" style="stop-color:#64B5F6"/>
+                  <stop offset="100%" style="stop-color:#1976D2"/>
+                </radialGradient>
+                <radialGradient id="nodeCyan" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" style="stop-color:#80DEEA"/>
+                  <stop offset="100%" style="stop-color:#0097A7"/>
+                </radialGradient>
+              </defs>
+
+              <circle cx="210" cy="190" r="55" fill="none" stroke="#E3EAF2" stroke-width="1" stroke-dasharray="4,4"/>
+              <text x="210" y="186" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="#546E7A" letter-spacing="1">CLOSED</text>
+              <text x="210" y="203" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="#546E7A" letter-spacing="1">LOOP</text>
+
+              <path d="M 268 95 Q 322 120 335 158" fill="none" stroke="url(#arrowGrad)" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+              <path d="M 335 222 Q 322 260 268 285" fill="none" stroke="url(#arrowGrad)" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+              <path d="M 152 285 Q 98 260 85 222" fill="none" stroke="url(#arrowGrad)" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+              <path d="M 85 158 Q 98 120 152 95" fill="none" stroke="url(#arrowGrad)" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+              <g>
+                <circle cx="210" cy="72" r="42" fill="url(#nodeBlue)" stroke="#2196F3" stroke-width="2"/>
+                <circle cx="210" cy="72" r="49" fill="none" stroke="#2196F3" stroke-width="1" opacity="0.25"/>
+                <text x="210" y="68" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FFFFFF">Issue</text>
+                <text x="210" y="84" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#FFFFFF" opacity="0.85">提报需求</text>
+              </g>
+
+              <g>
+                <circle cx="340" cy="190" r="42" fill="url(#nodeCyan)" stroke="#00BCD4" stroke-width="2"/>
+                <circle cx="340" cy="190" r="49" fill="none" stroke="#00BCD4" stroke-width="1" opacity="0.25"/>
+                <text x="340" y="186" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FFFFFF">Review</text>
+                <text x="340" y="202" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#FFFFFF" opacity="0.85">代码评审</text>
+              </g>
+
+              <g>
+                <circle cx="210" cy="308" r="42" fill="url(#nodeBlue)" stroke="#2196F3" stroke-width="2"/>
+                <circle cx="210" cy="308" r="49" fill="none" stroke="#2196F3" stroke-width="1" opacity="0.25"/>
+                <text x="210" y="304" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#FFFFFF">Merge</text>
+                <text x="210" y="320" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#FFFFFF" opacity="0.85">合并发布</text>
+              </g>
+
+              <g>
+                <circle cx="80" cy="190" r="42" fill="url(#nodeCyan)" stroke="#00BCD4" stroke-width="2"/>
+                <circle cx="80" cy="190" r="49" fill="none" stroke="#00BCD4" stroke-width="1" opacity="0.25"/>
+                <text x="80" y="186" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#FFFFFF">Feedback</text>
+                <text x="80" y="202" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#FFFFFF" opacity="0.85">回馈闭环</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label"><span>NEW CONTRIBUTOR RETENTION</span></div>
+            <div class="kpi-value"><span>+40<span class="unit">%</span></span></div>
+            <div class="kpi-note"><span>带有 <span class="highlight">good first issue</span> 标签的项目，新人留存率较无标签项目提升 40%</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><span>PR AVG RESPONSE TIME</span></div>
+            <div class="kpi-value"><span>&lt;72<span class="unit">h</span></span></div>
+            <div class="kpi-note"><span>健康社区 PR 平均响应时间应小于 <span class="highlight">72 小时</span>，是业界参考线</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-left">
+        <span class="footer-dot"></span>
+        <span class="footer-close">让贡献变得容易，让反馈变得及时，让参与者感到归属。</span>
+      </div>
+      <span class="footer-right">COLLABORATION · INSIGHT · 09</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

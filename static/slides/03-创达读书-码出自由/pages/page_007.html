@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>GNU与Linux的传奇</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&family=Roboto:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #B0BEC5;
+  --text-bright: #ECEFF1;
+  --bg-dark: #0A0E1A;
+  --bg-card: #111827;
+  --bg-card2: #0F1923;
+  --border-glow: #1E3A5F;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Roboto', sans-serif;
+  color: var(--text-main);
+  background: #000;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: radial-gradient(ellipse at 50% 0%, #0F1B2E 0%, #060A14 60%, #030610 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(33,150,243,0.06) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(0,188,212,0.05) 0%, transparent 40%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 36px 60px 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.header h1 {
+  font-family: 'Orbitron', 'Rajdhani', sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+  letter-spacing: 6px;
+  background: linear-gradient(90deg, #2196F3, #00BCD4, #2196F3);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  animation: shimmer 4s ease-in-out infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 200% center; }
+}
+
+.header .subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-main);
+  max-width: 1280px;
+  margin: 0 auto;
+  letter-spacing: 0.3px;
+}
+
+.deco-line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 12px auto 0;
+}
+
+/* Center area */
+.center-area {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  margin-bottom: 18px;
+}
+
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card {
+  background: linear-gradient(135deg, rgba(17,24,39,0.95) 0%, rgba(15,25,35,0.95) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: 8px;
+  padding: 14px 18px 14px 18px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow: 0 0 12px rgba(33,150,243,0.4);
+}
+
+.card .num-badge {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(0,188,212,0.15));
+  border: 1px solid rgba(33,150,243,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  box-shadow: 0 0 10px rgba(33,150,243,0.15) inset;
+}
+
+.card-body { flex: 1; min-width: 0; }
+
+.card-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.card-desc {
+  font-size: 10.8px;
+  line-height: 1.6;
+  color: var(--text-main);
+  font-weight: 300;
+}
+
+.card-icon {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  color: rgba(0,188,212,0.5);
+  letter-spacing: 2px;
+}
+
+/* Center emblem */
+.emblem {
+  width: 180px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+}
+
+.emblem-ring {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 24px rgba(33,150,243,0.3), 0 0 48px rgba(33,150,243,0.1) inset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 70%);
+}
+
+.emblem-ring::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,188,212,0.3);
+}
+
+.emblem-inner {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(33,150,243,0.12), rgba(0,188,212,0.1));
+  border: 1px solid rgba(33,150,243,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.emblem-text-1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 2px;
+}
+
+.emblem-divider {
+  width: 30px;
+  height: 1px;
+  background: var(--accent);
+  margin: 3px 0;
+}
+
+.emblem-text-2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.emblem-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  color: var(--text-main);
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+
+.emblem-tag {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  color: rgba(0,188,212,0.5);
+  letter-spacing: 2px;
+}
+
+/* Silhouette decorations */
+.silhouettes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.tl-item {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(17,24,39,0.9) 0%, rgba(15,25,35,0.9) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: 6px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tl-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.tl-year {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #2196F3, #00BCD4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 8px rgba(33,150,243,0.4));
+  flex-shrink: 0;
+}
+
+.tl-content { flex: 1; min-width: 0; }
+
+.tl-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+}
+
+.tl-desc {
+  font-size: 9.5px;
+  line-height: 1.5;
+  color: var(--text-main);
+  font-weight: 300;
+}
+
+/* Geometric decorations */
+.geo-line-h {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.3), transparent);
+}
+
+.geo-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* Grid background pattern */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-bg"></div>
+  </div>
+  <div id="ct">
+
+    <div class="silhouettes">
+      <span class="geo-dot" style="top:80px; left:60px;"></span>
+      <span class="geo-dot" style="top:80px; right:60px;"></span>
+      <span class="geo-dot" style="bottom:140px; left:60px;"></span>
+      <span class="geo-dot" style="bottom:140px; right:60px;"></span>
+      <div class="geo-line-h" style="top:45px; left:0; width:100%;"></div>
+      <div class="geo-line-h" style="bottom:110px; left:0; width:100%;"></div>
+    </div>
+
+    <div class="header">
+      <h1>GNU与Linux的传奇</h1>
+      <p class="subtitle">
+        Stallman 的理想主义提供了法律和哲学框架，Torvalds 的工程实践提供了核心技术基石。两人虽从未真正面对面，却共同成就了计算机科学史上最伟大的开源项目。Linux 如今运行在从超级计算机到智能手机的每一个领域。
+      </p>
+      <div class="deco-line"></div>
+    </div>
+
+    <div class="center-area">
+      <div class="col">
+        <div class="card">
+          <div class="num-badge">01</div>
+          <div class="card-body">
+            <div class="card-title">Stallman 的自由</div>
+            <div class="card-desc">Richard Stallman 在 MIT 看到 AI 实验室封闭软件后，立志重建一个自由的软件世界。他发起 GNU 计划，誓要让代码回归用户手中，从此改变了整个软件行业的游戏规则。</div>
+          </div>
+          <span class="card-icon">◆ FREE</span>
+        </div>
+        <div class="card">
+          <div class="num-badge">02</div>
+          <div class="card-body">
+            <div class="card-title">GPL 的革命性</div>
+            <div class="card-desc">Copyleft 机制确保任何衍生作品也必须保持开源，形成了不可逆的"自由传递"链。这是一项以法律为武器的哲学实践，让自由软件的基因永续传承，无法被私有化剥夺。</div>
+          </div>
+          <span class="card-icon">◆ COPYLEFT</span>
+        </div>
+      </div>
+
+      <div class="emblem">
+        <span class="emblem-label">GNU</span>
+        <div class="emblem-ring">
+          <div class="emblem-inner">
+            <span class="emblem-text-1">GNU</span>
+            <span class="emblem-divider"></span>
+            <span class="emblem-text-2">LINUX</span>
+          </div>
+        </div>
+        <span class="emblem-label">LINUX</span>
+        <span class="emblem-tag">/ 1983 — 1991 /</span>
+      </div>
+
+      <div class="col">
+        <div class="card">
+          <div class="num-badge">03</div>
+          <div class="card-body">
+            <div class="card-title">Torvalds 的 Linux</div>
+            <div class="card-desc">1991 年，在芬兰赫尔辛基大学，年仅 21 岁的 Linus Torvalds 在 Usenet 新闻组上发布了 Linux 内核的首个版本。一段个人项目的代码，最终长成了世界最大的开源操作系统。</div>
+          </div>
+          <span class="card-icon">◆ KERNEL</span>
+        </div>
+        <div class="card">
+          <div class="num-badge">04</div>
+          <div class="card-body">
+            <div class="card-title">天作之合</div>
+            <div class="card-desc">GNU 工具链与 Linux 内核结合，构成了完整的自由操作系统，被 Stallman 正式命名为 "GNU/Linux"。这一组合至今仍是全球互联网基础设施、云计算与移动设备的核心引擎。</div>
+          </div>
+          <span class="card-icon">◆ UNITE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-year">1987</span>
+        <div class="tl-content">
+          <div class="tl-title">GNU GCC 发布</div>
+          <div class="tl-desc">首个 GNU C 编译器诞生，标志着 GNU 计划进入实质阶段</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-year">1991</span>
+        <div class="tl-content">
+          <div class="tl-title">Linux 内核 0.01</div>
+          <div class="tl-desc">Linus 发布第一版内核，约 1 万行 C 代码，改变一切</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-year">1994</span>
+        <div class="tl-content">
+          <div class="tl-title">Debian 1.0 发行</div>
+          <div class="tl-desc">首个完整 GNU/Linux 发行版问世，开源系统走向大众</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

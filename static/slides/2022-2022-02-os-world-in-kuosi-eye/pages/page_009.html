@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2月开源数据全景</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0A0E1A;
+  --bg-card: #111827;
+  --bg-card-border: #1E2A3A;
+  --text-main: #E8EAF6;
+  --text-muted: #78909C;
+  --glow: 0 0 20px rgba(33, 150, 243, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0A0E1A 0%, #0D1525 40%, #0A1628 70%, #080C16 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 70%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -200px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.06) 0%, transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.title-accent {
+  width: 4px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--cyan) 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(33,150,243,0.5);
+}
+
+h1 {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+h1 .highlight {
+  color: var(--primary);
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--neutral);
+  line-height: 1.6;
+  max-width: 1380px;
+  padding-left: 22px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--cyan) 30%, transparent 80%);
+  margin: 4px 0 18px 0;
+  opacity: 0.6;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 165px;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--cyan) 100%);
+  opacity: 0.7;
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.06) 0%, transparent 70%);
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.kpi-value {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  text-shadow: 0 0 20px rgba(33,150,243,0.3);
+  margin: 4px 0 6px 0;
+}
+
+.kpi-value .unit {
+  font-size: 18px;
+  color: var(--cyan);
+  margin-left: 2px;
+}
+
+.kpi-name {
+  font-size: 13px;
+  color: var(--text-main);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.kpi-source {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.trend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.trend-arrow {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.trend-up { color: #4CAF50; }
+.trend-up-alt { color: var(--cyan); }
+
+.trend-text {
+  font-size: 10px;
+  color: var(--neutral);
+  font-family: 'Roboto Mono', monospace;
+}
+
+.mini-chart {
+  height: 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.mini-bar {
+  flex: 1;
+  background: var(--primary);
+  opacity: 0.6;
+  border-radius: 1px;
+  min-height: 2px;
+}
+
+.mini-bar.peak { opacity: 1; background: var(--cyan); }
+
+.summary-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summary-title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+
+.summary-card {
+  background: rgba(17, 24, 39, 0.6);
+  border: 1px solid rgba(33, 150, 243, 0.15);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--primary);
+  box-shadow: 0 0 8px rgba(33,150,243,0.4);
+}
+
+.summary-icon {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.summary-head {
+  font-size: 12px;
+  color: var(--text-main);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.summary-body {
+  font-size: 10px;
+  color: var(--neutral);
+  line-height: 1.5;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.dot-blue { background: var(--primary); box-shadow: 0 0 6px var(--primary); }
+.dot-cyan { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.dot-green { background: #4CAF50; box-shadow: 0 0 6px #4CAF50; }
+.dot-orange { background: #FF9800; box-shadow: 0 0 6px #FF9800; }
+.dot-red { background: #F44336; box-shadow: 0 0 6px #F44336; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <div class="title-row">
+        <div class="title-accent"></div>
+        <h1>2月<span class="highlight">开源数据</span>全景</h1>
+      </div>
+      <p class="subtitle">用数据说话——2022年2月的开源世界呈现出增长与安全并存的格局，AI相关项目爆发式增长，Rust持续逆袭，中国贡献者群体不断扩大，而安全事件的高占比也提醒我们开源治理仍需持续投入。</p>
+    </div>
+    <div class="divider"></div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label"><span class="status-dot dot-blue"></span>CONTRIBUTORS</div>
+          <div class="kpi-value">2000<span class="unit">万+</span></div>
+          <div class="kpi-name">全球月度活跃贡献者</div>
+          <div class="kpi-source">GitHub 平台统计口径</div>
+        </div>
+        <div class="trend-row">
+          <span class="trend-arrow trend-up">▲</span>
+          <span class="trend-text">持续攀升 · 历史峰值</span>
+          <div class="mini-chart" style="margin-left:auto;">
+            <div class="mini-bar" style="height:40%"></div>
+            <div class="mini-bar" style="height:55%"></div>
+            <div class="mini-bar" style="height:48%"></div>
+            <div class="mini-bar" style="height:65%"></div>
+            <div class="mini-bar" style="height:60%"></div>
+            <div class="mini-bar" style="height:75%"></div>
+            <div class="mini-bar peak" style="height:90%"></div>
+            <div class="mini-bar peak" style="height:100%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label"><span class="status-dot dot-cyan"></span>LANGUAGE RANK</div>
+          <div class="kpi-value">第10<span class="unit">位</span></div>
+          <div class="kpi-name">Rust TIOBE 排名</div>
+          <div class="kpi-source">历史首次进入前 10</div>
+        </div>
+        <div class="trend-row">
+          <span class="trend-arrow trend-up-alt">▲</span>
+          <span class="trend-text">逆袭跃升 · 里程碑</span>
+          <div class="mini-chart" style="margin-left:auto;">
+            <div class="mini-bar" style="height:90%"></div>
+            <div class="mini-bar" style="height:80%"></div>
+            <div class="mini-bar" style="height:72%"></div>
+            <div class="mini-bar" style="height:60%"></div>
+            <div class="mini-bar" style="height:50%"></div>
+            <div class="mini-bar" style="height:40%"></div>
+            <div class="mini-bar" style="height:30%"></div>
+            <div class="mini-bar peak" style="height:20%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label"><span class="status-dot dot-green"></span>CN CONTRIBUTORS</div>
+          <div class="kpi-value">25<span class="unit">%</span></div>
+          <div class="kpi-name">中国贡献者占比</div>
+          <div class="kpi-source">CNCF 年度调查数据趋势</div>
+        </div>
+        <div class="trend-row">
+          <span class="trend-arrow trend-up">▲</span>
+          <span class="trend-text">增速领跑 · 群体扩大</span>
+          <div class="mini-chart" style="margin-left:auto;">
+            <div class="mini-bar" style="height:30%"></div>
+            <div class="mini-bar" style="height:42%"></div>
+            <div class="mini-bar" style="height:50%"></div>
+            <div class="mini-bar" style="height:55%"></div>
+            <div class="mini-bar" style="height:62%"></div>
+            <div class="mini-bar" style="height:70%"></div>
+            <div class="mini-bar peak" style="height:80%"></div>
+            <div class="mini-bar peak" style="height:90%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label"><span class="status-dot dot-red"></span>CVE OPEN SOURCE</div>
+          <div class="kpi-value">75<span class="unit">%+</span></div>
+          <div class="kpi-name">CVE 涉及开源比例</div>
+          <div class="kpi-source">当月公布 CVE 统计</div>
+        </div>
+        <div class="trend-row">
+          <span class="trend-arrow" style="color:#F44336;">▲</span>
+          <span class="trend-text">高风险 · 治理待投入</span>
+          <div class="mini-chart" style="margin-left:auto;">
+            <div class="mini-bar" style="height:60%; background:#F44336;"></div>
+            <div class="mini-bar" style="height:65%; background:#F44336;"></div>
+            <div class="mini-bar" style="height:68%; background:#F44336;"></div>
+            <div class="mini-bar" style="height:72%; background:#F44336;"></div>
+            <div class="mini-bar" style="height:78%; background:#F44336;"></div>
+            <div class="mini-bar" style="height:82%; background:#F44336;"></div>
+            <div class="mini-bar peak" style="height:88%; background:#FF5252;"></div>
+            <div class="mini-bar peak" style="height:95%; background:#FF5252;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label"><span class="status-dot dot-cyan"></span>GO 1.18 DOWNLOAD</div>
+          <div class="kpi-value">500<span class="unit">万+</span></div>
+          <div class="kpi-name">Go 1.18 首周下载量</div>
+          <div class="kpi-source">Go 官网下载统计数据</div>
+        </div>
+        <div class="trend-row">
+          <span class="trend-arrow trend-up-alt">▲</span>
+          <span class="trend-text">首日爆量 · 版本热度高</span>
+          <div class="mini-chart" style="margin-left:auto;">
+            <div class="mini-bar peak" style="height:100%; background:var(--cyan);"></div>
+            <div class="mini-bar peak" style="height:90%; background:var(--cyan);"></div>
+            <div class="mini-bar" style="height:78%"></div>
+            <div class="mini-bar" style="height:65%"></div>
+            <div class="mini-bar" style="height:55%"></div>
+            <div class="mini-bar" style="height:45%"></div>
+            <div class="mini-bar" style="height:40%"></div>
+            <div class="mini-bar" style="height:35%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label"><span class="status-dot dot-blue"></span>AI REPO GROWTH</div>
+          <div class="kpi-value">+40<span class="unit">%</span></div>
+          <div class="kpi-name">AI 仓库月增速</div>
+          <div class="kpi-source">对比 2021 年 2 月基线</div>
+        </div>
+        <div class="trend-row">
+          <span class="trend-arrow trend-up">▲</span>
+          <span class="trend-text">爆发式增长 · AI 浪潮</span>
+          <div class="mini-chart" style="margin-left:auto;">
+            <div class="mini-bar" style="height:25%"></div>
+            <div class="mini-bar" style="height:30%"></div>
+            <div class="mini-bar" style="height:38%"></div>
+            <div class="mini-bar" style="height:45%"></div>
+            <div class="mini-bar" style="height:55%"></div>
+            <div class="mini-bar" style="height:68%"></div>
+            <div class="mini-bar peak" style="height:82%"></div>
+            <div class="mini-bar peak" style="height:100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-title">// KEY TAKEAWAYS · 核心要点摘要</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-icon">[ 01 ]</div>
+          <div class="summary-head"><span class="status-dot dot-blue"></span>GitHub 活跃度</div>
+          <div class="summary-body">月度仓库创建量持续增长，AI 相关项目增速最快，生态热度持续攀升。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon">[ 02 ]</div>
+          <div class="summary-head"><span class="status-dot dot-cyan"></span>Rust 语言排名</div>
+          <div class="summary-body">TIOBE 指数首次进入前 10，Stack Overflow 连续四年最受欢迎语言。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon">[ 03 ]</div>
+          <div class="summary-head"><span class="status-dot dot-green"></span>开源贡献者增长</div>
+          <div class="summary-body">全球月度活跃贡献者突破 2000 万，中国贡献者增速领跑全球。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon">[ 04 ]</div>
+          <div class="summary-head"><span class="status-dot dot-orange"></span>基金会议程</div>
+          <div class="summary-body">Apache、CNCF、LF AI 等基金会 2 月均有重要项目毕业或基金发放。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon">[ 05 ]</div>
+          <div class="summary-head"><span class="status-dot dot-red"></span>安全事件统计</div>
+          <div class="summary-body">当月 CVE 中涉及开源组件比例超过 75%，依赖风险持续高位。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

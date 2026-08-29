@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>上游贡献的关键数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1A1A2E;
+  --bg2:#0F0F1E;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --text-main:#E8EAF6;
+  --text-sub:#9FA8C7;
+  --card-bg:rgba(26,26,46,0.7);
+  --border-glow:rgba(33,150,243,0.55);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter','PingFang SC',sans-serif;font-size:16px;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(33,150,243,0.18) 0%, transparent 40%),
+    radial-gradient(circle at 88% 82%, rgba(0,229,255,0.14) 0%, transparent 42%),
+    linear-gradient(135deg,#0F0F1E 0%,#1A1A2E 55%,#0E1230 100%);
+}
+#bg::before{content:"";position:absolute;inset:0;background:
+    repeating-linear-gradient(0deg,rgba(33,150,243,0.04) 0 1px,transparent 1px 60px),
+    repeating-linear-gradient(90deg,rgba(33,150,243,0.04) 0 1px,transparent 1px 60px);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 56px 36px 56px;display:flex;flex-direction:column;}
+header{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.title{font-family:'Space Grotesk','Inter',sans-serif;font-weight:700;font-size:42px;letter-spacing:1px;
+  background:linear-gradient(90deg,#E8EAF6 0%,#00E5FF 60%,#2196F3 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.title-underline{width:120px;height:3px;background:linear-gradient(90deg,#00E5FF,#2196F3);border-radius:2px;
+  box-shadow:0 0 12px rgba(0,229,255,0.7);}
+.subtitle{font-size:15px;line-height:1.7;color:var(--text-sub);max-width:1480px;}
+.subtitle b{color:var(--accent);font-weight:600;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:12px;}
+.kpi{position:relative;background:linear-gradient(180deg,rgba(33,150,243,0.08),rgba(15,15,30,0.5));
+  border:1px solid var(--border-glow);border-radius:14px;padding:20px 18px 18px 18px;
+  box-shadow:0 0 22px rgba(33,150,243,0.18),inset 0 0 22px rgba(33,150,243,0.06);
+  display:flex;flex-direction:column;gap:8px;min-height:210px;}
+.kpi::before{content:"";position:absolute;top:-1px;left:18px;width:60px;height:2px;background:#00E5FF;box-shadow:0 0 10px #00E5FF;border-radius:2px;}
+.kpi::after{content:"";position:absolute;bottom:14px;right:14px;width:8px;height:8px;border-radius:50%;background:#00E5FF;box-shadow:0 0 10px #00E5FF;}
+.kpi-tag{font-size:11px;color:var(--accent);letter-spacing:2px;font-weight:600;}
+.kpi-title{font-size:16px;font-weight:600;color:var(--text-main);}
+.kpi-num{font-family:'Space Grotesk','Inter',sans-serif;font-size:44px;font-weight:700;
+  background:linear-gradient(135deg,#00E5FF 0%,#2196F3 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.05;
+  text-shadow:0 0 18px rgba(0,229,255,0.3);margin:2px 0;}
+.kpi-text{font-size:13px;line-height:1.6;color:var(--text-sub);}
+.kpi-num-lg{font-size:30px;}
+
+.points-block{margin-top:14px;background:linear-gradient(180deg,rgba(33,150,243,0.06),rgba(15,15,30,0.4));
+  border:1px solid rgba(33,150,243,0.28);border-radius:14px;padding:14px 20px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+.points-block-head{grid-column:1 / -1;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--accent);letter-spacing:3px;font-weight:600;}
+.points-block-head .line{flex:1;height:1px;background:linear-gradient(90deg,#2196F3,transparent);}
+.point{display:flex;flex-direction:column;gap:6px;}
+.point-head{display:flex;align-items:center;gap:8px;}
+.point-dot{width:8px;height:8px;border-radius:50%;background:#00E5FF;box-shadow:0 0 8px #00E5FF;flex-shrink:0;}
+.point-title{font-size:13px;font-weight:600;color:var(--text-main);}
+.point-text{font-size:12px;line-height:1.55;color:var(--text-sub);padding-left:16px;}
+
+.footer{margin-top:14px;text-align:center;font-family:'Space Grotesk','Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:2px;
+  padding:12px 0;border-top:1px solid rgba(33,150,243,0.25);border-bottom:1px solid rgba(33,150,243,0.25);
+  background:linear-gradient(90deg,transparent,rgba(0,229,255,0.06),transparent);}
+.footer .a{color:var(--accent);}
+.footer .b{color:var(--primary);}
+.footer .sep{color:var(--text-sub);margin:0 12px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<header>
+  <div class="title">上游贡献的关键数据</div>
+  <div class="title-underline"></div>
+  <div class="subtitle">数据为 <b>"上游优先"</b> 理念提供了量化支撑——从提交回流率到 Fork 的衰退周期，从企业采纳趋势到社区增长模式，多个维度都指向同一结论：<b>越靠近上游，投资回报越高；忽视上游，最终将被上游淘汰</b>。</div>
+</header>
+
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-tag">01 · PATCH</div>
+    <div class="kpi-title">补丁来源占比</div>
+    <div class="kpi-num">60%+</div>
+    <div class="kpi-text">顶级开源项目合入的补丁主要来自外部贡献者，社区驱动已成为上游代码演进的核心动力。</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-tag">02 · FORK</div>
+    <div class="kpi-title">Fork 衰退周期</div>
+    <div class="kpi-num">~18 个月</div>
+    <div class="kpi-text">长期远离上游的 Fork 项目代码质量和社区活力通常在 18 个月内出现明显下降。</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-tag">03 · ENTERPRISE</div>
+    <div class="kpi-title">企业评估维度</div>
+    <div class="kpi-num kpi-num-lg">上游活跃度</div>
+    <div class="kpi-text">它已成为企业架构选型的核心评估指标之一，直接决定长期技术债务与演进能力。</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-tag">04 · GROWTH</div>
+    <div class="kpi-title">贡献者增长</div>
+    <div class="kpi-num kpi-num-lg">正相关</div>
+    <div class="kpi-text">上游优先团队与封闭团队相比，贡献者数量和代码合入率均呈显著正向增长。</div>
+  </div>
+</div>
+
+<div class="points-block">
+  <div class="points-block-head"><span>五组支撑要点</span><span class="line"></span></div>
+  <div class="point">
+    <div class="point-head"><span class="point-dot"></span><span class="point-title">提交回流率</span></div>
+    <div class="point-text">顶级项目中大部分已合并补丁最初来自下游或边缘贡献者，上游汇聚下游智慧。</div>
+  </div>
+  <div class="point">
+    <div class="point-head"><span class="point-dot"></span><span class="point-title">维护负担</span></div>
+    <div class="point-text">下游发行版维护者平均需跟踪上百个上游版本的安全补丁，远离上游则加倍承压。</div>
+  </div>
+  <div class="point">
+    <div class="point-head"><span class="point-dot"></span><span class="point-title">Fork 衰退</span></div>
+    <div class="point-text">远离上游的 Fork 项目代码质量和社区活力通常在 18 个月内出现系统性下滑。</div>
+  </div>
+  <div class="point">
+    <div class="point-head"><span class="point-dot"></span><span class="point-title">社区增长</span></div>
+    <div class="point-text">上游优先团队的贡献者数量和合入率呈正相关，生态吸引力持续放大。</div>
+  </div>
+  <div class="point">
+    <div class="point-head"><span class="point-dot"></span><span class="point-title">企业采纳</span></div>
+    <div class="point-text">越来越多企业将上游活跃度列为架构选型的核心指标，驱动采购与研发投入。</div>
+  </div>
+</div>
+
+<div class="footer">
+  <span class="a">越靠近上游，回报越高</span><span class="sep">·</span><span class="b">远离上游，终被淘汰</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

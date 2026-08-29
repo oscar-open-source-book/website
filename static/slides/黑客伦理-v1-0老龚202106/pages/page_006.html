@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>实践与影响</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root {
+  --bg: #1E1E2E;
+  --silver: #B0BEC5;
+  --cyan: #00BCD4;
+  --dark-card: #222236;
+  --border: #3A3A52;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--silver);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px; height: 900px;
+  position: relative; overflow: hidden;
+  margin: 0 auto;
+  background: #1E1E2E;
+}
+#bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+#ct { position: absolute; inset: 0; z-index: 1; padding: 50px 70px 40px; box-sizing: border-box; }
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -220px; right: -220px;
+  width: 720px; height: 720px;
+  background: radial-gradient(circle, rgba(0,188,212,0.09) 0%, transparent 70%);
+  border-radius: 50%;
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -220px; left: -220px;
+  width: 720px; height: 720px;
+  background: radial-gradient(circle, rgba(176,190,197,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.big-num {
+  position: absolute;
+  top: -30px;
+  left: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 260px;
+  font-weight: 700;
+  color: rgba(0,188,212,0.055);
+  line-height: 1;
+  user-select: none;
+  letter-spacing: -8px;
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.geo-deco {
+  position: absolute;
+  pointer-events: none;
+}
+.geo-1 {
+  top: 110px; right: 240px;
+  width: 60px; height: 60px;
+  border: 1px solid rgba(0,188,212,0.22);
+  transform: rotate(45deg);
+}
+.geo-2 {
+  top: 300px; right: 170px;
+  width: 18px; height: 18px;
+  background: rgba(0,188,212,0.06);
+  border: 1px solid rgba(0,188,212,0.18);
+}
+.geo-3 {
+  bottom: 110px; left: 280px;
+  width: 42px; height: 42px;
+  border: 1px solid rgba(176,190,197,0.18);
+  border-radius: 50%;
+}
+.geo-4 {
+  top: 500px; left: 140px;
+  width: 10px; height: 10px;
+  background: var(--cyan);
+  opacity: 0.35;
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+}
+.geo-5 {
+  top: 40px; right: 90px;
+  width: 80px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--cyan));
+}
+.geo-6 {
+  bottom: 50px; right: 200px;
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, transparent, var(--silver));
+}
+
+.meta-info {
+  position: absolute;
+  top: 50px;
+  right: 70px;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--silver);
+  opacity: 0.5;
+  letter-spacing: 2px;
+  line-height: 1.9;
+}
+.meta-info .accent { color: var(--cyan); opacity: 1; }
+
+.terminal-hint {
+  position: absolute;
+  bottom: 18px;
+  left: 70px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--silver);
+  opacity: 0.35;
+  letter-spacing: 2px;
+}
+.terminal-hint .blink { color: var(--cyan); opacity: 1; }
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--silver);
+  opacity: 0.7;
+  letter-spacing: 2px;
+}
+.top-bar .dot {
+  width: 8px; height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+  flex-shrink: 0;
+}
+.top-bar .line {
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, var(--cyan), transparent);
+}
+
+.title-area {
+  position: relative;
+  margin-top: 28px;
+  margin-bottom: 32px;
+}
+.title-area h1 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 80px;
+  font-weight: 700;
+  color: #E8EEF2;
+  letter-spacing: 6px;
+  position: relative;
+  z-index: 1;
+}
+.title-area .subtitle {
+  margin-top: 14px;
+  font-size: 22px;
+  color: var(--cyan);
+  font-weight: 300;
+  letter-spacing: 10px;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+}
+.title-area .tag-line {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--silver);
+  opacity: 0.5;
+  letter-spacing: 2px;
+}
+.title-area .tag-line .cy { color: var(--cyan); opacity: 1; }
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 140px 1fr;
+  gap: 0;
+  margin-top: 10px;
+}
+
+.side-panel {
+  background: linear-gradient(135deg, #242438 0%, #1E1E2E 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px 26px 22px;
+  position: relative;
+  min-height: 360px;
+}
+.side-panel.left { border-left: 3px solid var(--cyan); }
+.side-panel.right { border-right: 3px solid var(--silver); }
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--silver);
+  opacity: 0.7;
+}
+.panel-header .badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-size: 10px;
+  border-radius: 3px;
+}
+.panel-header .badge.silver {
+  border-color: var(--silver);
+  color: var(--silver);
+}
+
+.panel-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 30px;
+  font-weight: 700;
+  color: #E8EEF2;
+  margin-bottom: 4px;
+}
+.panel-sub {
+  font-size: 12px;
+  color: var(--silver);
+  opacity: 0.55;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.points {
+  list-style: none;
+  margin-bottom: 16px;
+}
+.points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--silver);
+}
+.points li::before {
+  content: '>';
+  color: var(--cyan);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+.right .points li::before { color: var(--silver); }
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+.tags span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  background: rgba(0,188,212,0.08);
+  color: var(--cyan);
+  border: 1px solid rgba(0,188,212,0.22);
+  letter-spacing: 1px;
+}
+.right .tags span {
+  background: rgba(176,190,197,0.08);
+  color: var(--silver);
+  border-color: rgba(176,190,197,0.22);
+}
+
+.arrow-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.arrow-zone .v-line {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(to bottom, transparent, var(--cyan), transparent);
+}
+.arrow-zone .arrow-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 38px;
+  color: var(--cyan);
+  margin: 8px 0;
+  text-shadow: 0 0 15px rgba(0,188,212,0.5);
+}
+.arrow-zone .arrow-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--silver);
+  opacity: 0.6;
+  writing-mode: vertical-rl;
+  letter-spacing: 4px;
+  margin: 6px 0;
+}
+
+.bottom-bar {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.bottom-bar .progress {
+  flex: 1;
+  height: 2px;
+  background: rgba(176,190,197,0.15);
+  border-radius: 1px;
+  position: relative;
+}
+.bottom-bar .progress::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 55%;
+  background: linear-gradient(to right, var(--cyan), var(--silver));
+  border-radius: 1px;
+}
+.bottom-bar .closing-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+.bottom-bar .closing-text .dim { color: var(--silver); opacity: 0.5; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-overlay"></div>
+    <div class="big-num"><span>06</span></div>
+    <div class="geo-deco geo-1"></div>
+    <div class="geo-deco geo-2"></div>
+    <div class="geo-deco geo-3"></div>
+    <div class="geo-deco geo-4"></div>
+    <div class="geo-deco geo-5"></div>
+    <div class="geo-deco geo-6"></div>
+  </div>
+  <div id="ct">
+    <div class="meta-info">
+      <div>CHAPTER <span class="accent">06</span> / 12</div>
+      <div>PRACTICE × IMPACT</div>
+      <div>CLASSIFIED // INTERNAL</div>
+    </div>
+    <div class="terminal-hint"><span>$</span> init chapter_06 <span class="blink">_</span></div>
+
+    <div class="top-bar">
+      <span class="dot"></span>
+      <span>CHAPTER 06</span>
+      <span class="line"></span>
+      <span>PRACTICE &amp; IMPACT</span>
+      <span class="dot"></span>
+    </div>
+
+    <div class="title-area">
+      <h1>实践与影响</h1>
+      <div class="subtitle">从 理 念 到 行 动</div>
+      <span class="tag-line">// <span class="cy">ETHICS</span> → <span class="cy">CODE</span> → <span class="cy">REALITY</span> · hacker ethos in practice</span>
+    </div>
+
+    <div class="main-content">
+      <div class="side-panel left">
+        <div class="panel-header">
+          <span class="badge">// IDEAL</span>
+          <span>理念侧 · 抽象源头</span>
+        </div>
+        <div class="panel-title">开源社区</div>
+        <div class="panel-sub">open source community</div>
+        <ul class="points">
+          <li>Linux 内核全球协作，数万贡献者共同维护操作系统基石</li>
+          <li>Apache 基金会以开放治理践行自由、协作、去中心化精神</li>
+          <li>Git、Python、Node.js 等工具重新定义软件生产关系</li>
+          <li>"公开、协作、共享"从理念沉淀为行业基础设施</li>
+        </ul>
+        <div class="tags">
+          <span>Linux</span>
+          <span>Apache</span>
+          <span>FSF</span>
+          <span>GPL</span>
+        </div>
+      </div>
+
+      <div class="arrow-zone">
+        <div class="v-line"></div>
+        <div class="arrow-text">TRANSITION</div>
+        <div class="arrow-icon">▶</div>
+        <div class="arrow-text">FROM → TO</div>
+        <div class="v-line"></div>
+      </div>
+
+      <div class="side-panel right">
+        <div class="panel-header">
+          <span class="badge silver">// REALITY</span>
+          <span>现实侧 · 落地实践</span>
+        </div>
+        <div class="panel-title">商业拥抱</div>
+        <div class="panel-sub">enterprise adoption</div>
+        <ul class="points">
+          <li>Google 依托 Linux、Chrome、Android 构建开源商业帝国</li>
+          <li>Microsoft 拥抱开源，Azure + VS Code 引领企业级协作</li>
+          <li>红帽并购、Kubernetes 主导，开源成为云时代核心战略</li>
+          <li>黑客伦理从亚文化走向全球企业的技术哲学与商业引擎</li>
+        </ul>
+        <div class="tags">
+          <span>Google</span>
+          <span>Microsoft</span>
+          <span>Red Hat</span>
+          <span>K8s</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span class="closing-text"><span class="dim">从</span> 理 念 <span class="dim">到</span> 行 动 <span class="dim">·</span> <span class="dim">从</span> 理 想 <span class="dim">到</span> 现 实</span>
+      <div class="progress"></div>
+      <span class="closing-text">NEXT <span class="dim">→</span> 现代软件范式</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

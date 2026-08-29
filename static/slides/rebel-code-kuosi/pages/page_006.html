@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>全球开源数据一览</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+  --klein:#002FA7;
+  --klein-glow:#0040D0;
+  --cyan:#00BCD4;
+  --navy:#1A1A2E;
+  --navy-deep:#0F0F1A;
+  --card:#16162A;
+  --card-2:#1E1E38;
+  --line:#2A2A48;
+  --text:#E8E8F0;
+  --text-dim:#8888A8;
+  --text-mid:#B0B0C8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+
+body{
+  font-family:'Inter','Segoe UI',sans-serif;
+  font-size:17px;
+  color:var(--text);
+  background:var(--navy);
+  line-height:1.55;
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  background:
+    radial-gradient(1200px 700px at 15% -10%, rgba(0,47,167,0.28) 0%, transparent 60%),
+    radial-gradient(900px 600px at 95% 110%, rgba(0,188,212,0.12) 0%, transparent 55%),
+    var(--navy);
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(180deg, rgba(15,15,26,0.6) 0%, rgba(26,26,46,0.4) 100%);
+  pointer-events:none;
+}
+
+#bg::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  opacity:0.7;
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:42px 60px 40px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ===== HEADER ===== */
+.header{margin-bottom:14px;}
+.header-top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.tag-row{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;font-weight:600;}
+.tag-row .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+.tag-row .bar{width:40px;height:2px;background:linear-gradient(90deg,var(--cyan),transparent);}
+.header-meta{font-size:12px;color:var(--text-dim);letter-spacing:1.5px;}
+
+h1{
+  font-size:42px;
+  font-weight:800;
+  letter-spacing:-0.5px;
+  background:linear-gradient(135deg,#FFFFFF 0%, #C8D4FF 50%, var(--cyan) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:10px;
+}
+
+.subtitle{
+  font-size:14px;
+  color:var(--text-mid);
+  max-width:1380px;
+  line-height:1.75;
+  border-left:2px solid var(--cyan);
+  padding-left:14px;
+  font-weight:300;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:18px;
+  margin-bottom:16px;
+  flex:0 0 auto;
+}
+
+/* ---- Left KPI Panel ---- */
+.kpi-panel{
+  background:linear-gradient(135deg, var(--navy-deep) 0%, var(--card) 100%);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+  position:relative;
+  overflow:hidden;
+}
+.kpi-panel::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg, var(--klein) 0%, var(--cyan) 100%);
+}
+.kpi-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.kpi-title{font-size:13px;font-weight:700;color:var(--cyan);letter-spacing:1.5px;}
+.kpi-badge{font-size:11px;color:var(--text-dim);letter-spacing:1px;border:1px solid var(--line);padding:3px 8px;border-radius:4px;}
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:1fr 1fr;
+  gap:10px;
+}
+
+.kpi-card{
+  background:var(--navy-deep);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:14px 14px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;
+  overflow:hidden;
+  transition:all .3s;
+}
+.kpi-card .kpi-num{
+  font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.5px;line-height:1.1;
+}
+.kpi-card .kpi-num .unit{font-size:14px;font-weight:600;color:var(--cyan);margin-left:3px;}
+.kpi-card .kpi-label{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:0.3px;}
+.kpi-card .kpi-sub{font-size:10px;color:var(--text-dim);margin-top:6px;padding-top:6px;border-top:1px solid var(--line);line-height:1.5;}
+.kpi-card .kpi-corner{
+  position:absolute;top:8px;right:8px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);opacity:0.5;
+}
+
+.kpi-card.accent{
+  background:linear-gradient(135deg, var(--klein) 0%, #001F7A 100%);
+  border-color:var(--klein-glow);
+}
+.kpi-card.accent .kpi-num{color:#fff;}
+.kpi-card.accent .kpi-corner{background:#fff;opacity:0.8;}
+.kpi-card.accent .kpi-sub{color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.15);}
+
+.kpi-card.wide{
+  grid-column:span 2;
+  flex-direction:row;
+  align-items:center;
+  gap:14px;
+}
+.kpi-card.wide .kpi-left{flex:1;}
+.kpi-card.wide .kpi-bar{
+  height:4px;width:100%;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;
+}
+.kpi-card.wide .kpi-bar .fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--klein));border-radius:2px;}
+
+/* ---- Right Chart Panel ---- */
+.chart-panel{
+  background:linear-gradient(135deg, var(--navy-deep) 0%, var(--card) 100%);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+  position:relative;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.chart-panel::before{
+  content:'';
+  position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg, var(--cyan) 0%, var(--klein) 100%);
+}
+.chart-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:6px;
+}
+.chart-title{font-size:13px;font-weight:700;color:var(--cyan);letter-spacing:1.5px;}
+.chart-legend{display:flex;gap:14px;font-size:11px;color:var(--text-dim);}
+.chart-legend .lg{display:flex;align-items:center;gap:5px;}
+.chart-legend .lg .sq{width:8px;height:8px;border-radius:2px;}
+
+.chart-kpis{
+  display:flex;gap:12px;margin:8px 0 4px;
+}
+.chart-kpi{
+  flex:1;background:var(--navy-deep);border:1px solid var(--line);border-radius:8px;padding:8px 12px;
+  display:flex;flex-direction:column;
+}
+.chart-kpi .ck-label{font-size:10px;color:var(--text-dim);letter-spacing:0.5px;}
+.chart-kpi .ck-value{font-size:18px;font-weight:700;color:#fff;margin-top:2px;}
+.chart-kpi .ck-value .pct{color:var(--cyan);font-size:13px;}
+.chart-kpi.accent .ck-value{color:var(--cyan);}
+
+#chart_1{
+  width:100%;
+  flex:1;
+  min-height:180px;
+}
+
+/* ===== BOTTOM 4 COLUMNS ===== */
+.bottom{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:14px;
+  flex:0 0 auto;
+}
+.dim-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:16px 16px 14px;
+  position:relative;
+  overflow:hidden;
+}
+.dim-card::before{
+  content:'';
+  position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--cyan) 0%, var(--klein) 100%);
+}
+.dim-card .dim-icon{
+  font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:2px;margin-bottom:6px;
+}
+.dim-card .dim-title{
+  font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-0.2px;
+}
+.dim-card .dim-text{
+  font-size:12px;color:var(--text-mid);line-height:1.7;
+}
+.dim-card .dim-tag{
+  margin-top:10px;font-size:10px;color:var(--cyan);letter-spacing:1px;
+  border-top:1px solid var(--line);padding-top:8px;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--line);
+  padding-top:12px;
+  flex:0 0 auto;
+}
+.footer-text{
+  font-size:13px;color:var(--text-mid);font-weight:400;
+}
+.footer-text .hl{color:var(--cyan);font-weight:600;}
+.footer-meta{
+  font-size:11px;color:var(--text-dim);letter-spacing:1.5px;display:flex;align-items:center;gap:10px;
+}
+.footer-meta .fm-dot{width:5px;height:5px;border-radius:50%;background:var(--klein);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-top">
+        <div class="tag-row">
+          <span class="dot"></span>
+          <span>Open Source · Global Intelligence</span>
+          <span class="bar"></span>
+        </div>
+        <div class="header-meta">DATA · 2022</div>
+      </div>
+      <h1>全球开源数据一览</h1>
+      <p class="subtitle">用数据描绘 2022 年全球开源生态的整体面貌——从贡献者规模到项目活跃度，从商业渗透到许可证选择，数据清晰展示了开源已从边缘走向核心、成为现代软件产业的绝对主流。</p>
+    </div>
+
+    <div class="main">
+      <!-- Left KPI Panel -->
+      <div class="kpi-panel">
+        <div class="kpi-head">
+          <div class="kpi-title">▍核心数据 · KEY METRICS</div>
+          <div class="kpi-badge">5 DIMENSIONS</div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card accent">
+            <span class="kpi-corner"></span>
+            <div>
+              <div class="kpi-num">100<span class="unit">M+</span></div>
+              <div class="kpi-label">全球贡献者</div>
+            </div>
+            <div class="kpi-sub">累计注册开发者规模</div>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-corner"></span>
+            <div>
+              <div class="kpi-num">NO.2</div>
+              <div class="kpi-label">中国贡献者排名</div>
+            </div>
+            <div class="kpi-sub">仅次于美国，全球第二大群体</div>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-corner"></span>
+            <div>
+              <div class="kpi-num">千万<span class="unit">+</span></div>
+              <div class="kpi-label">GitHub 活跃仓库</div>
+            </div>
+            <div class="kpi-sub">月均活跃项目数</div>
+          </div>
+
+          <div class="kpi-card wide">
+            <span class="kpi-corner"></span>
+            <div class="kpi-left">
+              <div class="kpi-num">90<span class="unit">%+</span></div>
+              <div class="kpi-label">企业采用率 · 企业软件使用开源组件</div>
+            </div>
+            <div class="kpi-bar" style="max-width:140px;"><div class="fill" style="width:92%;"></div></div>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-corner"></span>
+            <div>
+              <div class="kpi-num">60<span class="unit">%+</span></div>
+              <div class="kpi-label">MIT / Apache 占比</div>
+            </div>
+            <div class="kpi-sub">主流许可证份额</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Chart Panel -->
+      <div class="chart-panel">
+        <div class="chart-head">
+          <div class="chart-title">▍贡献者增长曲线 · GROWTH</div>
+          <div class="chart-legend">
+            <div class="lg"><span class="sq" style="background:var(--cyan);"></span><span>累计贡献者（百万）</span></div>
+            <div class="lg"><span class="sq" style="background:var(--klein);"></span><span>年新增增速</span></div>
+          </div>
+        </div>
+        <div class="chart-kpis">
+          <div class="chart-kpi accent">
+            <span class="ck-label">2022 年总量</span>
+            <span class="ck-value">100<span class="pct">M+</span></span>
+          </div>
+          <div class="chart-kpi">
+            <span class="ck-label">较 2015 年增长</span>
+            <span class="ck-value">10×</span>
+          </div>
+          <div class="chart-kpi">
+            <span class="ck-label">年复合增长率</span>
+            <span class="ck-value">45<span class="pct">%</span></span>
+          </div>
+        </div>
+        <div id="chart_1" style="width:100%;height:200px;"></div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="dim-card">
+        <div class="dim-icon">DIM · 01</div>
+        <div class="dim-title">贡献者规模</div>
+        <div class="dim-text">全球活跃开源贡献者持续增长，中国贡献者占比逐年提升，成为全球第二大开源群体。</div>
+        <div class="dim-tag">→ 100M+ / CN #2</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">DIM · 02</div>
+        <div class="dim-title">项目活跃度</div>
+        <div class="dim-text">GitHub 平台上月均活跃仓库超过数千万，开源项目的 Star 总量突破百亿。</div>
+        <div class="dim-tag">→ 数千万仓库 / 百亿 Star</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">DIM · 03</div>
+        <div class="dim-title">商业参与</div>
+        <div class="dim-text">超过 90% 的企业级软件使用了开源组件，开源已成为商业软件供应链的基础。</div>
+        <div class="dim-tag">→ 90%+ 企业覆盖</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">DIM · 04</div>
+        <div class="dim-title">许可证趋势</div>
+        <div class="dim-text">MIT 和 Apache 2.0 仍是主流，GPLv3 在企业采用率有所上升，商业友好型许可证受关注。</div>
+        <div class="dim-tag">→ MIT · Apache · GPLv3</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">数据清晰展示了开源<span class="hl">已从边缘走向核心</span>、成为现代软件产业的<span class="hl">绝对主流</span></div>
+      <div class="footer-meta">
+        <span class="fm-dot"></span>
+        <span>OPEN SOURCE GLOBAL OUTLOOK · 2022</span>
+        <span class="fm-dot"></span>
+        <span>01 / 01</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>
+(function(){
+  const el = document.getElementById('chart_1');
+  const chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:42,right:50,top:20,bottom:30},
+    tooltip:{trigger:'axis'},
+    xAxis:{
+      type:'category',
+      data:['2015','2016','2017','2018','2019','2020','2021','2022'],
+      axisLine:{lineStyle:{color:'#2A2A48'}},
+      axisLabel:{color:'#8888A8',fontSize:10,fontFamily:'Inter'},
+      axisTick:{show:false}
+    },
+    yAxis:{
+      type:'value',
+      name:'百万',
+      nameTextStyle:{color:'#8888A8',fontSize:10,fontFamily:'Inter'},
+      axisLine:{show:false},
+      splitLine:{lineStyle:{color:'#1E1E38'}},
+      axisLabel:{color:'#8888A8',fontSize:10,fontFamily:'Inter'}
+    },
+    series:[
+      {
+        name:'累计贡献者（百万）',
+        type:'line',
+        smooth:true,
+        symbol:'circle',
+        symbolSize:7,
+        lineStyle:{color:'#00BCD4',width:2.5},
+        itemStyle:{color:'#00BCD4',borderColor:'#1A1A2E',borderWidth:2},
+        areaStyle:{
+          color:new echarts.graphic.LinearGradient(0,0,0,1,[
+            {offset:0,color:'rgba(0,188,212,0.35)'},
+            {offset:1,color:'rgba(0,188,212,0.02)'}
+          ])
+        },
+        label:{show:true,position:'top',color:'#00BCD4',fontSize:9,fontFamily:'Inter',fontWeight:'bold'},
+        data:[10,18,28,38,52,72,88,100]
+      },
+      {
+        name:'年新增增速',
+        type:'bar',
+        barWidth:8,
+        itemStyle:{
+          color:new echarts.graphic.LinearGradient(0,0,0,1,[
+            {offset:0,color:'#002FA7'},
+            {offset:1,color:'rgba(0,47,167,0.3)'}
+          ]),
+          borderRadius:[3,3,0,0]
+        },
+        data:[10,8,10,10,14,20,16,12]
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>

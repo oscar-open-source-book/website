@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Linux 的三种主流商业模式</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --neutral: #2D3748;
+  --bg-0: #060B14;
+  --bg-1: #0B1424;
+  --card: #131C2E;
+  --card-2: #182338;
+  --border: rgba(255,255,255,0.08);
+  --border-hi: rgba(33,150,243,0.4);
+  --text-main: #E2E8F0;
+  --text-dim: #A0AEC0;
+  --text-mute: #718096;
+  --accent-glow: rgba(33,150,243,0.4);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg-0);
+  color: var(--text-main);
+  font-weight: 400;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(1000px 700px at 15% 25%, rgba(33,150,243,0.14), transparent 65%), radial-gradient(800px 600px at 85% 90%, rgba(0,188,212,0.10), transparent 65%), linear-gradient(180deg, #060B14 0%, #0A1220 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 56px 36px 56px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Header ===== */
+.header { margin-bottom: 18px; }
+
+.eyebrow {
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 5px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 36px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+
+.title {
+  font-size: 50px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.08;
+  background: linear-gradient(100deg, #FFFFFF 0%, #63B3ED 45%, #2196F3 75%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 10px 0;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-dim);
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin: 0;
+}
+.subtitle .sep { color: var(--primary); margin: 0 8px; font-weight: 600; }
+.subtitle .accent { color: var(--cyan); font-weight: 500; }
+
+/* ===== Main ===== */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 580px 1fr;
+  gap: 32px;
+  min-height: 0;
+}
+
+/* Triangle Panel */
+.triangle-panel {
+  position: relative;
+  background: linear-gradient(155deg, #101A2C 0%, #0C1626 100%);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 14px 14px;
+  overflow: hidden;
+}
+.triangle-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--cyan), transparent);
+}
+
+.panel-label {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--cyan);
+  font-weight: 700;
+}
+.panel-label::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  margin-left: 8px;
+  vertical-align: middle;
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.triangle-wrap {
+  position: relative;
+  width: 100%;
+  height: 460px;
+}
+.triangle-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.vnode {
+  position: absolute;
+  text-align: center;
+  color: var(--text-main);
+  padding: 10px 18px;
+  background: linear-gradient(145deg, rgba(19,28,46,0.95), rgba(12,22,38,0.95));
+  border: 1.5px solid rgba(33,150,243,0.55);
+  border-radius: 10px;
+  box-shadow: 0 6px 22px rgba(33,150,243,0.22), 0 0 0 1px rgba(33,150,243,0.1);
+  backdrop-filter: blur(6px);
+}
+.vnode .vnum {
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.vnode .vtitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.vnode.n1 {
+  left: 50%;
+  top: -4px;
+  transform: translateX(-50%);
+}
+.vnode.n2 {
+  right: 12px;
+  top: 88%;
+  transform: translateY(-50%);
+}
+.vnode.n3 {
+  left: 12px;
+  top: 88%;
+  transform: translateY(-50%);
+}
+
+.center-badge {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(33,150,243,0.55), rgba(33,150,243,0.15) 60%, transparent 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 40px rgba(33,150,243,0.35), inset 0 0 20px rgba(33,150,243,0.25);
+}
+.center-badge::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+.center-badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(33,150,243,0.45);
+  animation: spin 22s linear infinite;
+}
+.center-badge .cb-text {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.center-badge .cb-cn {
+  font-size: 20px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 4px;
+  display: block;
+}
+.center-badge .cb-en {
+  font-size: 9px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-top: 4px;
+  font-weight: 600;
+  display: block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+}
+
+.card {
+  position: relative;
+  background: linear-gradient(150deg, #16202F 0%, #111A29 100%);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 10px;
+  padding: 14px 18px 14px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  overflow: hidden;
+}
+.card:nth-child(2) { border-left-color: #42A5F5; }
+.card:nth-child(3) { border-left-color: var(--cyan); }
+.card:nth-child(4) { border-left-color: #26C6DA; }
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at top right, rgba(33,150,243,0.14), transparent 70%);
+  pointer-events: none;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.card-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--primary), var(--cyan));
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(33,150,243,0.35);
+  letter-spacing: 0.5px;
+}
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+.card-body {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #CBD5E0;
+  margin: 0;
+}
+.card-tag {
+  margin-top: auto;
+  display: inline-block;
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  font-weight: 700;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(0,188,212,0.25);
+  width: 100%;
+}
+
+/* Data band */
+.databand {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.metric {
+  background: linear-gradient(140deg, rgba(33,150,243,0.10), rgba(0,188,212,0.06));
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.metric::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(33,150,243,0.15), transparent 70%);
+}
+.m-num {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  z-index: 1;
+}
+.m-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  z-index: 1;
+}
+.m-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+.m-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* Closing */
+.closing {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.10), rgba(0,188,212,0.04), transparent);
+  border-left: 3px solid var(--cyan);
+  border-radius: 6px;
+  font-size: 13px;
+  color: #DCE6F3;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.closing .accent {
+  color: var(--cyan);
+  font-weight: 700;
+}
+.closing .quote {
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1;
+  transform: translateY(2px);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="eyebrow"><span>BUSINESS MODELS · LINUX OPEN-SOURCE ECONOMY</span></div>
+      <h1 class="title"><span>Linux 的三种主流商业模式</span></h1>
+      <p class="subtitle"><span>服务支持</span><span class="sep">·</span><span>发行版授权</span><span class="sep">·</span><span>托管云原生</span><span class="sep">·</span><span class="accent">协同三角</span></p>
+    </div>
+
+    <div class="main">
+      <!-- Triangle Diagram -->
+      <div class="triangle-panel">
+        <div class="panel-label"><span>Synergy Triangle</span></div>
+        <div class="triangle-wrap">
+          <svg class="triangle-svg" viewBox="0 0 560 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="edgeGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#2196F3" stop-opacity="0.9"/>
+                <stop offset="50%" stop-color="#00BCD4" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#2196F3" stop-opacity="0.9"/>
+              </linearGradient>
+              <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#2196F3" stop-opacity="0.55"/>
+                <stop offset="60%" stop-color="#2196F3" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="5" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="12" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Decorative rings -->
+            <circle cx="280" cy="248" r="170" fill="none" stroke="rgba(33,150,243,0.08)" stroke-width="1" stroke-dasharray="4 8"/>
+            <circle cx="280" cy="248" r="115" fill="none" stroke="rgba(0,188,212,0.08)" stroke-width="1" stroke-dasharray="3 6"/>
+
+            <!-- Triangle filled glow -->
+            <polygon points="280,60 480,380 80,380" fill="rgba(33,150,243,0.05)" stroke="none"/>
+
+            <!-- Outer triangle stroke with glow -->
+            <polygon points="280,60 480,380 80,380" fill="none" stroke="url(#edgeGrad)" stroke-width="3" stroke-linejoin="round" filter="url(#glow)"/>
+
+            <!-- Inner triangle thin -->
+            <polygon points="280,60 480,380 80,380" fill="none" stroke="rgba(0,229,255,0.35)" stroke-width="1" stroke-dasharray="2 6"/>
+
+            <!-- Small edge midpoint dots -->
+            <circle cx="380" cy="220" r="3" fill="#00BCD4"/>
+            <circle cx="180" cy="220" r="3" fill="#00BCD4"/>
+            <circle cx="280" cy="380" r="3" fill="#00BCD4"/>
+
+            <!-- Center halo -->
+            <circle cx="280" cy="248" r="90" fill="url(#centerGrad)"/>
+
+            <!-- Dashed connectors to center -->
+            <line x1="280" y1="60" x2="280" y2="248" stroke="rgba(0,188,212,0.35)" stroke-width="1" stroke-dasharray="4 5"/>
+            <line x1="480" y1="380" x2="280" y2="248" stroke="rgba(0,188,212,0.35)" stroke-width="1" stroke-dasharray="4 5"/>
+            <line x1="80" y1="380" x2="280" y2="248" stroke="rgba(0,188,212,0.35)" stroke-width="1" stroke-dasharray="4 5"/>
+          </svg>
+
+          <div class="vnode n1">
+            <div class="vnum"><span>01</span></div>
+            <div class="vtitle"><span>服务与支持</span></div>
+          </div>
+          <div class="vnode n2">
+            <div class="vnum"><span>02</span></div>
+            <div class="vtitle"><span>发行版授权</span></div>
+          </div>
+          <div class="vnode n3">
+            <div class="vnum"><span>03</span></div>
+            <div class="vtitle"><span>托管云原生</span></div>
+          </div>
+
+          <div class="center-badge">
+            <div class="cb-text">
+              <span class="cb-cn"><span>协同</span></span>
+              <span class="cb-en"><span>Synergy</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div class="cards">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-num"><span>01</span></div>
+            <div class="card-title"><span>服务与支持</span></div>
+          </div>
+          <p class="card-body">Red Hat 为代表，通过订阅方式销售技术支持、补丁与更新。</p>
+          <div class="card-tag"><span>SUBSCRIPTION MODEL</span></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-num"><span>02</span></div>
+            <div class="card-title"><span>发行版授权</span></div>
+          </div>
+          <p class="card-body">Canonical、SUSE 提供商业发行版与 LTS 长期支持。</p>
+          <div class="card-tag"><span>LICENSED DISTRO</span></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-num"><span>03</span></div>
+            <div class="card-title"><span>托管云原生</span></div>
+          </div>
+          <p class="card-body">AWS、GCP 在 Linux 之上提供托管服务，间接放大开源价值。</p>
+          <div class="card-tag"><span>CLOUD MULTIPLIER</span></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-num"><span>04</span></div>
+            <div class="card-title"><span>企业级捆绑</span></div>
+          </div>
+          <p class="card-body">把内核、容器、AI 组件打包成完整平台，形成订阅闭环。</p>
+          <div class="card-tag"><span>PLATFORM BUNDLE</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data band -->
+    <div class="databand">
+      <div class="metric">
+        <div class="m-num"><span>①</span></div>
+        <div class="m-body">
+          <div class="m-title"><span>Red Hat 模式</span></div>
+          <div class="m-desc"><span>订阅制 · 服务 + 支持 + 更新</span></div>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="m-num"><span>5–10y</span></div>
+        <div class="m-body">
+          <div class="m-title"><span>LTS 长期支持</span></div>
+          <div class="m-desc"><span>主流发行版长期支持年限</span></div>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="m-num"><span>×∞</span></div>
+        <div class="m-body">
+          <div class="m-title"><span>云收入放大</span></div>
+          <div class="m-desc"><span>间接变现 · 开源内核作为云底座</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Closing narrative -->
+    <div class="closing">
+      <span class="quote"><span>“</span></span>
+      <span>Linux 本身免费，但围绕它的商业价值被反复变现——<span class="accent">三条路径互为补充</span>，共同构成 Linux 商业版图的支柱。</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

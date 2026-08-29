@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>MIT黑客俱乐部的传奇</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --bg:#0A0E17;
+  --bg-2:#0F1524;
+  --card:#101626;
+  --border:#2196F3;
+  --text:#B0BEC5;
+  --text-soft:#8A97A3;
+  --text-strong:#E0E6EC;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','Noto Sans SC','Roboto',sans-serif;
+  background:var(--bg);color:var(--text);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(33,150,243,0.10) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(0,188,212,0.08) 0%, transparent 45%),
+    linear-gradient(180deg,#0A0E17 0%, #0B111E 100%);
+}
+#bg::after{content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size:48px 48px;
+  opacity:0.5;
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 56px 40px 56px;box-sizing:border-box;}
+
+.head{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:54px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:3px;box-shadow:0 0 18px rgba(33,150,243,0.55);}
+.title-main{
+  font-family:'Orbitron','Rajdhani','Noto Sans SC',sans-serif;
+  font-size:38px;font-weight:800;color:var(--text-strong);
+  letter-spacing:2px;line-height:1.1;
+}
+.title-sub{
+  font-family:'Rajdhani','Noto Sans SC',sans-serif;
+  font-size:16px;color:var(--accent);letter-spacing:3px;font-weight:600;
+  margin-left:24px;
+}
+.subtitle-en{
+  font-size:14px;color:var(--text-soft);letter-spacing:1px;
+  margin-left:24px;
+}
+
+.main{display:grid;grid-template-columns:710px 1fr;gap:26px;height:588px;}
+
+.left-col{display:flex;flex-direction:column;gap:12px;height:588px;}
+.hero-wrap{
+  position:relative;width:700px;height:518px;
+  border:1px solid var(--border);
+  box-shadow:0 0 24px rgba(33,150,243,0.25), inset 0 0 40px rgba(0,0,0,0.4);
+  overflow:hidden;background:#0C1220;
+}
+.hero-wrap::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);z-index:2;}
+.hero-wrap::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--primary),transparent);z-index:2;}
+.hero-img{width:700px;height:518px;object-fit:cover;display:block;
+  filter:contrast(1.05) saturate(0.95) brightness(0.95);}
+.hero-meta{position:absolute;top:12px;left:14px;display:flex;gap:8px;z-index:3;}
+.meta-tag{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;
+  color:var(--accent);background:rgba(10,14,23,0.78);border:1px solid rgba(0,188,212,0.4);
+  padding:4px 10px;border-radius:2px;}
+.hero-caption{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;
+  background:rgba(15,21,36,0.7);border-left:3px solid var(--accent);
+}
+.caption-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);}
+.caption-text{font-size:14px;color:var(--text-soft);letter-spacing:1px;}
+.caption-text b{color:var(--text-strong);font-weight:600;}
+
+.right-col{display:grid;grid-template-rows:auto auto;gap:14px;height:588px;}
+
+.quad{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;height:392px;}
+.card{
+  position:relative;background:linear-gradient(160deg,#101626 0%, #0B1120 100%);
+  border:1px solid rgba(33,150,243,0.5);
+  padding:16px 18px;box-sizing:border-box;
+  display:flex;flex-direction:column;gap:8px;
+  box-shadow:0 0 0 1px rgba(33,150,243,0.08) inset;
+}
+.card::before{content:"";position:absolute;top:0;left:0;width:28px;height:1px;background:var(--accent);}
+.card::after{content:"";position:absolute;top:0;left:0;width:1px;height:28px;background:var(--accent);}
+.qhead{display:flex;align-items:center;gap:10px;}
+.qnum{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:800;
+  color:var(--primary);letter-spacing:1px;line-height:1;}
+.qtitle{font-size:15px;font-weight:700;color:var(--text-strong);letter-spacing:1px;}
+.qbody{font-size:12.5px;line-height:1.65;color:var(--text);letter-spacing:0.3px;}
+.qbody .hl{color:var(--accent);font-weight:600;}
+.qbody .yr{color:var(--primary);font-weight:700;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:1px;}
+
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;height:182px;}
+.kpi{
+  position:relative;background:linear-gradient(135deg, rgba(33,150,243,0.10) 0%, rgba(0,188,212,0.06) 100%);
+  border:1px solid rgba(0,188,212,0.45);
+  padding:16px 20px;box-sizing:border-box;
+  display:flex;flex-direction:column;justify-content:center;gap:8px;
+}
+.kpi::before{content:"";position:absolute;top:0;left:0;width:36px;height:1px;background:var(--accent);}
+.kpi-label{font-size:12px;color:var(--text-soft);letter-spacing:2px;font-weight:600;}
+.kpi-value{font-family:'Orbitron','Noto Sans SC',sans-serif;font-size:30px;font-weight:800;
+  color:var(--text-strong);letter-spacing:1px;line-height:1;}
+.kpi-value .unit{font-size:16px;color:var(--accent);margin-left:6px;font-weight:600;}
+.kpi-detail{font-size:12.5px;color:var(--text);line-height:1.6;}
+.kpi-detail .hl{color:var(--accent);font-weight:600;}
+
+.footer{
+  margin-top:16px;
+  display:flex;align-items:center;gap:14px;
+  padding:12px 20px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.10) 0%, rgba(0,188,212,0.04) 60%, transparent 100%);
+  border-left:3px solid var(--primary);
+}
+.footer-mark{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:3px;color:var(--accent);font-weight:700;}
+.footer-text{font-size:13.5px;line-height:1.6;color:var(--text);letter-spacing:0.5px;}
+.footer-text b{color:var(--text-strong);font-weight:600;}
+.footer-text .em{color:var(--accent);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="head">
+      <div class="title-row">
+        <div class="title-bar"></div>
+        <div class="title-main"><span>MIT黑客俱乐部的传奇</span></div>
+      </div>
+      <div class="title-sub"><span>现代开源精神的发源地 · The Cradle of Open-Source Spirit</span></div>
+      <div class="subtitle-en"><span>1956 — 1969 · 从一台 TX-0 计算机到一种改变世界的文化</span></div>
+    </div>
+
+    <div class="main">
+
+      <div class="left-col">
+        <div class="hero-wrap">
+          <img class="hero-img" src="../images/page_003_hero_left.png" alt="TX-0 大型计算机">
+          <div class="hero-meta">
+            <span class="meta-tag">ARTIFACT · 1956</span>
+            <span class="meta-tag">MIT LAB</span>
+          </div>
+        </div>
+        <div class="hero-caption">
+          <div class="caption-dot"></div>
+          <div class="caption-text"><b>TX-0：</b>MIT 黑客文化的起点 · 1956 年购入的交互式大型计算机，催生了现代"黑客"群体</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="quad">
+
+          <div class="card">
+            <div class="qhead">
+              <span class="qnum">01</span>
+              <span class="qtitle">TX-0 上的第一群黑客</span>
+            </div>
+            <div class="qbody"><span class="yr">1956</span> · MIT 购入 TX-0 交互式计算机，学生与教授通宵调试，第一次催生了"<span class="hl">黑客</span>"一词</div>
+          </div>
+
+          <div class="card">
+            <div class="qhead">
+              <span class="qnum">02</span>
+              <span class="qtitle">游戏即艺术</span>
+            </div>
+            <div class="qbody"><span class="yr">1962</span> · <span class="hl">Spacewar!</span> 诞生于 PDP-1，成为史上第一款电子游戏，代码被自由复制传播</div>
+          </div>
+
+          <div class="card">
+            <div class="qhead">
+              <span class="qnum">03</span>
+              <span class="qtitle">黑客守则的雏形</span>
+            </div>
+            <div class="qbody">三大原则贯穿整个黑客文化：<span class="hl">访问自由 · 信息免费 · 去中心化</span>，奠定了后世技术伦理基础</div>
+          </div>
+
+          <div class="card">
+            <div class="qhead">
+              <span class="qnum">04</span>
+              <span class="qtitle">从 MIT 到全国扩散</span>
+            </div>
+            <div class="qbody">通过 <span class="hl">BBS、电话线与业余无线电</span> 网络，黑客文化迅速传播到全美，孕育出整代技术社群</div>
+          </div>
+
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi">
+            <div class="kpi-label">SPACEWAR! 发行年份</div>
+            <div class="kpi-value">1962<span class="unit">年</span></div>
+            <div class="kpi-detail">史上首款电子游戏 · <span class="hl">被免费复制传播</span>，是早期开放源代码模式的雏形</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">MIT 黑客成员高峰</div>
+            <div class="kpi-value">200<span class="unit">+ 人</span></div>
+            <div class="kpi-detail"><span class="hl">1960 年代峰值估计</span> · 核心成员通宵驻守实验室，构成最早的极客社群</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span class="footer-mark">EPITOME</span>
+      <div class="footer-text">他们没有<span class="em">专利权意识</span>，没有<span class="em">商业壁垒</span>，只有纯粹的技术热情——<b>代码复制即传播</b>的模式，恰恰是后来开源运动的预演。</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源的定义与演进</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-deep:#0A1628;
+  --bg-card:#0F2035;
+  --bg-card2:#12293F;
+  --text-main:#E8EEF5;
+  --text-dim:#7E94AB;
+  --glow:0 0 20px rgba(33,150,243,0.5),0 0 40px rgba(0,188,212,0.2);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+  background:var(--bg-deep);
+  color:var(--text-main);
+  font-size:14px;
+  line-height:1.6;
+}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;
+  background:radial-gradient(ellipse at 30% 20%,rgba(33,150,243,0.08) 0%,transparent 50%),
+             radial-gradient(ellipse at 80% 90%,rgba(0,188,212,0.06) 0%,transparent 45%),
+             var(--bg-deep);
+}
+
+#bg .grid-lines{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(33,150,243,0.04) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(33,150,243,0.04) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+
+#bg .code-stream{position:absolute;top:0;left:0;width:100%;height:100%;
+  font-family:'Roboto Mono',monospace;font-size:11px;color:rgba(0,188,212,0.05);
+  line-height:1.8;word-break:break-all;letter-spacing:2px;
+  pointer-events:none;overflow:hidden;}
+
+#ct{position:absolute;inset:0;z-index:1;padding:36px 50px 30px 50px;box-sizing:border-box;
+  display:flex;flex-direction:column;gap:16px;}
+
+/* corner deco */
+.corner-deco{position:absolute;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--primary);opacity:0.5;}
+.corner-tl{top:8px;left:8px;}
+.corner-tr{top:8px;right:8px;}
+.corner-br{bottom:8px;right:8px;}
+.corner-bl{bottom:8px;left:8px;}
+
+/* header */
+.header{display:flex;flex-direction:column;gap:8px;}
+.title-row{display:flex;align-items:center;gap:16px;}
+.title-bar{width:4px;height:42px;background:linear-gradient(to bottom,var(--cyan),var(--primary));border-radius:2px;box-shadow:var(--glow);}
+.page-title{font-family:'Inter','Noto Sans SC',sans-serif;font-weight:900;font-size:30px;color:var(--text-main);letter-spacing:1px;}
+.title-sub{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.page-num{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--cyan);border:1px solid var(--cyan);padding:4px 12px;border-radius:3px;letter-spacing:2px;}
+.page-tag{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--neutral);letter-spacing:1px;}
+
+.quote-box{display:flex;align-items:flex-start;gap:12px;padding:12px 18px;
+  background:linear-gradient(90deg,rgba(33,150,243,0.08),rgba(0,188,212,0.04),transparent);
+  border-left:3px solid var(--cyan);border-radius:0 6px 6px 0;}
+.quote-icon{font-family:'Inter',sans-serif;font-size:28px;color:var(--cyan);font-weight:900;line-height:1;margin-top:-4px;}
+.quote-text{font-family:'Noto Sans SC',sans-serif;font-size:12.5px;color:var(--neutral);line-height:1.65;letter-spacing:0.3px;}
+
+/* timeline */
+.timeline-wrap{position:relative;padding:14px 20px 12px 20px;
+  background:linear-gradient(180deg,rgba(15,32,53,0.6),rgba(18,41,63,0.4));
+  border:1px solid rgba(33,150,243,0.2);border-radius:8px;}
+.timeline-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.timeline-icon{font-size:14px;}
+.timeline-title{font-family:'Inter','Noto Sans SC',sans-serif;font-weight:700;font-size:13px;color:var(--text-main);letter-spacing:1px;}
+.timeline-badge{margin-left:auto;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--cyan);padding:2px 8px;border:1px solid rgba(0,188,212,0.4);border-radius:3px;}
+
+.timeline-track{position:relative;height:60px;margin:4px 0;}
+.timeline-line{position:absolute;top:50%;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--primary) 10%,var(--cyan) 50%,var(--primary) 90%,transparent);
+  transform:translateY(-50%);box-shadow:0 0 8px rgba(33,150,243,0.4);}
+.timeline-pulse{position:absolute;top:50%;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 40%,rgba(0,188,212,0.6) 50%,transparent 60%);
+  transform:translateY(-50%);animation:pulse 3s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+
+.timeline-nodes{position:relative;display:flex;justify-content:space-between;align-items:center;height:100%;}
+.tl-node{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative;}
+.tl-dot{width:14px;height:14px;border-radius:50%;background:var(--bg-deep);
+  border:2px solid var(--cyan);box-shadow:0 0 10px var(--cyan),0 0 20px rgba(0,188,212,0.4);
+  position:relative;z-index:2;}
+.tl-dot::after{content:'';position:absolute;top:50%;left:50%;width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);transform:translate(-50%,-50%);}
+.tl-year{font-family:'Inter',sans-serif;font-weight:700;font-size:13px;color:var(--cyan);margin-top:4px;}
+.tl-label{font-family:'Noto Sans SC',sans-serif;font-size:10.5px;color:var(--neutral);text-align:center;line-height:1.4;max-width:180px;}
+.tl-label strong{color:var(--text-main);font-weight:700;}
+
+/* middle section */
+.middle-section{display:grid;grid-template-columns:480px 1fr;gap:16px;}
+
+/* data cards */
+.data-cards{display:flex;flex-direction:column;gap:12px;}
+.data-card{padding:16px 20px;background:linear-gradient(135deg,var(--bg-card),var(--bg-card2));
+  border:1px solid rgba(33,150,243,0.25);border-radius:8px;position:relative;overflow:hidden;}
+.data-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--primary),var(--cyan));}
+.data-card .dc-label{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;margin-bottom:6px;}
+.data-card .dc-title{font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:13px;color:var(--text-main);margin-bottom:10px;line-height:1.5;}
+.data-card .dc-bottom{display:flex;align-items:center;gap:14px;}
+.data-card .dc-number{font-family:'Inter',sans-serif;font-weight:900;font-size:38px;
+  background:linear-gradient(135deg,var(--cyan),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;}
+.data-card .dc-unit{font-family:'Noto Sans SC',sans-serif;font-size:11px;color:var(--neutral);line-height:1.4;flex:1;}
+.data-card .dc-unit strong{color:var(--text-main);font-weight:700;display:block;font-size:12px;margin-bottom:2px;}
+.data-card .dc-bar{width:40px;height:40px;border-radius:50%;background:rgba(33,150,243,0.1);
+  border:1px solid rgba(0,188,212,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+
+/* license panel */
+.license-panel{padding:16px 20px;background:linear-gradient(135deg,var(--bg-card),var(--bg-card2));
+  border:1px solid rgba(33,150,243,0.25);border-radius:8px;position:relative;overflow:hidden;}
+.license-panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--primary));}
+.lp-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.lp-title{font-family:'Inter','Noto Sans SC',sans-serif;font-weight:700;font-size:13px;color:var(--text-main);letter-spacing:0.5px;}
+.lp-subtitle{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--neutral);margin-left:auto;letter-spacing:1px;}
+
+.license-spectrum{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:6px 0;}
+.spec-bar{flex:1;height:4px;border-radius:2px;
+  background:linear-gradient(90deg,#00BCD4,#2196F3,#1565C0);position:relative;}
+.spec-label{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--neutral);white-space:nowrap;}
+.spec-label.left{color:var(--cyan);}
+.spec-label.right{color:#90CAF9;}
+
+.license-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.lic-col{padding:12px 12px;background:rgba(10,22,40,0.6);border:1px solid rgba(33,150,243,0.15);border-radius:6px;position:relative;}
+.lic-col-type{font-family:'Roboto Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:1.5px;margin-bottom:6px;}
+.lic-col-title{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:var(--text-main);margin-bottom:4px;}
+.lic-col-desc{font-family:'Noto Sans SC',sans-serif;font-size:10.5px;color:var(--neutral);line-height:1.55;margin-bottom:8px;}
+.lic-col-features{display:flex;flex-direction:column;gap:4px;}
+.lic-feat{display:flex;align-items:center;gap:6px;font-family:'Roboto Mono',monospace;font-size:9.5px;color:var(--text-main);}
+.lic-feat .dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);flex-shrink:0;}
+
+/* key points */
+.key-points{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.kp-card{padding:12px 14px;background:linear-gradient(160deg,var(--bg-card),rgba(10,22,40,0.5));
+  border:1px solid rgba(33,150,243,0.2);border-radius:6px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px;}
+.kp-card::after{content:'';position:absolute;top:0;right:0;width:20px;height:20px;
+  background:linear-gradient(225deg,rgba(0,188,212,0.15),transparent);border-radius:0 6px 0 0;}
+.kp-index{display:flex;align-items:center;gap:8px;}
+.kp-num{font-family:'Inter',sans-serif;font-weight:900;font-size:20px;
+  background:linear-gradient(135deg,var(--cyan),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.kp-icon{margin-left:auto;font-size:14px;opacity:0.6;}
+.kp-title{font-family:'Inter','Noto Sans SC',sans-serif;font-weight:700;font-size:12px;color:var(--text-main);letter-spacing:0.3px;}
+.kp-desc{font-family:'Noto Sans SC',sans-serif;font-size:10.5px;color:var(--neutral);line-height:1.55;}
+
+/* footer */
+.footer-bar{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 20px;
+  background:linear-gradient(90deg,transparent,rgba(33,150,243,0.08),transparent);
+  border-top:1px solid rgba(33,150,243,0.2);border-bottom:1px solid rgba(33,150,243,0.2);
+  border-radius:4px;}
+.footer-text{font-family:'Inter','Noto Sans SC',sans-serif;font-weight:700;font-size:15px;
+  background:linear-gradient(90deg,var(--cyan),var(--primary),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:4px;}
+.footer-diamond{font-size:8px;color:var(--cyan);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+<div class="grid-lines"></div>
+<div class="code-stream">
+01001000 01100101 01101100 01101100 01101111 #include &lt;stdio.h&gt; int main() { printf("Hello World\n"); return 0; } // open source is freedom; git commit -m "init"; $ npm install freedom; function isOpenSource(code) { return code.isFree(); } let community = new Community({ philosophy: 'open', }; for (let i=0; i&lt;Infinity; i++) { share(i); } &lt;div&gt;hello&lt;/div&gt; 10010100 11001110 01110111 10001010 #define FUTURE 1 if (license == "MIT") { freedom++; } while (open) { evolve(); }
+</div>
+<div class="corner-deco corner-tl">&lt;/&gt; sys://opensource.init</div>
+<div class="corner-deco corner-tr">$ node open.source --global</div>
+<div class="corner-deco corner-br">10110100 11010010 &lt;/&gt;</div>
+<div class="corner-deco corner-bl">// v3.0.0 - open paradigm</div>
+</div>
+
+<div id="ct">
+
+<!-- Header -->
+<div class="header">
+<div class="title-row">
+<div class="title-bar"></div>
+<div>
+<div class="page-title">开源的定义与演进</div>
+<div style="font-family:'Roboto Mono',monospace;font-size:10px;color:var(--neutral);letter-spacing:2px;margin-top:4px;">DEFINITION &amp; EVOLUTION OF OPEN SOURCE</div>
+</div>
+<div class="title-sub">
+<span class="page-tag">// CH.03</span>
+<span class="page-num">03 / 08</span>
+</div>
+</div>
+<div class="quote-box">
+<div class="quote-icon">"</div>
+<div class="quote-text">开源从一个小众社群的理想主义实践，发展为支撑全球互联网基础设施的核心范式。理解其定义与演进脉络，是理解当代软件生态格局的基本前提。</div>
+</div>
+</div>
+
+<!-- Timeline -->
+<div class="timeline-wrap">
+<div class="timeline-header">
+<span class="timeline-icon">◈</span>
+<span class="timeline-title">开源演进时间轴 · Timeline</span>
+<span class="timeline-badge">// 1991 — 2020s</span>
+</div>
+<div class="timeline-track">
+<div class="timeline-line"></div>
+<div class="timeline-pulse"></div>
+<div class="timeline-nodes">
+<div class="tl-node">
+<div class="tl-dot"></div>
+<div class="tl-year">1991</div>
+<div class="tl-label"><strong>Linux 首次发布</strong><br>Linus Torvalds 发布内核 0.01</div>
+</div>
+<div class="tl-node">
+<div class="tl-dot"></div>
+<div class="tl-year">1998</div>
+<div class="tl-label"><strong>"开源"术语正式提出</strong><br>Brunner 命名 open source</div>
+</div>
+<div class="tl-node">
+<div class="tl-dot"></div>
+<div class="tl-year">2000s</div>
+<div class="tl-label"><strong>企业全面拥抱开源</strong><br>IBM、Google 投入开源战略</div>
+</div>
+<div class="tl-node">
+<div class="tl-dot"></div>
+<div class="tl-year">近年</div>
+<div class="tl-label"><strong>中国开源浪潮</strong><br>阿里云、华为贡献增长</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Middle: data cards + license -->
+<div class="middle-section">
+<div class="data-cards">
+<div class="data-card">
+<div class="dc-label">// STANDARD 01</div>
+<div class="dc-title">OSI 开源定义：10 项核心评判标准</div>
+<div class="dc-bottom">
+<div class="dc-number">10</div>
+<div class="dc-bar">📜</div>
+<div class="dc-unit"><strong>核心评判标准</strong>自由分发 · 源代码公开 · 衍生作品权 · 作者完整性 · 不得歧视…</div>
+</div>
+</div>
+<div class="data-card">
+<div class="dc-label">// MILESTONE 02</div>
+<div class="dc-title">Linux 首次发布：1991 年</div>
+<div class="dc-bottom">
+<div class="dc-number">1991</div>
+<div class="dc-bar">🐧</div>
+<div class="dc-unit"><strong>Linux 0.01 内核</strong>9 月 17 日 Linus Torvalds 在 comp.os.minix 宣布内核开源</div>
+</div>
+</div>
+</div>
+
+<div class="license-panel">
+<div class="lp-header">
+<span style="font-size:14px;">⚖</span>
+<span class="lp-title">开源许可证谱系 · License Spectrum</span>
+<span class="lp-subtitle">// PERMISSIVE → COPIELEFT</span>
+</div>
+<div class="license-spectrum">
+<span class="spec-label left">宽松 PERMISSIVE</span>
+<div class="spec-bar"></div>
+<span class="spec-label right">强 COPIELEFT</span>
+</div>
+<div class="license-cols">
+<div class="lic-col">
+<div class="lic-col-type">// PERMISSIVE</div>
+<div class="lic-col-title">MIT</div>
+<div class="lic-col-desc">最简宽松协议，仅保留版权声明，允许任意使用、修改、分发与商用。</div>
+<div class="lic-col-features">
+<div class="lic-feat"><span class="dot"></span>自由商用</div>
+<div class="lic-feat"><span class="dot"></span>无需开源衍生</div>
+</div>
+</div>
+<div class="lic-col">
+<div class="lic-col-type">// PERMISSIVE +</div>
+<div class="lic-col-title">Apache 2.0</div>
+<div class="lic-col-desc">宽松协议，额外明确专利授权，要求保留通知文件，鼓励回馈社区。</div>
+<div class="lic-col-features">
+<div class="lic-feat"><span class="dot"></span>专利授权</div>
+<div class="lic-feat"><span class="dot"></span>保留版权声明</div>
+</div>
+</div>
+<div class="lic-col">
+<div class="lic-col-type">// COPIELEFT</div>
+<div class="lic-col-title">GPL</div>
+<div class="lic-col-desc">强 copyleft，衍生作品必须以相同许可证开源，保障软件自由的传播链。</div>
+<div class="lic-col-features">
+<div class="lic-feat"><span class="dot"></span>衍生须开源</div>
+<div class="lic-feat"><span class="dot"></span>自由连锁传播</div>
+</div>
+</div>
+</div>
+<div style="margin-top:10px;font-family:'Noto Sans SC',sans-serif;font-size:10.5px;color:var(--neutral);line-height:1.5;padding:8px 10px;background:rgba(0,188,212,0.05);border-left:2px solid var(--cyan);border-radius:0 4px 4px 0;">
+许可证决定代码使用与分发的边界：从宽松型到 copyleft 型，越靠右，对衍生作品的自由约束越强，是构建开放生态的底层法律契约。
+</div>
+</div>
+</div>
+
+<!-- Key Points -->
+<div style="display:flex;align-items:center;gap:10px;margin-top:-2px;">
+<span style="font-family:'Inter','Noto Sans SC',sans-serif;font-weight:700;font-size:12px;color:var(--text-main);">关键要点总结</span>
+<span style="flex:1;height:1px;background:linear-gradient(90deg,var(--primary),transparent);"></span>
+<span style="font-family:'Roboto Mono',monospace;font-size:10px;color:var(--cyan);">// KEY TAKEAWAYS</span>
+</div>
+<div class="key-points">
+<div class="kp-card">
+<div class="kp-index"><span class="kp-num">01</span><span class="kp-icon">📜</span></div>
+<div class="kp-title">开源定义</div>
+<div class="kp-desc">OSI 开源定义包含自由分发、源代码公开、衍生作品等十项核心评判标准。</div>
+</div>
+<div class="kp-card">
+<div class="kp-index"><span class="kp-num">02</span><span class="kp-icon">⚖</span></div>
+<div class="kp-title">许可证谱系</div>
+<div class="kp-desc">从宽松型 MIT、Apache 到 copyleft 型 GPL，许可证决定代码使用与分发的边界。</div>
+</div>
+<div class="kp-card">
+<div class="kp-index"><span class="kp-num">03</span><span class="kp-icon">⏱</span></div>
+<div class="kp-title">关键里程碑</div>
+<div class="kp-desc">1991 年 Linux 发布、1998 年开源术语正式提出、2000 年代企业全面拥抱开源。</div>
+</div>
+<div class="kp-card">
+<div class="kp-index"><span class="kp-num">04</span><span class="kp-icon">🇨🇳</span></div>
+<div class="kp-title">中国开源浪潮</div>
+<div class="kp-desc">近年来中国企业与开发者贡献大幅增长，阿里云、华为等成为国际重要力量。</div>
+</div>
+</div>
+
+<!-- Footer -->
+<div class="footer-bar">
+<span class="footer-diamond">◆</span>
+<span class="footer-text">定义清晰 · 演进有序 · 生态多元</span>
+<span class="footer-diamond">◆</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

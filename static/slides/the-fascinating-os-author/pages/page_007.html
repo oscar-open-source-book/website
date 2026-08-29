@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>书籍亮点拆解</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap');
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0d1424;
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --text:#E0E0E0;
+  --text-dim:#8899aa;
+  --card-bg:rgba(15,25,45,0.75);
+  --glow:0 0 20px rgba(33,150,243,0.35),0 0 60px rgba(33,150,243,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Roboto Mono',monospace;
+  color:var(--text);
+  background:var(--bg);
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:linear-gradient(135deg,#060a14 0%,#0a1226 50%,#060a14 100%);
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(1200px 700px at 20% 30%,rgba(33,150,243,0.10),transparent 60%),
+             radial-gradient(900px 600px at 85% 80%,rgba(0,188,212,0.08),transparent 60%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;display:flex;flex-direction:column;}
+
+/* 顶部装饰线 */
+.top-bar{
+  display:flex;align-items:center;gap:14px;margin-bottom:18px;
+}
+.top-bar .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+.top-bar .line{flex:1;height:1px;background:linear-gradient(90deg,var(--primary),transparent);}
+.top-bar .code-tag{
+  font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-dim);
+  letter-spacing:2px;
+}
+
+/* 标题区 */
+.head{display:flex;flex-direction:column;gap:14px;margin-bottom:26px;}
+.main-title{
+  font-family:'Inter',sans-serif;
+  font-weight:800;font-size:48px;letter-spacing:2px;
+  background:linear-gradient(90deg,#ffffff 0%,#2196F3 60%,#00BCD4 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 40px rgba(33,150,243,0.3);
+}
+.subtitle{
+  font-family:'Roboto Mono',monospace;font-size:14px;line-height:1.75;
+  color:var(--text-dim);max-width:1400px;
+  border-left:3px solid var(--primary);padding-left:16px;
+}
+.subtitle .hl{color:var(--cyan);}
+.subtitle .hl2{color:var(--primary);}
+
+/* 主体两栏 */
+.main{display:flex;gap:36px;flex:1;min-height:0;}
+
+/* 左侧书籍封面区 */
+.left{width:430px;position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.book-wrap{position:relative;width:340px;height:450px;}
+.book{
+  width:300px;height:400px;position:absolute;left:20px;top:25px;
+  background:linear-gradient(160deg,#0a1a3a 0%,#0d2550 40%,#091a3a 100%);
+  border:1.5px solid var(--primary);
+  border-radius:6px 12px 12px 6px;
+  box-shadow:0 0 30px rgba(33,150,243,0.45),0 0 80px rgba(33,150,243,0.2),inset 0 0 40px rgba(33,150,243,0.08);
+  display:flex;flex-direction:column;padding:34px 26px 30px 26px;
+  overflow:hidden;
+}
+.book::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:14px;
+  background:linear-gradient(90deg,rgba(33,150,243,0.35),rgba(33,150,243,0.05));
+}
+.book-spine{
+  position:absolute;left:-2px;top:10px;bottom:10px;width:8px;
+  background:linear-gradient(180deg,#2196F3,#00BCD4);
+  box-shadow:0 0 12px var(--primary);border-radius:3px 0 0 3px;
+}
+.book-deco-top{
+  font-family:'Roboto Mono',monospace;font-size:9px;color:var(--cyan);
+  letter-spacing:3px;margin-bottom:8px;
+}
+.book-title-cn{
+  font-family:'Inter',sans-serif;font-weight:800;font-size:24px;
+  color:#fff;line-height:1.35;margin-bottom:6px;
+  text-shadow:0 0 15px rgba(33,150,243,0.6);
+}
+.book-title-en{
+  font-family:'Roboto Mono',monospace;font-size:10px;color:var(--primary);
+  letter-spacing:1.5px;margin-bottom:18px;
+}
+.book-divider{
+  width:50px;height:2px;background:var(--cyan);margin-bottom:16px;
+  box-shadow:0 0 8px var(--cyan);
+}
+.book-code{
+  font-family:'Roboto Mono',monospace;font-size:10px;line-height:1.7;
+  color:var(--text-dim);
+}
+.book-code .k{color:#ff79c6;}
+.book-code .f{color:var(--cyan);}
+.book-code .s{color:#f1fa8c;}
+.book-code .c{color:#546e8a;}
+.book-code .n{color:var(--primary);}
+.book-badge{
+  margin-top:18px;display:inline-block;align-self:flex-start;
+  font-family:'Roboto Mono',monospace;font-size:10px;color:var(--bg);
+  background:linear-gradient(90deg,var(--primary),var(--cyan));
+  padding:5px 12px;border-radius:3px;letter-spacing:1px;
+}
+.book-bottom-line{
+  margin-top:14px;font-family:'Roboto Mono',monospace;font-size:8px;
+  color:var(--text-dim);letter-spacing:2px;
+  border-top:1px solid rgba(224,224,224,0.15);padding-top:10px;
+}
+
+/* 标签云 */
+.tag-cloud{position:absolute;inset:0;pointer-events:none;}
+.tag{
+  position:absolute;font-family:'Roboto Mono',monospace;
+  font-size:11px;padding:4px 10px;border:1px solid var(--primary);
+  color:var(--primary);border-radius:3px;
+  background:rgba(10,14,26,0.7);
+  box-shadow:0 0 8px rgba(33,150,243,0.3);
+  white-space:nowrap;
+}
+.tag.cyan{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 8px rgba(0,188,212,0.3);}
+.tag.dim{border-color:rgba(136,153,170,0.4);color:var(--text-dim);box-shadow:none;}
+.tag.t1{left:-30px;top:30px;font-size:13px;}
+.tag.t2{right:-40px;top:10px;font-size:12px;}
+.tag.t3{left:-50px;top:180px;font-size:11px;}
+.tag.t4{right:-30px;top:200px;font-size:12px;}
+.tag.t5{left:20px;bottom:80px;font-size:11px;}
+.tag.t6{right:-10px;bottom:110px;font-size:12px;}
+.tag.t7{left:-20px;bottom:20px;font-size:13px;}
+.tag.t8{right:10px;bottom:30px;font-size:11px;}
+
+/* 右侧四卡片 */
+.right{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;min-width:0;}
+.card{
+  position:relative;background:var(--card-bg);
+  border:1px solid rgba(33,150,243,0.35);
+  border-radius:8px;padding:18px 20px 18px 22px;
+  display:flex;flex-direction:column;gap:8px;
+  backdrop-filter:blur(4px);
+  transition:box-shadow 0.3s;
+  overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;
+  background:linear-gradient(180deg,var(--primary),var(--cyan));
+  box-shadow:0 0 8px var(--primary);
+}
+.card::after{
+  content:"";position:absolute;top:0;right:0;width:60px;height:60px;
+  background:radial-gradient(circle at top right,rgba(33,150,243,0.20),transparent 70%);
+  pointer-events:none;
+}
+.card-head{display:flex;align-items:center;gap:10px;}
+.card-idx{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:22px;
+  color:var(--primary);text-shadow:0 0 10px rgba(33,150,243,0.5);
+  min-width:32px;
+}
+.card-title{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:17px;color:#fff;
+  letter-spacing:1px;
+}
+.card-body{
+  font-size:12px;line-height:1.7;color:var(--text);
+  font-family:'Roboto Mono',monospace;
+}
+.card-body .k{color:var(--cyan);font-weight:500;}
+.card-body .k2{color:var(--primary);font-weight:500;}
+.card-icon{
+  position:absolute;right:14px;top:14px;
+  font-family:'Roboto Mono',monospace;font-size:9px;color:var(--text-dim);
+  letter-spacing:1px;
+}
+
+/* 底部数据亮点 */
+.bottom{
+  display:flex;gap:24px;margin-top:24px;
+}
+.stat{
+  flex:1;background:var(--card-bg);
+  border:1px solid rgba(33,150,243,0.3);
+  border-radius:8px;padding:16px 26px;display:flex;align-items:center;gap:22px;
+  position:relative;overflow:hidden;
+}
+.stat::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--cyan);box-shadow:0 0 10px var(--cyan);
+}
+.stat-label{
+  font-family:'Roboto Mono',monospace;font-size:12px;color:var(--text-dim);
+  letter-spacing:2px;line-height:1.5;
+}
+.stat-label .sub{display:block;color:var(--cyan);font-size:10px;margin-top:4px;}
+.stat-num{
+  font-family:'Inter',sans-serif;font-weight:800;font-size:42px;
+  background:linear-gradient(90deg,var(--primary),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:1px;
+}
+.stat-stars{
+  font-family:'Inter',sans-serif;font-size:32px;color:#FFD700;letter-spacing:3px;
+  text-shadow:0 0 15px rgba(255,215,0,0.5);
+}
+.stat-divider{width:1px;height:54px;background:rgba(224,224,224,0.15);align-self:center;}
+
+/* 页面底部小装饰 */
+.foot{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:16px;font-family:'Roboto Mono',monospace;font-size:10px;
+  color:var(--text-dim);letter-spacing:2px;
+}
+.foot-line{flex:1;height:1px;margin:0 14px;background:linear-gradient(90deg,transparent,rgba(33,150,243,0.4),transparent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <span class="dot"></span>
+      <span class="code-tag">CHAPTER · REVIEW · 01</span>
+      <span class="line"></span>
+      <span class="dot"></span>
+    </div>
+
+    <div class="head">
+      <h1 class="main-title">书籍亮点拆解</h1>
+      <p class="subtitle">
+        它不采用教科书式堆砌，而是以<span class="hl">讲故事</span>的方式带读者<span class="hl2">穿越操作系统世界</span>——
+        每一章都像一次技术探险，既传递知识也传递热情。
+      </p>
+    </div>
+
+    <div class="main">
+
+      <div class="left">
+        <div class="tag-cloud">
+          <span class="tag t1">UNIX</span>
+          <span class="tag cyan t2">Linux</span>
+          <span class="tag dim t3">进程</span>
+          <span class="tag t4">内存</span>
+          <span class="tag cyan t5">文件系统</span>
+          <span class="tag dim t6">网络</span>
+          <span class="tag t7">分布式</span>
+          <span class="tag cyan t8">Kernel</span>
+        </div>
+        <div class="book-wrap">
+          <div class="book">
+            <div class="book-spine"></div>
+            <div class="book-deco-top">// SYSTEM.SPINUP();</div>
+            <div class="book-title-cn">操作系统<br>漫游指南</div>
+            <div class="book-title-en">A JOURNEY THROUGH OS</div>
+            <div class="book-divider"></div>
+            <div class="book-code">
+<span class="c">// boot the kernel</span><br>
+<span class="k">fn</span> <span class="f">boot</span>() {<br>
+&nbsp;&nbsp;<span class="k">let</span> world = <span class="f">OS</span>::<span class="f">new</span>();<br>
+&nbsp;&nbsp;<span class="f">process</span>::<span class="f">spawn</span>(<span class="s">"</span>adventure<span class="s">"</span>);<br>
+&nbsp;&nbsp;<span class="f">memory</span>::<span class="f">map</span>(<span class="n">0x1FF0</span>);<br>
+}<br>
+<span class="c">// → ready to explore</span>
+            </div>
+            <span class="book-badge">v.1.0 / CORE</span>
+            <div class="book-bottom-line">— READ · CODE · REPEAT —</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+
+        <div class="card">
+          <span class="card-icon">01 / CORE</span>
+          <div class="card-head">
+            <span class="card-idx">01</span>
+            <span class="card-title">核心议题</span>
+          </div>
+          <div class="card-body">
+            书籍围绕<span class="k">操作系统演进史</span>展开，从
+            <span class="k2">UNIX</span> 到
+            <span class="k2">Linux</span>，从单核到分布式系统<span class="k">全景串联</span>。
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">02 / STYLE</span>
+          <div class="card-head">
+            <span class="card-idx">02</span>
+            <span class="card-title">写作风格</span>
+          </div>
+          <div class="card-body">
+            融合<span class="k">技术严谨性</span>与<span class="k">文学可读性</span>，用对话和<span class="k2">场景化叙述</span>让抽象概念变得鲜活有趣。
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">03 / ARCH</span>
+          <div class="card-head">
+            <span class="card-idx">03</span>
+            <span class="card-title">知识架构</span>
+          </div>
+          <div class="card-body">
+            按<span class="k">进程</span>、<span class="k">内存</span>、<span class="k2">文件系统</span>、<span class="k2">网络</span>等核心模块逐层深入，逻辑清晰递进。
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">04 / FEEDBACK</span>
+          <div class="card-head">
+            <span class="card-idx">04</span>
+            <span class="card-title">读者反馈</span>
+          </div>
+          <div class="card-body">
+            被众多开发者评价为<span class="k">"读完就想写代码"</span>的启发式读物，常被推荐为<span class="k2">入门首选</span>。
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="stat">
+        <div class="stat-label">
+          书籍章节数
+          <span class="sub">CHAPTERS · TOTAL</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-num">约 15 章</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">
+          社区综合评分
+          <span class="sub">COMMUNITY RATING</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-stars">★★★★★</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="code-tag">// OS.JOURNEY — DEEP DIVE</span>
+      <span class="foot-line"></span>
+      <span class="code-tag">END · OF · PAGE</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

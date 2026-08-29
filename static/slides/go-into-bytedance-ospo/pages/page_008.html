@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>关键数据与洞察</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1E293B;
+  --bg-dark:#0F172A;
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --text:#E2E8F0;
+  --text-dim:#94A3B8;
+  --card-bg:#243447;
+  --card-border:#2D4A66;
+  --glow:rgba(33,150,243,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Noto Sans SC','Inter',sans-serif;
+  color:var(--text);
+  background:var(--bg);
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  font-family:'Noto Sans SC',sans-serif;
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);
+}
+#bg .glow-1{
+  position:absolute;width:500px;height:500px;border-radius:50%;
+  left:-150px;top:-100px;
+  background:radial-gradient(circle,rgba(33,150,243,0.18) 0%,transparent 70%);
+}
+#bg .glow-2{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  right:-200px;bottom:-150px;
+  background:radial-gradient(circle,rgba(0,188,212,0.14) 0%,transparent 70%);
+}
+#bg .grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(33,150,243,0.04) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:45px 60px 35px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* Header */
+.header{
+  text-align:center;margin-bottom:22px;
+}
+.header h1{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  font-weight:800;font-size:40px;
+  background:linear-gradient(90deg,#2196F3 0%,#00BCD4 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:2px;margin-bottom:8px;
+}
+.header .subtitle{
+  font-size:14px;color:var(--text-dim);
+  max-width:1100px;margin:0 auto;line-height:1.6;
+  font-weight:300;
+}
+.header .subtitle .hl{color:var(--accent);font-weight:500;}
+
+/* KPI Grid */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(2,1fr);
+  gap:14px;
+  margin-bottom:18px;
+}
+.kpi-card{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:12px;
+  padding:14px 18px;
+  position:relative;
+  overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:108px;
+}
+.kpi-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:linear-gradient(180deg,#2196F3,#00BCD4);
+}
+.kpi-card .kpi-top{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.kpi-card .kpi-label{
+  font-size:12px;color:var(--text-dim);font-weight:500;
+  letter-spacing:0.5px;
+}
+.kpi-card .kpi-icon{
+  width:28px;height:28px;border-radius:6px;
+  background:rgba(33,150,243,0.12);
+  border:1px solid rgba(33,150,243,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--primary);
+}
+.kpi-card .kpi-num{
+  font-family:'Inter',sans-serif;
+  font-weight:800;font-size:34px;
+  color:#fff;line-height:1.1;
+  margin:2px 0;
+}
+.kpi-card .kpi-num .unit{
+  font-size:16px;font-weight:600;color:var(--accent);
+  margin-left:4px;
+}
+.kpi-card .kpi-num .plus{
+  font-size:24px;color:var(--accent);
+}
+.kpi-card .kpi-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:var(--text-dim);
+}
+.kpi-card .kpi-trend{
+  color:var(--accent);font-weight:600;font-size:11px;
+  display:flex;align-items:center;gap:3px;
+}
+.kpi-card .kpi-trend .arrow{font-size:13px;}
+.kpi-card .kpi-mini{
+  display:flex;gap:2px;align-items:flex-end;height:18px;
+}
+.kpi-card .kpi-mini span{
+  width:4px;background:var(--primary);border-radius:1px;
+  opacity:0.7;
+}
+
+/* Bottom Section */
+.bottom{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  flex:1;min-height:0;
+}
+
+/* Insights */
+.insights{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:repeat(3,1fr);
+  gap:10px;
+}
+.insight-item{
+  background:rgba(36,52,71,0.6);
+  border:1px solid var(--card-border);
+  border-radius:10px;
+  padding:10px 14px;
+  position:relative;
+}
+.insight-item .ins-head{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:5px;
+}
+.insight-item .ins-num{
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,#2196F3,#00BCD4);
+  color:#fff;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  font-family:'Inter',sans-serif;
+}
+.insight-item .ins-title{
+  font-size:13px;font-weight:600;color:#fff;
+}
+.insight-item .ins-desc{
+  font-size:11px;line-height:1.55;color:var(--text-dim);
+  font-weight:300;
+}
+
+/* Charts panel */
+.charts-panel{
+  background:rgba(36,52,71,0.5);
+  border:1px solid var(--card-border);
+  border-radius:12px;
+  padding:14px 16px;
+  display:flex;flex-direction:column;
+}
+.charts-panel .cp-title{
+  font-size:13px;font-weight:600;color:#fff;
+  margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.charts-panel .cp-title::before{
+  content:'';display:inline-block;
+  width:4px;height:16px;border-radius:2px;
+  background:linear-gradient(180deg,#2196F3,#00BCD4);
+}
+.chart-row{
+  display:flex;gap:12px;align-items:stretch;
+  flex:1;min-height:0;
+}
+#chart_1{flex:1.4;height:100%;}
+.chart-right{
+  display:flex;flex-direction:column;width:260px;flex-shrink:0;
+}
+#chart_2{width:100%;height:160px;}
+.chart-legend{
+  display:flex;flex-direction:column;gap:6px;
+  margin-top:8px;padding:0 4px;
+}
+.legend-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;color:var(--text-dim);
+}
+.legend-dot{
+  width:10px;height:10px;border-radius:3px;flex-shrink:0;
+}
+
+/* Footer */
+.footer{
+  margin-top:14px;text-align:center;
+  padding:10px 20px;
+  background:linear-gradient(90deg,rgba(33,150,243,0.1) 0%,rgba(0,188,212,0.1) 100%);
+  border:1px solid rgba(33,150,243,0.2);
+  border-radius:8px;
+  font-size:13px;color:#fff;font-weight:500;
+  letter-spacing:1px;
+}
+.footer .footer-icon{
+  color:var(--accent);margin:0 8px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="grid-lines"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <h1>关键数据与洞察</h1>
+      <div class="subtitle">
+        <span>开源已从可选策略变为<span class="hl">必选能力</span>，中国企业参与度快速提升但治理能力仍有空间——这正是 <span class="hl">OSPO</span> 的价值所在。</span>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">全球开源市场规模</span>
+          <span class="kpi-icon">◈</span>
+        </div>
+        <div class="kpi-num">100<span class="unit">亿+</span></div>
+        <div class="kpi-foot">
+          <span>美元 · 2023年</span>
+          <span class="kpi-trend"><span class="arrow">▲</span>两位数增长</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">企业开源采用率</span>
+          <span class="kpi-icon">◉</span>
+        </div>
+        <div class="kpi-num">95<span class="unit">%+</span></div>
+        <div class="kpi-foot">
+          <span>生产环境</span>
+          <span class="kpi-trend"><span class="arrow">▲</span>默认选项</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">中国开源贡献者排名</span>
+          <span class="kpi-icon">◍</span>
+        </div>
+        <div class="kpi-num">全球第2</div>
+        <div class="kpi-foot">
+          <span>GitHub 数据</span>
+          <span class="kpi-trend"><span class="arrow">▲</span>持续增长</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">CTO 合规关注比例</span>
+          <span class="kpi-icon">◐</span>
+        </div>
+        <div class="kpi-num">70<span class="unit">%+</span></div>
+        <div class="kpi-foot">
+          <span>开源合规优先事项</span>
+          <span class="kpi-trend"><span class="arrow">▲</span>SBOM 激增</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">OSPO 岗位年增长</span>
+          <span class="kpi-icon">◆</span>
+        </div>
+        <div class="kpi-num">40<span class="unit">%+</span></div>
+        <div class="kpi-foot">
+          <span>全球招聘趋势</span>
+          <span class="kpi-trend"><span class="arrow">▲</span>缺口扩大</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">字节开源项目数</span>
+          <span class="kpi-icon">◇</span>
+        </div>
+        <div class="kpi-num">200<span class="unit">+</span></div>
+        <div class="kpi-foot">
+          <span>GitHub 托管项目</span>
+          <span class="kpi-trend"><span class="arrow">▲</span>技术影响</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom">
+
+      <div class="insights">
+
+        <div class="insight-item">
+          <div class="ins-head">
+            <span class="ins-num">1</span>
+            <span class="ins-title">全球开源市场规模</span>
+          </div>
+          <div class="ins-desc">2023年突破百亿美元，年复合增长率持续保持两位数，开源经济生态持续扩张。</div>
+        </div>
+
+        <div class="insight-item">
+          <div class="ins-head">
+            <span class="ins-num">2</span>
+            <span class="ins-title">企业开源采用率</span>
+          </div>
+          <div class="ins-desc">超过95%的企业已在生产环境使用开源软件，开源成为技术基础设施的默认选项。</div>
+        </div>
+
+        <div class="insight-item">
+          <div class="ins-head">
+            <span class="ins-num">3</span>
+            <span class="ins-title">中国开源贡献者</span>
+          </div>
+          <div class="ins-desc">中国 GitHub 活跃开发者数持续增长，已成为全球第二大开源贡献国家。</div>
+        </div>
+
+        <div class="insight-item">
+          <div class="ins-head">
+            <span class="ins-num">4</span>
+            <span class="ins-title">合规风险关注度</span>
+          </div>
+          <div class="ins-desc">超70%的 CTO 将开源合规列为技术治理优先事项，SBOM 管理需求激增。</div>
+        </div>
+
+        <div class="insight-item">
+          <div class="ins-head">
+            <span class="ins-num">5</span>
+            <span class="ins-title">OSPO 人员需求增长</span>
+          </div>
+          <div class="ins-desc">全球 OSPO 相关岗位招聘需求年增长率超40%，人才缺口持续扩大。</div>
+        </div>
+
+        <div class="insight-item">
+          <div class="ins-head">
+            <span class="ins-num">6</span>
+            <span class="ins-title">开源驱动创新案例</span>
+          </div>
+          <div class="ins-desc">字节跳动通过 AI、音视频等领域开源项目，在全球社区建立强大技术影响力。</div>
+        </div>
+
+      </div>
+
+      <div class="charts-panel">
+        <div class="cp-title">六项关键指标量级对比</div>
+        <div class="chart-row">
+          <div id="chart_1" style="width:100%;height:200px;"></div>
+          <div class="chart-right">
+            <div id="chart_2" style="width:100%;height:160px;"></div>
+            <div class="chart-legend">
+              <div class="legend-item">
+                <span class="legend-dot" style="background:#2196F3;"></span>
+                <span>企业采用率 95%</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background:#00BCD4;"></span>
+                <span>合规关注度 70%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span>开源已成必选能力</span><span class="footer-icon">◆</span><span>OSPO 是治理落地的关键抓手</span>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:60,right:20,top:18,bottom:28},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+    xAxis:{
+      type:'category',
+      data:['市场规模','企业采用率','CTO合规关注','OSPO年增长','字节项目数','中国贡献者(指数)'],
+      axisLabel:{color:'#94A3B8',fontSize:9,rotate:15,interval:0},
+      axisLine:{lineStyle:{color:'#2D4A66'}},
+      axisTick:{show:false}
+    },
+    yAxis:{
+      type:'value',
+      axisLabel:{color:'#94A3B8',fontSize:10},
+      splitLine:{lineStyle:{color:'rgba(45,74,102,0.5)',type:'dashed'}},
+      axisLine:{show:false}
+    },
+    series:[{
+      type:'bar',
+      barWidth:'55%',
+      data:[
+        {value:100,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'#2196F3'},{offset:1,color:'#0D47A1'}]}}},
+        {value:95,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'#2196F3'},{offset:1,color:'#0D47A1'}]}}},
+        {value:70,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'#00BCD4'},{offset:1,color:'#006064'}]}}},
+        {value:40,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'#00BCD4'},{offset:1,color:'#006064'}]}}},
+        {value:200,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'#2196F3'},{offset:1,color:'#0D47A1'}]}}},
+        {value:85,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'#00BCD4'},{offset:1,color:'#006064'}]}}}
+      ],
+      label:{show:true,position:'top',color:'#E2E8F0',fontSize:10,fontWeight:600,formatter:'{c}'},
+      itemStyle:{borderRadius:[4,4,0,0]}
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+
+<script>(function(){
+  var chart = echarts.init(document.getElementById('chart_2'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    tooltip:{trigger:'item',formatter:'{b}: {c}%'},
+    series:[
+      {
+        name:'企业采用率',
+        type:'pie',
+        radius:['38%','52%'],
+        center:['50%','50%'],
+        avoidLabelOverlap:false,
+        label:{show:true,position:'center',formatter:'{a|95%}\n{b|采用率}',rich:{
+          a:{fontSize:20,fontWeight:700,color:'#2196F3',fontFamily:'Inter',lineHeight:24},
+          b:{fontSize:10,color:'#94A3B8',lineHeight:14}
+        }},
+        labelLine:{show:false},
+        data:[
+          {value:95,name:'企业采用率',itemStyle:{color:'#2196F3'}},
+          {value:5,name:'未采用',itemStyle:{color:'#1E293B'}}
+        ],
+        silent:true
+      },
+      {
+        name:'合规关注度',
+        type:'pie',
+        radius:['64%','76%'],
+        center:['50%','50%'],
+        avoidLabelOverlap:false,
+        label:{show:false},
+        labelLine:{show:false},
+        data:[
+          {value:70,name:'合规关注度',itemStyle:{color:'#00BCD4'}},
+          {value:30,name:'其他',itemStyle:{color:'rgba(0,188,212,0.12)'}}
+        ],
+        silent:true
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+
+</body>
+</html>

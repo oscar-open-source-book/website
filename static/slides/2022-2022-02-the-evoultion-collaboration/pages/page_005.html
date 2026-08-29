@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>协作模式变迁</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap');
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --bg:#F5F7FA;
+  --card:#FFFFFF;
+  --text-main:#1A2740;
+  --text-sub:#4A5568;
+  --border:#D6E4F0;
+  --shadow:0 6px 20px rgba(33,150,243,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Roboto Mono',monospace;color:var(--text-main);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 56px;box-sizing:border-box;}
+
+/* 背景装饰 */
+#bg{background:
+  radial-gradient(ellipse 900px 500px at 85% 10%, rgba(0,188,212,0.10), transparent 70%),
+  radial-gradient(ellipse 700px 400px at 5% 90%, rgba(33,150,243,0.08), transparent 70%),
+  var(--bg);
+}
+#bg::before{content:"";position:absolute;left:0;right:0;top:280px;height:1px;background:linear-gradient(90deg,transparent,var(--border) 20%,var(--border) 80%,transparent);opacity:.6;}
+#bg::after{content:"";position:absolute;left:0;right:0;top:640px;height:1px;background:linear-gradient(90deg,transparent,var(--border) 20%,var(--border) 80%,transparent);opacity:.6;}
+
+/* 顶部标题区 */
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:18px;}
+.head-left{flex:1;min-width:0;}
+.page-tag{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:3px;margin-bottom:8px;}
+.page-tag span{color:var(--primary);}
+h1{font-family:'Inter',sans-serif;font-weight:800;font-size:42px;color:var(--text-main);letter-spacing:1px;line-height:1.15;}
+h1 em{font-style:normal;color:var(--primary);position:relative;}
+h1 em::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:2px;}
+.sub{font-family:'Roboto Mono',monospace;font-size:12.5px;color:var(--text-sub);line-height:1.75;margin-top:12px;max-width:1120px;}
+.sub b{color:var(--primary);font-weight:500;}
+.head-right{display:flex;align-items:center;gap:10px;font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-sub);letter-spacing:1px;padding-bottom:6px;}
+.head-right .num{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:var(--primary);}
+
+/* 主体两栏 */
+.main{display:flex;gap:22px;margin-top:16px;height:640px;}
+.col-left{width:720px;display:flex;flex-direction:column;gap:14px;}
+.col-right{flex:1;display:flex;flex-direction:column;gap:14px;}
+
+/* 四条目 */
+.items{display:flex;flex-direction:column;gap:10px;}
+.item{display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:8px;padding:11px 16px;box-shadow:var(--shadow);transition:all .3s;}
+.item:nth-child(2){border-left-color:var(--accent);}
+.item:nth-child(3){border-left-color:var(--primary);}
+.item:nth-child(4){border-left-color:var(--accent);}
+.item-idx{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--primary);width:32px;flex-shrink:0;text-align:center;line-height:1.4;}
+.item:nth-child(even) .item-idx{color:var(--accent);}
+.item-body{flex:1;min-width:0;}
+.item-title{font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text-main);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.item-title .arrow{font-size:12px;color:var(--accent);font-weight:400;}
+.item-desc{font-size:11.5px;color:var(--text-sub);line-height:1.6;font-family:'Roboto Mono',monospace;}
+
+/* KPI 卡片 */
+.kpis{display:flex;gap:12px;}
+.kpi{flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.kpi::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.kpi-label{font-family:'Roboto Mono',monospace;font-size:10.5px;color:var(--text-sub);letter-spacing:1px;margin-bottom:6px;}
+.kpi-value{font-family:'Inter',sans-serif;font-size:26px;font-weight:800;color:var(--primary);line-height:1.1;}
+.kpi:nth-child(2) .kpi-value{color:var(--accent);}
+.kpi-sub{font-size:10.5px;color:var(--text-sub);margin-top:4px;line-height:1.5;}
+
+/* 右侧对比示意图 */
+.diagram{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow);height:560px;display:flex;flex-direction:column;}
+.diag-title{font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.diag-title .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--primary),var(--accent));}
+.diag-sub{font-size:10.5px;color:var(--text-sub);margin-bottom:10px;font-family:'Roboto Mono',monospace;}
+.diag-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:8px;flex:1;}
+.era{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
+.era-old{border-top:3px solid #78909C;}
+.era-new{border-top:3px solid var(--primary);}
+.era-head{display:flex;align-items:center;gap:8px;}
+.era-badge{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:1px;}
+.badge-old{background:#ECEFF1;color:#546E7A;}
+.badge-new{background:linear-gradient(90deg,var(--primary),var(--accent));color:#fff;}
+.era-name{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--text-main);}
+.era-name-old{color:#78909C;}
+.era-name-new{color:var(--primary);}
+
+/* 流程节点 */
+.flow{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.node{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:7px 10px;}
+.node-ico{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.ico-old{background:#90A4AE;}
+.ico-new{background:linear-gradient(135deg,var(--primary),var(--accent));}
+.node-txt{font-size:11px;color:var(--text-main);font-family:'Roboto Mono',monospace;font-weight:500;}
+.node-desc{font-size:9.5px;color:var(--text-sub);font-weight:400;display:block;margin-top:1px;}
+.flow-arrow{display:flex;align-items:center;justify-content:center;color:#78909C;font-size:11px;height:8px;}
+.flow-arrow.new{color:var(--primary);}
+
+.era-metrics{display:flex;gap:6px;margin-top:6px;}
+.metric{flex:1;background:var(--card);border:1px solid var(--border);border-radius:5px;padding:6px 8px;text-align:center;}
+.metric-v{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#546E7A;}
+.metric-v.accent{color:var(--primary);}
+.metric-l{font-size:9px;color:var(--text-sub);margin-top:2px;}
+
+/* 中间箭头列 */
+.mid-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+.mid-arrow{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(33,150,243,0.35);color:#fff;font-size:18px;font-weight:700;}
+.mid-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:var(--primary);text-align:center;letter-spacing:1px;line-height:1.4;}
+.mid-label-2{font-size:9.5px;color:var(--text-sub);text-align:center;line-height:1.5;margin-top:2px;font-family:'Roboto Mono',monospace;}
+
+/* SVG 进化图 */
+.evo-wrap{margin-top:10px;background:linear-gradient(90deg,rgba(33,150,243,0.04),rgba(0,188,212,0.04));border:1px dashed var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;}
+.evo-title{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--text-main);white-space:nowrap;}
+.evo-svg{flex:1;height:56px;}
+
+/* 底部收束 */
+.foot{margin-top:14px;padding:12px 24px;background:linear-gradient(90deg,rgba(33,150,243,0.08),rgba(0,188,212,0.08));border-radius:8px;border-left:4px solid var(--accent);display:flex;align-items:center;justify-content:center;gap:14px;}
+.foot-text{font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:var(--text-main);letter-spacing:0.5px;}
+.foot-text b{color:var(--primary);font-weight:700;}
+.foot-deco{font-family:'Roboto Mono',monospace;font-size:14px;color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="head">
+      <div class="head-left">
+        <div class="page-tag"><span>CONTENT</span> · 05 / 协作模式</div>
+        <h1>协作<em>模式</em>变迁</h1>
+        <p class="sub">协作模式的变迁不仅是<b>工具</b>的升级，更是<b>权力结构、参与方式和文化氛围</b>的整体重构，理解这些变迁有助于布道者在当下语境中讲好开源故事。</p>
+      </div>
+      <div class="head-right">
+        <span>PAGE</span>
+        <span class="num">05</span>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <!-- 左侧 -->
+      <div class="col-left">
+        <div class="items">
+          <div class="item">
+            <div class="item-idx">01</div>
+            <div class="item-body">
+              <div class="item-title">邮件合并 <span class="arrow">→</span> Pull Request</div>
+              <div class="item-desc">补丁以邮件发送时代协作门槛极高，PR 模式让零散贡献者也能参与，Git 平台成为协作基础设施。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-idx">02</div>
+            <div class="item-body">
+              <div class="item-title">BDFL <span class="arrow">→</span> TSC</div>
+              <div class="item-desc">从个人权威走向技术指导委员会的集体决策，治理结构制度化，降低单一决策者风险。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-idx">03</div>
+            <div class="item-body">
+              <div class="item-title">异步 <span class="arrow">→</span> 同步</div>
+              <div class="item-desc">异步邮件仍是主流，但 Slack / Discord 推动同步讨论成为补充，社区沟通更即时、密度更高。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-idx">04</div>
+            <div class="item-body">
+              <div class="item-title">开源 <span class="arrow">→</span> 开源 + 商业</div>
+              <div class="item-desc">商业公司主导的开源项目增多，需在开放性与商业诉求之间寻找平衡，模式更多元。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpi-label">PR 日均处理量</div>
+            <div class="kpi-value">50 万+</div>
+            <div class="kpi-sub">GitHub 平台每日合并请求</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">治理模式变迁</div>
+            <div class="kpi-value">BDFL → TSC</div>
+            <div class="kpi-sub">个人权威向委员会过渡</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧 -->
+      <div class="col-right">
+        <div class="diagram">
+          <div class="diag-title"><span class="dot"></span>范式对照 · 从低门槛个人协作到平台化众包</div>
+          <div class="diag-sub">// 旧范式：邮件发送 PATCH  ↔  新范式：Pull Request 代码评审流程</div>
+
+          <div class="diag-grid">
+
+            <div class="era era-old">
+              <div class="era-head">
+                <span class="era-badge badge-old">OLD</span>
+                <span class="era-name era-name-old">邮件 · PATCH 时代</span>
+              </div>
+              <div class="flow">
+                <div class="node">
+                  <div class="node-ico ico-old">@</div>
+                  <div class="node-txt">本地开发<span class="node-desc">git format-patch → 生成补丁</span></div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="node">
+                  <div class="node-ico ico-old">✉</div>
+                  <div class="node-txt">邮件列表提交<span class="node-desc">patch 附件发往 ML</span></div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="node">
+                  <div class="node-ico ico-old">↩</div>
+                  <div class="node-txt">来回讨论修订<span class="node-desc"> threaded email · 数周周期</span></div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="node">
+                  <div class="node-ico ico-old">⌖</div>
+                  <div class="node-txt">维护者手动合并<span class="node-desc">git am / apply</span></div>
+                </div>
+              </div>
+              <div class="era-metrics">
+                <div class="metric"><div class="metric-v">高</div><div class="metric-l">协作门槛</div></div>
+                <div class="metric"><div class="metric-v">分散</div><div class="metric-l">参与群体</div></div>
+                <div class="metric"><div class="metric-v">低</div><div class="metric-l">众包效率</div></div>
+              </div>
+            </div>
+
+            <div class="mid-col">
+              <div class="mid-arrow">→</div>
+              <div class="mid-label">EVOLUTION<br>演进</div>
+              <div class="mid-label-2">工具 + 平台<br>+ 社区</div>
+            </div>
+
+            <div class="era era-new">
+              <div class="era-head">
+                <span class="era-badge badge-new">NEW</span>
+                <span class="era-name era-name-new">平台 · PR 时代</span>
+              </div>
+              <div class="flow">
+                <div class="node">
+                  <div class="node-ico ico-new">①</div>
+                  <div class="node-txt">Fork · 提交分支<span class="node-desc">Web UI · 一键创建</span></div>
+                </div>
+                <div class="flow-arrow new">↓</div>
+                <div class="node">
+                  <div class="node-ico ico-new">②</div>
+                  <div class="node-txt">发起 Pull Request<span class="node-desc">diff 可视化 · 自动构建</span></div>
+                </div>
+                <div class="flow-arrow new">↓</div>
+                <div class="node">
+                  <div class="node-ico ico-new">③</div>
+                  <div class="node-txt">代码评审 · Review<span class="node-desc">多人参与 · 异步讨论</span></div>
+                </div>
+                <div class="flow-arrow new">↓</div>
+                <div class="node">
+                  <div class="node-ico ico-new">④</div>
+                  <div class="node-txt">CI 通过 · Merge<span class="node-desc">自动化流水线合并</span></div>
+                </div>
+              </div>
+              <div class="era-metrics">
+                <div class="metric"><div class="metric-v accent">低</div><div class="metric-l">协作门槛</div></div>
+                <div class="metric"><div class="metric-v accent">广泛</div><div class="metric-l">参与群体</div></div>
+                <div class="metric"><div class="metric-v accent">高</div><div class="metric-l">众包效率</div></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="evo-wrap">
+            <div class="evo-title">协作规模 · 时间轴</div>
+            <svg class="evo-svg" viewBox="0 0 420 56" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0" stop-color="#78909C"/>
+                  <stop offset="1" stop-color="#2196F3"/>
+                </linearGradient>
+              </defs>
+              <line x1="10" y1="36" x2="410" y2="36" stroke="#D6E4F0" stroke-width="1"/>
+              <path d="M 20 34 Q 140 32 240 22 T 400 8" fill="none" stroke="url(#g1)" stroke-width="2.5"/>
+              <circle cx="20" cy="34" r="4" fill="#78909C"/>
+              <circle cx="140" cy="28" r="4" fill="#90CAF9"/>
+              <circle cx="240" cy="22" r="4" fill="#2196F3"/>
+              <circle cx="400" cy="8" r="5" fill="#00BCD4"/>
+              <text x="20" y="52" font-family="Roboto Mono" font-size="9" fill="#546E7A">1991</text>
+              <text x="132" y="52" font-family="Roboto Mono" font-size="9" fill="#546E7A">2005</text>
+              <text x="228" y="52" font-family="Roboto Mono" font-size="9" fill="#546E7A">2011</text>
+              <text x="386" y="52" font-family="Roboto Mono" font-size="9" fill="#2196F3">2024</text>
+              <text x="6" y="24" font-family="Inter" font-size="9" font-weight="700" fill="#00BCD4">↑ 参与人数</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <span class="foot-deco">◇</span>
+      <span class="foot-text">工具在变，协作在变，但 <b>开放共享</b> 的精神 <b>不变</b></span>
+      <span class="foot-deco">◇</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

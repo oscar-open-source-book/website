@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>伦理量化</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1E1E2E;
+  --bg-2:#252538;
+  --card:#2A2A3E;
+  --border:#3A3A52;
+  --silver:#B0BEC5;
+  --cyan:#00BCD4;
+  --cyan-dim:#00838F;
+  --cyan-glow:rgba(0,188,212,.35);
+  --text-main:#E8E8EE;
+  --text-dim:#8A8AA0;
+  --accent:#00E5FF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:var(--bg);color:var(--text-main);font-family:'Inter','Noto Sans SC',sans-serif;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(180deg,#1A1A28 0%,#1E1E2E 40%,#16162A 100%);
+}
+#bg::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(176,190,197,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(176,190,197,.045) 1px,transparent 1px);
+  background-size:40px 40px,40px 40px;
+  pointer-events:none;
+}
+#bg::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(800px 400px at 85% 20%,rgba(0,188,212,.10),transparent 70%),
+    radial-gradient(600px 400px at 10% 90%,rgba(0,188,212,.06),transparent 70%);
+  pointer-events:none;
+}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 56px 36px 56px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* ---- HEADER ---- */
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;}
+.header-left{display:flex;flex-direction:column;gap:8px;}
+.tag-row{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);}
+.tag-row .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+.tag-row .slash{color:var(--silver);opacity:.5;}
+.tag-row .path{color:var(--silver);}
+h1{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:800;
+  font-size:52px;
+  letter-spacing:4px;
+  color:var(--text-main);
+  line-height:1.1;
+}
+h1 .accent{color:var(--cyan);text-shadow:0 0 24px var(--cyan-glow);}
+.subtitle{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:15px;
+  color:var(--silver);
+  letter-spacing:1px;
+  margin-top:6px;
+}
+.header-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);
+}
+.header-right .line{display:flex;align-items:center;gap:8px;}
+.header-right .line .k{color:var(--silver);}
+.header-right .line .v{color:var(--cyan);}
+.header-right .frame{
+  border:1px solid var(--border);border-radius:6px;padding:8px 14px;
+  background:rgba(42,42,62,.6);
+}
+
+/* ---- MAIN ---- */
+.main{display:grid;grid-template-columns:600px 1fr;gap:28px;flex:1;min-height:0;}
+
+/* KPI column */
+.kpi-col{display:grid;grid-template-rows:repeat(4,1fr);gap:14px;}
+.kpi{
+  position:relative;
+  background:linear-gradient(135deg,#252538 0%,#2A2A3E 100%);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 20px;
+  display:flex;align-items:center;gap:18px;
+  overflow:hidden;
+}
+.kpi::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--cyan),transparent);
+}
+.kpi::after{
+  content:"";position:absolute;right:-20px;top:-20px;width:80px;height:80px;
+  border:1px solid var(--border);border-radius:50%;
+  background:radial-gradient(circle,var(--cyan-glow) 0%,transparent 70%);
+  opacity:.4;
+}
+.kpi-icon{
+  flex-shrink:0;width:52px;height:52px;border-radius:8px;
+  background:rgba(0,188,212,.10);
+  border:1px solid var(--cyan-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--cyan);
+  font-weight:700;
+}
+.kpi-body{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;}
+.kpi-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--silver);
+  letter-spacing:2px;text-transform:uppercase;
+}
+.kpi-num{
+  font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;
+  color:var(--text-main);line-height:1.1;
+}
+.kpi-num .unit{font-size:14px;color:var(--cyan);margin-left:4px;font-weight:500;}
+.kpi-desc{font-size:11px;color:var(--text-dim);line-height:1.4;margin-top:2px;}
+.kpi-index{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);
+  opacity:.6;position:absolute;top:8px;right:14px;
+}
+
+/* Chart column */
+.chart-col{
+  display:flex;flex-direction:column;gap:12px;min-height:0;
+}
+.chart-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 4px;
+}
+.chart-head .t{
+  font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--text-main);
+  font-weight:500;letter-spacing:1px;
+}
+.chart-head .t .bar{color:var(--cyan);margin-right:8px;}
+.chart-head .meta{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);
+  display:flex;gap:12px;
+}
+.chart-head .meta span b{color:var(--cyan);font-weight:500;}
+.chart-box{
+  flex:1;
+  background:linear-gradient(180deg,#252538 0%,#1E1E2E 100%);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 14px 10px 14px;
+  position:relative;
+  display:flex;flex-direction:column;
+  min-height:0;
+}
+.chart-box::before{
+  content:"";position:absolute;left:14px;right:14px;top:14px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan-dim),transparent);
+  opacity:.5;
+}
+#chart_1{width:100%;height:100%;flex:1;min-height:0;}
+
+/* Annotation row below chart */
+.notes{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.note{
+  border:1px solid var(--border);
+  border-left:2px solid var(--cyan);
+  border-radius:4px;
+  padding:8px 12px;
+  background:rgba(0,188,212,.05);
+  display:flex;flex-direction:column;gap:2px;
+}
+.note .k{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--silver);letter-spacing:1px;}
+.note .v{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cyan);font-weight:700;}
+.note .d{font-size:10px;color:var(--text-dim);line-height:1.35;}
+
+/* ---- FOOTER ---- */
+.footer{
+  margin-top:18px;
+  border-top:1px dashed var(--border);
+  padding-top:12px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+}
+.footer .quote{color:var(--silver);letter-spacing:1px;}
+.footer .quote b{color:var(--cyan);font-weight:500;}
+.footer .right{display:flex;gap:14px;color:var(--text-dim);font-size:10px;}
+.footer .right .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);display:inline-block;margin-right:6px;box-shadow:0 0 6px var(--cyan);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="tag-row">
+          <span class="dot"></span>
+          <span>ETHICS-OS</span>
+          <span class="slash">/</span>
+          <span class="path">data-quant-dashboard</span>
+          <span class="slash">/</span>
+          <span>open-source</span>
+        </div>
+        <h1><span class="accent">&gt;</span>&nbsp;伦理量化<span style="color:var(--cyan);text-shadow:0 0 24px var(--cyan-glow);">_</span></h1>
+        <div class="subtitle">以数据量化视角看开源世界背后的伦理共识</div>
+      </div>
+      <div class="header-right">
+        <div class="frame">
+          <div class="line"><span class="k">// dashboard</span><span class="v">v2.0</span></div>
+          <div class="line"><span class="k">// status</span><span class="v">LIVE</span></div>
+          <div class="line"><span class="k">// region</span><span class="v">GLOBAL</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <!-- KPI Column -->
+      <div class="kpi-col">
+
+        <div class="kpi">
+          <div class="kpi-index">01</div>
+          <div class="kpi-icon">{ }</div>
+          <div class="kpi-body">
+            <div class="kpi-title">开源项目增长</div>
+            <div class="kpi-num">200M<span class="unit">+ 仓库</span></div>
+            <div class="kpi-desc">全球开源项目数量近年激增，GitHub 托管超 2 亿仓库</div>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-index">02</div>
+          <div class="kpi-icon">◎</div>
+          <div class="kpi-body">
+            <div class="kpi-title">贡献者分布</div>
+            <div class="kpi-num">200<span class="unit">+ 国家 / 地区</span></div>
+            <div class="kpi-desc">贡献者来自世界各地，跨国协作为常态</div>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-index">03</div>
+          <div class="kpi-icon">⚖</div>
+          <div class="kpi-body">
+            <div class="kpi-title">许可证采用</div>
+            <div class="kpi-num">MIT & Apache<span class="unit">主导</span></div>
+            <div class="kpi-desc">MIT 和 Apache 许可证占据主导，体现自由共享</div>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-index">04</div>
+          <div class="kpi-icon">▲</div>
+          <div class="kpi-body">
+            <div class="kpi-title">社区活跃度</div>
+            <div class="kpi-num">~1%<span class="unit">核心贡献者</span></div>
+            <div class="kpi-desc">核心贡献者比例约 1%，但影响辐射巨大</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Chart Column -->
+      <div class="chart-col">
+        <div class="chart-head">
+          <div class="t"><span class="bar">▎</span>GITHUB · 全球开源仓库增长趋势</div>
+          <div class="meta">
+            <span><b>UNIT</b> : 百万仓库</span>
+            <span><b>RANGE</b> : 2010 — 2021</span>
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <div id="chart_1"></div>
+        </div>
+
+        <div class="notes">
+          <div class="note">
+            <div class="k">// DATA · 01</div>
+            <div class="v">200M+ 仓库</div>
+            <div class="d">GitHub 仓库数 2 亿+（2021 年统计）</div>
+          </div>
+          <div class="note">
+            <div class="k">// DATA · 02</div>
+            <div class="v">MIT ~ 30%</div>
+            <div class="d">MIT 许可证占比约 30%（常用许可证）</div>
+          </div>
+          <div class="note">
+            <div class="k">// DATA · 03</div>
+            <div class="v">~ 5 人 / 项目</div>
+            <div class="d">每项目平均贡献者约 5 人（小项目常见）</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="quote">$ echo <b>&quot;数字背后是开源精神对自由、共享、协作的持续信仰&quot;</b></div>
+      <div class="right">
+        <span><span class="dot"></span>DATA STREAM · ACTIVE</span>
+        <span>ETHICS-OS / 2021</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const el = document.getElementById('chart_1');
+  const chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:54,right:24,top:32,bottom:34},
+    tooltip:{trigger:'axis'},
+    legend:{
+      data:['GitHub 仓库数 (百万)'],
+      textStyle:{color:'#B0BEC5',fontFamily:'JetBrains Mono',fontSize:10},
+      right:10,top:2,
+      itemWidth:14,itemHeight:8
+    },
+    xAxis:{
+      type:'category',
+      data:['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021'],
+      axisLine:{lineStyle:{color:'#3A3A52'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#8A8AA0',fontFamily:'JetBrains Mono',fontSize:10}
+    },
+    yAxis:{
+      type:'value',
+      name:'百万',
+      nameTextStyle:{color:'#8A8AA0',fontFamily:'JetBrains Mono',fontSize:10,padding:[0,0,6,0]},
+      axisLine:{show:false},
+      axisTick:{show:false},
+      splitLine:{lineStyle:{color:'rgba(176,190,197,.08)',type:'dashed'}},
+      axisLabel:{color:'#8A8AA0',fontFamily:'JetBrains Mono',fontSize:10}
+    },
+    series:[{
+      name:'GitHub 仓库数 (百万)',
+      type:'line',
+      smooth:true,
+      symbol:'circle',
+      symbolSize:7,
+      data:[2.2,3.5,5.0,9.0,14.0,20.0,28.0,40.0,55.0,80.0,130.0,200.0],
+      lineStyle:{color:'#00BCD4',width:3,shadowColor:'rgba(0,188,212,.6)',shadowBlur:12},
+      itemStyle:{color:'#00BCD4',borderColor:'#0E1A20',borderWidth:2},
+      areaStyle:{
+        color:{
+          type:'linear',x:0,y:0,x2:0,y2:1,
+          colorStops:[
+            {offset:0,color:'rgba(0,188,212,.35)'},
+            {offset:1,color:'rgba(0,188,212,0)'}
+          ]
+        }
+      },
+      markPoint:{
+        symbol:'pin',symbolSize:50,
+        itemStyle:{color:'#00BCD4',borderColor:'#0E1A20'},
+        label:{color:'#0E1A20',fontFamily:'JetBrains Mono',fontWeight:700,fontSize:10},
+        data:[
+          {name:'突破 2 亿',value:'200M+',coord:['2021',200]}
+        ]
+      },
+      markLine:{
+        symbol:'none',
+        lineStyle:{color:'#B0BEC5',type:'dashed',width:1,opacity:.5},
+        label:{color:'#B0BEC5',fontFamily:'JetBrains Mono',fontSize:10,formatter:'里程碑'},
+        data:[
+          {yAxis:100,name:'1 亿'},
+          {yAxis:50,name:'5 千万'}
+        ]
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

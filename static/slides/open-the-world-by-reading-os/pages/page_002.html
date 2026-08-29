@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>活动概览 - 章节过渡页</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #ECEFF1;
+  --text-sub: #90A4AE;
+  --bg-dark: #0A1628;
+  --bg-card: rgba(33, 150, 243, 0.06);
+  --border-line: rgba(33, 150, 243, 0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #060F1F 0%, #0A1E3D 40%, #0D1F42 70%, #081428 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(33,150,243,0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  right: -150px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,188,212,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.top-bar .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.6) 0%, rgba(33,150,243,0) 100%);
+}
+
+.top-bar .tag {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.top-bar .dots {
+  display: flex;
+  gap: 6px;
+}
+
+.top-bar .dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(33,150,243,0.3);
+  border: 1px solid rgba(33,150,243,0.5);
+}
+
+.top-bar .dots span:first-child {
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.main-content {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* 左侧大序号区域 */
+.left-section {
+  width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.chapter-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 6px;
+  margin-bottom: 12px;
+}
+
+.chapter-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 280px;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #42A5F5 0%, #2196F3 30%, #00BCD4 70%, #26C6DA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(33,150,243,0.5)) drop-shadow(0 0 60px rgba(0,188,212,0.3));
+  letter-spacing: -8px;
+  margin-bottom: 8px;
+}
+
+.chapter-number-glow {
+  position: absolute;
+  top: 80px;
+  left: 40px;
+  font-family: 'Inter', sans-serif;
+  font-size: 280px;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(33,150,243,0.08);
+  letter-spacing: -8px;
+  z-index: -1;
+}
+
+.section-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--text-main);
+  text-align: center;
+  margin-top: 16px;
+  letter-spacing: 4px;
+}
+
+.section-divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  margin: 16px auto 0;
+}
+
+/* 右侧三列卡片 */
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sub-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.sub-title-row .icon-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  flex-shrink: 0;
+}
+
+.sub-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+}
+
+.cards-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  flex: 1;
+  border: 1px solid var(--border-line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(10, 22, 48, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.card {
+  flex: 1;
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.card + .card {
+  border-left: 1px solid var(--border-line);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(0,188,212,0.1));
+  border: 1px solid var(--border-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.card-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.card-title-en {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.card-divider {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+
+.card-content {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.9;
+  color: var(--text-sub);
+  letter-spacing: 0.5px;
+}
+
+.card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.card-footer .footer-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(33,150,243,0.3);
+}
+
+.card-footer .arrow {
+  font-size: 14px;
+  color: var(--accent);
+}
+
+/* 底部装饰条 */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-line);
+}
+
+.bottom-bar .left-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.bottom-bar .label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.bottom-bar .value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.bottom-bar .right-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+}
+
+.bottom-bar .hex {
+  font-family: 'Inter', monospace;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(33,150,243,0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(33,150,243,0.3);
+}
+
+/* 装饰几何 */
+.deco-hex {
+  position: absolute;
+  z-index: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.deco-hex-1 {
+  top: 40px;
+  right: 40px;
+  width: 80px;
+  height: 80px;
+  border: 1px solid var(--primary);
+  transform: rotate(30deg);
+  animation: none;
+}
+
+.deco-hex-2 {
+  bottom: 60px;
+  left: 30px;
+  width: 60px;
+  height: 60px;
+  border: 1px solid var(--accent);
+  transform: rotate(15deg);
+}
+
+.deco-circle {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.2);
+  pointer-events: none;
+}
+
+.deco-circle-1 {
+  top: 120px;
+  right: 200px;
+  width: 120px;
+  height: 120px;
+}
+
+.deco-circle-2 {
+  bottom: 100px;
+  right: 100px;
+  width: 60px;
+  height: 60px;
+  border-color: rgba(0,188,212,0.25);
+}
+
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="grid-bg"></div>
+  <div class="deco-hex deco-hex-1"></div>
+  <div class="deco-hex deco-hex-2"></div>
+  <div class="deco-circle deco-circle-1"></div>
+  <div class="deco-circle deco-circle-2"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <span class="tag">CHAPTER</span>
+      <div class="line"></div>
+      <div class="dots">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <span class="tag">01 / 05</span>
+    </div>
+
+    <div class="main-content">
+      <div class="left-section">
+        <div class="chapter-number-glow">01</div>
+        <div class="chapter-label">— CHAPTER 01 —</div>
+        <div class="chapter-number">01</div>
+        <div class="section-title">活 动 概 览</div>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="right-section">
+        <div class="sub-title-row">
+          <div class="icon-dot"></div>
+          <div class="sub-title">从初心到书单，一览本期读书会全景</div>
+        </div>
+
+        <div class="cards-row">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-num">01</div>
+              <div>
+                <div class="card-title">初心与使命</div>
+                <div class="card-title-en">MISSION</div>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-content">
+              以阅读为桥梁，传播开源文化，推动开发者共同进步。我们相信阅读的力量，更相信分享的价值。
+            </div>
+            <div class="card-footer">
+              <span>VISION</span>
+              <div class="footer-line"></div>
+              <span class="arrow">→</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-num">02</div>
+              <div>
+                <div class="card-title">内容板块</div>
+                <div class="card-title-en">SECTIONS</div>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-content">
+              涵盖主题书单、嘉宾分享、社区互动与数据回顾四大板块，全面呈现本期读书会精彩内容。
+            </div>
+            <div class="card-footer">
+              <span>STRUCTURE</span>
+              <div class="footer-line"></div>
+              <span class="arrow">→</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-num">03</div>
+              <div>
+                <div class="card-title">参与方式</div>
+                <div class="card-title-en">JOIN US</div>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-content">
+              线上直播加录播回放，社区成员可全程参与讨论，随时随地加入这场知识盛宴。
+            </div>
+            <div class="card-footer">
+              <span>ACCESS</span>
+              <div class="footer-line"></div>
+              <span class="arrow">→</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="left-info">
+        <span class="label">SECTION</span>
+        <span class="value">活动概览</span>
+        <span class="label">|</span>
+        <span class="label">READ TIME</span>
+        <span class="value">3 MIN</span>
+      </div>
+      <div class="right-info">
+        <span class="hex">#2196F3</span>
+        <span>×</span>
+        <span class="hex">#00BCD4</span>
+        <span>|</span>
+        <span>DEEP BLUE TECH</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

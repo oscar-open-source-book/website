@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>阅读书单 · 精读精选</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --neutral:#ECEFF1;
+  --bg-deep:#0A1628;
+  --bg-card:#0F2138;
+  --bg-card-2:#11294A;
+  --border:#1B3A5C;
+  --text-dim:#90A4AE;
+  --glow:rgba(0,229,255,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;color:var(--neutral);background:#060F1E;overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#060F1E 0%,#0A1628 50%,#0B1E36 100%);}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.05) 1px,transparent 1px);background-size:60px 60px;}
+#bg .glow-1{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,0.12),transparent 70%);top:-160px;right:-120px;}
+#bg .glow-2{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.14),transparent 70%);bottom:-160px;left:-100px;}
+#ct{position:absolute;inset:0;z-index:1;padding:52px 60px 44px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+.head{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.head .tag{display:inline-flex;align-items:center;gap:8px;width:fit-content;font-family:'Roboto Mono',monospace;font-size:12px;letter-spacing:3px;color:var(--accent);padding:5px 14px;border:1px solid rgba(0,229,255,0.4);border-radius:20px;background:rgba(0,229,255,0.06);}
+.head .tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+.head h1{font-family:'Roboto Mono',monospace;font-size:38px;font-weight:700;letter-spacing:2px;color:var(--neutral);}
+.head h1 .bar{display:inline-block;width:6px;height:36px;background:var(--accent);margin-right:16px;vertical-align:-6px;box-shadow:0 0 12px var(--glow);}
+.head .sub{font-size:14px;line-height:1.7;color:var(--text-dim);max-width:1100px;}
+
+.main{flex:1;display:grid;grid-template-columns:720px 1fr;gap:24px;min-height:0;}
+
+.img-block{display:flex;flex-direction:column;gap:12px;}
+.img-frame{position:relative;width:700px;height:392px;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 0 0 1px rgba(0,229,255,0.08);}
+.img-frame img{width:100%;height:100%;object-fit:cover;display:block;}
+.img-frame .corner{position:absolute;width:22px;height:22px;border:2px solid var(--accent);}
+.img-frame .corner.tl{top:8px;left:8px;border-right:none;border-bottom:none;}
+.img-frame .corner.tr{top:8px;right:8px;border-left:none;border-bottom:none;}
+.img-frame .corner.bl{bottom:8px;left:8px;border-right:none;border-top:none;}
+.img-frame .corner.br{bottom:8px;right:8px;border-left:none;border-top:none;}
+.img-frame .scan{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);top:30%;opacity:0.5;animation:scan 4s linear infinite;}
+@keyframes scan{0%{top:10%;opacity:0;}50%{opacity:0.6;}100%{top:90%;opacity:0;}}
+.img-cap{display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(15,33,56,0.7);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;}
+.img-cap .ic{width:8px;height:8px;background:var(--accent);transform:rotate(45deg);box-shadow:0 0 6px var(--accent);}
+.img-cap .txt{font-family:'Roboto Mono',monospace;font-size:13px;letter-spacing:1.5px;color:var(--accent);}
+.img-cap .txt .dim{color:var(--text-dim);font-family:'Inter',sans-serif;font-size:12px;margin-left:8px;letter-spacing:0.5px;}
+
+.cards{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;}
+.card{position:relative;background:linear-gradient(160deg,#0F2138 0%,#11294A 100%);border:1px solid var(--border);border-radius:12px;padding:18px 18px 16px 18px;display:flex;flex-direction:column;gap:8px;overflow:hidden;transition:border-color .3s;}
+.card::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent));opacity:0.85;}
+.card::after{content:"";position:absolute;bottom:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.15),transparent 70%);}
+.card .num{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:2px;opacity:0.85;}
+.card .ttl{font-family:'Roboto Mono',monospace;font-size:18px;font-weight:700;color:var(--neutral);letter-spacing:1px;}
+.card .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(33,150,243,0.15);border:1px solid rgba(33,150,243,0.4);border-radius:4px;font-size:11px;color:var(--primary);font-family:'Roboto Mono',monospace;letter-spacing:1px;width:fit-content;}
+.card .desc{font-size:12px;line-height:1.65;color:var(--text-dim);}
+.card .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;}
+.card .tags span{font-size:10px;padding:3px 8px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:3px;color:var(--accent);font-family:'Roboto Mono',monospace;letter-spacing:0.5px;}
+
+.footer{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+.kpi{display:flex;align-items:center;gap:18px;padding:14px 22px;background:linear-gradient(90deg,rgba(33,150,243,0.12),rgba(0,229,255,0.04));border:1px solid var(--border);border-radius:10px;position:relative;overflow:hidden;}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);box-shadow:0 0 12px var(--glow);}
+.kpi .icon-box{width:52px;height:52px;border-radius:10px;background:rgba(33,150,243,0.15);border:1px solid rgba(33,150,243,0.3);display:flex;align-items:center;justify-content:center;font-family:'Roboto Mono',monospace;font-size:20px;color:var(--accent);flex-shrink:0;}
+.kpi .info{display:flex;flex-direction:column;gap:2px;flex:1;}
+.kpi .lbl{font-size:11px;color:var(--text-dim);letter-spacing:1.5px;font-family:'Roboto Mono',monospace;}
+.kpi .val{font-family:'Roboto Mono',monospace;font-size:26px;font-weight:700;color:var(--neutral);}
+.kpi .val .unit{font-size:14px;color:var(--primary);margin-left:4px;font-weight:500;}
+.kpi .note{font-size:11px;color:var(--text-dim);text-align:right;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-overlay"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+  </div>
+  <div id="ct">
+
+    <div class="head">
+      <span class="tag"><span class="dot"></span>READING LIST · CH03</span>
+      <h1><span class="bar"></span>阅读书单 · 精读精选</h1>
+      <p class="sub">阅读是开源布道者的必修课。本章汇总全年精读书单，覆盖文化、法律、治理与实践四个维度，帮助读者建立完整的开源知识坐标系。</p>
+    </div>
+
+    <div class="main">
+
+      <div class="img-block">
+        <div class="img-frame">
+          <img src="../images/page_003_book_stack.png" alt="立体书籍堆叠与光晕效果插画">
+          <div class="corner tl"></div>
+          <div class="corner tr"></div>
+          <div class="corner bl"></div>
+          <div class="corner br"></div>
+          <div class="scan"></div>
+        </div>
+        <div class="img-cap">
+          <span class="ic"></span>
+          <span class="txt">KNOWLEDGE STAGING<span class="dim">知识积累，层层沉淀 —— 立体书籍堆叠与全息光晕插画</span></span>
+        </div>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <span class="num">// 01 · CULTURE</span>
+          <span class="ttl">开源文化经典</span>
+          <span class="badge">PHILOSOPHY</span>
+          <p class="desc">《大教堂与集市》等著作，帮助理解开源背后的协作哲学与治理智慧。</p>
+          <div class="tags"><span>大教堂与集市</span><span>协作哲学</span><span>治理智慧</span></div>
+        </div>
+
+        <div class="card">
+          <span class="num">// 02 · LICENSE</span>
+          <span class="ttl">开源许可证指南</span>
+          <span class="badge">LEGAL</span>
+          <p class="desc">涵盖 GPL、Apache、MIT 许可证的差异与选用场景，为项目合规奠基。</p>
+          <div class="tags"><span>GPL</span><span>Apache</span><span>MIT</span><span>合规</span></div>
+        </div>
+
+        <div class="card">
+          <span class="num">// 03 · GOVERNANCE</span>
+          <span class="ttl">开源治理实践</span>
+          <span class="badge">FOUNDATION</span>
+          <p class="desc">包含 CNCF 与 Linux 基金会案例研究，学习基金会运作与社区建设。</p>
+          <div class="tags"><span>CNCF</span><span>Linux 基金会</span><span>社区建设</span></div>
+        </div>
+
+        <div class="card">
+          <span class="num">// 04 · PRACTICE</span>
+          <span class="ttl">代码阅读技巧</span>
+          <span class="badge">SOURCE</span>
+          <p class="desc">讲解大项目源码阅读方法论，从 Makefile 到核心架构的层层拆解。</p>
+          <div class="tags"><span>Makefile</span><span>核心架构</span><span>源码阅读</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="kpi">
+        <div class="icon-box">📚</div>
+        <div class="info">
+          <span class="lbl">READING COUNT</span>
+          <span class="val">18<span class="unit">本</span></span>
+        </div>
+        <div class="note">精读书籍<br>含中译本与英文原版</div>
+      </div>
+      <div class="kpi">
+        <div class="icon-box">📝</div>
+        <div class="info">
+          <span class="lbl">NOTES PAGES</span>
+          <span class="val">260<span class="unit">+ 页</span></span>
+        </div>
+        <div class="note">读书笔记<br>整理为 Markdown 归档</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

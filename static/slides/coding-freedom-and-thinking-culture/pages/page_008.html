@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>思考文化的意义</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --klein:#002FA7;
+  --klein-deep:#001A6B;
+  --cyan:#00BCD4;
+  --cyan-glow:#4DD0E1;
+  --bg:#F0F4F8;
+  --card-bg:#FFFFFF;
+  --text-main:#1A2744;
+  --text-sub:#5A6B87;
+  --text-white:#FFFFFF;
+  --danger:#E53935;
+  --border:#D6DEE8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  color:var(--text-main);
+  background:var(--bg);
+}
+h1,h2,h3{font-family:'Orbitron',sans-serif;font-weight:700;}
+
+/* Background decoration */
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,#F0F4F8 0%,#E3ECF5 45%,#DAE7F5 100%);
+  overflow:hidden;
+}
+#bg::before{
+  content:'';position:absolute;
+  top:-200px;right:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(0,47,167,0.08) 0%,transparent 70%);
+  border-radius:50%;
+}
+#bg::after{
+  content:'';position:absolute;
+  bottom:-150px;left:-150px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(0,188,212,0.10) 0%,transparent 70%);
+  border-radius:50%;
+}
+.geo-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,47,167,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,47,167,0.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;
+}
+
+/* Content layer */
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:42px 60px 0 60px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* Header */
+.header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-bottom:14px;
+  border-bottom:2px solid var(--klein);
+  position:relative;
+}
+.header::after{
+  content:'';position:absolute;
+  left:0;bottom:-2px;height:2px;width:200px;
+  background:var(--cyan);
+}
+.title-block{display:flex;flex-direction:column;gap:6px;}
+.title-eyebrow{
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;font-weight:500;
+  letter-spacing:4px;
+  color:var(--cyan);
+  text-transform:uppercase;
+}
+.main-title{
+  font-size:38px;font-weight:900;
+  color:var(--klein);
+  letter-spacing:2px;
+}
+.subtitle{
+  font-size:13px;color:var(--text-sub);
+  max-width:900px;
+  line-height:1.6;
+  font-weight:400;
+  margin-top:4px;
+}
+.header-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--klein);color:#fff;
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;font-weight:500;letter-spacing:2px;
+  padding:5px 12px;
+  border-radius:2px;
+}
+.badge .dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;}
+.tag-danger{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(229,57,53,0.10);
+  color:var(--danger);
+  font-size:11px;font-weight:600;letter-spacing:1px;
+  padding:4px 10px;border-radius:2px;
+  border:1px solid rgba(229,57,53,0.3);
+}
+.tag-danger .dot{width:6px;height:6px;background:var(--danger);border-radius:50%;}
+
+/* Main grid */
+.main{
+  display:grid;
+  grid-template-columns:45% 55%;
+  gap:28px;
+  margin-top:20px;
+  flex:1;
+  min-height:0;
+}
+
+/* LEFT: Pyramid */
+.left-panel{
+  display:flex;flex-direction:column;
+  gap:12px;
+}
+.panel-label{
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;font-weight:500;letter-spacing:3px;
+  color:var(--klein);
+  display:flex;align-items:center;gap:8px;
+}
+.panel-label .bar{width:24px;height:2px;background:var(--cyan);}
+.pyramid-wrap{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;
+  gap:8px;
+  padding:8px 0 4px 0;
+}
+.pyr-layer{
+  position:relative;
+  display:flex;align-items:center;
+  padding:12px 24px;
+  color:#fff;
+  font-family:'Inter',sans-serif;
+}
+.pyr-layer .icon{
+  width:36px;height:36px;
+  border-radius:8px;
+  background:rgba(255,255,255,0.18);
+  display:flex;align-items:center;justify-content:center;
+  margin-right:14px;
+  font-size:18px;
+  flex-shrink:0;
+}
+.pyr-layer .layer-info{display:flex;flex-direction:column;gap:2px;}
+.pyr-layer .layer-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;font-weight:700;letter-spacing:2px;
+}
+.pyr-layer .layer-desc{
+  font-size:11px;font-weight:400;opacity:0.9;letter-spacing:0.5px;
+}
+
+/* Trapezoid shapes via clip-path */
+.pyr-top{
+  clip-path:polygon(50% 0%,90% 100%,10% 100%);
+  background:linear-gradient(180deg,#003DC9,#002FA7);
+  width:240px;height:100px;
+  align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;padding:30px 24px 12px 24px;
+}
+.pyr-top .icon{margin-right:0;margin-bottom:6px;}
+.pyr-top .layer-info{align-items:center;}
+
+.pyr-mid{
+  clip-path:polygon(0 0,100% 0,92% 100%,8% 100%);
+  background:linear-gradient(180deg,#0050D8,#003DC9);
+  width:380px;height:96px;
+}
+
+.pyr-base{
+  clip-path:polygon(0 0,100% 0,86% 100%,14% 100%);
+  background:linear-gradient(180deg,#006EE6,#0050D8);
+  width:520px;height:96px;
+}
+
+/* Right side: 4 cards */
+.right-panel{
+  display:grid;
+  grid-template-rows:repeat(4,1fr);
+  gap:12px;
+}
+.point-card{
+  display:flex;align-items:center;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-left:4px solid var(--klein);
+  border-radius:4px;
+  padding:12px 18px;
+  gap:16px;
+  position:relative;
+  overflow:hidden;
+  transition:none;
+}
+.point-card::after{
+  content:'';position:absolute;
+  top:0;right:0;width:80px;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(0,188,212,0.05));
+  pointer-events:none;
+}
+.card-index{
+  font-family:'Orbitron',sans-serif;
+  font-size:28px;font-weight:900;
+  color:var(--cyan);
+  min-width:46px;
+  line-height:1;
+}
+.card-body{display:flex;flex-direction:column;gap:3px;flex:1;}
+.card-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;font-weight:700;
+  color:var(--klein);
+  letter-spacing:1.5px;
+}
+.card-desc{
+  font-size:12px;color:var(--text-sub);
+  line-height:1.55;font-weight:400;
+}
+
+/* Bottom data bar */
+.data-bar{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  background:linear-gradient(90deg,var(--klein-deep) 0%,var(--klein) 60%,#0045C9 100%);
+  border-radius:4px;
+  padding:16px 28px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.data-bar::before{
+  content:'';position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--cyan);
+}
+.data-bar::after{
+  content:'';position:absolute;
+  top:0;right:-60px;width:200px;height:100%;
+  background:radial-gradient(circle,rgba(0,188,212,0.15) 0%,transparent 70%);
+}
+.data-cell{
+  display:flex;flex-direction:column;gap:6px;
+  padding:0 20px;
+  position:relative;z-index:1;
+}
+.data-cell + .data-cell{
+  border-left:1px solid rgba(255,255,255,0.15);
+}
+.data-label{
+  font-family:'Orbitron',sans-serif;
+  font-size:9px;font-weight:500;letter-spacing:3px;
+  color:var(--cyan);
+  text-transform:uppercase;
+}
+.data-value{
+  font-family:'Orbitron',sans-serif;
+  font-size:18px;font-weight:700;letter-spacing:1px;
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+}
+.data-value .num{font-size:34px;font-weight:900;color:var(--cyan-glow);}
+.data-value .unit{font-size:13px;color:rgba(255,255,255,0.7);font-weight:400;letter-spacing:2px;}
+.data-sub{
+  font-size:11px;color:rgba(255,255,255,0.7);
+  font-weight:400;letter-spacing:0.5px;
+}
+.data-threat{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(229,57,53,0.2);
+  border:1px solid rgba(229,57,53,0.5);
+  padding:6px 14px;
+  border-radius:3px;
+  color:#FF6B6B;
+  font-size:13px;font-weight:600;
+  font-family:'Orbitron',sans-serif;
+  letter-spacing:1px;
+}
+.data-threat .pulse{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--danger);
+  box-shadow:0 0 8px var(--danger);
+}
+.data-threat-row{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.threat-note{
+  font-size:11px;color:rgba(255,255,255,0.7);
+  font-weight:400;letter-spacing:0.5px;
+  font-family:'Inter',sans-serif;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="geo-grid"></div>
+  </div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="title-block">
+        <span class="title-eyebrow"><span>THINKING CULTURE · ISSUE 01</span></span>
+        <h1 class="main-title"><span>思考文化的意义</span></h1>
+        <p class="subtitle"><span>思考文化不是抽象口号，而体现在每个 RFC 辩论和每次 Code Review 讨论中。本期特别提醒——警惕『效率至上』对独立思考的吞噬。</span></p>
+      </div>
+      <div class="header-right">
+        <span class="badge"><span class="dot"></span><span>CULTURE / 01</span></span>
+        <span class="tag-danger"><span class="dot"></span><span>⚠ 当前最大威胁</span></span>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+      <!-- LEFT: Pyramid -->
+      <div class="left-panel">
+        <span class="panel-label"><span class="bar"></span><span>三层思考文化金字塔</span></span>
+        <div class="pyramid-wrap">
+
+          <div class="pyr-layer pyr-top">
+            <div class="icon">🧭</div>
+            <div class="layer-info">
+              <span class="layer-title">独立判断</span>
+              <span class="layer-desc">基于事实与推理做出个人决策</span>
+            </div>
+          </div>
+
+          <div class="pyr-layer pyr-mid">
+            <div class="icon">🐢</div>
+            <div class="layer-info">
+              <span class="layer-title">慢思考</span>
+              <span class="layer-desc">允许深度推理与反复推敲的空间</span>
+            </div>
+          </div>
+
+          <div class="pyr-layer pyr-base">
+            <div class="icon">🌐</div>
+            <div class="layer-info">
+              <span class="layer-title">包容</span>
+              <span class="layer-desc">接纳多元观点与不同技术路线的共存</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: 4 cards -->
+      <div class="right-panel">
+
+        <div class="point-card">
+          <span class="card-index">01</span>
+          <div class="card-body">
+            <span class="card-title">反对从众</span>
+            <span class="card-desc">开源社区最珍贵的是不同意的声音，而非整齐划一的赞美。</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <span class="card-index">02</span>
+          <div class="card-body">
+            <span class="card-title">慢即是快</span>
+            <span class="card-desc">Rust 的设计哲学证明，花时间做正确的事比快速交付更长远。</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <span class="card-index">03</span>
+          <div class="card-body">
+            <span class="card-title">包容异议</span>
+            <span class="card-desc">Linux 内核邮件列表的论战文化是工程决策质量的隐形保障。</span>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <span class="card-index">04</span>
+          <div class="card-body">
+            <span class="card-title">拒绝内卷</span>
+            <span class="card-desc">当绩效考核压倒贡献热情，开源社区的精神根基就会动摇。</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom data bar -->
+    <div class="data-bar">
+      <div class="data-cell">
+        <span class="data-label"><span>KEY CASES / 关键案例</span></span>
+        <span class="data-value">
+          <span class="num">3</span><span class="unit">个经典案例</span>
+        </span>
+        <span class="data-sub"><span>Rust · Linus Torvalds · Python</span></span>
+      </div>
+      <div class="data-cell">
+        <span class="data-label"><span>CULTURAL CHALLENGE / 文化挑战</span></span>
+        <div class="data-threat-row">
+          <span class="data-threat"><span class="pulse"></span><span>内卷 · 效率主义</span></span>
+          <span class="threat-note"><span>当前最大威胁 — 侵蚀独立思考的根基</span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源的精神内核</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap');
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-deep:#081222;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Roboto Mono',monospace;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 50% 45%, #122c52 0%, #081222 62%, #040a16 100%);}
+#bg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.055) 1px, transparent 1px);background-size:40px 40px;}
+#bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(90deg, rgba(33,150,243,0.055) 1px, transparent 1px);background-size:40px 40px;}
+.glow-a{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at 28% 22%, rgba(33,150,243,0.20), transparent 46%);}
+.glow-b{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at 72% 78%, rgba(0,188,212,0.16), transparent 48%);}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 60px 30px 60px;display:flex;flex-direction:column;}
+
+.header{position:relative;height:72px;text-align:center;}
+.header h1{font-family:'Inter',sans-serif;font-weight:800;font-size:48px;color:#fff;letter-spacing:3px;text-shadow:0 0 22px rgba(33,150,243,0.55);}
+.header .sub{font-family:'Inter',sans-serif;font-weight:500;font-size:12px;color:var(--neutral);letter-spacing:8px;margin-top:8px;}
+.header .deco{position:absolute;top:50%;height:2px;background:linear-gradient(90deg,transparent,var(--primary) 50%,transparent);width:260px;transform:translateY(-50%);}
+.header .deco.l{left:60px;}
+.header .deco.r{right:60px;}
+
+.stage{position:relative;flex:1;margin-top:15px;}
+.svg-layer{position:absolute;left:0;top:0;width:1480px;height:670px;pointer-events:none;z-index:1;}
+
+.quad{position:absolute;width:690px;height:270px;background:linear-gradient(135deg, rgba(20,42,76,0.85), rgba(8,18,34,0.88));border:1px solid rgba(33,150,243,0.40);border-radius:14px;padding:24px 28px;display:flex;align-items:center;gap:22px;z-index:2;box-shadow:0 0 24px rgba(33,150,243,0.10) inset, 0 12px 34px rgba(0,0,0,0.45);}
+.quad .corner{position:absolute;width:14px;height:14px;border:2px solid var(--primary);}
+.quad .c-tl{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.quad .c-tr{top:-1px;right:-1px;border-left:none;border-bottom:none;}
+.quad .c-bl{bottom:-1px;left:-1px;border-right:none;border-top:none;}
+.quad .c-br{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+.quad .icon{width:78px;height:78px;flex-shrink:0;filter:drop-shadow(0 0 10px rgba(0,188,212,0.85));}
+.quad .body{flex:1;}
+.quad .kw{font-family:'Inter',sans-serif;font-weight:700;font-size:22px;color:#fff;letter-spacing:1px;margin-bottom:6px;}
+.quad .kw .num{color:var(--accent);font-size:13px;margin-right:10px;font-weight:500;letter-spacing:2px;}
+.quad .divider{width:42px;height:2px;background:var(--primary);margin-bottom:10px;}
+.quad .desc{font-size:12.5px;line-height:1.75;color:var(--neutral);}
+.quad.tl{left:0;top:20px;}
+.quad.tr{right:0;top:20px;}
+.quad.bl{left:0;bottom:0;}
+.quad.br{right:0;bottom:0;}
+
+.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:128px;height:128px;z-index:3;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.core .ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(33,150,243,0.7);box-shadow:0 0 30px rgba(33,150,243,0.55), inset 0 0 18px rgba(33,150,243,0.45);animation:pulse 2.6s ease-in-out infinite;}
+.core .ring2{position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(0,188,212,0.45);box-shadow:0 0 22px rgba(0,188,212,0.35);}
+.core .ring3{position:absolute;inset:-28px;border-radius:50%;border:1px dashed rgba(33,150,243,0.30);}
+.core .core-dot{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle, #5fdcff 0%, #2196F3 55%, #0a4a80 100%);box-shadow:0 0 36px rgba(33,150,243,1), 0 0 70px rgba(33,150,243,0.55);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:17px;letter-spacing:1px;}
+.core .label{position:absolute;bottom:-22px;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;color:var(--neutral);letter-spacing:3px;white-space:nowrap;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.08);opacity:0.85;}}
+
+.footer{height:60px;display:flex;align-items:center;justify-content:center;padding:0 30px;margin-top:15px;position:relative;}
+.footer .line{flex:0 0 auto;width:170px;height:1px;background:linear-gradient(90deg,transparent,var(--primary));}
+.footer .line.r{background:linear-gradient(90deg,var(--primary),transparent);}
+.footer .text{flex:1;text-align:center;font-size:13.5px;color:var(--neutral);line-height:1.6;padding:0 28px;}
+.footer .text b{color:#fff;font-family:'Inter',sans-serif;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div class="glow-a"></div>
+<div class="glow-b"></div>
+<div id="ct">
+<div class="header">
+<div class="deco l"></div>
+<div class="deco r"></div>
+<h1>开源的精神内核</h1>
+<div class="sub">OPEN · SOURCE · SPIRIT</div>
+</div>
+
+<div class="stage">
+<svg class="svg-layer" viewBox="0 0 1480 670" preserveAspectRatio="none">
+<defs>
+<linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2196F3" stop-opacity="0"/><stop offset="0.5" stop-color="#2196F3" stop-opacity="0.95"/><stop offset="1" stop-color="#2196F3" stop-opacity="0.2"/></linearGradient>
+<linearGradient id="lg2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2196F3" stop-opacity="0"/><stop offset="0.5" stop-color="#2196F3" stop-opacity="0.95"/><stop offset="1" stop-color="#2196F3" stop-opacity="0.2"/></linearGradient>
+<linearGradient id="lg3" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#00BCD4" stop-opacity="0"/><stop offset="0.5" stop-color="#00BCD4" stop-opacity="0.95"/><stop offset="1" stop-color="#00BCD4" stop-opacity="0.2"/></linearGradient>
+<linearGradient id="lg4" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#00BCD4" stop-opacity="0"/><stop offset="0.5" stop-color="#00BCD4" stop-opacity="0.95"/><stop offset="1" stop-color="#00BCD4" stop-opacity="0.2"/></linearGradient>
+<radialGradient id="coreHalo" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#4dd0ff" stop-opacity="0.55"/><stop offset="0.5" stop-color="#2196F3" stop-opacity="0.2"/><stop offset="1" stop-color="#2196F3" stop-opacity="0"/></radialGradient>
+</defs>
+<ellipse cx="740" cy="335" rx="380" ry="260" fill="url(#coreHalo)"/>
+<line x1="640" y1="260" x2="685" y2="305" stroke="url(#lg1)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<line x1="840" y1="260" x2="795" y2="305" stroke="url(#lg2)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<line x1="640" y1="410" x2="685" y2="365" stroke="url(#lg3)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<line x1="840" y1="410" x2="795" y2="365" stroke="url(#lg4)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<circle cx="510" cy="185" r="2.5" fill="#2196F3" opacity="0.7"/>
+<circle cx="970" cy="185" r="2.5" fill="#2196F3" opacity="0.7"/>
+<circle cx="510" cy="485" r="2.5" fill="#00BCD4" opacity="0.7"/>
+<circle cx="970" cy="485" r="2.5" fill="#00BCD4" opacity="0.7"/>
+<circle cx="740" cy="180" r="2" fill="#2196F3" opacity="0.5"/>
+<circle cx="740" cy="490" r="2" fill="#2196F3" opacity="0.5"/>
+<circle cx="270" cy="335" r="2" fill="#00BCD4" opacity="0.5"/>
+<circle cx="1210" cy="335" r="2" fill="#00BCD4" opacity="0.5"/>
+</svg>
+
+<div class="quad tl">
+<span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+<svg class="icon" viewBox="0 0 78 78"><g fill="none" stroke="#4dd0ff" stroke-width="2.5" stroke-linecap="round">
+<path d="M19 60 V40 a22 22 0 0 1 44 0 V60" stroke="#2196F3"/>
+<path d="M13 60 H65"/>
+<path d="M39 30 v-8"/>
+<circle cx="39" cy="18" r="4.5" fill="#2196F3" stroke="none"/>
+</g></svg>
+<div class="body">
+<div class="kw"><span class="num">01</span>自由与开放</div>
+<div class="divider"></div>
+<div class="desc">思想自由、代码开放，任何人皆可参与创造，打破知识与技术的垄断壁垒，让智慧跨越阶层与地域自由流动。</div>
+</div>
+</div>
+
+<div class="quad tr">
+<span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+<svg class="icon" viewBox="0 0 78 78"><g fill="none" stroke="#4dd0ff" stroke-width="2.5" stroke-linecap="round">
+<circle cx="18" cy="18" r="5.5" fill="#2196F3" stroke="none"/>
+<circle cx="60" cy="18" r="5.5" fill="#2196F3" stroke="none"/>
+<circle cx="39" cy="40" r="5.5" fill="#00BCD4" stroke="none"/>
+<circle cx="18" cy="60" r="4.5" fill="#2196F3" stroke="none"/>
+<circle cx="60" cy="60" r="4.5" fill="#2196F3" stroke="none"/>
+<path d="M23 22 L34 37"/><path d="M55 22 L44 37"/><path d="M33 44 L23 55"/><path d="M45 44 L55 55"/><path d="M23 60 L55 60"/>
+</g></svg>
+<div class="body">
+<div class="kw"><span class="num">02</span>协作与共享</div>
+<div class="divider"></div>
+<div class="desc">全球开发者跨越地域与组织边界，在 GitHub 等平台协同迭代代码与互相评审，让集体智慧汇聚成更强大的创造力。</div>
+</div>
+</div>
+
+<div class="quad bl">
+<span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+<svg class="icon" viewBox="0 0 78 78"><g fill="none" stroke="#4dd0ff" stroke-width="2.5" stroke-linecap="round">
+<path d="M39 12 L62 23 V41 c0 15 -10 26 -23 32 c-13 -6 -23 -17 -23 -32 V23 Z" stroke="#2196F3"/>
+<path d="M28 40 L36 48 L51 32" stroke="#4dd0ff"/>
+</g></svg>
+<div class="body">
+<div class="kw"><span class="num">03</span>透明与信任</div>
+<div class="divider"></div>
+<div class="desc">代码全公开，缺陷无处遁形，通过社区监督与同行评审构建可信的数字基础设施，让技术真正经得起时间检验。</div>
+</div>
+</div>
+
+<div class="quad br">
+<span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+<svg class="icon" viewBox="0 0 78 78"><g fill="none" stroke="#4dd0ff" stroke-width="2.5" stroke-linecap="round">
+<path d="M17 30 a22 22 0 0 1 38 0" stroke="#2196F3"/>
+<path d="M58 20 L62 30 L54 32"/>
+<path d="M63 48 a22 22 0 0 1 -38 0" stroke="#2196F3"/>
+<path d="M22 58 L18 48 L26 46"/>
+</g></svg>
+<div class="body">
+<div class="kw"><span class="num">04</span>回馈与传承</div>
+<div class="divider"></div>
+<div class="desc">站在巨人肩上，回馈社区是开源人的义务，形成可持续的知识循环与代际传承，让每一代开发者都受益于前人的积累。</div>
+</div>
+</div>
+
+<div class="core">
+<div class="ring3"></div>
+<div class="ring2"></div>
+<div class="ring"></div>
+<div class="core-dot">开源</div>
+<div class="label">CORE · SPIRIT</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="line"></div>
+<div class="text">自由 × 协作 × 透明 × 回馈 —— 四种精神共同汇聚，构筑起 <b>自我繁衍、生生不息</b> 的知识生态系统，让开源成为技术文明最持久的底色。</div>
+<div class="line r"></div>
+</div>
+</div>
+</div>
+</body>
+</html>

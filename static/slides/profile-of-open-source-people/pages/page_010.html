@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>总结与展望</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-deep:#060d1a;
+  --bg-card:rgba(20,40,70,0.55);
+  --border:rgba(33,150,243,0.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:#e0eaf8;overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg-deep);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 64px;display:flex;flex-direction:column;}
+
+/* background layers */
+.bg-glow{position:absolute;width:1200px;height:1200px;border-radius:50%;filter:blur(120px);opacity:.55;}
+.bg-glow.a{background:radial-gradient(circle,#1565c0 0%,transparent 70%);left:-300px;top:-400px;}
+.bg-glow.b{background:radial-gradient(circle,#00838f 0%,transparent 70%);right:-400px;bottom:-500px;}
+.bg-glow.c{background:radial-gradient(circle,#1976d2 0%,transparent 60%);left:50%;top:30%;transform:translateX(-50%);width:800px;height:800px;opacity:.28;}
+
+.bg-grid{position:absolute;inset:0;background-image:
+  linear-gradient(rgba(33,150,243,0.05) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(33,150,243,0.05) 1px,transparent 1px);
+  background-size:60px 60px;}
+
+.code-stream{position:absolute;top:0;left:0;width:100%;height:100%;font-family:'Courier New',monospace;font-size:13px;color:rgba(0,188,212,0.10);line-height:1.6;white-space:pre-wrap;word-break:break-all;letter-spacing:2px;pointer-events:none;overflow:hidden;}
+.code-stream.b{color:rgba(33,150,243,0.07);}
+
+/* corner ornaments */
+.corner{position:absolute;width:120px;height:120px;border:1px solid rgba(33,150,243,0.35);}
+.corner.tl{top:20px;left:20px;border-right:none;border-bottom:none;}
+.corner.tr{top:20px;right:20px;border-left:none;border-bottom:none;}
+.corner.bl{bottom:20px;left:20px;border-right:none;border-top:none;}
+.corner.br{bottom:20px;right:20px;border-left:none;border-top:none;}
+
+/* header */
+.header{text-align:center;margin-top:4px;}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:13px;letter-spacing:6px;color:var(--accent);font-weight:500;margin-bottom:16px;}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);}
+.eyebrow .line{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));}
+.eyebrow .line.r{background:linear-gradient(90deg,var(--accent),transparent);}
+
+.title{font-size:64px;font-weight:800;letter-spacing:6px;background:linear-gradient(135deg,#64b5f6 0%,#2196F3 40%,#00BCD4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 40px rgba(33,150,243,0.3);margin-bottom:14px;}
+
+.subtitle{font-size:18px;font-weight:300;color:var(--neutral);letter-spacing:4px;}
+
+.title-underline{width:200px;height:2px;margin:14px auto 0;background:linear-gradient(90deg,transparent,var(--primary),var(--accent),transparent);}
+
+/* three rows */
+.points{display:flex;flex-direction:column;gap:12px;margin-top:22px;}
+.point{display:flex;align-items:center;gap:20px;padding:14px 24px;border:1px solid var(--border);border-radius:12px;background:var(--bg-card);backdrop-filter:blur(6px);position:relative;overflow:hidden;}
+.point::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.point::after{content:'';position:absolute;right:-40px;top:-40px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.12),transparent 70%);}
+.p-index{flex-shrink:0;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;background:linear-gradient(135deg,#1565c0,#00838f);box-shadow:0 0 20px rgba(33,150,243,0.4);}
+.p-icon{flex-shrink:0;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(33,150,243,0.15);border:1px solid rgba(0,188,212,0.3);}
+.p-icon svg{width:24px;height:24px;}
+.p-body{flex:1;min-width:0;}
+.p-label{font-size:12px;letter-spacing:4px;color:var(--accent);font-weight:600;margin-bottom:4px;}
+.p-text{font-size:16px;line-height:1.55;color:#cfdde6;font-weight:400;}
+.p-text b{color:#fff;font-weight:600;}
+
+/* data tags */
+.tags{display:flex;justify-content:center;gap:24px;margin-top:18px;}
+.tag{display:flex;align-items:center;gap:10px;padding:9px 20px;border:1px solid rgba(0,188,212,0.35);border-radius:20px;background:rgba(0,188,212,0.06);}
+.tag .tag-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+.tag .tag-text{font-size:13px;color:var(--neutral);letter-spacing:1px;}
+.tag .tag-text b{color:#fff;font-weight:600;}
+
+/* footer */
+.footer{margin-top:18px;padding:18px 28px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(135deg,rgba(20,40,70,0.5),rgba(0,40,60,0.3));position:relative;}
+.footer::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent),var(--primary));border-radius:14px 0 0 14px;}
+.footer-inner{display:flex;align-items:center;gap:24px;}
+.footer-badge{flex-shrink:0;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#1565c0,#00838f);display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(33,150,243,0.35);}
+.footer-badge svg{width:32px;height:32px;}
+.footer-text{flex:1;font-size:13.5px;line-height:1.7;color:#b8c8d8;font-weight:300;letter-spacing:0.5px;}
+.footer-text b{color:#e8f2ff;font-weight:500;}
+.footer-sign{text-align:right;flex-shrink:0;}
+.footer-sign .name{font-size:14px;color:#fff;font-weight:600;letter-spacing:2px;}
+.footer-sign .org{font-size:11px;color:var(--accent);letter-spacing:3px;margin-top:4px;}
+
+/* floating particles */
+.particle{position:absolute;border-radius:50%;background:var(--accent);opacity:.4;animation:float 6s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-glow a"></div>
+    <div class="bg-glow b"></div>
+    <div class="bg-glow c"></div>
+    <div class="bg-grid"></div>
+    <div class="code-stream">const openSource = { community: "global", spirit: "collaboration", license: "MIT/GPL/Apache", contributors: Infinity, repos: [], languages: ["Python","JavaScript","Go","Rust","TypeScript"], motivation: ["growth","belonging","impact","passion"], trends: ["AI-assisted","enterprise","diversity"] };</div>
+    <div class="code-stream b" style="top:40%;">git commit -m "summary &amp; outlook" &amp;&amp; git push origin main &amp;&amp; echo "building the open source ecosystem together" &amp;&amp; npm publish &amp;&amp; pip install future</div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <div class="particle" style="width:4px;height:4px;left:12%;top:18%;"></div>
+    <div class="particle" style="width:3px;height:3px;left:88%;top:25%;animation-delay:1s;"></div>
+    <div class="particle" style="width:5px;height:5px;left:8%;top:72%;animation-delay:2s;"></div>
+    <div class="particle" style="width:3px;height:3px;left:92%;top:78%;animation-delay:3s;"></div>
+    <div class="particle" style="width:4px;height:4px;left:50%;top:12%;animation-delay:1.5s;"></div>
+  </div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="eyebrow">
+        <span class="line"></span>
+        <span class="dot"></span>
+        <span>CHAPTER · 10</span>
+        <span class="dot"></span>
+        <span>OUTLOOK</span>
+        <span class="line r"></span>
+      </div>
+      <h1 class="title">总结与展望</h1>
+      <div class="title-underline"></div>
+      <p class="subtitle">从画像认知到行动实践，共建开源生态</p>
+    </div>
+
+    <div class="points">
+      <div class="point">
+        <div class="p-index">01</div>
+        <div class="p-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+        </div>
+        <div class="p-body">
+          <div class="p-label">CORE INSIGHT · 核心收获</div>
+          <div class="p-text">开源人士是<b>多元、技术驱动</b>、以<b>成长与归属</b>为动机的<b>全球性群体</b>。</div>
+        </div>
+      </div>
+
+      <div class="point">
+        <div class="p-index">02</div>
+        <div class="p-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="p-body">
+          <div class="p-label">EVANGELISM · 布道策略</div>
+          <div class="p-text"><b>理解画像</b>才能精准触达，<b>降低参与门槛</b>并<b>强化社区归属感</b>是关键。</div>
+        </div>
+      </div>
+
+      <div class="point">
+        <div class="p-index">03</div>
+        <div class="p-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.8"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="p-body">
+          <div class="p-label">FUTURE TRENDS · 持续关注</div>
+          <div class="p-text"><b>AI 辅助开发</b>、<b>企业开源</b>、<b>多元化包容</b>等趋势将持续重塑社区格局。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tags">
+      <div class="tag">
+        <span class="tag-dot"></span>
+        <span class="tag-text">分享时间：<b>2023 年 6 月（开源之道 · 适兕）</b></span>
+      </div>
+      <div class="tag">
+        <span class="tag-dot"></span>
+        <span class="tag-text">核心维度：<b>6 个（定义 / 类型 / 数据 / 动机 / 技能 / 文化）</b></span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-inner">
+        <div class="footer-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1 3-6z"/></svg>
+        </div>
+        <div class="footer-text">
+          本期分享从<b>定义、类型、数据、动机、技能到文化</b>六个维度系统勾勒了 2023 年开源人士的群体画像。理解这些画像不仅有助于个人规划开源参与路径，也为开源布道者提供了更精准的沟通策略。<b>期待每一位读者都能找到属于自己的开源角色，共同推动生态繁荣。</b>
+        </div>
+        <div class="footer-sign">
+          <div class="name">开源之道 · 适兕</div>
+          <div class="org">OPEN SOURCE INSIGHTS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

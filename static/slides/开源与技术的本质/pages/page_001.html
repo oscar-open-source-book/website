@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源与技术的本质</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #2196F3;
+  --cyan: #00BCD4;
+  --space: #1A1A2E;
+  --space-dark: #0F0F1A;
+  --text-main: #E8EAF6;
+  --text-muted: #90A4AE;
+  --card-bg: rgba(33, 150, 243, 0.06);
+  --card-border: rgba(33, 150, 243, 0.28);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif; }
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #1A1A2E 0%, #12122A 50%, #0D0D20 100%);
+}
+
+#bg .grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33, 150, 243, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+#bg .glow-1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  left: -100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.14) 0%, transparent 70%);
+  filter: blur(20px);
+}
+
+#bg .glow-2 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  bottom: -150px;
+  right: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.10) 0%, transparent 70%);
+  filter: blur(20px);
+}
+
+#bg .hex-deco {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(33, 150, 243, 0.03);
+}
+
+#bg .hex-1 { top: 700px; left: 40px; }
+#bg .hex-2 { top: 100px; right: 60px; width: 40px; height: 40px; border-color: rgba(0, 188, 212, 0.25); }
+#bg .hex-3 { bottom: 80px; left: 300px; width: 30px; height: 30px; border-color: rgba(0, 188, 212, 0.18); }
+
+#bg .dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  opacity: 0.6;
+}
+
+#bg .dot-1 { top: 120px; left: 300px; }
+#bg .dot-2 { top: 500px; left: 80px; }
+#bg .dot-3 { bottom: 200px; right: 30px; }
+#bg .dot-4 { top: 350px; right: 50px; }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 70px;
+  box-sizing: border-box;
+}
+
+.main-grid {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 50px;
+}
+
+.left-col {
+  width: 730px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
+.tag-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tag-line .tag-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.tag-line .tag-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.main-title {
+  font-size: 76px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.12;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #2196F3 60%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sub-title {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(33, 150, 243, 0.2);
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.modules {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.module {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 16px 12px 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.module::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 2px;
+}
+
+.module-1::before { background: var(--sky); }
+.module-2::before { background: var(--cyan); }
+.module-3::before { background: linear-gradient(180deg, var(--sky), var(--cyan)); }
+
+.module-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: rgba(33, 150, 243, 0.12);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sky);
+}
+
+.module-2 .module-icon { background: rgba(0, 188, 212, 0.12); border-color: rgba(0, 188, 212, 0.3); color: var(--cyan); }
+
+.module-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.module-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.module-text {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-main);
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.data-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.data-card {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(33, 150, 243, 0.05);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.data-card .data-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--sky);
+  line-height: 1;
+  font-family: 'Inter', monospace;
+}
+
+.data-card .data-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.data-card-2 .data-num { color: var(--cyan); }
+.data-card-2 { border-color: rgba(0, 188, 212, 0.25); }
+
+.summary {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(33, 150, 243, 0.12);
+}
+
+.summary span { color: rgba(33, 150, 243, 0.8); font-weight: 500; }
+
+/* Right column - image area */
+.hero-wrapper {
+  position: relative;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.hero-frame {
+  position: relative;
+  width: 700px;
+  height: 391px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  box-shadow:
+    0 0 40px rgba(33, 150, 243, 0.15),
+    0 0 80px rgba(0, 188, 212, 0.08);
+}
+
+.hero-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.08) 0%, transparent 40%, transparent 60%, rgba(0, 188, 212, 0.06) 100%);
+  pointer-events: none;
+}
+
+.hero-frame img {
+  width: 700px;
+  height: 391px;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--cyan);
+}
+
+.hero-corner-tl { top: -1px; left: -1px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.hero-corner-tr { top: -1px; right: -1px; border-top: 2px solid var(--sky); border-right: 2px solid var(--sky); }
+.hero-corner-bl { bottom: -1px; left: -1px; border-bottom: 2px solid var(--sky); border-left: 2px solid var(--sky); }
+.hero-corner-br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+.hero-meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  width: 700px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-meta-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border: 1px solid rgba(0, 188, 212, 0.4);
+  border-radius: 3px;
+  background: rgba(0, 188, 212, 0.06);
+}
+
+.hero-meta-size {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  font-family: 'Inter', monospace;
+}
+
+.hero-caption {
+  width: 700px;
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.08), rgba(0, 188, 212, 0.04));
+  border-left: 3px solid var(--sky);
+  border-radius: 0 6px 6px 0;
+}
+
+.hero-caption-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--sky);
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+
+.hero-caption-text {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-main);
+  line-height: 1.6;
+  opacity: 0.92;
+}
+
+.hero-caption-text .accent { color: var(--cyan); font-weight: 600; }
+
+.hero-stats {
+  display: flex;
+  gap: 12px;
+  width: 700px;
+  margin-top: 14px;
+}
+
+.hero-stat {
+  flex: 1;
+  padding: 14px 16px;
+  background: rgba(33, 150, 243, 0.04);
+  border: 1px solid rgba(33, 150, 243, 0.15);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-stat-value {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.hero-stat-label {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.footer-line {
+  position: absolute;
+  bottom: 30px;
+  left: 70px;
+  right: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: rgba(144, 164, 174, 0.5);
+  letter-spacing: 2px;
+  z-index: 2;
+}
+
+.footer-line .footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-line .footer-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cyan);
+  opacity: 0.5;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-lines"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="hex-deco hex-1"></div>
+    <div class="hex-deco hex-2"></div>
+    <div class="hex-deco hex-3"></div>
+    <div class="dot dot-1"></div>
+    <div class="dot dot-2"></div>
+    <div class="dot dot-3"></div>
+    <div class="dot dot-4"></div>
+  </div>
+  <div id="ct">
+    <div class="main-grid">
+      <div class="left-col">
+        <div class="tag-line">
+          <div class="tag-dot"></div>
+          <div class="tag-text">OPEN SOURCE · TECH · ESSENCE</div>
+        </div>
+        <h1 class="main-title"><span>开源与</span><span>技术的本质</span></h1>
+        <div class="sub-title"><span>2021 · 开源之道 读书笔记</span></div>
+
+        <div class="modules">
+          <div class="module module-1">
+            <div class="module-icon">01</div>
+            <div class="module-content">
+              <div class="module-label">主题聚焦</div>
+              <div class="module-text">从开源精神与技术演进的双重维度，重新审视创新与协作的关系</div>
+            </div>
+          </div>
+          <div class="module module-2">
+            <div class="module-icon">02</div>
+            <div class="module-content">
+              <div class="module-label">阅读来源</div>
+              <div class="module-text">《开源之书记录：2021-05》专章分享，凝练核心洞见</div>
+            </div>
+          </div>
+          <div class="module module-3">
+            <div class="module-icon">03</div>
+            <div class="module-content">
+              <div class="module-label">核心追问</div>
+              <div class="module-text">开源是手段还是目的？技术的本质究竟指向何方？</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-row">
+          <div class="data-card data-card-1">
+            <div class="data-num">2021-05</div>
+            <div class="data-label">笔记来源<br>开源之道系列专章</div>
+          </div>
+          <div class="data-card data-card-2">
+            <div class="data-num">×</div>
+            <div class="data-label">核心命题<br>开源 × 技术，本质探索与再思考</div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <span>本篇</span>围绕「开源与技术的本质」这一命题展开，结合2021年5月开源之道的阅读笔记，从<span>哲学</span>、<span>历史</span>与<span>生态</span>三个层面，探讨开源运动与软件技术发展的内在逻辑及其对未来的深远影响。
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="hero-wrapper">
+          <div class="hero-frame">
+            <span class="hero-corner hero-corner-tl"></span>
+            <span class="hero-corner hero-corner-tr"></span>
+            <span class="hero-corner hero-corner-bl"></span>
+            <span class="hero-corner hero-corner-br"></span>
+            <img src="../images/page_001_hero.png" alt="深空场景中流动的代码流光与几何网格交织的远景">
+          </div>
+
+          <div class="hero-meta">
+            <div class="hero-meta-tag">VISUAL · NEBULA CODE</div>
+            <div class="hero-meta-size">2752 × 1536 / 1.79 : 1</div>
+          </div>
+
+          <div class="hero-caption">
+            <div class="hero-caption-label">IMAGE INTENT</div>
+            <div class="hero-caption-text"><span class="accent">代码流 × 几何网格</span>，隐喻开源生态的流动与构建</div>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-value">代码流光</div>
+              <div class="hero-stat-label">CODE FLOW</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-value">几何网格</div>
+              <div class="hero-stat-label">GEOMETRIC GRID</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-value">蓝色霓虹</div>
+              <div class="hero-stat-label">BLUE NEON</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-line">
+    <div class="footer-left">
+      <span class="footer-dot"></span>
+      <span>OPEN SOURCE ESSAYS · 2021 · READING NOTES</span>
+    </div>
+    <div>01 / COVER</div>
+  </div>
+</div>
+</body>
+</html>

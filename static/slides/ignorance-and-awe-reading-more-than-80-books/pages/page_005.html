@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>品类巡礼</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --cream: #FAF7F2;
+  --navy: #0D2137;
+  --navy-light: #1a3555;
+  --wine: #880E4F;
+  --wine-soft: #b03a72;
+  --text-main: #2a2a2a;
+  --text-muted: #6b6b6b;
+  --divider: #d4cfc8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  background: var(--cream);
+  color: var(--text-main);
+  font-weight: 400;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--wine);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--navy);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 36px 60px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--wine);
+  position: relative;
+}
+
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+
+.page-num {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 13px;
+  color: var(--wine);
+  letter-spacing: 3px;
+  font-style: italic;
+}
+
+.main-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 8px;
+  line-height: 1;
+}
+
+.header-right {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  letter-spacing: 1px;
+  padding-bottom: 4px;
+}
+
+.subtitle {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* Five Columns */
+.columns {
+  display: flex;
+  margin-top: 14px;
+  height: 180px;
+  position: relative;
+}
+
+.col {
+  flex: 1;
+  padding: 10px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.col + .col::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--wine);
+  opacity: 0.6;
+}
+
+.col-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.col-icon svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--navy);
+  fill: none;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.col-name {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 3px;
+  margin-bottom: 2px;
+}
+
+.col-tag {
+  font-family: 'Playfair Display', serif;
+  font-size: 10px;
+  color: var(--wine);
+  letter-spacing: 2px;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.col-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--wine-soft);
+  margin-bottom: 8px;
+}
+
+.col-desc {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--text-main);
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+/* Image Section */
+.image-section {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 260px;
+}
+
+.image-frame {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 230px;
+  width: 100%;
+}
+
+.image-wrap {
+  flex-shrink: 0;
+  position: relative;
+  height: 230px;
+}
+
+.image-wrap img {
+  height: 230px;
+  width: auto;
+  display: block;
+  border: 1px solid var(--divider);
+  box-shadow: 0 2px 12px rgba(13,33,55,0.08);
+}
+
+.image-wrap::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 16px;
+  height: 16px;
+  border-top: 2px solid var(--wine);
+  border-left: 2px solid var(--wine);
+}
+
+.image-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  border-bottom: 2px solid var(--wine);
+  border-right: 2px solid var(--wine);
+}
+
+.image-caption {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  font-weight: 300;
+  font-style: italic;
+  border-left: 2px solid var(--wine);
+  padding-left: 18px;
+}
+
+.image-caption strong {
+  display: block;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 14px;
+  color: var(--navy);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+/* Narrative */
+.narrative {
+  margin-top: 12px;
+  padding: 12px 30px 0;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex: 1;
+}
+
+.narrative-left {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 28px;
+  color: var(--wine);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.narrative-text {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-main);
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  text-align: justify;
+}
+
+.narrative-text .highlight {
+  color: var(--wine);
+  font-weight: 600;
+}
+
+/* Footer */
+.footer {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-text {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 15px;
+  color: var(--navy);
+  font-weight: 600;
+  letter-spacing: 6px;
+}
+
+.footer-text .accent {
+  color: var(--wine);
+}
+
+.footer-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+.dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: var(--wine);
+  border-radius: 50%;
+  margin: 0 8px;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <span class="page-num">N°05</span>
+        <h1 class="main-title">品类巡礼</h1>
+      </div>
+      <span class="header-right">A Reader's Journey Through Categories</span>
+    </div>
+
+    <p class="subtitle">五列并立，五种养分——从代码到诗学，从算法到审美，一场跨越边界的阅读之旅</p>
+
+    <div class="columns">
+
+      <div class="col">
+        <div class="col-icon">
+          <svg viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="4"/>
+            <path d="M16 3v5M16 24v5M3 16h5M24 16h5M6.5 6.5l3.5 3.5M22 22l3.5 3.5M25.5 6.5L22 10M10 22l-3.5 3.5"/>
+            <rect x="11" y="2" width="10" height="4" rx="1" transform="rotate(45 16 4)"/>
+          </svg>
+        </div>
+        <div class="col-name">技术与工程</div>
+        <div class="col-tag">Engineering</div>
+        <div class="col-divider"></div>
+        <p class="col-desc">从源码阅读到架构设计，涵盖操作系统、分布式系统与算法经典</p>
+      </div>
+
+      <div class="col">
+        <div class="col-icon">
+          <svg viewBox="0 0 32 32">
+            <path d="M4 6h9c2 0 3 1 4 2 1-1 2-2 4-2h7v20h-7c-2 0-3-1-4-2-1 1-2 2-4 2H4z"/>
+            <path d="M16 8v20"/>
+            <path d="M7 12h6M7 16h6"/>
+          </svg>
+        </div>
+        <div class="col-name">人文与历史</div>
+        <div class="col-tag">Humanities</div>
+        <div class="col-divider"></div>
+        <p class="col-desc">人类简史、文明兴衰等宏观叙事，帮助理解技术背后的社会脉络</p>
+      </div>
+
+      <div class="col">
+        <div class="col-icon">
+          <svg viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="10"/>
+            <path d="M11 12c1.5-1 3-1 5 0s3 1.5 5 0"/>
+            <path d="M11 16c1.5-1 3-1 5 0s3 1.5 5 0"/>
+            <path d="M11 20c1.5-1 3-1 5 0s3 1.5 5 0"/>
+            <circle cx="16" cy="6" r="1.5" fill="#880E4F" stroke="none"/>
+          </svg>
+        </div>
+        <div class="col-name">哲学与认知</div>
+        <div class="col-tag">Philosophy</div>
+        <div class="col-divider"></div>
+        <p class="col-desc">从认识论到批判性思维，追问我们如何知道我们所知道的</p>
+      </div>
+
+      <div class="col">
+        <div class="col-icon">
+          <svg viewBox="0 0 32 32">
+            <rect x="5" y="8" width="9" height="20"/>
+            <rect x="18" y="4" width="9" height="24"/>
+            <path d="M5 14h9M5 20h9M18 10h9M18 16h9M18 22h9"/>
+            <circle cx="9.5" cy="27" r="1.5" fill="#880E4F" stroke="none"/>
+          </svg>
+        </div>
+        <div class="col-name">商业与管理</div>
+        <div class="col-tag">Business</div>
+        <div class="col-divider"></div>
+        <p class="col-desc">开源商业模式、社区治理与领导力实践，与布道工作高度相关</p>
+      </div>
+
+      <div class="col">
+        <div class="col-icon">
+          <svg viewBox="0 0 32 32">
+            <path d="M16 3c-7 0-12 5-12 12 0 4 3 6 6 6 2 0 3-1 3-3 0-1-1-2-1-3 0-2 2-3 3-1 1 1 2 1 3 0 2-2 5-3 5-8 0-5-3-9-7-13z" transform="scale(0.9) translate(3 3)"/>
+            <circle cx="20" cy="10" r="1.5"/>
+            <circle cx="23" cy="15" r="1.5"/>
+            <circle cx="22" cy="20" r="1.5"/>
+            <circle cx="19" cy="23" r="1.5"/>
+          </svg>
+        </div>
+        <div class="col-name">设计与美学</div>
+        <div class="col-tag">Design</div>
+        <div class="col-divider"></div>
+        <p class="col-desc">用户体验、视觉传达与交互设计，拓宽技术人的审美边界</p>
+      </div>
+
+    </div>
+
+    <div class="image-section">
+      <div class="image-frame">
+        <div class="image-wrap">
+          <img src="../images/page_005_category_grid.png" alt="五品类抽象图标网格插画，藏蓝细墨线加酒红点缀，五列竖向构图">
+        </div>
+        <div class="image-caption">
+          <strong>五柱并峙 · 一图一世界</strong>
+          几何结构象征工程之严谨，有机曲线勾勒人文之温度，分形晶格映射哲学之深邃，交错形态演绎商业之张力，对称平衡呈现设计之和谐——五种语言，共构一张知识地图。
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span class="narrative-left">"…"</span>
+      <p class="narrative-text">
+        五十个品类并非随性堆叠，而是一张<span class="highlight">精心编织的知识网络</span>——技术书提供手艺、人文书提供视野、哲学书提供深度、商业书提供格局、设计书提供温度。<span class="highlight">五种养分缺一不可</span>，正如一个健康的开源社区需要多元角色，缺一不可。
+      </p>
+    </div>
+
+    <div class="footer">
+      <span class="footer-text">五种养分<span class="dot"></span><span class="accent">缺一不可</span></span>
+      <span class="footer-meta">Five Nourishments · One Network</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

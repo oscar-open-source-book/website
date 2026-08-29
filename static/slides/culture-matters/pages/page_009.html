@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>本期文章脉络</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@400;500;700;800&family=Noto+Sans+Mono:wght@400;500&display=swap');
+
+:root{
+  --klein:#002FA7;
+  --klein-deep:#001B6B;
+  --klein-light:#1E3FCC;
+  --accent:#4FC3F7;
+  --accent-soft:#81D4FA;
+  --neutral:#B0BEC5;
+  --neutral-dim:#78909C;
+  --bg:#050B1E;
+  --bg-card:#0A1638;
+  --bg-card-hover:#0D1E4A;
+  --border:#1A3A8A;
+  --glow:rgba(79,195,247,0.15);
+  --glow-strong:rgba(79,195,247,0.35);
+  --text-main:#E8EEF8;
+  --text-sub:#B0BEC5;
+  --font-title:'Inter','Noto Sans SC',sans-serif;
+  --font-body:'Roboto Mono','Noto Sans Mono CJK SC','Noto Sans SC',monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:var(--font-body);
+  color:var(--text-main);
+  background:#020612;
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  font-family:var(--font-body);
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 900px 600px at 15% 10%, rgba(0,47,167,0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 500px at 85% 90%, rgba(0,47,167,0.22) 0%, transparent 60%),
+    linear-gradient(160deg, #050B1E 0%, #030820 40%, #02051A 100%);
+}
+
+#bg::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(79,195,247,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,195,247,0.035) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 1200px 700px at 50% 45%, #000 40%, transparent 100%);
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:42px 56px 42px 56px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* Header */
+.header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-bottom:18px;
+  border-bottom:1px solid rgba(79,195,247,0.15);
+  margin-bottom:22px;
+}
+
+.header-left{max-width:900px;}
+
+.eyebrow{
+  font-family:var(--font-body);
+  font-size:11px;font-weight:500;
+  color:var(--accent);
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+
+.eyebrow::before{
+  content:'';display:inline-block;
+  width:24px;height:1px;background:var(--accent);
+}
+
+.main-title{
+  font-family:var(--font-title);
+  font-size:40px;font-weight:800;
+  color:var(--text-main);
+  letter-spacing:1px;
+  line-height:1.1;
+}
+
+.main-title .hl{
+  color:var(--accent);
+  text-shadow:0 0 24px rgba(79,195,247,0.5);
+}
+
+.subtitle{
+  font-family:var(--font-title);
+  font-size:13px;font-weight:400;
+  color:var(--neutral);
+  line-height:1.6;
+  margin-top:10px;
+  max-width:820px;
+}
+
+.subtitle .kw{color:var(--accent);font-weight:600;}
+
+/* KPIs */
+.kpis{
+  display:flex;gap:14px;
+}
+
+.kpi{
+  background:linear-gradient(135deg, rgba(0,47,167,0.25), rgba(10,22,56,0.9));
+  border:1px solid rgba(79,195,247,0.25);
+  border-radius:8px;
+  padding:10px 18px;
+  min-width:140px;
+  position:relative;
+  overflow:hidden;
+}
+
+.kpi::before{
+  content:'';position:absolute;
+  top:0;left:0;width:3px;height:100%;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent);
+}
+
+.kpi-num{
+  font-family:var(--font-title);
+  font-size:24px;font-weight:800;
+  color:var(--accent);
+  line-height:1;
+}
+
+.kpi-label{
+  font-size:9px;font-weight:400;
+  color:var(--neutral);
+  margin-top:4px;
+  letter-spacing:1px;
+}
+
+.kpi-sub{
+  font-size:8px;color:var(--neutral-dim);
+  margin-top:3px;
+}
+
+/* Main */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px;
+  min-height:0;
+}
+
+/* Left cards */
+.cards{
+  display:flex;flex-direction:column;
+  gap:10px;
+  min-height:0;
+}
+
+.card{
+  flex:1;
+  display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg, rgba(0,47,167,0.18) 0%, rgba(10,22,56,0.85) 100%);
+  border:1px solid rgba(79,195,247,0.15);
+  border-left:3px solid var(--klein-light);
+  border-radius:6px;
+  padding:10px 16px;
+  position:relative;
+  overflow:hidden;
+  transition:all 0.3s;
+}
+
+.card::before{
+  content:'';position:absolute;
+  top:0;right:0;width:80px;height:100%;
+  background:radial-gradient(ellipse at right, rgba(79,195,247,0.12), transparent 70%);
+}
+
+.card-num{
+  font-family:var(--font-title);
+  font-size:22px;font-weight:800;
+  color:rgba(79,195,247,0.25);
+  line-height:1;
+  min-width:38px;
+  font-family:var(--font-body);
+}
+
+.card-body{flex:1;min-width:0;}
+
+.card-title{
+  font-family:var(--font-title);
+  font-size:13px;font-weight:700;
+  color:var(--text-main);
+  margin-bottom:3px;
+  letter-spacing:0.5px;
+}
+
+.card-desc{
+  font-size:9.5px;font-weight:300;
+  color:var(--neutral);
+  line-height:1.5;
+}
+
+.card-tags{
+  display:flex;gap:5px;margin-top:5px;
+}
+
+.tag{
+  font-size:7.5px;
+  padding:1px 6px;
+  border:1px solid rgba(79,195,247,0.3);
+  border-radius:2px;
+  color:var(--accent-soft);
+  letter-spacing:0.5px;
+}
+
+/* Right mindmap */
+.mindmap{
+  position:relative;
+  background:linear-gradient(135deg, rgba(0,27,107,0.15), rgba(5,11,30,0.9));
+  border:1px solid rgba(79,195,247,0.12);
+  border-radius:6px;
+  padding:14px;
+  display:flex;flex-direction:column;
+  min-height:0;
+  overflow:hidden;
+}
+
+.mm-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:6px;
+  padding-bottom:6px;
+  border-bottom:1px solid rgba(79,195,247,0.1);
+}
+
+.mm-title{
+  font-family:var(--font-title);
+  font-size:12px;font-weight:700;
+  color:var(--text-main);
+}
+
+.mm-tag{
+  font-size:8px;
+  color:var(--accent);
+  letter-spacing:1.5px;
+}
+
+.mm-canvas{
+  flex:1;
+  position:relative;
+  min-height:0;
+}
+
+.mm-svg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+}
+
+.mm-node{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  font-family:var(--font-title);
+  font-size:10px;font-weight:600;
+  color:var(--text-main);
+  border-radius:4px;
+  z-index:2;
+  line-height:1.2;
+  padding:6px 10px;
+}
+
+.mm-node-center{
+  width:74px;height:74px;
+  background:radial-gradient(circle, var(--klein) 0%, var(--klein-deep) 80%);
+  border:2px solid var(--accent);
+  border-radius:50%;
+  box-shadow:0 0 24px rgba(79,195,247,0.5), inset 0 0 12px rgba(79,195,247,0.3);
+  font-size:14px;font-weight:800;
+  color:var(--text-main);
+  animation:pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 24px rgba(79,195,247,0.5), inset 0 0 12px rgba(79,195,247,0.3);}
+  50%{box-shadow:0 0 36px rgba(79,195,247,0.7), inset 0 0 18px rgba(79,195,247,0.5);}
+}
+
+.mm-node-branch{
+  width:108px;height:44px;
+  background:linear-gradient(135deg, rgba(0,47,167,0.6), rgba(10,22,56,0.95));
+  border:1px solid rgba(79,195,247,0.4);
+  font-size:9.5px;font-weight:600;
+  box-shadow:0 0 12px rgba(0,47,167,0.3);
+}
+
+.mm-node-branch .node-num{
+  position:absolute;
+  top:-5px;left:-5px;
+  width:16px;height:16px;
+  border-radius:50%;
+  background:var(--accent);
+  color:var(--klein-deep);
+  font-size:9px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-title);
+  box-shadow:0 0 8px var(--accent);
+}
+
+/* Bottom bar */
+.footer-bar{
+  margin-top:16px;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 14px;
+  background:rgba(10,22,56,0.5);
+  border:1px solid rgba(79,195,247,0.1);
+  border-radius:4px;
+  font-size:9px;
+  color:var(--neutral-dim);
+  letter-spacing:1px;
+}
+
+.footer-left{display:flex;gap:16px;align-items:center;}
+
+.footer-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 8px var(--accent);
+  display:inline-block;
+  margin-right:6px;
+}
+
+.footer-mid{
+  font-size:9px;
+  color:var(--accent-soft);
+  letter-spacing:2px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="header-left">
+    <div class="eyebrow"><span>ISSUE&nbsp;THREAD&nbsp;//&nbsp;MIND&nbsp;MAP</span></div>
+    <div class="main-title">本期<span class="hl">文章脉络</span></div>
+    <div class="subtitle">本期月志围绕<span class="kw">"文化"</span>主线展开——从理论到实践、从全球到中国、从心理到工具，构建多维度理解开源社区运行的隐性框架。</div>
+  </div>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-num">10+</div>
+      <div class="kpi-label">精选文章</div>
+      <div class="kpi-sub">文化 · 心理 · 工具</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">6</div>
+      <div class="kpi-label">话题领域</div>
+      <div class="kpi-sub">治理 · 安全 · 演进</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-num">01</div>
+      <div class="card-body">
+        <div class="card-title">文化的隐形力量</div>
+        <div class="card-desc">文化如何无声地影响技术决策、项目走向与社区生态，是开源世界里最隐蔽的操作系统。</div>
+        <div class="card-tags"><span class="tag">隐形力量</span><span class="tag">决策影响</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-num">02</div>
+      <div class="card-body">
+        <div class="card-title">开源中的心理安全</div>
+        <div class="card-desc">引用 Google 的 Project Aristotle 研究论证心理安全是高绩效团队第一要素，也是贡献者留存的关键。</div>
+        <div class="card-tags"><span class="tag">Project Aristotle</span><span class="tag">心理安全</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-num">03</div>
+      <div class="card-body">
+        <div class="card-title">贡献者画像</div>
+        <div class="card-desc">分析不同贡献者动机差异——技术成长、职业发展、社区归属，理解谁在参与以及为什么参与。</div>
+        <div class="card-tags"><span class="tag">动机分析</span><span class="tag">用户画像</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-num">04</div>
+      <div class="card-body">
+        <div class="card-title">工具与文化的关系</div>
+        <div class="card-desc">从邮件列表到 Slack 再到 GitHub Discussions，探讨工具演进背后的文化变迁与协作范式转移。</div>
+        <div class="card-tags"><span class="tag">工具演进</span><span class="tag">协作范式</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-num">05</div>
+      <div class="card-body">
+        <div class="card-title">中国开源文化的独特性</div>
+        <div class="card-desc">探讨中文社区在语言、时区、协作习惯上的特殊性，以及与国际社区融合的现实路径与挑战。</div>
+        <div class="card-tags"><span class="tag">中文社区</span><span class="tag">国际融合</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mindmap">
+    <div class="mm-header">
+      <span class="mm-title"><span style="color:var(--accent);">▸</span> 文化·思维导图</span>
+      <span class="mm-tag">RADIAL · NODE · GRAPH</span>
+    </div>
+    <div class="mm-canvas">
+      <svg class="mm-svg" viewBox="0 0 680 540" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#002FA7;stop-opacity:0.9"/>
+            <stop offset="100%" style="stop-color:#4FC3F7;stop-opacity:0.7"/>
+          </linearGradient>
+          <radialGradient id="centerGlow">
+            <stop offset="0%" style="stop-color:#4FC3F7;stop-opacity:0.3"/>
+            <stop offset="100%" style="stop-color:#4FC3F7;stop-opacity:0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Decorative circles -->
+        <circle cx="340" cy="270" r="200" fill="none" stroke="#1E3FCC" stroke-opacity="0.15" stroke-dasharray="2 6"/>
+        <circle cx="340" cy="270" r="140" fill="none" stroke="#1E3FCC" stroke-opacity="0.12" stroke-dasharray="1 4"/>
+        <circle cx="340" cy="270" r="220" fill="url(#centerGlow)"/>
+
+        <!-- Connection lines from center (340,270) to 5 branches -->
+        <line x1="340" y1="270" x2="340" y2="60" stroke="url(#lineGrad)" stroke-width="2"/>
+        <line x1="340" y1="270" x2="560" y2="170" stroke="url(#lineGrad)" stroke-width="2"/>
+        <line x1="340" y1="270" x2="570" y2="380" stroke="url(#lineGrad)" stroke-width="2"/>
+        <line x1="340" y1="270" x2="110" y2="380" stroke="url(#lineGrad)" stroke-width="2"/>
+        <line x1="340" y1="270" x2="120" y2="170" stroke="url(#lineGrad)" stroke-width="2"/>
+
+        <!-- Flow dots on lines -->
+        <circle cx="340" cy="165" r="3" fill="#4FC3F7" opacity="0.8"/>
+        <circle cx="450" cy="220" r="3" fill="#4FC3F7" opacity="0.8"/>
+        <circle cx="455" cy="320" r="3" fill="#4FC3F7" opacity="0.8"/>
+        <circle cx="225" cy="320" r="3" fill="#4FC3F7" opacity="0.8"/>
+        <circle cx="230" cy="220" r="3" fill="#4FC3F7" opacity="0.8"/>
+
+        <!-- Secondary connections between branches -->
+        <path d="M 340 60 Q 450 100 560 170" fill="none" stroke="#4FC3F7" stroke-opacity="0.15" stroke-dasharray="3 3" stroke-width="1"/>
+        <path d="M 560 170 Q 600 275 570 380" fill="none" stroke="#4FC3F7" stroke-opacity="0.15" stroke-dasharray="3 3" stroke-width="1"/>
+        <path d="M 570 380 Q 340 470 110 380" fill="none" stroke="#4FC3F7" stroke-opacity="0.15" stroke-dasharray="3 3" stroke-width="1"/>
+        <path d="M 110 380 Q 70 275 120 170" fill="none" stroke="#4FC3F7" stroke-opacity="0.15" stroke-dasharray="3 3" stroke-width="1"/>
+        <path d="M 120 170 Q 230 100 340 60" fill="none" stroke="#4FC3F7" stroke-opacity="0.15" stroke-dasharray="3 3" stroke-width="1"/>
+      </svg>
+
+      <!-- Center node -->
+      <div class="mm-node mm-node-center" style="left:50%;top:50%;">文化</div>
+
+      <!-- Branch nodes (positions match SVG viewBox, using percentages) -->
+      <div class="mm-node mm-node-branch" style="left:50%;top:11%;">
+        <span class="node-num">1</span>
+        <span>隐形力量</span>
+      </div>
+      <div class="mm-node mm-node-branch" style="left:82.4%;top:31.5%;">
+        <span class="node-num">2</span>
+        <span>心理安全</span>
+      </div>
+      <div class="mm-node mm-node-branch" style="left:83.8%;top:70.4%;">
+        <span class="node-num">3</span>
+        <span>贡献者画像</span>
+      </div>
+      <div class="mm-node mm-node-branch" style="left:16.2%;top:70.4%;">
+        <span class="node-num">4</span>
+        <span>工具与文化</span>
+      </div>
+      <div class="mm-node mm-node-branch" style="left:17.6%;top:31.5%;">
+        <span class="node-num">5</span>
+        <span>中国开源</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-bar">
+  <div class="footer-left">
+    <span><span class="footer-dot"></span>ISSUE_2025Q1</span>
+    <span>THEME: 文化</span>
+    <span>DIMENSION: 理论→实践 · 全球→中国 · 心理→工具</span>
+  </div>
+  <div class="footer-mid">// CULTURE · MIND · TOOL · COMMUNITY · PRACTICE · GROWTH</div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

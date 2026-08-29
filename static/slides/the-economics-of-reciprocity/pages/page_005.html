@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>实证：互惠如何被观测</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --navy: #0D2137;
+    --navy-2: #1B3A5C;
+    --navy-soft: #2E4E74;
+    --gold: #B08D57;
+    --gold-soft: #C9A876;
+    --cream: #F7F5F0;
+    --cream-2: #EFEAE0;
+    --line: #D9D2C4;
+    --muted: #6B6558;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Helvetica Neue", "Noto Sans SC", "PingFang SC", Arial, sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    background: var(--cream);
+    line-height: 1.55;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--cream);
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(1200px 700px at 85% 10%, rgba(176,141,87,0.10), transparent 60%),
+      radial-gradient(900px 600px at 5% 95%, rgba(13,33,55,0.06), transparent 60%),
+      var(--cream);
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 46px 64px 40px 64px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--navy);
+  }
+
+  .header-left { flex: 1; }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 28px;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  h1 {
+    font-family: Georgia, "Noto Serif SC", "Songti SC", serif;
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    font-family: Georgia, "Noto Serif SC", serif;
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 12px;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .page-mark {
+    text-align: right;
+    font-family: Georgia, "Noto Serif SC", serif;
+    color: var(--navy);
+  }
+  .page-mark .num {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .page-mark .lbl {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* KPI Row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+    margin-top: 26px;
+    margin-bottom: 26px;
+  }
+
+  .kpi {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--navy);
+    padding: 22px 24px 20px 24px;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(13,33,55,0.06);
+  }
+
+  .kpi .idx {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .kpi .tag {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .kpi .big {
+    font-family: Georgia, "Noto Serif SC", serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+  }
+  .kpi.k2 .big { font-size: 36px; color: var(--gold); letter-spacing: 1px; }
+  .kpi.k3 .big { font-size: 36px; color: var(--gold); }
+
+  .kpi .label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line);
+    letter-spacing: 1px;
+  }
+  .kpi .note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Two-column content */
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 4px;
+  }
+
+  .col {
+    position: relative;
+  }
+
+  .col-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .col-head .sq {
+    width: 14px;
+    height: 14px;
+    background: var(--gold);
+    display: inline-block;
+  }
+
+  .col-head .title {
+    font-family: Georgia, "Noto Serif SC", serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+
+  .col-head .sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+    letter-spacing: 2px;
+  }
+
+  .item {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--line);
+  }
+  .item:last-child { border-bottom: none; }
+
+  .item .no {
+    flex: 0 0 30px;
+    font-family: Georgia, serif;
+    font-size: 18px;
+    color: var(--gold);
+    font-weight: 700;
+    line-height: 1.3;
+    padding-top: 2px;
+  }
+
+  .item .body { flex: 1; }
+
+  .item .h {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 3px;
+    letter-spacing: 0.5px;
+  }
+  .item .h .accent { color: var(--gold); }
+
+  .item .d {
+    font-size: 14px;
+    color: #3B3A35;
+    line-height: 1.55;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: Georgia, "Noto Serif SC", serif;
+    font-size: 13px;
+    color: var(--navy);
+    font-style: italic;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .footer .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    display: inline-block;
+    flex: 0 0 8px;
+  }
+  .footer .src {
+    margin-left: auto;
+    color: var(--muted);
+    font-style: normal;
+    letter-spacing: 2px;
+    font-size: 11px;
+    font-family: "Helvetica Neue", "Noto Sans SC", sans-serif;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span>EMPIRICAL EVIDENCE · CHAPTER 05</span></div>
+        <h1>实证：互惠如何被观测</h1>
+        <div class="subtitle">多源数据交叉验证：实验、社区、企业三条证据链相互支撑</div>
+      </div>
+      <div class="page-mark">
+        <div class="num">05</div>
+        <div class="lbl">PAGE</div>
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="kpi-row">
+      <div class="kpi k1">
+        <div class="idx">01</div>
+        <div class="tag">SAMPLE · EXPERIMENT</div>
+        <div class="big">数百人</div>
+        <div class="label">实验参与</div>
+        <div class="note">实验室受控任务</div>
+      </div>
+      <div class="kpi k2">
+        <div class="idx">02</div>
+        <div class="tag">SAMPLE · COMMUNITY</div>
+        <div class="big">GIMP / Apache</div>
+        <div class="label">社区样本</div>
+        <div class="note">两大成熟开源项目</div>
+      </div>
+      <div class="kpi k3">
+        <div class="idx">03</div>
+        <div class="tag">STRENGTH · EFFECT</div>
+        <div class="big">显著正相关</div>
+        <div class="label">效应强度</div>
+        <div class="note">统计检验通过</div>
+      </div>
+    </div>
+
+    <!-- Two-column content -->
+    <div class="cols">
+      <div class="col">
+        <div class="col-head">
+          <span class="sq"></span>
+          <span class="title">实验证据 · Laboratory</span>
+          <span class="sub">FIELD A</span>
+        </div>
+
+        <div class="item">
+          <div class="no">i.</div>
+          <div class="body">
+            <div class="h">匿名回报行为</div>
+            <div class="d">实验室任务中参与者会主动回报先前帮助过自己的<span class="accent">匿名对象</span>，说明互惠机制不依赖身份识别或声誉压力。</div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="no">ii.</div>
+          <div class="body">
+            <div class="h">回应延迟</div>
+            <div class="d">直接互惠响应通常在<span class="accent">数日之内</span>，间接互惠则跨越<span class="accent">数月</span>——时间尺度与互惠类型强相关。</div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="no">iii.</div>
+          <div class="body">
+            <div class="h">关键控制变量</div>
+            <div class="d">排除<span class="accent">声望与商业收益</span>后，互惠效应依然显著，表明其并非市场激励的伪装。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="col-head">
+          <span class="sq"></span>
+          <span class="title">社区观测 · Community &amp; Enterprise</span>
+          <span class="sub">FIELD B</span>
+        </div>
+
+        <div class="item">
+          <div class="no">i.</div>
+          <div class="body">
+            <div class="h">社区贡献日志</div>
+            <div class="d">GIMP、Apache 等社区的完整贡献日志显示，<span class="accent">收到帮助者贡献率显著提高</span>——互惠在自然环境中同样稳定可测。</div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="no">ii.</div>
+          <div class="body">
+            <div class="h">企业工程师参与</div>
+            <div class="d">商业公司工程师参与开源项目的比例<span class="accent">远高于</span>纯个人开发者，形成规模化贡献主体。</div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="no">iii.</div>
+          <div class="body">
+            <div class="h">组织化互惠通道</div>
+            <div class="d">呈现"<span class="accent">企业更高、组织化互惠</span>"特征——个体间的互惠在机构层面被制度化放大。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span class="dot"></span>
+      <span>论文说服力来自多源数据交叉验证，让"互惠"从直觉上升为可检验的经济学命题。</span>
+      <span class="src">EVIDENCE · EXPERIMENT / COMMUNITY / ENTERPRISE</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>为什么写开源书</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#00BCD4;
+  --primary-glow:rgba(0,188,212,.35);
+  --accent:#FF7043;
+  --bg:#07121F;
+  --bg-2:#0C1B2E;
+  --text-main:#EAF6F9;
+  --text-muted:#7FA0B0;
+  --line:rgba(0,188,212,.28);
+  --card:rgba(12,27,46,.72);
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:var(--sans);color:var(--text-main);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:54px 64px;display:flex;flex-direction:column;box-sizing:border-box;}
+h1,h2,h3{font-family:var(--mono);font-weight:700;}
+p{font-family:var(--sans);}
+
+#bg{
+  background:
+    radial-gradient(1100px 700px at 88% 18%, rgba(0,188,212,.16), transparent 60%),
+    radial-gradient(900px 700px at 8% 95%, rgba(255,112,67,.10), transparent 60%),
+    linear-gradient(160deg,#07121F 0%, #0A1A2B 55%, #07121F 100%);
+}
+#bg::after{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,188,212,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,.04) 1px, transparent 1px);
+  background-size:64px 64px, 64px 64px;
+  mask-image:radial-gradient(1400px 900px at 50% 40%, #000 35%, transparent 85%);
+}
+
+.top-row{display:flex;gap:48px;align-items:flex-start;flex:0 0 auto;}
+
+.title-zone{position:relative;flex:0 0 820px;padding-left:34px;}
+.title-zone::before{
+  content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:2px;
+  background:linear-gradient(180deg,var(--primary) 0%, rgba(0,188,212,.15) 100%);
+  box-shadow:0 0 18px var(--primary-glow);
+}
+.eyebrow{
+  font-family:var(--mono);font-size:13px;letter-spacing:.32em;color:var(--primary);
+  text-transform:uppercase;margin-bottom:14px;
+}
+.eyebrow .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:10px;vertical-align:middle;box-shadow:0 0 12px rgba(255,112,67,.7);}
+.section-title{
+  font-family:var(--mono);font-weight:800;font-size:64px;line-height:1.05;letter-spacing:-.01em;
+  color:var(--text-main);
+  text-shadow:0 0 28px rgba(0,188,212,.18);
+}
+.section-title .accent{color:var(--primary);}
+.subtitle{
+  margin-top:18px;font-family:var(--sans);font-weight:400;font-size:22px;line-height:1.5;color:var(--text-muted);letter-spacing:.02em;
+}
+.subtitle b{color:var(--accent);font-weight:500;}
+
+.visual-zone{flex:1;height:447px;position:relative;display:flex;align-items:flex-start;justify-content:flex-end;}
+.visual-frame{
+  width:800px;height:447px;border-radius:10px;overflow:hidden;position:relative;
+  border:1px solid var(--line);
+  box-shadow:0 18px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(0,188,212,.08) inset;
+  background:linear-gradient(160deg,#08182A,#06131F);
+}
+.visual-frame img{display:block;width:100%;height:100%;object-fit:cover;}
+.visual-frame::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 90px rgba(0,188,212,.18);
+}
+.visual-tag{
+  position:absolute;left:18px;bottom:16px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--primary);
+  background:rgba(7,18,31,.72);padding:8px 12px;border:1px solid var(--line);border-radius:3px;
+}
+.visual-tag .k{color:var(--accent);}
+
+.three-col{
+  margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:0 0 auto;
+}
+.col{
+  position:relative;background:var(--card);border:1px solid var(--line);border-radius:8px;
+  padding:22px 22px 22px 24px;backdrop-filter:blur(4px);
+}
+.col::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;background:var(--primary);border-radius:2px;}
+.col .idx{font-family:var(--mono);font-size:12px;color:var(--primary);letter-spacing:.24em;}
+.col h3{font-family:var(--mono);font-size:24px;color:var(--text-main);margin:8px 0 4px;font-weight:700;}
+.col .tag{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.14em;margin-bottom:10px;}
+.col p{font-size:14px;line-height:1.65;color:var(--text-muted);}
+.col p em{color:var(--text-main);font-style:normal;font-weight:500;}
+
+.closing{
+  margin-top:28px;position:relative;padding:18px 24px 18px 40px;flex:1 1 auto;
+  display:flex;align-items:center;
+  border-top:1px solid var(--line);
+}
+.closing::before{
+  content:"";position:absolute;left:0;top:24px;bottom:24px;width:3px;background:var(--accent);
+  box-shadow:0 0 14px rgba(255,112,67,.55);
+}
+.closing p{font-size:15px;line-height:1.7;color:var(--text-main);letter-spacing:.01em;}
+.closing p .hl{color:var(--primary);}
+.closing p .hl2{color:var(--accent);}
+.closing .meta{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--text-muted);letter-spacing:.22em;text-align:right;flex:0 0 auto;}
+.closing .meta b{display:block;color:var(--primary);font-size:22px;font-weight:700;margin-bottom:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-row">
+      <div class="title-zone">
+        <div class="eyebrow"><span class="dot"></span><span>SECTION · 章节</span></div>
+        <div class="section-title">为什么<span class="accent">写开源书</span></div>
+        <div class="subtitle">从个人阅读到<b>公共知识沉淀</b></div>
+      </div>
+
+      <div class="visual-zone">
+        <div class="visual-frame">
+          <img src="../images/page_002_section_visual.png" alt="书页轮廓溶解为倾泻的代码符号与电路纹路碎片，青蓝辉光环绕">
+          <div class="visual-tag"><span class="k">FIG.02</span> &nbsp;文献 × 代码 &nbsp;·&nbsp; 知识转化</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="col">
+        <div class="idx">01</div>
+        <h3>知识焦虑</h3>
+        <div class="tag">KNOWLEDGE · ANXIETY</div>
+        <p><em>信息爆炸时代缺乏系统性整理</em>，写书是对知识体系的主动构建。</p>
+      </div>
+      <div class="col">
+        <div class="idx">02</div>
+        <h3>开源精神</h3>
+        <div class="tag">OPEN · SOURCE</div>
+        <p><em>知识共享是开源的核心理念</em>，写开源书本身就是对开源文化的践行。</p>
+      </div>
+      <div class="col">
+        <div class="idx">03</div>
+        <h3>社区价值</h3>
+        <div class="tag">COMMUNITY · VALUE</div>
+        <p>将<em>个人经验转化为社区公共资源</em>，降低后来者的学习成本。</p>
+      </div>
+    </div>
+
+    <div class="closing">
+      <p>写一本<span class="hl">开源书</span>，首先源于对知识的<span class="hl2">焦虑与渴望</span>。在开源社区中，每个人既是学习者也是贡献者。将个人的阅读与实践沉淀为可共享的书籍，既是对自己的知识梳理，也是对社区的一份回馈。</p>
+      <div class="meta"><b>02</b>SECTION OPENER</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

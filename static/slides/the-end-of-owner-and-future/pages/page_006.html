@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>数据透视：维护者危机</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+:root{
+  --bg:#1A1E2E;
+  --card:#22273B;
+  --card2:#1E2438;
+  --klein:#002FA7;
+  --klein-light:#1E4BD8;
+  --cyan:#00BCD4;
+  --text:#E8ECF4;
+  --text-dim:#9AA3B8;
+  --border:#2A3350;
+  --accent-warn:#FF6B4A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:400;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 900px 600px at 85% 15%, rgba(0,47,167,0.18) 0%, rgba(0,47,167,0) 60%),
+    radial-gradient(ellipse 700px 500px at 5% 90%, rgba(0,188,212,0.10) 0%, rgba(0,188,212,0) 60%),
+    linear-gradient(180deg,#161A28 0%, #1A1E2E 50%, #141826 100%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:38px 60px 32px 60px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px;}
+
+/* --- Header --- */
+.header{display:flex;flex-direction:column;gap:8px;position:relative;}
+.header::before{content:"";position:absolute;left:-10px;top:6px;width:4px;height:60px;background:linear-gradient(180deg,var(--cyan),var(--klein-light));border-radius:2px;}
+.title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:44px;letter-spacing:-0.5px;color:#FFFFFF;}
+.title .hl{background:linear-gradient(90deg,var(--cyan),var(--klein-light));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.subtitle{font-size:14px;color:var(--text-dim);max-width:1300px;line-height:1.55;font-weight:400;}
+
+/* --- Body grid --- */
+.body{display:grid;grid-template-columns:560px 1fr;gap:24px;flex:1;min-height:0;}
+
+/* --- Left KPI column --- */
+.kpi-col{display:flex;flex-direction:column;gap:10px;}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:grid;grid-template-columns:110px 1fr;align-items:center;gap:14px;position:relative;overflow:hidden;flex:1;min-height:0;}
+.kpi-card::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cyan);}
+.kpi-card:nth-child(even)::after{background:var(--klein-light);}
+.kpi-num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;line-height:1;color:var(--cyan);letter-spacing:-0.5px;}
+.kpi-card:nth-child(even) .kpi-num{color:var(--klein-light);}
+.kpi-body{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.kpi-label{font-size:13px;font-weight:600;color:#FFFFFF;}
+.kpi-ctx{font-size:11px;color:var(--text-dim);line-height:1.45;}
+
+/* --- Right column --- */
+.right-col{display:flex;flex-direction:column;gap:14px;min-height:0;}
+.chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px 8px 16px;height:300px;display:flex;flex-direction:column;}
+.chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
+.chart-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:#FFFFFF;}
+.chart-legend{display:flex;gap:16px;font-size:11px;color:var(--text-dim);}
+.chart-legend span{display:inline-flex;align-items:center;gap:5px;}
+.chart-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+#chart_1{width:100%;height:230px;}
+
+.points{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;flex:1;min-height:0;}
+.point{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;display:flex;flex-direction:column;gap:5px;position:relative;overflow:hidden;}
+.point::before{content:"";position:absolute;top:0;left:0;width:30px;height:3px;background:var(--cyan);}
+.point:nth-child(even)::before{background:var(--klein-light);}
+.point-head{display:flex;align-items:center;gap:8px;}
+.point-idx{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--cyan);font-weight:600;letter-spacing:1px;}
+.point:nth-child(even) .point-idx{color:var(--klein-light);}
+.point-title{font-size:13px;font-weight:700;color:#FFFFFF;font-family:'Space Grotesk',sans-serif;}
+.point-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+
+/* --- Footer --- */
+.footer{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:linear-gradient(90deg,rgba(0,47,167,0.25),rgba(0,188,212,0.10));border:1px solid var(--border);border-radius:10px;}
+.footer-text{font-family:'Space Grotesk',sans-serif;font-size:14px;color:#FFFFFF;font-weight:500;letter-spacing:0.5px;}
+.footer-text .cyan{color:var(--cyan);font-weight:700;}
+.footer-meta{font-size:10px;color:var(--text-dim);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+<div class="title">数据透视：<span class="hl">维护者危机</span></div>
+<div class="subtitle">数据揭示了开源生态中普遍存在的结构性问题——维护者危机不是个别现象而是系统性挑战，从贡献者衰减到安全债务，每一个数据点都在提醒我们："Owner 终结"不是终点，而是重构的起点。</div>
+</div>
+
+<div class="body">
+
+<!-- LEFT: KPI -->
+<div class="kpi-col">
+<div class="kpi-card">
+<div class="kpi-num">80%</div>
+<div class="kpi-body">
+<div class="kpi-label">Top 2% 贡献者产出 80%+ 代码</div>
+<div class="kpi-ctx">开源项目贡献分布呈极端幂律，头部少数人承载绝大多数产出</div>
+</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num">&gt;50%</div>
+<div class="kpi-body">
+<div class="kpi-label">维护者报告倦怠</div>
+<div class="kpi-ctx">多项调研显示过半维护者感到耗竭，长期无偿劳动难以为继</div>
+</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num">&lt;30%</div>
+<div class="kpi-body">
+<div class="kpi-label">新贡献者留存率</div>
+<div class="kpi-ctx">首次贡献后能持续参与的比率偏低，社区入口宽而留存窄</div>
+</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num">数周~月</div>
+<div class="kpi-body">
+<div class="kpi-label">典型 PR 等待时间</div>
+<div class="kpi-ctx">头部项目审查瓶颈日益突出，PR 堆积直接拖慢迭代节奏</div>
+</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num">Log4j</div>
+<div class="kpi-body">
+<div class="kpi-label">关键项目安全响应案例</div>
+<div class="kpi-ctx">暴露无人维护项目的安全脆弱性，单个漏洞影响面波及数百万系统</div>
+</div>
+</div>
+</div>
+
+<!-- RIGHT -->
+<div class="right-col">
+<div class="chart-wrap">
+<div class="chart-head">
+<div class="chart-title">贡献者衰减与审查瓶颈趋势</div>
+<div class="chart-legend">
+<span><span class="dot" style="background:#00BCD4"></span>月活跃贡献者 (指数)</span>
+<span><span class="dot" style="background:#1E4BD8"></span>PR 平均等待周数</span>
+</div>
+</div>
+<div id="chart_1" style="width:100%;height:230px;"></div>
+</div>
+
+<div class="points">
+<div class="point">
+<div class="point-head">
+<span class="point-idx">01</span>
+<span class="point-title">贡献者衰减</span>
+</div>
+<div class="point-desc">多数开源项目呈现幂律分布，少数人贡献绝大部分代码，社区深度不足</div>
+</div>
+<div class="point">
+<div class="point-head">
+<span class="point-idx">02</span>
+<span class="point-title">审查瓶颈</span>
+</div>
+<div class="point-desc">PR 响应时间持续延长，维护者被 issue 和 review 淹没，新贡献者难以融入</div>
+</div>
+<div class="point">
+<div class="point-head">
+<span class="point-idx">03</span>
+<span class="point-title">继任真空</span>
+</div>
+<div class="point-desc">关键项目缺乏明确的继任计划，owner 一旦退出项目即面临停滞风险</div>
+</div>
+<div class="point">
+<div class="point-head">
+<span class="point-idx">04</span>
+<span class="point-title">商业依赖</span>
+</div>
+<div class="point-desc">企业赞助成为主要运维资金源，但商业利益与社区利益之间冲突加剧</div>
+</div>
+<div class="point">
+<div class="point-head">
+<span class="point-idx">05</span>
+<span class="point-title">倦怠循环</span>
+</div>
+<div class="point-desc">贡献者从热情到疲惫再到退出，新贡献者不断涌入但留存率极低</div>
+</div>
+<div class="point">
+<div class="point-head">
+<span class="point-idx">06</span>
+<span class="point-title">安全债务</span>
+</div>
+<div class="point-desc">Log4j 事件后暴露出大量项目无人维护安全更新，单个漏洞影响面巨大</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="footer">
+<div class="footer-text">从数据看见危机，从危机走向<span class="cyan">重构</span></div>
+<div class="footer-meta">MAINTAINER CRISIS · INSIGHTS</div>
+</div>
+
+</div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  const months = ['2018','2019','2020','2021','2022','2023','2024'];
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:36,right:44,top:14,bottom:22},
+    tooltip:{trigger:'axis'},
+    xAxis:{
+      type:'category',
+      data:months,
+      axisLine:{lineStyle:{color:'#2A3350'}},
+      axisLabel:{color:'#9AA3B8',fontSize:10,fontFamily:'Inter'},
+      axisTick:{show:false}
+    },
+    yAxis:[
+      {
+        type:'value',
+        name:'贡献者指数',
+        nameTextStyle:{color:'#9AA3B8',fontSize:9},
+        splitLine:{lineStyle:{color:'#22273B'}},
+        axisLabel:{color:'#9AA3B8',fontSize:9},
+        axisLine:{show:false},axisTick:{show:false}
+      },
+      {
+        type:'value',
+        name:'PR 等待周数',
+        nameTextStyle:{color:'#9AA3B8',fontSize:9},
+        splitLine:{show:false},
+        axisLabel:{color:'#9AA3B8',fontSize:9},
+        axisLine:{show:false},axisTick:{show:false}
+      }
+    ],
+    series:[
+      {
+        name:'月活跃贡献者 (指数)',
+        type:'bar',
+        barWidth:16,
+        data:[100,92,80,68,55,44,35],
+        itemStyle:{
+          color:new echarts.graphic.LinearGradient(0,0,0,1,[
+            {offset:0,color:'#00BCD4'},{offset:1,color:'#004E5C'}
+          ]),
+          borderRadius:[3,3,0,0]
+        }
+      },
+      {
+        name:'PR 平均等待周数',
+        type:'line',
+        yAxisIndex:1,
+        smooth:true,
+        symbol:'circle',
+        symbolSize:6,
+        data:[2,3,5,8,12,18,26],
+        lineStyle:{color:'#1E4BD8',width:2.5},
+        itemStyle:{color:'#1E4BD8',borderColor:'#00BCD4',borderWidth:2},
+        areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[
+          {offset:0,color:'rgba(30,75,216,0.35)'},{offset:1,color:'rgba(30,75,216,0)'}
+        ])}
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

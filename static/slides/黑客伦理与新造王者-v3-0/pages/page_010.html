@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之道·未来可期</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+:root{
+  --bg:#1E2A38;
+  --bg-2:#16202C;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --text-main:#EAF2FA;
+  --text-muted:#9AB1C6;
+  --line:rgba(33,150,243,0.25);
+  --line-strong:rgba(33,150,243,0.55);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'JetBrains Mono', ui-monospace, monospace;
+  color:var(--text-main);
+  background:#0E1520;
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;margin:0 auto;
+  font-family:'JetBrains Mono', ui-monospace, monospace;
+}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:48px 72px 40px 72px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* Background layers */
+.bg-base{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 900px 540px at 50% 45%, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0.08) 35%, rgba(30,42,56,0) 70%),
+    linear-gradient(180deg, #16202C 0%, #1E2A38 45%, #16202C 100%);
+}
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:48px 48px;
+  background-position:center center;
+  mask-image:radial-gradient(ellipse 1100px 700px at 50% 50%, black 0%, transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 1100px 700px at 50% 50%, black 0%, transparent 75%);
+}
+.bg-orb-1{
+  position:absolute;left:-140px;top:-140px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, rgba(0,229,255,0.18) 0%, rgba(0,229,255,0.04) 55%, rgba(0,229,255,0) 75%);
+  filter:blur(2px);
+}
+.bg-orb-2{
+  position:absolute;right:-120px;bottom:-120px;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0.05) 55%, rgba(33,150,243,0) 75%);
+}
+.bg-orb-3{
+  position:absolute;right:180px;top:80px;width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, rgba(0,229,255,0.10) 0%, rgba(0,229,255,0) 70%);
+}
+.bg-ring{
+  position:absolute;left:50%;top:42%;width:1100px;height:1100px;margin-left:-550px;margin-top:-550px;
+  border-radius:50%;
+  border:1px solid rgba(33,150,243,0.10);
+}
+.bg-ring-2{
+  position:absolute;left:50%;top:42%;width:780px;height:780px;margin-left:-390px;margin-top:-390px;
+  border-radius:50%;
+  border:1px solid rgba(33,150,243,0.16);
+}
+.bg-ring-3{
+  position:absolute;left:50%;top:42%;width:480px;height:480px;margin-left:-240px;margin-top:-240px;
+  border-radius:50%;
+  border:1px dashed rgba(0,229,255,0.18);
+}
+
+/* Corner accents */
+.corner{
+  position:absolute;width:64px;height:64px;
+}
+.corner::before,.corner::after{
+  content:"";position:absolute;background:var(--accent);
+}
+.corner.tl{left:24px;top:24px;}
+.corner.tr{right:24px;top:24px;}
+.corner.bl{left:24px;bottom:24px;}
+.corner.br{right:24px;bottom:24px;}
+.corner.tl::before,.corner.tr::before,.corner.bl::before,.corner.br::before{
+  left:0;top:0;width:24px;height:2px;
+}
+.corner.tl::after,.corner.bl::after{
+  left:0;top:0;width:2px;height:24px;
+}
+.corner.tr::after,.corner.br::after{
+  right:0;top:0;width:2px;height:24px;
+}
+.corner.tr::before,.corner.br::before{
+  right:0;left:auto;top:0;width:24px;height:2px;
+}
+.corner.bl::before,.corner.br::before{
+  left:0;bottom:0;top:auto;width:24px;height:2px;
+}
+.corner.bl::after,.corner.br::after{
+  left:0;bottom:0;top:auto;width:2px;height:24px;
+}
+.corner.tr::after,.corner.br::after{
+  right:0;bottom:0;top:auto;left:auto;width:2px;height:24px;
+}
+
+/* Header */
+.header{
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  padding-top:8px;
+}
+.eyebrow{
+  display:flex;align-items:center;gap:14px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px;letter-spacing:0.32em;
+  color:var(--accent);
+  margin-bottom:14px;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);}
+.eyebrow .bar{width:36px;height:1px;background:linear-gradient(90deg, rgba(0,229,255,0), var(--accent));}
+.eyebrow .bar-r{width:36px;height:1px;background:linear-gradient(90deg, var(--accent), rgba(0,229,255,0));}
+
+.title{
+  font-family:'Inter', sans-serif;
+  font-weight:800;
+  font-size:78px;
+  letter-spacing:0.02em;
+  line-height:1.05;
+  background:linear-gradient(180deg, #FFFFFF 0%, #B8D9F5 60%, #2196F3 100%);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+  text-align:center;
+}
+.title .accent{
+  background:linear-gradient(180deg, #00E5FF 0%, #2196F3 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.subtitle{
+  font-family:'JetBrains Mono', monospace;
+  font-size:16px;
+  font-weight:400;
+  color:var(--text-muted);
+  letter-spacing:0.28em;
+  text-align:center;
+  margin-top:14px;
+}
+.subtitle .sep{color:var(--primary);margin:0 14px;}
+
+.header-rule{
+  margin:18px auto 0 auto;
+  width:560px;height:1px;
+  background:linear-gradient(90deg, rgba(33,150,243,0) 0%, var(--primary) 50%, rgba(33,150,243,0) 100%);
+  position:relative;
+}
+.header-rule::before,.header-rule::after{
+  content:"";position:absolute;top:-3px;width:7px;height:7px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 12px var(--accent);
+}
+.header-rule::before{left:-3px;}
+.header-rule::after{right:-3px;}
+
+/* Summary */
+.summary-wrap{
+  margin-top:22px;
+  padding:0 40px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.summary-label{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;letter-spacing:0.4em;
+  color:var(--primary);
+  margin-bottom:12px;
+}
+.summary{
+  font-family:'JetBrains Mono', monospace;
+  font-size:16.5px;
+  line-height:1.95;
+  color:var(--text-main);
+  text-align:center;
+  max-width:1180px;
+  font-weight:400;
+}
+.summary .hl{
+  color:var(--accent);
+  font-weight:500;
+}
+.summary .hl-p{
+  color:var(--primary);
+  font-weight:500;
+}
+
+/* Modules */
+.modules{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:0;
+  position:relative;
+}
+.module{
+  padding:22px 26px 24px 26px;
+  position:relative;
+  display:flex;flex-direction:column;
+}
+.module:not(:last-child)::after{
+  content:"";position:absolute;right:-1px;top:20px;bottom:20px;width:1px;
+  background:linear-gradient(180deg, rgba(33,150,243,0) 0%, var(--line-strong) 20%, var(--line-strong) 80%, rgba(33,150,243,0) 100%);
+}
+.module:not(:last-child)::before{
+  content:"";position:absolute;right:-3px;top:50%;transform:translateY(-50%);
+  width:7px;height:7px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 10px var(--accent);
+}
+.mod-head{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:12px;
+}
+.mod-index{
+  font-family:'Inter', sans-serif;
+  font-weight:700;font-size:22px;
+  color:var(--primary);
+  letter-spacing:0.02em;
+  width:38px;
+}
+.mod-title{
+  font-family:'Inter', sans-serif;
+  font-weight:600;font-size:21px;
+  color:var(--text-main);
+  letter-spacing:0.04em;
+}
+.mod-tag{
+  display:inline-block;
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px;letter-spacing:0.28em;
+  color:var(--accent);
+  padding:3px 9px;border:1px solid rgba(0,229,255,0.35);
+  border-radius:2px;margin-bottom:10px;align-self:flex-start;
+}
+.mod-text{
+  font-family:'JetBrains Mono', monospace;
+  font-size:13px;
+  line-height:1.78;
+  color:var(--text-muted);
+  font-weight:400;
+}
+.mod-text .k{color:var(--text-main);font-weight:500;}
+.mod-bar{
+  margin-top:14px;height:2px;width:48px;
+  background:linear-gradient(90deg, var(--accent), var(--primary));
+  border-radius:2px;
+  box-shadow:0 0 8px rgba(0,229,255,0.5);
+}
+
+/* Bottom bar */
+.footer{
+  margin-top:auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 8px 0 8px;
+  border-top:1px solid rgba(33,150,243,0.22);
+  position:relative;
+}
+.footer::before{
+  content:"";position:absolute;top:-1px;left:0;width:140px;height:1px;
+  background:linear-gradient(90deg, var(--accent), rgba(0,229,255,0));
+  box-shadow:0 0 8px rgba(0,229,255,0.6);
+}
+.footer-item{
+  display:flex;align-items:center;gap:12px;
+  font-family:'JetBrains Mono', monospace;
+}
+.footer-k{
+  font-size:10px;letter-spacing:0.32em;
+  color:var(--text-muted);
+}
+.footer-v{
+  font-size:14px;font-weight:500;
+  color:var(--text-main);
+  letter-spacing:0.05em;
+}
+.footer-v .accent{color:var(--accent);}
+.footer-divider{
+  width:1px;height:20px;background:rgba(33,150,243,0.25);
+}
+
+/* Decorative floating glyphs */
+.glyph{
+  position:absolute;font-family:'JetBrains Mono', monospace;
+  color:rgba(33,150,243,0.35);font-size:14px;
+  font-weight:600;letter-spacing:0.05em;
+  pointer-events:none;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-base"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-ring"></div>
+    <div class="bg-ring-2"></div>
+    <div class="bg-ring-3"></div>
+    <div class="bg-orb-1"></div>
+    <div class="bg-orb-2"></div>
+    <div class="bg-orb-3"></div>
+    <span class="glyph" style="left:60px;top:180px;">// OPEN</span>
+    <span class="glyph" style="right:60px;top:200px;">SRC * 2020</span>
+    <span class="glyph" style="left:80px;bottom:160px;">{ freedom }</span>
+    <span class="glyph" style="right:70px;bottom:170px;">~$ ./future</span>
+    <span class="glyph" style="left:340px;top:96px;">01001110 01000101</span>
+    <span class="glyph" style="right:320px;top:100px;">fork & commit</span>
+  </div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="eyebrow">
+        <span class="bar-r"></span>
+        <span class="dot"></span>
+        <span>EPILOGUE · 尾声</span>
+        <span class="dot"></span>
+        <span class="bar"></span>
+      </div>
+      <h1 class="title">开源之道<span class="accent">·</span>未来可期</h1>
+      <div class="subtitle">
+        传承黑客伦理<span class="sep">◆</span>共建开放未来<span class="sep">◆</span>CODE · COLLABORATE · CREATE
+      </div>
+      <div class="header-rule"></div>
+    </div>
+
+    <div class="summary-wrap">
+      <div class="summary-label">SUMMARY · 核心叙事</div>
+      <p class="summary">
+        从<span class="hl">黑客伦理的诞生</span>到<span class="hl-p">新一代开源王者的崛起</span>，我们看到的是一个<span class="hl">理想主义</span>与<span class="hl-p">务实精神</span>交织的运动。<br>
+        开源之道不仅是技术路线的选择，更是一种关于<span class="hl">自由、协作与开放</span>的世界观——<br>
+        让我们带着这份理解，继续投身于开源的未来建设之中。
+      </p>
+    </div>
+
+    <div class="modules">
+      <div class="module">
+        <div class="mod-head">
+          <span class="mod-index">01</span>
+          <span class="mod-title">精神传承</span>
+        </div>
+        <span class="mod-tag">SPIRIT · 传承</span>
+        <div class="mod-text">
+          理解黑客伦理<span class="k">不是为了怀旧</span>，而是为了在<span class="k">新时代更好地守护开放与自由</span>。
+        </div>
+        <div class="mod-bar"></div>
+      </div>
+      <div class="module">
+        <div class="mod-head">
+          <span class="mod-index">02</span>
+          <span class="mod-title">行动号召</span>
+        </div>
+        <span class="mod-tag">ACTION · 共建</span>
+        <div class="mod-text">
+          每位开发者都可以成为<span class="k">开源生态的建设者</span>，从小处贡献到<span class="k">社区治理</span>。
+        </div>
+        <div class="mod-bar"></div>
+      </div>
+      <div class="module">
+        <div class="mod-head">
+          <span class="mod-index">03</span>
+          <span class="mod-title">持续探索</span>
+        </div>
+        <span class="mod-tag">EXPLORE · 演进</span>
+        <div class="mod-text">
+          开源运动仍在演进，<span class="k">新的议题与挑战</span>将不断涌现，需要我们<span class="k">持续学习与思考</span>。
+        </div>
+        <div class="mod-bar"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-item">
+        <span class="footer-k">VERSION</span>
+        <span class="footer-v">分享版本 <span class="accent">V3.0</span></span>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-item">
+        <span class="footer-k">COMMUNITY</span>
+        <span class="footer-v">社区 <span class="accent">开源之道</span></span>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-item">
+        <span class="footer-k">THANKS</span>
+        <span class="footer-v">感谢参与 <span class="accent">2020.11</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

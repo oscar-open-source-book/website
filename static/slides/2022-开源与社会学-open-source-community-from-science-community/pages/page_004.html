@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源社区核心数据画像</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --gray:#B0BEC5;
+  --bg-1:#08111f;
+  --bg-2:#0d1b33;
+  --card:#11243f;
+  --card-2:#0f1f38;
+  --line:#1c3458;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif;}
+html,body{width:1600px;height:900px;overflow:hidden;color:#e3eaf5;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:radial-gradient(ellipse at 20% 0%, #12294a 0%, #08111f 60%);}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 85% 15%, rgba(33,150,243,0.18) 0, transparent 40%),
+  radial-gradient(circle at 10% 90%, rgba(0,188,212,0.12) 0, transparent 45%),
+  linear-gradient(180deg,#08111f 0%, #0b1729 100%);
+}
+#bg::after{content:"";position:absolute;inset:0;background-image:
+  linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:50px 50px;pointer-events:none;
+}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 56px 36px 56px;box-sizing:border-box;display:flex;flex-direction:column;}
+.header{display:flex;flex-direction:column;gap:8px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+.title-row{display:flex;align-items:center;gap:16px;}
+.title-dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);}
+h1{font-size:36px;font-weight:700;letter-spacing:1px;background:linear-gradient(90deg,#fff,#7ec5ff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.subtitle{font-size:13px;color:var(--gray);line-height:1.6;max-width:1400px;margin-left:26px;}
+.main{display:flex;gap:24px;margin-top:20px;height:486px;}
+.left-panel{flex:0 0 55%;background:var(--card-2);border:1px solid var(--line);border-radius:14px;padding:18px 22px;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.left-panel::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--primary),var(--cyan));}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.panel-title{font-size:16px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px;}
+.panel-title .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.panel-tag{font-size:11px;color:var(--gray);letter-spacing:1px;border:1px solid var(--line);padding:3px 8px;border-radius:4px;}
+.chart-wrap{flex:1;display:flex;gap:16px;align-items:stretch;}
+.chart-box{flex:1;display:flex;flex-direction:column;}
+.chart-legend{display:flex;gap:14px;margin-top:6px;justify-content:center;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray);}
+.legend-dot{width:9px;height:9px;border-radius:2px;}
+.right-panel{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:12px;}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.kpi::after{content:"";position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle at 100% 0%, rgba(33,150,243,0.22), transparent 70%);}
+.kpi-num{font-size:30px;font-weight:800;color:var(--primary);text-shadow:0 0 14px rgba(33,150,243,0.55);line-height:1.05;}
+.kpi-num.cyan{color:var(--cyan);text-shadow:0 0 14px rgba(0,188,212,0.55);}
+.kpi-label{font-size:11px;color:var(--gray);margin-top:6px;line-height:1.4;}
+.kpi-sub{font-size:10px;color:#7d8fa3;margin-top:3px;letter-spacing:0.5px;}
+.bottom{margin-top:18px;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+.sum-card{background:linear-gradient(180deg,#11243f,#0d1a30);border:1px solid var(--line);border-radius:10px;padding:12px 12px 14px 12px;position:relative;display:flex;flex-direction:column;gap:6px;}
+.sum-card .num{font-size:13px;font-weight:700;color:var(--cyan);letter-spacing:1px;}
+.sum-card h3{font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;gap:6px;}
+.sum-card h3::before{content:"";display:inline-block;width:3px;height:11px;background:var(--primary);border-radius:2px;}
+.sum-card p{font-size:10.5px;color:var(--gray);line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <div class="title-row">
+        <span class="title-dot"></span>
+        <h1>开源社区核心数据画像</h1>
+      </div>
+      <p class="subtitle">数据揭示开源社区的宏观图景——规模庞大但参与高度不均衡，头部项目聚集效应明显，商业机构深度嵌入却与纯粹社区保持张力，这些数据为社会学分析提供了经验基础，也暴露了开放协作中的结构性不平等。</p>
+    </div>
+
+    <div class="main">
+      <div class="left-panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span><span>许可证分布 · 三大许可占比</span></div>
+          <div class="panel-tag">LICENSE MIX</div>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-box" style="flex:1.15;">
+            <div id="chart_1" style="width:100%;height:100%;"></div>
+            <div class="chart-legend">
+              <div class="legend-item"><span class="legend-dot" style="background:#2196F3;"></span><span>MIT</span></div>
+              <div class="legend-item"><span class="legend-dot" style="background:#00BCD4;"></span><span>GPL 系</span></div>
+              <div class="legend-item"><span class="legend-dot" style="background:#64B5F6;"></span><span>Apache-2.0</span></div>
+              <div class="legend-item"><span class="legend-dot" style="background:#1c3458;"></span><span>其他</span></div>
+            </div>
+          </div>
+          <div class="chart-box" style="flex:1;">
+            <div id="chart_2" style="width:100%;height:100%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <div class="kpi">
+          <div class="kpi-num">70M+</div>
+          <div class="kpi-label">全球开源贡献者</div>
+          <div class="kpi-sub">SOURCE · GITHUB</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num cyan">90%+</div>
+          <div class="kpi-label">企业 IT 基础设施依赖开源</div>
+          <div class="kpi-sub">ENTERPRISE ADOPTION</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">&lt;10%</div>
+          <div class="kpi-label">女性开发者占比</div>
+          <div class="kpi-sub">GENDER DIVERSITY</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num cyan">38%</div>
+          <div class="kpi-label">MIT 许可证占比</div>
+          <div class="kpi-sub">MIT LICENSE</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">19%</div>
+          <div class="kpi-label">GPL 系许可证占比</div>
+          <div class="kpi-sub">GPL FAMILY</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">19%</div>
+          <div class="kpi-label">Apache-2.0 许可证占比</div>
+          <div class="kpi-sub">APACHE 2.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="sum-card">
+        <div class="num">01</div>
+        <h3>开发者规模</h3>
+        <p>全球贡献者数千万，GitHub 年新增仓库超亿级。</p>
+      </div>
+      <div class="sum-card">
+        <div class="num">02</div>
+        <h3>许可证分布</h3>
+        <p>MIT 与 Apache-2.0 主导，GPL 系仍保有显著份额。</p>
+      </div>
+      <div class="sum-card">
+        <div class="num">03</div>
+        <h3>协作地理</h3>
+        <p>高度集中于北美与东亚，非洲与南亚增长迅速。</p>
+      </div>
+      <div class="sum-card">
+        <div class="num">04</div>
+        <h3>项目生命周期</h3>
+        <p>多数项目不活跃，少数头部项目如 Linux 与 Kubernetes 持续繁荣。</p>
+      </div>
+      <div class="sum-card">
+        <div class="num">05</div>
+        <h3>商业参与</h3>
+        <p>超 90% 企业 IT 基础设施依赖开源，已成为数字经济基础设施。</p>
+      </div>
+      <div class="sum-card">
+        <div class="num">06</div>
+        <h3>女性参与</h3>
+        <p>占比不足 10%，社区仍面临显著性别多样性挑战。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  const el = document.getElementById('chart_1');
+  const chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    tooltip:{show:false},
+    series:[{
+      type:'pie',
+      radius:['45%','72%'],
+      center:['50%','46%'],
+      avoidLabelOverlap:true,
+      itemStyle:{borderColor:'#0d1a30',borderWidth:2},
+      label:{
+        show:true,
+        formatter:'{b}\n{d}%',
+        color:'#e3eaf5',
+        fontSize:12,
+        fontWeight:600,
+        lineHeight:15
+      },
+      labelLine:{lineStyle:{color:'#7d8fa3'}},
+      data:[
+        {value:38,name:'MIT',itemStyle:{color:'#2196F3'}},
+        {value:19,name:'GPL 系',itemStyle:{color:'#00BCD4'}},
+        {value:19,name:'Apache-2.0',itemStyle:{color:'#64B5F6'}},
+        {value:24,name:'其他',itemStyle:{color:'#1c3458'}}
+      ]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+
+<script>(function(){
+  const el = document.getElementById('chart_2');
+  const chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:60,right:18,top:24,bottom:28},
+    tooltip:{show:false},
+    xAxis:{
+      type:'value',
+      max:40,
+      axisLine:{lineStyle:{color:'#1c3458'}},
+      axisLabel:{color:'#B0BEC5',fontSize:10,formatter:'{value}%'},
+      splitLine:{lineStyle:{color:'#1c3458',type:'dashed'}}
+    },
+    yAxis:{
+      type:'category',
+      data:['MIT','GPL 系','Apache-2.0'],
+      axisLine:{lineStyle:{color:'#1c3458'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#e3eaf5',fontSize:11,fontWeight:500}
+    },
+    series:[{
+      type:'bar',
+      barWidth:14,
+      itemStyle:{
+        color:function(p){
+          return new echarts.graphic.LinearGradient(0,0,1,0,[
+            {offset:0,color:'#0d1a30'},
+            {offset:1,color:p.dataIndex===0?'#2196F3':(p.dataIndex===1?'#00BCD4':'#64B5F6')}
+          ]);
+        },
+        borderRadius:[0,4,4,0]
+      },
+      label:{show:true,position:'right',color:'#e3eaf5',fontSize:11,fontWeight:600,formatter:'{c}%'},
+      data:[38,19,19]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

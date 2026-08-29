@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源 · 献给世界的礼物</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Roboto+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --neutral: #B0BEC5;
+  --gold: #FFD54F;
+  --gold-light: #FFEB9C;
+  --dark-bg-1: #050B1A;
+  --dark-bg-2: #0A1628;
+  --dark-bg-3: #0D1F3C;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  color: #E0E8F0;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  font-family: 'Roboto Mono', monospace;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 40%, #0D2A52 0%, #081830 35%, #040A18 70%, #02060F 100%);
+}
+
+#bg canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Central glow halo */
+.halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  transform: translate(-50%, -54%);
+  z-index: 0;
+  background: radial-gradient(circle, rgba(33,150,243,0.12) 0%, rgba(0,188,212,0.06) 30%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Corner deco */
+.corner {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 2px solid rgba(33,150,243,0.3);
+  z-index: 2;
+}
+.corner.tl { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+.corner.tr { top: 30px; right: 30px; border-left: none; border-bottom: none; }
+.corner.bl { bottom: 30px; left: 30px; border-right: none; border-top: none; }
+.corner.br { bottom: 30px; right: 30px; border-left: none; border-top: none; }
+
+/* Header tag */
+.tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 3;
+}
+.tag .line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan));
+}
+.tag .line.right {
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+
+/* Main title */
+.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 72px;
+  color: #FFFFFF;
+  text-align: center;
+  letter-spacing: 4px;
+  text-shadow:
+    0 0 20px rgba(33,150,243,0.7),
+    0 0 40px rgba(33,150,243,0.4),
+    0 0 80px rgba(0,188,212,0.3);
+  margin-bottom: 14px;
+  z-index: 3;
+  position: relative;
+}
+.main-title .dot {
+  color: var(--cyan);
+  margin: 0 16px;
+  text-shadow: 0 0 20px rgba(0,188,212,0.8);
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: var(--neutral);
+  letter-spacing: 12px;
+  text-align: center;
+  margin-bottom: 32px;
+  z-index: 3;
+  position: relative;
+}
+
+/* Divider */
+.divider {
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--cyan), var(--primary), transparent);
+  margin: 0 auto 28px;
+  z-index: 3;
+  position: relative;
+}
+.divider::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 7px;
+  height: 7px;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+/* Three pillar cards */
+.pillars {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  z-index: 3;
+  position: relative;
+}
+.pillar {
+  width: 290px;
+  padding: 22px 24px 24px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.08) 0%, rgba(0,188,212,0.04) 100%);
+  border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  position: relative;
+  overflow: hidden;
+}
+.pillar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+.pillar .num {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  letter-spacing: 4px;
+  margin-bottom: 6px;
+}
+.pillar .title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--gold);
+  margin-bottom: 12px;
+  text-shadow: 0 0 12px rgba(255,213,79,0.4);
+  letter-spacing: 2px;
+}
+.pillar .desc {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--neutral);
+  letter-spacing: 0.5px;
+}
+.pillar .icon-wrap {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Closing quote */
+.closing {
+  text-align: center;
+  z-index: 3;
+  position: relative;
+  margin-top: 8px;
+}
+.closing-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 6px;
+  margin-bottom: 10px;
+}
+.closing-text {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 44px;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold), #FFB300, var(--gold-light));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 16px;
+  text-shadow: none;
+  animation: shimmer 4s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.closing-sub {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--neutral);
+  letter-spacing: 4px;
+  margin-top: 10px;
+}
+
+/* Bottom bar */
+.bottom-bar {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 3;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: rgba(176,190,197,0.5);
+  letter-spacing: 3px;
+}
+.bottom-bar .sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+}
+
+/* Floating rings decoration */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.15);
+  z-index: 0;
+  pointer-events: none;
+}
+.ring.r1 { width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%, -50%); border-color: rgba(33,150,243,0.08); }
+.ring.r2 { width: 800px; height: 800px; top: 50%; left: 50%; transform: translate(-50%, -50%); border-color: rgba(0,188,212,0.06); }
+.ring.r3 { width: 1000px; height: 1000px; top: 50%; left: 50%; transform: translate(-50%, -50%); border-color: rgba(33,150,243,0.04); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <canvas id="particleCanvas"></canvas>
+  </div>
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+  <div class="ring r3"></div>
+  <div class="halo"></div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div id="ct">
+    <div class="tag">
+      <span class="line"></span>
+      <span>THE&nbsp;FINAL&nbsp;CHAPTER</span>
+      <span class="line right"></span>
+    </div>
+
+    <div class="main-title"><span>开源</span><span class="dot">·</span><span>献给世界的礼物</span></div>
+    <div class="subtitle">愿代码自由，世界更好</div>
+
+    <div class="divider"></div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.5">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <div class="num">01 / ACT</div>
+        <div class="title"><span>持续行动</span></div>
+        <div class="desc"><span>阅读是起点，行动才是关键。从提交第一个 PR 开始，真正参与开源共建，让每一份代码都成为改变世界的支点。</span></div>
+      </div>
+      <div class="pillar">
+        <div class="icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.5">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3 12h18M12 3a13 13 0 010 18M12 3a13 13 0 000 18"/>
+          </svg>
+        </div>
+        <div class="num">02 / OPEN</div>
+        <div class="title"><span>保持开放</span></div>
+        <div class="desc"><span>保持开放心态，拥抱不同观点与协作方式。让开源精神融入日常工作与生活，成为思维与行动的自然底色。</span></div>
+      </div>
+      <div class="pillar">
+        <div class="icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="num">03 / FUTURE</div>
+        <div class="title"><span>共赴未来</span></div>
+        <div class="desc"><span>携手共建更自由、更开放、更美好的数字世界。开源不仅是技术选择，更是一场关于自由、协作与分享的人类实践。</span></div>
+      </div>
+    </div>
+
+    <div class="closing">
+      <div class="closing-label">— A GIFT TO THE WORLD —</div>
+      <div class="closing-text"><span>愿代码自由</span></div>
+      <div class="closing-sub">献给世界的礼物 &nbsp;·&nbsp; OPEN SOURCE FOR A BETTER WORLD</div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <span>FREE&nbsp;CODE</span>
+    <span class="sep"></span>
+    <span>BETTER&nbsp;WORLD</span>
+    <span class="sep"></span>
+    <span>THANK&nbsp;YOU</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 1600;
+  canvas.height = 900;
+
+  const centerX = 800;
+  const centerY = 420;
+  const particles = [];
+  const NUM = 180;
+
+  function createParticle() {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 300 + Math.random() * 500;
+    return {
+      x: centerX + Math.cos(angle) * dist,
+      y: centerY + Math.sin(angle) * dist * 0.6,
+      vx: 0,
+      vy: 0,
+      size: Math.random() * 1.8 + 0.4,
+      life: Math.random(),
+      maxLife: 0.6 + Math.random() * 0.4,
+      hue: Math.random() > 0.5 ? '33,150,243' : '0,188,212',
+      trail: []
+    };
+  }
+
+  for (let i = 0; i < NUM; i++) {
+    particles.push(createParticle());
+  }
+
+  let time = 0;
+
+  function update() {
+    time += 0.016;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      p.life += 0.008;
+      if (p.life > p.maxLife) {
+        Object.assign(p, createParticle());
+      }
+
+      const dx = centerX - p.x;
+      const dy = centerY - p.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const speed = 0.6 + (1 - dist / 800) * 1.2;
+      p.vx = (dx / dist) * speed;
+      p.vy = (dy / dist) * speed;
+
+      p.trail.push({x: p.x, y: p.y});
+      if (p.trail.length > 12) p.trail.shift();
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      const alpha = Math.min(p.life / 0.3, 1) * (1 - (p.life - 0.1) / p.maxLife) * 0.8;
+
+      // Draw trail
+      for (let i = 0; i < p.trail.length - 1; i++) {
+        const t = p.trail[i];
+        const ta = (i / p.trail.length) * alpha * 0.5;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, p.size * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.hue},${ta})`;
+        ctx.fill();
+      }
+
+      // Draw head
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.hue},${alpha})`;
+      ctx.shadowColor = `rgba(${p.hue},0.6)`;
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+
+    // Draw converging lines
+    ctx.strokeStyle = 'rgba(33,150,243,0.03)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 12; i++) {
+      const angle = (i / 12) * Math.PI * 2 + time * 0.1;
+      ctx.beginPath();
+      ctx.moveTo(centerX + Math.cos(angle) * 100, centerY + Math.sin(angle) * 60);
+      ctx.lineTo(centerX + Math.cos(angle) * 600, centerY + Math.sin(angle) * 350);
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  update();
+})();
+</script>
+</body>
+</html>

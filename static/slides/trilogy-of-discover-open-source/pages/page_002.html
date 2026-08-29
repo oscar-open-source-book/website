@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之道月刊</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #002FA7;
+  --accent: #FF7043;
+  --bg: #F5F5F5;
+  --text-main: #1A1A1A;
+  --text-sub: #555555;
+  --text-light: #888888;
+  --line: #D0D5DD;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 70px 50px 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 20px 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--primary);
+  letter-spacing: 2px;
+}
+
+.brand-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.meta {
+  font-size: 13px;
+  color: var(--text-light);
+  letter-spacing: 1px;
+}
+
+/* Main area */
+.main-area {
+  display: flex;
+  flex: 1;
+  margin-top: 30px;
+}
+
+/* Left vertical line */
+.left-rail {
+  width: 40px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.left-rail .vline {
+  position: absolute;
+  left: 18px;
+  top: 10px;
+  width: 4px;
+  height: calc(100% - 20px);
+  background: var(--primary);
+}
+
+.left-rail .vline-tick {
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 2px;
+  background: var(--primary);
+}
+
+.left-rail .tick-1 { top: 80px; }
+.left-rail .tick-2 { top: 380px; }
+.left-rail .tick-3 { top: 680px; }
+
+.left-rail .tick-label {
+  position: absolute;
+  left: 4px;
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+
+.tick-label-1 { top: 60px; }
+.tick-label-2 { top: 360px; }
+.tick-label-3 { top: 660px; }
+
+/* Content area */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-left: 50px;
+  position: relative;
+}
+
+/* Hero number + title */
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.hero-num {
+  font-size: 160px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 0.85;
+  letter-spacing: -4px;
+  font-feature-settings: "tnum";
+}
+
+.hero-num .slash {
+  color: var(--accent);
+  font-weight: 300;
+  font-size: 80px;
+  margin-left: 8px;
+  vertical-align: top;
+  position: relative;
+  top: 20px;
+}
+
+.hero-text {
+  padding-top: 20px;
+  flex: 1;
+}
+
+.hero-eyebrow {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 4px;
+  margin-bottom: 14px;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 17px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  letter-spacing: 1px;
+  font-weight: 300;
+  max-width: 620px;
+}
+
+/* Cards */
+.cards {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.card {
+  flex: 1;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--primary);
+  padding: 22px 24px 24px 24px;
+  position: relative;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-num {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.75;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+}
+
+/* Bottom section */
+.bottom {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.data-row {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 18px;
+}
+
+.data-item {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.data-label {
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+
+.data-value {
+  font-size: 15px;
+  color: var(--text-main);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.data-value .sep {
+  color: var(--accent);
+  margin: 0 6px;
+  font-weight: 300;
+}
+
+.summary {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.85;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+  max-width: 1000px;
+  padding-left: 20px;
+  border-left: 3px solid var(--accent);
+}
+
+/* Decorative corner marks */
+.corner-tl {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  width: 24px;
+  height: 24px;
+  border-top: 2px solid var(--primary);
+  border-left: 2px solid var(--primary);
+  z-index: 2;
+}
+
+.corner-br {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  width: 24px;
+  height: 24px;
+  border-bottom: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
+  z-index: 2;
+}
+
+/* Decorative small square */
+.deco-square {
+  position: absolute;
+  top: 70px;
+  right: 70px;
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  z-index: 2;
+}
+
+.deco-line-h {
+  position: absolute;
+  top: 76px;
+  right: 90px;
+  width: 60px;
+  height: 2px;
+  background: var(--primary);
+  z-index: 2;
+}
+
+/* Footer dots decoration */
+.footer-deco {
+  position: absolute;
+  bottom: 30px;
+  left: 70px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  z-index: 2;
+}
+
+.footer-deco .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+.footer-deco .dot-accent {
+  background: var(--accent);
+}
+
+.footer-deco .dot-text {
+  font-size: 10px;
+  color: var(--text-light);
+  letter-spacing: 3px;
+  margin-left: 10px;
+}
+
+.footer-page {
+  position: absolute;
+  bottom: 28px;
+  right: 70px;
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 2px;
+  z-index: 2;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="deco-line-h"></div>
+    <div class="deco-square"></div>
+
+    <div class="top-bar">
+      <div class="brand"><span class="brand-dot"></span><span>OPEN&nbsp;SOURCE&nbsp;MONTHLY</span></div>
+      <div class="meta"><span>SECTION · 02 / 过渡章节</span></div>
+    </div>
+
+    <div class="main-area">
+      <div class="left-rail">
+        <div class="vline"></div>
+        <div class="vline-tick tick-1"></div>
+        <div class="vline-tick tick-2"></div>
+        <div class="vline-tick tick-3"></div>
+        <div class="tick-label tick-label-1"><span>01</span></div>
+        <div class="tick-label tick-label-2"><span>02</span></div>
+        <div class="tick-label tick-label-3"><span>03</span></div>
+      </div>
+
+      <div class="content">
+        <div class="hero">
+          <div class="hero-num"><span>02</span><span class="slash">/08</span></div>
+          <div class="hero-text">
+            <div class="hero-eyebrow"><span>CHAPTER · 开源之声</span></div>
+            <div class="hero-title"><span>开源之道月刊</span></div>
+            <div class="hero-subtitle"><span>中国开源社区最具影响力的技术出版物之一</span></div>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-num"><span>01 — 创刊初衷</span></div>
+            <div class="card-title"><span>记录技术脉络</span></div>
+            <div class="card-desc"><span>致力于记录开源技术发展脉络，推动国内开源文化普及</span></div>
+          </div>
+          <div class="card">
+            <div class="card-num"><span>02 — 内容特色</span></div>
+            <div class="card-title"><span>深度长文为主</span></div>
+            <div class="card-desc"><span>以深度长文为主，涵盖技术解读、人物访谈与社区观察</span></div>
+          </div>
+          <div class="card">
+            <div class="card-num"><span>03 — 影响力</span></div>
+            <div class="card-title"><span>权威开源读物</span></div>
+            <div class="card-desc"><span>被广泛视为国内开源领域的权威读物，读者覆盖开发者群体</span></div>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="data-row">
+            <div class="data-item">
+              <span class="data-label"><span>出版形式</span></span>
+              <span class="data-value"><span>月刊</span></span>
+            </div>
+            <div class="data-item">
+              <span class="data-label"><span>内容类型</span></span>
+              <span class="data-value"><span>技术解读</span><span class="sep">·</span><span>人物访谈</span><span class="sep">·</span><span>社区观察</span></span>
+            </div>
+          </div>
+          <div class="summary">
+            <span>开源之道是国内开源领域最具影响力的月刊之一，自创办以来始终坚持以深度内容记录开源生态的演进，成为开发者了解开源文化与前沿技术的重要窗口。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-deco">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot dot-accent"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot-text"><span>SECTION 02</span></span>
+    </div>
+    <div class="footer-page"><span>OPEN SOURCE MONTHLY · 02</span></div>
+
+  </div>
+</div>
+</body>
+</html>

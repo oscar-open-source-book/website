@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>发现开源三部曲</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --klein:#002FA7;
+  --klein-deep:#001F73;
+  --klein-light:#3B5BC9;
+  --accent:#FF7043;
+  --gray:#F5F5F5;
+  --text-main:#0A1A4A;
+  --text-sub:#4A5A8A;
+  --text-mute:#8A9AC4;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  color:var(--text-main);
+  background:var(--gray);
+  -webkit-font-smoothing:antialiased;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--gray);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 72px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 背景装饰 */
+.bg-04{
+  position:absolute;
+  right:-40px;top:-60px;
+  font-size:560px;
+  font-weight:900;
+  line-height:1;
+  color:var(--klein);
+  opacity:0.045;
+  letter-spacing:-20px;
+  font-family:'Inter',sans-serif;
+  pointer-events:none;
+  user-select:none;
+}
+.bg-line{
+  position:absolute;
+  left:0;top:0;bottom:0;width:6px;
+  background:var(--klein);
+}
+.bg-dot{
+  position:absolute;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent);
+}
+.bg-dot-1{right:60px;top:54px;}
+.bg-dot-2{right:60px;top:74px;opacity:0.5;}
+
+/* 顶部 */
+.top{display:flex;align-items:flex-start;justify-content:space-between;}
+.chapter-tag{display:flex;align-items:center;gap:14px;}
+.chapter-tag .num{
+  font-size:14px;font-weight:700;color:var(--klein);
+  letter-spacing:4px;font-family:'Inter',sans-serif;
+}
+.chapter-tag .bar{width:36px;height:2px;background:var(--accent);}
+.chapter-tag .label{font-size:13px;color:var(--text-sub);letter-spacing:2px;font-weight:500;}
+.page-meta{font-size:12px;color:var(--text-mute);letter-spacing:3px;text-align:right;line-height:1.8;}
+.page-meta .p-no{font-size:28px;color:var(--klein);font-weight:800;letter-spacing:0;display:block;font-family:'Inter',sans-serif;}
+
+/* 标题区 */
+.head{margin-top:18px;}
+.eyebrow{font-size:13px;color:var(--accent);letter-spacing:6px;font-weight:600;margin-bottom:12px;}
+.title{
+  font-size:80px;font-weight:800;line-height:1.05;
+  color:var(--klein);letter-spacing:-2px;
+  font-family:'Inter','PingFang SC',sans-serif;
+}
+.title .accent-char{color:var(--accent);}
+.subtitle{
+  margin-top:16px;font-size:20px;font-weight:400;
+  color:var(--text-sub);letter-spacing:2px;line-height:1.5;
+}
+.subtitle .divider{display:inline-block;width:18px;height:1px;background:var(--text-mute);vertical-align:middle;margin:0 14px;}
+
+/* 三段递进色块 */
+.trio{margin-top:26px;display:flex;flex-direction:column;gap:12px;}
+.strip{
+  display:flex;align-items:center;
+  padding:18px 28px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 4px 18px rgba(0,47,167,0.12);
+}
+.strip-1{
+  width:46%;
+  background:linear-gradient(90deg,#001F73 0%,#002FA7 100%);
+  border-radius:4px 0 0 4px;
+}
+.strip-2{
+  width:70%;
+  background:linear-gradient(90deg,#002FA7 0%,#2A45C0 100%);
+  border-radius:4px 0 0 4px;
+}
+.strip-3{
+  width:96%;
+  background:linear-gradient(90deg,#002FA7 0%,#3B5BC9 60%,#5A78DD 100%);
+  border-radius:4px;
+}
+.strip::after{
+  content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--accent);
+}
+.strip-1 .idx,.strip-2 .idx,.strip-3 .idx{
+  font-family:'Inter',sans-serif;
+  font-size:34px;font-weight:800;
+  color:rgba(255,255,255,0.28);
+  font-family:'Inter',sans-serif;
+  letter-spacing:-1px;
+  min-width:60px;
+}
+.strip .body{flex:1;display:flex;align-items:center;gap:22px;}
+.strip .vol{
+  font-size:15px;font-weight:700;color:var(--accent);
+  letter-spacing:3px;
+  padding:5px 12px;border:1px solid rgba(255,112,67,0.5);border-radius:2px;
+  white-space:nowrap;
+}
+.strip .content{font-size:14px;font-weight:400;color:rgba(255,255,255,0.92);line-height:1.55;letter-spacing:0.5px;}
+.strip .arrow{
+  font-size:18px;color:rgba(255,255,255,0.4);
+  font-weight:300;padding-left:8px;
+}
+
+/* 底部区 */
+.footer{
+  margin-top:auto;
+  display:flex;align-items:stretch;gap:28px;
+}
+.narrative{
+  flex:1;padding:20px 24px;
+  background:#fff;
+  border-left:3px solid var(--klein);
+  position:relative;
+}
+.narrative .tag{
+  font-size:11px;font-weight:700;color:var(--accent);
+  letter-spacing:4px;margin-bottom:8px;
+}
+.narrative .text{
+  font-size:14px;line-height:1.75;color:var(--text-main);letter-spacing:0.3px;font-weight:400;
+}
+.narrative .text .hl{color:var(--klein);font-weight:600;}
+
+.stats{
+  display:flex;flex-direction:column;gap:12px;
+  width:280px;
+}
+.stat{
+  flex:1;
+  background:#fff;
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;
+  overflow:hidden;
+}
+.stat .left{display:flex;flex-direction:column;gap:4px;}
+.stat .k{font-size:11px;color:var(--text-mute);letter-spacing:2px;font-weight:500;}
+.stat .v{font-size:18px;color:var(--klein);font-weight:700;letter-spacing:1px;}
+.stat .ico{
+  font-size:30px;font-weight:800;
+  color:rgba(0,47,167,0.10);
+  font-family:'Inter',sans-serif;
+}
+.stat .accent-bar{
+  position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);
+}
+
+/* 底部装饰线 */
+.foot-line{
+  margin-top:14px;
+  display:flex;align-items:center;gap:12px;
+}
+.foot-line .l1{flex:1;height:1px;background:linear-gradient(90deg,var(--klein) 0%,transparent 100%);}
+.foot-line .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;}
+.foot-line .txt{font-size:11px;color:var(--text-mute);letter-spacing:4px;font-weight:500;}
+.foot-line .l2{flex:1;height:1px;background:linear-gradient(90deg,transparent 0%,var(--klein) 100%);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-04">04</div>
+    <div class="bg-line"></div>
+    <div class="bg-dot bg-dot-1"></div>
+    <div class="bg-dot bg-dot-2"></div>
+  </div>
+  <div id="ct">
+
+    <div class="top">
+      <div class="chapter-tag">
+        <span class="num">CH·04</span>
+        <span class="bar"></span>
+        <span class="label">章节过渡 / SECTION DIVIDER</span>
+      </div>
+      <div class="page-meta">
+        <span class="p-no">04</span>
+        <span>总页数 / 04</span>
+      </div>
+    </div>
+
+    <div class="head">
+      <div class="eyebrow">DISCOVER · OPEN · SOURCE</div>
+      <h1 class="title">发现开源<span class="accent-char">三</span>部曲</h1>
+      <div class="subtitle">
+        从认知到实践的三段式阅读旅程<span class="divider"></span>
+        <span>A Three-Part Journey from Understanding to Building</span>
+      </div>
+    </div>
+
+    <div class="trio">
+      <div class="strip strip-1">
+        <div class="idx">01</div>
+        <div class="body">
+          <span class="vol">第一辑 · 初识</span>
+          <span class="content">回答开源是什么 —— 理解许可证、协作模式与社区文化的底层逻辑，建立对开源世界的第一层系统认知。</span>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="strip strip-2">
+        <div class="idx">02</div>
+        <div class="body">
+          <span class="vol">第二辑 · 实践</span>
+          <span class="content">聚焦如何选择项目、参与贡献 —— 把开源思想真正融入日常工作，从旁观者转变为有产出的参与者。</span>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="strip strip-3">
+        <div class="idx">03</div>
+        <div class="body">
+          <span class="vol">第三辑 · 共建</span>
+          <span class="content">探讨如何主导开源项目 —— 构建可持续的社区治理体系，从贡献者走向建设者与引领者。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="narrative">
+        <div class="tag">CORE NARRATIVE</div>
+        <div class="text">
+          发现开源三部曲构成了一个完整的<span class="hl">认知进阶体系</span>：从理解开源理念出发，经由亲身参与实践，最终走向<span class="hl">社区治理与共建</span>，为读者提供了一条可复制的开源成长路径。
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="left">
+            <span class="k">阅读阶段</span>
+            <span class="v">三段式</span>
+          </div>
+          <span class="ico">Ⅲ</span>
+          <span class="accent-bar"></span>
+        </div>
+        <div class="stat">
+          <div class="left">
+            <span class="k">核心路径</span>
+            <span class="v">认知 → 实践 → 共建</span>
+          </div>
+          <span class="ico">→</span>
+          <span class="accent-bar"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-line">
+      <span class="l1"></span>
+      <span class="dot"></span>
+      <span class="txt">CHAPTER 04 · OPEN SOURCE TRILOGY</span>
+      <span class="dot"></span>
+      <span class="l2"></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

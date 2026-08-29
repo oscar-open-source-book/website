@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源生态关键数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --bg:#F5F7FA;
+  --text-main:#0D1B2A;
+  --text-sub:#4A5A6E;
+  --card-bg:#FFFFFF;
+  --line:#E1E8F0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:var(--text-main);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#F5F7FA 0%,#EAF2FA 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg::before{content:"";position:absolute;top:-260px;right:-200px;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.12) 0%,rgba(33,150,243,0) 70%);}
+#bg::after{content:"";position:absolute;bottom:-220px;left:-180px;width:580px;height:580px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,0.12) 0%,rgba(0,188,212,0) 70%);}
+#ct{position:absolute;inset:0;z-index:1;padding:0;box-sizing:border-box;}
+
+.top-bar{height:6px;width:100%;background:linear-gradient(90deg,#0D47A1 0%,#2196F3 35%,#00BCD4 75%,#80DEEA 100%);}
+
+.header{padding:32px 60px 18px 60px;position:relative;}
+.header::after{content:"";position:absolute;left:60px;right:60px;bottom:14px;height:1px;background:linear-gradient(90deg,rgba(33,150,243,0.5),rgba(33,150,243,0));}
+.title-row{display:flex;align-items:baseline;justify-content:space-between;}
+.title{font-family:'Inter',sans-serif;font-weight:800;font-size:34px;color:var(--text-main);letter-spacing:-0.5px;}
+.title .accent{color:var(--primary);}
+.title-en{font-family:'Roboto Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;letter-spacing:2px;text-transform:uppercase;}
+.subtitle{margin-top:14px;font-size:15px;color:var(--text-sub);line-height:1.6;max-width:1100px;}
+.subtitle .hi{color:var(--primary);font-weight:600;}
+
+.grid{padding:22px 60px 0 60px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,240px);gap:20px;}
+
+.card{position:relative;background:var(--card-bg);border-radius:14px;padding:22px 24px;box-shadow:0 6px 22px rgba(13,27,42,0.06),0 1px 3px rgba(13,27,42,0.04);overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+.card::after{content:"";position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,0.14) 0%,rgba(0,188,212,0) 70%);pointer-events:none;}
+
+.card-head{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2;}
+.card-idx{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:1.5px;background:rgba(0,188,212,0.10);padding:4px 10px;border-radius:20px;}
+.card-tag{font-size:11px;color:var(--text-sub);font-weight:500;letter-spacing:0.5px;}
+
+.num{font-family:'Roboto Mono',monospace;font-weight:700;font-size:46px;color:var(--primary);line-height:1.1;letter-spacing:-1px;position:relative;z-index:2;}
+.num .unit{font-size:22px;color:var(--accent);font-weight:600;margin-left:4px;}
+.num-mini{font-family:'Roboto Mono',monospace;font-weight:700;font-size:30px;color:var(--primary);line-height:1.2;letter-spacing:-0.5px;position:relative;z-index:2;}
+.num-mini .unit{font-size:16px;color:var(--accent);font-weight:600;margin-left:4px;}
+
+.card-name{font-size:16px;font-weight:700;color:var(--text-main);margin-top:8px;position:relative;z-index:2;}
+.card-note{font-size:12px;color:var(--text-sub);line-height:1.55;margin-top:6px;position:relative;z-index:2;}
+
+.divider-row{display:flex;align-items:center;gap:8px;margin-top:10px;position:relative;z-index:2;}
+.divider-row .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.divider-row .line{flex:1;height:1px;background:linear-gradient(90deg,rgba(33,150,243,0.4),rgba(33,150,243,0));}
+.divider-row .num-meta{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-sub);}
+
+.card-6{background:linear-gradient(135deg,#0D2540 0%,#103A6B 60%,#0A6079 100%);border:1px solid rgba(0,188,212,0.3);color:#fff;}
+.card-6 .card-name{color:#fff;}
+.card-6 .card-note{color:rgba(255,255,255,0.78);}
+.card-6 .num{color:#fff;}
+.card-6 .num .unit{color:#80DEEA;}
+.card-6 .card-idx{background:rgba(0,188,212,0.25);color:#80DEEA;}
+.card-6 .card-tag{color:rgba(255,255,255,0.7);}
+.card-6 .divider-row .line{background:linear-gradient(90deg,rgba(128,222,234,0.6),rgba(128,222,234,0));}
+.card-6 .divider-row .dot{background:#80DEEA;}
+.card-6 .divider-row .num-meta{color:rgba(255,255,255,0.75);}
+
+.chart-row{display:flex;align-items:center;gap:12px;margin-top:14px;position:relative;z-index:2;}
+.chart-row .bar{flex:1;height:6px;background:rgba(13,27,42,0.06);border-radius:3px;overflow:hidden;position:relative;}
+.chart-row .bar .fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;}
+.chart-row .bar-label{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-sub);min-width:44px;text-align:right;}
+
+.footer{padding:0 60px 30px 60px;margin-top:6px;}
+.footer-inner{background:linear-gradient(135deg,rgba(33,150,243,0.05),rgba(0,188,212,0.05));border:1px solid var(--line);border-radius:12px;padding:16px 22px;display:flex;align-items:flex-start;gap:16px;}
+.footer-tag{flex-shrink:0;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:600;color:var(--primary);background:rgba(33,150,243,0.10);padding:5px 10px;border-radius:4px;letter-spacing:1px;align-self:flex-start;}
+.footer-text{font-size:13.5px;color:var(--text-sub);line-height:1.7;flex:1;}
+.footer-text .hl{color:var(--primary);font-weight:600;}
+.footer-text .hl2{color:#00838F;font-weight:600;}
+.footer-text strong{color:var(--text-main);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="top-bar"></div>
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title">开源生态<span class="accent">关键数据</span> · 数字经济底层操作系统</div>
+        <div class="title-en">OPEN SOURCE ECOSYSTEM · KEY METRICS</div>
+      </div>
+      <div class="subtitle">从参与人数、企业依赖度、资金规模到中国份额——开源已从<span class="hi">边缘文化</span>演变为支撑<span class="hi">数字经济</span>的底层操作系统，全球开源生态在开发者规模、企业采用、基础设施投入三大维度同时形成正循环。</div>
+    </div>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-idx">01 / SCALE</div>
+          <div class="card-tag">参与规模</div>
+        </div>
+        <div>
+          <div class="num">1,000<span class="unit">万+</span></div>
+          <div class="card-name">全球开源贡献者</div>
+          <div class="card-note">GitHub Octoverse 2021 报告披露，全球活跃开源贡献者规模突破千万级，年度活跃仓库数量持续增长。</div>
+        </div>
+        <div class="divider-row"><span class="dot"></span><span class="line"></span><span class="num-meta">YoY ▲ 28.9%</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-idx">02 / ADOPTION</div>
+          <div class="card-tag">企业依赖</div>
+        </div>
+        <div>
+          <div class="num">90<span class="unit">%+</span></div>
+          <div class="card-name">企业生产环境采用率</div>
+          <div class="card-note">Fortune 500 企业中超过九成已在生产环境中使用开源技术，开源已成为企业级技术栈的核心组成。</div>
+        </div>
+        <div class="chart-row">
+          <span class="bar-label">90%</span>
+          <div class="bar"><div class="fill" style="width:90%;"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-idx">03 / GROWTH</div>
+          <div class="card-tag">代码产出</div>
+        </div>
+        <div>
+          <div class="num">1.7<span class="unit">亿+</span></div>
+          <div class="card-name">GitHub 累计公开仓库</div>
+          <div class="card-note">GitHub 年度新增仓库两位数增长，全球累计公开仓库突破 1.7 亿，代码资产持续沉淀。</div>
+        </div>
+        <div class="divider-row"><span class="dot"></span><span class="line"></span><span class="num-meta">YoY ▲ 28.9%</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-idx">04 / CAPITAL</div>
+          <div class="card-tag">资金规模</div>
+        </div>
+        <div>
+          <div class="num">$10<span class="unit">亿+</span></div>
+          <div class="card-name">基金会年度预算合计</div>
+          <div class="card-note">Linux Foundation、Apache Foundation、CNCF 等头部开源基金会年度预算合计超十亿美元。</div>
+        </div>
+        <div class="chart-row">
+          <span class="bar-label">$1B+</span>
+          <div class="bar"><div class="fill" style="width:78%;"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-idx">05 / CHINA</div>
+          <div class="card-tag">中国份额</div>
+        </div>
+        <div>
+          <div class="num">20<span class="unit">%+</span></div>
+          <div class="card-name">中国贡献者全球占比</div>
+          <div class="card-note">中国贡献者在全球开源社区份额超 20%，在 CNCF、Apache 等组织中活跃度位居前列。</div>
+        </div>
+        <div class="chart-row">
+          <span class="bar-label">20%</span>
+          <div class="bar"><div class="fill" style="width:62%;"></div></div>
+        </div>
+      </div>
+
+      <div class="card card-6">
+        <div class="card-head">
+          <div class="card-idx">06 / MOMENTUM</div>
+          <div class="card-tag">中国增速</div>
+        </div>
+        <div>
+          <div class="num-mini">领先全球<span class="unit">平均</span></div>
+          <div class="card-name" style="margin-top:10px;">中国贡献者增速</div>
+          <div class="card-note">CNCF、Apache、Kubernetes 等项目中，中国贡献者增速显著领先全球平均水平，成为推动开源演进的核心力量。</div>
+        </div>
+        <div class="chart-row">
+          <span class="bar-label">CN</span>
+          <div class="bar" style="background:rgba(255,255,255,0.12);"><div class="fill" style="width:82%;background:linear-gradient(90deg,#80DEEA,#00BCD4);"></div></div>
+          <span class="bar-label" style="color:rgba(255,255,255,0.7);">WLD</span>
+          <div class="bar" style="background:rgba(255,255,255,0.12);flex:0.6;"><div class="fill" style="width:45%;background:rgba(128,222,234,0.5);"></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-inner">
+        <div class="footer-tag">CORE NARRATIVE</div>
+        <div class="footer-text">
+          <strong>核心叙事：</strong>开源生态已覆盖<span class="hl">千万级</span>开发者规模；大型企业生产环境开源依赖率<span class="hl">超九成</span>；GitHub 年度新增仓库保持<span class="hl">两位数</span>增长；头部开源基金会年度预算合计<span class="hl">超十亿美元</span>；<span class="hl2">中国贡献者全球占比超 20%</span>且在 CNCF 等组织中高度活跃；开源商业模式从云托管到商业授权形成完整链条——开源已成为数字经济的<span class="hl2">底层操作系统</span>。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

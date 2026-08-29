@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之道的成功</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cyan: #00BCD4;
+  --blue: #2196F3;
+  --cyan-glow: 0 0 20px rgba(0,188,212,0.6);
+  --bg-dark: #050810;
+  --text-main: #E8F4F8;
+  --text-dim: #7A9BB0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(160deg, #050810 0%, #0a1220 50%, #060918 100%);
+}
+
+.bg-glow-a {
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,188,212,0.10) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.bg-glow-b {
+  position: absolute;
+  bottom: -150px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(33,150,243,0.08) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    linear-gradient(rgba(0,188,212,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(0,188,212,0.18);
+}
+
+.brand-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: var(--cyan);
+  text-transform: uppercase;
+}
+
+.brand-meta {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+}
+
+.main-area {
+  display: flex;
+  gap: 36px;
+  margin-top: 24px;
+  height: 370px;
+}
+
+.left-col {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 10px;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.kicker-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: var(--cyan-glow);
+  display: inline-block;
+}
+
+h1.main-title {
+  font-family: 'Space Grotesk', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 1.02;
+  color: var(--text-main);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.title-gradient {
+  background: linear-gradient(135deg, #00BCD4 0%, #2196F3 60%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-underline {
+  width: 140px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue));
+  margin: 14px 0 18px 0;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0,188,212,0.5);
+}
+
+h2.subtitle {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+}
+
+.right-col {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.modules {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  height: 245px;
+}
+
+.mod-card {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(10,18,32,0.85) 0%, rgba(15,25,45,0.6) 100%);
+  border: 1px solid rgba(0,188,212,0.22);
+  border-radius: 8px;
+  padding: 20px 20px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mod-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue));
+  opacity: 0.8;
+}
+
+.mod-number {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.mod-title {
+  font-family: 'Space Grotesk', 'PingFang SC', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.mod-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.75;
+  letter-spacing: 0.3px;
+}
+
+.mod-icon {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  opacity: 0.35;
+}
+
+.footnote {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.foot-line {
+  flex: 0 0 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,188,212,0.5), transparent);
+}
+
+.foot-text {
+  font-family: 'Space Grotesk', 'PingFang SC', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dim);
+  letter-spacing: 4px;
+}
+
+.foot-text .highlight {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.corner-deco {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(0,188,212,0.3);
+  z-index: 0;
+}
+
+.corner-tl { top: 24px; left: 24px; border-right: none; border-bottom: none; }
+.corner-tr { top: 24px; right: 24px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 44px; left: 24px; border-right: none; border-top: none; }
+.corner-br { bottom: 44px; right: 24px; border-left: none; border-top: none; }
+
+.bottom-bar {
+  position: absolute;
+  bottom: 18px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(122,155,176,0.45);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-glow-a"></div>
+    <div class="bg-glow-b"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="corner-deco corner-tl"></div>
+  <div class="corner-deco corner-tr"></div>
+  <div class="corner-deco corner-bl"></div>
+  <div class="corner-deco corner-br"></div>
+
+  <div id="ct">
+    <div class="top-bar">
+      <span class="brand-tag">◆ OPEN SOURCE · 2023</span>
+      <span class="brand-meta">RESEARCH &nbsp;·&nbsp; INSIGHT &nbsp;·&nbsp; SHARE</span>
+    </div>
+
+    <div class="main-area">
+      <div class="left-col">
+        <span class="kicker"><span class="kicker-dot"></span><span>THE SUCCESS OF OPEN SOURCE</span></span>
+        <h1 class="main-title">开源之道<br><span class="title-gradient">的成功</span></h1>
+        <div class="title-underline"></div>
+        <h2 class="subtitle">2023年开源布道与阅读分享实录</h2>
+      </div>
+
+      <div class="right-col">
+        <svg class="node-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <filter id="glow-strong" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <radialGradient id="node-grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00BCD4" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0.3"/>
+            </radialGradient>
+          </defs>
+
+          <circle cx="250" cy="200" r="200" fill="none" stroke="#2196F3" stroke-opacity="0.06" stroke-width="1" stroke-dasharray="2 8"/>
+          <circle cx="250" cy="200" r="170" fill="none" stroke="#00BCD4" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="4 6"/>
+
+          <g stroke="#00BCD4" stroke-opacity="0.3" stroke-width="1" fill="none">
+            <line x1="250" y1="200" x2="120" y2="80"/>
+            <line x1="250" y1="200" x2="380" y2="80"/>
+            <line x1="250" y1="200" x2="90" y2="220"/>
+            <line x1="250" y1="200" x2="410" y2="220"/>
+            <line x1="250" y1="200" x2="150" y2="330"/>
+            <line x1="250" y1="200" x2="350" y2="330"/>
+            <line x1="250" y1="200" x2="250" y2="60"/>
+            <line x1="250" y1="200" x2="250" y2="360"/>
+            <line x1="120" y1="80" x2="250" y2="60"/>
+            <line x1="380" y1="80" x2="250" y2="60"/>
+            <line x1="90" y1="220" x2="120" y2="80"/>
+            <line x1="410" y1="220" x2="380" y2="80"/>
+            <line x1="150" y1="330" x2="90" y2="220"/>
+            <line x1="350" y1="330" x2="410" y2="220"/>
+            <line x1="150" y1="330" x2="250" y2="360"/>
+            <line x1="350" y1="330" x2="250" y2="360"/>
+            <line x1="120" y1="80" x2="180" y2="140"/>
+            <line x1="380" y1="80" x2="320" y2="140"/>
+            <line x1="180" y1="140" x2="250" y2="200"/>
+            <line x1="320" y1="140" x2="250" y2="200"/>
+            <line x1="180" y1="140" x2="90" y2="220"/>
+            <line x1="320" y1="140" x2="410" y2="220"/>
+            <line x1="180" y1="140" x2="320" y2="140"/>
+          </g>
+
+          <g stroke="#2196F3" stroke-opacity="0.18" stroke-width="0.8" fill="none">
+            <line x1="150" y1="330" x2="120" y2="80"/>
+            <line x1="350" y1="330" x2="380" y2="80"/>
+            <line x1="90" y1="220" x2="250" y2="360"/>
+            <line x1="410" y1="220" x2="250" y2="60"/>
+          </g>
+
+          <g filter="url(#glow-strong)">
+            <circle cx="250" cy="200" r="15" fill="url(#node-grad)" stroke="#00BCD4" stroke-width="2"/>
+          </g>
+
+          <g filter="url(#glow-cyan)">
+            <circle cx="120" cy="80" r="8" fill="#00BCD4" stroke="#00BCD4" stroke-width="1.5" stroke-opacity="0.6"/>
+            <circle cx="380" cy="80" r="8" fill="#00BCD4" stroke="#00BCD4" stroke-width="1.5" stroke-opacity="0.6"/>
+            <circle cx="90" cy="220" r="7" fill="#2196F3" stroke="#2196F3" stroke-width="1.5" stroke-opacity="0.6"/>
+            <circle cx="410" cy="220" r="7" fill="#2196F3" stroke="#2196F3" stroke-width="1.5" stroke-opacity="0.6"/>
+            <circle cx="150" cy="330" r="8" fill="#00BCD4" stroke="#00BCD4" stroke-width="1.5" stroke-opacity="0.6"/>
+            <circle cx="350" cy="330" r="8" fill="#00BCD4" stroke="#00BCD4" stroke-width="1.5" stroke-opacity="0.6"/>
+            <circle cx="250" cy="60" r="5" fill="#2196F3" stroke="#2196F3" stroke-width="1" stroke-opacity="0.5"/>
+            <circle cx="250" cy="360" r="5" fill="#2196F3" stroke="#2196F3" stroke-width="1" stroke-opacity="0.5"/>
+            <circle cx="180" cy="140" r="5" fill="#00BCD4" stroke="#00BCD4" stroke-width="1" stroke-opacity="0.5"/>
+            <circle cx="320" cy="140" r="5" fill="#00BCD4" stroke="#00BCD4" stroke-width="1" stroke-opacity="0.5"/>
+            <circle cx="60" cy="360" r="3.5" fill="#2196F3" stroke="#2196F3" stroke-width="0.8" stroke-opacity="0.4"/>
+            <circle cx="440" cy="360" r="3.5" fill="#2196F3" stroke="#2196F3" stroke-width="0.8" stroke-opacity="0.4"/>
+            <circle cx="60" cy="60" r="3.5" fill="#00BCD4" stroke="#00BCD4" stroke-width="0.8" stroke-opacity="0.4"/>
+            <circle cx="440" cy="60" r="3.5" fill="#00BCD4" stroke="#00BCD4" stroke-width="0.8" stroke-opacity="0.4"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="modules">
+      <div class="mod-card">
+        <span class="mod-number">01 &nbsp;/&nbsp; THEME &amp; CONTEXT</span>
+        <span class="mod-title">主题与背景</span>
+        <span class="mod-desc">这是2023年6月由适兕开源杂志策划并举办的开源布道分享活动实录，聚焦开源运动的核心议题与前沿动态。</span>
+        <svg class="mod-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="14" stroke="#00BCD4" stroke-width="1.2" stroke-opacity="0.6"/>
+          <circle cx="16" cy="16" r="4" fill="#00BCD4" fill-opacity="0.4"/>
+        </svg>
+      </div>
+
+      <div class="mod-card">
+        <span class="mod-number">02 &nbsp;/&nbsp; OPEN SOURCE VALUE</span>
+        <span class="mod-title">开源价值主张</span>
+        <span class="mod-desc">开源技术、社区文化与商业模式正深度重塑全球软件行业的格局与走向，构建新一代创新基础设施。</span>
+        <svg class="mod-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4 L28 16 L16 28 L4 16 Z" stroke="#00BCD4" stroke-width="1.2" stroke-opacity="0.6"/>
+          <path d="M16 10 L22 16 L16 22 L10 16 Z" fill="#00BCD4" fill-opacity="0.3"/>
+        </svg>
+      </div>
+
+      <div class="mod-card">
+        <span class="mod-number">03 &nbsp;/&nbsp; RECORD &amp; SPREAD</span>
+        <span class="mod-title">记录与传播</span>
+        <span class="mod-desc">以图文并茂的演示方式完整记录一场真实而深刻的开源阅读分享会，让开源理念触达更广阔的受众。</span>
+        <svg class="mod-icon" viewBox="0 0 32 32" fill="none">
+          <rect x="4" y="6" width="24" height="20" stroke="#00BCD4" stroke-width="1.2" stroke-opacity="0.6" rx="2"/>
+          <line x1="8" y1="12" x2="20" y2="12" stroke="#00BCD4" stroke-width="1" stroke-opacity="0.5"/>
+          <line x1="8" y1="16" x2="24" y2="16" stroke="#00BCD4" stroke-width="1" stroke-opacity="0.5"/>
+          <line x1="8" y1="20" x2="18" y2="20" stroke="#00BCD4" stroke-width="1" stroke-opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="footnote">
+      <span class="foot-line"></span>
+      <span class="foot-text">自由 <span class="highlight">·</span> 协作 <span class="highlight">·</span> 共建 <span class="highlight">·</span> 未来</span>
+      <span class="foot-line"></span>
+    </div>
+
+    <div class="bottom-bar">
+      <span>SHI SHI OPEN SOURCE MAGAZINE</span>
+      <span>◆ &nbsp; OPEN&nbsp;·&nbsp;SOURCE&nbsp;·&nbsp;FUTURE</span>
+      <span>2023.06</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

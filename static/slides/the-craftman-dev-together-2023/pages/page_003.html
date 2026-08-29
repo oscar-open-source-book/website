@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>2023开源全景</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg: #1E293B;
+  --text-main: #E8F0FE;
+  --text-muted: #94A8C4;
+  --card-bg: rgba(20, 30, 48, 0.78);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#bg .bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#bg .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(15,23,42,0.94) 0%, rgba(15,23,42,0.88) 42%, rgba(15,23,42,0.5) 66%, rgba(15,23,42,0.28) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 64px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-area {
+  display: grid;
+  grid-template-columns: 1fr 0.82fr;
+  gap: 44px;
+  flex: 1;
+}
+
+.left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 12px;
+}
+
+.header { margin-bottom: 30px; }
+
+.header .tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 62px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 2px;
+  line-height: 1.05;
+}
+
+.header h1 .accent { color: var(--primary); }
+
+.header .underline {
+  width: 76px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  margin-top: 18px;
+  border-radius: 2px;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.point {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 11px 18px;
+  background: rgba(30, 41, 59, 0.5);
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+}
+
+.point .dot {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 9px;
+  margin-left: 2px;
+  box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
+}
+
+.point .content { flex: 1; }
+
+.point .title {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 3px;
+  letter-spacing: 1px;
+}
+
+.point .desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.right-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding-left: 10px;
+}
+
+.kpi-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(33, 150, 243, 0.28);
+  border-radius: 10px;
+  padding: 18px 26px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 120px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,188,212,0.06));
+  pointer-events: none;
+}
+
+.kpi-card .label {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.kpi-card .number {
+  font-family: 'Inter', sans-serif;
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.1;
+  letter-spacing: 1px;
+}
+
+.kpi-card .number .unit {
+  font-size: 22px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.kpi-card .context {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.footer-line {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(33, 150, 243, 0.2);
+  margin-top: 10px;
+}
+
+.footer-line .accent-text {
+  color: var(--primary);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_003_chart_bg.png" alt="">
+    <div class="bg-overlay"></div>
+  </div>
+  <div id="ct">
+    <div class="main-area">
+      <div class="left-col">
+        <div class="header">
+          <div class="tag"><span>OPEN SOURCE · 2023</span></div>
+          <h1><span>2023<span class="accent">开源</span>全景</span></h1>
+          <div class="underline"></div>
+        </div>
+        <div class="points">
+          <div class="point">
+            <div class="dot"></div>
+            <div class="content">
+              <div class="title"><span>全球趋势</span></div>
+              <div class="desc"><span>2023年全球开源项目数量持续高速增长，企业采用率突破历史新高</span></div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="dot"></div>
+            <div class="content">
+              <div class="title"><span>中国贡献</span></div>
+              <div class="desc"><span>中国开发者社区活跃度显著提升，原创开源项目在国际上获得广泛认可</span></div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="dot"></div>
+            <div class="content">
+              <div class="title"><span>AI浪潮</span></div>
+              <div class="desc"><span>大模型与开源的交汇成为年度关键词，AI驱动的自动化开发工具层出不穷</span></div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="dot"></div>
+            <div class="content">
+              <div class="title"><span>治理挑战</span></div>
+              <div class="desc"><span>供应链安全、许可证合规与商业变现的张力成为社区治理的新焦点议题</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="kpi-card">
+          <div class="label"><span>全球活跃开源项目</span></div>
+          <div class="number"><span>4.9</span><span class="unit"> 亿+</span></div>
+          <div class="context"><span>GitHub平台统计估算</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="label"><span>企业采用率</span></div>
+          <div class="number"><span>90<span class="unit">%+</span></span></div>
+          <div class="context"><span>大型企业技术栈包含开源组件</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="label"><span>中国开发者数量</span></div>
+          <div class="number"><span>3800</span><span class="unit"> 万+</span></div>
+          <div class="context"><span>2023年国内开发者规模估算</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-line"><span>理解这一全景格局，是本期<span class="accent-text">阅读分享</span>的重要起点</span></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>2023书单数据速览</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+  --primary:#0D2137;
+  --accent:#C08B3E;
+  --gray:#9CA3AF;
+  --bg:#F7F8FA;
+  --card:#FFFFFF;
+  --line:#E5E7EB;
+  --text-main:#1F2937;
+  --text-sub:#4B5563;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;color:var(--text-main);}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,#F7F8FA 0%,#EEF1F5 50%,#F7F8FA 100%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
+.header .badge{display:inline-flex;align-items:center;gap:8px;width:max-content;padding:5px 14px;border-radius:20px;background:rgba(13,33,55,0.06);color:var(--primary);font-size:12px;font-weight:600;letter-spacing:1px;}
+.header .badge::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.header h1{font-size:34px;font-weight:800;color:var(--primary);letter-spacing:-0.5px;line-height:1.2;}
+.header h1 .accent{color:var(--accent);}
+.header .subtitle{font-size:14px;color:var(--text-sub);font-weight:400;line-height:1.6;max-width:1200px;}
+
+/* KPI Row */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:22px;}
+.kpi-card{background:var(--card);border-radius:14px;padding:20px 22px;border:1px solid var(--line);position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px;}
+.kpi-card::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);}
+.kpi-card .label{font-size:12px;color:var(--gray);font-weight:500;letter-spacing:0.5px;text-transform:uppercase;}
+.kpi-card .value{display:flex;align-items:baseline;gap:4px;}
+.kpi-card .value .num{font-size:36px;font-weight:800;color:var(--accent);line-height:1;}
+.kpi-card .value .unit{font-size:14px;font-weight:600;color:var(--primary);}
+.kpi-card .desc{font-size:12px;color:var(--text-sub);line-height:1.4;}
+.kpi-card .mini-bar{height:3px;background:var(--line);border-radius:2px;margin-top:4px;overflow:hidden;}
+.kpi-card .mini-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--primary));border-radius:2px;}
+
+/* Main Section */
+.main{display:grid;grid-template-columns:560px 1fr;gap:22px;flex:1;min-height:0;}
+
+/* Left Chart Card */
+.chart-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.card-head .title{font-size:15px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:8px;}
+.card-head .title::before{content:"";display:inline-block;width:4px;height:14px;background:var(--accent);border-radius:2px;}
+.card-head .meta{font-size:11px;color:var(--gray);font-weight:500;}
+.chart-wrap{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;}
+#chart_1{width:280px;height:280px;}
+.chart-legend{display:flex;flex-direction:column;gap:10px;flex:1;}
+.legend-item{display:flex;flex-direction:column;gap:3px;padding:8px 10px;border-radius:8px;background:rgba(247,248,250,0.7);border:1px solid var(--line);}
+.legend-item .row1{display:flex;align-items:center;justify-content:space-between;}
+.legend-item .dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px;}
+.legend-item .name{font-size:12px;font-weight:600;color:var(--text-main);}
+.legend-item .pct{font-size:16px;font-weight:800;color:var(--primary);}
+.legend-item .desc{font-size:11px;color:var(--gray);padding-left:18px;}
+
+/* Right Bullets */
+.bullets-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;}
+.bullets-list{display:flex;flex-direction:column;gap:11px;flex:1;}
+.bullet{display:flex;gap:14px;align-items:flex-start;padding:11px 14px;border-radius:10px;background:rgba(247,248,250,0.6);border:1px solid var(--line);position:relative;transition:all .2s;}
+.bullet .icon{flex-shrink:0;width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--primary),#1a3a5c);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:14px;font-weight:800;font-family:Inter,sans-serif;}
+.bullet .body{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;}
+.bullet .b-title{font-size:13px;font-weight:700;color:var(--primary);}
+.bullet .b-desc{font-size:12px;color:var(--text-sub);line-height:1.5;}
+.bullet .b-desc .hi{color:var(--accent);font-weight:600;}
+.bullet .b-desc .pr{color:var(--primary);font-weight:600;}
+
+/* Bottom Narrative */
+.footer{margin-top:18px;padding:16px 22px;border-radius:12px;background:linear-gradient(135deg,rgba(13,33,55,0.95),rgba(26,58,92,0.9));color:#fff;position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;}
+.footer::before{content:"";position:absolute;right:-30px;top:-30px;width:100px;height:100px;border-radius:50%;background:rgba(192,139,62,0.15);}
+.footer::after{content:"";position:absolute;right:40px;bottom:-20px;width:60px;height:60px;border-radius:50%;background:rgba(192,139,62,0.1);}
+.footer .q-mark{font-size:36px;font-weight:800;color:var(--accent);line-height:0.8;font-family:Inter,sans-serif;flex-shrink:0;}
+.footer .text{font-size:13px;line-height:1.65;font-weight:400;flex:1;}
+.footer .text .gold{color:var(--accent);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="badge"><span>OPEN SOURCE · 2023</span></div>
+  <h1>2023书单<span class="accent">数据速览</span></h1>
+  <p class="subtitle">本次书单共收录 <strong style="color:var(--primary)">12 本</strong> 开源主题核心读物，横跨 <strong style="color:var(--primary)">思想</strong>、<strong style="color:var(--primary)">工程</strong> 与 <strong style="color:var(--primary)">社区</strong> 三大方向，为开发者勾勒一条从入门到进阶的完整阅读地图。</p>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi-card">
+    <div class="label"><span>BOOK TOTAL</span></div>
+    <div class="value"><span class="num">12</span><span class="unit">本</span></div>
+    <div class="desc"><span>书单总收录数量</span></div>
+    <div class="mini-bar"><span style="width:100%"></span></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label"><span>CN SHARE</span></div>
+    <div class="value"><span class="num">67</span><span class="unit">%</span></div>
+    <div class="desc"><span>中文译作占比</span></div>
+    <div class="mini-bar"><span style="width:67%"></span></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label"><span>5★ RATE</span></div>
+    <div class="value"><span class="num">58</span><span class="unit">%</span></div>
+    <div class="desc"><span>五星推荐占比</span></div>
+    <div class="mini-bar"><span style="width:58%"></span></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label"><span>ENG PRACTICE</span></div>
+    <div class="value"><span class="num">42</span><span class="unit">%</span></div>
+    <div class="desc"><span>工程实践类占比</span></div>
+    <div class="mini-bar"><span style="width:42%"></span></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="chart-card">
+    <div class="card-head">
+      <div class="title"><span>主题权重分布</span></div>
+      <div class="meta"><span>三大方向占比 · 共 12 本</span></div>
+    </div>
+    <div class="chart-wrap">
+      <div id="chart_1" style="width:280px;height:280px;"></div>
+      <div class="chart-legend">
+        <div class="legend-item">
+          <div class="row1">
+            <span class="name"><span class="dot" style="background:#0D2137;"></span>思想奠基类</span>
+            <span class="pct">25%</span>
+          </div>
+          <span class="desc">开源哲学与理念入门</span>
+        </div>
+        <div class="legend-item">
+          <div class="row1">
+            <span class="name"><span class="dot" style="background:#C08B3E;"></span>工程实践类</span>
+            <span class="pct">42%</span>
+          </div>
+          <span class="desc">工具链与开发方法论</span>
+        </div>
+        <div class="legend-item">
+          <div class="row1">
+            <span class="name"><span class="dot" style="background:#1a3a5c;"></span>社区文化类</span>
+            <span class="pct">33%</span>
+          </div>
+          <span class="desc">协作生态与治理模式</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bullets-card">
+    <div class="card-head">
+      <div class="title"><span>核心要点速览</span></div>
+      <div class="meta"><span>SIX KEY INSIGHTS</span></div>
+    </div>
+    <div class="bullets-list">
+      <div class="bullet">
+        <div class="icon">01</div>
+        <div class="body">
+          <div class="b-title"><span>覆盖范围</span></div>
+          <div class="b-desc"><span>横跨<span class="hi">思想 · 工程 · 社区</span>三大方向，构建从理念到实践的完整知识图谱。</span></div>
+        </div>
+      </div>
+      <div class="bullet">
+        <div class="icon">02</div>
+        <div class="body">
+          <div class="b-title"><span>语言分布</span></div>
+          <div class="b-desc"><span>中文译作 <span class="pr">67%</span>，英文原版 <span class="pr">33%</span>；中文内容为主，兼顾国际前沿视野。</span></div>
+        </div>
+      </div>
+      <div class="bullet">
+        <div class="icon">03</div>
+        <div class="body">
+          <div class="b-title"><span>推荐度评级</span></div>
+          <div class="b-desc"><span>五星 <span class="pr">58%</span> · 四星 <span class="pr">33%</span> · 三星 <span class="pr">9%</span>，整体口碑优异，高评分占九成。</span></div>
+        </div>
+      </div>
+      <div class="bullet">
+        <div class="icon">04</div>
+        <div class="body">
+          <div class="b-title"><span>主题权重</span></div>
+          <div class="b-desc"><span>思想奠基 <span class="pr">25%</span> · 工程实践 <span class="pr">42%</span> · 社区文化 <span class="pr">33%</span>，工程类权重最高。</span></div>
+        </div>
+      </div>
+      <div class="bullet">
+        <div class="icon">05</div>
+        <div class="body">
+          <div class="b-title"><span>推荐路径</span></div>
+          <div class="b-desc"><span>入门先读<span class="hi">思想类</span> → 再进入<span class="hi">工程类</span> → 最后拓展<span class="hi">社区文化类</span>，循序渐进。</span></div>
+        </div>
+      </div>
+      <div class="bullet">
+        <div class="icon">06</div>
+        <div class="body">
+          <div class="b-title"><span>延伸资源</span></div>
+          <div class="b-desc"><span>每本书附<span class="hi">延伸阅读链接</span>与<span class="hi">社区讨论帖索引</span>，方便读者持续深入。</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span class="q-mark">"</span>
+  <span class="text">从数据统计的视角看，这份书单<span class="gold">偏向工程实践</span>，反映当下开源开发者最迫切的诉求。<span class="gold">思想奠基类</span>作为入口，<span class="gold">社区文化类</span>作为升华，共同构成一条从入门到进阶的阅读路径。</span>
+</div>
+
+</div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    tooltip:{trigger:'item',formatter:'{b}: {c}%'},
+    legend:{show:false},
+    series:[{
+      type:'pie',
+      radius:['52%','78%'],
+      center:['50%','50%'],
+      avoidLabelOverlap:false,
+      label:{show:false},
+      labelLine:{show:false},
+      itemStyle:{borderColor:'#FFFFFF',borderWidth:3},
+      data:[
+        {value:42,name:'工程实践类',itemStyle:{color:'#C08B3E'}},
+        {value:33,name:'社区文化类',itemStyle:{color:'#1a3a5c'}},
+        {value:25,name:'思想奠基类',itemStyle:{color:'#0D2137'}}
+      ]
+    },{
+      type:'pie',
+      radius:['0%','42%'],
+      center:['50%','50%'],
+      label:{show:false},
+      labelLine:{show:false},
+      silent:true,
+      itemStyle:{color:'transparent',borderColor:'transparent'},
+      data:[{value:1}]
+    }]
+  });
+  // center text overlay via graphic
+  chart.setOption({
+    graphic:[{
+      type:'text',
+      left:'center',
+      top:'40%',
+      style:{text:'三大方向',fontSize:13,fontWeight:600,fill:'#4B5563',fontFamily:'Inter,PingFang SC'}
+    },{
+      type:'text',
+      left:'center',
+      top:'48%',
+      style:{text:'12 本',fontSize:28,fontWeight:800,fill:'#0D2137',fontFamily:'Inter'}
+    },{
+      type:'text',
+      left:'center',
+      top:'62%',
+      style:{text:'OPEN SOURCE',fontSize:10,fontWeight:500,fill:'#9CA3AF',fontFamily:'Inter'}
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>六步建设法 · OSBook Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D2137;
+    --red:#C0392B;
+    --bg:#F5F5F5;
+    --ink:#1A2332;
+    --muted:#4A5568;
+    --line:#DBDEE3;
+    --card:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:#E8E8EA;font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;color:var(--ink);}
+  .wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+  #bg{position:absolute;inset:0;z-index:0;}
+  #ct{position:absolute;inset:0;z-index:1;padding:50px 70px 46px;box-sizing:border-box;}
+
+  /* Decorative bg layers */
+  .deco-rule{position:absolute;left:0;right:0;height:1px;background:rgba(13,33,55,0.08);}
+  .deco-red-dot{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--red);}
+  .deco-serial{position:absolute;font-family:'Playfair Display',serif;color:rgba(13,33,55,0.10);font-weight:700;letter-spacing:0.02em;}
+  .deco-bar{position:absolute;background:var(--navy);}
+
+  /* Header */
+  .header{position:relative;padding-top:6px;}
+  .eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+  .eyebrow-mark{width:34px;height:2px;background:var(--red);}
+  .eyebrow-text{font-size:12px;letter-spacing:0.32em;color:var(--red);font-weight:600;}
+  .eyebrow-en{font-size:11px;letter-spacing:0.22em;color:var(--navy);opacity:0.55;font-weight:500;}
+  .title{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:700;color:var(--navy);font-size:88px;line-height:1;letter-spacing:-0.01em;}
+  .title .num{color:var(--red);font-style:italic;margin-right:12px;}
+  .subtitle{font-family:'Noto Serif SC',serif;font-size:16px;line-height:1.7;color:var(--muted);margin-top:18px;max-width:900px;font-weight:500;}
+  .subtitle .accent{color:var(--navy);font-weight:700;}
+
+  /* Main grid */
+  .main{display:grid;grid-template-columns:520px 1fr;gap:56px;margin-top:30px;}
+
+  /* Timeline image panel */
+  .timeline-panel{position:relative;padding-top:10px;}
+  .timeline-image{width:520px;height:693px;display:block;box-shadow:0 22px 44px -22px rgba(13,33,55,0.28);background:#EFEFEF;}
+  .timeline-tag{position:absolute;left:26px;bottom:26px;display:flex;align-items:center;gap:12px;}
+  .timeline-tag-line{width:28px;height:2px;background:var(--red);}
+  .timeline-tag-text{font-family:'Playfair Display',serif;font-size:13px;letter-spacing:0.32em;color:var(--navy);font-weight:700;}
+  .timeline-caption{position:absolute;right:22px;top:22px;font-family:'Playfair Display',serif;font-size:11px;letter-spacing:0.28em;color:#FFFFFF;background:var(--navy);padding:5px 12px;font-weight:600;}
+
+  /* Steps list */
+  .steps-wrap{display:flex;flex-direction:column;gap:16px;}
+  .steps-head{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:8px;border-bottom:1.5px solid var(--navy);}
+  .steps-head-left{display:flex;align-items:baseline;gap:14px;}
+  .steps-head-label{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;color:var(--navy);letter-spacing:0.04em;}
+  .steps-head-en{font-size:10px;letter-spacing:0.32em;color:var(--red);font-weight:600;}
+  .steps-head-count{font-family:'Playfair Display',serif;font-size:14px;color:var(--muted);letter-spacing:0.16em;font-weight:600;}
+
+  .step-item{display:flex;gap:16px;align-items:flex-start;padding:6px 0;}
+  .step-num{flex-shrink:0;width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:19px;letter-spacing:0;box-shadow:0 6px 14px -6px rgba(13,33,55,0.55);position:relative;}
+  .step-num::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(192,57,43,0.32);}
+  .step-body{flex:1;padding-top:2px;min-width:0;}
+  .step-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:19px;color:var(--navy);line-height:1.25;margin-bottom:5px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .step-en{font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:11px;color:var(--red);letter-spacing:0.12em;}
+  .step-desc{font-size:13px;line-height:1.65;color:var(--muted);}
+  .step-desc .em{color:var(--navy);font-weight:600;}
+
+  /* KPI strip */
+  .kpi-strip{position:absolute;left:70px;right:70px;bottom:80px;display:flex;gap:22px;}
+  .kpi-card{flex:1;background:var(--card);border:1px solid var(--line);border-top:2.5px solid var(--navy);padding:14px 24px;display:flex;align-items:center;gap:20px;box-shadow:0 12px 26px -18px rgba(13,33,55,0.22);}
+  .kpi-num{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:38px;line-height:1;letter-spacing:-0.01em;flex-shrink:0;}
+  .kpi-num .plus{color:var(--red);font-style:italic;margin-left:2px;}
+  .kpi-text{display:flex;flex-direction:column;gap:5px;min-width:0;}
+  .kpi-label{font-size:11px;color:var(--red);font-weight:600;letter-spacing:0.24em;}
+  .kpi-sub{font-family:'Noto Serif SC',serif;font-size:14px;color:var(--navy);font-weight:700;line-height:1.35;}
+
+  /* Footer */
+  .footer{position:absolute;left:70px;right:70px;bottom:22px;display:flex;align-items:center;justify-content:center;gap:16px;}
+  .footer-line{width:52px;height:1px;background:var(--red);}
+  .footer-text{font-family:'Noto Serif SC',serif;font-size:15px;color:var(--navy);font-weight:600;letter-spacing:0.03em;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="deco-rule" style="top:0;"></div>
+    <div class="deco-bar" style="top:0;left:0;width:6px;height:180px;background:var(--red);"></div>
+    <div class="deco-serial" style="top:36px;right:70px;font-size:13px;letter-spacing:0.36em;color:var(--navy);opacity:0.55;">SIX · STEPS · METHODOLOGY</div>
+    <div class="deco-red-dot" style="bottom:230px;left:34px;"></div>
+    <div class="deco-serial" style="bottom:206px;left:56px;font-size:10px;letter-spacing:0.28em;font-weight:600;">06</div>
+    <div class="deco-bar" style="bottom:0;right:0;width:6px;height:140px;background:var(--navy);opacity:0.9;"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="eyebrow">
+        <div class="eyebrow-mark"></div>
+        <div class="eyebrow-text">OSBOOK CLUB · METHODOLOGY</div>
+        <div class="eyebrow-en">— 06 / 06 —</div>
+      </div>
+      <h1 class="title"><span class="num">06.</span>六步建设法</h1>
+      <p class="subtitle">建设 <span class="accent">OSBook Club</span> 可遵循六步法，从明确愿景到持续迭代，每一步都体现<span class="accent">开源精神</span>中的<span class="accent">协作</span>与<span class="accent">透明</span>原则。</p>
+    </div>
+
+    <div class="main">
+      <!-- Timeline image (primary visual) -->
+      <div class="timeline-panel">
+        <img class="timeline-image" src="../images/page_006_timeline.png" alt="六步建设流程竖向时间线">
+        <div class="timeline-caption">VERTICAL · TIMELINE</div>
+        <div class="timeline-tag">
+          <div class="timeline-tag-line"></div>
+          <div class="timeline-tag-text">SIX · NODES</div>
+        </div>
+      </div>
+
+      <!-- Steps list -->
+      <div class="steps-wrap">
+        <div class="steps-head">
+          <div class="steps-head-left">
+            <span class="steps-head-label">STEP · BY · STEP</span>
+            <span class="steps-head-en">SIX PHASES</span>
+          </div>
+          <span class="steps-head-count">01 — 06</span>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <div class="step-title">发起与愿景<span class="step-en">Vision &amp; Kick-off</span></div>
+            <div class="step-desc">明确 Club 的<span class="em">使命、目标读者与价值主张</span>，在技术社区或学术平台公开宣布。</div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <div class="step-title">平台搭建<span class="step-en">Platform Setup</span></div>
+            <div class="step-desc">选择 <span class="em">GitHub、语雀或自建网站</span>作为内容托管与协作平台，建立规范目录结构。</div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <div class="step-title">内容征集<span class="step-en">Call for Contribution</span></div>
+            <div class="step-desc">发出 Call for Contribution，设定<span class="em">写作指南与评审标准</span>，降低参与门槛。</div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <div class="step-title">协作生产<span class="step-en">Collaborative Production</span></div>
+            <div class="step-desc">采用 <span class="em">Issue-PR 流程</span>管理内容贡献，设立编辑委员会进行质量把控。</div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <div class="step-title">阅读活动<span class="step-en">Reading Sessions</span></div>
+            <div class="step-desc">组织<span class="em">线上共读、直播答疑与主题讨论</span>，将静态内容转化为动态学习体验。</div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">06</div>
+          <div class="step-body">
+            <div class="step-title">反馈迭代<span class="step-en">Feedback &amp; Iteration</span></div>
+            <div class="step-desc">收集读者反馈持续优化内容，<span class="em">定期发布新版本</span>，形成正循环。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-num">3<span class="plus">+</span></div>
+        <div class="kpi-text">
+          <div class="kpi-label">PLATFORM · OPTIONS</div>
+          <div class="kpi-sub">平台选择（GitHub / 语雀 / 自建网站）</div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num">4–6<span style="font-size:20px;letter-spacing:0;margin-left:6px;">周</span></div>
+        <div class="kpi-text">
+          <div class="kpi-label">ITERATION · CYCLE</div>
+          <div class="kpi-sub">一个内容迭代周期</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="footer-text">从愿景到迭代的完整闭环，是开源协作精神的一次完整演练。</div>
+      <div class="footer-line"></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

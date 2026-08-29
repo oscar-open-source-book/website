@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之书·许可证揭秘</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Source+Code+Pro:wght@400;600;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --bg-dark: #0D1B2A;
+  --bg-darker: #0A1622;
+  --text-main: #E0EAF6;
+  --text-dim: #7FA0C0;
+  --text-accent: #64B5F6;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Source Code Pro', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 60px;
+  box-sizing: border-box;
+}
+
+/* ===== Background layers ===== */
+.bg-base {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 1200px 700px at 20% 30%, rgba(33,150,243,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse 900px 600px at 85% 75%, rgba(0,188,212,0.08) 0%, transparent 55%),
+              var(--bg-dark);
+}
+
+.bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.bg-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(10,22,34,0.7) 100%);
+}
+
+/* ===== Code rain canvas ===== */
+#codeRain {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 320px;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+/* ===== Decorative particles ===== */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.p1 { width: 6px; height: 6px; top: 8%; left: 12%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); animation: float 4s ease-in-out infinite; }
+.p2 { width: 4px; height: 4px; top: 15%; left: 78%; background: var(--primary); box-shadow: 0 0 10px var(--primary); animation: float 5s ease-in-out infinite 0.5s; }
+.p3 { width: 5px; height: 5px; top: 42%; left: 6%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); animation: float 6s ease-in-out infinite 1s; }
+.p4 { width: 3px; height: 3px; top: 60%; left: 92%; background: var(--primary); box-shadow: 0 0 8px var(--primary); animation: float 4.5s ease-in-out infinite 0.3s; }
+.p5 { width: 7px; height: 7px; top: 88%; left: 22%; background: var(--cyan); box-shadow: 0 0 14px var(--cyan); animation: float 5.5s ease-in-out infinite 1.5s; }
+.p6 { width: 4px; height: 4px; top: 70%; left: 50%; background: var(--primary); box-shadow: 0 0 8px var(--primary); animation: float 6s ease-in-out infinite 2s; }
+.p7 { width: 5px; height: 5px; top: 30%; left: 45%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); animation: float 4s ease-in-out infinite 0.8s; }
+.p8 { width: 3px; height: 3px; top: 55%; left: 88%; background: var(--primary); box-shadow: 0 0 8px var(--primary); animation: float 5s ease-in-out infinite 1.2s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-14px) scale(1.3); opacity: 1; }
+}
+
+/* ===== Decorative lines ===== */
+.deco-line-left {
+  position: absolute;
+  left: 0;
+  top: 35%;
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  z-index: 0;
+}
+
+.deco-line-right {
+  position: absolute;
+  right: 0;
+  top: 62%;
+  width: 220px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  z-index: 0;
+}
+
+/* ===== Corner brackets ===== */
+.corner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-color: var(--cyan);
+  border-style: solid;
+  z-index: 0;
+}
+.corner-tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+.corner-tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+.corner-bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+.corner-br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+/* ===== Title area ===== */
+.title-block {
+  text-align: center;
+  margin-top: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.title-badge {
+  display: inline-block;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  padding: 6px 20px;
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 20px;
+  margin-bottom: 22px;
+  background: rgba(0,188,212,0.06);
+}
+
+.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 78px;
+  letter-spacing: 4px;
+  line-height: 1.1;
+  color: var(--text-main);
+  text-shadow:
+    0 0 20px rgba(33,150,243,0.6),
+    0 0 40px rgba(33,150,243,0.3),
+    0 0 80px rgba(33,150,243,0.15);
+  position: relative;
+}
+
+.main-title .dot {
+  color: var(--cyan);
+  text-shadow: 0 0 16px rgba(0,188,212,0.8);
+}
+
+.title-underline {
+  width: 180px;
+  height: 3px;
+  margin: 22px auto;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--cyan), var(--primary), transparent);
+  border-radius: 2px;
+}
+
+.subtitle {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 19px;
+  color: var(--text-accent);
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.subtitle .sep {
+  color: var(--cyan);
+  margin: 0 8px;
+}
+
+.subtitle .accent {
+  color: var(--cyan);
+}
+
+/* ===== Three columns ===== */
+.columns {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 42px;
+  z-index: 2;
+  position: relative;
+}
+
+.col-card {
+  flex: 1;
+  max-width: 420px;
+  padding: 26px 24px;
+  background: linear-gradient(160deg, rgba(33,150,243,0.08) 0%, rgba(13,27,42,0.6) 100%);
+  border: 1px solid rgba(33,150,243,0.18);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+
+.col-card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.1) 0%, transparent 70%);
+}
+
+.col-icon {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.col-num {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+  text-shadow: 0 0 10px rgba(33,150,243,0.4);
+}
+
+.col-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.col-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--cyan);
+  margin-bottom: 12px;
+  border-radius: 1px;
+}
+
+.col-desc {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Bottom info bar ===== */
+.bottom-bar {
+  position: absolute;
+  bottom: 36px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 8px;
+  background: rgba(10,22,34,0.6);
+  z-index: 2;
+}
+
+.bottom-bar::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+  border-radius: 8px 0 0 8px;
+}
+
+.info-item {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.info-item .label {
+  color: var(--cyan);
+  margin-right: 10px;
+}
+
+.info-item .value {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.info-sep {
+  color: rgba(33,150,243,0.3);
+  font-family: 'Source Code Pro', monospace;
+  font-size: 18px;
+}
+
+.bottom-tag {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+}
+
+.bottom-tag .accent {
+  color: var(--cyan);
+}
+
+/* ===== Side decorations ===== */
+.side-text-left {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: rotate(-90deg) translateX(0);
+  transform-origin: left center;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  color: rgba(0,188,212,0.3);
+  letter-spacing: 6px;
+  z-index: 0;
+  white-space: nowrap;
+}
+
+.side-text-right {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: rotate(90deg) translateX(0);
+  transform-origin: right center;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  color: rgba(0,188,212,0.3);
+  letter-spacing: 6px;
+  z-index: 0;
+  white-space: nowrap;
+}
+
+/* ===== Floating code snippets ===== */
+.code-float {
+  position: absolute;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  color: rgba(0,188,212,0.18);
+  letter-spacing: 1px;
+  z-index: 0;
+  white-space: nowrap;
+}
+
+.cf1 { top: 6%; left: 2%; }
+.cf2 { top: 82%; left: 3%; }
+.cf3 { top: 78%; right: 2%; text-align: right; }
+.cf4 { top: 4%; right: 40%; }
+
+/* ===== Narrative text ===== */
+.narrative {
+  position: absolute;
+  bottom: 110px;
+  left: 60px;
+  right: 60px;
+  text-align: center;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  line-height: 1.8;
+  z-index: 2;
+}
+
+.narrative .hl-blue { color: var(--primary); font-weight: 600; }
+.narrative .hl-cyan { color: var(--cyan); font-weight: 600; }
+.narrative .quote-mark {
+  color: var(--cyan);
+  font-size: 20px;
+  margin: 0 4px;
+  opacity: 0.6;
+}
+
+/* ===== Animated scanning line ===== */
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.4;
+  z-index: 0;
+  animation: scanDown 6s linear infinite;
+}
+
+@keyframes scanDown {
+  0% { top: -1px; }
+  100% { top: 900px; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-base"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-vignette"></div>
+    <canvas id="codeRain"></canvas>
+    <div class="scan-line"></div>
+  </div>
+
+  <div id="ct">
+    <!-- Corner brackets -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <!-- Side text -->
+    <div class="side-text-left">OPEN SOURCE · LICENSE · 2023 · 08</div>
+    <div class="side-text-right">// READ.SHARE.LEARN //</div>
+
+    <!-- Floating code snippets -->
+    <div class="code-float cf1">{ "license": "MIT", "status": "permissive" }</div>
+    <div class="code-float cf2">git commit -m "choose your license wisely"</div>
+    <div class="code-float cf3">// SPDX-License-Identifier: Apache-2.0</div>
+    <div class="code-float cf4">$ npm install --save @open-source/license</div>
+
+    <!-- Decorative lines -->
+    <div class="deco-line-left"></div>
+    <div class="deco-line-right"></div>
+
+    <!-- Particles -->
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
+    <div class="particle p6"></div>
+    <div class="particle p7"></div>
+    <div class="particle p8"></div>
+
+    <!-- Title block -->
+    <div class="title-block">
+      <div class="title-badge">
+        <span>// READING SHARING · ISSUE 2023-08 //</span>
+      </div>
+      <h1 class="main-title">
+        <span>开源之书<span class="dot">·</span>许可证揭秘</span>
+      </h1>
+      <div class="title-underline"></div>
+      <p class="subtitle">
+        <span>2023-08</span>
+        <span class="sep">|</span>
+        <span>阅读分享</span>
+        <span class="sep">|</span>
+        <span class="accent">开源之道</span>
+        <span class="sep">·</span>
+        <span class="accent">适兕</span>
+      </p>
+    </div>
+
+    <!-- Three columns -->
+    <div class="columns">
+      <div class="col-card">
+        <div class="col-icon"><span>&lt;SECTION 01 /&gt;</span></div>
+        <div class="col-num">01</div>
+        <div class="col-title"><span>主题定位</span></div>
+        <div class="col-divider"></div>
+        <div class="col-desc">
+          <span>本期以阅读分享形式，深度解读软件开源许可证的核心机制与实践意义，构建系统化的认知框架。</span>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="col-icon"><span>&lt;SECTION 02 /&gt;</span></div>
+        <div class="col-num">02</div>
+        <div class="col-title"><span>讲者身份</span></div>
+        <div class="col-divider"></div>
+        <div class="col-desc">
+          <span>适兕为开源之道社区核心布道者，长期致力于推动开源许可证知识的普及与传播。</span>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="col-icon"><span>&lt;SECTION 03 /&gt;</span></div>
+        <div class="col-num">03</div>
+        <div class="col-title"><span>核心议题</span></div>
+        <div class="col-divider"></div>
+        <div class="col-desc">
+          <span>聚焦从法律文本走向工程实践，厘清开源许可证的价值与边界，赋能开发者协作决策。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Narrative -->
+    <div class="narrative">
+      <span>
+        <span class="quote-mark">「</span>
+        本期分享由<span class="hl-cyan">适兕</span>主讲，拆解许可证的<span class="hl-blue">分类逻辑</span>、<span class="hl-blue">法律效力</span>与<span class="hl-blue">选型方法</span>，让许可证从"挡路的法律条款"变成<span class="hl-cyan">"可信赖的协作契约"</span>
+        <span class="quote-mark">」</span>
+      </span>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="bottom-bar">
+      <div class="info-item"><span class="label">分享期次</span><span class="value">2023-08</span></div>
+      <span class="info-sep">▸</span>
+      <div class="info-item"><span class="label">分享人</span><span class="value">适兕</span></div>
+      <span class="info-sep">▸</span>
+      <div class="info-item"><span class="label">社　　区</span><span class="value">开源之道</span></div>
+      <span class="info-sep">▸</span>
+      <div class="bottom-tag"><span class="accent">#</span>OPEN_SOURCE_LICENSE<span class="accent">#</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('codeRain');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = 380;
+  canvas.height = 320;
+
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}[]<>=/\\|_+-*/#@$%&{}MIT GPL APACHE';
+  const fontSize = 11;
+  const columns = Math.floor(canvas.width / fontSize);
+  const drops = new Array(columns).fill(1).map(() => Math.random() * canvas.height / fontSize);
+
+  function draw() {
+    ctx.fillStyle = 'rgba(13,27,42,0.12)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = fontSize + 'px "Source Code Pro", monospace';
+    for (let i = 0; i < drops.length; i++) {
+      const char = chars[Math.floor(Math.random() * chars.length)];
+      const x = i * fontSize;
+      const y = drops[i] * fontSize;
+
+      const isHead = Math.random() > 0.95;
+      if (isHead) {
+        ctx.fillStyle = 'rgba(100,255,218,0.9)';
+      } else {
+        ctx.fillStyle = 'rgba(0,188,212,0.5)';
+      }
+      ctx.fillText(char, x, y);
+
+      if (y > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

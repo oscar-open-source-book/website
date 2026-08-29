@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>GPL核心机制解析</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --gray-blue:#B0BEC5;
+  --bg-deep:#060d1a;
+  --bg-card:#0d1a2e;
+  --bg-card2:#102138;
+  --border:#1a3555;
+  --text-main:#e8f0f8;
+  --text-dim:#7f95ab;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Roboto Mono',monospace;
+  color:var(--text-main);
+  background:var(--bg-deep);
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 800px 500px at 12% 25%, rgba(33,150,243,0.10), transparent 60%),
+    radial-gradient(ellipse 700px 450px at 92% 80%, rgba(0,188,212,0.08), transparent 60%),
+    #060d1a;
+}
+#bg::before{content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.03) 1px, transparent 1px);
+  background-size:50px 50px;
+  opacity:0.6;
+}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 36px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+.header{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Roboto Mono',monospace;font-size:11px;font-weight:500;
+  color:var(--cyan);letter-spacing:2px;
+  padding:5px 12px;
+  border:1px solid rgba(0,188,212,0.4);
+  border-radius:3px;
+  background:rgba(0,188,212,0.06);
+}
+.title-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+h1{
+  font-family:'Inter',sans-serif;
+  font-weight:900;font-size:46px;
+  letter-spacing:1px;
+  background:linear-gradient(90deg,#eaf4ff 0%, #2196F3 60%, #00BCD4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.subtitle{
+  font-family:'Roboto Mono',monospace;
+  font-size:13px;font-weight:300;
+  color:var(--gray-blue);
+  line-height:1.7;
+  max-width:1380px;
+  padding-left:4px;
+  border-left:2px solid var(--primary);
+  padding:4px 0 4px 14px;
+}
+
+.divider{
+  height:1px;margin:6px 0 18px 0;
+  background:linear-gradient(90deg,transparent 0%, var(--primary) 20%, var(--cyan) 50%, var(--primary) 80%, transparent 100%);
+  opacity:0.6;
+  position:relative;
+}
+.divider::after{content:'';position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+
+.main-area{
+  flex:1;display:grid;
+  grid-template-columns:340px 1fr;
+  gap:22px;
+  min-height:0;
+}
+
+.left-panel{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 20px;
+  background:linear-gradient(160deg, #0d1a2e 0%, #0a1426 100%);
+  border:1px solid var(--border);
+  border-radius:6px;
+  position:relative;overflow:hidden;
+  gap:18px;
+}
+.left-panel::before{content:'';position:absolute;top:-40px;left:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.18),transparent 70%);}
+.left-panel::after{content:'';position:absolute;bottom:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,0.14),transparent 70%);}
+.copyleft-wrap{
+  position:relative;z-index:1;
+  width:160px;height:160px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  border:2px solid var(--primary);
+  background:radial-gradient(circle at 40% 35%, rgba(33,150,243,0.15), rgba(6,13,26,0.9) 70%);
+  box-shadow:0 0 30px rgba(33,150,243,0.35), inset 0 0 30px rgba(33,150,243,0.15);
+}
+.copyleft-sym{
+  font-family:'Inter',sans-serif;
+  font-size:90px;font-weight:900;
+  color:var(--primary);
+  text-shadow:0 0 20px rgba(33,150,243,0.7);
+  transform:rotate(180deg);
+  line-height:1;
+}
+.left-label{
+  position:relative;z-index:1;
+  font-family:'Inter',sans-serif;
+  font-weight:700;font-size:22px;
+  color:#eaf4ff;
+  text-align:center;
+  letter-spacing:1px;
+}
+.left-sub{
+  position:relative;z-index:1;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;font-weight:300;
+  color:var(--gray-blue);
+  text-align:center;
+  line-height:1.6;
+  max-width:240px;
+}
+.left-tag{
+  position:relative;z-index:1;
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--cyan);
+  letter-spacing:3px;
+  padding:4px 10px;
+  border:1px solid rgba(0,188,212,0.35);
+  border-radius:3px;
+}
+
+.right-panel{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:14px;min-height:0;
+}
+.mech-card{
+  display:flex;flex-direction:column;
+  padding:16px 14px;
+  background:linear-gradient(170deg, #0d1a2e 0%, #0a1426 100%);
+  border:1px solid var(--border);
+  border-radius:5px;
+  position:relative;overflow:hidden;
+  gap:10px;
+}
+.mech-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg, var(--primary), var(--cyan));
+}
+.mech-card::after{content:'';position:absolute;top:14px;right:14px;width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);opacity:0.6;}
+.mech-icon{
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:8px;
+  background:rgba(33,150,243,0.12);
+  border:1px solid rgba(33,150,243,0.35);
+  font-family:'Inter',sans-serif;
+  font-weight:700;font-size:18px;
+  color:var(--primary);
+}
+.mech-num{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--cyan);
+  letter-spacing:2px;
+  font-weight:500;
+}
+.mech-title{
+  font-family:'Inter',sans-serif;
+  font-weight:700;font-size:16px;
+  color:#eaf4ff;
+  line-height:1.3;
+}
+.mech-divider{
+  height:1px;
+  background:linear-gradient(90deg, var(--primary), transparent);
+  opacity:0.5;
+}
+.mech-desc{
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;font-weight:300;
+  color:var(--gray-blue);
+  line-height:1.65;
+}
+.mech-footer{
+  margin-top:auto;
+  display:flex;align-items:center;gap:6px;
+  font-family:'Roboto Mono',monospace;
+  font-size:9px;color:var(--text-dim);
+  letter-spacing:1px;
+  padding-top:8px;
+  border-top:1px dashed rgba(33,150,243,0.15);
+}
+.mech-footer-dot{width:4px;height:4px;border-radius:50%;background:var(--primary);}
+
+.bottom-bar{
+  margin-top:16px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:18px;
+  padding:14px 22px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.08) 0%, rgba(0,188,212,0.05) 100%);
+  border:1px solid var(--border);
+  border-radius:5px;
+  position:relative;
+}
+.bottom-bar::before{content:'';position:absolute;top:0;left:0;height:100%;width:3px;
+  background:linear-gradient(180deg, var(--primary), var(--cyan));
+  border-radius:5px 0 0 5px;
+}
+.stat{
+  display:flex;align-items:center;gap:16px;
+}
+.stat-right{justify-content:flex-end;}
+.stat-num{
+  font-family:'Inter',sans-serif;
+  font-weight:900;font-size:32px;
+  color:var(--primary);
+  text-shadow:0 0 12px rgba(33,150,243,0.4);
+  min-width:60px;
+}
+.stat-num .unit{font-size:16px;font-weight:600;color:var(--cyan);margin-left:4px;}
+.stat-divider{width:1px;height:40px;background:rgba(33,150,243,0.3);}
+.stat-info{display:flex;flex-direction:column;gap:3px;}
+.stat-title{
+  font-family:'Inter',sans-serif;
+  font-weight:600;font-size:14px;
+  color:#eaf4ff;
+  letter-spacing:0.5px;
+}
+.stat-desc{
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;font-weight:300;
+  color:var(--gray-blue);
+}
+.stat-num-cyan{color:var(--cyan);text-shadow:0 0 12px rgba(0,188,212,0.4);}
+.stat-num-cyan .unit{color:var(--primary);}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="title-row">
+    <span class="title-badge"><span>OPEN SOURCE / MECHANISM</span></span>
+    <h1><span>GPL核心机制解析</span></h1>
+  </div>
+  <p class="subtitle"><span>GPL的核心机制围绕Copyleft构建，通过法律条款确保软件自由的不可逆传递，理解这些机制是分析GPL争议与成长的前提。</span></p>
+</div>
+
+<div class="divider"></div>
+
+<div class="main-area">
+  <div class="left-panel">
+    <div class="copyleft-wrap">
+      <span class="copyleft-sym"><span>©</span></span>
+    </div>
+    <div class="left-label"><span>自由不可逆传递</span></div>
+    <div class="left-sub"><span>基于Copyleft理念，保障自由软件在每一次派生中持续自由</span></div>
+    <div class="left-tag"><span>COPYLEFT</span></div>
+  </div>
+
+  <div class="right-panel">
+    <div class="mechanism-card mech-card">
+      <div class="mech-icon"><span>01</span></div>
+      <div class="mech-num"><span>MECHANISM_01</span></div>
+      <div class="mech-title"><span>Copyleft原则</span></div>
+      <div class="mech-divider"></div>
+      <div class="mech-desc"><span>GPL要求派生作品必须以相同许可证发布，形成自由软件的保护链。</span></div>
+      <div class="mech-footer"><span class="mech-footer-dot"></span><span>PRINCIPLE</span></div>
+    </div>
+
+    <div class="mechanism-card mech-card">
+      <div class="mech-icon"><span>02</span></div>
+      <div class="mech-num"><span>MECHANISM_02</span></div>
+      <div class="mech-title"><span>四大自由</span></div>
+      <div class="mech-divider"></div>
+      <div class="mech-desc"><span>使用、研究、复制、改进的自由，是GPL许可证的哲学根基。</span></div>
+      <div class="mech-footer"><span class="mech-footer-dot"></span><span>PHILOSOPHY</span></div>
+    </div>
+
+    <div class="mechanism-card mech-card">
+      <div class="mech-icon"><span>03</span></div>
+      <div class="mech-num"><span>MECHANISM_03</span></div>
+      <div class="mech-title"><span>传染性条款</span></div>
+      <div class="mech-divider"></div>
+      <div class="mech-desc"><span>GPL代码被链接或修改后，整个作品需遵循GPL，这是争议的核心来源。</span></div>
+      <div class="mech-footer"><span class="mech-footer-dot"></span><span>CONTENTIOUS</span></div>
+    </div>
+
+    <div class="mechanism-card mech-card">
+      <div class="mech-icon"><span>04</span></div>
+      <div class="mech-num"><span>MECHANISM_04</span></div>
+      <div class="mech-title"><span>合规义务</span></div>
+      <div class="mech-divider"></div>
+      <div class="mech-desc"><span>分发GPL软件必须提供源代码、保留版权声明和许可证副本。</span></div>
+      <div class="mech-footer"><span class="mech-footer-dot"></span><span>COMPLIANCE</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <div class="stat">
+    <div class="stat-num"><span>4</span><span class="unit">项</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat-info">
+      <div class="stat-title"><span>四大自由</span></div>
+      <div class="stat-desc"><span>使用 / 研究 / 复制 / 改进</span></div>
+    </div>
+  </div>
+  <div class="stat stat-right">
+    <div class="stat-info" style="text-align:right;">
+      <div class="stat-title"><span>许可证版本</span></div>
+      <div class="stat-desc"><span>GPL主要版本</span></div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-num stat-num-cyan"><span>v2</span><span class="unit">&amp;</span><span>v3</span></div>
+  </div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

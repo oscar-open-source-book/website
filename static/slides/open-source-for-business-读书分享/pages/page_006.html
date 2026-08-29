@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源商业模式的进化</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Roboto:wght@400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00E5FF;
+  --neutral: #B0BEC5;
+  --bg-dark: #0A0E1A;
+  --bg-card: #0F1629;
+  --bg-card-2: #131C33;
+  --border: #1A2540;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto', 'PingFang SC', sans-serif;
+  color: #E0E6ED;
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #070B14 0%, #0A1428 40%, #0C1A30 70%, #0A0E1A 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.12) 0%, transparent 70%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -250px;
+  left: -150px;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 60px 36px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.title-area {
+  flex: 1;
+}
+
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border: 1px solid rgba(0,229,255,0.35);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  background: rgba(0,229,255,0.06);
+}
+
+.title-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 40px;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #FFFFFF 0%, #2196F3 60%, #00E5FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h1 .accent-line {
+  display: inline-block;
+  width: 4px;
+  height: 36px;
+  background: var(--accent);
+  margin-right: 14px;
+  vertical-align: -6px;
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(0,229,255,0.6);
+}
+
+.header-right {
+  text-align: right;
+  margin-top: 6px;
+}
+
+.header-right .metric-label {
+  font-size: 11px;
+  color: var(--neutral);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.header-right .metric-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.subtitle {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--neutral);
+  max-width: 1400px;
+  padding: 12px 20px;
+  border-left: 3px solid var(--primary);
+  background: rgba(33,150,243,0.05);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 18px;
+}
+
+.subtitle strong {
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+.main-area {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 14px;
+}
+
+.card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0.7;
+}
+
+.card-index {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: rgba(33,150,243,0.15);
+  line-height: 1;
+}
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  background: rgba(0,229,255,0.1);
+  border: 1px solid rgba(0,229,255,0.25);
+  font-size: 20px;
+  color: var(--accent);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+.card-tag {
+  font-size: 10.5px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.card-desc {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--neutral);
+  margin-bottom: 12px;
+  flex: 1;
+}
+
+.card-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.3), transparent);
+  margin-bottom: 10px;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.card-meta .tag {
+  font-size: 10.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(33,150,243,0.12);
+  color: var(--primary);
+  border: 1px solid rgba(33,150,243,0.2);
+}
+
+.kpi-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+.kpi-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(15,22,41,0.9), rgba(19,28,51,0.9));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+.kpi-icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: rgba(33,150,243,0.15);
+  border: 1px solid rgba(33,150,243,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-icon-box .icon-text {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--accent);
+}
+
+.kpi-content {
+  flex: 1;
+}
+
+.kpi-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+}
+
+.kpi-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.1;
+}
+
+.kpi-value .unit {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-left: 3px;
+}
+
+.kpi-sub {
+  font-size: 11px;
+  color: var(--neutral);
+  margin-top: 2px;
+}
+
+.footer-bar {
+  margin-top: 14px;
+  padding: 14px 24px;
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.08), rgba(0,229,255,0.04));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.footer-bar .footer-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  flex-shrink: 0;
+}
+
+.footer-bar .footer-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #FFFFFF, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="title-area">
+    <div class="title-badge"><span class="dot"></span><span>OPEN SOURCE BUSINESS · 行业洞察</span></div>
+    <h1><span class="accent-line"></span>开源商业模式的进化</h1>
+  </div>
+  <div class="header-right">
+    <div class="metric-label">FOUR PARADIGMS</div>
+    <div class="metric-value">04 种模式</div>
+  </div>
+</div>
+
+<div class="subtitle">
+  开源商业模式的进化揭示了一个事实——<strong>软件本身可以免费，但围绕软件构建的服务、生态与差异化能力才是真正的价值来源</strong>，这也是企业参与开源时必须想清楚的问题。
+</div>
+
+<div class="main-area">
+
+  <div class="card">
+    <div class="card-index">01</div>
+    <div class="card-icon">￥</div>
+    <div class="card-tag">SERVICE MODEL</div>
+    <div class="card-title">服务变现</div>
+    <div class="card-desc">以 Red Hat 与 Canonical 为代表，通过企业级支持、安全补丁与订阅服务实现规模盈利，服务即核心产品。</div>
+    <div class="card-divider"></div>
+    <div class="card-meta">
+      <span class="tag">Red Hat</span>
+      <span class="tag">Canonical</span>
+      <span class="tag">订阅制</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-index">02</div>
+    <div class="card-icon">☁</div>
+    <div class="card-tag">CLOUD HOSTING</div>
+    <div class="card-title">云托管</div>
+    <div class="card-desc">MongoDB、Couchbase 等以云托管与高级特性差异化拉动收入增长，让用户为便捷与高性能付费。</div>
+    <div class="card-divider"></div>
+    <div class="card-meta">
+      <span class="tag">MongoDB</span>
+      <span class="tag">Couchbase</span>
+      <span class="tag">SaaS</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-index">03</div>
+    <div class="card-icon">⇄</div>
+    <div class="card-tag">DUAL LICENSE</div>
+    <div class="card-title">双许可制</div>
+    <div class="card-desc">部分项目采用开源加商业许可双轨并行，既保留社区开放贡献，又为企业使用场景锁定商业利益。</div>
+    <div class="card-divider"></div>
+    <div class="card-meta">
+      <span class="tag">双轨许可</span>
+      <span class="tag">社区+商业</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-index">04</div>
+    <div class="card-icon">◈</div>
+    <div class="card-tag">ECOSYSTEM</div>
+    <div class="card-title">生态变现</div>
+    <div class="card-desc">通过周边工具、培训、咨询与硬件协同，围绕核心开源产品构建完整的生态收入体系。</div>
+    <div class="card-divider"></div>
+    <div class="card-meta">
+      <span class="tag">培训咨询</span>
+      <span class="tag">工具链</span>
+      <span class="tag">硬件</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-icon-box"><span class="icon-text">$</span></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Red Hat 订阅收入</div>
+        <div class="kpi-value">数十亿<span class="unit">美元/年</span></div>
+        <div class="kpi-sub">由订阅服务驱动规模盈利</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon-box"><span class="icon-text">↑</span></div>
+      <div class="kpi-content">
+        <div class="kpi-title">MongoDB 云增速</div>
+        <div class="kpi-value">快速扩张<span class="unit">YoY</span></div>
+        <div class="kpi-sub">由 Atlas 平台驱动云收入增长</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon-box"><span class="icon-text">%</span></div>
+      <div class="kpi-content">
+        <div class="kpi-title">双许可占比</div>
+        <div class="kpi-value">显著增长<span class="unit">近年趋势</span></div>
+        <div class="kpi-sub">新增开源项目采用率持续上升</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-bar">
+  <span class="footer-dot"></span>
+  <span class="footer-text">软件免费，价值在服务、生态与差异化。</span>
+  <span class="footer-dot"></span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

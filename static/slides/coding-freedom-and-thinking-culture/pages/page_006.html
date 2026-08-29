@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>核心思想 — 章节过渡页</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --klein: #002FA7;
+  --klein-deep: #001E70;
+  --cyan: #00BCD4;
+  --cyan-glow: #00E5FF;
+  --bg: #F0F4F8;
+  --text-main: #0A1628;
+  --text-sub: #3A4A6B;
+  --text-light: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 600px at 20% 10%, rgba(0,47,167,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 800px 500px at 85% 90%, rgba(0,188,212,0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #E8EEF6 0%, #F0F4F8 40%, #E4EBF3 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  border: 1px solid rgba(0,47,167,0.12);
+  border-radius: 50%;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -120px;
+  left: -80px;
+  width: 260px;
+  height: 260px;
+  border: 1px solid rgba(0,188,212,0.18);
+  border-radius: 50%;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 72px 40px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top header section */
+.chapter-header {
+  text-align: center;
+  position: relative;
+  padding-bottom: 18px;
+}
+
+.chapter-tag {
+  display: inline-block;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--cyan);
+  padding: 6px 20px;
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+.chapter-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 68px;
+  color: var(--klein);
+  letter-spacing: 4px;
+  line-height: 1;
+  position: relative;
+  display: inline-block;
+}
+
+.chapter-title .zh {
+  font-family: 'Orbitron', 'PingFang SC', sans-serif;
+  font-weight: 700;
+}
+
+.title-deco-left, .title-deco-right {
+  position: absolute;
+  top: 50%;
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--klein));
+  transform: translateY(-50%);
+}
+.title-deco-left { right: calc(100% + 24px); background: linear-gradient(270deg, transparent, var(--klein)); }
+.title-deco-right { left: calc(100% + 24px); }
+
+.subtitle {
+  font-size: 17px;
+  color: var(--text-sub);
+  margin-top: 12px;
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+/* Center convergence area */
+.convergence {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 10px;
+}
+
+.left-card, .right-card {
+  width: 320px;
+  background: var(--klein);
+  border-radius: 14px;
+  padding: 26px 24px;
+  color: var(--text-light);
+  position: relative;
+  box-shadow: 0 12px 40px rgba(0,47,167,0.28);
+  z-index: 3;
+}
+
+.left-card {
+  margin-right: 60px;
+}
+.right-card {
+  margin-left: 60px;
+}
+
+.card-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-family: 'Orbitron', 'PingFang SC', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+
+.card-text {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.88);
+  font-weight: 300;
+}
+
+.card-accent {
+  position: absolute;
+  top: -1px;
+  left: 24px;
+  width: 48px;
+  height: 3px;
+  background: var(--cyan);
+  border-radius: 0 0 3px 3px;
+}
+
+.left-card .card-accent { left: 24px; }
+.right-card .card-accent { right: 24px; left: auto; background: var(--cyan-glow); }
+
+/* Center node */
+.center-node {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #001E70 0%, #002FA7 50%, #003CB0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 4;
+  box-shadow:
+    0 0 0 6px rgba(0,188,212,0.15),
+    0 0 40px rgba(0,47,167,0.4),
+    0 0 80px rgba(0,188,212,0.2);
+}
+
+.center-node::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,188,212,0.35);
+}
+
+.center-node::after {
+  content: '';
+  position: absolute;
+  inset: -28px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,47,167,0.2);
+}
+
+.node-inner {
+  padding: 0 14px;
+}
+
+.node-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--cyan-glow);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.node-title {
+  font-family: 'Orbitron', 'PingFang SC', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.node-text {
+  font-size: 11px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.78);
+  font-weight: 300;
+}
+
+/* Connecting arrows / light beams */
+.beam-left, .beam-right {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.beam-left {
+  right: calc(50% + 100px);
+  width: 70px;
+  background: linear-gradient(90deg, rgba(0,188,212,0.1), var(--cyan) 60%, var(--cyan-glow));
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(0,188,212,0.6);
+}
+
+.beam-left::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 10px solid var(--cyan-glow);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  transform: translateY(-50%);
+  filter: drop-shadow(0 0 4px var(--cyan-glow));
+}
+
+.beam-right {
+  left: calc(50% + 100px);
+  width: 70px;
+  background: linear-gradient(270deg, rgba(0,188,212,0.1), var(--cyan) 60%, var(--cyan-glow));
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(0,188,212,0.6);
+}
+
+.beam-right::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-right: 10px solid var(--cyan-glow);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  transform: translateY(-50%);
+  filter: drop-shadow(0 0 4px var(--cyan-glow));
+}
+
+/* Light dots along beams */
+.beam-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--cyan-glow);
+  box-shadow: 0 0 8px var(--cyan-glow);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+}
+
+/* Bottom narrative */
+.bottom-section {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.narrative {
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-sub);
+  text-align: center;
+  max-width: 1180px;
+  font-weight: 300;
+  padding: 14px 30px;
+  border-top: 1px solid rgba(0,47,167,0.12);
+  border-bottom: 1px solid rgba(0,47,167,0.12);
+  background: rgba(255,255,255,0.4);
+  border-radius: 4px;
+}
+
+.tags-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tag-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--klein);
+  font-weight: 700;
+  padding: 6px 14px;
+  background: rgba(0,47,167,0.06);
+  border: 1px solid rgba(0,47,167,0.2);
+  border-radius: 4px;
+}
+
+.tag-pill {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--klein);
+  padding: 7px 20px;
+  background: var(--text-light);
+  border: 1px solid rgba(0,47,167,0.15);
+  border-radius: 20px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(0,47,167,0.06);
+  position: relative;
+}
+
+.tag-pill .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  box-shadow: 0 0 6px var(--cyan);
+}
+
+/* Page number */
+.page-num {
+  position: absolute;
+  top: 48px;
+  right: 72px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  color: var(--klein);
+  letter-spacing: 3px;
+  font-weight: 700;
+  z-index: 5;
+}
+
+.page-num::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--klein);
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* Geometric corner decorations */
+.corner {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  z-index: 2;
+  opacity: 0.4;
+}
+
+.corner-tl { top: 20px; left: 20px; border-top: 2px solid var(--klein); border-left: 2px solid var(--klein); }
+.corner-tr { top: 20px; right: 20px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+.corner-bl { bottom: 16px; left: 20px; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.corner-br { bottom: 16px; right: 20px; border-bottom: 2px solid var(--klein); border-right: 2px solid var(--klein); }
+
+/* Floating hex elements */
+.hex-deco {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+  opacity: 0.15;
+}
+
+.hex-deco svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Side decorative labels */
+.side-label {
+  position: absolute;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: rgba(0,47,167,0.25);
+  writing-mode: vertical-rl;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.side-label.left { left: 28px; }
+.side-label.right { right: 28px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <div class="page-num">06 / CHAPTER</div>
+
+  <div class="side-label left">CHAPTER · 06</div>
+  <div class="side-label right">CORE · IDEAS</div>
+
+  <div id="ct">
+
+    <div class="chapter-header">
+      <div class="chapter-tag">CHAPTER 06 · CORE IDEAS</div>
+      <div style="display:flex;align-items:center;justify-content:center;">
+        <div class="title-deco-left"></div>
+        <span class="chapter-title"><span class="zh">核心思想</span></span>
+        <div class="title-deco-right"></div>
+      </div>
+      <div class="subtitle">从阅读到内化：自由与思考的双重变奏</div>
+    </div>
+
+    <div class="convergence">
+
+      <div class="left-card">
+        <span class="card-accent"></span>
+        <div class="card-num">01</div>
+        <div class="card-title">自由的边界</div>
+        <div class="card-text">开源自由不是为所欲为，而是在规则中创造更大可能</div>
+      </div>
+
+      <div class="beam-left">
+        <div class="beam-dot" style="left: 12px;"></div>
+        <div class="beam-dot" style="left: 36px;"></div>
+        <div class="beam-dot" style="left: 56px;"></div>
+      </div>
+
+      <div class="center-node">
+        <div class="node-inner">
+          <div class="node-label">CONVERGENCE</div>
+          <div class="node-title">两者的交汇</div>
+          <div class="node-text">真正的编码自由，源于敢于独立思考和持续表达的能力</div>
+        </div>
+      </div>
+
+      <div class="beam-right">
+        <div class="beam-dot" style="right: 12px;"></div>
+        <div class="beam-dot" style="right: 36px;"></div>
+        <div class="beam-dot" style="right: 56px;"></div>
+      </div>
+
+      <div class="right-card">
+        <span class="card-accent"></span>
+        <div class="card-num">02</div>
+        <div class="card-title">思考的代价</div>
+        <div class="card-text">独立思考意味着承担被孤立、被质疑的风险</div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="narrative">
+        两本书看似一讲技术、一讲文化，实则互为镜像：没有思考的自由只是放纵，没有自由的思考则成空谈。本节将两本读物的精神内核并置，为后续深入讨论搭建思想桥梁。
+      </div>
+
+      <div class="tags-row">
+        <span class="tag-label">三大精神坐标</span>
+        <span class="tag-pill"><span class="dot"></span>自由</span>
+        <span class="tag-pill"><span class="dot"></span>规则</span>
+        <span class="tag-pill"><span class="dot"></span>独立思考</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

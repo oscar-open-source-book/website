@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>自由代码，自由世界</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --gray:#B0BEC5;
+  --dark-bg:#050b1a;
+  --dark-2:#0a1428;
+  --card-bg:rgba(13,26,50,0.72);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:#000;}
+body{
+  font-family:'Inter','Roboto','PingFang SC','Microsoft YaHei',sans-serif;
+  color:#e6eef8;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:radial-gradient(ellipse at 50% 30%, #0c1c3a 0%, #061024 45%, #03070f 100%);
+}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg canvas{position:absolute;top:0;left:0;width:1600px;height:900px;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.05) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
+.bg-glow{position:absolute;width:900px;height:900px;left:350px;top:-200px;border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.22) 0%, rgba(0,188,212,0.08) 40%, transparent 70%);
+  filter:blur(20px);pointer-events:none;}
+.bg-glow-2{position:absolute;width:700px;height:700px;right:-200px;bottom:-250px;border-radius:50%;
+  background:radial-gradient(circle, rgba(0,188,212,0.18) 0%, rgba(33,150,243,0.06) 45%, transparent 70%);
+  filter:blur(20px);pointer-events:none;}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 80px 40px 80px;display:flex;flex-direction:column;box-sizing:border-box;}
+
+.side-line{position:absolute;top:80px;bottom:120px;width:2px;
+  background:linear-gradient(180deg,transparent 0%, #2196F3 30%, #00BCD4 60%, transparent 100%);
+  box-shadow:0 0 12px rgba(33,150,243,0.6),0 0 24px rgba(0,188,212,0.3);}
+.side-line.left{left:40px;}
+.side-line.right{right:40px;}
+.side-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#00BCD4;box-shadow:0 0 10px #00BCD4,0 0 20px rgba(0,188,212,0.6);}
+
+.title-zone{margin-top:18px;display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;}
+.eyebrow{font-family:'Rajdhani',sans-serif;font-weight:500;font-size:15px;letter-spacing:8px;color:#00BCD4;margin-bottom:14px;
+  text-shadow:0 0 8px rgba(0,188,212,0.7);}
+.main-title{
+  font-family:'Orbitron','Rajdhani',sans-serif;font-weight:900;font-size:82px;letter-spacing:6px;
+  color:#eaf6ff;
+  text-shadow:
+    0 0 10px rgba(33,150,243,0.9),
+    0 0 24px rgba(33,150,243,0.85),
+    0 0 48px rgba(0,188,212,0.7),
+    0 0 80px rgba(0,188,212,0.5),
+    0 2px 0 rgba(0,188,212,0.4);
+  line-height:1.05;
+  animation:glowPulse 3.5s ease-in-out infinite alternate;
+}
+@keyframes glowPulse{
+  0%{text-shadow:0 0 10px rgba(33,150,243,0.8),0 0 24px rgba(33,150,243,0.7),0 0 48px rgba(0,188,212,0.55),0 0 80px rgba(0,188,212,0.4),0 2px 0 rgba(0,188,212,0.4);}
+  100%{text-shadow:0 0 14px rgba(33,150,243,1),0 0 32px rgba(33,150,243,0.95),0 0 60px rgba(0,188,212,0.85),0 0 100px rgba(0,188,212,0.7),0 2px 0 rgba(0,188,212,0.5);}
+}
+.title-underline{margin-top:22px;width:520px;height:2px;background:linear-gradient(90deg,transparent,#2196F3,#00BCD4,#2196F3,transparent);box-shadow:0 0 8px rgba(33,150,243,0.8);}
+.subtitle{margin-top:14px;font-family:'Rajdhani',sans-serif;font-weight:500;font-size:22px;letter-spacing:4px;color:#B0BEC5;}
+
+.cards{margin-top:38px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;z-index:2;position:relative;}
+.card{
+  background:linear-gradient(160deg, rgba(15,32,60,0.85) 0%, rgba(8,20,42,0.9) 100%);
+  border:1px solid rgba(33,150,243,0.35);
+  border-radius:10px;
+  padding:22px 22px 20px 22px;
+  position:relative;
+  backdrop-filter:blur(4px);
+  box-shadow:0 0 20px rgba(33,150,243,0.12), inset 0 0 30px rgba(33,150,243,0.05);
+  overflow:hidden;
+}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#2196F3,#00BCD4);box-shadow:0 0 10px rgba(0,188,212,0.7);}
+.card-corner{position:absolute;right:12px;top:10px;width:14px;height:14px;border-top:2px solid #00BCD4;border-right:2px solid #00BCD4;opacity:0.7;}
+.card-num{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:3px;color:#00BCD4;margin-bottom:8px;}
+.card-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:24px;color:#eaf6ff;letter-spacing:2px;margin-bottom:10px;text-shadow:0 0 8px rgba(33,150,243,0.4);}
+.card-divider{width:40px;height:2px;background:linear-gradient(90deg,#2196F3,#00BCD4);margin-bottom:10px;box-shadow:0 0 6px rgba(33,150,243,0.7);}
+.card-text{font-size:14px;line-height:1.75;color:#B0BEC5;font-weight:300;}
+.card-text b{color:#eaf6ff;font-weight:500;}
+
+.tribute{margin-top:28px;padding:18px 28px;position:relative;z-index:2;
+  background:linear-gradient(90deg, rgba(33,150,243,0.06) 0%, rgba(0,188,212,0.08) 50%, rgba(33,150,243,0.06) 100%);
+  border-top:1px solid rgba(0,188,212,0.25);
+  border-bottom:1px solid rgba(0,188,212,0.25);
+}
+.tribute-tag{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px;letter-spacing:4px;color:#00BCD4;margin-bottom:8px;text-shadow:0 0 6px rgba(0,188,212,0.6);}
+.tribute-text{font-size:14px;line-height:1.8;color:#cfd9e6;font-weight:300;text-align:center;letter-spacing:0.5px;}
+.tribute-text em{color:#eaf6ff;font-style:normal;font-weight:500;}
+
+.info-bar{margin-top:auto;padding-top:14px;display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid rgba(33,150,243,0.25);z-index:2;position:relative;}
+.info-item{display:flex;align-items:center;gap:10px;}
+.info-dot{width:8px;height:8px;border-radius:50%;background:#2196F3;box-shadow:0 0 8px #2196F3;}
+.info-label{font-family:'Rajdhani',sans-serif;font-weight:500;font-size:12px;letter-spacing:3px;color:#00BCD4;}
+.info-value{font-size:14px;color:#eaf6ff;font-weight:400;letter-spacing:1px;}
+.info-sep{width:1px;height:14px;background:rgba(176,190,197,0.3);}
+
+.footer-code{position:absolute;left:0;right:0;bottom:0;height:36px;display:flex;align-items:center;justify-content:center;gap:4px;overflow:hidden;z-index:2;opacity:0.5;}
+.footer-code span{font-family:'Rajdhani',monospace;font-size:12px;color:#2196F3;letter-spacing:4px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <canvas id="rainCanvas" width="1600" height="900"></canvas>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+    <div class="side-line left"></div>
+    <div class="side-line right"></div>
+    <div class="side-dot" style="left:35px;top:80px;"></div>
+    <div class="side-dot" style="left:35px;bottom:120px;"></div>
+    <div class="side-dot" style="right:35px;top:80px;"></div>
+    <div class="side-dot" style="right:35px;bottom:120px;"></div>
+  </div>
+
+  <div id="ct">
+    <div class="title-zone">
+      <div class="eyebrow"><span>FREE CODE · FREE WORLD</span></div>
+      <h1 class="main-title"><span>自由代码，自由世界</span></h1>
+      <div class="title-underline"></div>
+      <div class="subtitle"><span>让信息的洪流继续奔涌</span></div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-corner"></div>
+        <div class="card-num"><span>01 / 传承</span></div>
+        <div class="card-title"><span>传承与展望</span></div>
+        <div class="card-divider"></div>
+        <div class="card-text"><span>从 <b>MIT 黑客俱乐部</b> 到 <b>全球开源社区</b>，代码的自由精神跨越国界与时代，<b>从未熄灭</b>。一代代开发者用键盘延续着这场接力。</span></div>
+      </div>
+      <div class="card">
+        <div class="card-corner"></div>
+        <div class="card-num"><span>02 / 贡献</span></div>
+        <div class="card-title"><span>每个人的贡献</span></div>
+        <div class="card-divider"></div>
+        <div class="card-text"><span>开源不仅是 <b>写代码</b>，更是 <b>分享知识</b>、<b>协作创新</b> 的生活方式。每一次提交、每一行注释、每一篇文档，都是献给未来的礼物。</span></div>
+      </div>
+      <div class="card">
+        <div class="card-corner"></div>
+        <div class="card-num"><span>03 / 前行</span></div>
+        <div class="card-title"><span>继续码出自由</span></div>
+        <div class="card-divider"></div>
+        <div class="card-text"><span>以 <b>开放的心态</b> 拥抱技术，以 <b>协作的精神</b> 推动进步。让每一段代码都成为撬动世界的支点，<b>码出属于我们的自由</b>。</span></div>
+      </div>
+    </div>
+
+    <div class="tribute">
+      <div class="tribute-tag"><span>致 · 献给每一位选择开源的你</span></div>
+      <div class="tribute-text"><span>《码出自由》是一封 <em>写给未来的信</em>。当每一位开发者选择开源，<em>Stallman 的梦想</em> 就在延续，<em>Wozniak 的热情</em> 就在传递。愿我们都能成为这场 <em>伟大运动</em> 的一部分 —— <em>码出自由，共创未来</em>。</span></div>
+    </div>
+
+    <div class="info-bar">
+      <div class="info-item">
+        <div class="info-dot"></div>
+        <span class="info-label"><span>分享主题</span></span>
+        <div class="info-sep"></div>
+        <span class="info-value"><span>码出自由（开源读书分享）</span></span>
+      </div>
+      <div class="info-item">
+        <div class="info-dot" style="background:#00BCD4;box-shadow:0 0 8px #00BCD4;"></div>
+        <span class="info-label"><span>分享日期</span></span>
+        <div class="info-sep"></div>
+        <span class="info-value"><span>2021.07.03（创达读书会）</span></span>
+      </div>
+    </div>
+
+    <div class="footer-code" id="footerCode"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const canvas=document.getElementById('rainCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=1600,H=900;
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}[]<>=/\\|+-*/自由代码开源未来协作开放创新//FREE//CODE//01010100//';
+  const fontSize=14;
+  const cols=Math.floor(W/fontSize);
+  const drops=[];
+  for(let i=0;i<cols;i++){
+    drops[i]={
+      y:Math.random()*H,
+      speed:0.3+Math.random()*1.1,
+      char:'',
+      alpha:0.1+Math.random()*0.4,
+      tailLen:8+Math.floor(Math.random()*22),
+      color:Math.random()<0.15?'accent':'primary'
+    };
+    drops[i].char=chars[Math.floor(Math.random()*chars.length)];
+  }
+  function draw(){
+    ctx.fillStyle='rgba(3,7,15,0.14)';
+    ctx.fillRect(0,0,W,H);
+    ctx.font=fontSize+'px "Rajdhani",monospace';
+    for(let i=0;i<cols;i++){
+      const d=drops[i];
+      const x=i*fontSize;
+      const headColor=d.color==='accent'?'rgba(0,200,220,1)':'rgba(140,200,255,1)';
+      const trailColor=d.color==='accent'?'rgba(0,188,212,':'rgba(33,150,243,';
+      for(let t=0;t<d.tailLen;t++){
+        const ty=d.y-t*fontSize;
+        if(ty<0||ty>H) continue;
+        const a=d.alpha*Math.max(0,1-t/d.tailLen);
+        if(t===0){
+          ctx.fillStyle=headColor;
+          ctx.shadowColor=trailColor+'1)';
+          ctx.shadowBlur=8;
+        } else {
+          ctx.fillStyle=trailColor+a+')';
+          ctx.shadowBlur=0;
+        }
+        if(Math.random()<0.005) d.char=chars[Math.floor(Math.random()*chars.length)];
+        ctx.fillText(d.char,x,ty);
+      }
+      ctx.shadowBlur=0;
+      d.y+=d.speed*fontSize*0.6;
+      if(d.y-d.tailLen*fontSize>H){
+        d.y=Math.random()*-200;
+        d.speed=0.3+Math.random()*1.1;
+        d.color=Math.random()<0.15?'accent':'primary';
+        d.char=chars[Math.floor(Math.random()*chars.length)];
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+<script>
+(function(){
+  var codes=['</>','{ }','< / >','[ ]','( )','&&','||','=>','==','!=','//FREE','0101','1010','/* */','def','git commit','npm','sudo','chmod 777','git push','node','linux','open source','自由','开源'];
+  var el=document.getElementById('footerCode');
+  if(!el) return;
+  function build(){
+    var html='';
+    for(var i=0;i<48;i++){
+      var t=codes[Math.floor(Math.random()*codes.length)];
+      var op=0.4+Math.random()*0.5;
+      html+='<span style="opacity:'+op+'">'+t+'</span>';
+    }
+    el.innerHTML=html;
+  }
+  build();
+  setInterval(build,3200);
+})();
+</script>
+</body>
+</html>

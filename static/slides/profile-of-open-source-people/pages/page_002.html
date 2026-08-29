@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一部分：谁在开源</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --muted:#B0BEC5;
+  --dark-bg:#060B1E;
+  --dark-card:#0C1430;
+  --dark-line:#1B2A55;
+  --text:#EAF2FF;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',-apple-system,sans-serif;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{background:var(--dark-bg);color:var(--text);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:radial-gradient(ellipse at 20% 20%, #0E1B4A 0%, #060B1E 60%, #03071A 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:2;padding:70px 80px;display:flex;}
+
+/* 流动代码列 */
+.code-col{position:absolute;top:0;height:100%;width:24px;opacity:.10;
+  font-family:'Inter',monospace;font-size:12px;line-height:1.6;color:var(--accent);
+  animation:flow 18s linear infinite;letter-spacing:1px;}
+@keyframes flow{0%{transform:translateY(-100%);}100%{transform:translateY(100%);}}
+
+/* 粒子点 */
+.particles{position:absolute;inset:0;}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--accent);opacity:.5;
+  animation:drift 8s ease-in-out infinite;}
+@keyframes drift{0%,100%{transform:translate(0,0);}50%{transform:translate(8px,-12px);}}
+
+/* 网格线 */
+.grid-bg{position:absolute;inset:0;background-image:
+  linear-gradient(rgba(33,150,243,.04) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(33,150,243,.04) 1px, transparent 1px);
+  background-size:60px 60px;}
+
+/* 左半区大数字 */
+.left-panel{flex:0 0 46%;position:relative;display:flex;flex-direction:column;justify-content:center;
+  padding-right:40px;border-right:1px solid var(--dark-line);}
+.chapter-tag{font-size:13px;letter-spacing:6px;color:var(--accent);margin-bottom:24px;font-weight:500;}
+.mega-num{font-size:380px;font-weight:900;line-height:0.85;background:linear-gradient(135deg,#2196F3 0%,#00BCD4 60%,#4FC3F7 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-10px;
+  text-shadow:0 0 80px rgba(33,150,243,.25);position:relative;}
+.mega-num::after{content:"PART 01";position:absolute;left:8px;bottom:-18px;font-size:22px;letter-spacing:12px;
+  background:none;-webkit-background-clip:initial;background-clip:initial;color:var(--muted);font-weight:500;}
+.left-meta{margin-top:60px;display:flex;gap:24px;}
+.meta-item{display:flex;flex-direction:column;gap:6px;padding:14px 18px;border:1px solid var(--dark-line);
+  border-left:3px solid var(--primary);background:rgba(33,150,243,.05);}
+.meta-label{font-size:11px;letter-spacing:3px;color:var(--muted);}
+.meta-value{font-size:16px;color:var(--text);font-weight:600;}
+
+/* 右半区 */
+.right-panel{flex:1;display:flex;flex-direction:column;justify-content:center;padding-left:60px;}
+.section-badge{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border:1px solid var(--accent);
+  border-radius:20px;font-size:12px;letter-spacing:3px;color:var(--accent);width:fit-content;margin-bottom:26px;background:rgba(0,188,212,.06);}
+.section-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);}
+h1{font-size:56px;font-weight:800;line-height:1.1;color:var(--text);margin-bottom:18px;letter-spacing:-1px;}
+h1 .accent{color:var(--primary);}
+.subtitle{font-size:18px;color:var(--muted);line-height:1.7;margin-bottom:34px;padding-bottom:24px;border-bottom:1px solid var(--dark-line);}
+.subtitle strong{color:var(--accent);font-weight:600;}
+
+.points{display:flex;flex-direction:column;gap:12px;margin-bottom:26px;}
+.point{display:flex;align-items:flex-start;gap:18px;padding:14px 18px;background:rgba(33,150,243,.04);
+  border:1px solid var(--dark-line);border-left:3px solid var(--primary);transition:all .3s;}
+.point:nth-child(2){border-left-color:var(--accent);background:rgba(0,188,212,.04);}
+.point:nth-child(3){border-left-color:#4FC3F7;}
+.point:nth-child(4){border-left-color:var(--accent);background:rgba(0,188,212,.04);}
+.p-num{font-size:20px;font-weight:800;color:var(--primary);min-width:38px;line-height:1;}
+.point:nth-child(2) .p-num,.point:nth-child(4) .p-num{color:var(--accent);}
+.p-content{flex:1;}
+.p-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.p-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+.narrative{padding:16px 20px;background:linear-gradient(135deg,rgba(33,150,243,.10),rgba(0,188,212,.06));
+  border:1px solid rgba(33,150,243,.25);border-radius:4px;font-size:13px;color:var(--text);line-height:1.75;}
+.narrative .tag{display:inline-block;font-size:11px;letter-spacing:3px;color:var(--accent);font-weight:600;margin-bottom:6px;}
+.narrative p{margin:0;}
+
+/* 底部装饰条 */
+.bottom-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary));opacity:.6;}
+.corner{position:absolute;width:40px;height:40px;border:2px solid var(--accent);opacity:.4;}
+.corner.tl{top:30px;left:30px;border-right:none;border-bottom:none;}
+.corner.tr{top:30px;right:30px;border-left:none;border-bottom:none;}
+.corner.bl{bottom:30px;left:30px;border-right:none;border-top:none;}
+.corner.br{bottom:30px;right:30px;border-left:none;border-top:none;}
+
+.page-num{position:absolute;bottom:30px;right:60px;font-size:11px;letter-spacing:3px;color:var(--muted);z-index:3;}
+.brand{position:absolute;top:40px;right:60px;font-size:12px;letter-spacing:4px;color:var(--muted);z-index:3;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-bg"></div>
+    <div class="code-col" style="left:60px;animation-duration:22s;">01001000 01100101 01101100 01101100 01101111<br>var openSource = true;<br>const community = new Map();<br>import { contributors } from 'global';<br>function analyze(people) {<br>&nbsp;&nbsp;return people.filter(isActive);<br>}<br>git commit -m "part one"<br>01110100 01010000<br>SELECT * FROM committers<br>WHERE region = 'global';<br>package.json → dependencies<br>npm install knowledge<br>git push origin main<br>01010011 01011001<br>const roles = ['core','participant','observer'];<br>export default community;<br>01100111 01000100 01101001 01100010 01100001 01110011 01100101 01110101 01100011 01110100</div>
+    <div class="code-col" style="left:200px;animation-duration:28s;font-size:11px;"># Part I — Who Opens Source<br>// defining the participants<br>typedef struct OSSContributor {<br>&nbsp;&nbsp;char* profession;<br>&nbsp;&nbsp;char* techStack;<br>&nbsp;&nbsp;int commitCount;<br>&nbsp;&nbsp;enum Role role;<br>} contributor_t;<br><br>enum Role { CORE, PARTICIPANT, OBSERVER };<br>const int globalScale = 110000000;<br>// 110M+ developers worldwide<br>float adoptionRate = 0.92;<br>return {scale, adoption, trend};<br>2023 — new career patterns<br>01011110 01100011 01100001 01110100 01100100 01100001<br>data.pipeline(oss_people).flow()<br>SELECT role, count(*) FROM profiles<br>GROUP BY role;<br>01001000 01000001 01001110 01010101 01000100 01000101 01000011 01001010</div>
+    <div class="code-col" style="right:80px;animation-duration:26s;font-size:11px;animation-direction:reverse;"># data particles stream<br>particle.flow(x=0.7, y=0.3)<br>stream.emit('signal', payload)<br>while(active) { render(); }</div>
+    <div class="particles">
+      <div class="particle" style="left:10%;top:15%;animation-delay:0s;"></div>
+      <div class="particle" style="left:25%;top:70%;animation-delay:1.5s;background:var(--primary);"></div>
+      <div class="particle" style="left:45%;top:30%;animation-delay:3s;"></div>
+      <div class="particle" style="left:60%;top:85%;animation-delay:2s;background:var(--primary);"></div>
+      <div class="particle" style="left:80%;top:20%;animation-delay:4s;"></div>
+      <div class="particle" style="left:15%;top:55%;animation-delay:5s;background:var(--primary);"></div>
+      <div class="particle" style="left:70%;top:45%;animation-delay:1s;"></div>
+      <div class="particle" style="left:90%;top:65%;animation-delay:3.5s;background:var(--primary);"></div>
+      <div class="particle" style="left:5%;top:90%;animation-delay:2.5s;"></div>
+      <div class="particle" style="left:50%;top:10%;animation-delay:4.5s;background:var(--primary);"></div>
+      <div class="particle" style="left:35%;top:45%;animation-delay:6s;"></div>
+      <div class="particle" style="left:85%;top:90%;animation-delay:0.8s;"></div>
+    </div>
+  </div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <div class="brand">OPEN SOURCE REPORT · 2024</div>
+
+  <div id="ct">
+    <div class="left-panel">
+      <div class="chapter-tag"><span>PART · 章节过渡</span></div>
+      <div class="mega-num">01</div>
+      <div class="left-meta">
+        <div class="meta-item">
+          <span class="meta-label">章节</span>
+          <span class="meta-value">第一部分</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">主题</span>
+          <span class="meta-value">谁在开源</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">关键议题</span>
+          <span class="meta-value">4 个维度</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="section-badge"><span>SECTION TRANSITION</span></div>
+      <h1>第一部分：<span class="accent">谁在开源</span></h1>
+      <div class="subtitle">定义、类型与分布 —— <strong>认识开源社区的真实参与者</strong></div>
+
+      <div class="points">
+        <div class="point">
+          <div class="p-num">01</div>
+          <div class="p-content">
+            <div class="p-title">画像构建</div>
+            <div class="p-desc">从职业背景到技术栈，多维勾勒开源人士的基本轮廓</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="p-num">02</div>
+          <div class="p-content">
+            <div class="p-title">贡献图谱</div>
+            <div class="p-desc">区分核心贡献者、参与者与观察者的不同角色定位</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="p-num">03</div>
+          <div class="p-content">
+            <div class="p-title">数据透视</div>
+            <div class="p-desc">用报告关键指标呈现全球开源人群的规模与结构</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="p-num">04</div>
+          <div class="p-content">
+            <div class="p-title">群体趋势</div>
+            <div class="p-desc">观察2023年开源人群在职业构成上的新变化方向</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="narrative">
+        <span class="tag">PART NARRATIVE · 章节叙事</span>
+        <p>本部分将系统性介绍开源人士的定义边界、常见类型划分以及全球范围内的数据分布，为后续深入讨论动机与文化奠定事实基础。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar"></div>
+  <div class="page-num">02 / 18</div>
+</div>
+</body>
+</html>

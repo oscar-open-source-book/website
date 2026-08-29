@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>从选题到成文</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --cyan:#00BCD4;
+  --cyan-glow:rgba(0,188,212,0.55);
+  --orange:#FF7043;
+  --neutral:#ECEFF1;
+  --navy-deep:#08111f;
+  --navy-mid:#0d1c32;
+  --navy-light:#132842;
+  --card-bg:rgba(19,40,66,0.7);
+  --grid:rgba(0,188,212,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','Noto Sans SC',sans-serif;color:var(--neutral);overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--navy-deep);background-image:
+  linear-gradient(180deg,#08111f 0%,#0b1a2f 45%,#08111f 100%);
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:60px 60px;
+  opacity:0.7;
+}
+#bg::after{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse 900px 500px at 50% 25%,rgba(0,188,212,0.08),transparent 70%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 50px;box-sizing:border-box;display:flex;flex-direction:column;}
+.header{margin-bottom:10px;}
+.title{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:42px;
+  letter-spacing:2px;
+  color:var(--neutral);
+  text-shadow:0 0 20px var(--cyan-glow);
+  display:flex;align-items:center;gap:16px;
+}
+.title .dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan),0 0 24px var(--cyan-glow);
+  display:inline-block;
+}
+.subtitle{
+  margin-top:10px;
+  font-size:14px;
+  line-height:1.7;
+  color:rgba(236,239,241,0.72);
+  max-width:1480px;
+  font-weight:300;
+}
+.timeline-area{
+  display:flex;justify-content:center;align-items:center;
+  margin:14px 0 12px 0;
+  position:relative;
+}
+.timeline-img-wrap{
+  width:960px;height:531px;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 0 40px rgba(0,188,212,0.15),inset 0 0 0 1px rgba(0,188,212,0.12);
+  position:relative;
+}
+.timeline-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.timeline-img-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 60%,rgba(8,17,31,0.4) 100%);
+  pointer-events:none;
+}
+.cards{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  margin-top:4px;
+}
+.card{
+  background:var(--card-bg);
+  border:1px solid rgba(0,188,212,0.18);
+  border-radius:6px;
+  padding:14px 16px;
+  position:relative;
+  backdrop-filter:blur(4px);
+  transition:border-color 0.3s;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:0.6;
+}
+.card-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  color:var(--cyan);
+  letter-spacing:1px;
+  margin-bottom:4px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-num .bar{
+  width:20px;height:2px;background:var(--cyan);
+  box-shadow:0 0 6px var(--cyan-glow);
+}
+.card-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:19px;
+  font-weight:700;
+  color:var(--neutral);
+  margin-bottom:7px;
+  letter-spacing:1px;
+}
+.card-title .accent{color:var(--orange);}
+.card-desc{
+  font-size:12.5px;
+  line-height:1.65;
+  color:rgba(236,239,241,0.72);
+  font-weight:300;
+}
+.tip-bar{
+  margin-top:auto;
+  background:rgba(255,112,67,0.08);
+  border:1px solid rgba(255,112,67,0.28);
+  border-left:3px solid var(--orange);
+  border-radius:4px;
+  padding:12px 20px;
+  display:flex;align-items:center;gap:14px;
+  font-size:13px;
+  color:rgba(236,239,241,0.85);
+}
+.tip-bar .tip-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--orange);
+  letter-spacing:1px;
+  padding:3px 8px;
+  border:1px solid rgba(255,112,67,0.4);
+  border-radius:3px;
+  flex-shrink:0;
+}
+.tip-bar .tip-text{font-weight:400;}
+.tip-bar .tip-text strong{color:var(--orange);font-weight:500;}
+.deco-corner{
+  position:absolute;
+  width:30px;height:30px;
+  border:1px solid rgba(0,188,212,0.3);
+  z-index:1;
+}
+.deco-corner.tl{top:20px;left:20px;border-right:none;border-bottom:none;}
+.deco-corner.tr{top:20px;right:20px;border-left:none;border-bottom:none;}
+.deco-corner.bl{bottom:20px;left:20px;border-right:none;border-top:none;}
+.deco-corner.br{bottom:20px;right:20px;border-left:none;border-top:none;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="deco-corner tl"></div>
+    <div class="deco-corner tr"></div>
+    <div class="deco-corner bl"></div>
+    <div class="deco-corner br"></div>
+
+    <div class="header">
+      <div class="title">
+        <span class="dot"></span>
+        <span>从选题到成文</span>
+      </div>
+      <div class="subtitle">
+        选题决定了书籍的方向，大纲决定了书籍的骨架；在开源写作中不必追求一次成文，而是在社区反馈中持续迭代，让每一章都达到可分享的质量后再推进下一章
+      </div>
+    </div>
+
+    <div class="timeline-area">
+      <div class="timeline-img-wrap">
+        <img src="../images/page_006_timeline.png" alt="四阶段时间线信息图">
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-num"><span class="bar"></span><span>STEP 01</span></div>
+        <div class="card-title">选题调研<span class="accent">.</span></div>
+        <div class="card-desc">调研社区已有内容，找准缺口与差异化定位，避免重复造轮子。</div>
+      </div>
+      <div class="card">
+        <div class="card-num"><span class="bar"></span><span>STEP 02</span></div>
+        <div class="card-title">大纲先行<span class="accent">.</span></div>
+        <div class="card-desc">先完成详细目录与每章摘要，再进入正文写作，确保逻辑自洽。</div>
+      </div>
+      <div class="card">
+        <div class="card-num"><span class="bar"></span><span>STEP 03</span></div>
+        <div class="card-title">小步快跑<span class="accent">.</span></div>
+        <div class="card-desc">每章独立成文后立即提交到仓库，快速获得社区反馈并迭代修正。</div>
+      </div>
+      <div class="card">
+        <div class="card-num"><span class="bar"></span><span>STEP 04</span></div>
+        <div class="card-title">读者视角<span class="accent">.</span></div>
+        <div class="card-desc">写作时不断切换读者视角，确保内容对新手友好且对老手有价值。</div>
+      </div>
+    </div>
+
+    <div class="tip-bar">
+      <span class="tip-label">TIP</span>
+      <span class="tip-text">建议章节粒度：<strong>1500-3000字/章</strong>，保证独立可读性与阅读节奏</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

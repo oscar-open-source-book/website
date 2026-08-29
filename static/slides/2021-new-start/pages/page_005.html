@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>年度关键数据</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+:root{
+  --bg-0:#061024;
+  --bg-1:#0B1B3A;
+  --bg-2:#11224A;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --accent-2:#64FFDA;
+  --text-main:#ECEFF1;
+  --text-mute:#90A4AE;
+  --line:#1E3A6B;
+  --card:#0E1E42;
+  --glow:rgba(0,229,255,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','Helvetica Neue',sans-serif;color:var(--text-main);background:var(--bg-0);overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:radial-gradient(ellipse at 20% 0%, #0E2454 0%, #061024 55%, #03081A 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px),linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);background-size:48px 48px;}
+#bg .glow1{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle, rgba(0,229,255,0.18), transparent 60%);top:-180px;right:-120px;filter:blur(20px);}
+#bg .glow2{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle, rgba(33,150,243,0.20), transparent 60%);bottom:-220px;left:-160px;filter:blur(24px);}
+#bg .beam{position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg, transparent 0%, var(--accent) 25%, var(--primary) 50%, var(--accent) 75%, transparent 100%);box-shadow:0 0 24px var(--glow),0 0 60px rgba(33,150,243,0.5);}
+#bg .beam2{position:absolute;left:0;right:0;top:180px;height:1px;background:linear-gradient(90deg, transparent 0%, rgba(0,229,255,0.5) 30%, rgba(33,150,243,0.4) 60%, transparent 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+.head{display:flex;flex-direction:column;gap:10px;margin-bottom:6px;}
+.head .row1{display:flex;align-items:center;justify-content:space-between;}
+.head .title{font-family:'Roboto Mono','JetBrains Mono',monospace;font-weight:700;font-size:56px;letter-spacing:2px;background:linear-gradient(90deg,#ECEFF1 0%, #2196F3 60%, #00E5FF 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.head .meta{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--text-mute);letter-spacing:2px;display:flex;gap:18px;align-items:center;}
+.head .meta .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);display:inline-block;}
+.head .sub{font-size:15px;color:var(--text-mute);line-height:1.6;max-width:1320px;border-left:2px solid var(--primary);padding-left:14px;}
+.cards{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:18px;height:498px;}
+.card{position:relative;background:linear-gradient(140deg, rgba(14,30,66,0.85) 0%, rgba(8,18,40,0.9) 100%);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;overflow:hidden;}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, var(--accent), transparent);opacity:0.6;}
+.card::after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle, rgba(33,150,243,0.15), transparent 70%);right:-40px;bottom:-40px;pointer-events:none;}
+.card .idx{position:absolute;top:10px;right:12px;font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-mute);letter-spacing:1px;}
+.ring-wrap{width:110px;height:110px;position:relative;display:flex;align-items:center;justify-content:center;}
+.ring-wrap svg{width:110px;height:110px;transform:rotate(-90deg);}
+.ring-wrap .track{fill:none;stroke:#16294D;stroke-width:9;}
+.ring-wrap .prog{fill:none;stroke-width:9;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(0,229,255,0.5));}
+.ring-wrap .pct{position:absolute;font-family:'Roboto Mono',monospace;font-size:13px;font-weight:500;color:var(--accent);letter-spacing:1px;}
+.info{display:flex;flex-direction:column;gap:6px;}
+.info .label{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-mute);letter-spacing:2px;text-transform:uppercase;}
+.info .num{font-family:'Roboto Mono',monospace;font-weight:700;font-size:34px;color:var(--text-main);letter-spacing:0.5px;line-height:1.1;}
+.info .num .unit{font-size:16px;color:var(--accent);font-weight:500;margin-left:4px;letter-spacing:1px;}
+.info .note{font-size:11.5px;color:var(--text-mute);line-height:1.5;border-top:1px dashed rgba(33,150,243,0.3);padding-top:8px;margin-top:2px;}
+.info .note .tag{display:inline-block;font-family:'Roboto Mono',monospace;font-size:9px;color:var(--primary);border:1px solid var(--primary);border-radius:3px;padding:1px 6px;margin-right:6px;letter-spacing:1px;vertical-align:1px;}
+.summary{margin-top:18px;background:linear-gradient(90deg, rgba(11,27,58,0.6) 0%, rgba(14,30,66,0.85) 50%, rgba(11,27,58,0.6) 100%);border:1px solid var(--line);border-radius:12px;padding:14px 18px;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;position:relative;overflow:hidden;}
+.summary::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg, var(--accent), var(--primary));box-shadow:0 0 12px var(--accent);}
+.summary .col{display:flex;flex-direction:column;gap:5px;padding-left:12px;position:relative;}
+.summary .col+.col::after{content:"";position:absolute;left:0;top:6px;bottom:6px;width:1px;background:linear-gradient(180deg, transparent, var(--line), transparent);}
+.summary .col .tag{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:2px;}
+.summary .col .name{font-size:13px;font-weight:600;color:var(--text-main);letter-spacing:0.5px;}
+.summary .col .desc{font-size:10.5px;color:var(--text-mute);line-height:1.5;}
+.footline{margin-top:10px;display:flex;justify-content:space-between;align-items:center;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--text-mute);letter-spacing:2px;}
+.footline .left{display:flex;gap:12px;align-items:center;}
+.footline .right{display:flex;gap:8px;align-items:center;}
+.footline .k{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid"></div>
+    <div class="glow1"></div>
+    <div class="glow2"></div>
+    <div class="beam2"></div>
+    <div class="beam"></div>
+  </div>
+  <div id="ct">
+    <div class="head">
+      <div class="row1">
+        <div class="title">年度关键数据</div>
+        <div class="meta"><span class="dot"></span><span>PAGE 05 / KEY METRICS</span><span>2021 ANNUAL · OPEN SOURCE</span></div>
+      </div>
+      <div class="sub">用数据回望 2021 —— 从代码到社区、从阅读到传播、从投入到产出，每一个维度都折射出开源之旅的丰富层次与真实价值。</div>
+    </div>
+
+    <div class="cards">
+
+      <div class="card"><span class="idx">01 / 06</span>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"></circle>
+            <circle class="prog" cx="50" cy="50" r="42" stroke="#00E5FF" stroke-dasharray="263.9" stroke-dashoffset="71.2"></circle>
+          </svg>
+          <div class="pct">73%</div>
+        </div>
+        <div class="info">
+          <div class="label">PR SUBMISSION</div>
+          <div class="num">87<span class="unit">个</span></div>
+          <div class="note"><span class="tag">SCOPE</span>注释覆盖 6 个开源项目</div>
+        </div>
+      </div>
+
+      <div class="card"><span class="idx">02 / 06</span>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"></circle>
+            <circle class="prog" cx="50" cy="50" r="42" stroke="#2196F3" stroke-dasharray="263.9" stroke-dashoffset="30.1"></circle>
+          </svg>
+          <div class="pct">88%</div>
+        </div>
+        <div class="info">
+          <div class="label">CODE REVIEW</div>
+          <div class="num">140<span class="unit">+ 次</span></div>
+          <div class="note"><span class="tag">REVIEW</span>注释 Review 他人代码</div>
+        </div>
+      </div>
+
+      <div class="card"><span class="idx">03 / 06</span>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"></circle>
+            <circle class="prog" cx="50" cy="50" r="42" stroke="#00E5FF" stroke-dasharray="263.9" stroke-dashoffset="21.1"></circle>
+          </svg>
+          <div class="pct">92%</div>
+        </div>
+        <div class="info">
+          <div class="label">ISSUE ENGAGEMENT</div>
+          <div class="num">230<span class="unit">+ 条</span></div>
+          <div class="note"><span class="tag">DISCUSS</span>注释讨论与建议</div>
+        </div>
+      </div>
+
+      <div class="card"><span class="idx">04 / 06</span>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"></circle>
+            <circle class="prog" cx="50" cy="50" r="42" stroke="#64FFDA" stroke-dasharray="263.9" stroke-dashoffset="52.8"></circle>
+          </svg>
+          <div class="pct">80%</div>
+        </div>
+        <div class="info">
+          <div class="label">READING TIME</div>
+          <div class="num">480<span class="unit">小时</span></div>
+          <div class="note"><span class="tag">MIX</span>含纸质与电子版</div>
+        </div>
+      </div>
+
+      <div class="card"><span class="idx">05 / 06</span>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"></circle>
+            <circle class="prog" cx="50" cy="50" r="42" stroke="#2196F3" stroke-dasharray="263.9" stroke-dashoffset="66.0"></circle>
+          </svg>
+          <div class="pct">75%</div>
+        </div>
+        <div class="info">
+          <div class="label">OUTPUT WORDS</div>
+          <div class="num">12<span class="unit">万字</span></div>
+          <div class="note"><span class="tag">OUTPUT</span>全年累计输出</div>
+        </div>
+      </div>
+
+      <div class="card"><span class="idx">06 / 06</span>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"></circle>
+            <circle class="prog" cx="50" cy="50" r="42" stroke="#00E5FF" stroke-dasharray="263.9" stroke-dashoffset="92.4"></circle>
+          </svg>
+          <div class="pct">65%</div>
+        </div>
+        <div class="info">
+          <div class="label">COMMUNITY MEMBERS</div>
+          <div class="num">500<span class="unit">+ 人</span></div>
+          <div class="note"><span class="tag">SELF</span>自建开源兴趣群</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="summary">
+      <div class="col">
+        <div class="tag">// DIM.01</div>
+        <div class="name">代码贡献维度</div>
+        <div class="desc">全年提交 PR 数量、参与仓库数与代码审查活跃度</div>
+      </div>
+      <div class="col">
+        <div class="tag">// DIM.02</div>
+        <div class="name">社区互动维度</div>
+        <div class="desc">Issue 讨论、线上活动参与度与社群运营数据</div>
+      </div>
+      <div class="col">
+        <div class="tag">// DIM.03</div>
+        <div class="name">知识传播维度</div>
+        <div class="desc">阅读、写作、分享三类行为的量化对比与趋势</div>
+      </div>
+      <div class="col">
+        <div class="tag">// DIM.04</div>
+        <div class="name">成长指标维度</div>
+        <div class="desc">技术栈拓展、新技能习得与认证获取的年度汇总</div>
+      </div>
+      <div class="col">
+        <div class="tag">// DIM.05</div>
+        <div class="name">影响力维度</div>
+        <div class="desc">文章阅读量、直播互动数与社交媒体关注增长</div>
+      </div>
+      <div class="col">
+        <div class="tag">// DIM.06</div>
+        <div class="name">投入产出维度</div>
+        <div class="desc">时间投入与产出成果的量化分析与 ROI 估算</div>
+      </div>
+    </div>
+
+    <div class="footline">
+      <div class="left"><span>[ 2021 · OPEN SOURCE JOURNEY ]</span><span>·</span><span class="k">DATA SUMMARY v1.0</span></div>
+      <div class="right"><span>SIX-DIMENSION DASHBOARD</span><span>·</span><span>YEAR-END REPORT</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

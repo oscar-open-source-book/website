@@ -1,0 +1,417 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源许可证全景解读 · 02</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --navy: #0D2137;
+    --navy-deep: #08182A;
+    --navy-light: #14304E;
+    --gold: #C9A227;
+    --gold-light: #E8C660;
+    --gray: #5A5A5A;
+    --gray-light: #9BA1A8;
+    --paper: #F5F1E6;
+    --serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+    --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--paper);
+    background: var(--navy-deep);
+    overflow: hidden;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(ellipse at 15% 20%, var(--navy-light) 0%, var(--navy) 45%, var(--navy-deep) 100%);
+  }
+
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201, 162, 39, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 162, 39, 0.045) 1px, transparent 1px);
+    background-size: 80px 80px;
+    z-index: 1;
+  }
+
+  .bg-glow {
+    position: absolute;
+    top: -160px;
+    right: -160px;
+    width: 640px;
+    height: 640px;
+    background: radial-gradient(circle, rgba(201, 162, 39, 0.14) 0%, rgba(201, 162, 39, 0) 65%);
+    z-index: 1;
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    padding: 56px 80px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 顶部装饰条 */
+  .top-deco {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(201, 162, 39, 0.28);
+  }
+  .top-deco .left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .accent-bar {
+    width: 44px;
+    height: 3px;
+    background: var(--gold);
+  }
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .roman {
+    font-family: var(--serif);
+    font-size: 14px;
+    letter-spacing: 5px;
+    color: var(--gray-light);
+    font-weight: 500;
+  }
+
+  /* 主体 */
+  .main {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    padding-top: 36px;
+  }
+  .left-col {
+    flex: 1.05;
+    padding-right: 20px;
+  }
+  .section-tag {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 10px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: 70px;
+    font-weight: 900;
+    line-height: 1.16;
+    color: var(--paper);
+    margin-bottom: 26px;
+    letter-spacing: 3px;
+  }
+  h1 .divider {
+    color: var(--gold);
+    margin: 0 14px;
+    font-weight: 500;
+    font-size: 54px;
+    vertical-align: middle;
+  }
+  h1 .sub-emphasis {
+    color: var(--gold-light);
+  }
+  .subtitle-line {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 46px;
+  }
+  .subtitle-line .gold-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+  .subtitle-line .subtitle {
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--gray-light);
+    letter-spacing: 5px;
+    font-weight: 500;
+  }
+
+  /* 三卡 */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  .card {
+    background: rgba(20, 48, 78, 0.5);
+    border: 1px solid rgba(201, 162, 39, 0.28);
+    border-top: 2px solid var(--gold);
+    padding: 26px 22px 28px;
+    position: relative;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    right: 20px;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    opacity: 0.7;
+  }
+  .card-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201, 162, 39, 0.22);
+  }
+  .card-title-row .num {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .card-title-row .title {
+    font-family: var(--serif);
+    font-size: 26px;
+    color: var(--paper);
+    font-weight: 700;
+    letter-spacing: 4px;
+  }
+  .card p {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--gray-light);
+    letter-spacing: 0.5px;
+  }
+
+  /* 右侧装饰 */
+  .right-col {
+    width: 400px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-left: 40px;
+    position: relative;
+  }
+  .number-block {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    margin-bottom: 22px;
+  }
+  .number-02 {
+    font-family: var(--serif);
+    font-size: 156px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -6px;
+    text-shadow: 0 0 40px rgba(201, 162, 39, 0.28);
+  }
+  .number-meta {
+    text-align: right;
+    padding-left: 18px;
+    border-left: 1px solid rgba(201, 162, 39, 0.4);
+  }
+  .number-meta .en {
+    font-family: var(--serif);
+    font-size: 15px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .number-meta .cn {
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--gray-light);
+    letter-spacing: 3px;
+    line-height: 1.5;
+  }
+
+  .icon-wrap {
+    position: relative;
+    width: 300px;
+    height: 300px;
+  }
+  .icon-wrap img {
+    width: 300px;
+    height: 300px;
+    display: block;
+    filter: drop-shadow(0 8px 32px rgba(201, 162, 39, 0.22));
+  }
+  .icon-caption {
+    position: absolute;
+    bottom: -32px;
+    right: 0;
+    font-family: var(--serif);
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: var(--gold);
+  }
+
+  /* 底部叙事 */
+  .footer {
+    margin-top: 34px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(201, 162, 39, 0.28);
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .footer-deco {
+    width: 3px;
+    height: 76px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .footer-text {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.9;
+    color: var(--gray-light);
+    letter-spacing: 1.5px;
+  }
+  .footer-text strong {
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  /* 四角装饰 */
+  .corner {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    border: 1.5px solid rgba(201, 162, 39, 0.5);
+    z-index: 3;
+  }
+  .corner.tl { top: 24px; left: 24px; border-right: none; border-bottom: none; }
+  .corner.tr { top: 24px; right: 24px; border-left: none; border-bottom: none; }
+  .corner.bl { bottom: 24px; left: 24px; border-right: none; border-top: none; }
+  .corner.br { bottom: 24px; right: 24px; border-left: none; border-top: none; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+  </div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div id="ct">
+    <div class="top-deco">
+      <div class="left">
+        <span class="accent-bar"></span>
+        <span class="eyebrow">学术专题 · 开源生态研究</span>
+      </div>
+      <div class="roman">SECTION TWO — OF FIVE</div>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="section-tag">本 章 概 要</div>
+        <h1>
+          <span>开源许可证</span>
+          <span class="divider">·</span>
+          <span class="sub-emphasis">全景解读</span>
+        </h1>
+        <div class="subtitle-line">
+          <span class="gold-dot"></span>
+          <span class="subtitle">从法律框架到精神内核</span>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-title-row">
+              <span class="num">I.</span>
+              <span class="title">为何重要</span>
+            </div>
+            <p>许可证是开源项目的法律基石，决定了代码的使用、修改与分发规则，是一切开源行为的契约起点。</p>
+          </div>
+          <div class="card">
+            <div class="card-title-row">
+              <span class="num">II.</span>
+              <span class="title">常见误区</span>
+            </div>
+            <p>许多开发者混淆开源与免费，对许可证条款理解不深，在实际协作中易忽视义务与责任。</p>
+          </div>
+          <div class="card">
+            <div class="card-title-row">
+              <span class="num">III.</span>
+              <span class="title">分享目标</span>
+            </div>
+            <p>帮助听众建立对主流许可证的清晰认知框架，理解其精神分野与适用场景。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="number-block">
+          <div class="number-02">02</div>
+          <div class="number-meta">
+            <div class="en">CHAPTER</div>
+            <div class="cn">第二<br>章节</div>
+          </div>
+        </div>
+        <div class="icon-wrap">
+          <img src="../images/page_002_accent.png" alt="法律天平与羊皮卷轴融合的黄金色装饰图标">
+          <div class="icon-caption">LIBERTAS · IUSTITIA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-deco"></div>
+      <div class="footer-text">
+        开源许可证远不止一纸法律文本，它是开源精神的<strong>具体载体</strong>。本节将带领大家从宏观视角审视许可证体系，理解其如何在<strong>法律层面</strong>守护开源自由，又如何在<strong>精神层面</strong>凝聚社区共识。
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

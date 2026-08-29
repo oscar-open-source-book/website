@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>新王者的面貌</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+:root{--primary:#2196F3;--accent:#00E5FF;--bg:#1E2A38;--bg-dark:#151E2A;--text-main:#E8EEF5;--text-muted:#8A9BB0;--card-bg:#243347;--border:#2D4056}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text-main);font-size:14px;overflow:hidden}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto}
+#bg{position:absolute;inset:0;z-index:0;background:var(--bg)}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 60px 40px;box-sizing:border-box;display:flex;flex-direction:column}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.035) 1px,transparent 1px);background-size:40px 40px;z-index:0}
+.bg-glow{position:absolute;border-radius:50%;z-index:0}
+.bg-glow-1{width:500px;height:500px;top:-220px;right:-120px;background:radial-gradient(circle,rgba(33,150,243,0.1) 0%,transparent 70%)}
+.bg-glow-2{width:500px;height:500px;bottom:-220px;left:-120px;background:radial-gradient(circle,rgba(0,229,255,0.07) 0%,transparent 70%)}
+
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.page-title{font-family:'Inter',sans-serif;font-weight:800;font-size:36px;color:var(--text-main);letter-spacing:-0.5px;line-height:1}
+.page-title .accent{color:var(--primary)}
+.page-title .dot{color:var(--accent);margin:0 6px}
+.subtitle{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1.5px;text-align:right;line-height:1.7}
+.subtitle .em{color:var(--accent)}
+
+.kpi-row{display:flex;gap:18px;margin-bottom:20px}
+.kpi-card{flex:1;background:var(--card-bg);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:6px;padding:14px 20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden}
+.kpi-card::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle,rgba(0,229,255,0.06) 0%,transparent 70%);border-radius:0 6px 0 60px}
+.kpi-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:34px;color:var(--accent);line-height:1;white-space:nowrap}
+.kpi-info{display:flex;flex-direction:column;gap:4px}
+.kpi-label{font-size:12px;color:var(--text-main);font-weight:600;letter-spacing:0.5px}
+.kpi-desc{font-size:11px;color:var(--text-muted)}
+.kpi-divider{width:1px;height:42px;background:var(--border)}
+
+.matrix-area{flex:1;position:relative;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;padding:10px 60px}
+
+.matrix-svg{position:absolute;inset:10px 60px;z-index:0;pointer-events:none}
+
+.quadrant{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px 20px;position:relative;z-index:1;display:flex;flex-direction:column;overflow:hidden;transition:none}
+.quadrant::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);opacity:0.6}
+.quadrant::after{content:'';position:absolute;bottom:0;right:0;width:40px;height:40px;border-right:1px solid rgba(0,229,255,0.15);border-bottom:1px solid rgba(0,229,255,0.15);border-radius:0 0 8px 0}
+.q-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--primary);letter-spacing:2px;margin-bottom:5px}
+.q-title{font-family:'Inter',sans-serif;font-weight:700;font-size:19px;color:var(--text-main);margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.q-title-bar{width:18px;height:3px;background:var(--accent);border-radius:1px}
+.q-text{font-size:12px;color:var(--text-muted);line-height:1.75;flex:1}
+.q-text .hl{color:var(--accent)}
+.q-text .hl2{color:var(--primary);font-weight:600}
+.q-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+.q-chip{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);border:1px solid rgba(0,229,255,0.3);border-radius:3px;padding:3px 8px;background:rgba(0,229,255,0.05)}
+.q-chip.primary{color:var(--primary);border-color:rgba(33,150,243,0.3);background:rgba(33,150,243,0.05)}
+
+.center-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;width:134px;height:134px;border-radius:50%;background:radial-gradient(circle,#2196F3 0%,#1565C0 65%,#0D47A1 100%);border:2px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(33,150,243,0.4),0 0 60px rgba(33,150,243,0.2),inset 0 0 20px rgba(0,229,255,0.15);text-align:center}
+.center-badge::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(0,229,255,0.3)}
+.center-badge::after{content:'';position:absolute;inset:-18px;border-radius:50%;border:1px dashed rgba(33,150,243,0.2)}
+.badge-title{font-family:'Inter',sans-serif;font-weight:700;font-size:18px;color:#fff;line-height:1.2}
+.badge-sub{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(255,255,255,0.7);margin-top:5px;letter-spacing:1.5px}
+
+.footer-narrative{margin-top:16px;text-align:center;padding:14px 40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;background:rgba(33,150,243,0.03)}
+.footer-narrative::before,.footer-narrative::after{content:'';position:absolute;top:50%;width:7px;height:7px;background:var(--accent);border-radius:50%;transform:translateY(-50%);box-shadow:0 0 8px rgba(0,229,255,0.6)}
+.footer-narrative::before{left:-4px}
+.footer-narrative::after{right:-4px}
+.footer-text{font-family:'Inter',sans-serif;font-weight:500;font-size:14px;color:var(--text-main);letter-spacing:0.5px}
+.footer-text .em{color:var(--accent);font-weight:700}
+.footer-text .sep{color:var(--primary);margin:0 8px}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-grid"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="page-title">新<span class="accent">王者</span>的<span class="dot">·</span>面<span class="accent">貌</span></div>
+      <div class="subtitle">
+        OPEN SOURCE POWER STRUCTURE<br>
+        <span class="em">// 开源权力格局演进图谱</span>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-num">100+</div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-info">
+          <span class="kpi-label">CNCF 项目数</span>
+          <span class="kpi-desc">成熟开源项目 · 云原生基础设施</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num">千亿级</div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-info">
+          <span class="kpi-label">商业开源市值</span>
+          <span class="kpi-desc">头部企业估值 · 美元计</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num">50+</div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-info">
+          <span class="kpi-label">基金会数量</span>
+          <span class="kpi-desc">全球开源基金会 · 制度化治理</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="matrix-area">
+      <svg class="matrix-svg" viewBox="0 0 1000 440" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#00E5FF;stop-opacity:0.15"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#00E5FF;stop-opacity:0.15"/>
+          </linearGradient>
+          <linearGradient id="lg3" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#00E5FF;stop-opacity:0.15"/>
+          </linearGradient>
+          <linearGradient id="lg4" x1="100%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#00E5FF;stop-opacity:0.15"/>
+          </linearGradient>
+        </defs>
+        <line x1="500" y1="220" x2="230" y2="105" stroke="url(#lg1)" stroke-width="1.5" stroke-dasharray="5,5"/>
+        <line x1="500" y1="220" x2="770" y2="105" stroke="url(#lg2)" stroke-width="1.5" stroke-dasharray="5,5"/>
+        <line x1="500" y1="220" x2="230" y2="335" stroke="url(#lg3)" stroke-width="1.5" stroke-dasharray="5,5"/>
+        <line x1="500" y1="220" x2="770" y2="335" stroke="url(#lg4)" stroke-width="1.5" stroke-dasharray="5,5"/>
+        <circle cx="500" cy="220" r="4" fill="#00E5FF"/>
+        <circle cx="230" cy="105" r="3" fill="#2196F3" opacity="0.7"/>
+        <circle cx="770" cy="105" r="3" fill="#2196F3" opacity="0.7"/>
+        <circle cx="230" cy="335" r="3" fill="#2196F3" opacity="0.7"/>
+        <circle cx="770" cy="335" r="3" fill="#2196F3" opacity="0.7"/>
+      </svg>
+
+      <div class="quadrant">
+        <div class="q-tag">// 象限一 · CLOUD NATIVE</div>
+        <div class="q-title"><span class="q-title-bar"></span>云原生阵营</div>
+        <div class="q-text">
+          <span class="hl">CNCF 基金会</span>员工与<span class="hl2">谷歌</span>、<span class="hl2">微软</span>、<span class="hl2">亚马逊</span>共同塑造云原生开源治理格局，主导 Kubernetes、Prometheus 等核心基础设施标准的制定权与演进方向。
+        </div>
+        <div class="q-tags">
+          <span class="q-chip">CNCF</span>
+          <span class="q-chip primary">Kubernetes</span>
+          <span class="q-chip primary">云原生治理</span>
+        </div>
+      </div>
+
+      <div class="quadrant">
+        <div class="q-tag">// 象限二 · COMMERCIAL</div>
+        <div class="q-title"><span class="q-title-bar"></span>商业开源先锋</div>
+        <div class="q-text">
+          <span class="hl">HashiCorp</span>、<span class="hl2">MongoDB</span>、<span class="hl2">Confluent</span>等企业以开源为核心构建商业帝国，将活跃技术社区直接转化为资本市场的头部上市公司。
+        </div>
+        <div class="q-tags">
+          <span class="q-chip primary">HashiCorp</span>
+          <span class="q-chip">MongoDB</span>
+          <span class="q-chip primary">Confluent</span>
+        </div>
+      </div>
+
+      <div class="quadrant">
+        <div class="q-tag">// 象限三 · FOUNDATION</div>
+        <div class="q-title"><span class="q-title-bar"></span>基金会新势力</div>
+        <div class="q-text">
+          <span class="hl">Linux Foundation</span>旗下项目矩阵持续扩张，<span class="hl2">Apache 基金会</span>生态繁荣发展，成为开源权力分配的制度化载体与中立仲裁平台。
+        </div>
+        <div class="q-tags">
+          <span class="q-chip primary">Linux Foundation</span>
+          <span class="q-chip">Apache</span>
+          <span class="q-chip primary">项目矩阵</span>
+        </div>
+      </div>
+
+      <div class="quadrant">
+        <div class="q-tag">// 象限四 · INDIVIDUAL</div>
+        <div class="q-title"><span class="q-title-bar"></span>个人贡献者转型</div>
+        <div class="q-text">
+          新一代开源领袖从<span class="hl">社区贡献者</span>向<span class="hl2">技术决策者</span>与<span class="hl2">商业操盘手</span>双重身份演进，个人英雄主义正让位于组织化协作与制度化治理。
+        </div>
+        <div class="q-tags">
+          <span class="q-chip">贡献者</span>
+          <span class="q-chip primary">决策者</span>
+          <span class="q-chip primary">操盘手</span>
+        </div>
+      </div>
+
+      <div class="center-badge">
+        <div class="badge-title">新造<br>王者</div>
+        <div class="badge-sub">多重角色 · 权力重构</div>
+      </div>
+    </div>
+
+    <div class="footer-narrative">
+      <div class="footer-text">
+        <span class="em">开源的权力结构</span>正在从<span class="em">个人英雄主义</span><span class="sep">→</span>向<span class="em">组织化运作</span>迁移，形成了新的<span class="em">权力分配格局</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

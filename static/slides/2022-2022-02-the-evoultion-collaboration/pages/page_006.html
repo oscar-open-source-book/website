@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>社区治理与参与</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap');
+:root{
+  --primary:#2196F3;
+  --primary-dark:#1565C0;
+  --accent:#00BCD4;
+  --accent2:#0097A7;
+  --bg:#F5F7FA;
+  --card:#FFFFFF;
+  --text-main:#1A2740;
+  --text-sub:#4A5A78;
+  --line:#DCE6F2;
+  --glow:rgba(33,150,243,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  background:var(--bg);
+  font-family:'Roboto Mono',monospace;
+  color:var(--text-main);
+  font-size:13px;
+  letter-spacing:0.3px;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 60px 40px 60px;box-sizing:border-box;}
+
+/* Background decoration */
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+.bg-glow-1{
+  position:absolute;top:-200px;right:-200px;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(33,150,243,0.18),transparent 70%);
+  filter:blur(20px);
+}
+.bg-glow-2{
+  position:absolute;bottom:-220px;left:-180px;width:560px;height:560px;
+  background:radial-gradient(circle,rgba(0,188,212,0.16),transparent 70%);
+  filter:blur(20px);
+}
+
+/* Header */
+.header{margin-bottom:18px;}
+.page-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+  color:var(--primary);letter-spacing:2px;margin-bottom:12px;
+}
+.page-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);}
+.page-tag .bar{width:60px;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+.main-title{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:42px;color:var(--text-main);
+  display:flex;align-items:baseline;gap:18px;margin-bottom:12px;
+}
+.main-title .accent-bar{
+  display:inline-block;width:6px;height:38px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:3px;
+}
+.main-title .en{
+  font-size:13px;font-weight:500;color:var(--text-sub);letter-spacing:3px;font-family:'Roboto Mono',monospace;
+}
+.title-underline{
+  height:3px;width:220px;background:linear-gradient(90deg,var(--primary),var(--accent),transparent);
+  margin-bottom:14px;border-radius:2px;
+}
+.narrative{
+  font-size:13.5px;line-height:1.85;color:var(--text-sub);max-width:1380px;
+  border-left:3px solid var(--primary);padding-left:16px;
+  background:linear-gradient(90deg,rgba(33,150,243,0.05),transparent);
+  padding-top:8px;padding-bottom:8px;border-radius:0 6px 6px 0;
+}
+
+/* Quadrants */
+.quad-grid{
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:14px;margin-top:16px;height:340px;
+}
+.quad{
+  position:relative;background:var(--card);
+  border:1px solid var(--line);border-radius:10px;
+  padding:16px 18px 14px 18px;
+  box-shadow:0 2px 12px rgba(33,150,243,0.06);
+  overflow:hidden;
+}
+.quad::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+}
+.quad::after{
+  content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;
+  border-radius:50%;background:radial-gradient(circle,rgba(0,188,212,0.12),transparent 70%);
+}
+.quad-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:10px;
+}
+.quad-icon{
+  width:38px;height:38px;border-radius:8px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px var(--glow);flex-shrink:0;
+}
+.quad-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.quad-title{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:17px;color:var(--text-main);
+}
+.quad-num{
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--accent2);
+  letter-spacing:1.5px;margin-top:2px;
+}
+.quad-body{
+  font-size:12.5px;line-height:1.75;color:var(--text-sub);
+  position:relative;z-index:2;
+}
+.quad-body strong{color:var(--primary-dark);font-weight:600;}
+.quad-tags{
+  display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;
+}
+.quad-tag{
+  font-size:10.5px;padding:3px 10px;border-radius:20px;
+  background:rgba(33,150,243,0.08);color:var(--primary-dark);
+  border:1px solid rgba(33,150,243,0.2);
+  font-family:'Roboto Mono',monospace;letter-spacing:0.5px;
+}
+.quad-tag.accent{
+  background:rgba(0,188,212,0.1);color:var(--accent2);border-color:rgba(0,188,212,0.25);
+}
+
+/* Mini visual inside each quadrant */
+.quad-mini{
+  display:flex;align-items:center;gap:8px;margin-top:8px;
+  height:34px;
+}
+.mini-bar{
+  flex:1;height:8px;border-radius:4px;
+  background:rgba(33,150,243,0.1);position:relative;overflow:hidden;
+}
+.mini-bar span{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:4px;}
+
+/* Funnel band */
+.funnel-zone{
+  margin-top:16px;background:var(--card);
+  border:1px solid var(--line);border-radius:10px;
+  padding:14px 22px;height:120px;position:relative;overflow:hidden;
+  display:flex;align-items:center;gap:20px;
+}
+.funnel-zone::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--accent),var(--primary));
+}
+.funnel-label{
+  width:130px;flex-shrink:0;
+}
+.funnel-label .zh{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:var(--text-main);margin-bottom:4px;}
+.funnel-label .en{font-size:10px;color:var(--text-sub);letter-spacing:1.5px;font-family:'Roboto Mono',monospace;}
+
+.funnel-visual{
+  flex:1;display:flex;align-items:center;gap:6px;height:60px;
+}
+.funnel-step{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  flex:1;height:100%;justify-content:center;position:relative;
+}
+.funnel-bar{
+  height:32px;border-radius:4px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:12px;
+  position:relative;box-shadow:0 2px 8px var(--glow);
+}
+.funnel-bar.b1{width:100%;opacity:1;}
+.funnel-bar.b2{width:78%;opacity:0.95;}
+.funnel-bar.b3{width:52%;opacity:0.9;}
+.funnel-bar.b4{width:30%;opacity:0.85;}
+.funnel-bar.b5{width:14%;opacity:0.8;}
+.funnel-rate{font-size:10px;color:var(--accent2);font-family:'Roboto Mono',monospace;letter-spacing:0.5px;}
+
+.data-cards{
+  display:flex;gap:12px;width:380px;flex-shrink:0;
+}
+.data-card{
+  flex:1;background:linear-gradient(135deg,rgba(33,150,243,0.06),rgba(0,188,212,0.06));
+  border:1px solid rgba(33,150,243,0.2);border-radius:8px;
+  padding:10px 12px;
+}
+.data-card .num{
+  font-family:'Inter',sans-serif;font-weight:800;font-size:24px;
+  color:var(--primary);line-height:1.1;
+}
+.data-card .num .unit{font-size:13px;font-weight:600;color:var(--accent2);}
+.data-card .desc{font-size:10.5px;color:var(--text-sub);line-height:1.5;margin-top:5px;}
+
+/* Footer */
+.footer{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);
+  font-size:10.5px;color:var(--text-sub);letter-spacing:1px;
+  font-family:'Roboto Mono',monospace;
+}
+.footer .left{display:flex;align-items:center;gap:10px;}
+.footer .left .badge{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;padding:3px 10px;border-radius:10px;font-weight:600;
+}
+.footer .right{display:flex;align-items:center;gap:14px;}
+.footer .right .sq{width:6px;height:6px;background:var(--accent);display:inline-block;border-radius:1px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="page-tag">
+        <span class="dot"></span>
+        <span>PART 06 · GOVERNANCE</span>
+        <span class="bar"></span>
+      </div>
+      <div class="main-title">
+        <span class="accent-bar"></span>
+        <span>社区治理与参与</span>
+        <span class="en">COMMUNITY GOVERNANCE &amp; PARTICIPATION</span>
+      </div>
+      <div class="title-underline"></div>
+      <div class="narrative">
+        治理结构是开源社区可持续运转的骨架。一个健康的社区需要在开放准入与质量控制之间找到平衡，而布道者的工作正是降低参与门槛、激发贡献意愿。
+      </div>
+    </div>
+
+    <div class="quad-grid">
+
+      <div class="quad">
+        <div class="quad-head">
+          <div class="quad-icon">
+            <svg viewBox="0 0 24 24"><polygon points="12 3 21 8 21 16 12 21 3 16 3 8"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div>
+            <div class="quad-title">治理层级</div>
+            <div class="quad-num">Q1 · GOVERNANCE HIERARCHY</div>
+          </div>
+        </div>
+        <div class="quad-body">
+          <strong>贡献者 → Committer → PMC / TSC</strong> 三层架构，逐级赋予决策权与审核权，形成权力制衡与责任下沉的治理链条。
+        </div>
+        <div class="quad-mini">
+          <div class="mini-bar"><span style="width:100%"></span></div>
+          <div class="mini-bar"><span style="width:65%"></span></div>
+          <div class="mini-bar"><span style="width:28%"></span></div>
+        </div>
+        <div class="quad-tags">
+          <span class="quad-tag">贡献者 Contributor</span>
+          <span class="quad-tag">Committer</span>
+          <span class="quad-tag accent">PMC / TSC</span>
+        </div>
+      </div>
+
+      <div class="quad">
+        <div class="quad-head">
+          <div class="quad-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 6 L21 6 L15 14 L15 20 L9 22 L9 14 Z"/></svg>
+          </div>
+          <div>
+            <div class="quad-title">参与漏斗</div>
+            <div class="quad-num">Q2 · PARTICIPATION FUNNEL</div>
+          </div>
+        </div>
+        <div class="quad-body">
+          从 <strong>Star</strong>、<strong>Issue</strong> 到 <strong>PR</strong> 再到核心 <strong>Commit</strong>，参与深度呈现<strong>指数级衰减</strong>，顶层活跃贡献者极为稀缺。
+        </div>
+        <div class="quad-mini">
+          <div style="display:flex;align-items:center;gap:5px;width:100%;justify-content:flex-end;">
+            <span style="font-size:9px;color:var(--text-sub);">Star</span>
+            <span style="font-size:14px;color:var(--primary);">▸</span>
+            <span style="font-size:9px;color:var(--text-sub);">Issue</span>
+            <span style="font-size:14px;color:var(--primary);">▸</span>
+            <span style="font-size:9px;color:var(--text-sub);">PR</span>
+            <span style="font-size:14px;color:var(--accent);">▸</span>
+            <span style="font-size:9px;color:var(--accent2);">Commit</span>
+          </div>
+        </div>
+        <div class="quad-tags">
+          <span class="quad-tag">★ Star</span>
+          <span class="quad-tag">⊘ Issue</span>
+          <span class="quad-tag">≡ PR</span>
+          <span class="quad-tag accent">◆ Commit</span>
+        </div>
+      </div>
+
+      <div class="quad">
+        <div class="quad-head">
+          <div class="quad-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12 L21 12 M12 3 C15 7 15 17 12 21 C9 17 9 7 12 3"/></svg>
+          </div>
+          <div>
+            <div class="quad-title">包容性挑战</div>
+            <div class="quad-num">Q3 · INCLUSIVITY CHALLENGES</div>
+          </div>
+        </div>
+        <div class="quad-body">
+          <strong>语言壁垒</strong>、<strong>时区差异</strong>与<strong>隐性门槛</strong>持续影响新兴贡献者的留存率，是全球化社区必须直面的结构性问题。
+        </div>
+        <div class="quad-mini">
+          <div class="mini-bar"><span style="width:72%;background:linear-gradient(90deg,#ff7043,#ffa726);"></span></div>
+          <div class="mini-bar"><span style="width:58%;background:linear-gradient(90deg,#ff7043,#ffa726);"></span></div>
+          <div class="mini-bar"><span style="width:44%;background:linear-gradient(90deg,#ff7043,#ffa726);"></span></div>
+        </div>
+        <div class="quad-tags">
+          <span class="quad-tag" style="background:rgba(255,112,67,0.1);color:#e64a19;border-color:rgba(255,112,67,0.3);">语言壁垒</span>
+          <span class="quad-tag" style="background:rgba(255,112,67,0.1);color:#e64a19;border-color:rgba(255,112,67,0.3);">时区差异</span>
+          <span class="quad-tag" style="background:rgba(255,112,67,0.1);color:#e64a19;border-color:rgba(255,112,67,0.3);">隐性门槛</span>
+        </div>
+      </div>
+
+      <div class="quad">
+        <div class="quad-head">
+          <div class="quad-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 19 L8 12 L13 16 L21 5"/><polyline points="14 5 21 5 21 12"/></svg>
+          </div>
+          <div>
+            <div class="quad-title">健康度指标</div>
+            <div class="quad-num">Q4 · HEALTH METRICS</div>
+          </div>
+        </div>
+        <div class="quad-body">
+          <strong>Chaos Butterfly</strong>、<strong>CNCF 成熟度模型</strong>等工具正在量化社区活力，从响应速度、决策透明到生态扩展形成评估闭环。
+        </div>
+        <div class="quad-mini">
+          <div style="display:flex;align-items:center;gap:8px;width:100%;font-family:'Inter',sans-serif;">
+            <div style="flex:1;text-align:center;">
+              <div style="font-size:13px;font-weight:700;color:var(--primary);">9.2</div>
+              <div style="font-size:9px;color:var(--text-sub);">响应</div>
+            </div>
+            <div style="width:1px;height:24px;background:var(--line);"></div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-size:13px;font-weight:700;color:var(--accent);">8.6</div>
+              <div style="font-size:9px;color:var(--text-sub);">透明</div>
+            </div>
+            <div style="width:1px;height:24px;background:var(--line);"></div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-size:13px;font-weight:700;color:var(--primary);">7.8</div>
+              <div style="font-size:9px;color:var(--text-sub);">生态</div>
+            </div>
+          </div>
+        </div>
+        <div class="quad-tags">
+          <span class="quad-tag">Chaos Butterfly</span>
+          <span class="quad-tag accent">CNCF 成熟度</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="funnel-zone">
+      <div class="funnel-label">
+        <div class="zh">参与衰减带</div>
+        <div class="en">PARTICIPATION DECAY</div>
+      </div>
+      <div class="funnel-visual">
+        <div class="funnel-step">
+          <div class="funnel-bar b1">围观者</div>
+          <div class="funnel-rate">100%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-bar b2">Star / Watch</div>
+          <div class="funnel-rate">~60%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-bar b3">提 Issue</div>
+          <div class="funnel-rate">~15%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-bar b4">提交 PR</div>
+          <div class="funnel-rate">~5%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-bar b5">核心 Commit</div>
+          <div class="funnel-rate">~2%</div>
+        </div>
+      </div>
+      <div class="data-cards">
+        <div class="data-card">
+          <div class="num">2<span class="unit">-5%</span></div>
+          <div class="desc">核心贡献者占比 · 大多数项目长期贡献者比例</div>
+        </div>
+        <div class="data-card">
+          <div class="num">≈30<span class="unit">%</span></div>
+          <div class="desc">首次贡献者留存 · 完成首个 PR 后持续参与比例</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="left">
+        <span class="badge">OPEN SOURCE</span>
+        <span>社区治理与参与 / COMMUNITY GOVERNANCE &amp; PARTICIPATION</span>
+      </div>
+      <div class="right">
+        <span>P06 / GOV</span>
+        <span class="sq"></span>
+        <span>OPEN · INCLUSIVE · SUSTAINABLE</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

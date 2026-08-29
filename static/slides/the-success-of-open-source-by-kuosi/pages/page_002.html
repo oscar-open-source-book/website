@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源时代背景</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root{
+  --cyan:#00BCD4;
+  --blue:#2196F3;
+  --neutral:#ECEFF1;
+  --bg-dark:#060B18;
+  --bg-mid:#0A1628;
+  --line:rgba(0,188,212,0.35);
+  --glow:rgba(0,188,212,0.55);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Inter','JetBrains Mono',monospace;
+  color:var(--neutral);
+  background:#000;
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  background:radial-gradient(ellipse at 50% 30%, #0E1F38 0%, #060B18 55%, #03070F 100%);
+  font-family:'Inter',sans-serif;
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  overflow:hidden;
+}
+
+#bg .grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.045) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+
+#bg .scanlines{
+  position:absolute;inset:0;
+  background-image:linear-gradient(180deg, rgba(255,255,255,0.018) 0%, transparent 1px);
+  background-size:100% 3px;
+  mix-blend-mode:overlay;
+}
+
+#bg .glow-top{
+  position:absolute;
+  top:-300px;left:50%;transform:translateX(-50%);
+  width:1200px;height:600px;
+  background:radial-gradient(ellipse at center, rgba(0,188,212,0.18) 0%, rgba(33,150,243,0.06) 40%, transparent 70%);
+  filter:blur(20px);
+}
+
+#bg .glow-bl{
+  position:absolute;
+  bottom:-260px;left:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(circle, rgba(33,150,243,0.14) 0%, transparent 60%);
+  filter:blur(30px);
+}
+
+#bg .glow-br{
+  position:absolute;
+  bottom:-200px;right:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(circle, rgba(0,188,212,0.12) 0%, transparent 60%);
+  filter:blur(30px);
+}
+
+#bg .corner-tl{
+  position:absolute;top:28px;left:28px;
+  width:70px;height:70px;
+  border-top:2px solid var(--cyan);
+  border-left:2px solid var(--cyan);
+  opacity:0.7;
+}
+
+#bg .corner-tr{
+  position:absolute;top:28px;right:28px;
+  width:70px;height:70px;
+  border-top:2px solid var(--blue);
+  border-right:2px solid var(--blue);
+  opacity:0.7;
+}
+
+#bg .corner-bl{
+  position:absolute;bottom:28px;left:28px;
+  width:70px;height:70px;
+  border-bottom:2px solid var(--blue);
+  border-left:2px solid var(--blue);
+  opacity:0.7;
+}
+
+#bg .corner-br{
+  position:absolute;bottom:28px;right:28px;
+  width:70px;height:70px;
+  border-bottom:2px solid var(--cyan);
+  border-right:2px solid var(--cyan);
+  opacity:0.7;
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:60px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+.top-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  letter-spacing:0.18em;
+  color:rgba(236,239,241,0.6);
+  padding:0 20px;
+}
+
+.top-bar .left-mark{
+  display:flex;align-items:center;gap:14px;
+}
+
+.top-bar .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan),0 0 24px var(--glow);
+  animation:pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:0.55;transform:scale(1.25);}
+}
+
+.top-bar .right-mark{
+  display:flex;align-items:center;gap:14px;
+}
+
+.top-bar .bar-seg{
+  width:60px;height:1px;background:linear-gradient(90deg, transparent, var(--cyan));
+}
+
+.header{
+  text-align:center;
+  margin-top:22px;
+}
+
+.chapter-tag{
+  display:inline-flex;align-items:center;gap:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  letter-spacing:0.35em;
+  color:var(--cyan);
+  margin-bottom:22px;
+}
+
+.chapter-tag .seg{
+  width:60px;height:1px;background:var(--cyan);
+  box-shadow:0 0 8px var(--glow);
+}
+
+.chapter-tag .num{
+  font-size:18px;font-weight:600;color:#fff;
+}
+
+.chapter-num-big{
+  position:absolute;
+  top:50px;right:80px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:220px;
+  font-weight:700;
+  line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(0,188,212,0.14);
+  letter-spacing:-8px;
+  pointer-events:none;
+  user-select:none;
+}
+
+.chapter-num-bg{
+  position:absolute;
+  top:120px;left:80px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:180px;
+  font-weight:700;
+  line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(33,150,243,0.10);
+  letter-spacing:-8px;
+  pointer-events:none;
+  user-select:none;
+}
+
+h1.title{
+  font-family:'Space Grotesk','Inter',sans-serif;
+  font-weight:700;
+  font-size:78px;
+  letter-spacing:0.18em;
+  background:linear-gradient(90deg, #ECEFF1 0%, #00BCD4 50%, #2196F3 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 40px rgba(0,188,212,0.15);
+  margin-bottom:18px;
+}
+
+.subtitle{
+  font-family:'Inter',sans-serif;
+  font-size:20px;
+  font-weight:300;
+  letter-spacing:0.32em;
+  color:rgba(236,239,241,0.72);
+  position:relative;
+  display:inline-flex;
+  align-items:center;gap:22px;
+}
+
+.subtitle .deco{
+  width:50px;height:1px;background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+
+.divider{
+  margin:24px auto 0;
+  width:560px;height:1px;
+  background:linear-gradient(90deg, transparent, var(--cyan) 30%, var(--blue) 70%, transparent);
+  box-shadow:0 0 12px var(--glow);
+}
+
+.timeline-wrap{
+  margin-top:38px;
+  padding:0 30px;
+  position:relative;
+}
+
+.timeline-axis{
+  position:absolute;
+  top:34px;left:60px;right:60px;
+  height:2px;
+  background:linear-gradient(90deg, transparent, var(--cyan) 8%, var(--cyan) 50%, var(--blue) 92%, transparent);
+  box-shadow:0 0 10px var(--glow);
+  z-index:1;
+}
+
+.timeline-axis::before,
+.timeline-axis::after{
+  content:'';
+  position:absolute;top:-3px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 10px var(--cyan);
+}
+
+.timeline-axis::before{left:-10px;}
+.timeline-axis::after{right:-10px;background:var(--blue);box-shadow:0 0 10px var(--blue);}
+
+.timeline-nodes{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:24px;
+  position:relative;
+  z-index:2;
+}
+
+.node{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding:0 8px;
+}
+
+.node .node-head{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.3em;
+  color:var(--cyan);
+  margin-bottom:10px;
+}
+
+.node .dot-wrap{
+  position:relative;
+  width:42px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;
+}
+
+.node .dot-outer{
+  position:absolute;inset:0;
+  border-radius:50%;
+  border:1px solid rgba(0,188,212,0.35);
+  animation:rotate-ring 6s linear infinite;
+}
+
+.node .dot-mid{
+  position:absolute;inset:6px;
+  border-radius:50%;
+  border:1px solid rgba(0,188,212,0.5);
+}
+
+.node .dot-inner{
+  width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle, #fff 0%, var(--cyan) 60%, transparent 100%);
+  box-shadow:0 0 14px var(--cyan), 0 0 28px var(--glow);
+  z-index:2;
+  animation:pulse 2s ease-in-out infinite;
+}
+
+.node:nth-child(2) .dot-inner{
+  background:radial-gradient(circle, #fff 0%, var(--blue) 60%, transparent 100%);
+  box-shadow:0 0 14px var(--blue), 0 0 28px rgba(33,150,243,0.5);
+}
+
+.node:nth-child(2) .dot-outer{border-color:rgba(33,150,243,0.35);}
+.node:nth-child(2) .dot-mid{border-color:rgba(33,150,243,0.5);}
+.node:nth-child(2) .node-head{color:var(--blue);}
+
+.node:nth-child(4) .dot-inner{
+  background:radial-gradient(circle, #fff 0%, var(--blue) 60%, transparent 100%);
+  box-shadow:0 0 14px var(--blue), 0 0 28px rgba(33,150,243,0.5);
+}
+.node:nth-child(4) .dot-outer{border-color:rgba(33,150,243,0.35);}
+.node:nth-child(4) .dot-mid{border-color:rgba(33,150,243,0.5);}
+.node:nth-child(4) .node-head{color:var(--blue);}
+
+@keyframes rotate-ring{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+.node-card{
+  background:linear-gradient(160deg, rgba(0,188,212,0.06) 0%, rgba(33,150,243,0.04) 100%);
+  border:1px solid rgba(0,188,212,0.18);
+  border-radius:6px;
+  padding:20px 16px 18px;
+  width:100%;
+  position:relative;
+  overflow:hidden;
+}
+
+.node:nth-child(2) .node-card{
+  border-color:rgba(33,150,243,0.22);
+  background:linear-gradient(160deg, rgba(33,150,243,0.06) 0%, rgba(0,188,212,0.03) 100%);
+}
+
+.node:nth-child(4) .node-card{
+  border-color:rgba(33,150,243,0.22);
+  background:linear-gradient(160deg, rgba(33,150,243,0.06) 0%, rgba(0,188,212,0.03) 100%);
+}
+
+.node-card::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:40px;height:2px;
+  background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);
+}
+
+.node:nth-child(2) .node-card::before,
+.node:nth-child(4) .node-card::before{
+  background:var(--blue);
+  box-shadow:0 0 8px var(--blue);
+}
+
+.node-keyword{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;
+  font-size:22px;
+  color:#fff;
+  letter-spacing:0.05em;
+  margin-bottom:4px;
+}
+
+.node-year{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  color:var(--cyan);
+  letter-spacing:0.15em;
+  margin-bottom:12px;
+}
+
+.node:nth-child(2) .node-year,
+.node:nth-child(4) .node-year{color:var(--blue);}
+
+.node-card .divider-sm{
+  width:32px;height:1px;
+  background:var(--cyan);
+  margin:0 auto 12px;
+  opacity:0.6;
+}
+
+.node:nth-child(2) .node-card .divider-sm,
+.node:nth-child(4) .node-card .divider-sm{
+  background:var(--blue);
+}
+
+.node-text{
+  font-size:13.5px;
+  line-height:1.7;
+  color:rgba(236,239,241,0.78);
+  font-weight:300;
+}
+
+.node-text .hl{
+  color:var(--cyan);
+  font-weight:500;
+}
+
+.node:nth-child(2) .node-text .hl,
+.node:nth-child(4) .node-text .hl{color:var(--blue);}
+
+.node-text .num-hl{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:16px;
+  font-weight:600;
+  color:#fff;
+}
+
+.footer-band{
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  padding:0 40px;
+}
+
+.footer-band .line{
+  flex:1;max-width:280px;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(0,188,212,0.5));
+}
+
+.footer-band .line.right{
+  background:linear-gradient(90deg, rgba(33,150,243,0.5), transparent);
+}
+
+.footer-text{
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:300;
+  letter-spacing:0.16em;
+  color:rgba(236,239,241,0.68);
+  text-align:center;
+  max-width:780px;
+  line-height:1.7;
+}
+
+.footer-text .accent{
+  color:var(--cyan);
+  font-weight:400;
+}
+
+.side-deco-l{
+  position:absolute;
+  left:24px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:12px;
+  align-items:center;
+}
+
+.side-deco-l .bar{
+  width:1px;height:20px;
+  background:linear-gradient(180deg, transparent, var(--cyan), transparent);
+  opacity:0.5;
+}
+
+.side-deco-l .lbl{
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.4em;
+  color:rgba(0,188,212,0.45);
+}
+
+.side-deco-r{
+  position:absolute;
+  right:24px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:12px;
+  align-items:center;
+}
+
+.side-deco-r .bar{
+  width:1px;height:20px;
+  background:linear-gradient(180deg, transparent, var(--blue), transparent);
+  opacity:0.5;
+}
+
+.side-deco-r .lbl{
+  writing-mode:vertical-rl;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.4em;
+  color:rgba(33,150,243,0.45);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+  <div class="grid"></div>
+  <div class="scanlines"></div>
+  <div class="glow-top"></div>
+  <div class="glow-bl"></div>
+  <div class="glow-br"></div>
+  <div class="corner-tl"></div>
+  <div class="corner-tr"></div>
+  <div class="corner-bl"></div>
+  <div class="corner-br"></div>
+</div>
+
+<div id="ct">
+  <div class="chapter-num-big"><span>02</span></div>
+  <div class="chapter-num-bg"><span>OPEN&nbsp;SOURCE</span></div>
+
+  <div class="top-bar">
+    <div class="left-mark">
+      <span class="dot"></span>
+      <span>CHAPTER&nbsp;//&nbsp;OPEN SOURCE ERA</span>
+    </div>
+    <div class="right-mark">
+      <span class="bar-seg"></span>
+      <span>PART · 02 / 06</span>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="chapter-tag">
+      <span class="seg"></span>
+      <span class="num">02</span>
+      <span>CHAPTER OVERVIEW</span>
+      <span class="seg"></span>
+    </div>
+
+    <h1 class="title"><span>开源时代背景</span></h1>
+
+    <div class="subtitle">
+      <span class="deco"></span>
+      <span>从免费软件运动到开源经济时代</span>
+      <span class="deco"></span>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <div class="timeline-wrap">
+    <div class="timeline-axis"></div>
+    <div class="side-deco-l">
+      <span class="bar"></span>
+      <span class="lbl">TIMELINE · 1983 → 2024</span>
+      <span class="bar"></span>
+    </div>
+    <div class="side-deco-r">
+      <span class="bar"></span>
+      <span class="lbl">FOUR&nbsp;·&nbsp;KEY&nbsp;·&nbsp;MILESTONES</span>
+      <span class="bar"></span>
+    </div>
+
+    <div class="timeline-nodes">
+      <div class="node">
+        <div class="node-head"><span>NODE · 01</span></div>
+        <div class="dot-wrap">
+          <div class="dot-outer"></div>
+          <div class="dot-mid"></div>
+          <div class="dot-inner"></div>
+        </div>
+        <div class="node-card">
+          <div class="node-keyword"><span>历史脉络</span></div>
+          <div class="node-year"><span>SINCE&nbsp;1983</span></div>
+          <div class="divider-sm"></div>
+          <div class="node-text">
+            从 <span class="hl">GNU 计划</span>、<span class="hl">Linux 内核</span> 到 <span class="hl">Apache 基金会</span>，开源走过 <span class="num-hl">三十余</span> 年辉煌历程
+          </div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-head"><span>NODE · 02</span></div>
+        <div class="dot-wrap">
+          <div class="dot-outer"></div>
+          <div class="dot-mid"></div>
+          <div class="dot-inner"></div>
+        </div>
+        <div class="node-card">
+          <div class="node-keyword"><span>全球格局</span></div>
+          <div class="node-year"><span>GLOBAL · SCALE</span></div>
+          <div class="divider-sm"></div>
+          <div class="node-text">
+            <span class="hl">GitHub</span> 全球开发者超过 <span class="num-hl">1.3 亿</span>，开源已成为全球软件产业主流趋势
+          </div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-head"><span>NODE · 03</span></div>
+        <div class="dot-wrap">
+          <div class="dot-outer"></div>
+          <div class="dot-mid"></div>
+          <div class="dot-inner"></div>
+        </div>
+        <div class="node-card">
+          <div class="node-keyword"><span>关键转折</span></div>
+          <div class="node-year"><span>2014 · ACQUISITION</span></div>
+          <div class="divider-sm"></div>
+          <div class="node-text">
+            <span class="num-hl">2014</span> 年 GitHub 被微软以 <span class="num-hl">75 亿</span> 美元收购，标志着开源正式进入 <span class="hl">企业级时代</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-head"><span>NODE · 04</span></div>
+        <div class="dot-wrap">
+          <div class="dot-outer"></div>
+          <div class="dot-mid"></div>
+          <div class="dot-inner"></div>
+        </div>
+        <div class="node-card">
+          <div class="node-keyword"><span>中国崛起</span></div>
+          <div class="node-year"><span>CHINA · RISING</span></div>
+          <div class="divider-sm"></div>
+          <div class="node-text">
+            国内开源贡献者数量突破 <span class="num-hl">600 万</span>，本土开源项目 <span class="hl">国际影响力</span> 持续扩大
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-band">
+    <span class="line"></span>
+    <div class="footer-text">
+      <span>理解开源历史脉络，是理解当下<span class="accent">开源经济</span>、<span class="accent">开源社区</span>和<span class="accent">开源企业</span>的关键起点。</span>
+    </div>
+    <span class="line right"></span>
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>许可证与治理模式</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #00BCD4;
+  --accent: #2196F3;
+  --text-main: #ECEFF1;
+  --text-dim: #90A4AE;
+  --bg-dark: #0A0E1A;
+  --bg-card: rgba(13, 21, 38, 0.72);
+  --border-glow: rgba(0, 188, 212, 0.4);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 1200px 600px at 15% 10%, rgba(0, 188, 212, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 900px 500px at 90% 90%, rgba(33, 150, 243, 0.08) 0%, transparent 60%),
+    #0A0E1A;
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 188, 212, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 188, 212, 0.035) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 64px 40px 64px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  margin-bottom: 28px;
+}
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--primary);
+  letter-spacing: 3px;
+  font-weight: 600;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  margin-bottom: 14px;
+}
+.page-badge .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+}
+.header h1 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #ECEFF1 0%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+.header .subtitle {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 1360px;
+  font-weight: 300;
+}
+.gradient-bar {
+  height: 2px;
+  margin-top: 20px;
+  background: linear-gradient(90deg, transparent 0%, var(--primary) 30%, var(--accent) 60%, transparent 100%);
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1px 360px;
+  gap: 40px;
+  margin-top: 28px;
+  min-height: 0;
+}
+
+/* Divider */
+.divider {
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, var(--primary) 20%, var(--accent) 50%, var(--primary) 80%, transparent 100%);
+  box-shadow: 0 0 14px rgba(0, 188, 212, 0.6), 0 0 4px rgba(0, 188, 212, 0.9);
+  position: relative;
+}
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 20px var(--primary), 0 0 8px var(--primary);
+}
+
+/* Left column */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+.point-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 22px;
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 188, 212, 0.18);
+  border-radius: 12px;
+  position: relative;
+  transition: all 0.3s;
+  backdrop-filter: blur(8px);
+  flex: 1;
+}
+.point-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+.point-num {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 36px;
+  text-shadow: 0 0 12px rgba(0, 188, 212, 0.5);
+}
+.point-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.point-title {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ECEFF1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.point-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary);
+  border: 1px solid rgba(0, 188, 212, 0.35);
+  border-radius: 4px;
+  padding: 2px 7px;
+  letter-spacing: 0.5px;
+}
+.point-desc {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+/* Right column */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 0;
+}
+.kpi-card {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 188, 212, 0.22);
+  border-radius: 16px;
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+}
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.12) 0%, transparent 70%);
+}
+.kpi-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+.kpi-value {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00BCD4 0%, #2196F3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
+  margin-bottom: 8px;
+}
+.kpi-value-text {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00BCD4 0%, #2196F3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.kpi-caption {
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.kpi-title {
+  font-size: 13px;
+  color: var(--text-main);
+  font-weight: 600;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 188, 212, 0.15);
+  line-height: 1.5;
+}
+.kpi-deco {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 10px;
+  color: rgba(0, 188, 212, 0.3);
+  letter-spacing: 2px;
+}
+
+/* Footer */
+.footer {
+  margin-top: 24px;
+  text-align: center;
+  position: relative;
+  padding-top: 18px;
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+.footer-text {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 3px;
+  font-style: italic;
+}
+.footer-text .accent {
+  color: var(--primary);
+  font-weight: 500;
+  font-style: normal;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="page-badge">
+        <span class="dot"></span>
+        <span>PART 08 · OPEN SOURCE GOVERNANCE</span>
+      </div>
+      <h1>许可证与治理模式</h1>
+      <p class="subtitle">许可证是开源的法律基石，治理模式决定项目的长期活力；随着商业模式的演进，许可证也在不断创新，如何在开放与商业之间找到平衡，是每个开源项目必须回答的核心命题。</p>
+      <div class="gradient-bar"></div>
+    </div>
+
+    <div class="main">
+
+      <div class="left-col">
+
+        <div class="point-card">
+          <div class="point-num">01</div>
+          <div class="point-body">
+            <div class="point-title">
+              <span>经典许可证</span>
+              <span class="point-tag">CLASSIC</span>
+            </div>
+            <div class="point-desc">MIT、Apache 2.0、GPL 等经典许可证在不同商业场景下各有适用优势，构成了开源生态的法律基石。</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-num">02</div>
+          <div class="point-body">
+            <div class="point-title">
+              <span>新型许可证</span>
+              <span class="point-tag">EMERGING</span>
+            </div>
+            <div class="point-desc">SSPL、BSL 等新型许可证引发开源定义边界与合规的广泛讨论与争议，重塑商业开源的底层逻辑。</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-num">03</div>
+          <div class="point-body">
+            <div class="point-title">
+              <span>基金会模式</span>
+              <span class="point-tag">FOUNDATION</span>
+            </div>
+            <div class="point-desc">CNCF、Apache Software Foundation 等基金会提供中立治理与基础设施，保障项目的长期可持续性。</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-num">04</div>
+          <div class="point-body">
+            <div class="point-title">
+              <span>商业友好</span>
+              <span class="point-tag">BUSINESS</span>
+            </div>
+            <div class="point-desc">企业级开源项目需要在开放性与可持续商业回报之间找到合理平衡，探索多元化的盈利路径。</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="point-num">05</div>
+          <div class="point-body">
+            <div class="point-title">
+              <span>中国实践</span>
+              <span class="point-tag">CHINA</span>
+            </div>
+            <div class="point-desc">中国企业在开源许可证选择上逐步建立起丰富的本土化实践经验，推动全球开源治理格局的多极化演进。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="right-col">
+
+        <div class="kpi-card">
+          <div class="kpi-label">OSI CERTIFIED</div>
+          <div class="kpi-value">90<span style="font-size:36px;">+</span></div>
+          <div class="kpi-caption">OSI 官方认证许可证</div>
+          <div class="kpi-title">开放源代码促进会（OSI）已认证的许可证数量，涵盖经典协议与新兴商业协议</div>
+          <div class="kpi-deco">// 01</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">ADOPTION RANK</div>
+          <div class="kpi-value-text">第一</div>
+          <div class="kpi-caption">企业级最常用许可证</div>
+          <div class="kpi-title">Apache 2.0 在企业级开源项目中的采用率位居全球首位，是商业开源的事实标准</div>
+          <div class="kpi-deco">// 02</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <p class="footer-text">在<span class="accent">开放</span>与<span class="accent">商业</span>之间，找到可持续的平衡点</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

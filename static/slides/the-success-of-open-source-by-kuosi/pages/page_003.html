@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>2023开源生态概览</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Source+Code+Pro:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#00BCD4;
+  --blue:#2196F3;
+  --text:#ECEFF1;
+  --muted:#90A4AE;
+  --bg:#0D1117;
+  --bg2:#1A1A2E;
+  --card:#161B22;
+  --border:#2A3340;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px;box-sizing:border-box;display:flex;flex-direction:column;}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.06) 1px,transparent 1px);background-size:48px 48px;}
+.glow{position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(120px);opacity:0.28;pointer-events:none;}
+.glow.a{background:#00BCD4;top:-180px;left:-160px;}
+.glow.b{background:#2196F3;bottom:-200px;right:-180px;}
+.scan{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.45;}
+
+.head{display:flex;flex-direction:column;gap:10px;margin-bottom:6px;}
+.kicker{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--cyan);letter-spacing:3px;}
+.title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:54px;letter-spacing:1px;line-height:1.05;}
+.title .cy{color:var(--cyan);}
+.sub{font-size:15px;color:var(--muted);max-width:1280px;line-height:1.6;}
+.sub b{color:var(--text);font-weight:600;}
+
+.timeline{margin-top:14px;display:flex;align-items:center;gap:0;position:relative;}
+.tl-line{flex:0 0 100%;height:1px;background:linear-gradient(90deg,transparent,var(--border) 8%,var(--border) 92%,transparent);position:relative;}
+.tl-row{display:flex;justify-content:space-between;width:100%;position:absolute;top:-36px;left:0;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--muted);letter-spacing:1.5px;}
+.tl-node{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);position:relative;}
+.tl-node.mid{background:var(--blue);box-shadow:0 0 8px var(--blue);}
+.tl-node.dim{background:var(--border);box-shadow:none;}
+.tl-tags{display:flex;justify-content:space-between;width:100%;margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;}
+
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px;}
+.kpi{position:relative;background:linear-gradient(180deg,#161B22 0%,#1A1F2B 100%);border:1px solid var(--border);border-radius:12px;padding:18px 22px;display:flex;flex-direction:column;gap:6px;overflow:hidden;}
+.kpi::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue));}
+.kpi-tag{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--muted);letter-spacing:1.5px;}
+.kpi-num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:42px;color:var(--cyan);line-height:1;}
+.kpi-label{font-size:13px;color:var(--text);font-weight:500;}
+.kpi-desc{font-size:11.5px;color:var(--muted);line-height:1.5;}
+
+.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:16px;}
+.card{grid-column:span 2;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;min-height:150px;}
+.card.wide{grid-column:span 3;}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--blue));}
+.c-head{display:flex;align-items:center;gap:10px;}
+.c-idx{font-family:'Source Code Pro',monospace;font-size:12px;color:var(--cyan);border:1px solid var(--cyan);border-radius:4px;padding:2px 7px;letter-spacing:1px;}
+.c-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;}
+.c-title .k{color:var(--cyan);}
+.c-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.c-text{font-size:12.5px;color:var(--muted);line-height:1.65;}
+.c-text b{color:var(--text);font-weight:600;}
+.c-foot{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:6px;border-top:1px dashed var(--border);font-family:'Source Code Pro',monospace;font-size:10.5px;color:var(--muted);letter-spacing:1px;}
+.c-foot .dot{width:5px;height:5px;border-radius:50%;background:var(--blue);}
+
+.footer{margin-top:14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:12px;}
+.foot-line{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--text);letter-spacing:1px;}
+.foot-line .k{color:var(--cyan);}
+.foot-meta{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--muted);letter-spacing:1.5px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+  <div class="grid-bg"></div>
+  <div class="glow a"></div>
+  <div class="glow b"></div>
+  <div class="scan"></div>
+</div>
+<div id="ct">
+
+  <div class="head">
+    <div class="kicker"><span>// YEAR_IN_REVIEW · 2023</span></div>
+    <div class="title"><span>2023<span class="cy"> 开源生态 </span>概览</span></div>
+    <div class="sub">
+      <span><b>技术加速演进</b>与<b>治理模式深刻变革</b>并行的一年 —— <b>AI 浪潮</b>将开源推上风口浪尖，<b>许可证创新</b>带来新讨论，<b>云原生</b>与<b>安全治理</b>成为不可忽视的议题。</span>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <span class="tl-node"></span>
+        <span class="tl-node mid"></span>
+        <span class="tl-node mid"></span>
+        <span class="tl-node"></span>
+        <span class="tl-node dim"></span>
+        <span class="tl-node mid"></span>
+        <span class="tl-node"></span>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-tags">
+        <span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span><span>JUL</span><span>AUG</span><span>SEP</span><span>OCT</span><span>NOV</span><span>DEC</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-tag"><span>01 · GITHUB ACTIVITY</span></div>
+      <div class="kpi-num"><span>4.7 亿+</span></div>
+      <div class="kpi-label"><span>GitHub 活跃项目数</span></div>
+      <div class="kpi-desc"><span>截至 2023 年，全球开源项目规模持续创历史新高。</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-tag"><span>02 · ENTERPRISE ADOPTION</span></div>
+      <div class="kpi-num"><span>73%</span></div>
+      <div class="kpi-label"><span>企业开源采用率</span></div>
+      <div class="kpi-desc"><span>商业软件产品中包含开源组件的比例，渗透全面深化。</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-tag"><span>03 · CNCF ECOSYSTEM</span></div>
+      <div class="kpi-num"><span>140+</span></div>
+      <div class="kpi-label"><span>CNCF 已孵化项目</span></div>
+      <div class="kpi-desc"><span>覆盖毕业与孵化期项目，云原生生态版图加速扩张。</span></div>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="c-head"><span class="c-idx">01</span><span class="c-title"><span class="k">AI</span> 与开源</span><span class="c-dot"></span></div>
+      <div class="c-text"><span><b>大模型时代</b>，开源与闭源之争加剧，<b>Llama</b> 等开源模型引发行业变革，重塑研发范式。</span></div>
+      <div class="c-foot"><span class="dot"></span><span>LLAMA · LLAMACPP · FAISS</span></div>
+    </div>
+    <div class="card">
+      <div class="c-head"><span class="c-idx">02</span><span class="c-title">许可证<span class="k">争议</span></span><span class="c-dot"></span></div>
+      <div class="c-text"><span><b>SSPL</b>、<b>BSL</b> 等新型许可证，引发开源社区对<b>开源定义</b>的重新审视与讨论。</span></div>
+      <div class="c-foot"><span class="dot"></span><span>SSPL · BSL · MPL</span></div>
+    </div>
+    <div class="card wide">
+      <div class="c-head"><span class="c-idx">03</span><span class="c-title">基金会<span class="k">繁荣</span></span><span class="c-dot"></span></div>
+      <div class="c-text"><span><b>CNCF</b>、<b>LF AI 与数据</b>等基金会加速成熟，企业参与度持续提升，成为开源治理的核心枢纽。</span></div>
+      <div class="c-foot"><span class="dot"></span><span>CNCF · LF AI &amp; DATA · ASF · LINUX FOUNDATION</span></div>
+    </div>
+    <div class="card">
+      <div class="c-head"><span class="c-idx">04</span><span class="c-title">云原生<span class="k">主流</span></span><span class="c-dot"></span></div>
+      <div class="c-text"><span><b>Kubernetes</b>、<b>Prometheus</b> 等项目生态成熟，成为现代基础设施基石。</span></div>
+      <div class="c-foot"><span class="dot"></span><span>K8S · PROMETHEUS · ISTIO</span></div>
+    </div>
+    <div class="card wide">
+      <div class="c-head"><span class="c-idx">05</span><span class="c-title">安全<span class="k">挑战</span></span><span class="c-dot"></span></div>
+      <div class="c-text"><span>供应链攻击频发，<b>OpenSSF</b> 等组织推动<b>开源安全治理体系</b>建立，合规与审计走向常态化。</span></div>
+      <div class="c-foot"><span class="dot"></span><span>OPENSSF · SCOREBOARD · SBOM</span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="foot-line"><span>2023：<span class="k">开源</span> 从协作走向<span class="k">治理</span></span></div>
+    <div class="foot-meta"><span>SOURCE · OSS INSIGHT 2023 · END_OF_REPORT</span></div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

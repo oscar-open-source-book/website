@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源治理与社区健康</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --neutral:#B0BEC5;
+  --bg-dark:#0A1428;
+  --bg-card:#12203D;
+  --bg-card2:#0F1B33;
+  --text-main:#E8EAF6;
+  --text-sub:#90A4AE;
+  --border:#1E3A5F;
+  --glow:rgba(33,150,243,0.35);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Roboto','PingFang SC',sans-serif;
+  color:var(--text-main);
+  background:#06101F;
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(33,150,243,0.18) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(0,229,255,0.12) 0%, transparent 38%),
+    var(--bg-dark);
+}
+
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+#bg .scan{
+  position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity:0.35;top:280px;
+}
+#bg .glow-dot{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 12px var(--accent);
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:46px 56px 40px 56px;
+  display:flex;flex-direction:column;
+  font-family:'Roboto','PingFang SC',sans-serif;
+}
+
+/* Header */
+.header{display:flex;flex-direction:column;gap:14px;margin-bottom:22px;}
+.header .title-row{display:flex;align-items:center;gap:20px;}
+.header .title-bar{
+  width:6px;height:54px;border-radius:3px;
+  background:linear-gradient(180deg, var(--accent), var(--primary));
+  box-shadow:0 0 16px var(--glow);
+}
+.header h1{
+  font-family:'Inter',sans-serif;
+  font-weight:800;font-size:42px;color:#fff;
+  letter-spacing:2px;line-height:1;
+  background:linear-gradient(90deg,#fff 30%, var(--accent));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.header .tag{
+  margin-left:auto;display:flex;align-items:center;gap:10px;
+  font-family:'Inter',sans-serif;font-size:12px;letter-spacing:3px;
+  color:var(--accent);
+  border:1px solid rgba(0,229,255,0.35);
+  padding:8px 16px;border-radius:20px;
+  background:rgba(0,229,255,0.05);
+}
+.header .tag .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px var(--accent);
+}
+.header .quote{
+  font-size:14.5px;line-height:1.75;color:var(--neutral);
+  padding:14px 20px;
+  border-left:3px solid var(--primary);
+  background:linear-gradient(90deg, rgba(33,150,243,0.08), transparent);
+  border-radius:0 8px 8px 0;
+}
+.header .quote b{color:#fff;font-weight:500;}
+
+/* Main */
+.main{
+  flex:1;display:flex;gap:24px;min-height:0;
+}
+
+/* Left column */
+.left{width:530px;display:flex;flex-direction:column;gap:12px;}
+.card{
+  flex:1;display:flex;align-items:stretch;gap:14px;
+  padding:16px 18px;
+  background:linear-gradient(135deg, var(--bg-card), var(--bg-card2));
+  border:1px solid var(--border);
+  border-radius:12px;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--accent), var(--primary));
+}
+.card .idx{
+  font-family:'Inter',sans-serif;
+  font-size:28px;font-weight:700;color:var(--primary);
+  min-width:44px;display:flex;align-items:center;justify-content:center;
+  border-right:1px solid var(--border);
+  letter-spacing:0;
+}
+.card .body{display:flex;flex-direction:column;gap:6px;flex:1;}
+.card .head{display:flex;align-items:center;gap:10px;}
+.card .head .label{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:17px;color:#fff;
+}
+.card .head .tag-mini{
+  font-family:'Inter',sans-serif;font-size:10px;color:var(--accent);
+  border:1px solid rgba(0,229,255,0.4);padding:3px 8px;border-radius:10px;
+  letter-spacing:1px;
+}
+.card .desc{
+  font-size:13px;line-height:1.6;color:var(--neutral);
+}
+.card .desc b{color:#E8EAF6;font-weight:500;}
+.card .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+.card .chip{
+  font-size:11px;padding:3px 10px;border-radius:12px;
+  background:rgba(33,150,243,0.12);color:var(--primary);
+  border:1px solid rgba(33,150,243,0.3);
+  font-family:'Inter',sans-serif;
+}
+.card .chip.accent{background:rgba(0,229,255,0.1);color:var(--accent);border-color:rgba(0,229,255,0.3);}
+
+/* Right column */
+.right{flex:1;display:flex;flex-direction:column;gap:16px;min-width:0;}
+
+.chart-wrap{
+  flex:1.15;display:flex;gap:16px;align-items:stretch;
+  background:linear-gradient(135deg, var(--bg-card), var(--bg-card2));
+  border:1px solid var(--border);border-radius:12px;
+  padding:16px 18px 12px 18px;position:relative;
+}
+.chart-wrap::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius:12px 12px 0 0;
+}
+.chart-left{flex:1;display:flex;flex-direction:column;min-width:0;}
+.chart-left .ctitle{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:#fff;
+  margin-bottom:2px;
+}
+.chart-left .csub{font-size:11px;color:var(--neutral);margin-bottom:4px;}
+.chart-left #chart_1{width:100%;height:260px;}
+.chart-legend{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
+.legend-item{
+  display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--neutral);
+  padding:4px 8px;border-radius:6px;background:rgba(255,255,255,0.02);
+}
+.legend-item .ldot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.legend-item .lname{flex:1;color:#E8EAF6;}
+.legend-item .lval{font-family:'Inter',sans-serif;color:var(--accent);font-weight:600;}
+
+.data-cards{
+  flex:1;display:flex;gap:12px;
+}
+.dcard{
+  flex:1;display:flex;flex-direction:column;justify-content:space-between;
+  padding:14px 16px;border-radius:12px;
+  background:linear-gradient(160deg, var(--bg-card), var(--bg-card2));
+  border:1px solid var(--border);position:relative;overflow:hidden;
+}
+.dcard::after{
+  content:"";position:absolute;top:0;right:0;width:60px;height:60px;
+  background:radial-gradient(circle at top right, rgba(0,229,255,0.18), transparent 70%);
+}
+.dcard .icon{
+  width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  background:rgba(33,150,243,0.15);border:1px solid rgba(33,150,243,0.35);
+  font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:var(--accent);
+  margin-bottom:8px;
+}
+.dcard .dlbl{font-size:11px;color:var(--neutral);letter-spacing:1px;margin-bottom:4px;}
+.dcard .dval{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:22px;color:#fff;
+  line-height:1.1;margin-bottom:6px;
+}
+.dcard .dval .unit{font-size:13px;color:var(--accent);font-weight:500;margin-left:2px;}
+.dcard .ddesc{font-size:11.5px;color:var(--neutral);line-height:1.55;}
+
+/* Footer */
+.footer{
+  margin-top:18px;display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:12px;border-radius:10px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.08), rgba(0,229,255,0.08), rgba(33,150,243,0.08));
+  border:1px solid rgba(0,229,255,0.25);
+}
+.footer .ftxt{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:17px;
+  color:#fff;letter-spacing:3px;
+}
+.footer .ftxt span{color:var(--accent);}
+.footer .fdash{
+  flex:0 0 120px;height:1px;
+  background:linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+.footer .fdbl{
+  font-family:'Inter',sans-serif;font-size:11px;color:var(--neutral);letter-spacing:2px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid"></div>
+    <div class="scan"></div>
+    <div class="glow-dot" style="left:8%;top:15%;"></div>
+    <div class="glow-dot" style="left:82%;top:22%;"></div>
+    <div class="glow-dot" style="left:74%;top:78%;"></div>
+    <div class="glow-dot" style="left:5%;top:68%;"></div>
+    <div class="glow-dot" style="left:50%;top:4%;"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title-bar"></div>
+        <h1>开源治理与社区健康</h1>
+        <div class="tag"><span class="dot"></span>OPEN SOURCE GOVERNANCE</div>
+      </div>
+      <div class="quote">
+        开源项目的长期生命力并不只取决于<b>技术优劣</b>，更取决于<b>治理与社区的健康度</b>。清晰的治理结构、稳定的核心维护者群体和友好的许可证策略，才是项目穿越周期的关键。
+      </div>
+    </div>
+
+    <div class="main">
+
+      <div class="left">
+
+        <div class="card">
+          <div class="idx">01</div>
+          <div class="body">
+            <div class="head">
+              <span class="label">治理模式</span>
+              <span class="tag-mini">GOVERNANCE</span>
+            </div>
+            <div class="desc">从<b>仁慈独裁者</b>到<b>基金会主导</b>，再到<b>企业联盟共治</b>，治理结构直接影响社区活力。</div>
+            <div class="chips">
+              <span class="chip">BDFL 模式</span>
+              <span class="chip accent">基金会主导</span>
+              <span class="chip">企业联盟共治</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="idx">02</div>
+          <div class="body">
+            <div class="head">
+              <span class="label">贡献者结构</span>
+              <span class="tag-mini">CONTRIBUTORS</span>
+            </div>
+            <div class="desc"><b>头部贡献者</b>与<b>企业贡献者</b>共同决定项目的技术路线与生态走向。</div>
+            <div class="chips">
+              <span class="chip">核心维护者</span>
+              <span class="chip accent">企业贡献者</span>
+              <span class="chip">社区志愿者</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="idx">03</div>
+          <div class="body">
+            <div class="head">
+              <span class="label">许可证选择</span>
+              <span class="tag-mini">LICENSE</span>
+            </div>
+            <div class="desc"><b>GPL / Apache / MIT</b> 与<b>商业友好型许可</b>之间的选择，映射不同战略意图。</div>
+            <div class="chips">
+              <span class="chip">GPL 强 copyleft</span>
+              <span class="chip accent">Apache 2.0</span>
+              <span class="chip">MIT 宽松</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="idx">04</div>
+          <div class="body">
+            <div class="head">
+              <span class="label">健康度指标</span>
+              <span class="tag-mini">HEALTH METRICS</span>
+            </div>
+            <div class="desc"><b>提交频率 · 响应速度 · 维护活跃度 · 文档完善度</b>，构成社区健康度的核心指标。</div>
+            <div class="chips">
+              <span class="chip">提交频率</span>
+              <span class="chip accent">响应速度</span>
+              <span class="chip">维护活跃度</span>
+              <span class="chip">文档完善度</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="right">
+
+        <div class="chart-wrap">
+          <div class="chart-left">
+            <div class="ctitle">开源生态治理结构层次感</div>
+            <div class="csub">Governance Model Distribution · 全球主要开源项目</div>
+            <div id="chart_1" style="width:100%;height:260px;"></div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><span class="ldot" style="background:#2196F3;"></span><span class="lname">基金会主导</span><span class="lval">32%</span></div>
+            <div class="legend-item"><span class="ldot" style="background:#00E5FF;"></span><span class="lname">企业联盟共治</span><span class="lval">26%</span></div>
+            <div class="legend-item"><span class="ldot" style="background:#64B5F6;"></span><span class="lname">社区共识治理</span><span class="lval">18%</span></div>
+            <div class="legend-item"><span class="ldot" style="background:#1565C0;"></span><span class="lname">仁慈独裁者</span><span class="lval">14%</span></div>
+            <div class="legend-item"><span class="ldot" style="background:#0091EA;"></span><span class="lname">商业公司主导</span><span class="lval">10%</span></div>
+          </div>
+        </div>
+
+        <div class="data-cards">
+          <div class="dcard">
+            <div>
+              <div class="icon"><span>◈</span></div>
+              <div class="dlbl">主流许可证</div>
+              <div class="dval">GPL <span class="unit">/</span> Apache <span class="unit">/</span> MIT</div>
+            </div>
+            <div class="ddesc">三大主流开源许可证覆盖绝大多数知名项目，选择直接影响代码复用与商业化边界。</div>
+          </div>
+          <div class="dcard">
+            <div>
+              <div class="icon"><span>◆</span></div>
+              <div class="dlbl">全球开源基金会</div>
+              <div class="dval">100<span class="unit">+ 家</span></div>
+            </div>
+            <div class="ddesc">全球开源基金会组织数量超过 100 家，成为项目长期治理与资产托管的核心载体。</div>
+          </div>
+          <div class="dcard">
+            <div>
+              <div class="icon"><span>✦</span></div>
+              <div class="dlbl">维护者流失风险</div>
+              <div class="dval">高<span class="unit">· 关键风险</span></div>
+            </div>
+            <div class="ddesc">维护者流失率是项目连续性的关键风险，头部项目更需建立后备维护机制。</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="fdash"></span>
+      <div class="ftxt"><span>治理清晰</span> · <span>社区活跃</span> · <span>许可友好</span></div>
+      <span class="fdash"></span>
+      <span class="fdbl">THE KEY TO LONGEVITY</span>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var el = document.getElementById('chart_1');
+  var chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    tooltip:{show:false},
+    series:[{
+      type:'pie',
+      radius:['45%','72%'],
+      center:['50%','52%'],
+      avoidLabelOverlap:true,
+      label:{
+        show:true,
+        position:'outside',
+        formatter:'{b}',
+        color:'#B0BEC5',
+        fontSize:10,
+        fontFamily:'Inter, sans-serif'
+      },
+      labelLine:{length:6,length2:6,lineStyle:{color:'#1E3A5F'}},
+      itemStyle:{
+        borderColor:'#0A1428',
+        borderWidth:2,
+        shadowColor:'rgba(0,229,255,0.25)',
+        shadowBlur:8
+      },
+      data:[
+        {value:32, name:'基金会主导', itemStyle:{color:'#2196F3'}},
+        {value:26, name:'企业联盟共治', itemStyle:{color:'#00E5FF'}},
+        {value:18, name:'社区共识治理', itemStyle:{color:'#64B5F6'}},
+        {value:14, name:'仁慈独裁者', itemStyle:{color:'#1565C0'}},
+        {value:10, name:'商业公司主导', itemStyle:{color:'#0091EA'}}
+      ]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

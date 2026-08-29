@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>分享概览</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --klein:#002FA7;
+  --cyan:#00BCD4;
+  --cyan-glow:rgba(0,188,212,0.55);
+  --light:#F0F4F8;
+  --dark-card:rgba(0,20,80,0.55);
+  --dark-card-border:rgba(0,188,212,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Inter',sans-serif;color:var(--light);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background-image:url('../images/page_003_timeline_bg.png');background-size:cover;background-position:center;}
+#bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,20,80,0.35) 0%,rgba(0,20,80,0.15) 45%,rgba(0,20,80,0.55) 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* ── header ── */
+.header{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;}
+.title-block{flex-shrink:0;}
+.title-block .kicker{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:500;letter-spacing:4px;color:var(--cyan);margin-bottom:10px;}
+.title-block h1{font-family:'Orbitron',sans-serif;font-weight:900;font-size:68px;color:var(--light);line-height:1;letter-spacing:2px;text-shadow:0 0 24px rgba(0,188,212,0.35);}
+.title-block .underline{width:110px;height:3px;background:var(--cyan);margin-top:16px;box-shadow:0 0 12px var(--cyan-glow);}
+
+.data-cards{display:flex;gap:14px;margin-top:6px;}
+.dcard{width:170px;padding:16px 18px;background:var(--dark-card);border:1px solid var(--dark-card-border);border-radius:10px;backdrop-filter:blur(4px);position:relative;overflow:hidden;}
+.dcard::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--cyan);box-shadow:0 0 10px var(--cyan-glow);}
+.dcard .num{font-family:'Orbitron',sans-serif;font-weight:900;font-size:38px;color:var(--klein);line-height:1;text-shadow:0 0 14px rgba(0,188,212,0.7),0 0 3px var(--light);}
+.dcard .num .unit{font-size:15px;font-weight:500;color:var(--light);margin-left:3px;letter-spacing:1px;}
+.dcard .lbl{font-size:12px;font-weight:500;color:var(--cyan);letter-spacing:2px;margin-top:8px;font-family:'Orbitron',sans-serif;}
+.dcard .sub{font-size:11px;color:rgba(240,244,248,0.72);margin-top:5px;line-height:1.5;font-weight:300;}
+
+/* ── timeline ── */
+.timeline{position:relative;flex:1;margin-top:24px;padding:0 10px;display:flex;align-items:center;}
+.nodes{display:flex;width:100%;justify-content:space-between;align-items:flex-start;}
+.node{width:270px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding-top:6px;}
+.node .icon-wrap{width:78px;height:78px;border-radius:50%;background:rgba(0,20,80,0.7);border:2px solid var(--cyan);box-shadow:0 0 20px var(--cyan-glow),inset 0 0 12px rgba(0,188,212,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:18px;position:relative;}
+.node .icon-wrap svg{width:38px;height:38px;stroke:var(--cyan);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px var(--cyan-glow));}
+.node .icon-wrap .seq{position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;background:var(--klein);border:2px solid var(--cyan);font-family:'Orbitron',sans-serif;font-weight:700;font-size:12px;color:var(--light);display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px var(--cyan-glow);}
+.node .nname{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:var(--light);letter-spacing:2px;margin-bottom:8px;}
+.node .ndesc{font-size:12px;font-weight:300;color:rgba(240,244,248,0.78);line-height:1.65;letter-spacing:0.3px;padding:0 4px;}
+
+/* connector line between nodes */
+.connector{position:absolute;top:45px;left:0;width:100%;height:2px;pointer-events:none;z-index:0;}
+.connector .glow{position:absolute;top:0;left:6%;width:88%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan) 15%,var(--cyan) 85%,transparent);opacity:0.35;box-shadow:0 0 8px var(--cyan-glow);}
+
+/* ── footer ── */
+.footer{margin-top:14px;text-align:center;position:relative;}
+.footer .line{width:180px;height:1px;background:var(--cyan);opacity:0.4;margin:0 auto 12px;}
+.footer .anchor{font-family:'Orbitron',sans-serif;font-weight:500;font-size:15px;color:rgba(240,244,248,0.9);letter-spacing:1.5px;}
+.footer .anchor .hl{color:var(--cyan);font-weight:700;}
+.footer .anchor .qm{color:var(--cyan);font-family:'Orbitron',sans-serif;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="title-block">
+      <div class="kicker"><span>SHARING · OVERVIEW</span></div>
+      <h1><span>分享概览</span></h1>
+      <div class="underline"></div>
+    </div>
+    <div class="data-cards">
+      <div class="dcard">
+        <div class="num"><span>120</span><span class="unit">分钟</span></div>
+        <div class="lbl"><span>总时长</span></div>
+        <div class="sub"><span>含互动环节</span></div>
+      </div>
+      <div class="dcard">
+        <div class="num"><span>5</span><span class="unit">个</span></div>
+        <div class="lbl"><span>环节数</span></div>
+        <div class="sub"><span>破冰→精讲→讨论→互动→寄语</span></div>
+      </div>
+      <div class="dcard">
+        <div class="num"><span>3</span><span class="unit">位</span></div>
+        <div class="lbl"><span>分享嘉宾</span></div>
+        <div class="sub"><span>1 位主讲 + 2 位领读</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+    <div class="connector"><div class="glow"></div></div>
+    <div class="nodes">
+
+      <!-- Node 1 -->
+      <div class="node">
+        <div class="icon-wrap">
+          <span class="seq">01</span>
+          <svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M8 10h8M8 13h5"/></svg>
+        </div>
+        <div class="nname"><span>开场破冰</span></div>
+        <div class="ndesc"><span>适兕分享个人与开源结缘的故事，引出"自由"命题</span></div>
+      </div>
+
+      <!-- Node 2 -->
+      <div class="node">
+        <div class="icon-wrap">
+          <span class="seq">02</span>
+          <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h6v17H6a2 2 0 0 1-2-2V5z"/><path d="M20 5a2 2 0 0 0-2-2h-6v17h6a2 2 0 0 0 2-2V5z"/><path d="M10 3v17"/></svg>
+        </div>
+        <div class="nname"><span>书目精讲</span></div>
+        <div class="ndesc"><span>两位领读人分别拆解《编码自由》与《思考文化》的核心章节</span></div>
+      </div>
+
+      <!-- Node 3 -->
+      <div class="node">
+        <div class="icon-wrap">
+          <span class="seq">03</span>
+          <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="3.5"/><path d="M4 12v3a8 3.5 0 0 0 16 0v-3"/><path d="M8 15.5a4 1.5 0 0 0 8 0"/></svg>
+        </div>
+        <div class="nname"><span>圆桌讨论</span></div>
+        <div class="ndesc"><span>围绕"开源是否还足够自由"展开观点碰撞与案例复盘</span></div>
+      </div>
+
+      <!-- Node 4 -->
+      <div class="node">
+        <div class="icon-wrap">
+          <span class="seq">04</span>
+          <svg viewBox="0 0 24 24"><path d="M4 8V4h4"/><path d="M20 8V4h-4"/><path d="M4 16v4h4"/><path d="M20 16v4h-4"/><rect x="8" y="6" width="4" height="12"/><rect x="12" y="8" width="4" height="4"/><rect x="8" y="14" width="2" height="2"/></svg>
+        </div>
+        <div class="nname"><span>观众互动</span></div>
+        <div class="ndesc"><span>现场扫码提交问题，随机抽取并实时作答</span></div>
+      </div>
+
+      <!-- Node 5 -->
+      <div class="node">
+        <div class="icon-wrap">
+          <span class="seq">05</span>
+          <svg viewBox="0 0 24 24"><path d="M6 3v18"/><path d="M6 5h12l-3 4 3 4H6"/></svg>
+        </div>
+        <div class="nname"><span>总结寄语</span></div>
+        <div class="ndesc"><span>提炼三大启示，号召持续关注开源文化建设的实际行动</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="line"></div>
+    <div class="anchor"><span>从破冰故事到圆桌辩论，<span class="hl">120分钟</span>，<span class="hl">五段旅程</span>，回到同一个问题<span class="qm">：</span>我们究竟追求怎样的<span class="hl">自由</span></span></div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

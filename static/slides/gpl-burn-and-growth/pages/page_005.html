@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2023 GPL生态数据</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --secondary:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#070d1c;
+  --bg-mid:#0d1629;
+  --card-bg:#0f1a30;
+  --card-border:rgba(33,150,243,0.25);
+  --glow:0 0 18px rgba(33,150,243,0.45),0 0 2px rgba(33,150,243,0.6);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:#000;
+  font-family:'Roboto Mono',monospace;
+  color:#e0e8f4;
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;
+  margin:0 auto;
+  background:radial-gradient(ellipse at 20% 0%,#0e2547 0%,#070d1c 55%,#04081a 100%);
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(33,150,243,0.045) 1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+#bg::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 85% 15%,rgba(0,188,212,0.10),transparent 45%),
+             radial-gradient(circle at 10% 90%,rgba(33,150,243,0.10),transparent 45%);
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:38px 56px 32px 56px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* ---- Header ---- */
+.header{
+  display:flex;flex-direction:column;gap:10px;
+  padding-bottom:14px;margin-bottom:14px;
+  border-bottom:1px solid rgba(33,150,243,0.20);
+  position:relative;
+}
+.header::after{
+  content:"";position:absolute;left:0;bottom:-1px;width:280px;height:2px;
+  background:linear-gradient(90deg,var(--primary),var(--secondary),transparent);
+}
+
+.title-row{display:flex;align-items:center;gap:16px;}
+.title-dot{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--primary);
+  box-shadow:0 0 14px var(--primary),0 0 4px var(--primary);
+}
+h1{
+  font-family:'Inter',sans-serif;
+  font-weight:900;font-size:40px;letter-spacing:1px;
+  background:linear-gradient(90deg,#ffffff 0%,#2196F3 60%,#00BCD4 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1.1;
+}
+h1 .sub-tag{
+  font-size:14px;font-weight:600;
+  background:rgba(33,150,243,0.15);
+  border:1px solid var(--card-border);
+  color:var(--secondary);
+  padding:4px 10px;border-radius:4px;
+  margin-left:14px;vertical-align:middle;
+  -webkit-text-fill-color:var(--secondary);
+}
+
+.lede{
+  font-family:'Roboto Mono',monospace;
+  font-size:13.5px;line-height:1.7;color:var(--neutral);
+  max-width:1280px;
+}
+.lede .hl{color:#fff;font-weight:500;}
+
+/* ---- Main grid ---- */
+.main{
+  flex:1;display:grid;grid-template-columns:55fr 45fr;
+  gap:20px;min-height:0;
+}
+
+/* ---- Left: KPI cards ---- */
+.kpi-col{
+  display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:14px;
+}
+.kpi{
+  position:relative;
+  background:linear-gradient(160deg,rgba(15,26,48,0.92),rgba(8,15,32,0.92));
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  padding:14px 14px 12px 14px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  overflow:hidden;
+  transition:all .3s;
+}
+.kpi::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--primary),var(--secondary));
+}
+.kpi::after{
+  content:"";position:absolute;right:-30px;top:-30px;width:80px;height:80px;
+  border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.15),transparent 70%);
+}
+.kpi-label{
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:600;
+  color:var(--neutral);letter-spacing:.5px;
+  display:flex;align-items:center;gap:6px;
+}
+.kpi-label .dot{width:6px;height:6px;border-radius:50%;background:var(--secondary);box-shadow:0 0 6px var(--secondary);}
+.kpi-value{
+  font-family:'Inter',sans-serif;font-weight:900;
+  font-size:36px;line-height:1.1;
+  color:#fff;
+  text-shadow:0 0 14px rgba(33,150,243,0.7),0 0 2px rgba(33,150,243,0.9);
+  letter-spacing:-0.5px;
+  margin:6px 0 2px 0;
+}
+.kpi-value .unit{font-size:18px;color:var(--primary);font-weight:700;margin-left:3px;}
+.kpi-value .trend-up{color:var(--secondary);font-size:18px;margin-left:4px;}
+.kpi-value .trend-down{color:#ff5252;font-size:18px;margin-left:4px;}
+.kpi-desc{
+  font-family:'Roboto Mono',monospace;
+  font-size:10.5px;line-height:1.5;color:var(--neutral);
+  border-top:1px solid rgba(176,190,197,0.15);
+  padding-top:6px;margin-top:2px;
+}
+.kpi-bar{
+  margin-top:8px;height:3px;border-radius:2px;
+  background:rgba(33,150,243,0.12);overflow:hidden;
+}
+.kpi-bar > i{
+  display:block;height:100%;
+  background:linear-gradient(90deg,var(--primary),var(--secondary));
+  box-shadow:0 0 8px var(--primary);
+}
+
+/* ---- Right: dimension cards ---- */
+.dim-col{
+  display:grid;grid-template-rows:repeat(6,1fr);gap:8px;
+}
+.dim{
+  position:relative;
+  display:flex;align-items:stretch;gap:12px;
+  background:linear-gradient(90deg,rgba(15,26,48,0.85) 0%,rgba(13,22,41,0.55) 100%);
+  border:1px solid rgba(33,150,243,0.18);
+  border-left:2px solid var(--primary);
+  border-radius:4px;
+  padding:8px 12px;
+}
+.dim::before{
+  content:"";position:absolute;left:-2px;top:0;width:2px;height:33%;
+  background:var(--secondary);box-shadow:0 0 8px var(--secondary);
+}
+.dim-index{
+  font-family:'Inter',sans-serif;font-weight:900;font-size:22px;
+  color:rgba(33,150,243,0.35);
+  min-width:38px;
+  display:flex;align-items:center;justify-content:center;
+}
+.dim-body{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;}
+.dim-head{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:13px;
+  color:#fff;display:flex;align-items:center;gap:8px;
+}
+.dim-head .tag{
+  font-family:'Roboto Mono',monospace;font-size:9px;
+  color:var(--secondary);
+  border:1px solid rgba(0,188,212,0.4);
+  padding:1px 6px;border-radius:3px;
+}
+.dim-text{
+  font-family:'Roboto Mono',monospace;font-size:10.5px;
+  line-height:1.55;color:var(--neutral);
+}
+
+/* ---- Footer ---- */
+.footer{
+  margin-top:12px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;
+  border:1px solid rgba(33,150,243,0.20);
+  border-radius:6px;
+  background:linear-gradient(90deg,rgba(33,150,243,0.08),rgba(0,188,212,0.04));
+  position:relative;
+}
+.footer::before{
+  content:"";position:absolute;left:18px;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;
+  background:var(--primary);box-shadow:0 0 12px var(--primary);
+}
+.footer-text{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:16px;
+  color:#fff;letter-spacing:1px;padding-left:24px;
+}
+.footer-text .accent{color:var(--secondary);}
+.footer-meta{
+  font-family:'Roboto Mono',monospace;font-size:10.5px;color:var(--neutral);
+  display:flex;gap:14px;align-items:center;
+}
+.footer-meta .sep{color:rgba(176,190,197,0.4);}
+
+/* corner decorations */
+.corner{
+  position:absolute;width:24px;height:24px;
+  border:1px solid var(--primary);opacity:0.45;
+}
+.corner-tl{top:12px;left:12px;border-right:none;border-bottom:none;}
+.corner-tr{top:12px;right:12px;border-left:none;border-bottom:none;}
+.corner-bl{bottom:12px;left:12px;border-right:none;border-top:none;}
+.corner-br{bottom:12px;right:12px;border-left:none;border-top:none;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <span class="corner corner-tl"></span>
+    <span class="corner corner-tr"></span>
+    <span class="corner corner-bl"></span>
+    <span class="corner corner-br"></span>
+
+    <div class="header">
+      <div class="title-row">
+        <span class="title-dot"></span>
+        <h1>2023 GPL 生态数据<span class="sub-tag">DATA DASHBOARD</span></h1>
+      </div>
+      <p class="lede">
+        <span class="hl">2023 年 4 月的数据揭示了一个矛盾图景：</span>GPL 生态在规模和活跃度上持续增长，但合规冲突也在同步加剧。这些数据是理解燃烧与成长辩证关系的量化基础。
+      </p>
+    </div>
+
+    <div class="main">
+      <!-- Left: 6 KPI cards -->
+      <div class="kpi-col">
+
+        <div class="kpi">
+          <div class="kpi-label"><span class="dot"></span>GitHub GPL 项目</div>
+          <div>
+            <div class="kpi-value">38<span class="unit">万+</span><span class="trend-up">▲</span></div>
+            <div class="kpi-bar"><i style="width:88%"></i></div>
+          </div>
+          <div class="kpi-desc">全平台 GPL 许可证项目估算总量，覆盖 v2 / v3 / AGPL。</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label"><span class="dot"></span>Linux 贡献者</div>
+          <div>
+            <div class="kpi-value">19,000<span class="unit">+</span><span class="trend-up">▲</span></div>
+            <div class="kpi-bar"><i style="width:72%"></i></div>
+          </div>
+          <div class="kpi-desc">内核开发社区活跃度持续增长，月均活跃提交稳定上升。</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label"><span class="dot"></span>合规争议案件</div>
+          <div>
+            <div class="kpi-value">+18<span class="unit">%</span><span class="trend-down">▲</span></div>
+            <div class="kpi-bar"><i style="width:55%"></i></div>
+          </div>
+          <div class="kpi-desc">2023 年上半年 GPL 合规争议和诉讼案件同比上升趋势。</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label"><span class="dot"></span>v2 → v3 迁移</div>
+          <div>
+            <div class="kpi-value">↑<span class="unit">趋势增强</span></div>
+            <div class="kpi-bar"><i style="width:60%"></i></div>
+          </div>
+          <div class="kpi-desc">许可证升级运动持续，AGPL 采纳同步走高。</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label"><span class="dot"></span>新兴市场贡献</div>
+          <div>
+            <div class="kpi-value">24<span class="unit">%</span><span class="trend-up">▲</span></div>
+            <div class="kpi-bar"><i style="width:48%"></i></div>
+          </div>
+          <div class="kpi-desc">亚洲 / 拉美开发者占比显著提升，全球化加速。</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label"><span class="dot"></span>企业 GPL 使用率</div>
+          <div>
+            <div class="kpi-value">78<span class="unit">%</span><span class="trend-up">▲</span></div>
+            <div class="kpi-bar"><i style="width:82%"></i></div>
+          </div>
+          <div class="kpi-desc">基础设施层普遍采用 GPL 软件，渗透率持续扩大。</div>
+        </div>
+
+      </div>
+
+      <!-- Right: 6 dimension cards -->
+      <div class="dim-col">
+
+        <div class="dim">
+          <div class="dim-index">01</div>
+          <div class="dim-body">
+            <div class="dim-head">项目规模<span class="tag">SCALE</span></div>
+            <div class="dim-text">GitHub 上采用 GPL 家族许可证的开源项目数量持续增长，Linux 生态贡献者活跃度同步上升。</div>
+          </div>
+        </div>
+
+        <div class="dim">
+          <div class="dim-index">02</div>
+          <div class="dim-body">
+            <div class="dim-head">贡献者增长<span class="tag">CONTRIBUTORS</span></div>
+            <div class="dim-text">全球 GPL 项目的贡献者社区规模扩大，新兴经济体贡献比例显著提升。</div>
+          </div>
+        </div>
+
+        <div class="dim">
+          <div class="dim-index">03</div>
+          <div class="dim-body">
+            <div class="dim-head">企业采用<span class="tag">ENTERPRISE</span></div>
+            <div class="dim-text">越来越多的科技公司在基础设施层采用 GPL 软件，但合规意识参差不齐。</div>
+          </div>
+        </div>
+
+        <div class="dim">
+          <div class="dim-index">04</div>
+          <div class="dim-body">
+            <div class="dim-head">合规事件<span class="tag">COMPLIANCE</span></div>
+            <div class="dim-text">2023 年上半年 GPL 合规争议和诉讼案件数量相比去年同期有所增加。</div>
+          </div>
+        </div>
+
+        <div class="dim">
+          <div class="dim-index">05</div>
+          <div class="dim-body">
+            <div class="dim-head">许可证迁移<span class="tag">MIGRATION</span></div>
+            <div class="dim-text">部分项目从 GPL v2 向 v3 或 AGPL 迁移，反映对新兴合规场景的关注。</div>
+          </div>
+        </div>
+
+        <div class="dim">
+          <div class="dim-index">06</div>
+          <div class="dim-body">
+            <div class="dim-head">社区活跃度<span class="tag">HEALTH</span></div>
+            <div class="dim-text">GPL 项目的 issue 响应时间、PR 合并率等社区健康指标整体呈上升趋势。</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">增长与合规的<span class="accent">辩证共生</span></div>
+      <div class="footer-meta">
+        <span>SOURCE: 公开数据综合估算</span>
+        <span class="sep">/</span>
+        <span>UPDATED: 2023-04</span>
+        <span class="sep">/</span>
+        <span>DATASET v1.0</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

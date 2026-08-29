@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>现代开源的四座支柱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Lato:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Lato:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --wine: #880E4F;
+  --bg: #F5F5F5;
+  --ink: #0D2137;
+  --muted: rgba(13,33,55,.55);
+  --line: rgba(13,33,55,.14);
+  --card: #FFFFFF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: #E8E8E8;
+  font-family: 'Lato', 'Noto Sans SC', -apple-system, sans-serif;
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+p { line-height: 1.6; }
+ul { list-style: none; }
+h1, h2, h3 { font-weight: normal; }
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, #FAFAF8 0%, #F5F5F5 55%, #ECECEA 100%);
+}
+#bg::before {
+  content: '';
+  position: absolute;
+  top: 42px;
+  left: 60px;
+  right: 60px;
+  height: 1px;
+  background: rgba(13,33,55,.14);
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: 176px;
+  left: 60px;
+  right: 60px;
+  height: 1px;
+  background: rgba(13,33,55,.14);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 32px 60px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Masthead */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 6px;
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3.5px;
+  color: var(--navy);
+  text-transform: uppercase;
+}
+.masthead .mh-right {
+  display: flex;
+  gap: 22px;
+  color: var(--wine);
+  letter-spacing: 3px;
+}
+
+/* Header */
+.header {
+  margin-top: 18px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(13,33,55,.22);
+  position: relative;
+}
+.eyebrow {
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: var(--wine);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.eyebrow::before {
+  content: '';
+  width: 42px;
+  height: 1px;
+  background: var(--wine);
+}
+.title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 68px;
+  line-height: 1.02;
+  color: var(--navy);
+  letter-spacing: -1px;
+}
+.subtitle-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-top: 12px;
+}
+.subtitle-row .dot {
+  color: var(--wine);
+  font-size: 24px;
+  line-height: 1;
+}
+.subtitle {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-style: italic;
+  font-size: 20px;
+  color: var(--muted);
+  font-weight: 300;
+  letter-spacing: .5px;
+}
+
+/* Intro */
+.intro {
+  margin-top: 20px;
+  padding-left: 18px;
+  border-left: 3px solid var(--wine);
+  max-width: 1280px;
+  position: relative;
+}
+.intro-prefix {
+  position: absolute;
+  top: -8px;
+  left: 22px;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--wine);
+  line-height: 1;
+  font-weight: 700;
+}
+.intro p {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.72;
+  color: var(--navy);
+  font-weight: 400;
+  letter-spacing: .2px;
+  padding-top: 8px;
+}
+.intro p strong {
+  color: var(--wine);
+  font-weight: 700;
+}
+
+/* Cards */
+.cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  min-height: 0;
+}
+.card {
+  background: var(--card);
+  padding: 22px 22px 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 0 rgba(13,33,55,.06);
+}
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: var(--wine);
+  font-weight: 700;
+}
+.card-num::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--wine);
+  margin-top: 8px;
+}
+.card-mark {
+  width: 52px;
+  height: 52px;
+  background: var(--navy);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  position: relative;
+}
+.card-mark::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 14px;
+  height: 14px;
+  background: var(--wine);
+}
+.card-eyebrow {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.card-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--navy);
+  margin-bottom: 12px;
+  letter-spacing: -.3px;
+}
+.card-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--wine);
+  margin-bottom: 14px;
+}
+.card-desc {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  line-height: 1.72;
+  color: rgba(13,33,55,.72);
+  margin-bottom: 14px;
+  letter-spacing: .2px;
+}
+.card-list {
+  border-top: 1px dashed rgba(13,33,55,.18);
+  padding-top: 14px;
+  flex: 1;
+}
+.card-list li {
+  font-family: 'Lato', 'Noto Serif SC', sans-serif;
+  font-size: 12.5px;
+  color: var(--navy);
+  padding: 7px 0;
+  border-bottom: 1px dashed rgba(13,33,55,.1);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  line-height: 1.4;
+}
+.card-list li:last-child { border-bottom: none; }
+.card-list .idx {
+  font-family: 'Playfair Display', serif;
+  font-size: 10.5px;
+  color: var(--wine);
+  font-weight: 700;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+/* KPI Band */
+.kpi-band {
+  background: var(--navy);
+  color: #FFFFFF;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 24px 20px 22px;
+  margin-top: 22px;
+  position: relative;
+}
+.kpi-band::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--wine);
+}
+.kpi {
+  padding: 0 22px;
+  border-left: 1px solid rgba(255,255,255,.14);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 118px;
+}
+.kpi:first-child { border-left: none; padding-left: 6px; }
+.kpi-label {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.kpi-value {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: #FFFFFF;
+}
+.kpi-value .suffix {
+  font-size: 22px;
+  color: var(--wine);
+  margin-left: 4px;
+  letter-spacing: 0;
+  font-weight: 700;
+  vertical-align: 6px;
+}
+.kpi-value .comma {
+  color: rgba(255,255,255,.35);
+  font-weight: 300;
+  font-size: 34px;
+  margin: 0 -2px;
+}
+.kpi-note {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,.55);
+  letter-spacing: .8px;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(13,33,55,.4);
+  text-transform: uppercase;
+}
+.footer .foot-mark { color: var(--wine); font-weight: 900; letter-spacing: 2px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="masthead">
+      <div class="mh-left">The Open-Source Review &nbsp;·&nbsp; 现代开源观察</div>
+      <div class="mh-right">
+        <span>Vol. IV</span>
+        <span>2024</span>
+        <span>专题 · 支柱</span>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="eyebrow">The Four Pillars · 现代开源的四座支柱</div>
+      <h1 class="title">现代开源的四座支柱</h1>
+      <div class="subtitle-row">
+        <span class="dot">✦</span>
+        <span class="subtitle">基金会、协作平台与新基础设施如何重塑软件世界</span>
+      </div>
+    </div>
+
+    <div class="intro">
+      <div class="intro-prefix">“</div>
+      <p>进入 2010 年代后，开源不再只是系统软件的领地。<strong>容器、编排、机器学习、前端框架</strong>——每一种新技术都天然以开源为发布介质。基金会和协作平台成为开源新基础设施。</p>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-num">01</div>
+          <div class="card-mark">A</div>
+        </div>
+        <div class="card-eyebrow">FOUNDATION</div>
+        <h3 class="card-title">Apache<br>基金会</h3>
+        <div class="card-divider"></div>
+        <p class="card-desc">企业级 Java 生态的守护者，治理着一整套分布式计算、存储与流式处理的中台基础设施。</p>
+        <ul class="card-list">
+          <li><span class="idx">i.</span><span>Hadoop 分布式计算</span></li>
+          <li><span class="idx">ii.</span><span>Spark 内存计算引擎</span></li>
+          <li><span class="idx">iii.</span><span>Kafka 分布式消息</span></li>
+          <li><span class="idx">iv.</span><span>Flink 流式处理</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-num">02</div>
+          <div class="card-mark">C</div>
+        </div>
+        <div class="card-eyebrow">CLOUD NATIVE</div>
+        <h3 class="card-title">CNCF 与<br>云原生</h3>
+        <div class="card-divider"></div>
+        <p class="card-desc">容器生态事实标准由 CNCF 定义，93+ 个毕业与孵化项目覆盖编排、观测、服务网格与存储。</p>
+        <ul class="card-list">
+          <li><span class="idx">i.</span><span>Kubernetes 容器编排</span></li>
+          <li><span class="idx">ii.</span><span>Prometheus 可观测性</span></li>
+          <li><span class="idx">iii.</span><span>Envoy 服务网格代理</span></li>
+          <li><span class="idx">iv.</span><span>93+ 毕业 / 孵化项目</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-num">03</div>
+          <div class="card-mark">G</div>
+        </div>
+        <div class="card-eyebrow">COLLABORATION</div>
+        <h3 class="card-title">GitHub 与<br>协作工具</h3>
+        <div class="card-divider"></div>
+        <p class="card-desc">2008 年上线的托管平台，重塑了代码评审、CI 与团队协作流程，成为软件开发的公共广场。</p>
+        <ul class="card-list">
+          <li><span class="idx">i.</span><span>2008 年正式上线</span></li>
+          <li><span class="idx">ii.</span><span>托管 4.5 亿+ 仓库</span></li>
+          <li><span class="idx">iii.</span><span>Pull Request 评审机制</span></li>
+          <li><span class="idx">iv.</span><span>1 亿+ 全球开发者</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-num">04</div>
+          <div class="card-mark">W</div>
+        </div>
+        <div class="card-eyebrow">WEB &amp; AI</div>
+        <h3 class="card-title">Web 与<br>AI 浪潮</h3>
+        <div class="card-divider"></div>
+        <p class="card-desc">浏览器与训练成为新战场，前端框架与深度学习库让 Web 与 AI 的边界彼此消融。</p>
+        <ul class="card-list">
+          <li><span class="idx">i.</span><span>React · Vue 前端框架</span></li>
+          <li><span class="idx">ii.</span><span>TensorFlow 深度学习</span></li>
+          <li><span class="idx">iii.</span><span>PyTorch 研究首选</span></li>
+          <li><span class="idx">iv.</span><span>浏览器即新操作系统</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="kpi-band">
+      <div class="kpi">
+        <div>
+          <div class="kpi-label">Apache 顶级项目</div>
+          <div class="kpi-value">269</div>
+        </div>
+        <div class="kpi-note">Top-Level Projects · 涵盖计算、存储、Web</div>
+      </div>
+      <div class="kpi">
+        <div>
+          <div class="kpi-label">CNCF 项目总数</div>
+          <div class="kpi-value">93<span class="suffix">+</span></div>
+        </div>
+        <div class="kpi-note">毕业 + 孵化 + 沙箱合计</div>
+      </div>
+      <div class="kpi">
+        <div>
+          <div class="kpi-label">GitHub 仓库数</div>
+          <div class="kpi-value">4.5<span class="comma">亿</span><span class="suffix">+</span></div>
+        </div>
+        <div class="kpi-note">Repositories · 覆盖几乎所有语言</div>
+      </div>
+      <div class="kpi">
+        <div>
+          <div class="kpi-label">GitHub 开发者</div>
+          <div class="kpi-value">1<span class="comma">亿</span><span class="suffix">+</span></div>
+        </div>
+        <div class="kpi-note">Developers · 全球软件创作者</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div><span class="foot-mark">◆</span> &nbsp; Open-Source Review &nbsp; · &nbsp; 现代开源观察专题</div>
+      <div>END OF FEATURE</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第二章·秩序与无律</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #607D8B;
+  --bg-deep: #060a18;
+  --bg-mid: #0c1428;
+  --text-main: #e8eef8;
+  --text-sub: #a0b4cc;
+  --text-dim: #607D8B;
+  --line: rgba(33, 150, 243, 0.25);
+  --glow: rgba(33, 150, 243, 0.6);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 1400px 800px at 20% 50%, rgba(33,150,243,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse 1000px 600px at 85% 60%, rgba(0,188,212,0.06) 0%, transparent 60%),
+              linear-gradient(180deg, #060a18 0%, #0a1224 50%, #060a18 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+}
+
+/* Particle field layers */
+.particles-chaos {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 500px;
+  height: 900px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.particles-grid {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 900px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Central light band */
+.light-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 430px;
+  height: 4px;
+  z-index: 2;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(96,125,139,0.3) 5%,
+    rgba(33,150,243,0.5) 20%,
+    rgba(33,150,243,0.9) 40%,
+    rgba(0,188,212,1) 55%,
+    rgba(33,150,243,0.9) 70%,
+    rgba(33,150,243,0.3) 85%,
+    transparent 100%);
+  box-shadow: 0 0 20px rgba(33,150,243,0.5), 0 0 60px rgba(0,188,212,0.2);
+}
+
+.light-band-glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 420px;
+  height: 24px;
+  z-index: 2;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(33,150,243,0.08) 15%,
+    rgba(33,150,243,0.15) 35%,
+    rgba(0,188,212,0.25) 50%,
+    rgba(33,150,243,0.15) 65%,
+    rgba(33,150,243,0.08) 80%,
+    transparent 100%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* Header area */
+.chapter-header {
+  position: relative;
+  z-index: 5;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(33,150,243,0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chapter-tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--primary);
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+
+.chapter-tag::before {
+  content: '// ';
+  color: var(--neutral);
+}
+
+.chapter-meta {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+/* Main two-column layout */
+.main-content {
+  display: grid;
+  grid-template-columns: 620px 1fr;
+  gap: 50px;
+  margin-top: 35px;
+  position: relative;
+  z-index: 5;
+}
+
+/* Left column */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 15px;
+}
+
+.chapter-num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 78px;
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--primary);
+  letter-spacing: 4px;
+  line-height: 1;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.chapter-num .num-fill {
+  -webkit-text-stroke: 0;
+  color: var(--primary);
+  text-shadow: 0 0 30px rgba(33,150,243,0.5);
+}
+
+.title-zh {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 62px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 8px;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #ffffff 0%, #2196F3 50%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-underline {
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  margin: 18px 0 22px 0;
+  box-shadow: 0 0 12px var(--glow);
+}
+
+.subtitle {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-sub);
+  line-height: 1.6;
+  letter-spacing: 1px;
+  max-width: 540px;
+}
+
+.subtitle .accent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Right column - 4 key points */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 15px;
+}
+
+.points-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.points-header .label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: var(--neutral);
+  letter-spacing: 2px;
+}
+
+.points-header .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(96,125,139,0.4), transparent);
+}
+
+.point-card {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  gap: 16px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.05) 0%, rgba(0,188,212,0.02) 100%);
+  border: 1px solid rgba(33,150,243,0.12);
+  border-left: 2px solid var(--primary);
+  border-radius: 4px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.point-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.point-card .num {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  line-height: 1.2;
+  text-shadow: 0 0 10px rgba(33,150,243,0.4);
+}
+
+.point-card .num .small {
+  display: block;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.point-card .content .title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.point-card .content .title .en {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 400;
+  margin-left: 8px;
+  letter-spacing: 1px;
+}
+
+.point-card .content .desc {
+  font-size: 12.5px;
+  color: var(--text-sub);
+  line-height: 1.55;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+/* Bottom narrative */
+.bottom-narrative {
+  position: absolute;
+  left: 70px;
+  right: 70px;
+  bottom: 35px;
+  z-index: 5;
+  padding: 18px 28px;
+  border-top: 1px solid rgba(33,150,243,0.2);
+  border-bottom: 1px solid rgba(33,150,243,0.1);
+  background: linear-gradient(90deg,
+    rgba(33,150,243,0.04) 0%,
+    rgba(0,188,212,0.03) 50%,
+    rgba(33,150,243,0.04) 100%);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.narrative-quote {
+  font-size: 36px;
+  color: var(--primary);
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.narrative-text {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  flex: 1;
+}
+
+.narrative-text .highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.narrative-text .key {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* Chaos-to-order indicator */
+.transition-indicator {
+  position: absolute;
+  left: 640px;
+  right: 640px;
+  top: 410px;
+  height: 44px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: var(--neutral);
+  letter-spacing: 2px;
+}
+
+.transition-indicator .chaos {
+  color: var(--neutral);
+}
+
+.transition-indicator .arrow {
+  flex: 1;
+  height: 1px;
+  margin: 0 12px;
+  background: linear-gradient(90deg, var(--neutral), var(--primary), var(--accent));
+  position: relative;
+}
+
+.transition-indicator .arrow::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: -3px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid var(--accent);
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+}
+
+.transition-indicator .order {
+  color: var(--accent);
+}
+
+/* Decorative corner brackets */
+.corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  z-index: 4;
+  border-color: rgba(33,150,243,0.3);
+  border-style: solid;
+  border-width: 0;
+}
+
+.corner.tl { top: 20px; left: 20px; border-top-width: 1px; border-left-width: 1px; }
+.corner.tr { top: 20px; right: 20px; border-top-width: 1px; border-right-width: 1px; }
+.corner.bl { bottom: 20px; left: 20px; border-bottom-width: 1px; border-left-width: 1px; }
+.corner.br { bottom: 20px; right: 20px; border-bottom-width: 1px; border-right-width: 1px; }
+
+/* Animated particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes drift-right {
+  0% { transform: translateX(-10px); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(10px); opacity: 0; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <!-- Corner brackets -->
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <!-- Chaos particles (left) -->
+  <div class="particles-chaos" id="chaosParticles"></div>
+
+  <!-- Grid particles (right) -->
+  <div class="particles-grid" id="gridParticles"></div>
+
+  <!-- Light band -->
+  <div class="light-band-glow"></div>
+  <div class="light-band"></div>
+
+  <!-- Transition indicator above band -->
+  <div class="transition-indicator">
+    <span class="chaos">CHAOS · 混沌</span>
+    <span class="arrow"></span>
+    <span class="order">ORDER · 秩序</span>
+  </div>
+
+  <div id="ct">
+    <!-- Header -->
+    <div class="chapter-header">
+      <span class="chapter-tag">CHAPTER TRANSITION</span>
+      <span class="chapter-meta">02 / 07 &nbsp;·&nbsp; ORDER FROM EMERGENCE</span>
+    </div>
+
+    <div class="main-content">
+      <!-- Left column -->
+      <div class="left-col">
+        <div class="chapter-num">
+          <span class="num-fill">第</span><span>二</span><span class="num-fill">章</span>
+        </div>
+        <div class="title-zh">秩序与无律</div>
+        <div class="title-underline"></div>
+        <div class="subtitle">
+          当协作<span class="accent">去中心化</span>，规则从何处来？
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="right-col">
+        <div class="points-header">
+          <span class="label">CORE THEMES · 章节要点</span>
+          <span class="line"></span>
+        </div>
+
+        <div class="point-card">
+          <div class="num">01<span class="small">THESIS</span></div>
+          <div class="content">
+            <div class="title">自发秩序的力量<span class="en">SPONTANEOUS ORDER</span></div>
+            <div class="desc">维基百科证明了无中央控制下大规模协作的可行性</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="num">02<span class="small">FRAMEWORK</span></div>
+          <div class="content">
+            <div class="title">代码即契约<span class="en">CODE IS LAW</span></div>
+            <div class="desc">开源项目通过贡献指南、行为准则、治理文档构建隐性法律框架</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="num">03<span class="small">MECHANISM</span></div>
+          <div class="content">
+            <div class="title">信任的机制化<span class="en">TRUST MECHANIZED</span></div>
+            <div class="desc">Code Review、CI/CD、自动测试将人际信任转化为可验证的工程流程</div>
+          </div>
+        </div>
+
+        <div class="point-card">
+          <div class="num">04<span class="small">EMERGENCE</span></div>
+          <div class="content">
+            <div class="title">混沌中的涌现<span class="en">ORDER IN CHAOS</span></div>
+            <div class="desc">无数独立贡献者基于共同目标自发协作，形成超越任何个体规划的结果</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom narrative -->
+    <div class="bottom-narrative">
+      <div class="narrative-quote">"</div>
+      <div class="narrative-text">
+        在开源世界中<span class="key">"无律"并非无序</span>。当<span class="highlight">贡献指南</span>、<span class="highlight">行为准则</span>和<span class="highlight">自动化流程</span>被精心编织在一起，它们构成了一种<span class="key">看不见但无处不在的秩序</span>——这正是混沌理论所揭示的：在看似随机的个体行为中，系统会自发涌现出稳定结构。
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Generate chaos particles (scattered, random positions)
+  var chaosContainer = document.getElementById('chaosParticles');
+  var chaosDots = [
+    [20,80],[150,40],[80,180],[250,120],[180,300],[50,280],[300,200],
+    [120,380],[220,420],[350,340],[90,460],[280,510],[400,440],[60,560],
+    [180,600],[320,560],[100,660],[240,700],[380,640],[150,750],[300,780],
+    [420,180],[50,140],[260,260],[140,540],[340,680],[200,380],[380,520],
+    [70,340],[280,100],[440,300],[110,720],[230,460],[360,420],[400,600],
+    [50,420],[190,240],[310,360]
+  ];
+
+  chaosDots.forEach(function(pos, i) {
+    var dot = document.createElement('div');
+    dot.className = 'particle';
+    var size = 2 + Math.random() * 4;
+    var opacity = 0.2 + Math.random() * 0.5;
+    var isAccent = Math.random() > 0.7;
+    dot.style.cssText = 'left:' + pos[0] + 'px;top:' + pos[1] + 'px;width:' + size + 'px;height:' + size + 'px;background:' + (isAccent ? '#00BCD4' : '#2196F3') + ';opacity:' + opacity + ';animation: pulse-dot ' + (2 + Math.random()*3) + 's ease-in-out ' + (Math.random()*2) + 's infinite, float-slow ' + (4 + Math.random()*4) + 's ease-in-out ' + (Math.random()*2) + 's infinite;';
+    chaosContainer.appendChild(dot);
+  });
+
+  // Generate grid particles (ordered, regular spacing)
+  var gridContainer = document.getElementById('gridParticles');
+  var cols = 8, rows = 16;
+  var spacingX = 44, spacingY = 52;
+  var offsetX = 280, offsetY = 60;
+
+  for (var r = 0; r < rows; r++) {
+    for (var c = 0; c < cols; c++) {
+      var dot = document.createElement('div');
+      dot.className = 'particle';
+      var x = offsetX + c * spacingX;
+      var y = offsetY + r * spacingY;
+      var distFromCenter = Math.abs(c - cols/2) + Math.abs(r - rows/2);
+      var maxDist = cols/2 + rows/2;
+      var normDist = distFromCenter / maxDist;
+      var opacity = 0.08 + normDist * 0.35;
+      var size = 2 + (1 - normDist) * 2;
+      var isAccent = (c + r) % 7 === 0;
+      dot.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + size + 'px;height:' + size + 'px;background:' + (isAccent ? '#00BCD4' : '#2196F3') + ';opacity:' + opacity + ';animation: pulse-dot ' + (3 + Math.random()*2) + 's ease-in-out ' + (Math.random()*1.5) + 's infinite;';
+      gridContainer.appendChild(dot);
+    }
+  }
+
+  // Connecting lines between nearby grid nodes (using small pseudo-grid)
+  // Add a subtle vertical grid line effect via CSS gradient overlay
+  var gridOverlay = document.createElement('div');
+  gridOverlay.style.cssText = 'position:absolute;left:0;top:0;width:400px;height:900px;pointer-events:none;z-index:1;background-image:repeating-linear-gradient(0deg, transparent 0, transparent 51px, rgba(33,150,243,0.06) 51px, rgba(33,150,243,0.06) 52px), repeating-linear-gradient(90deg, transparent 0, transparent 43px, rgba(33,150,243,0.06) 43px, rgba(33,150,243,0.06) 44px);opacity:0.5;';
+  gridContainer.appendChild(gridOverlay);
+})();
+</script>
+</body>
+</html>

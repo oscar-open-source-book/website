@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源的简史</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Lato:wght@300;400;700&family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --wine: #880E4F;
+  --wine-light: #B0276A;
+  --light: #F5F5F5;
+  --muted: rgba(245, 245, 245, 0.65);
+  --line: rgba(245, 245, 245, 0.22);
+  --line-strong: rgba(245, 245, 245, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  color: var(--light);
+  background: var(--navy);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--navy);
+}
+
+#bg { position: absolute; inset: 0; z-index: 0; }
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 62px;
+  box-sizing: border-box;
+}
+
+/* Corner brackets */
+.frame {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  z-index: 1;
+}
+.frame-c-tl { top: 26px; left: 26px; }
+.frame-c-tr { top: 26px; right: 26px; }
+.frame-c-bl { bottom: 26px; left: 26px; }
+.frame-c-br { bottom: 26px; right: 26px; }
+.frame-c-tl::before, .frame-c-tr::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 28px; height: 1px; background: var(--wine);
+}
+.frame-c-tl::after, .frame-c-tr::after {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 1px; height: 28px; background: var(--wine);
+}
+.frame-c-tr::before, .frame-c-tr::after { left: auto; right: 0; }
+.frame-c-bl::before, .frame-c-br::before {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 28px; height: 1px; background: var(--wine);
+}
+.frame-c-bl::after, .frame-c-br::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 1px; height: 28px; background: var(--wine);
+}
+.frame-c-br::before, .frame-c-br::after { left: auto; right: 0; }
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 44px;
+}
+.head-left {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  letter-spacing: 0.42em;
+  color: var(--wine-light);
+  font-weight: 500;
+}
+.head-right {
+  font-family: 'Lato', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.38em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 34px;
+  margin-bottom: 50px;
+}
+.hero-bar {
+  width: 8px;
+  height: 172px;
+  background: var(--wine);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.hero-bar::after {
+  content: '';
+  position: absolute;
+}
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.hero-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 108px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--light);
+  letter-spacing: 0.02em;
+}
+.hero-title-cn {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+}
+.hero-sub {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--muted);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+.hero-sub::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--wine);
+  flex-shrink: 0;
+}
+
+/* Info points */
+.info-row {
+  display: flex;
+  gap: 44px;
+  margin-bottom: 42px;
+  padding-left: 42px;
+}
+.info-point {
+  flex: 1;
+  padding-left: 22px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.info-point::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 2px;
+  height: 100%;
+  background: var(--wine);
+}
+.info-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  color: var(--wine-light);
+  letter-spacing: 0.24em;
+  font-weight: 500;
+  line-height: 1;
+}
+.info-body { display: flex; flex-direction: column; gap: 10px; }
+.info-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--light);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.info-rule {
+  width: 32px;
+  height: 1px;
+  background: var(--line-strong);
+}
+.info-detail {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+}
+
+/* Divider line */
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 6px 0 28px 0;
+}
+
+/* Narrative */
+.narrative {
+  display: flex;
+  gap: 34px;
+  padding-left: 42px;
+  padding-right: 30px;
+  align-items: flex-start;
+}
+.narrative-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 60px;
+  color: var(--wine);
+  line-height: 0.7;
+  font-style: italic;
+  font-weight: 400;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+.narrative-text {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  color: rgba(245, 245, 245, 0.88);
+  letter-spacing: 0.03em;
+}
+.narrative-text .em {
+  color: var(--wine-light);
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* Footer */
+.footer-data {
+  position: absolute;
+  bottom: 92px;
+  left: 62px;
+  right: 62px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  gap: 60px;
+}
+.data-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.data-item.right { text-align: right; align-items: flex-end; }
+.data-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--wine-light);
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+.data-value .plus {
+  font-size: 36px;
+  font-weight: 500;
+  vertical-align: top;
+  margin-left: 4px;
+  font-style: italic;
+}
+.data-label {
+  font-family: 'Lato', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  letter-spacing: 0.06em;
+}
+.data-label .strong { color: var(--light); font-weight: 700; }
+
+.footer-brand {
+  position: absolute;
+  bottom: 44px;
+  left: 62px;
+  right: 62px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  letter-spacing: 0.36em;
+  color: var(--muted);
+}
+.foot-brand-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.foot-brand-left::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--wine);
+}
+.foot-brand-right {
+  color: var(--wine-light);
+  font-weight: 500;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="frame frame-c-tl"></div>
+  <div class="frame frame-c-tr"></div>
+  <div class="frame frame-c-bl"></div>
+  <div class="frame frame-c-br"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="head-left"><span>OPEN · SOURCE · A · BRIEF · HISTORY</span></div>
+      <div class="head-right"><span>NO. 012 &nbsp;·&nbsp; SEPTEMBER 2023</span></div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-bar"></div>
+      <div class="hero-content">
+        <div class="hero-title"><span class="hero-title-cn">开源的简史</span></div>
+        <div class="hero-sub"><span>From Unix to Kubernetes &nbsp;·&nbsp; A Half-Century of Collaboration</span></div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-point">
+        <div class="info-num"><span>NO. 01</span></div>
+        <div class="info-body">
+          <div class="info-title"><span>开源 · 一场实验</span></div>
+          <div class="info-rule"></div>
+          <div class="info-detail"><span>1969 至今，全球开发者共同编写的软件文明</span></div>
+        </div>
+      </div>
+      <div class="info-point">
+        <div class="info-num"><span>NO. 02</span></div>
+        <div class="info-body">
+          <div class="info-title"><span>适合 · 阅读笔记</span></div>
+          <div class="info-rule"></div>
+          <div class="info-detail"><span>开源之书的第 12 期分享，2023 年 9 月</span></div>
+        </div>
+      </div>
+      <div class="info-point">
+        <div class="info-num"><span>NO. 03</span></div>
+        <div class="info-body">
+          <div class="info-title"><span>一份阅读清单</span></div>
+          <div class="info-rule"></div>
+          <div class="info-detail"><span>《开源：来自边缘的承诺》《大教堂与集市》等经典</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="narrative">
+      <div class="narrative-mark"><span>"</span></div>
+      <div class="narrative-text"><span>本期阅读分享聚焦<span class="em">开源运动的完整脉络</span>：从贝尔实验室的一行 hello world，到今天云端运行的每一台服务器背后都跑着 Linux。我们用 <span class="em">10 页</span>回顾五十年历程，也希望这份提纲能成为一份可扩展的阅读目录。</span></div>
+    </div>
+
+    <div class="footer-data">
+      <div class="data-item">
+        <div class="data-value"><span>1969</span></div>
+        <div class="data-label"><span>OPEN SOURCE · ORIGIN</span><br><span>Unix 诞生于贝尔实验室</span></div>
+      </div>
+      <div class="data-item right">
+        <div class="data-value"><span>180M<span class="plus">+</span></span></div>
+        <div class="data-label"><span>GLOBAL DEVELOPERS TODAY</span><br><span>全球使用或维护开源代码的开发者</span></div>
+      </div>
+    </div>
+
+    <div class="footer-brand">
+      <div class="foot-brand-left"><span>OPEN SOURCE READING CLUB</span></div>
+      <div class="foot-brand-right"><span>ISSUE 12 · SEPTEMBER 2023</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

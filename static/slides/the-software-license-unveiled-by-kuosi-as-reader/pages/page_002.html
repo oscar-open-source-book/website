@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第一部分：许可证全景</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #ECEFF1;
+  --text-dim: #90A4AE;
+  --bg-deep: #0A0E1A;
+  --bg-mid: #0F1424;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', 'PingFang SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0A0E1A 0%, #0F1B2E 50%, #0A0E1A 100%);
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.glow-orb-1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.12) 0%, transparent 70%);
+  top: -200px;
+  left: -100px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.glow-orb-2 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.10) 0%, transparent 70%);
+  bottom: -150px;
+  right: -100px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.light-streak {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.6) 30%, rgba(0,188,212,0.6) 70%, transparent 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.streak-1 { top: 120px; left: 0; width: 45%; }
+.streak-2 { top: 780px; left: 0; width: 100%; }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-area {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  flex: 1;
+  padding-top: 20px;
+}
+
+/* Left: Giant 01 */
+.num-block {
+  width: 38%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
+
+.chapter-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.bignum {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.85;
+  background: linear-gradient(135deg, #2196F3 0%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -20px;
+  position: relative;
+}
+
+.bignum-outline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.85;
+  letter-spacing: -20px;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(33,150,243,0.15);
+  background: none;
+  pointer-events: none;
+  transform: translate(6px, 6px);
+}
+
+.bignum-glow {
+  position: absolute;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.85;
+  letter-spacing: -20px;
+  color: transparent;
+  -webkit-text-stroke: 0.5px rgba(33,150,243,0.08);
+  transform: scale(1.05);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+/* Right: Title area */
+.title-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.divider-line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  margin-bottom: 28px;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 6px;
+  margin-bottom: 14px;
+}
+
+.chapter-title {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.chapter-title .accent {
+  color: var(--primary);
+}
+
+.chapter-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  color: var(--text-dim);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: 1px;
+  margin-bottom: 40px;
+  max-width: 620px;
+}
+
+/* Three key points */
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 680px;
+}
+
+.point {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.point-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  white-space: nowrap;
+  padding: 4px 10px;
+  border: 1px solid rgba(0,188,212,0.35);
+  border-radius: 2px;
+  min-width: 88px;
+  text-align: center;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.point-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.point-text .em {
+  color: var(--text-main);
+  font-weight: 400;
+}
+
+/* Footer decorative */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.footer-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.4) 20%, rgba(0,188,212,0.4) 80%, transparent 100%);
+  margin: 0 20px;
+}
+
+.footer-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  opacity: 0.6;
+}
+
+.corner-mark {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  opacity: 0.5;
+  z-index: 2;
+}
+
+.corner-mark-bl {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  opacity: 0.5;
+  z-index: 2;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-overlay"></div>
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+    <div class="light-streak streak-1"></div>
+    <div class="light-streak streak-2"></div>
+  </div>
+
+  <div id="ct">
+    <div class="corner-mark">SRC / LICENSE / 01</div>
+
+    <div class="main-area">
+      <div class="num-block">
+        <div class="chapter-tag">// CHAPTER OPENING</div>
+        <div style="position:relative; display:inline-block;">
+          <div class="bignum-glow">01</div>
+          <div class="bignum-outline">01</div>
+          <div class="bignum">01</div>
+        </div>
+      </div>
+
+      <div class="title-block">
+        <div class="divider-line"></div>
+        <div class="section-label">PART ONE — 01</div>
+        <div class="chapter-title">
+          <span class="accent">第一部分</span>：许可证全景
+        </div>
+        <div class="chapter-subtitle">
+          为何需要开源许可证？<br>
+          它的角色与边界在哪里
+        </div>
+
+        <div class="points">
+          <div class="point">
+            <span class="point-tag">问题引入</span>
+            <span class="point-text">代码自由分发 <span class="em">不等于</span> 法律自由，版权法默认保护所有创作</span>
+          </div>
+          <div class="point">
+            <span class="point-tag">角色定位</span>
+            <span class="point-text">许可证是版权人向公众 <span class="em">授予使用、修改、分发权利</span> 的契约工具</span>
+          </div>
+          <div class="point">
+            <span class="point-tag">边界说明</span>
+            <span class="point-text">许可证 <span class="em">不创设</span> 新权利，仅是对既有版权进行有条件释放</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-text">— OVERVIEW —</span>
+      <span class="footer-line"></span>
+      <span class="footer-text">01 / 03 — OPEN SOURCE LICENSE</span>
+    </div>
+
+    <div class="corner-mark-bl">// PRESS TO BEGIN</div>
+  </div>
+</div>
+</body>
+</html>

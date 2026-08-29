@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>未来：走向何处</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+:root{
+  --bg:#1A1E2E;
+  --klein:#002FA7;
+  --cyan:#00BCD4;
+  --white:#FFFFFF;
+  --text-main:#E8ECF5;
+  --text-dim:#8892B0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  width:1600px;height:900px;overflow:hidden;
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  background:var(--bg);color:var(--text-main);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 70px;}
+
+/* 背景层：渐变 + 星点 */
+.bg-layer{position:absolute;inset:0;background:radial-gradient(ellipse 900px 500px at 50% -10%, #1f2a48 0%, #1A1E2E 60%);}
+.dots{position:absolute;inset:0;opacity:.5;}
+.dot{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--white);opacity:.3;}
+
+/* 顶部标题区 */
+.header{text-align:center;margin-top:14px;position:relative;}
+.eyebrow{
+  font-family:'Space Grotesk',sans-serif;font-weight:500;
+  font-size:14px;letter-spacing:6px;color:var(--cyan);
+  margin-bottom:18px;
+}
+.eyebrow-line{display:inline-flex;align-items:center;gap:14px;}
+.eyebrow-line .bar{width:40px;height:1px;background:var(--cyan);display:inline-block;}
+.title-zh{
+  font-family:'Space Grotesk','Noto Sans SC',sans-serif;
+  font-weight:600;font-size:72px;letter-spacing:10px;
+  background:linear-gradient(90deg,#FFFFFF 0%, #B8D4F5 50%, #FFFFFF 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.1;
+}
+.subtitle{
+  font-family:'Noto Sans SC',sans-serif;font-weight:300;
+  font-size:20px;color:var(--text-dim);letter-spacing:3px;
+  margin-top:20px;line-height:1.6;
+}
+.subtitle .accent{color:var(--cyan);font-weight:400;}
+
+/* 中部 SVG 视觉区 */
+.viz{
+  position:relative;width:100%;height:300px;margin-top:18px;
+}
+.viz-svg{position:absolute;inset:0;width:100%;height:100%;}
+
+/* 三个方向卡片 */
+.directions{
+  position:absolute;left:0;right:0;top:180px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;
+  padding:0 20px;
+}
+.dir-card{
+  background:linear-gradient(180deg, rgba(0,47,167,0.12) 0%, rgba(0,47,167,0.03) 100%);
+  border:1px solid rgba(0,188,212,0.18);
+  border-radius:8px;padding:20px 22px;position:relative;
+  backdrop-filter:blur(4px);
+}
+.dir-card .num{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:13px;letter-spacing:3px;color:var(--cyan);
+}
+.dir-card h3{
+  font-family:'Space Grotesk','Noto Sans SC',sans-serif;
+  font-weight:600;font-size:20px;margin-top:8px;
+  color:var(--white);letter-spacing:1px;
+}
+.dir-card p{
+  font-size:13px;line-height:1.7;color:var(--text-dim);
+  margin-top:10px;font-weight:300;
+}
+.dir-card .idx{
+  position:absolute;top:16px;right:18px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;
+  font-size:36px;color:rgba(0,47,167,0.35);letter-spacing:2px;
+}
+
+/* 底部叙事区 */
+.narrative{
+  position:absolute;left:70px;right:70px;bottom:32px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.mainline{
+  font-size:13px;font-weight:300;color:var(--cyan);
+  letter-spacing:2px;text-align:center;
+  padding:10px 0;border-top:1px solid rgba(0,188,212,0.2);
+  border-bottom:1px solid rgba(0,188,212,0.2);
+}
+.story{
+  font-size:12px;font-weight:300;color:var(--text-dim);
+  line-height:1.8;text-align:center;letter-spacing:1px;
+  max-width:1200px;margin:0 auto;
+}
+.story .hl{color:var(--white);font-weight:400;}
+
+/* 装饰角标 */
+.corner{position:absolute;font-family:'Space Grotesk',sans-serif;font-size:10px;color:rgba(136,146,176,0.4);letter-spacing:3px;}
+.corner-tl{top:20px;left:24px;}
+.corner-tr{top:20px;right:24px;}
+.corner-br{bottom:8px;right:24px;}
+
+/* 顶部光点 */
+.glow-top{
+  position:absolute;left:50%;top:-1px;transform:translateX(-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:var(--white);
+  box-shadow:0 0 24px 8px rgba(0,188,212,0.55),0 0 60px 20px rgba(0,47,167,0.3);
+}
+.glow-halo{
+  position:absolute;left:50%;top:-20px;transform:translateX(-50%);
+  width:60px;height:60px;border-radius:50%;
+  border:1px solid rgba(0,188,212,0.3);
+}
+.glow-halo2{
+  position:absolute;left:50%;top:-40px;transform:translateX(-50%);
+  width:120px;height:120px;border-radius:50%;
+  border:1px solid rgba(0,47,167,0.15);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-layer"></div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <div id="ct">
+    <span class="corner corner-tl">CHAPTER · 05</span>
+    <span class="corner corner-tr">FUTURE HORIZON</span>
+    <span class="corner corner-br">OPEN SOURCE / 开源之未来</span>
+
+    <div class="glow-halo2"></div>
+    <div class="glow-halo"></div>
+    <div class="glow-top"></div>
+
+    <div class="header">
+      <div class="eyebrow">
+        <span class="eyebrow-line">
+          <span class="bar"></span><span>WHERE WE ARE HEADED</span><span class="bar"></span>
+        </span>
+      </div>
+      <div class="title-zh"><span>未来：走向何处</span></div>
+      <div class="subtitle"><span>从个人驱动到<span class="accent">生态驱动</span>——开源项目的新形态展望</span></div>
+    </div>
+
+    <div class="viz">
+      <svg class="viz-svg" viewBox="0 0 1460 300" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="gradKlein" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#002FA7" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#002FA7" stop-opacity="0.6"/>
+          </linearGradient>
+          <linearGradient id="gradCyan" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#00BCD4" stop-opacity="0.65"/>
+          </linearGradient>
+          <linearGradient id="gradWhite" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.5"/>
+          </linearGradient>
+          <filter id="glowKlein" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- 三条上升路径，从底部三点发散汇聚到顶部光点 -->
+        <!-- 路径1 克莱因蓝 左 -->
+        <path d="M 200 300 C 260 200, 340 120, 730 8"
+              fill="none" stroke="url(#gradKlein)" stroke-width="2.2"
+              filter="url(#glowKlein)" stroke-linecap="round"/>
+        <!-- 路径2 青色 中 -->
+        <path d="M 730 300 C 740 200, 720 120, 730 8"
+              fill="none" stroke="url(#gradCyan)" stroke-width="2.6"
+              filter="url(#glowKlein)" stroke-linecap="round"/>
+        <!-- 路径3 白色 右 -->
+        <path d="M 1260 300 C 1200 200, 1120 120, 730 8"
+              fill="none" stroke="url(#gradWhite)" stroke-width="2.2"
+              filter="url(#glowKlein)" stroke-linecap="round"/>
+
+        <!-- 底部节点 -->
+        <circle cx="200" cy="300" r="5" fill="#002FA7" opacity="0.9"/>
+        <circle cx="730" cy="300" r="5" fill="#00BCD4" opacity="0.9"/>
+        <circle cx="1260" cy="300" r="5" fill="#FFFFFF" opacity="0.85"/>
+
+        <!-- 路径上的小节点 -->
+        <circle cx="360" cy="170" r="2.5" fill="#002FA7"/>
+        <circle cx="730" cy="180" r="2.5" fill="#00BCD4"/>
+        <circle cx="1100" cy="170" r="2.5" fill="#FFFFFF" opacity="0.7"/>
+      </svg>
+
+      <div class="directions">
+        <div class="dir-card">
+          <span class="idx">01</span>
+          <span class="num">DIRECTION I</span>
+          <h3><span>治理制度化</span></h3>
+          <p><span>基金会、委员会、宪法化流程成为大型开源项目的标配，决策与贡献走向规范化与可预期。</span></p>
+        </div>
+        <div class="dir-card">
+          <span class="idx">02</span>
+          <span class="num">DIRECTION II</span>
+          <h3><span>维护工具化</span></h3>
+          <p><span>AI 辅助代码审查、自动依赖更新、机器人维护体系大幅降低人力成本，让维护者更聚焦核心创造。</span></p>
+        </div>
+        <div class="dir-card">
+          <span class="idx">03</span>
+          <span class="num">DIRECTION III</span>
+          <h3><span>生态协同化</span></h3>
+          <p><span>项目间形成更紧密的联盟与互操作标准，单个项目不再是孤岛，共荣共生成为新常态。</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="mainline"><span>无论走向何方，开源的核心理念——开放、协作、共享——不会改变，变的只是承载形式</span></div>
+      <div class="story"><span>Owner 的终结并非开源的终结，而是开源进入<span class="hl">成熟期</span>的标志。从个人英雄到制度保障，从人力驱动到工具赋能，开源项目的未来形态将更加多元、更具韧性，也更值得我们去<span class="hl">想象和参与</span>。</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var dotsEl=document.getElementById('dots');
+  if(dotsEl){
+    var frag=document.createDocumentFragment();
+    for(var i=0;i<60;i++){
+      var d=document.createElement('div');
+      d.className='dot';
+      d.style.left=Math.random()*1600+'px';
+      d.style.top=Math.random()*900+'px';
+      d.style.opacity=(Math.random()*.4+.1).toFixed(2);
+      d.style.width=(Math.random()*1.5+.8).toFixed(1)+'px';
+      d.style.height=d.style.width;
+      frag.appendChild(d);
+    }
+    dotsEl.appendChild(frag);
+  }
+})();
+</script>
+</body>
+</html>

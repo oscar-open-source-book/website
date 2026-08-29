@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源布道与阅读分享 | CCF 2023</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --navy-mid:#3A4A5F;
+  --red:#C0392B;
+  --red-dark:#8E2A1E;
+  --gray-bg:#F5F5F5;
+  --gray-line:#D9D9D9;
+  --gray-text:#6B6B6B;
+  --paper:#FAFAF8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  background:#EBEBE6;
+  font-family:'Noto Sans SC',-apple-system,sans-serif;
+  color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:#F5F5F5;
+}
+
+#bg{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(155deg,#FAFAF8 0%,#F0F0EC 100%);
+}
+.bg-overlay{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 15% 85%,rgba(13,33,55,0.06) 0%,transparent 55%);
+  pointer-events:none;
+}
+.deco-top-bar{
+  position:absolute;top:0;left:0;right:0;height:8px;
+  background:var(--navy);
+  z-index:2;
+}
+.deco-top-bar::after{
+  content:'';position:absolute;top:0;right:0;height:8px;width:180px;
+  background:var(--red);
+}
+.deco-bottom-bar{
+  position:absolute;bottom:0;left:0;right:0;height:6px;
+  background:var(--navy);z-index:2;
+}
+.deco-ghost-text{
+  position:absolute;
+  font-family:'Playfair Display',serif;
+  font-size:520px;font-weight:900;
+  line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(13,33,55,0.06);
+  letter-spacing:-20px;
+  pointer-events:none;
+  z-index:1;
+}
+.deco-ghost-1{top:-100px;right:-40px;}
+.deco-ghost-2{bottom:-140px;left:-30px;font-size:380px;}
+.deco-vert-left{
+  position:absolute;left:0;top:8px;bottom:6px;width:14px;
+  background:var(--navy);z-index:2;
+}
+.deco-vert-right{
+  position:absolute;right:0;top:8px;bottom:6px;width:14px;
+  background:var(--navy);z-index:2;
+}
+.deco-book{
+  position:absolute;
+  width:90px;height:60px;
+  top:120px;right:60px;
+  transform:rotate(-8deg);
+  z-index:2;
+  opacity:0.9;
+}
+
+#ct{
+  position:absolute;inset:0;z-index:10;
+  padding:56px 76px 44px;
+  display:flex;flex-direction:column;
+}
+
+/* Header masthead */
+.header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:16px;
+  border-bottom:2px solid var(--navy);
+  position:relative;
+}
+.header::after{
+  content:'';position:absolute;bottom:-6px;left:0;right:0;
+  height:1px;background:var(--navy);opacity:0.35;
+}
+.masthead-left{display:flex;align-items:center;gap:18px;}
+.masthead-mark{
+  width:56px;height:56px;background:var(--red);color:#fff;
+  font-family:'Playfair Display',serif;font-size:38px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  line-height:1;letter-spacing:-1px;
+  flex-shrink:0;
+}
+.masthead-text .zh{
+  font-family:'Noto Serif SC',serif;
+  font-size:19px;font-weight:700;color:var(--navy);
+  letter-spacing:6px;
+  line-height:1.3;
+}
+.masthead-text .en{
+  font-family:'Playfair Display',serif;
+  font-size:11px;font-weight:500;color:var(--gray-text);
+  letter-spacing:4px;margin-top:4px;
+}
+.masthead-right{
+  font-family:'Playfair Display',serif;
+  font-size:12px;color:var(--navy);letter-spacing:4px;font-weight:500;
+}
+.masthead-right .num{
+  font-size:22px;font-weight:800;color:var(--red);
+  letter-spacing:1px;
+}
+.masthead-right .bar{color:var(--gray-line);margin:0 8px;}
+
+/* Hero title */
+.hero{
+  padding:54px 0 40px;text-align:center;position:relative;
+}
+.kicker{
+  font-family:'Playfair Display',serif;
+  font-size:15px;color:var(--red);letter-spacing:8px;
+  text-transform:uppercase;font-weight:600;margin-bottom:22px;
+}
+.kicker::before,.kicker::after{
+  content:'';display:inline-block;width:32px;height:1px;
+  background:var(--red);vertical-align:middle;margin:0 18px;
+}
+.title-row{display:flex;align-items:baseline;justify-content:center;gap:22px;}
+.title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:112px;font-weight:800;color:var(--navy);
+  line-height:1.05;letter-spacing:14px;
+}
+.title-cn{
+  font-family:'Noto Serif SC','Playfair Display',serif;
+  font-size:98px;font-weight:900;color:var(--navy);
+  line-height:1;letter-spacing:14px;
+}
+.underline-stroke{
+  width:96px;height:6px;background:var(--red);
+  margin:22px auto 0;
+}
+.tagline{
+  font-family:'Noto Serif SC',serif;
+  font-size:23px;color:var(--navy-mid);
+  letter-spacing:5px;margin-top:26px;font-weight:500;
+}
+
+/* Points */
+.points{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px;
+  flex:1;
+  padding:6px 0 22px;
+}
+.point{
+  background:var(--paper);
+  border:1px solid var(--gray-line);
+  padding:32px 28px 28px;
+  position:relative;
+  display:flex;flex-direction:column;gap:14px;
+}
+.point::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--red);
+}
+.point-num{
+  font-family:'Playfair Display',serif;
+  font-size:60px;font-weight:900;color:var(--red);
+  line-height:1;letter-spacing:-2px;
+  margin-bottom:2px;
+}
+.point-en{
+  font-family:'Playfair Display',serif;
+  font-size:11px;color:var(--gray-text);letter-spacing:3px;
+  text-transform:uppercase;font-weight:600;
+}
+.point-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:26px;color:var(--navy);font-weight:800;
+  letter-spacing:5px;line-height:1.3;
+}
+.point-rule{
+  width:44px;height:2px;background:var(--navy);
+  margin:2px 0 4px;
+}
+.point-desc{
+  font-size:14px;color:#4E5A6B;line-height:1.85;
+  letter-spacing:0.6px;flex:1;
+}
+
+/* Footer */
+.footer{
+  display:flex;align-items:center;gap:32px;
+  padding:24px 0 0;
+  border-top:1px solid var(--gray-line);
+  position:relative;
+}
+.footer::before{
+  content:'';position:absolute;top:-3px;left:0;
+  width:110px;height:5px;background:var(--navy);
+}
+.footer-left{
+  flex:1;
+  display:flex;align-items:center;gap:16px;
+  font-family:'Playfair Display',serif;
+  font-size:11px;color:var(--gray-text);letter-spacing:3px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.footer-left .dot{
+  width:7px;height:7px;background:var(--red);border-radius:50%;
+  display:inline-block;flex-shrink:0;
+}
+.footer-narrative{
+  flex:0 1 780px;
+  text-align:center;
+  font-family:'Noto Serif SC',serif;
+  font-size:14.5px;color:var(--navy-mid);line-height:1.9;
+  letter-spacing:1.5px;
+  position:relative;
+  padding:0 20px;
+}
+.footer-narrative::before,.footer-narrative::after{
+  content:'';display:block;
+  width:22px;height:1px;background:var(--red);
+  margin:0 auto 12px;
+}
+.footer-narrative::after{margin:12px auto 0;}
+.footer-right{
+  flex:1;
+  display:flex;justify-content:flex-end;align-items:center;gap:12px;
+  font-family:'Playfair Display',serif;
+  font-size:11px;color:var(--gray-text);letter-spacing:3px;
+  text-transform:uppercase;white-space:nowrap;
+}
+.footer-right .stamp{
+  padding:7px 14px;
+  border:1px solid var(--navy);
+  color:var(--navy);font-weight:700;letter-spacing:4px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-overlay"></div>
+    <div class="deco-top-bar"></div>
+    <div class="deco-bottom-bar"></div>
+    <div class="deco-vert-left"></div>
+    <div class="deco-vert-right"></div>
+    <div class="deco-ghost-text deco-ghost-1">23</div>
+    <div class="deco-ghost-text deco-ghost-2">OSB</div>
+    <svg class="deco-book" viewBox="0 0 90 60" fill="none">
+      <path d="M45 12 C30 4 12 4 4 8 L4 52 C12 48 30 48 45 56 C60 48 78 48 86 52 L86 8 C78 4 60 4 45 12 Z" stroke="#0D2137" stroke-width="1.6" fill="none"/>
+      <line x1="45" y1="12" x2="45" y2="56" stroke="#0D2137" stroke-width="1"/>
+      <line x1="14" y1="18" x2="36" y2="20" stroke="#C0392B" stroke-width="1.2"/>
+      <line x1="14" y1="26" x2="36" y2="28" stroke="#0D2137" stroke-width="0.8" opacity="0.5"/>
+      <line x1="14" y1="34" x2="36" y2="36" stroke="#0D2137" stroke-width="0.8" opacity="0.5"/>
+      <line x1="14" y1="42" x2="32" y2="44" stroke="#0D2137" stroke-width="0.8" opacity="0.5"/>
+      <line x1="54" y1="20" x2="76" y2="18" stroke="#C0392B" stroke-width="1.2"/>
+      <line x1="54" y1="28" x2="76" y2="26" stroke="#0D2137" stroke-width="0.8" opacity="0.5"/>
+      <line x1="54" y1="36" x2="76" y2="34" stroke="#0D2137" stroke-width="0.8" opacity="0.5"/>
+      <line x1="54" y1="44" x2="72" y2="42" stroke="#0D2137" stroke-width="0.8" opacity="0.5"/>
+    </svg>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="masthead-left">
+        <div class="masthead-mark"><span>OS</span></div>
+        <div class="masthead-text">
+          <div class="zh"><span>开 源 之 道</span></div>
+          <div class="en"><span>OPEN SOURCE · BOOK CLUB</span></div>
+        </div>
+      </div>
+      <div class="masthead-right">
+        <span>ISSUE</span>&nbsp;
+        <span class="num">03</span>
+        <span class="bar">|</span>
+        <span>CCF 2023 · ANNUAL</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="kicker"><span>COVER STORY · 2023</span></div>
+      <div class="title-row">
+        <div class="title-cn"><span>开</span></div>
+        <div class="title-cn"><span>源</span></div>
+        <div class="title-cn"><span>布</span></div>
+        <div class="title-cn"><span>道</span></div>
+        <div class="title-cn"><span>与</span></div>
+        <div class="title-cn"><span>阅</span></div>
+        <div class="title-cn"><span>读</span></div>
+        <div class="title-cn"><span>分</span></div>
+        <div class="title-cn"><span>享</span></div>
+      </div>
+      <div class="underline-stroke"></div>
+      <div class="tagline"><span>以开源之道建设 OSBook Club · CCF 2023</span></div>
+    </div>
+
+    <div class="points">
+      <div class="point">
+        <div class="point-num"><span>01</span></div>
+        <div class="point-en"><span>OPEN SOURCE MINDSET</span></div>
+        <div class="point-title"><span>开 源 精 神</span></div>
+        <div class="point-rule"></div>
+        <div class="point-desc"><span>将协作、透明、共享的开源理念引入知识传播与阅读社区，让每一位阅读者都能成为贡献者。</span></div>
+      </div>
+      <div class="point">
+        <div class="point-num"><span>02</span></div>
+        <div class="point-en"><span>CCF 2023 SHOWCASE</span></div>
+        <div class="point-title"><span>CCF 2023 分 享</span></div>
+        <div class="point-rule"></div>
+        <div class="point-desc"><span>在中国计算机联合会年度活动中呈现开源之书（OSBook）的实践成果与社区洞察。</span></div>
+      </div>
+      <div class="point">
+        <div class="point-num"><span>03</span></div>
+        <div class="point-en"><span>SHARER IN PRACTICE</span></div>
+        <div class="point-title"><span>适 兕 · 分 享 者</span></div>
+        <div class="point-rule"></div>
+        <div class="point-desc"><span>来自开源之道的实践者视角，分享阅读社区的建设路径与运营经验。</span></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left"><span class="dot"></span><span>EDITORIAL · 编者按</span></div>
+      <div class="footer-narrative">
+        <span>本次分享聚焦于如何通过开源的方式建设 OSBook 阅读俱乐部，将开源协作的理念应用于知识传播领域，推动阅读社区的成长与繁荣。</span>
+      </div>
+      <div class="footer-right"><span class="stamp">CCF 2023</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

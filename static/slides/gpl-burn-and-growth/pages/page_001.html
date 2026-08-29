@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>GPL的燃烧与成长</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap');
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --gray:#B0BEC5;
+  --dark:#0a0e1a;
+  --darker:#060912;
+  --card-bg:rgba(10,14,26,0.72);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Roboto Mono',monospace;color:#e0e8f0;overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 50% 40%, #0d1a30 0%, #060912 60%, #03050c 100%);}
+#bg::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 20% 30%, rgba(33,150,243,0.08) 0%, transparent 40%),
+  radial-gradient(circle at 80% 70%, rgba(0,188,212,0.08) 0%, transparent 40%);}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 60px;display:flex;flex-direction:column;align-items:center;}
+
+.title-block{margin-top:10px;text-align:center;width:100%;}
+.h1-title{
+  font-family:'Inter',sans-serif;font-weight:800;font-size:52px;
+  background:linear-gradient(90deg,#64b5f6 0%,#2196F3 35%,#00BCD4 70%,#80deea 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:2px;line-height:1.1;
+  text-shadow:0 0 40px rgba(33,150,243,0.15);
+}
+.h1-title .glow-dot{color:#00BCD4;}
+.subtitle{
+  font-family:'Roboto Mono',monospace;font-weight:400;font-size:14px;
+  color:#B0BEC5;margin-top:12px;letter-spacing:3px;
+}
+.subtitle-sep{color:#00BCD4;margin:0 8px;}
+
+.hero-wrap{
+  margin-top:18px;width:100%;display:flex;justify-content:center;align-items:center;
+}
+.hero-frame{
+  position:relative;width:1000px;height:540px;
+  border:1px solid rgba(33,150,243,0.3);
+  border-radius:6px;
+  box-shadow:0 0 30px rgba(33,150,243,0.15),0 0 60px rgba(0,188,212,0.08);
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-frame img{width:100%;height:100%;object-fit:cover;display:block;}
+.hero-corner{position:absolute;width:14px;height:14px;border:2px solid #00BCD4;}
+.hero-corner.tl{top:8px;left:8px;border-right:none;border-bottom:none;}
+.hero-corner.tr{top:8px;right:8px;border-left:none;border-bottom:none;}
+.hero-corner.bl{bottom:8px;left:8px;border-right:none;border-top:none;}
+.hero-corner.br{bottom:8px;right:8px;border-left:none;border-top:none;}
+.hero-caption{
+  position:absolute;bottom:10px;left:0;right:0;text-align:center;
+  font-family:'Roboto Mono',monospace;font-size:11px;color:#80cbc4;
+  letter-spacing:4px;
+}
+
+.bottom-section{
+  width:100%;margin-top:18px;
+}
+.info-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Roboto Mono',monospace;font-size:12px;color:#B0BEC5;
+  padding:0 10px;letter-spacing:1px;
+}
+.info-row .info-left,.info-row .info-right{display:flex;align-items:center;gap:8px;}
+.info-row .info-dot{width:6px;height:6px;border-radius:50%;background:#00BCD4;box-shadow:0 0 8px #00BCD4;}
+.info-label{color:#64b5f6;}
+
+.narrative-line{
+  text-align:center;font-family:'Roboto Mono',monospace;font-size:11px;
+  color:#78909c;margin-top:10px;letter-spacing:2px;line-height:1.6;
+}
+
+.cards-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  margin-top:14px;width:100%;
+}
+.card{
+  background:var(--card-bg);
+  border:1px solid rgba(33,150,243,0.25);
+  border-left:3px solid #2196F3;
+  border-radius:4px;padding:12px 16px;
+  backdrop-filter:blur(4px);
+  position:relative;
+  transition:all 0.3s;
+}
+.card:nth-child(2){border-left-color:#00BCD4;}
+.card:nth-child(3){border-left-color:#64b5f6;}
+.card-title{
+  font-family:'Inter',sans-serif;font-weight:700;font-size:13px;
+  color:#e3f2fd;letter-spacing:1px;margin-bottom:6px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-title .num{
+  font-family:'Roboto Mono',monospace;font-size:10px;color:#00BCD4;
+  background:rgba(0,188,212,0.12);padding:2px 6px;border-radius:2px;
+}
+.card-content{
+  font-family:'Roboto Mono',monospace;font-size:10.5px;color:#b0bec5;
+  line-height:1.55;letter-spacing:0.5px;
+}
+.card::after{
+  content:"";position:absolute;top:0;right:0;width:20px;height:20px;
+  background:linear-gradient(225deg,rgba(0,188,212,0.15) 0%,transparent 60%);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="title-block">
+      <div class="h1-title">GPL<span class="glow-dot">·</span>的燃烧与成长</div>
+      <div class="subtitle">2023年4月开源之书记录<span class="subtitle-sep">·</span>GPL生态的深度观察与开源布道</div>
+    </div>
+
+    <div class="hero-wrap">
+      <div class="hero-frame">
+        <span class="hero-corner tl"></span>
+        <span class="hero-corner tr"></span>
+        <span class="hero-corner bl"></span>
+        <span class="hero-corner br"></span>
+        <img src="../images/page_001_hero.png" alt="火焰与代码融合的抽象封面主视觉，深色海军蓝背景中发光的天蓝与青色粒子汇聚成火焰与二进制电路交织的图腾">
+        <div class="hero-caption">F L A M E &nbsp; &nbsp; &times; &nbsp; &nbsp; C O D E &nbsp; &nbsp; &times; &nbsp; &nbsp; G P L</div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="info-row">
+        <div class="info-left">
+          <span class="info-dot"></span>
+          <span class="info-label">记录时间</span>
+          <span>：2023-04（月度开源之书记录）</span>
+        </div>
+        <div class="info-right">
+          <span class="info-label">核心议题</span>
+          <span>：GPL（通用公共许可证）</span>
+          <span class="info-dot"></span>
+        </div>
+      </div>
+
+      <div class="narrative-line">
+        GPL许可证再次成为全球开源社区的焦点话题，本书记录了GPL生态在争议中燃烧、在争议中成长的双面图景
+      </div>
+
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-title"><span class="num">01</span>开源之书记录</div>
+          <div class="card-content">记录GPL许可证在全球开源社区中的争议、合规事件与持续增长</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="num">02</span>燃烧与成长</div>
+          <div class="card-content">GPL合规冲突如烈火般考验社区，但生态规模仍在持续扩张</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="num">03</span>开源布道视角</div>
+          <div class="card-content">从开源布道者的立场，审视GPL哲学在当代的技术与经济意义</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

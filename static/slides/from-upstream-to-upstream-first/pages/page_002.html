@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>什么是"上游"？</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00E5FF;
+  --bg: #1A1A2E;
+  --bg-deep: #0F0F1E;
+  --text-main: #E8EAF6;
+  --text-sub: #9FA8C7;
+  --line: rgba(33,150,243,0.25);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #1A1A2E 0%, #0F0F1E 100%);
+}
+#bg { position: absolute; inset: 0; z-index: 0; }
+#ct { position: absolute; inset: 0; z-index: 1; padding: 60px; box-sizing: border-box; }
+
+/* 背景装饰 */
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.bg-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  right: -200px; top: 100px;
+  background: radial-gradient(circle, rgba(0,229,255,0.12) 0%, transparent 65%);
+  border-radius: 50%;
+}
+.bg-glow-2 {
+  position: absolute;
+  width: 500px; height: 500px;
+  left: -100px; bottom: -100px;
+  background: radial-gradient(circle, rgba(33,150,243,0.10) 0%, transparent 65%);
+  border-radius: 50%;
+}
+
+/* 顶部导航条 */
+.top-bar {
+  position: absolute;
+  top: 40px; left: 60px; right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.top-bar .brand {
+  display: flex; align-items: center; gap: 10px;
+}
+.brand-dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent);
+}
+.top-bar .page-info {
+  display: flex; align-items: center; gap: 20px;
+}
+.page-info .bar {
+  width: 60px; height: 2px;
+  background: var(--line);
+  position: relative;
+}
+.page-info .bar::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 30%; height: 100%;
+  background: var(--accent);
+}
+
+/* 主区域 */
+.main-area {
+  position: absolute;
+  top: 110px; left: 60px; right: 60px; bottom: 120px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+/* 左侧：超大数字 + 标题 */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+.chapter-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--accent);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+.big-number {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 320px;
+  line-height: 0.9;
+  background: linear-gradient(180deg, #00E5FF 0%, #2196F3 50%, rgba(33,150,243,0.2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  letter-spacing: -10px;
+  margin-bottom: 30px;
+}
+.big-number::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+.title-zh {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.subtitle-zh {
+  font-size: 18px;
+  color: var(--text-sub);
+  font-weight: 300;
+  letter-spacing: 1px;
+  max-width: 480px;
+  line-height: 1.6;
+}
+.title-en {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: rgba(33,150,243,0.5);
+  margin-top: 24px;
+  text-transform: uppercase;
+}
+
+/* 右侧：CSS 光效河流 */
+.right-col {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.river-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.river {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.river-line {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid;
+  opacity: 0.7;
+}
+.river-line:nth-child(1) {
+  width: 380px; height: 380px;
+  border-color: rgba(33,150,243,0.3);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 3s ease-in-out infinite;
+}
+.river-line:nth-child(2) {
+  width: 280px; height: 280px;
+  border-color: rgba(0,229,255,0.4);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 3s ease-in-out infinite 0.5s;
+}
+.river-line:nth-child(3) {
+  width: 190px; height: 190px;
+  border-color: rgba(0,229,255,0.55);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 3s ease-in-out infinite 1s;
+}
+.river-line:nth-child(4) {
+  width: 110px; height: 110px;
+  border-color: rgba(0,229,255,0.7);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 3s ease-in-out infinite 1.5s;
+}
+.river-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px;
+  background: radial-gradient(circle, #00E5FF 0%, rgba(0,229,255,0.3) 40%, transparent 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 60px rgba(0,229,255,0.6);
+  animation: center-glow 2.5s ease-in-out infinite;
+}
+
+/* 河流流线 */
+.flow-lines {
+  position: absolute;
+  inset: 0;
+}
+.flow {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.5;
+  top: 50%;
+}
+.flow:nth-child(1) { left: 0; width: 100%; transform: translateY(-30px); animation: flow-move 3s linear infinite; }
+.flow:nth-child(2) { left: 0; width: 100%; transform: translateY(-60px); animation: flow-move 3s linear infinite 0.3s; opacity: 0.3; }
+.flow:nth-child(3) { left: 0; width: 100%; transform: translateY(30px); animation: flow-move 3s linear infinite 0.6s; }
+.flow:nth-child(4) { left: 0; width: 100%; transform: translateY(60px); animation: flow-move 3s linear infinite 0.9s; opacity: 0.3; }
+.flow:nth-child(5) { left: 0; width: 100%; transform: translateY(-90px); animation: flow-move 3s linear infinite 1.2s; opacity: 0.2; }
+.flow:nth-child(6) { left: 0; width: 100%; transform: translateY(90px); animation: flow-move 3s linear infinite 1.5s; opacity: 0.2; }
+
+/* 河流标签 */
+.river-label-source {
+  position: absolute;
+  top: 22%; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.river-label-down {
+  position: absolute;
+  bottom: 22%; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: rgba(33,150,243,0.5);
+  text-transform: uppercase;
+}
+.river-arrow-up {
+  position: absolute;
+  top: 32%; left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: var(--accent);
+  opacity: 0.8;
+}
+.river-arrow-down {
+  position: absolute;
+  bottom: 32%; left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: rgba(33,150,243,0.4);
+  opacity: 0.6;
+}
+
+/* 右侧数据节点 */
+.node {
+  position: absolute;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent);
+}
+.node:nth-child(1) { top: 15%; left: 20%; }
+.node:nth-child(2) { top: 30%; left: 82%; }
+.node:nth-child(3) { top: 50%; left: 15%; }
+.node:nth-child(4) { top: 70%; left: 88%; }
+.node:nth-child(5) { top: 85%; left: 35%; }
+
+/* 底部三要点 */
+.points-area {
+  position: absolute;
+  bottom: 50px; left: 60px; right: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.point-card {
+  position: relative;
+  padding: 20px 22px 20px 22px;
+  background: rgba(33,150,243,0.04);
+  border: 1px solid rgba(33,150,243,0.15);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.point-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--primary));
+}
+.point-index {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.point-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+.point-desc {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-sub);
+  font-weight: 300;
+}
+
+/* 底部对比条 */
+.dual-bar {
+  position: absolute;
+  bottom: 18px; left: 60px; right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+.dual-bar .up-side {
+  color: var(--accent);
+  display: flex; align-items: center; gap: 10px;
+}
+.dual-bar .down-side {
+  color: rgba(33,150,243,0.5);
+  display: flex; align-items: center; gap: 10px;
+}
+.dual-bar .divider {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent, var(--primary));
+  margin: 0 20px;
+  opacity: 0.4;
+}
+
+/* 动画 */
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  50% { transform: translate(-50%, -50%) scale(1.06); opacity: 0.3; }
+}
+@keyframes center-glow {
+  0%, 100% { box-shadow: 0 0 40px rgba(0,229,255,0.5); }
+  50% { box-shadow: 0 0 80px rgba(0,229,255,0.9); }
+}
+@keyframes flow-move {
+  0% { opacity: 0; transform: translateY(var(--ty, 0)) translateX(-30%); }
+  30% { opacity: 0.6; }
+  70% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(var(--ty, 0)) translateX(30%); }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+  </div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <span>OPEN SOURCE · CHAPTER TRANSITION</span>
+      </div>
+      <div class="page-info">
+        <span>SECTION 01</span>
+        <div class="bar"></div>
+        <span>P. 02 / 12</span>
+      </div>
+    </div>
+
+    <div class="main-area">
+      <div class="left-col">
+        <div class="chapter-label"><span>CHAPTER · 01</span></div>
+        <div class="big-number"><span>01</span></div>
+        <div class="title-zh"><span>什么是"上游"？</span></div>
+        <div class="subtitle-zh"><span>理解开源生态中的源头协作概念</span></div>
+        <div class="title-en"><span>What Does "Upstream" Mean ?</span></div>
+      </div>
+
+      <div class="right-col">
+        <div class="river-container">
+          <div class="river">
+            <div class="river-line"></div>
+            <div class="river-line"></div>
+            <div class="river-line"></div>
+            <div class="river-line"></div>
+            <div class="river-center"></div>
+            <div class="flow-lines">
+              <div class="flow"></div>
+              <div class="flow"></div>
+              <div class="flow"></div>
+              <div class="flow"></div>
+              <div class="flow"></div>
+              <div class="flow"></div>
+            </div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="river-label-source"><span>源 头 · SOURCE</span></div>
+            <div class="river-arrow-up"><span>▲</span></div>
+            <div class="river-arrow-down"><span>▼</span></div>
+            <div class="river-label-down"><span>下游 · FORK</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="points-area">
+      <div class="point-card">
+        <div class="point-index"><span>01 / CONCEPT</span></div>
+        <div class="point-title"><span>概念引入</span></div>
+        <div class="point-desc"><span>"上游"指代软件项目中更靠近原始代码库与决策源头的那一端。</span></div>
+      </div>
+      <div class="point-card">
+        <div class="point-index"><span>02 / CONTRAST</span></div>
+        <div class="point-title"><span>对比下游</span></div>
+        <div class="point-desc"><span>下游通常是被分叉即 Fork、二次加工后的版本，远离社区核心。</span></div>
+      </div>
+      <div class="point-card">
+        <div class="point-index"><span>03 / WHY</span></div>
+        <div class="point-title"><span>为何重要</span></div>
+        <div class="point-desc"><span>理解上游是理解开源权力结构、治理模式和贡献价值的起点。</span></div>
+      </div>
+    </div>
+
+    <div class="dual-bar">
+      <div class="up-side"><span>◉ 靠近源头的协作端</span></div>
+      <div class="divider"></div>
+      <div class="down-side"><span>Fork / 下游发行 ◉</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

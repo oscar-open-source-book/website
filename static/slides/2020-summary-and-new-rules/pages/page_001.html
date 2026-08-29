@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之道 · 适兕</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --gray: #607D8B;
+  --light: #E3F2FD;
+  --white: #FFFFFF;
+  --dark: #1A2332;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 30%, #64B5F6 60%, #2196F3 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 85% 30%, rgba(0, 188, 212, 0.25) 0%, transparent 55%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 15% 85%, rgba(96, 125, 139, 0.18) 0%, transparent 50%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+/* Right side decoration */
+.deco-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 700px;
+  height: 900px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gear-outer {
+  position: absolute;
+  top: 80px;
+  right: 60px;
+  width: 320px;
+  height: 320px;
+  animation: none;
+}
+
+.gear-inner {
+  position: absolute;
+  top: 280px;
+  right: 260px;
+  width: 200px;
+  height: 200px;
+}
+
+.code-block {
+  position: absolute;
+  top: 460px;
+  right: 100px;
+  font-family: 'Inter', monospace;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.8;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.code-block span { color: rgba(0,188,212,0.5); }
+
+.floating-dots {
+  position: absolute;
+  top: 60px;
+  right: 440px;
+  width: 120px;
+  height: 120px;
+}
+
+/* Content layout */
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 780px;
+  justify-content: space-between;
+}
+
+.header-section {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.brand-tag::before {
+  content: '';
+  display: inline-block;
+  width: 36px;
+  height: 2px;
+  background: var(--cyan);
+}
+
+.main-title {
+  font-size: 88px;
+  font-weight: 900;
+  color: var(--dark);
+  letter-spacing: 4px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.main-title .dot {
+  color: var(--cyan);
+  margin: 0 8px;
+}
+
+.subtitle {
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--gray);
+  letter-spacing: 2px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid rgba(33, 150, 243, 0.3);
+  display: inline-block;
+  padding-top: 12px;
+}
+
+/* Cards section */
+.cards-section {
+  display: flex;
+  gap: 24px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 24px 26px;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 8px 32px rgba(33,150,243,0.12);
+  transition: transform 0.3s;
+}
+
+.card:nth-child(2) { border-left-color: var(--cyan); }
+.card:nth-child(3) { border-left-color: var(--gray); }
+
+.card-number {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.card:nth-child(2) .card-number { color: var(--cyan); }
+.card:nth-child(3) .card-number { color: var(--gray); }
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* Footer */
+.footer-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 0;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.year-badge {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--primary), var(--cyan));
+  padding: 8px 18px;
+  border-radius: 8px;
+  letter-spacing: 2px;
+  display: inline-block;
+  width: fit-content;
+  box-shadow: 0 4px 16px rgba(33,150,243,0.3);
+}
+
+.team-name {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.footer-right {
+  text-align: right;
+}
+
+.closing-line {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  line-height: 1.6;
+  max-width: 460px;
+}
+
+.closing-line::before {
+  content: '—— ';
+  color: var(--cyan);
+}
+
+/* SVG decorations inline */
+.geo-circle-1 {
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+}
+
+.geo-circle-2 {
+  position: absolute;
+  bottom: -60px;
+  left: 300px;
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+}
+
+.geo-square {
+  position: absolute;
+  bottom: 120px;
+  left: -40px;
+  width: 100px;
+  height: 100px;
+  border: 2px solid rgba(255,255,255,0.12);
+  transform: rotate(45deg);
+}
+
+/* Code symbols floating */
+.code-symbols {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  font-family: 'Inter', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.15);
+  line-height: 2.4;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* Divider line */
+.title-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.title-divider .line {
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.title-divider .line2 {
+  width: 20px;
+  height: 3px;
+  background: var(--cyan);
+  border-radius: 2px;
+}
+
+.title-divider .line3 {
+  width: 10px;
+  height: 3px;
+  background: var(--gray);
+  border-radius: 2px;
+}
+
+.title-divider .label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 3px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="geo-circle-1"></div>
+    <div class="geo-circle-2"></div>
+    <div class="geo-square"></div>
+
+    <div class="code-symbols">
+      &lt;code&gt; &amp;nbsp;&amp;nbsp;{ } &lt;/&gt; /* * /<br>
+      [ import ]( ) =&gt; &amp;nbsp; #! //<br>
+      &lt;/&gt; {} [] () &amp;nbsp;&amp;nbsp;&amp;nbsp; @
+    </div>
+
+    <!-- Right side gear decoration SVG -->
+    <div class="deco-right">
+      <svg class="gear-outer" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.4"/>
+            <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0.15"/>
+          </linearGradient>
+        </defs>
+        <!-- Outer gear -->
+        <g transform="translate(160,160)" fill="url(#gearGrad)" stroke="rgba(255,255,255,0.6)" stroke-width="2">
+          <circle r="120" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+          <circle r="100" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="8 6"/>
+          <g>
+            <!-- Gear teeth -->
+            <rect x="-8" y="-145" width="16" height="20" rx="3"/>
+            <rect x="-8" y="125" width="16" height="20" rx="3"/>
+            <rect x="-145" y="-8" width="20" height="16" rx="3"/>
+            <rect x="125" y="-8" width="20" height="16" rx="3"/>
+            <rect x="-106" y="-106" width="16" height="20" rx="3" transform="rotate(45)"/>
+            <rect x="90" y="-106" width="16" height="20" rx="3" transform="rotate(45)"/>
+            <rect x="-106" y="86" width="16" height="20" rx="3" transform="rotate(-45)"/>
+            <rect x="90" y="86" width="16" height="20" rx="3" transform="rotate(-45)"/>
+            <rect x="-55" y="-132" width="16" height="20" rx="3" transform="rotate(22.5)"/>
+            <rect x="39" y="-132" width="16" height="20" rx="3" transform="rotate(22.5)"/>
+            <rect x="-55" y="112" width="16" height="20" rx="3" transform="rotate(-22.5)"/>
+            <rect x="39" y="112" width="16" height="20" rx="3" transform="rotate(-22.5)"/>
+            <rect x="-132" y="-55" width="16" height="20" rx="3" transform="rotate(-22.5)"/>
+            <rect x="-132" y="39" width="16" height="20" rx="3" transform="rotate(-22.5)"/>
+            <rect x="112" y="-55" width="16" height="20" rx="3" transform="rotate(22.5)"/>
+            <rect x="112" y="39" width="16" height="20" rx="3" transform="rotate(22.5)"/>
+          </g>
+          <circle r="60" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+          <circle r="35" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="4 4"/>
+        </g>
+      </svg>
+
+      <svg class="gear-inner" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(100,100)" fill="rgba(255,255,255,0.3)" stroke="rgba(255,255,255,0.7)" stroke-width="1.5">
+          <circle r="70" fill="none" stroke="rgba(0,188,212,0.4)" stroke-width="2"/>
+          <g>
+            <rect x="-5" y="-90" width="10" height="14" rx="2"/>
+            <rect x="-5" y="76" width="10" height="14" rx="2"/>
+            <rect x="-90" y="-5" width="14" height="10" rx="2"/>
+            <rect x="76" y="-5" width="14" height="10" rx="2"/>
+            <rect x="-67" y="-67" width="10" height="14" rx="2" transform="rotate(45)"/>
+            <rect x="57" y="-67" width="10" height="14" rx="2" transform="rotate(45)"/>
+            <rect x="-67" y="57" width="10" height="14" rx="2" transform="rotate(-45)"/>
+            <rect x="57" y="57" width="10" height="14" rx="2" transform="rotate(-45)"/>
+          </g>
+          <circle r="30" fill="rgba(255,255,255,0.15)" stroke="rgba(0,188,212,0.5)" stroke-width="1.5"/>
+          <circle r="15" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+        </g>
+      </svg>
+
+      <div class="code-block">
+<span>&lt;</span>open-source<span>&gt;</span><br>
+  <span>import</span> community;<br>
+  <span>const</span> rules = [<br>
+    'collaborate',<br>
+    'share',<br>
+    'innovate'<br>
+  ];<br>
+<span>&lt;/</span>open-source<span>&gt;</span>
+    </div>
+    </div>
+
+    <div class="content">
+      <div class="header-section">
+        <div class="brand-tag"><span>OPEN SOURCE · SHI SI</span></div>
+
+        <div class="title-divider">
+          <span class="line"></span>
+          <span class="line2"></span>
+          <span class="line3"></span>
+          <span class="label">ANNUAL REPORT</span>
+        </div>
+
+        <h1 class="main-title"><span>开源之道</span><span class="dot">·</span><span>适兕</span></h1>
+        <div class="subtitle"><span>2020年终总结与2021新规则发布</span></div>
+      </div>
+
+      <div class="cards-section">
+        <div class="card">
+          <div class="card-number"><span>01</span></div>
+          <div class="card-title"><span>记录与回顾</span></div>
+          <div class="card-desc"><span>系统梳理2020年开源社区的活跃成果与里程碑事件</span></div>
+        </div>
+        <div class="card">
+          <div class="card-number"><span>02</span></div>
+          <div class="card-title"><span>规则与展望</span></div>
+          <div class="card-desc"><span>面向2021年提出开源贡献与协作的全新规范建议</span></div>
+        </div>
+        <div class="card">
+          <div class="card-number"><span>03</span></div>
+          <div class="card-title"><span>适兕出品</span></div>
+          <div class="card-desc"><span>由开源之道适兕团队整理发布，持续倡导中文开源文化</span></div>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <div class="footer-left">
+          <span class="year-badge">2020 → 2021</span>
+          <span class="team-name">适兕 · 开源之道系列</span>
+        </div>
+        <div class="footer-right">
+          <p class="closing-line"><span>总结与前瞻，推动更多开发者加入开源协作的行列。</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

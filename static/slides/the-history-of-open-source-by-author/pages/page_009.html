@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源经济：谁在用、谁在赚</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Lato:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F5F5;
+  --ink:#0D2137;
+  --ink-2:#1F3A5C;
+  --accent:#880E4F;
+  --muted:#6B7A8F;
+  --line:#D6DBE2;
+  --soft:#E4E9F0;
+  --bar-soft:#A9B8CC;
+  --bar-soft-2:#BFCBDA;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#EAEAEA;font-family:'Lato','Noto Sans SC',sans-serif;color:var(--ink);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 40px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Background deco */
+.bg-deco-1{position:absolute;top:-140px;right:-120px;width:420px;height:420px;border:1px solid var(--line);border-radius:50%;opacity:.6;}
+.bg-deco-2{position:absolute;bottom:-180px;left:-100px;width:380px;height:380px;border:1px solid var(--line);border-radius:50%;opacity:.5;}
+.bg-mark{position:absolute;top:38px;right:60px;font-family:'Playfair Display',serif;font-style:italic;color:var(--accent);font-size:14px;letter-spacing:2px;}
+.bg-vert{position:absolute;left:24px;top:120px;writing-mode:vertical-rl;letter-spacing:6px;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;padding-bottom:16px;border-bottom:1px solid var(--line);position:relative;}
+.header-left{flex:1;}
+.eyebrow{font-size:11px;letter-spacing:4px;color:var(--accent);font-weight:700;margin-bottom:8px;text-transform:uppercase;}
+.title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:46px;font-weight:700;color:var(--ink);line-height:1.05;letter-spacing:-.5px;}
+.title .amp{color:var(--accent);font-style:italic;font-weight:600;}
+.subtitle{margin-top:8px;font-size:14px;color:var(--ink-2);max-width:900px;line-height:1.55;}
+.page-num{font-family:'Playfair Display',serif;font-size:64px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-2px;}
+.page-num small{display:block;font-family:'Lato',sans-serif;font-size:10px;color:var(--muted);letter-spacing:3px;font-weight:600;margin-top:4px;text-transform:uppercase;}
+
+/* Main content */
+.main{flex:1;display:grid;grid-template-columns:1.05fr 1fr;gap:28px;margin-top:22px;}
+
+/* Chart card */
+.chart-card{background:#FFFFFF;border:1px solid var(--line);padding:22px 26px;position:relative;display:flex;flex-direction:column;}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.card-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:17px;font-weight:700;color:var(--ink);}
+.card-tag{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;text-transform:uppercase;padding:3px 8px;border:1px solid var(--line);}
+.hero-stat{display:flex;align-items:baseline;gap:10px;margin:2px 0 12px;}
+.hero-num{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:var(--accent);line-height:1;letter-spacing:-2px;}
+.hero-label{font-size:11px;color:var(--muted);line-height:1.4;letter-spacing:1px;}
+.hero-label b{color:var(--ink);font-weight:700;display:block;font-size:13px;}
+
+.bar-chart{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:8px;margin-top:6px;}
+.bar-row{display:grid;grid-template-columns:130px 1fr 74px;align-items:center;gap:10px;}
+.bar-label{font-size:12px;color:var(--ink);font-weight:600;line-height:1.25;}
+.bar-label small{display:block;color:var(--muted);font-weight:400;font-size:10px;letter-spacing:.5px;margin-top:1px;}
+.bar-track{height:22px;background:var(--soft);position:relative;border-radius:1px;}
+.bar-fill{position:absolute;top:0;left:0;height:100%;background:var(--bar-soft);}
+.bar-fill.hero{background:var(--ink);height:30px;top:-4px;box-shadow:0 2px 6px rgba(13,33,55,.25);}
+.bar-fill.accent{background:var(--accent);}
+.bar-val{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink-2);text-align:right;}
+.bar-val.hero{font-size:22px;color:var(--accent);font-weight:900;}
+.bar-val.accent{color:var(--accent);}
+.chart-foot{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:10px;color:var(--muted);display:flex;justify-content:space-between;letter-spacing:.5px;}
+.legend-dot{display:inline-block;width:8px;height:8px;background:var(--ink);margin-right:6px;vertical-align:middle;}
+.legend-dot.s{background:var(--bar-soft);}
+
+/* KPI card */
+.kpi-card{background:var(--ink);color:#fff;padding:22px 24px;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.kpi-card::before{content:'';position:absolute;top:0;right:0;width:120px;height:120px;background:var(--accent);clip-path:polygon(100% 0,100% 100%,0 0);}
+.kpi-head{position:relative;z-index:2;}
+.kpi-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:17px;font-weight:700;}
+.kpi-sub{font-size:10px;color:#B8C4D6;letter-spacing:2px;text-transform:uppercase;margin-top:4px;font-weight:600;}
+.kpi-list{flex:1;display:flex;flex-direction:column;justify-content:space-around;margin-top:12px;position:relative;z-index:2;}
+.kpi-item{display:grid;grid-template-columns:32px 1fr 88px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.12);}
+.kpi-item:last-child{border-bottom:none;}
+.kpi-idx{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent);line-height:1;}
+.kpi-name{font-size:12.5px;line-height:1.3;color:#E6ECF5;font-weight:500;}
+.kpi-name small{display:block;color:#8FA3BD;font-size:10px;font-weight:400;margin-top:2px;letter-spacing:.5px;}
+.kpi-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff;text-align:right;line-height:1;letter-spacing:-.5px;}
+.kpi-val small{display:block;font-family:'Lato',sans-serif;font-size:9px;color:#8FA3BD;font-weight:600;letter-spacing:1.5px;margin-top:2px;}
+
+/* Six grid */
+.grid{margin-top:20px;background:#FFFFFF;border:1px solid var(--line);}
+.grid-head{display:flex;align-items:center;justify-content:space-between;padding:10px 22px;border-bottom:1px solid var(--line);}
+.grid-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:15px;font-weight:700;color:var(--ink);}
+.grid-tag{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;text-transform:uppercase;}
+.grid-body{display:grid;grid-template-columns:repeat(3,1fr);}
+.g-cell{padding:14px 22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;display:flex;gap:12px;align-items:flex-start;}
+.g-cell:nth-child(3n){border-right:none;}
+.g-cell:nth-child(n+4){border-bottom:none;}
+.g-num{flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-family:'Playfair Display',serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1;}
+.g-cell.accent .g-num{background:var(--accent);}
+.g-text{flex:1;min-width:0;}
+.g-h{font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:3px;}
+.g-h em{color:var(--accent);font-style:normal;font-family:'Playfair Display',serif;font-weight:700;}
+.g-p{font-size:10.5px;color:var(--muted);line-height:1.45;}
+
+/* Footer */
+.foot{margin-top:14px;display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--ink);}
+.foot-quote{font-family:'Playfair Display','Noto Serif SC',serif;font-size:13px;color:var(--ink);font-style:italic;}
+.foot-quote b{color:var(--accent);font-style:normal;font-weight:700;letter-spacing:1px;}
+.foot-meta{font-size:10px;color:var(--muted);letter-spacing:2px;font-weight:600;text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-deco-1"></div>
+    <div class="bg-deco-2"></div>
+    <div class="bg-mark">THE OPEN-SOURCE ECONOMY</div>
+    <div class="bg-vert">No.09 / Open Source Economics</div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow">Chapter 09 · 开源经济</div>
+        <h1 class="title">开源经济：<span class="amp">谁在用、谁在赚</span></h1>
+        <div class="subtitle">开源早已是产业而非运动——Open Core、云托管、基金会会费、企业赞助四种商业模式叠加，形成每年数百亿美元的隐形市场。</div>
+      </div>
+      <div class="page-num">09<small>DATA · ECON</small></div>
+    </div>
+
+    <div class="main">
+
+      <!-- Left: Bar chart -->
+      <div class="chart-card">
+        <div class="card-head">
+          <div class="card-title">关键指标 · 开源产业五维</div>
+          <div class="card-tag">FIG.01 / 2023</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-num">95%</div>
+          <div class="hero-label"><b>企业正在使用开源</b>Red Hat 开发者经济调查多年结论</div>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <div class="bar-label">企业使用开源比例<small>Red Hat 调查</small></div>
+            <div class="bar-track"><div class="bar-fill hero" style="width:95%;"></div></div>
+            <div class="bar-val hero">95%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Gitee 开发者规模<small>2500 万+ 单位</small></div>
+            <div class="bar-track"><div class="bar-fill" style="width:82%;"></div></div>
+            <div class="bar-val">2500<span style="font-size:11px;">万+</span></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Linux Foundation 会员<small>企业数量</small></div>
+            <div class="bar-track"><div class="bar-fill" style="width:68%;"></div></div>
+            <div class="bar-val">1000<span style="font-size:11px;">+</span></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">GitHub 2023 营收<small>单位：亿美元</small></div>
+            <div class="bar-track"><div class="bar-fill accent" style="width:56%;"></div></div>
+            <div class="bar-val accent">$18亿</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">软件代码中开源占比<small>Linux Foundation 估计</small></div>
+            <div class="bar-track"><div class="bar-fill" style="width:24%;"></div></div>
+            <div class="bar-val">24%</div>
+          </div>
+        </div>
+        <div class="chart-foot">
+          <span><span class="legend-dot"></span>核心结论 &nbsp; <span class="legend-dot s"></span>产业指标</span>
+          <span>Source: Red Hat / Linux Foundation / GitHub / Gitee</span>
+        </div>
+      </div>
+
+      <!-- Right: KPI card -->
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <div class="kpi-title">五个数字看懂开源经济</div>
+          <div class="kpi-sub">KPI · Key Figures</div>
+        </div>
+        <div class="kpi-list">
+          <div class="kpi-item">
+            <div class="kpi-idx">01</div>
+            <div class="kpi-name">企业使用开源比例<small>Red Hat 开发者经济调查</small></div>
+            <div class="kpi-val">95%<small>OF ENTERPRISES</small></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-idx">02</div>
+            <div class="kpi-name">代码中开源占比<small>Linux Foundation 报告估计</small></div>
+            <div class="kpi-val">24%<small>OF CODEBASE</small></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-idx">03</div>
+            <div class="kpi-name">GitHub 2023 商业营收<small>企业订阅 + Copilot 授权</small></div>
+            <div class="kpi-val">$18亿<small>FY 2023</small></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-idx">04</div>
+            <div class="kpi-name">Linux Foundation 会员<small>全球企业会员单位</small></div>
+            <div class="kpi-val">1000+<small>MEMBERS</small></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-idx">05</div>
+            <div class="kpi-name">Gitee 开发者规模<small>中国头部代码托管平台</small></div>
+            <div class="kpi-val">2500万+<small>DEVELOPERS</small></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Six grid -->
+    <div class="grid">
+      <div class="grid-head">
+        <div class="grid-title">六格要点 · 从使用到变现的完整链路</div>
+        <div class="grid-tag">FIG.02 / KEY POINTS</div>
+      </div>
+      <div class="grid-body">
+        <div class="g-cell">
+          <div class="g-num">1</div>
+          <div class="g-text">
+            <div class="g-h"><em>95%</em> 的企业在使用开源</div>
+            <div class="g-p">Red Hat 开发者经济调查多年结论，开源已从可选组件变为企业基础设施。</div>
+          </div>
+        </div>
+        <div class="g-cell">
+          <div class="g-num">2</div>
+          <div class="g-text">
+            <div class="g-h"><em>24%</em> 的软件代码来自开源</div>
+            <div class="g-p">Linux Foundation 报告估计的开源代码占比，商业软件底层均大量依赖开源。</div>
+          </div>
+        </div>
+        <div class="g-cell accent">
+          <div class="g-num">3</div>
+          <div class="g-text">
+            <div class="g-h">GitHub 营收 <em>$18亿</em>（2023）</div>
+            <div class="g-p">主要来自企业订阅（GitHub Enterprise）与 Copilot AI 编码助手授权收入。</div>
+          </div>
+        </div>
+        <div class="g-cell">
+          <div class="g-num">4</div>
+          <div class="g-text">
+            <div class="g-h">Docker 是典型 <em>Open Core</em></div>
+            <div class="g-p">开源核心 Moby 保持开放，Docker Desktop 商业双许可向企业收取许可费。</div>
+          </div>
+        </div>
+        <div class="g-cell accent">
+          <div class="g-num">5</div>
+          <div class="g-text">
+            <div class="g-h">基金会经济 <em>$4亿+</em></div>
+            <div class="g-p">Linux Foundation 年收入超 4 亿美元，会员超 1000 家，会费与培训为主要收入。</div>
+          </div>
+        </div>
+        <div class="g-cell">
+          <div class="g-num">6</div>
+          <div class="g-text">
+            <div class="g-h">开源在中国的足迹</div>
+            <div class="g-p">Gitee 开发者 2500 万+，OpenAtom 开源原子基金会管理 HarmonyOS 等项目。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="foot-quote">"四种商业模式叠加，形成 <b>数百亿美元</b> 的隐形市场。"</div>
+      <div class="foot-meta">Open Source · Business Models · 2024</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

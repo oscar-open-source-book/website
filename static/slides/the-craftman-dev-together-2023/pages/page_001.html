@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之道·三月刊</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-dark: #1E293B;
+  --bg-darker: #0F172A;
+  --text-main: #E2E8F0;
+  --text-muted: #94A3B8;
+  --text-bright: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #1A2744 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  display: flex;
+}
+
+.left-panel {
+  width: 640px;
+  height: 900px;
+  padding: 56px 48px 44px 60px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+  overflow: hidden;
+}
+
+.left-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(circle, rgba(33, 150, 243, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+}
+
+.left-panel::after {
+  content: '';
+  position: absolute;
+  top: -100px; right: -80px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.top-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 2;
+}
+
+.label-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent);
+}
+
+.label-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+.label-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.title-section {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 20px;
+}
+
+.title-accent {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--primary);
+  letter-spacing: 6px;
+  margin-bottom: 10px;
+}
+
+.main-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 72px;
+  line-height: 1.02;
+  color: var(--text-bright);
+  letter-spacing: -1px;
+  text-shadow: 0 0 50px rgba(33, 150, 243, 0.25);
+  margin-bottom: 12px;
+}
+
+.title-underline {
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  margin-top: 16px;
+  box-shadow: 0 0 12px rgba(33, 150, 243, 0.5);
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 26px;
+  position: relative;
+  z-index: 2;
+}
+
+.subtitle-accent-bar {
+  display: block;
+  width: 50px;
+  height: 2px;
+  background: var(--accent);
+  margin-bottom: 14px;
+  opacity: 0.7;
+}
+
+.narrative {
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  border-left: 2px solid var(--accent);
+  background: rgba(33, 150, 243, 0.04);
+  border-radius: 0 6px 6px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  position: relative;
+  z-index: 2;
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 13px 18px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(33, 150, 243, 0.12);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+}
+
+.card:nth-child(2) { border-left-color: var(--accent); }
+.card:nth-child(3) { border-left-color: #4FC3F7; }
+
+.card-number {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--primary);
+  min-width: 28px;
+  line-height: 1.2;
+}
+
+.card:nth-child(2) .card-number { color: var(--accent); }
+.card:nth-child(3) .card-number { color: #4FC3F7; }
+
+.card-content { flex: 1; }
+
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-bright);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.card-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  border-top: 1px solid rgba(33, 150, 243, 0.12);
+  position: relative;
+  z-index: 2;
+}
+
+.footer-left {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+}
+
+.footer-right {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+.right-panel {
+  flex: 1;
+  height: 900px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.1) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero-frame {
+  position: relative;
+  width: 920px;
+  height: 514px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55), 0 0 90px rgba(33, 150, 243, 0.12);
+  z-index: 2;
+}
+
+.hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-caption {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.caption-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.caption-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+}
+
+.hero-corner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  z-index: 3;
+}
+
+.hero-corner-tl { top: 160px; left: 320px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); opacity: 0.6; }
+.hero-corner-tr { top: 160px; right: 320px; border-top: 2px solid var(--primary); border-right: 2px solid var(--primary); opacity: 0.6; }
+.hero-corner-bl { bottom: 170px; left: 320px; border-bottom: 2px solid var(--primary); border-left: 2px solid var(--primary); opacity: 0.6; }
+.hero-corner-br { bottom: 170px; right: 320px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); opacity: 0.6; }
+
+.hero-tag {
+  position: absolute;
+  top: 110px;
+  left: 340px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag-line {
+  width: 30px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+.tag-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="left-panel">
+      <div class="top-label">
+        <span class="label-dot"></span>
+        <span class="label-text">OPEN SOURCE · MARCH</span>
+        <span class="label-line"></span>
+      </div>
+
+      <div class="title-section">
+        <span class="title-accent">JOURNAL No.03</span>
+        <h1 class="main-title"><span>开源之道</span><br><span>三月刊</span></h1>
+        <span class="title-underline"></span>
+      </div>
+
+      <span class="subtitle-accent-bar"></span>
+      <p class="subtitle"><span>工匠精神的开发者协作之路</span></p>
+
+      <p class="narrative"><span>本期刊以工匠精神为核心命题，探讨开发者如何在开源生态中打磨技艺、协同共创，通过精选文章与阅读札记传递开源布道的力量。</span></p>
+
+      <div class="cards">
+        <div class="card">
+          <span class="card-number">01</span>
+          <div class="card-content">
+            <div class="card-title"><span>主题定位</span></div>
+            <div class="card-desc"><span>围绕《工匠之道》与开发者协作展开的开源阅读分享与思想布道</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <span class="card-number">02</span>
+          <div class="card-content">
+            <div class="card-title"><span>出版背景</span></div>
+            <div class="card-desc"><span>2023 年 3 月刊由 ApacheCN 开源社区编纂，聚焦开源人的成长与团队协同</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <span class="card-number">03</span>
+          <div class="card-content">
+            <div class="card-title"><span>受众定位</span></div>
+            <div class="card-desc"><span>面向开发者、开源维护者及技术社区布道者的深度阅读材料</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span class="footer-left">APACHECN · OPEN SOURCE COMMUNITY</span>
+        <span class="footer-right">VOL.03 / MARCH 2023</span>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="hero-glow"></div>
+      <div class="hero-tag">
+        <span class="tag-line"></span>
+        <span class="tag-text">HERO VISUAL</span>
+      </div>
+      <span class="hero-corner hero-corner-tl"></span>
+      <span class="hero-corner hero-corner-tr"></span>
+      <span class="hero-corner hero-corner-bl"></span>
+      <span class="hero-corner hero-corner-br"></span>
+      <div class="hero-frame">
+        <img src="../images/page_001_hero.png" alt="深海军蓝背景下交错的金属齿轮与发光青蓝色代码线交织的科技意象，远处体积雾与蓝色辉光">
+      </div>
+      <div class="hero-caption">
+        <span class="caption-dot"></span>
+        <span class="caption-text">TECHNOLOGY · CRAFTSMANSHIP · OPEN SOURCE</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

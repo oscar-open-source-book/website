@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第三辑·社区共建</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #002FA7;
+  --accent: #FF7043;
+  --bg: #F5F5F5;
+  --card-bg: #FFFFFF;
+  --text-main: #1A1A2E;
+  --text-sub: #4A4A6A;
+  --text-muted: #8A8AA0;
+  --line: #E8E8F0;
+  --primary-light: #E6EBFF;
+  --accent-light: #FFE3DA;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  opacity: 0.5;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -100px;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  opacity: 0.4;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 1050px;
+}
+
+.chapter-tag {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--primary);
+}
+
+.chapter-tag .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.chapter-tag .bar {
+  width: 40px;
+  height: 1.5px;
+  background: var(--primary);
+  opacity: 0.5;
+}
+
+.main-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  line-height: 1.15;
+}
+
+.main-title .accent-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  margin: 0 6px 8px 0;
+  vertical-align: middle;
+}
+
+.subtitle {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.7;
+  max-width: 950px;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.page-number {
+  font-size: 56px;
+  font-weight: 300;
+  color: var(--primary);
+  line-height: 1;
+  opacity: 0.25;
+  font-style: italic;
+}
+
+.page-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+}
+
+/* Divider */
+.divider-line {
+  height: 1px;
+  background: var(--line);
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.divider-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: 2px;
+  background: var(--primary);
+  margin-top: -0.5px;
+}
+
+/* Three columns */
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+
+.col-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 28px 26px 26px;
+  position: relative;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 280px;
+}
+
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 48px;
+  background: var(--primary);
+  border-radius: 4px 0 0 4px;
+}
+
+.col-card .col-number {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.col-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.col-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.col-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+.col-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.col-desc {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.75;
+}
+
+.col-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.col-keywords .kw {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: var(--primary-light);
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.col-keywords .kw.accent {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+/* Banner */
+.banner {
+  background: var(--primary);
+  border-radius: 14px;
+  padding: 20px 30px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner::after {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.banner-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.banner-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.banner-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+.banner-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.5;
+}
+
+.banner-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 14px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+/* Bottom data */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.data-card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.data-card .data-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.data-card.left .data-icon {
+  background: var(--primary-light);
+}
+
+.data-card.right .data-icon {
+  background: var(--accent-light);
+}
+
+.data-card .data-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.data-card .data-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.data-card .data-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+}
+
+.data-card.left .data-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.data-card.right .data-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+
+.data-card .data-value .sep {
+  color: var(--text-muted);
+  font-weight: 400;
+  margin: 0 6px;
+}
+
+.data-card .data-value .plus {
+  color: var(--text-muted);
+  font-weight: 400;
+  margin: 0 6px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="chapter-tag">
+          <span class="dot"></span>
+          <span>CHAPTER 03</span>
+          <span class="bar"></span>
+          <span>COMMUNITY</span>
+        </div>
+        <div class="main-title"><span class="accent-dot"></span>第三辑·社区共建</div>
+        <div class="subtitle">当视角从个人实践转向社区治理，开源的可持续运营成为核心命题——面对商业化、基金会化与 AI 技术冲击的多重变革，开源社区正在经历深刻的结构调整。</div>
+      </div>
+      <div class="header-right">
+        <div class="page-number">07</div>
+        <div class="page-label">PAGE / 07</div>
+      </div>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <!-- Three columns -->
+    <div class="columns">
+
+      <!-- Column 1: 治理模式 -->
+      <div class="col-card">
+        <span class="col-number">01</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="7" r="3.5" stroke="#002FA7" stroke-width="2"/>
+            <circle cx="6" cy="25" r="3" stroke="#002FA7" stroke-width="2"/>
+            <circle cx="26" cy="25" r="3" stroke="#002FA7" stroke-width="2"/>
+            <circle cx="16" cy="25" r="3" stroke="#002FA7" stroke-width="2"/>
+            <path d="M16 10.5 L8.5 22" stroke="#002FA7" stroke-width="1.5"/>
+            <path d="M16 10.5 L16 22" stroke="#002FA7" stroke-width="1.5"/>
+            <path d="M16 10.5 L23.5 22" stroke="#002FA7" stroke-width="1.5"/>
+            <path d="M8.5 25 L16 25" stroke="#002FA7" stroke-width="1" opacity="0.4"/>
+            <path d="M16 25 L23.5 25" stroke="#002FA7" stroke-width="1" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="col-tag">GOVERNANCE</div>
+        <div class="col-title">治理模式</div>
+        <div class="col-desc">从委员会制到 BDFL 模式，不同治理结构决定了社区的发展节奏与方向。权力集中与分散的取舍，直接影响项目决策效率与参与者积极性。</div>
+        <div class="col-keywords">
+          <span class="kw">委员会制</span>
+          <span class="kw">BDFL 模式</span>
+          <span class="kw accent">决策结构</span>
+        </div>
+      </div>
+
+      <!-- Column 2: 可持续性 -->
+      <div class="col-card">
+        <span class="col-number">02</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 5 A11 11 0 0 1 27 16" stroke="#002FA7" stroke-width="2" fill="none"/>
+            <path d="M27 16 A11 11 0 0 1 16 27" stroke="#002FA7" stroke-width="2" fill="none"/>
+            <path d="M16 27 A11 11 0 0 1 5 16" stroke="#002FA7" stroke-width="2" fill="none"/>
+            <path d="M5 16 A11 11 0 0 1 16 5" stroke="#002FA7" stroke-width="2" fill="none"/>
+            <path d="M27 16 L29 16 L28.5 14 Z" fill="#FF7043"/>
+            <path d="M16 27 L16 29 L14 28.5 Z" fill="#FF7043"/>
+            <path d="M5 16 L3 16 L3.5 14 Z" fill="#FF7043"/>
+            <path d="M16 5 L16 3 L18 3.5 Z" fill="#FF7043"/>
+          </svg>
+        </div>
+        <div class="col-tag">SUSTAINABILITY</div>
+        <div class="col-title">可持续性</div>
+        <div class="col-desc">健康社区需要资金、人才、治理三要素协同运作，避免过度依赖单一贡献者。长期主义要求建立资源补给与人员更替的制度化通道。</div>
+        <div class="col-keywords">
+          <span class="kw">资金</span>
+          <span class="kw">人才</span>
+          <span class="kw accent">治理协同</span>
+        </div>
+      </div>
+
+      <!-- Column 3: 商业关系 -->
+      <div class="col-card">
+        <span class="col-number">03</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="4" y="10" width="11" height="15" rx="1.5" stroke="#002FA7" stroke-width="2"/>
+            <rect x="17" y="10" width="11" height="15" rx="1.5" stroke="#002FA7" stroke-width="2"/>
+            <path d="M5.5 14.5 H13.5" stroke="#002FA7" stroke-width="1.2"/>
+            <path d="M5.5 17 H13.5" stroke="#002FA7" stroke-width="1.2"/>
+            <path d="M5.5 19.5 H11" stroke="#002FA7" stroke-width="1.2"/>
+            <circle cx="22.5" cy="17" r="2.5" stroke="#FF7043" stroke-width="1.8"/>
+            <path d="M18.5 22.5 H26.5" stroke="#002FA7" stroke-width="1.2"/>
+            <path d="M18.5 25 H24" stroke="#002FA7" stroke-width="1.2"/>
+            <path d="M15 22 L17 22" stroke="#002FA7" stroke-width="1.5"/>
+            <path d="M15 18 L17 18" stroke="#002FA7" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="col-tag">COMMERCIAL</div>
+        <div class="col-title">商业关系</div>
+        <div class="col-desc">开源与商业并非对立，基金会化与托管模式成为主流融合路径。企业投入与社区自治之间的边界，正在被新的治理工具与法律框架重新定义。</div>
+        <div class="col-keywords">
+          <span class="kw">基金会化</span>
+          <span class="kw">商业托管</span>
+          <span class="kw accent">融合路径</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Banner: 未来方向 -->
+    <div class="banner">
+      <div class="banner-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 12 L10 12 L8 7 L16 6 L12 12 L18 12 L14 17 L16 22 L10 21 L12 16 L4 16 Z" fill="#FFFFFF"/>
+        </svg>
+      </div>
+      <div class="banner-text">
+        <div class="banner-label">FUTURE · 未来方向</div>
+        <div class="banner-title">AI 时代下的开源协作将重塑传统贡献模式，社区治理面临全新挑战。</div>
+      </div>
+      <div class="banner-tag">2024 →</div>
+    </div>
+
+    <!-- Bottom data cards -->
+    <div class="bottom-row">
+      <div class="data-card left">
+        <div class="data-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 3 L20 7 L20 13 C20 17.5 16.5 20.5 12 22 C7.5 20.5 4 17.5 4 13 L4 7 Z" stroke="#002FA7" stroke-width="2" fill="none"/>
+            <path d="M8.5 12 L11 14.5 L15.5 10" stroke="#FF7043" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+        <div class="data-text">
+          <span class="data-label">治理核心 · CORE</span>
+          <span class="data-value">资金<span class="sep">·</span>人才<span class="sep">·</span>制度</span>
+        </div>
+      </div>
+      <div class="data-card right">
+        <div class="data-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="7" cy="12" r="4" stroke="#FF7043" stroke-width="2" fill="none"/>
+            <circle cx="17" cy="12" r="4" stroke="#FF7043" stroke-width="2" fill="none"/>
+            <path d="M11 12 L13 12" stroke="#FF7043" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="data-text">
+          <span class="data-label">融合趋势 · TREND</span>
+          <span class="data-value">基金会化<span class="plus">+</span>商业托管</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

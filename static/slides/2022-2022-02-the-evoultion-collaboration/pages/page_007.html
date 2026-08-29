@@ -1,0 +1,448 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Part 02 阅读与布道</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --light: #F5F7FA;
+  --dark: #0B1E3A;
+  --text-main: #E8F0F7;
+  --text-sub: #8FA9C4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--text-main);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #061224 0%, #0B1E3A 40%, #0A2540 100%);
+}
+
+#bg { position: absolute; inset: 0; z-index: 0; }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bg-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.node {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent), 0 0 28px rgba(0,188,212,0.4);
+}
+.node.small { width: 5px; height: 5px; opacity: 0.7; }
+.node.mid { width: 8px; height: 8px; opacity: 0.85; }
+.node.large {
+  width: 12px; height: 12px;
+  box-shadow: 0 0 16px var(--accent), 0 0 40px rgba(0,188,212,0.5), 0 0 60px rgba(33,150,243,0.3);
+}
+
+.main-area {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 60px;
+  margin-top: 10px;
+}
+
+.left-col {
+  flex: 0 0 520px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.part-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 16px;
+  letter-spacing: 8px;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.big-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 360px;
+  line-height: 0.85;
+  background: linear-gradient(180deg, #64B5F6 0%, #2196F3 40%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 40px rgba(33,150,243,0.5)) drop-shadow(0 0 80px rgba(0,188,212,0.3));
+  letter-spacing: -12px;
+}
+
+.num-underline {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.num-underline .line {
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.num-underline .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.chapter-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.title-bar {
+  width: 4px;
+  min-height: 150px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(33,150,243,0.5);
+}
+
+.title-text { display: flex; flex-direction: column; gap: 8px; }
+
+.title-zh {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 1.15;
+  color: var(--text-main);
+  letter-spacing: 2px;
+}
+
+.title-sub {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  letter-spacing: 3px;
+}
+
+.title-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.points { display: flex; flex-direction: column; gap: 14px; }
+
+.point {
+  display: flex;
+  align-items: stretch;
+  gap: 18px;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(0,188,212,0.2);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.point::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.point-icon {
+  flex: 0 0 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(0,188,212,0.1));
+  border: 1px solid rgba(0,188,212,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.point-content { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+
+.point-head {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.point-head .tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid rgba(0,188,212,0.3);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+
+.point-desc {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-sub);
+  letter-spacing: 0.5px;
+}
+
+.footer-band {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  background: rgba(33,150,243,0.06);
+  border: 1px solid rgba(33,150,243,0.15);
+  border-radius: 8px;
+  position: relative;
+}
+
+.footer-band::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.footer-label {
+  flex: 0 0 auto;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.footer-text {
+  flex: 1;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-sub);
+  letter-spacing: 0.5px;
+}
+
+.footer-text .highlight { color: var(--accent); font-weight: 500; }
+
+.footer-dims { flex: 0 0 auto; display: flex; gap: 6px; }
+
+.dim-chip {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--primary);
+  border: 1px solid rgba(33,150,243,0.3);
+  padding: 5px 10px;
+  border-radius: 3px;
+  background: rgba(33,150,243,0.06);
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(0,188,212,0.15);
+}
+
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+.top-left .sep {
+  width: 24px; height: 1px;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text-sub);
+}
+
+.top-right .pg { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <svg class="bg-svg" viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <defs>
+        <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#2196F3" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#00BCD4" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="line1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#2196F3" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#00BCD4" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="300" cy="450" rx="400" ry="350" fill="url(#glow1)"/>
+      <ellipse cx="1300" cy="300" rx="350" ry="300" fill="url(#glow2)"/>
+      <ellipse cx="1400" cy="750" rx="300" ry="250" fill="url(#glow1)"/>
+      <line x1="120" y1="150" x2="1480" y2="150" stroke="url(#line1)" stroke-width="1"/>
+      <line x1="80" y1="820" x2="1520" y2="820" stroke="url(#line1)" stroke-width="1"/>
+      <line x1="100" y1="200" x2="1300" y2="700" stroke="#2196F3" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="4 8"/>
+      <line x1="200" y1="750" x2="1400" y2="180" stroke="#00BCD4" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="4 8"/>
+      <line x1="300" y1="100" x2="900" y2="500" stroke="#2196F3" stroke-opacity="0.1" stroke-width="1" stroke-dasharray="2 6"/>
+      <line x1="500" y1="850" x2="1200" y2="250" stroke="#00BCD4" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="2 6"/>
+      <line x1="0" y1="450" x2="1600" y2="450" stroke="#2196F3" stroke-opacity="0.05" stroke-width="1"/>
+    </svg>
+    <div class="node large" style="left:180px; top:140px;"></div>
+    <div class="node mid" style="left:280px; top:220px;"></div>
+    <div class="node small" style="left:360px; top:180px;"></div>
+    <div class="node small" style="left:120px; top:320px;"></div>
+    <div class="node mid" style="left:1480px; top:250px;"></div>
+    <div class="node small" style="left:1520px; top:350px;"></div>
+    <div class="node small" style="left:1400px; top:180px;"></div>
+    <div class="node mid" style="left:1420px; top:760px;"></div>
+    <div class="node small" style="left:1350px; top:810px;"></div>
+    <div class="node small" style="left:1500px; top:720px;"></div>
+    <div class="node small" style="left:220px; top:780px;"></div>
+    <div class="node mid" style="left:80px; top:720px;"></div>
+    <div class="node small" style="left:150px; top:500px;"></div>
+    <div class="node small" style="left:1380px; top:500px;"></div>
+    <div class="node small" style="left:800px; top:110px;"></div>
+    <div class="node small" style="left:800px; top:860px;"></div>
+    <div class="node small" style="left:500px; top:80px;"></div>
+    <div class="node small" style="left:1100px; top:80px;"></div>
+  </div>
+  <div id="ct">
+    <div class="top-bar">
+      <div class="top-left">
+        <span>OPEN&nbsp;SOURCE&nbsp;EVANGELISM</span>
+        <span class="sep"></span>
+        <span>SECTION</span>
+      </div>
+      <div class="top-right">
+        <span>SYS://PART.02</span>
+        <span>·</span>
+        <span class="pg">PG&nbsp;07&nbsp;/&nbsp;16</span>
+      </div>
+    </div>
+
+    <div class="main-area">
+      <div class="left-col">
+        <div class="part-label"><span>PART</span></div>
+        <div class="big-num"><span>02</span></div>
+        <div class="num-underline">
+          <span class="line"></span>
+          <span class="dot"></span>
+          <span class="line"></span>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="chapter-title">
+          <div class="title-bar"></div>
+          <div class="title-text">
+            <div class="title-zh"><span>阅读与布道</span></div>
+            <div class="title-sub"><span>READING&nbsp;·&nbsp;EVANGELISM</span></div>
+            <div class="title-desc"><span>从开源之道文本中提炼可落地的布道实践</span></div>
+          </div>
+        </div>
+
+        <div class="points">
+          <div class="point">
+            <div class="point-icon"><span>01</span></div>
+            <div class="point-content">
+              <div class="point-head"><span>阅读视角</span><span class="tag">PERSPECTIVE</span></div>
+              <div class="point-desc"><span>以布道者身份重读协作演进，思考如何在当下语境中传递开源价值</span></div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="point-icon"><span>02</span></div>
+            <div class="point-content">
+              <div class="point-head"><span>方法提炼</span><span class="tag">METHOD</span></div>
+              <div class="point-desc"><span>从成功案例中抽象可复制的布道路径与关键技巧</span></div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="point-icon"><span>03</span></div>
+            <div class="point-content">
+              <div class="point-head"><span>行动导向</span><span class="tag">ACTION</span></div>
+              <div class="point-desc"><span>让每一次分享都能转化为参与者的实际行动与社区连接</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-band">
+      <div class="footer-label"><span>OUTRO</span></div>
+      <div class="footer-text">
+        <span>第二部分从阅读回到实践，把协作演进的历史洞察转化为<span class="highlight">布道者今日可用的方法论</span>，涵盖定位、叙事、传播与社群建设四个维度。</span>
+      </div>
+      <div class="footer-dims">
+        <span class="dim-chip">定位</span>
+        <span class="dim-chip">叙事</span>
+        <span class="dim-chip">传播</span>
+        <span class="dim-chip">社群建设</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

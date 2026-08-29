@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>共读 · 共成长</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --secondary: #00BCD4;
+  --neutral: #B0BEC5;
+  --dark-1: #0a0e1a;
+  --dark-2: #0d1528;
+  --dark-3: #111b33;
+  --glow-blue: rgba(33, 150, 243, 0.5);
+  --glow-cyan: rgba(0, 188, 212, 0.5);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  width: 1600px;
+  height: 900px;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: radial-gradient(ellipse at 50% 30%, #0f1d3a 0%, #0a0e1a 55%, #060a14 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+}
+
+.nebula-1 { width: 600px; height: 600px; top: -200px; left: -100px; background: #2196F3; }
+.nebula-2 { width: 500px; height: 500px; bottom: -150px; right: -100px; background: #00BCD4; }
+.nebula-3 { width: 400px; height: 400px; top: 200px; right: 30%; background: #2196F3; opacity: 0.12; }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-zone {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.badge-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 10px var(--glow-cyan);
+}
+
+.badge-text {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 6px;
+  color: var(--neutral);
+  text-transform: uppercase;
+}
+
+.title-main {
+  font-size: 68px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #64b5f6 0%, #2196F3 30%, #00BCD4 70%, #4dd0e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  position: relative;
+  filter: drop-shadow(0 0 24px rgba(33, 150, 243, 0.4));
+}
+
+.title-underline {
+  width: 120px;
+  height: 3px;
+  margin: 14px auto 12px;
+  background: linear-gradient(90deg, transparent, #2196F3, #00BCD4, transparent);
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--glow-blue);
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--neutral);
+  letter-spacing: 2px;
+}
+
+.subtitle .accent {
+  color: var(--secondary);
+  font-weight: 500;
+}
+
+.cards-zone {
+  display: flex;
+  gap: 24px;
+  margin: 20px 0 16px;
+  width: 1440px;
+  justify-content: center;
+}
+
+.icon-card {
+  flex: 1;
+  background: linear-gradient(145deg, rgba(17, 27, 51, 0.85) 0%, rgba(13, 21, 40, 0.9) 100%);
+  border: 1px solid rgba(33, 150, 243, 0.25);
+  border-radius: 16px;
+  padding: 22px 22px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.icon-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+  opacity: 0.8;
+}
+
+.icon-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.15) 0%, transparent 70%);
+}
+
+.card-icon-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.icon-card:nth-child(1) .card-icon-wrap {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.05));
+  box-shadow: 0 0 20px rgba(33, 150, 243, 0.3), inset 0 0 12px rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.4);
+}
+
+.icon-card:nth-child(2) .card-icon-wrap {
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.2), rgba(0, 188, 212, 0.05));
+  box-shadow: 0 0 20px rgba(0, 188, 212, 0.3), inset 0 0 12px rgba(0, 188, 212, 0.1);
+  border: 1px solid rgba(0, 188, 212, 0.4);
+}
+
+.icon-card:nth-child(3) .card-icon-wrap {
+  background: linear-gradient(135deg, rgba(176, 190, 197, 0.15), rgba(176, 190, 197, 0.03));
+  box-shadow: 0 0 20px rgba(176, 190, 197, 0.25), inset 0 0 12px rgba(176, 190, 197, 0.08);
+  border: 1px solid rgba(176, 190, 197, 0.35);
+}
+
+.icon-svg {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-index {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--primary);
+  opacity: 0.7;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.icon-card:nth-child(2) .card-index { color: var(--secondary); }
+.icon-card:nth-child(3) .card-index { color: var(--neutral); }
+
+.card-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #e8eaf6;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--neutral);
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+}
+
+.card-desc .hl {
+  color: #64b5f6;
+  font-weight: 500;
+}
+
+.icon-card:nth-child(2) .card-desc .hl { color: #4dd0e1; }
+
+.closing-text {
+  width: 1000px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral);
+  line-height: 1.9;
+  letter-spacing: 1px;
+  padding: 0 30px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.closing-text .glow-word {
+  color: #64b5f6;
+  font-weight: 500;
+}
+
+.data-zone {
+  display: flex;
+  gap: 30px;
+  width: 1440px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.data-card {
+  flex: 1;
+  background: linear-gradient(145deg, rgba(17, 27, 51, 0.6), rgba(10, 14, 26, 0.8));
+  border: 1px solid rgba(33, 150, 243, 0.15);
+  border-radius: 12px;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.data-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--secondary));
+  box-shadow: 0 0 8px var(--glow-blue);
+}
+
+.data-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(33, 150, 243, 0.12);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  flex-shrink: 0;
+}
+
+.data-content {
+  flex: 1;
+}
+
+.data-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--neutral);
+  letter-spacing: 2px;
+  margin-bottom: 3px;
+}
+
+.data-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e8eaf6;
+  letter-spacing: 0.5px;
+}
+
+.data-value .hl-num {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.data-value .hl-num-cyan {
+  color: var(--secondary);
+  font-weight: 700;
+}
+
+.data-note {
+  font-size: 11px;
+  color: var(--neutral);
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.bottom-glow {
+  width: 1440px;
+  height: 4px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(33, 150, 243, 0.1) 10%,
+    rgba(33, 150, 243, 0.6) 30%,
+    rgba(0, 188, 212, 0.8) 50%,
+    rgba(33, 150, 243, 0.6) 70%,
+    rgba(33, 150, 243, 0.1) 90%,
+    transparent 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 16px var(--glow-blue), 0 0 32px var(--glow-cyan);
+  margin-bottom: 10px;
+}
+
+.footline {
+  width: 1440px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--neutral);
+  opacity: 0.5;
+  letter-spacing: 2px;
+}
+
+.footline .center-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footline .center-mark .dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 6px var(--glow-blue);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+    <div class="star-layer" id="starLayer"></div>
+  </div>
+  <div id="ct">
+    <div class="header-zone">
+      <div class="badge-line">
+        <span class="badge-dot"></span>
+        <span class="badge-text"><span>END OF JOURNEY</span></span>
+        <span class="badge-dot"></span>
+      </div>
+      <h1 class="title-main"><span>共读 · 共成长</span></h1>
+      <div class="title-underline"></div>
+      <p class="subtitle"><span>下期推荐：</span><span class="accent"><span>开源社区治理与代码贡献规范</span></span></p>
+    </div>
+
+    <div class="cards-zone">
+      <div class="icon-card">
+        <div class="card-icon-wrap">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </div>
+        <div class="card-index"><span>01</span></div>
+        <div class="card-title"><span>阅读回顾</span></div>
+        <div class="card-desc"><span>本期系统梳理了<span class="hl">20+ 开源许可证</span>的分类与合规要点，覆盖 GPL / Apache / MIT / BSD 等主流许可体系</span></div>
+      </div>
+      <div class="icon-card">
+        <div class="card-icon-wrap">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <div class="card-index"><span>02</span></div>
+        <div class="card-title"><span>下期预告</span></div>
+        <div class="card-desc"><span>将聚焦<span class="hl">开源社区治理模式</span>与<span class="hl">高质量贡献指南</span>，探索核心维护者生态与代码审查流程</span></div>
+      </div>
+      <div class="icon-card">
+        <div class="card-icon-wrap">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#B0BEC5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            <line x1="8" y1="10" x2="16" y2="10"/>
+            <line x1="8" y1="13" x2="13" y2="13"/>
+          </svg>
+        </div>
+        <div class="card-index"><span>03</span></div>
+        <div class="card-title"><span>交流互动</span></div>
+        <div class="card-desc"><span>欢迎在<span class="hl">开源之道社区</span>留言讨论许可证选型案例，分享你遇到的合规挑战与最佳实践</span></div>
+      </div>
+    </div>
+
+    <div class="closing-text">
+      <span><span class="glow-word">开源许可证的世界</span>比想象中复杂，但也比想象中有趣。愿这份阅读笔记能为你打开<span class="glow-word">合规与协作</span>的新视角，在<span class="glow-word">开源的旅程</span>中走得更稳更远。</span>
+    </div>
+
+    <div class="data-zone">
+      <div class="data-card">
+        <div class="data-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="data-content">
+          <div class="data-label"><span>本期阅读时长</span></div>
+          <div class="data-value"><span class="hl-num">8h</span></div>
+          <div class="data-note"><span>本期笔记整理总用时</span></div>
+        </div>
+      </div>
+      <div class="data-card">
+        <div class="data-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="data-content">
+          <div class="data-label"><span>下期主题</span></div>
+          <div class="data-value"><span class="hl-num-cyan">社区治理</span></div>
+          <div class="data-note"><span>2022 年 5 月阅读计划</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-glow"></div>
+
+    <div class="footline">
+      <span><span>开源阅读计划</span></span>
+      <span class="center-mark">
+        <span class="dot"></span>
+        <span><span>THE END · 感谢共读</span></span>
+        <span class="dot"></span>
+      </span>
+      <span><span>2022 · 第 05 期</span></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var layer = document.getElementById('starLayer');
+  var sizes = [1, 1.5, 2, 2.5, 3];
+  var colors = ['#ffffff', '#64b5f6', '#4dd0e1', '#90caf9', '#80deea'];
+  var count = 120;
+  for (var i = 0; i < count; i++) {
+    var star = document.createElement('div');
+    star.className = 'star';
+    var size = sizes[Math.floor(Math.random() * sizes.length)];
+    var color = colors[Math.floor(Math.random() * colors.length)];
+    var x = Math.random() * 1600;
+    var y = Math.random() * 900;
+    var opacity = (0.3 + Math.random() * 0.7).toFixed(2);
+    var blur = size < 2 ? 0 : 0.5;
+    star.style.cssText =
+      'left:' + x.toFixed(0) + 'px;top:' + y.toFixed(0) + 'px;' +
+      'width:' + size + 'px;height:' + size + 'px;' +
+      'background:' + color + ';' +
+      'opacity:' + opacity + ';' +
+      'box-shadow: 0 0 ' + (size * 2) + 'px ' + color + ';' +
+      'filter: blur(' + blur + 'px);';
+    layer.appendChild(star);
+  }
+
+  for (var j = 0; j < 8; j++) {
+    var star2 = document.createElement('div');
+    star2.className = 'star';
+    var sz = 2 + Math.random() * 2;
+    var cx = Math.random() * 1600;
+    var cy = Math.random() * 900;
+    star2.style.cssText =
+      'left:' + cx.toFixed(0) + 'px;top:' + cy.toFixed(0) + 'px;' +
+      'width:' + sz + 'px;height:' + sz + 'px;' +
+      'background:#ffffff;' +
+      'opacity:0.9;' +
+      'box-shadow: 0 0 12px #64b5f6, 0 0 24px rgba(100,181,246,0.4);';
+    layer.appendChild(star2);
+  }
+})();
+</script>
+</body>
+</html>

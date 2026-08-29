@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>从伦理到运动</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00E5FF;
+  --bg: #1E2A38;
+  --bg-dark: #16202C;
+  --text-main: #E8EEF5;
+  --text-dim: #8FA3B8;
+  --card-bg: #233244;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-main);
+  background: var(--bg);
+  overflow: hidden;
+}
+h1, h2, h3 { font-family: 'Inter', sans-serif; }
+a { color: var(--accent); text-decoration: none; }
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 10%, rgba(33,150,243,0.10) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 90%, rgba(0,229,255,0.07) 0%, transparent 50%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Header === */
+.header { margin-bottom: 32px; }
+.title-row { display: flex; align-items: center; gap: 20px; }
+.title-bar {
+  width: 4px; height: 60px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(33,150,243,0.5);
+}
+h1 {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+.h1-accent { color: var(--accent); }
+.subtitle {
+  margin-top: 14px;
+  margin-left: 24px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 1200px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* === Timeline === */
+.timeline-wrap {
+  position: relative;
+  padding: 40px 40px 30px;
+  margin-bottom: 28px;
+}
+.timeline-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+.timeline-line {
+  position: absolute;
+  top: 118px;
+  left: 100px;
+  right: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.2), var(--primary) 30%, var(--accent) 70%, rgba(0,229,255,0.2));
+  z-index: 0;
+}
+.timeline-line::before, .timeline-line::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.timeline-line::before { left: -8px; background: var(--primary); opacity: 0.4; }
+.timeline-line::after { right: -8px; background: var(--accent); opacity: 0.4; }
+
+.timeline-nodes {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+.node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.node-year {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+.node-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 4px rgba(33,150,243,0.2), 0 0 18px rgba(33,150,243,0.7), 0 0 40px rgba(0,229,255,0.3);
+  margin-bottom: 18px;
+  position: relative;
+}
+.node-dot::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.node-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+.node-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 360px;
+}
+.node-tag {
+  margin-top: 12px;
+  font-size: 10px;
+  color: var(--primary);
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  border: 1px solid rgba(33,150,243,0.3);
+  border-radius: 10px;
+}
+
+/* === Cards === */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.card {
+  background: var(--card-bg);
+  border: 1px solid rgba(33,150,243,0.15);
+  border-radius: 8px;
+  padding: 20px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.card-idx {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+.card-desc {
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+/* === Footer === */
+.footer {
+  text-align: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(33,150,243,0.15);
+}
+.footer-phrase {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 4px;
+}
+.footer-phrase .sep {
+  color: var(--accent);
+  margin: 0 12px;
+  font-weight: 400;
+}
+.footer-sub {
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title-bar"></div>
+        <h1>从伦理到<span class="h1-accent">运动</span></h1>
+      </div>
+      <p class="subtitle">
+        黑客伦理从一种文化思潮走向制度化的社会运动，经历了从个人宣言到法律框架、从哲学讨论到工程实践的完整转化。这一过程中涌现的关键人物与里程碑事件，为后来的开源繁荣奠定了不可动摇的基础。
+      </p>
+    </div>
+
+    <div class="timeline-wrap">
+      <div class="timeline-label">// 里程碑时间轴</div>
+      <div class="timeline-line"></div>
+      <div class="timeline-nodes">
+
+        <div class="node">
+          <div class="node-year">1985</div>
+          <div class="node-dot"></div>
+          <div class="node-title">FSF 成立</div>
+          <div class="node-desc">Stallman 创立自由软件基金会（FSF），并以 GPL 协议将黑客伦理转化为法律层面的制度保障，为自由软件运动提供了法理基石。</div>
+          <div class="node-tag">GPL · 自由软件</div>
+        </div>
+
+        <div class="node">
+          <div class="node-year">1991</div>
+          <div class="node-dot"></div>
+          <div class="node-title">Linux 发布</div>
+          <div class="node-desc">Torvalds 公开发布 Linux 内核，证明了分布式开源协作模式在工程实践中的巨大潜力，开启了操作系统领域的全新时代。</div>
+          <div class="node-tag">KERNEL · 工程实践</div>
+        </div>
+
+        <div class="node">
+          <div class="node-year">1995</div>
+          <div class="node-dot"></div>
+          <div class="node-title">Apache 发布</div>
+          <div class="node-desc">Apache HTTP Server 成为互联网基础设施的基石，将开源软件推入主流视野，标志着自由理念在全球商业互联网中的全面渗透。</div>
+          <div class="node-tag">HTTP · 基础设施</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-idx">01 / MOTION</div>
+        <div class="card-title">自由软件运动</div>
+        <div class="card-desc">Stallman 以 FSF 为组织载体，将个人对软件自由的信念转化为有纲领、有法理、有社群的系统性社会运动。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-idx">02 / LINUX</div>
+        <div class="card-title">Linux 的崛起</div>
+        <div class="card-desc">Linux 内核的诞生打破了商业操作系统垄断，以开放协作的工程模式证明了自由软件在高性能计算中的可行性。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-idx">03 / APACHE</div>
+        <div class="card-title">Apache 时刻</div>
+        <div class="card-desc">Apache HTTP Server 承载了早期互联网的大半流量，成为开源软件走向产业化与基础设施化的关键转折点。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-idx">04 / SYSTEM</div>
+        <div class="card-title">理念制度化</div>
+        <div class="card-desc">从道德倡导到 GPL 协议，从社群共识到基金会治理，黑客伦理完成了从软性理念到硬性制度的历史跨越。</div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-phrase">
+        从宣言到制度<span class="sep">·</span>从哲学到工程
+      </div>
+      <div class="footer-sub">FROM MANIFESTO TO INSTITUTE &nbsp;·&nbsp; FROM PHILOSOPHY TO ENGINEERING</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

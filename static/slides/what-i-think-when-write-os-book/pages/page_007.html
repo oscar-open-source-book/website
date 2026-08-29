@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源书生态一览</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-dark: #0D1117;
+  --bg-card: #161B22;
+  --bg-card-hover: #1C232C;
+  --border: #21262D;
+  --primary: #00BCD4;
+  --primary-glow: rgba(0, 188, 212, 0.35);
+  --accent: #FF7043;
+  --accent-glow: rgba(255, 112, 67, 0.4);
+  --text-main: #ECEFF1;
+  --text-secondary: #8B949E;
+  --text-muted: #556168;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 500px at 80% -10%, rgba(0,188,212,0.10), transparent 70%),
+    radial-gradient(ellipse 700px 400px at -5% 110%, rgba(255,112,67,0.07), transparent 70%),
+    var(--bg-dark);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 56px;
+  box-sizing: border-box;
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.035) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,188,212,0.25), transparent);
+  z-index: 0;
+}
+.scanline.s1 { top: 130px; }
+.scanline.s2 { top: 720px; }
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 14px;
+}
+
+.header-left {
+  max-width: 1050px;
+}
+
+.tag-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  padding: 4px 12px;
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  background: rgba(0,188,212,0.06);
+}
+
+.tag-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.tag-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+h1.title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+h1.title .accent-bar {
+  display: inline-block;
+  width: 6px;
+  height: 42px;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-glow);
+  margin-right: 16px;
+  vertical-align: -6px;
+  border-radius: 2px;
+}
+
+h1.title .cyan-text {
+  color: var(--primary);
+  text-shadow: 0 0 20px var(--primary-glow);
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 400;
+  max-width: 1050px;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.metric-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+}
+
+.metric-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--primary);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+
+/* KPI Cards */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 30px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px 24px 24px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0.9;
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.kpi-index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+}
+
+.kpi-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
+}
+
+.kpi-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--primary);
+  text-shadow: 0 0 24px var(--primary-glow), 0 0 48px rgba(0,188,212,0.15);
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -1px;
+}
+
+.kpi-underline {
+  width: 50px;
+  height: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+.kpi-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.kpi-corner {
+  position: absolute;
+  bottom: 16px;
+  right: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+
+/* Mini sparkline for each card */
+.kpi-sparkline {
+  position: absolute;
+  bottom: 30px;
+  left: 24px;
+  right: 24px;
+  height: 32px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Bottom narrative band */
+.narrative {
+  position: relative;
+  background: linear-gradient(90deg, rgba(0,188,212,0.06) 0%, rgba(255,112,67,0.04) 50%, rgba(0,188,212,0.06) 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px 36px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  overflow: hidden;
+}
+
+.narrative::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.narrative-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: rgba(0,188,212,0.1);
+  border: 1px solid rgba(0,188,212,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.narrative-text {
+  flex: 1;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  font-weight: 400;
+}
+
+.narrative-text .hl-cyan {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.narrative-text .hl-orange {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Footer bar */
+.footer-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  background: rgba(22,27,34,0.9);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  z-index: 2;
+  gap: 24px;
+}
+
+.footer-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.footer-item .val {
+  color: var(--primary);
+}
+
+.footer-spacer { flex: 1; }
+
+.footer-bar-inner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  gap: 24px;
+  background: rgba(22,27,34,0.9);
+  border-top: 1px solid var(--border);
+  z-index: 2;
+}
+
+.footer-bar-inner .f-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.footer-bar-inner .f-item .val {
+  color: var(--primary);
+}
+
+.footer-bar-inner .f-spacer { flex: 1; }
+
+/* Content shift to avoid footer */
+#ct {
+  padding-bottom: 56px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="grid-overlay"></div>
+  <div class="scanline s1"></div>
+  <div class="scanline s2"></div>
+
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="tag-row">
+          <span class="tag-dot"></span>
+          <span class="tag">// ECOSYSTEM_OVERVIEW</span>
+          <span class="tag-text">DATA_MODULE · 04 / 12</span>
+        </div>
+        <h1 class="title">
+          <span class="accent-bar"></span><span class="cyan-text">开源书</span>生态一览
+        </h1>
+        <p class="subtitle">
+          开源书籍已形成相当规模的生态，从数量、贡献者到更新频率，这一领域展现出了传统出版难以企及的活力。
+        </p>
+      </div>
+      <div class="header-right">
+        <span class="metric-id">SYS // LIVE-01</span>
+        <span class="metric-status"><span class="status-dot"></span>数据已同步 · 实时</span>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+
+      <div class="kpi-card">
+        <div class="kpi-index">01 / QUANTITY</div>
+        <div class="kpi-label">中文开源技术书籍</div>
+        <div class="kpi-value">1000<span style="font-size:28px;color:var(--accent);">+</span></div>
+        <div class="kpi-underline"></div>
+        <div class="kpi-desc">涵盖各技术领域的开源出版作品</div>
+        <svg class="kpi-sparkline" viewBox="0 0 200 32" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#00BCD4" stroke-width="1.5"
+            points="0,26 20,22 40,24 60,18 80,16 100,14 120,10 140,12 160,8 180,6 200,4"/>
+          <polyline fill="rgba(0,188,212,0.08)" stroke="none"
+            points="0,26 20,22 40,24 60,18 80,16 100,14 120,10 140,12 160,8 180,6 200,4 200,32 0,32"/>
+        </svg>
+        <span class="kpi-corner">↑ TREND</span>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-index">02 / CONTRIBUTORS</div>
+        <div class="kpi-label">头部书籍贡献者</div>
+        <div class="kpi-value">数十位</div>
+        <div class="kpi-underline"></div>
+        <div class="kpi-desc">翻译、审校、校对等多角色协作</div>
+        <svg class="kpi-sparkline" viewBox="0 0 200 32" preserveAspectRatio="none">
+          <g fill="#00BCD4" opacity="0.6">
+            <circle cx="10" cy="22" r="2.5"/>
+            <circle cx="30" cy="18" r="3"/>
+            <circle cx="50" cy="20" r="2"/>
+            <circle cx="70" cy="14" r="3.5"/>
+            <circle cx="90" cy="16" r="2.5"/>
+            <circle cx="110" cy="10" r="4"/>
+            <circle cx="130" cy="12" r="2"/>
+            <circle cx="150" cy="8" r="3"/>
+            <circle cx="170" cy="10" r="2.5"/>
+            <circle cx="190" cy="6" r="3.5"/>
+          </g>
+        </svg>
+        <span class="kpi-corner">◆ NETWORK</span>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-index">03 / CADENCE</div>
+        <div class="kpi-label">平均更新周期</div>
+        <div class="kpi-value">2-3<span style="font-size:24px;color:var(--accent);font-weight:600;">月/次</span></div>
+        <div class="kpi-underline"></div>
+        <div class="kpi-desc">活跃项目保持高频迭代</div>
+        <svg class="kpi-sparkline" viewBox="0 0 200 32" preserveAspectRatio="none">
+          <g stroke="#00BCD4" stroke-width="1.5" fill="none">
+            <line x1="10" y1="20" x2="10" y2="8"/>
+            <line x1="35" y1="22" x2="35" y2="10"/>
+            <line x1="60" y1="24" x2="60" y2="12"/>
+            <line x1="85" y1="18" x2="85" y2="6"/>
+            <line x1="110" y1="20" x2="110" y2="8"/>
+            <line x1="135" y1="22" x2="135" y2="10"/>
+            <line x1="160" y1="18" x2="160" y2="6"/>
+            <line x1="185" y1="16" x2="185" y2="4"/>
+          </g>
+          <line x1="0" y1="26" x2="200" y2="26" stroke="#00BCD4" stroke-width="0.5" opacity="0.4"/>
+        </svg>
+        <span class="kpi-corner">⟳ CYCLE</span>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-index">04 / IMPACT</div>
+        <div class="kpi-label">年下载量级</div>
+        <div class="kpi-value">数十<span style="font-size:28px;color:var(--accent);">万次</span></div>
+        <div class="kpi-underline"></div>
+        <div class="kpi-desc">优质书籍的社区影响力指标</div>
+        <svg class="kpi-sparkline" viewBox="0 0 200 32" preserveAspectRatio="none">
+          <path d="M0,30 Q40,28 60,24 T100,18 T140,12 T180,6 L200,2"
+            fill="none" stroke="#FF7043" stroke-width="1.5"/>
+          <path d="M0,30 Q40,28 60,24 T100,18 T140,12 T180,6 L200,2 L200,32 L0,32 Z"
+            fill="rgba(255,112,67,0.08)" stroke="none"/>
+        </svg>
+        <span class="kpi-corner">★ TOP</span>
+      </div>
+
+    </div>
+
+    <div class="narrative">
+      <div class="narrative-icon">Σ</div>
+      <div class="narrative-text">
+        国内以<span class="hl-cyan">开源形式</span>出版的中文技术书籍已超<span class="hl-orange">千种</span>，涵盖<span class="hl-cyan">后端、前端、运维</span>等方向；头部开源书籍通常有<span class="hl-orange">数十位</span>社区贡献者参与，活跃书籍平均每 <span class="hl-cyan">2-3 个月</span>有一次版本更新；优质开源书籍年下载量可达<span class="hl-orange">数十万次</span>，是许多开发者入门的首选资料。
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bar-inner">
+    <span class="f-item">// OPEN_SOURCE_BOOKS</span>
+    <span class="f-item">MODULE <span class="val">04</span> / 12</span>
+    <span class="f-item">SIGNAL <span class="val">STRONG</span></span>
+    <span class="f-spacer"></span>
+    <span class="f-item">SOURCE <span class="val">COMMUNITY_DB</span></span>
+    <span class="f-item">SYNC <span class="val">OK</span></span>
+  </div>
+</div>
+</body>
+</html>

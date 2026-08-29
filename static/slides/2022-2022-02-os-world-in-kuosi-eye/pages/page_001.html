@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2022年2月开源世界</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --bg-dark:#050b1a;
+  --bg-darker:#020611;
+  --text-main:#e6f2ff;
+  --text-dim:#8fb8d9;
+  --line:rgba(33,150,243,0.35);
+  --card-bg:rgba(10,26,58,0.55);
+  --card-border:rgba(0,188,212,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--text-main);
+  background:var(--bg-darker);
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;
+  margin:0 auto;
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .bg-photo{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(1.15) contrast(1.05);
+}
+#bg .bg-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(2,6,17,0.55) 0%, rgba(2,6,17,0.45) 35%, rgba(2,6,17,0.75) 75%, rgba(2,6,17,0.92) 100%);
+}
+#bg .bg-vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 45%, rgba(33,150,243,0.12) 0%, rgba(2,6,17,0) 55%),radial-gradient(ellipse at 50% 100%, rgba(2,6,17,0.9) 0%, rgba(2,6,17,0) 60%);
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:54px 72px 44px 72px;
+  display:flex;flex-direction:column;
+  box-sizing:border-box;
+}
+
+/* top header bar */
+.top-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 4px 12px 4px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:10px;
+}
+.top-left{
+  display:flex;align-items:center;gap:14px;
+  font-family:'Roboto Mono',monospace;
+  font-size:13px;color:var(--accent);letter-spacing:2px;
+}
+.top-left .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 10px var(--accent),0 0 22px var(--accent);
+}
+.top-left .tag{
+  border:1px solid var(--accent);
+  padding:3px 10px;border-radius:2px;
+  color:var(--accent);
+}
+.top-right{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;color:var(--text-dim);letter-spacing:2px;
+}
+
+/* title area */
+.title-zone{
+  flex:0 0 auto;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 0 18px 0;
+  text-align:center;
+  position:relative;
+}
+.title-zone::before,
+.title-zone::after{
+  content:"";position:absolute;
+  height:1px;
+  width:340px;
+  background:linear-gradient(90deg, transparent, var(--primary), transparent);
+  top:50%;
+}
+.title-zone::before{left:-180px;}
+.title-zone::after{right:-180px;}
+.eyebrow{
+  font-family:'Roboto Mono',monospace;
+  font-size:14px;letter-spacing:8px;
+  color:var(--accent);
+  margin-bottom:14px;
+  text-shadow:0 0 12px rgba(0,188,212,0.7);
+}
+.main-title{
+  font-family:'Roboto Mono',monospace;
+  font-weight:700;
+  font-size:96px;
+  line-height:1.05;
+  color:#cfe8ff;
+  letter-spacing:2px;
+  text-shadow:
+    0 0 8px rgba(33,150,243,0.95),
+    0 0 22px rgba(33,150,243,0.85),
+    0 0 44px rgba(33,150,243,0.65),
+    0 0 80px rgba(0,188,212,0.45),
+    0 0 120px rgba(0,188,212,0.25);
+  margin-bottom:18px;
+}
+.sub-title{
+  font-family:'Inter',sans-serif;
+  font-weight:300;
+  font-size:22px;
+  color:var(--text-dim);
+  letter-spacing:6px;
+}
+.sub-title .accent{color:var(--accent);}
+
+/* cards */
+.cards{
+  flex:1 1 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  margin-top:6px;
+}
+.card{
+  position:relative;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:6px;
+  padding:22px 24px 20px 24px;
+  backdrop-filter:blur(4px);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+  box-shadow:0 0 12px var(--primary);
+}
+.card-head{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:12px;
+}
+.card-num{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  padding:2px 7px;border-radius:2px;
+  box-shadow:0 0 8px rgba(0,188,212,0.4);
+}
+.card-title{
+  font-family:'Roboto Mono',monospace;
+  font-weight:700;
+  font-size:19px;
+  color:#fff;
+  letter-spacing:1px;
+  text-shadow:0 0 10px rgba(33,150,243,0.7);
+}
+.card-desc{
+  font-size:13.5px;line-height:1.75;
+  color:var(--text-dim);
+  font-weight:300;
+}
+.card-kw{
+  margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;
+}
+.card-kw span{
+  font-family:'Roboto Mono',monospace;
+  font-size:10.5px;
+  color:var(--accent);
+  border:1px solid rgba(0,188,212,0.4);
+  padding:2px 7px;border-radius:2px;
+  letter-spacing:1px;
+}
+
+/* footer */
+.footer{
+  flex:0 0 auto;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+}
+.footer-left{
+  display:flex;align-items:center;gap:16px;
+}
+.footer-narrative{
+  font-size:13.5px;color:var(--text-dim);
+  font-weight:300;line-height:1.5;
+  max-width:780px;
+}
+.footer-narrative .hl{color:var(--accent);font-weight:500;}
+.footer-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+  font-family:'Roboto Mono',monospace;
+}
+.issue-num{
+  font-size:22px;color:var(--text-main);font-weight:700;letter-spacing:2px;
+  text-shadow:0 0 12px rgba(33,150,243,0.6);
+}
+.issue-date{
+  font-size:12px;color:var(--accent);letter-spacing:3px;
+}
+
+/* corner decorations */
+.corner{
+  position:absolute;width:22px;height:22px;
+  border:2px solid var(--accent);
+  z-index:2;
+  box-shadow:0 0 8px rgba(0,188,212,0.6);
+}
+.corner.tl{top:20px;left:20px;border-right:none;border-bottom:none;}
+.corner.tr{top:20px;right:20px;border-left:none;border-bottom:none;}
+.corner.bl{bottom:20px;left:20px;border-right:none;border-top:none;}
+.corner.br{bottom:20px;right:20px;border-left:none;border-top:none;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <img class="bg-photo" src="../images/page_001_hero.png" alt="暗色科技背景，深蓝黑色基底上流动着天蓝色和青蓝色的代码粒子流">
+    <div class="bg-overlay"></div>
+    <div class="bg-vignette"></div>
+  </div>
+
+  <span class="corner tl"></span>
+  <span class="corner tr"></span>
+  <span class="corner bl"></span>
+  <span class="corner br"></span>
+
+  <div id="ct">
+    <div class="top-bar">
+      <div class="top-left">
+        <span class="dot"></span>
+        <span class="tag"><span>OPEN·SOURCE·OBSERVER</span></span>
+        <span><span>MAINTAINED&nbsp;BY&nbsp;SHI·SI</span></span>
+      </div>
+      <div class="top-right"><span>EST.&nbsp;2022&nbsp;·&nbsp;MONTHLY&nbsp;DIGEST</span></div>
+    </div>
+
+    <div class="title-zone">
+      <div class="eyebrow"><span>OPEN&nbsp;SOURCE&nbsp;/&nbsp;FEBRUARY&nbsp;2022</span></div>
+      <h1 class="main-title"><span>2022年2月开源世界</span></h1>
+      <div class="sub-title"><span>开源之道·适兕&nbsp;&nbsp;<span class="accent">月度观察与阅读分享</span></span></div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num"><span>01</span></span>
+          <span class="card-title"><span>观察视角</span></span>
+        </div>
+        <p class="card-desc"><span>以开源之道编辑部视角，回顾 2022 年 2 月开源领域的关键事件与行业风向，梳理脉络、还原语境。</span></p>
+        <div class="card-kw">
+          <span><span>EDITORIAL</span></span>
+          <span><span>EVENTS</span></span>
+          <span><span>2022·02</span></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num"><span>02</span></span>
+          <span class="card-title"><span>内容范围</span></span>
+        </div>
+        <p class="card-desc"><span>覆盖编程语言发布、云原生进展、许可证争议与供应链安全四大主线，构建本期全景地图。</span></p>
+        <div class="card-kw">
+          <span><span>LANG</span></span>
+          <span><span>CLOUD-NATIVE</span></span>
+          <span><span>LICENSE</span></span>
+          <span><span>SECURITY</span></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num"><span>03</span></span>
+          <span class="card-title"><span>阅读推荐</span></span>
+        </div>
+        <p class="card-desc"><span>精选当月开源社区深度文章与值得关注的技术报告，为读者提供高质量的阅读入口。</span></p>
+        <div class="card-kw">
+          <span><span>ARTICLES</span></span>
+          <span><span>REPORTS</span></span>
+          <span><span>COMMUNITY</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <div class="footer-narrative">
+          <span>本期由 <span class="hl">适兕</span> 主笔，聚焦 <span class="hl">2 月开源技术发布</span> 与 <span class="hl">社区动态</span>，带你纵览这个月开源世界的脉搏与回响。</span>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="issue-num"><span>VOL.&nbsp;2022·02</span></div>
+        <div class="issue-date"><span>2022&nbsp;/&nbsp;02&nbsp;·&nbsp;OPEN&nbsp;SOURCE</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二辑·深入实践</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #002FA7;
+  --primary-light: #E6E9F5;
+  --accent: #FF7043;
+  --accent-light: #FFEBE0;
+  --bg: #F5F5F5;
+  --white: #FFFFFF;
+  --text-main: #1A1A2E;
+  --text-sub: #5A5A72;
+  --border: #E0E0E8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #F8F9FD 0%, #F0F1F7 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,47,167,0.06) 0%, transparent 70%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,112,67,0.05) 0%, transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 64px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-left { max-width: 980px; }
+
+.tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  max-width: 860px;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.header-num {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.header-num-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+}
+
+/* Flow Section */
+.flow-section {
+  margin-top: 22px;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 22px 32px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(0,47,167,0.04);
+}
+
+.flow-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-sub);
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.flow-label::before {
+  content: '';
+  width: 4px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.flow-container {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  justify-content: center;
+}
+
+.flow-step {
+  flex: 1;
+  max-width: 340px;
+  background: linear-gradient(135deg, var(--primary) 0%, #0040CC 100%);
+  color: #fff;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+}
+
+.flow-step-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.3);
+  line-height: 1;
+  min-width: 36px;
+}
+
+.flow-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.flow-step-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.flow-step-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 400;
+}
+
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 24px;
+  font-weight: 700;
+  min-width: 28px;
+}
+
+/* Four Cards */
+.cards-section {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 18px 18px 16px;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--primary);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0,47,167,0.03);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.card-body {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.card-tags {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.card-tag {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+.card-tag.accent {
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+/* Bottom Data Cards */
+.bottom-section {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.data-card {
+  border-radius: 12px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.data-card-1 {
+  background: linear-gradient(135deg, var(--primary) 0%, #0038CC 100%);
+  color: #fff;
+}
+
+.data-card-2 {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+}
+
+.data-card-left {
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.data-card-num {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.data-card-label {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+.data-card-divider {
+  width: 1px;
+  height: 46px;
+  background: rgba(255,255,255,0.2);
+}
+
+.data-card-2 .data-card-divider {
+  background: var(--border);
+}
+
+.data-card-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.data-card-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.data-card-desc {
+  font-size: 12px;
+  opacity: 0.75;
+  line-height: 1.6;
+}
+
+.data-card-1 .data-card-title { color: #fff; }
+.data-card-2 .data-card-title { color: var(--text-main); }
+.data-card-2 .data-card-desc { color: var(--text-sub); }
+
+/* Footer line */
+.footer-bar {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-left {
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+}
+
+.footer-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.footer-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.footer-dot.active {
+  background: var(--accent);
+  width: 20px;
+  border-radius: 3px;
+}
+
+.footer-right {
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <span class="tag">CHAPTER 02</span>
+        <h1 class="title">第二辑 · 深入实践</h1>
+        <p class="subtitle">本辑聚焦开源实践环节，通过具体案例和可操作建议，帮助读者从旁观者转变为参与者，掌握从理解项目到贡献代码的完整路径。</p>
+      </div>
+      <div class="header-right">
+        <div class="header-num">02</div>
+        <div class="header-num-label">VOL. II / 深入</div>
+      </div>
+    </div>
+
+    <div class="flow-section">
+      <div class="flow-label"><span>新人典型起步路径</span></div>
+      <div class="flow-container">
+        <div class="flow-step">
+          <div class="flow-step-num">01</div>
+          <div class="flow-step-body">
+            <div class="flow-step-title">修文档</div>
+            <div class="flow-step-desc">修正错别字 / 补充缺失说明</div>
+          </div>
+        </div>
+        <div class="flow-arrow">➜</div>
+        <div class="flow-step">
+          <div class="flow-step-num">02</div>
+          <div class="flow-step-body">
+            <div class="flow-step-title">提 Issue</div>
+            <div class="flow-step-desc">报告 Bug / 提出改进建议</div>
+          </div>
+        </div>
+        <div class="flow-arrow">➜</div>
+        <div class="flow-step">
+          <div class="flow-step-num">03</div>
+          <div class="flow-step-body">
+            <div class="flow-step-title">发 PR</div>
+            <div class="flow-step-desc">提交代码变更 / 等待 Review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards-section">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">01</div>
+          <div class="card-title">选项目策略</div>
+        </div>
+        <div class="card-body">从个人兴趣出发，结合技能匹配度，优先选择文档完善、社区活跃、维护良好的成熟开源项目作为切入。</div>
+        <div class="card-tags">
+          <span class="card-tag">兴趣驱动</span>
+          <span class="card-tag">技能匹配</span>
+          <span class="card-tag accent">成熟项目</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">02</div>
+          <div class="card-title">贡献路径</div>
+        </div>
+        <div class="card-body">从修复文档错别字、提交 Issue 反馈开始，逐步过渡到功能代码贡献，完成从外沿到核心的能力升级。</div>
+        <div class="card-tags">
+          <span class="card-tag">文档修正</span>
+          <span class="card-tag">Issue 反馈</span>
+          <span class="card-tag accent">代码贡献</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">03</div>
+          <div class="card-title">沟通技巧</div>
+        </div>
+        <div class="card-body">在邮件列表与 Issue 区保持专业、清晰的表达，尊重社区既定流程与行为规范，建立可信赖的合作者形象。</div>
+        <div class="card-tags">
+          <span class="card-tag">专业表达</span>
+          <span class="card-tag">社区流程</span>
+          <span class="card-tag accent">行为规范</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">04</div>
+          <div class="card-title">实践经验</div>
+        </div>
+        <div class="card-body">真实案例揭示：从第一次 PR 合并到成为核心贡献者，通常需要 6 至 12 个月的持续投入与不断积累。</div>
+        <div class="card-tags">
+          <span class="card-tag">持续投入</span>
+          <span class="card-tag">真实案例</span>
+          <span class="card-tag accent">6~12 个月</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="data-card data-card-1">
+        <div class="data-card-left">
+          <div class="data-card-num">3 STEP</div>
+          <div class="data-card-label">新人起步</div>
+        </div>
+        <div class="data-card-divider"></div>
+        <div class="data-card-right">
+          <div class="data-card-title">修文档 → 提 Issue → 发 PR</div>
+          <div class="data-card-desc">三步走是最典型的新人入圈路径，低门槛、可复用、见效快</div>
+        </div>
+      </div>
+      <div class="data-card data-card-2">
+        <div class="data-card-left">
+          <div class="data-card-num" style="color:var(--accent);">6~12<span style="font-size:16px;font-weight:600;">个月</span></div>
+          <div class="data-card-label">成长周期</div>
+        </div>
+        <div class="data-card-divider"></div>
+        <div class="data-card-right">
+          <div class="data-card-title">成为核心贡献者</div>
+          <div class="data-card-desc">持续参与、稳定输出，是新人进阶为社区核心成员的时间基准</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-left">OPEN SOURCE · DEEP PRACTICE</div>
+      <div class="footer-dots">
+        <div class="footer-dot active"></div>
+        <div class="footer-dot"></div>
+        <div class="footer-dot"></div>
+        <div class="footer-dot"></div>
+      </div>
+      <div class="footer-right">PAGE 02 / 04</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

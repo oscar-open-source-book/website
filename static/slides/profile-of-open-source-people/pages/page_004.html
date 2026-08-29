@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>贡献者类型分层</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --bg-dark:#0a1628;
+  --bg-panel:#10203b;
+  --bg-card:#0f1f38;
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --cyan-soft:#004d5e;
+  --text-main:#e8f0fa;
+  --text-sub:#8aa4c4;
+  --text-dim:#5a7a9e;
+  --border:#1c3558;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg-dark);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 15% 10%,rgba(33,150,243,0.18) 0%,transparent 45%),radial-gradient(ellipse at 85% 90%,rgba(0,188,212,0.14) 0%,transparent 45%);}
+#bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.05) 1px,transparent 1px);background-size:60px 60px;opacity:0.6;}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 56px;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.header-left{display:flex;align-items:center;gap:16px;}
+.title-bar{width:5px;height:36px;background:linear-gradient(180deg,var(--primary),var(--cyan));border-radius:3px;}
+.header h1{font-size:28px;font-weight:700;letter-spacing:1px;color:var(--text-main);}
+.header-right{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-dim);font-weight:500;letter-spacing:2px;}
+.header-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);}
+
+/* Main area */
+.main{display:grid;grid-template-columns:440px 1fr;gap:28px;flex:1;min-height:0;}
+
+/* Pyramid panel */
+.pyramid-panel{background:linear-gradient(180deg,#0d2240 0%,#0b1a30 100%);border:1px solid var(--border);border-radius:12px;padding:18px 18px 16px;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.pyramid-panel::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);}
+.panel-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.panel-label .label{font-size:13px;font-weight:600;color:var(--cyan);letter-spacing:1px;}
+.panel-label .badge{font-size:10px;padding:3px 9px;border:1px solid var(--cyan);color:var(--cyan);border-radius:10px;letter-spacing:1px;}
+
+.pyramid-wrap{display:flex;align-items:center;justify-content:center;flex:1;margin:4px 0 6px;}
+.pyramid{display:flex;flex-direction:column;align-items:center;width:100%;gap:5px;}
+.pyr-row{display:flex;align-items:center;justify-content:center;height:60px;position:relative;}
+.pyr-trapezoid{display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;letter-spacing:0.5px;color:#fff;position:relative;height:60px;clip-path:polygon(0 0,100% 0,calc(100% - 25px) 100%,25px 100%);}
+.pyr-row-top .pyr-trapezoid{width:150px;height:56px;font-size:13px;clip-path:polygon(50% 0,100% 100%,0 100%);padding-top:14px;}
+.pyr-row-2 .pyr-trapezoid{width:230px;}
+.pyr-row-3 .pyr-trapezoid{width:310px;}
+.pyr-row-4 .pyr-trapezoid{width:390px;}
+
+.l1{background:linear-gradient(135deg,#e040fb 0%,#2196F3 100%);}
+.l2{background:linear-gradient(135deg,#42a5f5 0%,#1565c0 100%);}
+.l3{background:linear-gradient(135deg,#00bcd4 0%,#00778a 100%);}
+.l4{background:linear-gradient(135deg,#1a3a5c 0%,#0d2240 100%);border:1px solid #254066;}
+.pyr-row-4 .pyr-trapezoid{font-weight:500;font-size:12.5px;color:var(--text-sub);letter-spacing:0;}
+
+.pyramid-legend{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:var(--text-dim);margin-top:6px;padding:0 6px;}
+.pyramid-legend .arrow{flex:1;height:1px;margin:0 12px;background:linear-gradient(90deg,var(--primary),var(--cyan));}
+.pyramid-legend .item{display:flex;align-items:center;gap:4px;}
+
+/* Right column */
+.right-col{display:flex;flex-direction:column;gap:14px;min-height:0;}
+.roles{display:flex;flex-direction:column;gap:9px;flex:1;min-height:0;}
+
+.role-card{display:flex;align-items:stretch;gap:12px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:8px;padding:8px 14px;}
+.role-card .icon{flex-shrink:0;width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--primary),var(--cyan));position:relative;}
+.role-card .icon::after{content:"";position:absolute;inset:0;border-radius:8px;background:linear-gradient(135deg,transparent 50%,rgba(255,255,255,0.1));}
+.role-card.r2{border-left-color:#42a5f5;}
+.role-card.r3{border-left-color:#00bcd4;}
+.role-card.r4{border-left-color:#5a7a9e;}
+.role-card.r5{border-left-color:#e040fb;}
+.role-card .body{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
+.role-card .role-head{display:flex;align-items:baseline;gap:8px;}
+.role-card .role-name{font-size:14.5px;font-weight:600;color:var(--text-main);}
+.role-card .role-tag{font-size:10px;color:var(--cyan);border:1px solid var(--cyan-soft);background:rgba(0,188,212,0.08);padding:1px 7px;border-radius:4px;letter-spacing:0.5px;font-weight:500;}
+.role-card.r2 .role-tag{color:#42a5f5;border-color:#1a3a5c;background:rgba(66,165,245,0.08);}
+.role-card.r3 .role-tag{color:var(--cyan);}
+.role-card.r4 .role-tag{color:#8aa4c4;border-color:#2c4060;background:rgba(90,122,158,0.08);}
+.role-card.r5 .role-tag{color:#e040fb;border-color:#4a1e5a;background:rgba(224,64,251,0.08);}
+.role-card .role-desc{font-size:11.5px;line-height:1.55;color:var(--text-sub);font-weight:400;}
+.role-card .role-meta{display:flex;gap:14px;font-size:10px;color:var(--text-dim);font-weight:500;letter-spacing:0.5px;margin-top:2px;}
+.role-card .role-meta span{display:flex;align-items:center;gap:4px;}
+.role-card .role-meta .meta-dot{width:4px;height:4px;border-radius:50%;background:var(--primary);}
+.role-card.r5 .role-meta .meta-dot{background:#e040fb;}
+
+/* Bottom data */
+.data-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.data-card{background:linear-gradient(135deg,#0d2240 0%,#0b1a30 100%);border:1px solid var(--border);border-radius:8px;padding:12px 18px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;}
+.data-card::before{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--primary),var(--cyan));}
+.data-icon{flex-shrink:0;width:48px;height:48px;border-radius:50%;border:2px solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--primary);position:relative;}
+.data-icon::after{content:"";position:absolute;inset:4px;border-radius:50%;background:rgba(33,150,243,0.1);}
+.data-body{flex:1;display:flex;flex-direction:column;gap:2px;}
+.data-num{font-size:22px;font-weight:700;color:#fff;letter-spacing:0.5px;}
+.data-num .unit{font-size:13px;font-weight:500;color:var(--cyan);margin-left:2px;}
+.data-desc{font-size:11.5px;color:var(--text-sub);font-weight:400;line-height:1.4;}
+.data-bar{height:3px;flex:1;background:#1a3050;border-radius:2px;position:relative;overflow:hidden;}
+.data-bar-fill{position:absolute;top:0;left:0;bottom:0;background:linear-gradient(90deg,var(--primary),var(--cyan));border-radius:2px;}
+.data-bar-fill.w20{width:20%;}
+.data-bar-fill.w78{width:78%;}
+
+.footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:10px;color:var(--text-dim);letter-spacing:2px;}
+.footer-line{flex:1;height:1px;margin:0 16px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="header-left">
+    <div class="title-bar"></div>
+    <h1>贡献者类型分层</h1>
+  </div>
+  <div class="header-right">
+    <div class="header-dot"></div>
+    <span>CONTRIBUTOR STRATIFICATION</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Pyramid Panel -->
+  <div class="pyramid-panel">
+    <div class="panel-label">
+      <span class="label">● 金字塔结构</span>
+      <span class="badge">PYRAMID</span>
+    </div>
+    <div class="pyramid-wrap">
+      <div class="pyramid">
+        <div class="pyr-row pyr-row-top">
+          <div class="pyr-trapezoid l1"><span>核心维护者</span></div>
+        </div>
+        <div class="pyr-row pyr-row-2">
+          <div class="pyr-trapezoid l2"><span>活跃贡献者</span></div>
+        </div>
+        <div class="pyr-row pyr-row-3">
+          <div class="pyr-trapezoid l3"><span>偶尔参与者</span></div>
+        </div>
+        <div class="pyr-row pyr-row-4">
+          <div class="pyr-trapezoid l4"><span>社区观察者</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="pyramid-legend">
+      <span class="item">↑ 影响力</span>
+      <span class="arrow"></span>
+      <span class="item">数量 →</span>
+    </div>
+  </div>
+
+  <!-- Right column -->
+  <div class="right-col">
+    <div class="roles">
+
+      <div class="role-card r1">
+        <div class="icon"><span>01</span></div>
+        <div class="body">
+          <div class="role-head">
+            <span class="role-name">核心维护者</span>
+            <span class="role-tag">MAINTAINER</span>
+          </div>
+          <div class="role-desc">项目 Owner 或核心 Committer，负责架构决策与方向把控，数量少但影响力大。</div>
+          <div class="role-meta">
+            <span><span class="meta-dot"></span>角色权重：极高</span>
+            <span><span class="meta-dot"></span>决策权限：架构 · 方向</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card r2">
+        <div class="icon" style="background:linear-gradient(135deg,#42a5f5,#1565c0)"><span>02</span></div>
+        <div class="body">
+          <div class="role-head">
+            <span class="role-name">活跃贡献者</span>
+            <span class="role-tag">ACTIVE</span>
+          </div>
+          <div class="role-desc">定期提交代码或文档，有稳定的项目参与度，构成社区的中坚力量。</div>
+          <div class="role-meta">
+            <span><span class="meta-dot"></span>角色权重：高</span>
+            <span><span class="meta-dot"></span>参与频次：定期</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card r3">
+        <div class="icon" style="background:linear-gradient(135deg,#00bcd4,#00778a)"><span>03</span></div>
+        <div class="body">
+          <div class="role-head">
+            <span class="role-name">偶尔参与者</span>
+            <span class="role-tag">CASUAL</span>
+          </div>
+          <div class="role-desc">间歇性提交 Issue 或小型 PR，多为学习驱动或特定需求触发。</div>
+          <div class="role-meta">
+            <span><span class="meta-dot"></span>角色权重：中</span>
+            <span><span class="meta-dot"></span>触发方式：需求驱动</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card r4">
+        <div class="icon" style="background:linear-gradient(135deg,#5a7a9e,#2c4060)"><span>04</span></div>
+        <div class="body">
+          <div class="role-head">
+            <span class="role-name">社区观察者</span>
+            <span class="role-tag">OBSERVER</span>
+          </div>
+          <div class="role-desc">使用并关注开源项目，参与讨论但不频繁提交，是潜在的未来贡献者。</div>
+          <div class="role-meta">
+            <span><span class="meta-dot"></span>角色权重：基础</span>
+            <span><span class="meta-dot"></span>转化潜力：高</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card r5">
+        <div class="icon" style="background:linear-gradient(135deg,#e040fb,#9c27b0)"><span>05</span></div>
+        <div class="body">
+          <div class="role-head">
+            <span class="role-name">非代码贡献者</span>
+            <span class="role-tag">NON-CODE</span>
+          </div>
+          <div class="role-desc">通过文档撰写、社区翻译、活动组织等方式贡献，形式灵活且门槛较低。</div>
+          <div class="role-meta">
+            <span><span class="meta-dot"></span>角色权重：新兴</span>
+            <span><span class="meta-dot"></span>趋势：显著增长</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="data-row">
+      <div class="data-card">
+        <div class="data-icon"><span>20</span></div>
+        <div class="data-body">
+          <div class="data-num">≈ 20<span class="unit">%</span></div>
+          <div class="data-desc">核心贡献者占比，遵循 20/80 法则</div>
+        </div>
+        <div class="data-bar"><div class="data-bar-fill w20"></div></div>
+      </div>
+      <div class="data-card">
+        <div class="data-icon" style="color:var(--cyan);border-color:var(--cyan)"><span>↑</span></div>
+        <div class="data-body">
+          <div class="data-num" style="color:var(--cyan)">显著<span class="unit">↑</span></div>
+          <div class="data-desc">非代码贡献增长，集中于文档与社区运营</div>
+        </div>
+        <div class="data-bar"><div class="data-bar-fill w78"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span>OPEN SOURCE COMMUNITY</span>
+  <span class="footer-line"></span>
+  <span>CSS GEOMETRY · 2024</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

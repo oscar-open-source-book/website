@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二部分：文化与启示</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --dark-bg: #0A1628;
+  --dark-surface: #0F1F3A;
+  --dark-card: #122545;
+  --text-main: #FFFFFF;
+  --text-sub: #B0BEC5;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  width: 1600px;
+  height: 900px;
+  overflow: hidden;
+  color: var(--text-main);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #06101F 0%, #0A1A35 40%, #0D2247 70%, #081530 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+/* Grid overlay */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.7;
+}
+
+/* Network topology nodes */
+.node {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary), 0 0 16px rgba(33,150,243,0.4);
+}
+
+.pulse-node {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.5); opacity: 0.3; }
+}
+
+.pulse-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  animation: ringPulse 3s ease-out infinite;
+  opacity: 0;
+}
+
+@keyframes ringPulse {
+  0% { transform: scale(0.5); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* Glowing lines via pseudo-elements on decorative divs */
+.deco-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.4;
+}
+
+.deco-line-v {
+  position: absolute;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--accent), transparent);
+  opacity: 0.3;
+}
+
+/* Layout */
+.content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 620px 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Left: Big number */
+.left-section {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bignum-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bignum {
+  font-size: 380px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -15px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.12) 0%, rgba(0,188,212,0.08) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(33,150,243,0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.bignum-glow {
+  position: absolute;
+  font-size: 380px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -15px;
+  color: rgba(33,150,243,0.08);
+  filter: blur(20px);
+  z-index: 1;
+}
+
+.bignum-accent {
+  position: absolute;
+  font-size: 380px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -15px;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0,188,212,0.3);
+  transform: translate(6px, 6px);
+  z-index: 1;
+}
+
+.bignum-ring {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.25);
+  z-index: 0;
+}
+
+.bignum-ring-2 {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,188,212,0.18);
+  z-index: 0;
+}
+
+.bignum-ring-3 {
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.1);
+  z-index: 0;
+}
+
+.section-label {
+  position: absolute;
+  top: 30px;
+  left: 60px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  z-index: 3;
+}
+
+.section-label-cn {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--neutral);
+  letter-spacing: 3px;
+  z-index: 3;
+}
+
+/* Right section */
+.right-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 36px;
+  padding-right: 20px;
+}
+
+.title-block {
+  position: relative;
+}
+
+.title-block::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+
+.part-title {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  color: var(--text-main);
+  margin-top: 20px;
+}
+
+.part-title .accent-dot {
+  color: var(--accent);
+}
+
+.part-subtitle {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--neutral);
+  margin-top: 18px;
+  max-width: 720px;
+}
+
+/* Points */
+.points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.point-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 22px;
+  background: rgba(18, 37, 69, 0.55);
+  border: 1px solid rgba(33, 150, 243, 0.18);
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.point-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.point-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.25), rgba(0,188,212,0.15));
+  border: 1px solid rgba(33,150,243,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.point-icon .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 6px var(--primary);
+}
+
+.point-icon .dot-accent {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 4px var(--accent);
+}
+
+.point-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.point-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+.point-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--neutral);
+  line-height: 1.5;
+}
+
+/* SVG network lines background */
+.network-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+}
+
+/* Bottom accent bar */
+.bottom-bar {
+  position: absolute;
+  bottom: 30px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 3;
+}
+
+.bottom-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(33,150,243,0.3), transparent);
+  margin: 0 20px;
+}
+
+.bottom-text {
+  font-size: 11px;
+  color: var(--neutral);
+  letter-spacing: 3px;
+  opacity: 0.7;
+}
+
+/* Corner decorations */
+.corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  z-index: 3;
+}
+
+.corner-tl {
+  top: 30px;
+  left: 30px;
+  border-top: 1px solid var(--primary);
+  border-left: 1px solid var(--primary);
+}
+
+.corner-tr {
+  top: 30px;
+  right: 30px;
+  border-top: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+}
+
+.corner-bl {
+  bottom: 30px;
+  left: 30px;
+  border-bottom: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
+}
+
+.corner-br {
+  bottom: 30px;
+  right: 30px;
+  border-bottom: 1px solid var(--primary);
+  border-right: 1px solid var(--primary);
+}
+
+/* Vertical accent on right edge */
+.vertical-text {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--neutral);
+  opacity: 0.5;
+  z-index: 3;
+}
+
+/* Animated scanning line */
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,188,212,0.4), transparent);
+  animation: scan 6s linear infinite;
+  z-index: 1;
+}
+
+@keyframes scan {
+  0% { top: 10%; }
+  50% { top: 90%; }
+  100% { top: 10%; }
+}
+
+.narrative-text {
+  font-size: 13px;
+  color: var(--neutral);
+  line-height: 1.7;
+  max-width: 700px;
+  opacity: 0.85;
+  border-left: 2px solid rgba(0,188,212,0.4);
+  padding-left: 16px;
+  margin-top: 4px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-overlay"></div>
+    <div class="scan-line"></div>
+
+    <svg class="network-svg" viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <g stroke="rgba(33,150,243,0.15)" stroke-width="0.5" fill="none">
+        <line x1="120" y1="150" x2="380" y2="280"/>
+        <line x1="380" y1="280" x2="280" y2="520"/>
+        <line x1="280" y1="520" x2="520" y2="680"/>
+        <line x1="520" y1="680" x2="380" y2="280"/>
+        <line x1="380" y1="280" x2="700" y2="200"/>
+        <line x1="700" y1="200" x2="900" y2="350"/>
+        <line x1="900" y1="350" x2="700" y2="550"/>
+        <line x1="700" y1="550" x2="900" y2="700"/>
+        <line x1="900" y1="700" x2="1150" y2="600"/>
+        <line x1="1150" y1="600" x2="1350" y2="750"/>
+        <line x1="1350" y1="750" x2="1450" y2="400"/>
+        <line x1="1450" y1="400" x2="1200" y2="180"/>
+        <line x1="1200" y1="180" x2="900" y2="350"/>
+        <line x1="1200" y1="180" x2="700" y2="200"/>
+        <line x1="900" y1="350" x2="1450" y2="400"/>
+        <line x1="1450" y1="400" x2="1300" y2="100"/>
+        <line x1="520" y1="680" x2="800" y2="750"/>
+        <line x1="800" y1="750" x2="1150" y2="600"/>
+      </g>
+      <g fill="rgba(33,150,243,0.5)">
+        <circle cx="120" cy="150" r="3"/>
+        <circle cx="380" cy="280" r="4"/>
+        <circle cx="280" cy="520" r="3"/>
+        <circle cx="520" cy="680" r="3"/>
+        <circle cx="700" cy="200" r="4"/>
+        <circle cx="900" cy="350" r="5"/>
+        <circle cx="700" cy="550" r="3"/>
+        <circle cx="900" cy="700" r="3"/>
+        <circle cx="1150" cy="600" r="4"/>
+        <circle cx="1350" cy="750" r="3"/>
+        <circle cx="1450" cy="400" r="4"/>
+        <circle cx="1200" cy="180" r="3"/>
+        <circle cx="1300" cy="100" r="3"/>
+        <circle cx="800" cy="750" r="3"/>
+      </g>
+      <g fill="rgba(0,188,212,0.6)">
+        <circle cx="380" cy="280" r="2"/>
+        <circle cx="900" cy="350" r="2"/>
+        <circle cx="1450" cy="400" r="2"/>
+        <circle cx="520" cy="680" r="2"/>
+      </g>
+    </svg>
+
+    <div class="deco-line" style="top: 200px; left: 600px; width: 400px;"></div>
+    <div class="deco-line" style="bottom: 150px; left: 500px; width: 300px;"></div>
+    <div class="deco-line" style="top: 100px; left: 800px; width: 200px;"></div>
+    <div class="deco-line-v" style="left: 580px; top: 100px; height: 300px;"></div>
+    <div class="deco-line-v" style="left: 1050px; top: 300px; height: 250px;"></div>
+
+    <div class="pulse-ring" style="top: 230px; left: 350px; width: 30px; height: 30px;"></div>
+    <div class="pulse-ring" style="top: 650px; left: 490px; width: 20px; height: 20px; animation-delay: 1s;"></div>
+    <div class="pulse-ring" style="top: 320px; left: 1420px; width: 25px; height: 25px; animation-delay: 2s;"></div>
+
+    <div class="pulse-node" style="top: 180px; left: 880px; width: 8px; height: 8px;"></div>
+    <div class="pulse-node" style="top: 700px; left: 820px; width: 6px; height: 6px; animation-delay: 1.5s;"></div>
+    <div class="pulse-node" style="top: 380px; left: 1460px; width: 7px; height: 7px; animation-delay: 0.8s;"></div>
+    <div class="pulse-node" style="top: 540px; left: 670px; width: 5px; height: 5px; animation-delay: 2s;"></div>
+  </div>
+
+  <div id="ct">
+    <div class="section-label"><span>PART 02</span></div>
+    <div class="section-label-cn"><span>CHAPTER TRANSITION</span></div>
+
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="vertical-text"><span>OPEN SOURCE · CULTURE &amp; INSIGHTS</span></div>
+
+    <div class="content">
+      <div class="left-section">
+        <div class="bignum-container">
+          <div class="bignum-ring-3"></div>
+          <div class="bignum-ring-2"></div>
+          <div class="bignum-ring"></div>
+          <div class="bignum-glow"><span>02</span></div>
+          <div class="bignum-accent"><span>02</span></div>
+          <div class="bignum"><span>02</span></div>
+        </div>
+      </div>
+
+      <div class="right-section">
+        <div class="title-block">
+          <h1 class="part-title"><span>第二部分<span class="accent-dot">：</span>文化与启示</span></h1>
+          <p class="part-subtitle"><span>从画像到行动——开源文化内核与对布道者的启示</span></p>
+          <p class="narrative-text"><span>第二部分将从画像数据过渡到文化解读与实践启示，帮助读者理解开源社区运行背后的协作逻辑，并思考如何将这些认知应用到开源布道与推广工作中。</span></p>
+        </div>
+
+        <div class="points-list">
+          <div class="point-item">
+            <div class="point-icon"><div class="dot"></div><div class="dot-accent"></div></div>
+            <div class="point-text">
+              <div class="point-title"><span>协作文化</span></div>
+              <div class="point-desc"><span>探讨开源社区独特的沟通、决策与冲突解决方式</span></div>
+            </div>
+          </div>
+          <div class="point-item">
+            <div class="point-icon"><div class="dot"></div><div class="dot-accent"></div></div>
+            <div class="point-text">
+              <div class="point-title"><span>社区治理</span></div>
+              <div class="point-desc"><span>从 BDFL 到民主治理，理解不同项目的管理模式</span></div>
+            </div>
+          </div>
+          <div class="point-item">
+            <div class="point-icon"><div class="dot"></div><div class="dot-accent"></div></div>
+            <div class="point-text">
+              <div class="point-title"><span>布道启示</span></div>
+              <div class="point-desc"><span>基于画像数据提炼对开源推广者的策略建议</span></div>
+            </div>
+          </div>
+          <div class="point-item">
+            <div class="point-icon"><div class="dot"></div><div class="dot-accent"></div></div>
+            <div class="point-text">
+              <div class="point-title"><span>未来展望</span></div>
+              <div class="point-desc"><span>关注 AI 辅助开发、企业开源趋势等新兴议题</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span class="bottom-text">SECTION 02 / 04</span>
+      <div class="bottom-line"></div>
+      <span class="bottom-text">CULTURE · GOVERNANCE · EVANGELISM · FUTURE</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

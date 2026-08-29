@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>2023年数据透视</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --cyan:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg-dark:#0B1220;
+  --bg-card:#111C2E;
+  --bg-card2:#0F1828;
+  --border:rgba(176,190,197,0.15);
+  --glow:rgba(33,150,243,0.25);
+  --text-main:#E8EEF5;
+  --text-dim:#7F8C9B;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','Segoe UI',sans-serif;color:var(--text-main);background:#050810;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,#060B17 0%,#0B1220 45%,#0E1A2E 100%);}
+#bg::before{content:'';position:absolute;inset:0;background-image:
+  radial-gradient(circle at 15% 20%, rgba(33,150,243,0.10) 0%, transparent 40%),
+  radial-gradient(circle at 85% 80%, rgba(0,188,212,0.08) 0%, transparent 45%);
+}
+#bg::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(176,190,197,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(176,190,197,0.04) 1px, transparent 1px);background-size:50px 50px;opacity:0.6;}
+#ct{position:absolute;inset:0;z-index:1;padding:36px 56px;display:flex;flex-direction:column;gap:18px;}
+
+.header{display:flex;flex-direction:column;gap:8px;}
+.title-row{display:flex;align-items:center;gap:16px;}
+.title-accent{width:5px;height:46px;background:linear-gradient(180deg,var(--primary),var(--cyan));border-radius:3px;}
+h1{font-size:34px;font-weight:800;letter-spacing:0.5px;background:linear-gradient(90deg,#E8EEF5 0%,#2196F3 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.subtitle{font-size:13px;color:var(--neutral);font-weight:400;line-height:1.7;max-width:1488px;}
+.subtitle .hl{color:var(--cyan);font-weight:600;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.kpi{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;overflow:hidden;transition:transform .2s;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--cyan));opacity:0.8;}
+.kpi::after{content:'';position:absolute;right:-30px;bottom:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.12),transparent 70%);}
+.kpi-label{font-size:11px;color:var(--neutral);font-weight:500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.kpi-value{font-size:36px;font-weight:800;color:#fff;line-height:1.1;display:flex;align-items:baseline;gap:4px;}
+.kpi-unit{font-size:14px;font-weight:600;color:var(--primary);}
+.kpi-desc{font-size:11.5px;color:var(--text-dim);line-height:1.6;margin-top:10px;}
+.kpi-icon{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:6px;background:rgba(33,150,243,0.12);border:1px solid rgba(33,150,243,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--primary);font-weight:700;}
+
+.insight-row{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.insight{background:var(--bg-card2);border:1px solid var(--border);border-radius:12px;padding:14px 20px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;}
+.insight .dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);flex-shrink:0;}
+.insight.warn .dot{background:#FF7043;box-shadow:0 0 12px #FF7043;}
+.insight-body{flex:1;}
+.insight-title{font-size:14px;font-weight:700;color:var(--text-main);margin-bottom:3px;}
+.insight-desc{font-size:12px;color:var(--neutral);line-height:1.5;}
+.insight-tag{font-size:10px;font-weight:600;letter-spacing:1px;color:var(--cyan);border:1px solid rgba(0,188,212,0.4);padding:4px 10px;border-radius:20px;background:rgba(0,188,212,0.06);white-space:nowrap;flex-shrink:0;}
+.insight.warn .insight-tag{color:#FF7043;border-color:rgba(255,112,67,0.4);background:rgba(255,112,67,0.06);}
+
+.bottom-section{display:grid;grid-template-columns:1fr 520px;gap:16px;flex:1;min-height:0;}
+.chart-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:18px 22px 14px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.chart-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--cyan));}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.panel-title{font-size:14px;font-weight:700;color:var(--text-main);}
+.panel-badge{font-size:10px;color:var(--cyan);background:rgba(0,188,212,0.1);border:1px solid rgba(0,188,212,0.3);padding:3px 10px;border-radius:12px;font-weight:600;letter-spacing:0.5px;}
+.chart-wrap{flex:1;min-height:0;}
+
+.side-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;}
+.side-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--primary));}
+.side-title{font-size:14px;font-weight:700;color:var(--text-main);margin-bottom:2px;}
+.side-subtitle{font-size:11px;color:var(--text-dim);margin-bottom:4px;}
+.metric-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(176,190,197,0.10);}
+.metric-row:last-child{border-bottom:none;}
+.metric-label{font-size:12px;color:var(--neutral);font-weight:500;}
+.metric-bar-wrap{flex:1;margin:0 14px;height:6px;background:rgba(176,190,197,0.12);border-radius:3px;overflow:hidden;}
+.metric-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--primary),var(--cyan));}
+.metric-value{font-size:12px;font-weight:700;color:var(--text-main);min-width:42px;text-align:right;}
+
+.footer{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:linear-gradient(90deg,rgba(33,150,243,0.08),rgba(0,188,212,0.08));border:1px solid var(--border);border-radius:10px;}
+.footer-text{font-size:13px;font-weight:600;color:var(--text-main);letter-spacing:1px;}
+.footer-text .sep{color:var(--primary);margin:0 12px;font-weight:700;}
+.footer-text .accent{color:var(--cyan);}
+.footer-meta{font-size:10px;color:var(--text-dim);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title-accent"></div>
+        <h1>2023年数据透视</h1>
+      </div>
+      <p class="subtitle">2023年数据显示全球开源社区规模持续<span class="hl">扩张</span>，贡献者地理分布更加<span class="hl">多元</span>，中国贡献者增速亮眼但<span class="hl">女性参与度</span>仍需提升，新兴语言如 <span class="hl">Rust</span> 持续获得关注，而 JS 与 Python 生态依然占据<span class="hl">主流</span>。</p>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-icon">G</div>
+        <div class="kpi-label"><span>全球贡献者覆盖</span></div>
+        <div class="kpi-value">180<span class="kpi-unit">+ 国家</span></div>
+        <div class="kpi-desc">覆盖全球绝大多数有互联网接入的地区，开源影响力持续外延。</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon">C</div>
+        <div class="kpi-label"><span>中国贡献者增速</span></div>
+        <div class="kpi-value">领先<span class="kpi-unit">全球</span></div>
+        <div class="kpi-desc">企业级项目参与度快速上升，成为开源生态增长的重要引擎。</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon">L</div>
+        <div class="kpi-label"><span>主流语言 TOP3</span></div>
+        <div class="kpi-value">JS<span class="kpi-unit">·Py·Go</span></div>
+        <div class="kpi-desc">JavaScript / Python / Go 三大语言生态覆盖大多数开源项目。</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon">P</div>
+        <div class="kpi-label"><span>主平台</span></div>
+        <div class="kpi-value">GitHub</div>
+        <div class="kpi-desc">仍为最大代码托管与协作平台，生态壁垒持续巩固。</div>
+      </div>
+    </div>
+
+    <div class="insight-row">
+      <div class="insight warn">
+        <span class="dot"></span>
+        <div class="insight-body">
+          <div class="insight-title"><span>女性贡献者比例偏低</span></div>
+          <div class="insight-desc">社区正推动包容性改进，多元人才引入仍是长期议题。</div>
+        </div>
+        <span class="insight-tag">包容性改进</span>
+      </div>
+      <div class="insight">
+        <span class="dot"></span>
+        <div class="insight-body">
+          <div class="insight-title"><span>平台集中度仍高</span></div>
+          <div class="insight-desc">GitHub 仍是最大贡献平台，GitLab 与 Gitee 亦不可忽视。</div>
+        </div>
+        <span class="insight-tag">多平台协同</span>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="chart-panel">
+        <div class="panel-head">
+          <div class="panel-title"><span>六大维度分布雷达</span></div>
+          <span class="panel-badge">GLOBAL · 2023</span>
+        </div>
+        <div id="chart_1" class="chart-wrap" style="width:100%;height:100%;"></div>
+      </div>
+      <div class="side-panel">
+        <div class="side-title"><span>核心指标一览</span></div>
+        <div class="side-subtitle"><span>2023 年度关键数据速览</span></div>
+
+        <div class="metric-row">
+          <span class="metric-label"><span>全球规模</span></span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:95%;"></div></div>
+          <span class="metric-value">180+</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label"><span>软件工程师占比</span></span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:72%;"></div></div>
+          <span class="metric-value">最高</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label"><span>JS / Python 活跃</span></span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:88%;"></div></div>
+          <span class="metric-value">TOP1</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label"><span>GitHub 集中度</span></span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:82%;"></div></div>
+          <span class="metric-value">主导</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label"><span>中国企业级参与</span></span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:78%;"></div></div>
+          <span class="metric-value">↑↑</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label"><span>女性贡献者占比</span></span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:22%;background:linear-gradient(90deg,#FF7043,#FF8A65);"></div></div>
+          <span class="metric-value" style="color:#FF7043;">偏低</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text"><span>全球扩张</span><span class="sep">·</span><span>中国领跑</span><span class="sep">·</span><span class="accent">女性短板待补</span></div>
+      <div class="footer-meta"><span>OPEN SOURCE · DATA INSIGHTS 2023</span></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var el = document.getElementById('chart_1');
+  var chart = echarts.init(el, null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    tooltip:{trigger:'item'},
+    legend:{
+      data:['全球整体','中国表现'],
+      textStyle:{color:'#B0BEC5',fontSize:11,fontFamily:'Inter'},
+      top:0,right:0,
+      itemWidth:14,itemHeight:8
+    },
+    radar:{
+      center:['50%','55%'],
+      radius:'68%',
+      indicator:[
+        {name:'全球规模',max:100},
+        {name:'职业多样性',max:100},
+        {name:'技术栈丰富度',max:100},
+        {name:'平台活跃度',max:100},
+        {name:'中国增速',max:100},
+        {name:'女性占比',max:100}
+      ],
+      axisName:{color:'#B0BEC5',fontSize:12,fontFamily:'Inter',fontWeight:600},
+      splitLine:{lineStyle:{color:'rgba(176,190,197,0.18)'}},
+      splitArea:{areaStyle:{color:['rgba(33,150,243,0.03)','rgba(33,150,243,0.06)']}},
+      axisLine:{lineStyle:{color:'rgba(176,190,197,0.22)'}}
+    },
+    series:[{
+      type:'radar',
+      symbol:'circle',
+      symbolSize:6,
+      data:[
+        {
+          name:'全球整体',
+          value:[92,70,88,90,55,30],
+          lineStyle:{color:'#2196F3',width:2.5},
+          areaStyle:{color:'rgba(33,150,243,0.22)'},
+          itemStyle:{color:'#2196F3'}
+        },
+        {
+          name:'中国表现',
+          value:[60,55,72,65,95,22],
+          lineStyle:{color:'#00BCD4',width:2.5},
+          areaStyle:{color:'rgba(0,188,212,0.18)'},
+          itemStyle:{color:'#00BCD4'}
+        }
+      ]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

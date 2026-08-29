@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源阅读的意义</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --navy-deep:#0A1628;
+  --navy-mid:#12223B;
+  --cyan:#00BCD4;
+  --cyan-soft:rgba(0,188,212,0.18);
+  --amber:#FF7043;
+  --gray:#ECEFF1;
+  --gray-dim:#B0BEC5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter','Segoe UI',sans-serif;
+  color:var(--gray);
+  font-size:16px;
+  line-height:1.6;
+  background:var(--navy-deep);
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:var(--navy-deep);
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(180deg,#0A1628 0%,#0E1D34 50%,#0A1628 100%),
+    repeating-linear-gradient(0deg,rgba(0,188,212,0.05) 0 1px,transparent 1px 40px),
+    repeating-linear-gradient(90deg,rgba(0,188,212,0.05) 0 1px,transparent 1px 40px);
+}
+#ct{
+  position:absolute;inset:0;z-index:1;padding:48px 60px 40px;
+  display:flex;flex-direction:column;
+}
+
+/* Header */
+.header{
+  border-left:4px solid var(--cyan);
+  padding:6px 0 6px 22px;
+  margin-bottom:22px;
+}
+.header h1{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:34px;
+  color:var(--gray);
+  letter-spacing:1px;
+  text-shadow:0 0 18px rgba(0,188,212,0.35);
+}
+.header h1 .accent{color:var(--cyan);}
+.header .tag{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--amber);
+  border:1px solid rgba(255,112,67,0.5);
+  padding:2px 10px;border-radius:2px;
+  margin-bottom:10px;letter-spacing:2px;
+}
+.subtitle{
+  font-size:14px;color:var(--gray-dim);
+  line-height:1.7;
+  max-width:1360px;
+  margin-top:8px;
+  padding-left:26px;
+}
+.subtitle .hl{color:var(--cyan);font-weight:600;}
+.subtitle .hl2{color:var(--amber);font-weight:600;}
+
+/* Main split */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:580px 1fr;
+  gap:24px;
+  min-height:0;
+}
+
+/* Left cards */
+.left-col{
+  display:flex;flex-direction:column;
+  gap:12px;
+  padding-top:4px;
+}
+.card{
+  background:linear-gradient(135deg,rgba(0,188,212,0.06) 0%,rgba(18,34,59,0.85) 100%);
+  border:1px solid rgba(0,188,212,0.22);
+  border-left:3px solid var(--cyan);
+  border-radius:6px;
+  padding:12px 16px 12px 14px;
+  display:flex;align-items:center;gap:14px;
+  position:relative;
+  flex:1;
+  min-height:0;
+}
+.card::after{
+  content:"";
+  position:absolute;right:12px;top:12px;
+  width:8px;height:8px;
+  background:var(--amber);
+  box-shadow:0 0 8px rgba(255,112,67,0.6);
+  border-radius:50%;
+}
+.card .ico{
+  width:48px;height:48px;flex-shrink:0;
+  border:1px solid rgba(0,188,212,0.4);
+  background:rgba(0,188,212,0.08);
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--cyan);
+  box-shadow:0 0 12px rgba(0,188,212,0.18) inset;
+}
+.card .ico svg{width:26px;height:26px;}
+.card .body{flex:1;min-width:0;}
+.card .num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--amber);letter-spacing:2px;
+  margin-bottom:2px;
+}
+.card .title{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:600;
+  font-size:16px;color:var(--gray);
+  margin-bottom:3px;
+  letter-spacing:0.5px;
+}
+.card .desc{
+  font-size:13px;color:var(--gray-dim);line-height:1.55;
+}
+
+/* Right image */
+.right-col{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;
+  padding:6px 0 0;
+}
+.img-frame{
+  position:relative;
+  width:888px;height:496px;
+  border:1px solid rgba(0,188,212,0.28);
+  border-radius:6px;
+  padding:8px;
+  background:linear-gradient(135deg,rgba(10,22,40,0.95) 0%,rgba(18,34,59,0.85) 100%);
+  box-shadow:0 0 40px rgba(0,188,212,0.12);
+  display:flex;align-items:center;justify-content:center;
+}
+.img-frame::before{
+  content:"";position:absolute;left:-1px;top:-1px;
+  width:14px;height:14px;
+  border-left:2px solid var(--cyan);border-top:2px solid var(--cyan);
+}
+.img-frame::after{
+  content:"";position:absolute;right:-1px;bottom:-1px;
+  width:14px;height:14px;
+  border-right:2px solid var(--amber);border-bottom:2px solid var(--amber);
+}
+.img-frame img{
+  width:100%;height:100%;
+  object-fit:cover;
+  border-radius:3px;
+  display:block;
+}
+.img-cap{
+  margin-top:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--cyan);
+  letter-spacing:1.5px;
+  text-align:center;
+  opacity:0.85;
+}
+.img-cap .dot{color:var(--amber);margin:0 8px;}
+
+/* Corner labels on the image area */
+.corner-labels{
+  position:absolute;inset:0;pointer-events:none;
+  padding:30px 20px 60px;
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:2px;
+}
+.cl{
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:rgba(236,239,241,0.35);
+  letter-spacing:2px;
+}
+.cl.tl{justify-content:flex-start;}
+.cl.tr{justify-content:flex-end;}
+.cl.bl{justify-content:flex-start;}
+.cl.br{justify-content:flex-end;}
+
+/* Footer */
+.footer{
+  margin-top:16px;
+  padding:12px 20px;
+  background:rgba(255,112,67,0.06);
+  border:1px solid rgba(255,112,67,0.25);
+  border-left:3px solid var(--amber);
+  border-radius:4px;
+  color:var(--amber);
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  letter-spacing:0.5px;
+  display:flex;align-items:center;gap:12px;
+}
+.footer .lbl{
+  background:rgba(255,112,67,0.15);
+  padding:3px 10px;border-radius:2px;
+  font-size:10px;letter-spacing:2px;
+  flex-shrink:0;
+}
+.footer .txt{flex:1;color:var(--amber);opacity:0.95;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div><span class="tag">OPEN SOURCE READING</span></div>
+      <h1><span class="accent">&gt;</span> 开源阅读的意义</h1>
+      <p class="subtitle">
+        开源阅读不仅仅是一种获取知识的渠道，更是一种<span class="hl">学习理念</span>。它强调知识的<span class="hl">可获取性</span>、<span class="hl">可修改性</span>和<span class="hl">可共享性</span>，让每一个有热情的学习者都能在开源书籍的生态中找到自己的位置，<span class="hl2">从读者成长为贡献者</span>。
+      </p>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+
+        <div class="card">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M3 12h18"/>
+              <path d="M12 3c3 3.6 3 14.4 0 18M12 3c-3 3.6-3 14.4 0 18"/>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="num">01 / OPEN</div>
+            <div class="title">打破知识壁垒</div>
+            <div class="desc">开源书籍免费或低成本获取，让知识不再被商业出版垄断。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-3-6.7"/>
+              <path d="M21 4v5h-5"/>
+              <path d="M3 12a9 9 0 0 0 3 6.7"/>
+              <path d="M3 20v-5h5"/>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="num">02 / ITERATE</div>
+            <div class="title">持续演进更新</div>
+            <div class="desc">借助版本控制，书籍内容可以随技术进步持续迭代，不像纸质书一经出版便固定。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5" cy="6" r="2"/>
+              <circle cx="19" cy="6" r="2"/>
+              <circle cx="5" cy="18" r="2"/>
+              <circle cx="19" cy="18" r="2"/>
+              <circle cx="12" cy="12" r="2.4"/>
+              <path d="M6.5 7l4 3.5M17.5 7l-4 3.5M6.5 17l4-3.5M17.5 17l-4-3.5"/>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="num">03 / COLLABORATE</div>
+            <div class="title">社区共建智慧</div>
+            <div class="desc">读者可通过 Issue、PR 等方式直接参与内容改进，形成真正的协作创作。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 4l5 5-9 9-5 1 1-5z"/>
+              <path d="M10 9l5 5"/>
+              <path d="M4 20l3-3"/>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="num">04 / PRACTICE</div>
+            <div class="title">实践导向学习</div>
+            <div class="desc">开源书籍通常由一线开发者编写，内容紧贴真实工程实践，避免纸上谈兵。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="right-col">
+        <div class="img-frame">
+          <img src="../images/page_003_icon_grid.png" alt="开源阅读四象限概念图">
+          <div class="corner-labels">
+            <div class="cl tl">◆ OPEN</div>
+            <div class="cl tr">◐ ITERATE</div>
+            <div class="cl bl">◎ COLLABORATE</div>
+            <div class="cl br">⚒ PRACTICE</div>
+          </div>
+        </div>
+        <div class="img-cap">
+          开放<span class="dot">·</span>迭代<span class="dot">·</span>协作<span class="dot">·</span>实践
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="lbl">TYPICAL FORM</span>
+      <span class="txt">开源书籍典型形式：O'Reilly / 中国开源系列，涵盖技术、社区、文化等多个维度。</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

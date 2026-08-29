@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一辑·初识开源</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #F5F5F5;
+  --klein: #002FA7;
+  --klein-deep: #001F7A;
+  --klein-light: #E8EDFF;
+  --amber: #FF7043;
+  --amber-light: #FFF0EA;
+  --text-main: #1A1A2E;
+  --text-sub: #4A4A6A;
+  --text-muted: #8A8AA0;
+  --line: #E0E0E8;
+  --card-bg: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,47,167,0.04) 0%, transparent 70%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: 35%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,112,67,0.04) 0%, transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 60px 45px 60px;
+  box-sizing: border-box;
+}
+
+/* Top header bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--klein);
+  letter-spacing: 2px;
+}
+
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--amber);
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.chapter-tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+}
+
+/* Main content grid */
+.main-grid {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 40px;
+  height: 600px;
+}
+
+/* Left column */
+.left-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 20px;
+  border-right: 1px solid var(--line);
+}
+
+.bignum-wrap {
+  position: relative;
+}
+
+.bignum-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+
+.bignum {
+  font-size: 220px;
+  font-weight: 900;
+  color: var(--klein);
+  line-height: 0.88;
+  letter-spacing: -8px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+}
+
+.bignum::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 80px;
+  height: 6px;
+  background: var(--amber);
+  border-radius: 3px;
+}
+
+.left-title-block {
+  margin-top: 40px;
+}
+
+.main-title {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--klein);
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.7;
+  max-width: 380px;
+}
+
+.left-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--klein);
+  background: var(--klein-light);
+  padding: 5px 12px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.tag.amber {
+  color: var(--amber);
+  background: var(--amber-light);
+}
+
+/* Right column - 4 cards */
+.right-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px 24px 22px 24px;
+  position: relative;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--klein);
+}
+
+.card.amber-accent::before {
+  background: var(--amber);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card-index {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--klein);
+  background: var(--klein-light);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.card.amber-accent .card-index {
+  color: var(--amber);
+  background: var(--amber-light);
+}
+
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+.card-divider {
+  width: 36px;
+  height: 2px;
+  background: var(--klein);
+  margin-bottom: 12px;
+  border-radius: 1px;
+}
+
+.card.amber-accent .card-divider {
+  background: var(--amber);
+}
+
+.card-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.75;
+  flex-grow: 1;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+
+.meta-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.meta-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--amber);
+  border-radius: 50%;
+}
+
+.meta-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Bottom bar */
+.bottom-bar {
+  margin-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.data-points {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.dp {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dp-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--klein);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dp-icon.amber {
+  background: var(--amber);
+}
+
+.dp-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dp-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.dp-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+.narrative {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 380px;
+  text-align: right;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>OPEN SOURCE · 开源系列</span>
+      </div>
+      <div class="chapter-tag">CHAPTER · ONE · 第一辑</div>
+    </div>
+
+    <div class="main-grid">
+
+      <div class="left-col">
+        <div class="bignum-wrap">
+          <div class="bignum-label">CHAPTER NUMBER</div>
+          <div class="bignum">01</div>
+          <div class="left-title-block">
+            <div class="main-title">初识开源</div>
+            <div class="subtitle">第一辑从概念层面解构开源的本质内涵，强调许可证认知与社区文化理解的重要性，为后续参与实践奠定思想基础。</div>
+            <div class="left-tags">
+              <span class="tag">概念奠基</span>
+              <span class="tag">认知入门</span>
+              <span class="tag amber">思想铺垫</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-index">01</div>
+            <div class="card-title">开源本质</div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="card-desc">开源不仅是代码公开，更是一套开放协作、透明治理的软件开发哲学，承载着共享与进步的核心价值观。</div>
+          <div class="card-meta">
+            <span class="meta-label">CORE</span>
+            <span class="meta-dot"></span>
+            <span class="meta-value">哲学层面 · 协作基因</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-index">02</div>
+            <div class="card-title">许可证认知</div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="card-desc">GPL、MIT、Apache 2.0 等主流许可证的选择直接影响项目生态走向与商用边界，是参与开源必须理解的第一道门槛。</div>
+          <div class="card-meta">
+            <span class="meta-label">LICENSE</span>
+            <span class="meta-dot"></span>
+            <span class="meta-value">GPL · MIT · Apache 2.0</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-index">03</div>
+            <div class="card-title">社区文化</div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="card-desc">Merit-based 贡献机制、公开讨论与知识共享构成开源社区的核心价值，塑造了一种独特的分布式协作文化。</div>
+          <div class="card-meta">
+            <span class="meta-label">COMMUNITY</span>
+            <span class="meta-dot"></span>
+            <span class="meta-value">Merit · 公开 · 共享</span>
+          </div>
+        </div>
+
+        <div class="card amber-accent">
+          <div class="card-header">
+            <div class="card-index">04</div>
+            <div class="card-title">阅读启示</div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="card-desc">理解开源文化是参与任何开源项目的前置条件，避免陷入工具主义误区，建立正确认知方能真正融入生态。</div>
+          <div class="card-meta">
+            <span class="meta-label">INSIGHT</span>
+            <span class="meta-dot"></span>
+            <span class="meta-value">认知先行 · 文化优先</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="data-points">
+        <div class="dp">
+          <div class="dp-icon">★</div>
+          <div class="dp-text">
+            <span class="dp-label">核心议题</span>
+            <span class="dp-value">许可证 · 社区文化 · 协作哲学</span>
+          </div>
+        </div>
+        <div class="dp">
+          <div class="dp-icon amber">◈</div>
+          <div class="dp-text">
+            <span class="dp-label">阅读定位</span>
+            <span class="dp-value">认知奠基阶段</span>
+          </div>
+        </div>
+      </div>
+      <div class="narrative">
+        建立正确开源观念，为后续实践奠定思想基础
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

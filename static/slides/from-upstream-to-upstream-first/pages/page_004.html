@@ -1,0 +1,198 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+><head>
+<meta charset="UTF-8">
+<title>从"去上游"到"上游优先"</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root{
+  --bg:#1A1A2E;
+  --bg-2:#16213E;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --text-main:#E8EAF6;
+  --text-dim:#90A4C8;
+  --card:#1E2A4A;
+  --border:rgba(33,150,243,0.28);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;font-size:16px;color:var(--text-main);background:var(--bg);overflow:hidden;}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(160deg,#1A1A2E 0%,#16213E 50%,#0F1B33 100%);}
+
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.05) 1px,transparent 1px);background-size:50px 50px;}
+#bg .glow1{position:absolute;top:-200px;left:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.18) 0%,transparent 70%);filter:blur(40px);}
+#bg .glow2{position:absolute;bottom:-250px;right:-150px;width:650px;height:650px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,0.14) 0%,transparent 70%);filter:blur(40px);}
+#bg .glow3{position:absolute;top:40%;right:30%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.1) 0%,transparent 70%);filter:blur(30px);}
+#bg .line-diag{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+#bg .line-diag::before{content:'';position:absolute;top:120px;left:-100px;width:1800px;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,0.15) 30%,rgba(33,150,243,0.2) 50%,rgba(0,229,255,0.15) 70%,transparent);transform:rotate(-8deg);transform-origin:left center;}
+#bg .line-diag::after{content:'';position:absolute;bottom:180px;left:-100px;width:1800px;height:1px;background:linear-gradient(90deg,transparent,rgba(33,150,243,0.12) 40%,rgba(0,229,255,0.18) 60%,transparent);transform:rotate(6deg);transform-origin:left center;}
+#bg .hex{position:absolute;font-size:0;width:0;height:0;}
+#bg .hex.a{top:8%;left:8%;width:80px;height:80px;border:1px solid rgba(0,229,255,0.15);transform:rotate(45deg);border-radius:8px;}
+#bg .hex.b{top:70%;left:4%;width:50px;height:50px;border:1px solid rgba(33,150,243,0.18);transform:rotate(30deg);border-radius:6px;}
+#bg .hex.c{top:15%;right:6%;width:60px;height:60px;border:1px solid rgba(33,150,243,0.14);transform:rotate(20deg);border-radius:50%;}
+#bg .hex.d{bottom:12%;right:8%;width:70px;height:70px;border:1px solid rgba(0,229,255,0.12);transform:rotate(45deg);border-radius:8px;}
+#bg .dot{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent),0 0 16px rgba(0,229,255,0.4);}
+#bg .dot.d1{top:25%;left:20%;}
+#bg .dot.d2{top:60%;left:45%;}
+#bg .dot.d3{top:35%;right:25%;}
+#bg .dot.d4{bottom:30%;left:60%;}
+#bg .dot.d5{top:80%;left:30%;}
+#bg .dot.d6{top:15%;left:75%;}
+
+#ct{position:absolute;inset:0;z-index:1;padding:45px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+.header{position:relative;margin-bottom:20px;}
+.header .tag{display:inline-block;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:3px;color:var(--accent);border:1px solid rgba(0,229,255,0.4);padding:5px 14px;border-radius:20px;background:rgba(0,229,255,0.06);margin-bottom:14px;text-transform:uppercase;}
+.header h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:46px;letter-spacing:1px;color:var(--text-main);margin-bottom:12px;text-shadow:0 0 30px rgba(33,150,243,0.3);}
+.header h1 .hl{color:var(--accent);text-shadow:0 0 20px rgba(0,229,255,0.5);}
+.header .sub{font-size:15px;line-height:1.7;color:var(--text-dim);max-width:1400px;font-weight:300;}
+.header .sub b{color:var(--primary);font-weight:500;}
+.header .sub .em{color:var(--accent);font-weight:500;}
+
+.timeline-wrap{position:relative;flex:1;margin-top:12px;display:flex;flex-direction:column;}
+.timeline-line{position:relative;height:60px;margin:0 40px 0 0;}
+.timeline-line .track{position:absolute;top:50%;left:0;width:100%;height:3px;transform:translateY(-50%);background:linear-gradient(90deg,rgba(33,150,243,0.3) 0%,rgba(33,150,243,0.6) 30%,rgba(0,229,255,0.8) 60%,rgba(0,229,255,0.5) 100%);border-radius:2px;box-shadow:0 0 12px rgba(0,229,255,0.3);}
+.timeline-line .flow{position:absolute;top:50%;left:0;width:100%;height:3px;transform:translateY(-50%);background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.4) 50%,transparent 100%);border-radius:2px;animation:flowAnim 3s linear infinite;}
+@keyframes flowAnim{0%{background-position:-200px 0;}100%{background-position:2000px 0;}}
+.timeline-line .arrows{position:absolute;top:50%;left:0;width:100%;height:0;display:flex;justify-content:space-around;transform:translateY(-50%);}
+.timeline-line .arrows .arr{width:16px;height:16px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);transform:rotate(45deg);box-shadow:2px -2px 8px rgba(0,229,255,0.6);}
+
+.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:14px;flex:1;}
+.stage{position:relative;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px 16px 16px;display:flex;flex-direction:column;overflow:hidden;transition:all 0.3s;}
+.stage::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));box-shadow:0 0 12px rgba(33,150,243,0.5);}
+.stage::after{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,0.08) 0%,transparent 70%);}
+.stage .node{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);box-shadow:0 0 12px var(--accent),0 0 24px rgba(0,229,255,0.3);z-index:2;}
+.stage .node::before{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);}
+.stage .stage-num{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:2px;margin-bottom:6px;}
+.stage .stage-title{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:var(--text-main);line-height:1.4;margin-bottom:10px;}
+.stage .stage-title .kw{color:var(--primary);}
+.stage .stage-desc{font-size:12.5px;line-height:1.65;color:var(--text-dim);font-weight:300;flex:1;}
+.stage .stage-tag{margin-top:10px;font-size:10.5px;font-weight:500;letter-spacing:1px;color:var(--accent);border-top:1px solid rgba(0,229,255,0.15);padding-top:8px;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+.stage .stage-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
+.stage .geo{position:absolute;bottom:-20px;right:-20px;width:60px;height:60px;border:1px solid rgba(33,150,243,0.15);border-radius:50%;}
+
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px;}
+.kpi{position:relative;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 22px;display:flex;align-items:center;gap:18px;overflow:hidden;}
+.kpi::before{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(180deg,var(--primary),var(--accent));box-shadow:0 0 10px rgba(0,229,255,0.4);}
+.kpi .kpi-icon{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,rgba(33,150,243,0.2),rgba(0,229,255,0.1));border:1px solid rgba(0,229,255,0.25);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:var(--accent);box-shadow:0 0 12px rgba(0,229,255,0.15) inset;}
+.kpi .kpi-text{flex:1;}
+.kpi .kpi-label{font-size:11px;font-weight:500;letter-spacing:2px;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;}
+.kpi .kpi-value{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:var(--text-main);}
+.kpi .kpi-value .accent{color:var(--accent);text-shadow:0 0 10px rgba(0,229,255,0.4);}
+.kpi .kpi-value .arrow{color:var(--primary);margin:0 6px;}
+.kpi .kpi-value .dim{color:var(--text-dim);font-weight:400;font-size:16px;}
+
+.footer-bar{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:0 4px;}
+.footer-bar .left{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text-dim);letter-spacing:1px;}
+.footer-bar .left .bar{width:30px;height:2px;background:var(--accent);box-shadow:0 0 6px var(--accent);}
+.footer-bar .right{font-size:11px;color:var(--text-dim);letter-spacing:1.5px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid"></div>
+    <div class="glow1"></div>
+    <div class="glow2"></div>
+    <div class="glow3"></div>
+    <div class="line-diag"></div>
+    <div class="hex a"></div>
+    <div class="hex b"></div>
+    <div class="hex c"></div>
+    <div class="hex d"></div>
+    <div class="dot d1"></div>
+    <div class="dot d2"></div>
+    <div class="dot d3"></div>
+    <div class="dot d4"></div>
+    <div class="dot d5"></div>
+    <div class="dot d6"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <span class="tag"><span>OPEN SOURCE EVOLUTION</span></span>
+      <h1>从<span class="hl">"去上游"</span>到<span class="hl">"上游优先"</span></h1>
+      <p class="sub">"去上游"是一个<b>行动号召</b>，"上游优先"则是一种更深层次的<span class="em">价值观</span>——前者要求你去做贡献，后者要求你在<span class="em">每一次技术决策</span>中都默认以<b>上游社区的判断</b>为准。</p>
+    </div>
+
+    <div class="timeline-wrap">
+      <div class="timeline-line">
+        <div class="track"></div>
+        <div class="flow"></div>
+        <div class="arrows">
+          <div class="arr"></div>
+          <div class="arr"></div>
+          <div class="arr"></div>
+        </div>
+      </div>
+
+      <div class="stages">
+        <div class="stage">
+          <div class="node"></div>
+          <div class="stage-num">STAGE 01</div>
+          <div class="stage-title">早期理念：<span class="kw">"去上游贡献"</span></div>
+          <div class="stage-desc">鼓励从下游走到上游，提交补丁和修复，主动参与上游社区的代码维护与问题解决。</div>
+          <div class="stage-tag"><span class="dot"></span>行动号召 · CALL TO ACTION</div>
+          <div class="geo"></div>
+        </div>
+
+        <div class="stage">
+          <div class="node"></div>
+          <div class="stage-num">STAGE 02</div>
+          <div class="stage-title">认知升级：<span class="kw">"贡献者不够"</span></div>
+          <div class="stage-desc">人们逐渐意识到，仅做"贡献者"还不够，需要把上游社区作为技术决策的优先依据和判断基准。</div>
+          <div class="stage-tag"><span class="dot"></span>认知跃迁 · COGNITIVE SHIFT</div>
+          <div class="geo"></div>
+        </div>
+
+        <div class="stage">
+          <div class="node"></div>
+          <div class="stage-num">STAGE 03</div>
+          <div class="stage-title">范式转变：<span class="kw">"上游优先"</span></div>
+          <div class="stage-desc">在选择工具、架构决策时，优先考虑上游生态的完整性和长期健康，而非本地开发便利。</div>
+          <div class="stage-tag"><span class="dot"></span>范式革新 · PARADIGM SHIFT</div>
+          <div class="geo"></div>
+        </div>
+
+        <div class="stage">
+          <div class="node"></div>
+          <div class="stage-num">STAGE 04</div>
+          <div class="stage-title">哲学内核：<span class="kw">"源头即真理"</span></div>
+          <div class="stage-desc">这不是单纯的行为建议，而是对开源"源头即真理"原则的系统性践行，内化为工程师思维范式。</div>
+          <div class="stage-tag"><span class="dot"></span>哲学内核 · PHILOSOPHICAL CORE</div>
+          <div class="geo"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-icon">⟶</div>
+        <div class="kpi-text">
+          <div class="kpi-label">理念演进</div>
+          <div class="kpi-value"><span class="dim">行动</span><span class="arrow">──▶</span><span class="accent">价值观</span></div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon">⏱</div>
+        <div class="kpi-text">
+          <div class="kpi-label">转变时间</div>
+          <div class="kpi-value"><span class="accent">2010s</span><span class="dim"> 后期</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="left"><span class="bar"></span><span>SOURCE-FIRST PHILOSOPHY · 开源协作演进图谱</span></div>
+      <div class="right">UPSTREAM FIRST ▸ 2010s LATE ERA</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>中国开源崛起之路</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap');
+:root {
+  --primary: #00BCD4;
+  --blue: #2196F3;
+  --light: #ECEFF1;
+  --dark-bg: #0A1628;
+  --dark-card: #0F2035;
+  --dark-surface: #14283E;
+  --border-glow: rgba(0, 188, 212, 0.35);
+  --text-dim: rgba(236, 239, 241, 0.7);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--light);
+  overflow: hidden;
+}
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0A1628 0%, #0D1F38 40%, #0A1628 100%);
+}
+#ct {
+  position: absolute; inset: 0; z-index: 1;
+  padding: 45px 60px;
+  box-sizing: border-box;
+  display: flex; flex-direction: column;
+}
+
+/* Header */
+.header { text-align: center; margin-bottom: 20px; position: relative; }
+.header::before {
+  content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+.title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 42px; font-weight: 700;
+  letter-spacing: 4px;
+  background: linear-gradient(90deg, #00BCD4, #2196F3, #00BCD4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.subtitle {
+  font-size: 15px; color: var(--text-dim);
+  letter-spacing: 1px; font-weight: 300;
+}
+
+/* Main row */
+.main-row {
+  display: flex; gap: 28px; align-items: stretch;
+  height: 360px; margin-bottom: 18px;
+}
+.map-panel {
+  flex: 0 0 480px;
+  background: linear-gradient(135deg, #0F2035, #14283E);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.map-panel::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(0,188,212,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.map-label {
+  position: absolute; top: 12px; left: 14px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px; color: var(--primary);
+  letter-spacing: 2px; opacity: 0.7;
+}
+.map-corner-tr {
+  position: absolute; top: 12px; right: 14px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px; color: var(--blue);
+  letter-spacing: 2px; opacity: 0.6;
+}
+.map-svg-wrap {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 30px 20px 10px;
+}
+.map-cap {
+  text-align: center; font-size: 11px; color: var(--text-dim);
+  font-family: 'Source Code Pro', monospace;
+  letter-spacing: 1px; padding-bottom: 10px;
+}
+
+/* Data cards */
+.cards-col {
+  flex: 1; display: flex; flex-direction: column; gap: 14px;
+}
+.data-card {
+  flex: 1;
+  background: linear-gradient(135deg, #0F2035, #14283E);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  padding: 16px 22px;
+  display: flex; align-items: center; gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.data-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--primary), var(--blue));
+  box-shadow: 0 0 12px var(--primary);
+}
+.dc-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 36px; font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  min-width: 140px;
+  text-shadow: 0 0 20px rgba(0,188,212,0.4);
+}
+.dc-num .unit { font-size: 18px; color: var(--blue); font-weight: 500; margin-left: 2px; }
+.dc-text { flex: 1; }
+.dc-text .dc-title {
+  font-size: 14px; font-weight: 600; color: var(--light);
+  margin-bottom: 4px;
+}
+.dc-text .dc-desc {
+  font-size: 11px; color: var(--text-dim);
+  font-family: 'Source Code Pro', monospace;
+  letter-spacing: 0.5px; line-height: 1.5;
+}
+
+/* Modules row */
+.modules-row {
+  display: flex; gap: 12px;
+  height: 185px; margin-bottom: 14px;
+}
+.mod-card {
+  flex: 1;
+  background: linear-gradient(160deg, #0F2035 0%, #0A1628 100%);
+  border: 1px solid rgba(0,188,212,0.2);
+  border-radius: 8px;
+  padding: 14px 14px;
+  display: flex; flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.mod-card::before {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 30px; height: 30px;
+  background: radial-gradient(circle at top right, rgba(0,188,212,0.15), transparent 70%);
+}
+.mod-num {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px; color: var(--primary);
+  letter-spacing: 2px; opacity: 0.6;
+  margin-bottom: 4px;
+}
+.mod-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--light);
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.mod-icon {
+  width: 22px; height: 22px;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--primary);
+  font-family: 'Source Code Pro', monospace;
+  flex-shrink: 0;
+}
+.mod-desc {
+  font-size: 11px; color: var(--text-dim);
+  line-height: 1.55; font-weight: 300;
+}
+.mod-tag {
+  margin-top: auto;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9px; color: var(--blue);
+  letter-spacing: 1px; opacity: 0.5;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 12px 40px;
+  border-top: 1px solid rgba(0,188,212,0.15);
+  position: relative;
+}
+.footer::before {
+  content: ''; position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+.footer-text {
+  font-size: 12px; color: var(--text-dim);
+  letter-spacing: 1px; line-height: 1.6;
+}
+.footer-text strong {
+  color: var(--primary); font-weight: 500;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="title"><span>中国开源崛起之路</span></div>
+  <div class="subtitle"><span>从跟随走向引领，中国开源正孕育属于自己的文化与技术品牌</span></div>
+</div>
+
+<div class="main-row">
+
+  <div class="map-panel">
+    <div class="map-label"><span>SYS · CHINA · OPEN-SOURCE</span></div>
+    <div class="map-corner-tr"><span>NODE MAP v2.0</span></div>
+    <div class="map-svg-wrap">
+      <svg viewBox="0 0 400 320" width="440" height="290" style="display:block;">
+        <defs>
+          <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#2196F3" stop-opacity="0.5"/>
+          </linearGradient>
+          <radialGradient id="cityGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#00BCD4" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Grid dots background -->
+        <g opacity="0.15">
+          <g fill="#00BCD4">
+            <circle cx="40" cy="30" r="0.8"/><circle cx="80" cy="30" r="0.8"/><circle cx="120" cy="30" r="0.8"/><circle cx="160" cy="30" r="0.8"/><circle cx="200" cy="30" r="0.8"/><circle cx="240" cy="30" r="0.8"/><circle cx="280" cy="30" r="0.8"/><circle cx="320" cy="30" r="0.8"/><circle cx="360" cy="30" r="0.8"/>
+            <circle cx="40" cy="60" r="0.8"/><circle cx="80" cy="60" r="0.8"/><circle cx="120" cy="60" r="0.8"/><circle cx="160" cy="60" r="0.8"/><circle cx="200" cy="60" r="0.8"/><circle cx="240" cy="60" r="0.8"/><circle cx="280" cy="60" r="0.8"/><circle cx="320" cy="60" r="0.8"/><circle cx="360" cy="60" r="0.8"/>
+            <circle cx="40" cy="90" r="0.8"/><circle cx="80" cy="90" r="0.8"/><circle cx="120" cy="90" r="0.8"/><circle cx="160" cy="90" r="0.8"/><circle cx="200" cy="90" r="0.8"/><circle cx="240" cy="90" r="0.8"/><circle cx="280" cy="90" r="0.8"/><circle cx="320" cy="90" r="0.8"/><circle cx="360" cy="90" r="0.8"/>
+            <circle cx="40" cy="120" r="0.8"/><circle cx="80" cy="120" r="0.8"/><circle cx="120" cy="120" r="0.8"/><circle cx="160" cy="120" r="0.8"/><circle cx="200" cy="120" r="0.8"/><circle cx="240" cy="120" r="0.8"/><circle cx="280" cy="120" r="0.8"/><circle cx="320" cy="120" r="0.8"/><circle cx="360" cy="120" r="0.8"/>
+            <circle cx="40" cy="150" r="0.8"/><circle cx="80" cy="150" r="0.8"/><circle cx="120" cy="150" r="0.8"/><circle cx="160" cy="150" r="0.8"/><circle cx="200" cy="150" r="0.8"/><circle cx="240" cy="150" r="0.8"/><circle cx="280" cy="150" r="0.8"/><circle cx="320" cy="150" r="0.8"/><circle cx="360" cy="150" r="0.8"/>
+            <circle cx="40" cy="180" r="0.8"/><circle cx="80" cy="180" r="0.8"/><circle cx="120" cy="180" r="0.8"/><circle cx="160" cy="180" r="0.8"/><circle cx="200" cy="180" r="0.8"/><circle cx="240" cy="180" r="0.8"/><circle cx="280" cy="180" r="0.8"/><circle cx="320" cy="180" r="0.8"/><circle cx="360" cy="180" r="0.8"/>
+            <circle cx="40" cy="210" r="0.8"/><circle cx="80" cy="210" r="0.8"/><circle cx="120" cy="210" r="0.8"/><circle cx="160" cy="210" r="0.8"/><circle cx="200" cy="210" r="0.8"/><circle cx="240" cy="210" r="0.8"/><circle cx="280" cy="210" r="0.8"/><circle cx="320" cy="210" r="0.8"/><circle cx="360" cy="210" r="0.8"/>
+            <circle cx="40" cy="240" r="0.8"/><circle cx="80" cy="240" r="0.8"/><circle cx="120" cy="240" r="0.8"/><circle cx="160" cy="240" r="0.8"/><circle cx="200" cy="240" r="0.8"/><circle cx="240" cy="240" r="0.8"/><circle cx="280" cy="240" r="0.8"/><circle cx="320" cy="240" r="0.8"/><circle cx="360" cy="240" r="0.8"/>
+            <circle cx="40" cy="270" r="0.8"/><circle cx="80" cy="270" r="0.8"/><circle cx="120" cy="270" r="0.8"/><circle cx="160" cy="270" r="0.8"/><circle cx="200" cy="270" r="0.8"/><circle cx="240" cy="270" r="0.8"/><circle cx="280" cy="270" r="0.8"/><circle cx="320" cy="270" r="0.8"/><circle cx="360" cy="270" r="0.8"/>
+            <circle cx="40" cy="300" r="0.8"/><circle cx="80" cy="300" r="0.8"/><circle cx="120" cy="300" r="0.8"/><circle cx="160" cy="300" r="0.8"/><circle cx="200" cy="300" r="0.8"/><circle cx="240" cy="300" r="0.8"/><circle cx="280" cy="300" r="0.8"/><circle cx="320" cy="300" r="0.8"/><circle cx="360" cy="300" r="0.8"/>
+          </g>
+        </g>
+
+        <!-- China outline - stylized -->
+        <path d="M 75,105
+                 C 78,90 90,80 105,75
+                 L 130,70
+                 C 145,67 160,65 180,64
+                 L 220,63
+                 C 250,62 280,65 305,72
+                 L 335,80
+                 C 355,85 370,95 378,110
+                 L 382,128
+                 C 384,142 380,155 372,165
+                 L 358,178
+                 C 348,188 342,200 340,212
+                 L 335,230
+                 C 330,242 320,252 308,258
+                 L 285,266
+                 C 270,272 255,274 238,275
+                 L 210,275
+                 C 185,274 165,270 148,262
+                 L 128,250
+                 C 112,240 100,228 92,212
+                 L 82,195
+                 C 74,180 70,165 70,150
+                 L 72,130
+                 C 73,118 74,110 75,105 Z"
+                 fill="none" stroke="url(#mapGrad)" stroke-width="1.8"
+                 filter="url(#glow)" opacity="0.95"/>
+
+        <!-- Inner border lines for provinces -->
+        <g stroke="#2196F3" stroke-width="0.5" opacity="0.25" fill="none">
+          <path d="M 100,140 L 160,130 L 220,125 L 280,130 L 340,140"/>
+          <path d="M 90,170 L 150,165 L 220,160 L 300,168 L 350,175"/>
+          <path d="M 100,200 L 165,200 L 240,195 L 310,205"/>
+          <path d="M 110,230 L 180,235 L 250,232 L 300,240"/>
+          <path d="M 145,90 L 145,270"/>
+          <path d="M 220,63 L 220,275"/>
+          <path d="M 290,72 L 290,260"/>
+        </g>
+
+        <!-- Connecting lines between cities -->
+        <g stroke="#00BCD4" stroke-width="0.6" opacity="0.4" fill="none" stroke-dasharray="3,3">
+          <line x1="265" y1="108" x2="310" y2="175"/>
+          <line x1="265" y1="108" x2="200" y2="220"/>
+          <line x1="310" y1="175" x2="200" y2="220"/>
+          <line x1="265" y1="108" x2="140" y2="190"/>
+          <line x1="310" y1="175" x2="240" y2="240"/>
+        </g>
+
+        <!-- City dots (minor) -->
+        <g fill="#2196F3" opacity="0.6">
+          <circle cx="140" cy="190" r="2.5"/>
+          <circle cx="200" cy="220" r="2.5"/>
+          <circle cx="240" cy="240" r="2.5"/>
+          <circle cx="180" cy="160" r="2"/>
+          <circle cx="290" cy="200" r="2"/>
+        </g>
+
+        <!-- Beijing (highlighted) -->
+        <circle cx="265" cy="108" r="20" fill="url(#cityGlow)"/>
+        <circle cx="265" cy="108" r="10" fill="none" stroke="#00BCD4" stroke-width="0.5" opacity="0.5"/>
+        <circle cx="265" cy="108" r="5" fill="#00BCD4" filter="url(#glow)"/>
+        <text x="272" y="104" fill="#00BCD4" font-size="9" font-family="Source Code Pro, monospace" font-weight="600">北京</text>
+
+        <!-- Shanghai (highlighted) -->
+        <circle cx="310" cy="175" r="20" fill="url(#cityGlow)"/>
+        <circle cx="310" cy="175" r="10" fill="none" stroke="#00BCD4" stroke-width="0.5" opacity="0.5"/>
+        <circle cx="310" cy="175" r="5" fill="#00BCD4" filter="url(#glow)"/>
+        <text x="317" y="172" fill="#00BCD4" font-size="9" font-family="Source Code Pro, monospace" font-weight="600">上海</text>
+
+        <!-- City labels for minor -->
+        <g fill="#ECEFF1" opacity="0.5" font-size="7" font-family="Source Code Pro, monospace">
+          <text x="148" y="187">成都</text>
+          <text x="207" y="217">武汉</text>
+          <text x="247" y="237">深圳</text>
+          <text x="187" y="157">西安</text>
+        </g>
+
+        <!-- Decorative hexagons -->
+        <g stroke="#00BCD4" stroke-width="0.5" fill="none" opacity="0.3">
+          <polygon points="55,40 65,45 65,55 55,60 45,55 45,45"/>
+          <polygon points="370,290 380,295 380,305 370,310 360,305 360,295"/>
+        </g>
+      </svg>
+    </div>
+    <div class="map-cap"><span>OPEN-SOURCE NODE DISTRIBUTION · 中国开源节点分布</span></div>
+  </div>
+
+  <div class="cards-col">
+
+    <div class="data-card">
+      <div class="dc-num"><span>600<span class="unit">万+</span></span></div>
+      <div class="dc-text">
+        <div class="dc-title"><span>中国开源贡献者</span></div>
+        <div class="dc-desc"><span>位居全球第二，青年开发者占比 60%+</span></div>
+      </div>
+    </div>
+
+    <div class="data-card">
+      <div class="dc-num"><span>80<span class="unit">万+</span></span></div>
+      <div class="dc-text">
+        <div class="dc-title"><span>国内开源项目</span></div>
+        <div class="dc-desc"><span>托管于 Gitee 等国内平台，生态快速扩张</span></div>
+      </div>
+    </div>
+
+    <div class="data-card">
+      <div class="dc-num"><span>Top10</span></div>
+      <div class="dc-text">
+        <div class="dc-title"><span>Gartner 全球企业开源贡献榜</span></div>
+        <div class="dc-desc"><span>华为上榜，中国企业首次进入全球前十</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modules-row">
+
+  <div class="mod-card">
+    <div class="mod-num"><span>01 / POLICY</span></div>
+    <div class="mod-title"><span class="mod-icon">政</span><span>政策推动</span></div>
+    <div class="mod-desc"><span>国家层面鼓励开源创新，北京、上海等城市设立开源创新中心</span></div>
+    <div class="mod-tag"><span>// NATION-LEVEL SUPPORT</span></div>
+  </div>
+
+  <div class="mod-card">
+    <div class="mod-num"><span>02 / TALENT</span></div>
+    <div class="mod-title"><span class="mod-icon">才</span><span>人才涌现</span></div>
+    <div class="mod-desc"><span>中国开源贡献者数量位居全球第二，青年开发者占比高达六成以上</span></div>
+    <div class="mod-tag"><span>// YOUTH-DRIVEN FORCE</span></div>
+  </div>
+
+  <div class="mod-card">
+    <div class="mod-num"><span>03 / PROJECTS</span></div>
+    <div class="mod-title"><span class="mod-icon">项</span><span>明星项目</span></div>
+    <div class="mod-desc"><span>OpenEuler、OpenHarmony、Rust 等中国项目逐步获得国际社区广泛认可</span></div>
+    <div class="mod-tag"><span>// GLOBAL RECOGNITION</span></div>
+  </div>
+
+  <div class="mod-card">
+    <div class="mod-num"><span>04 / ENTERPRISE</span></div>
+    <div class="mod-title"><span class="mod-icon">企</span><span>企业参与</span></div>
+    <div class="mod-desc"><span>华为、阿里巴巴、腾讯等头部科技企业大力投入开源基础设施建设</span></div>
+    <div class="mod-tag"><span>// INFRA INVESTMENT</span></div>
+  </div>
+
+  <div class="mod-card">
+    <div class="mod-num"><span>05 / ECOSYSTEM</span></div>
+    <div class="mod-title"><span class="mod-icon">态</span><span>生态建设</span></div>
+    <div class="mod-desc"><span>从开源之夏到开源中国大会，本土开源活动与社区生态日趋成熟繁荣</span></div>
+    <div class="mod-tag"><span>// COMMUNITY GROWTH</span></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-text"><span><strong>中国已成为全球开源生态不可或缺的一环</strong>　·　从政策鼓励到产业深度参与再到青年开发者的热情投入，开源文化正在加速成熟</span></div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

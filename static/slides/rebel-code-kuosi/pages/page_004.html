@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>经典书目深度解读</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --bg:#1A1A2E;
+  --klein:#002FA7;
+  --klein-glow:#0046BF;
+  --cyan:#00BCD4;
+  --text-main:#EAEAF0;
+  --text-muted:#8A8FA8;
+  --text-dim:#5C6178;
+  --card-bg:#222242;
+  --line:#2E2E52;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;font-size:17px;color:var(--text-main);background:#000;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 12% 85%, rgba(0,47,167,0.25), transparent 70%),radial-gradient(ellipse 500px 350px at 88% 12%, rgba(0,188,212,0.12), transparent 70%);}
+#bg::after{content:'';position:absolute;top:0;right:0;width:1px;height:100%;background:linear-gradient(to bottom, transparent, var(--klein) 30%, var(--cyan) 60%, transparent);opacity:0.25;}
+#ct{position:absolute;inset:0;z-index:1;padding:52px 64px 48px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+.head{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:46px;background:linear-gradient(to bottom,var(--cyan),var(--klein));border-radius:3px;}
+h1{font-size:36px;font-weight:700;letter-spacing:1px;color:var(--text-main);}
+h1 .accent{color:var(--cyan);}
+.subtitle{font-size:15px;color:var(--text-muted);line-height:1.8;max-width:1300px;font-weight:300;}
+.subtitle .k-blue{color:var(--cyan);font-weight:500;}
+
+.main{display:flex;gap:40px;flex:1;align-items:stretch;}
+
+.left-col{width:660px;display:flex;flex-direction:column;gap:14px;flex-shrink:0;}
+.img-wrap{width:620px;height:345px;position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--line);align-self:center;}
+.img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to top, rgba(26,26,46,0.35), transparent 40%);pointer-events:none;}
+.caption{align-self:center;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--cyan);letter-spacing:1px;}
+.caption .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.caption .line{width:30px;height:1px;background:var(--cyan);opacity:0.5;}
+
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+.meta-card{background:var(--card-bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;position:relative;}
+.meta-card .m-label{font-size:11px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;}
+.meta-card .m-value{font-size:22px;font-weight:700;color:var(--text-main);margin-top:4px;}
+.meta-card .m-value .u{font-size:13px;color:var(--cyan);font-weight:400;margin-left:4px;}
+.meta-card.klein{border-left:3px solid var(--klein-glow);}
+.meta-card.cyan{border-left:3px solid var(--cyan);}
+
+.right-col{flex:1;display:flex;flex-direction:column;gap:12px;}
+
+.book{background:var(--card-bg);border:1px solid var(--line);border-radius:8px;padding:12px 18px 12px 22px;position:relative;display:flex;align-items:center;gap:18px;}
+.book::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:2px;}
+.book.b1::before{background:var(--cyan);box-shadow:0 0 8px rgba(0,188,212,0.5);}
+.book.b2::before{background:var(--klein-glow);box-shadow:0 0 8px rgba(0,47,167,0.5);}
+.book.b3::before{background:var(--cyan);box-shadow:0 0 8px rgba(0,188,212,0.5);}
+.book.b4::before{background:var(--klein-glow);box-shadow:0 0 8px rgba(0,47,167,0.5);}
+
+.book-num{font-size:28px;font-weight:700;color:var(--text-dim);font-style:italic;min-width:38px;font-family:'Inter',serif;}
+.book.b1 .book-num{color:var(--cyan);opacity:0.7;}
+.book.b3 .book-num{color:var(--cyan);opacity:0.7;}
+
+.book-body{flex:1;display:flex;flex-direction:column;gap:4px;}
+.book-title-row{display:flex;align-items:baseline;gap:10px;}
+.book-title{font-size:17px;font-weight:600;}
+.book.b1 .book-title{color:var(--cyan);}
+.book.b2 .book-title{color:#6BB5FF;}
+.book.b3 .book-title{color:var(--cyan);}
+.book.b4 .book-title{color:#6BB5FF;}
+.book-en{font-size:12px;color:var(--text-dim);font-style:italic;font-weight:300;}
+.book-desc{font-size:13px;color:var(--text-muted);line-height:1.6;font-weight:300;}
+.book-desc .hl{color:var(--text-main);font-weight:500;}
+.book-meta{display:flex;align-items:center;gap:14px;margin-top:2px;}
+.year{font-size:20px;font-weight:700;color:var(--text-main);letter-spacing:0.5px;}
+.year .y-tag{font-size:11px;font-weight:400;color:var(--text-dim);margin-right:4px;letter-spacing:1px;}
+.author{font-size:12px;color:var(--text-dim);font-weight:300;}
+.author .sep{color:var(--cyan);margin:0 6px;}
+
+.footer{margin-top:18px;display:flex;align-items:center;gap:14px;padding:14px 20px;background:linear-gradient(to right, rgba(0,47,167,0.15), rgba(0,188,212,0.08));border-radius:8px;border:1px solid var(--line);border-left:3px solid var(--cyan);}
+.footer-tag{font-size:11px;color:var(--cyan);letter-spacing:2px;font-weight:600;white-space:nowrap;}
+.footer-text{font-size:15px;color:var(--text-main);line-height:1.6;font-weight:400;}
+.footer-text .em{color:var(--cyan);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="head">
+      <div class="title-row">
+        <div class="title-bar"></div>
+        <h1>经典书目<span class="accent">深度解读</span></h1>
+      </div>
+      <p class="subtitle">经典书目之所以<span class="k-blue">历久弥新</span>，是因为它们触及了开源协作、软件设计和职业精神的最本质问题；主讲人将逐一拆解核心观点，并结合 <span class="k-blue">2022 年</span>的实际案例，说明它们如何仍在指导今天的实践。</p>
+    </div>
+
+    <div class="main">
+
+      <div class="left-col">
+        <div class="img-wrap">
+          <img src="../images/page_004_bookshelf.png" alt="抽象书架视觉隐喻——近黑色背景上竖向排列的书脊剪影，边缘透出克莱因蓝光晕，书脊间渗出青色微光">
+        </div>
+        <div class="caption">
+          <span class="line"></span>
+          <span class="dot"></span>
+          <span>知识的层次与积淀</span>
+          <span class="dot"></span>
+          <span class="line"></span>
+        </div>
+        <div class="meta-grid">
+          <div class="meta-card cyan">
+            <div class="m-label">解读书目</div>
+            <div class="m-value">4<span class="u">本经典</span></div>
+          </div>
+          <div class="meta-card klein">
+            <div class="m-label">跨越年代</div>
+            <div class="m-value">1994<span class="u">—2008</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+
+        <div class="book b1">
+          <div class="book-num">01</div>
+          <div class="book-body">
+            <div class="book-title-row">
+              <span class="book-title">大教堂与集市</span>
+              <span class="book-en">The Cathedral and the Bazaar</span>
+            </div>
+            <div class="book-desc"><span class="hl">Eric S. Raymond</span> 的经典论述，<span class="hl">集市式开放协作模型</span>至今仍是开源治理的思想基石。</div>
+            <div class="book-meta">
+              <span class="year"><span class="y-tag">年</span>1999</span>
+              <span class="author">Eric S. Raymond<span class="sep">·</span>著</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="book b2">
+          <div class="book-num">02</div>
+          <div class="book-body">
+            <div class="book-title-row">
+              <span class="book-title">Open Sources</span>
+              <span class="book-en">Open Sources: Voices from the Open Source Revolution</span>
+            </div>
+            <div class="book-desc"><span class="hl">开放源码促进会</span>编撰的多篇论文合集，系统梳理了早期<span class="hl">开源社区的形成与运作</span>。</div>
+            <div class="book-meta">
+              <span class="year"><span class="y-tag">年</span>1999</span>
+              <span class="author">开放源码促进会<span class="sep">·</span>编</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="book b3">
+          <div class="book-num">03</div>
+          <div class="book-body">
+            <div class="book-title-row">
+              <span class="book-title">代码整洁之道</span>
+              <span class="book-en">Clean Code</span>
+            </div>
+            <div class="book-desc"><span class="hl">Robert C. Martin</span> 以代码质量为切口，传递对<span class="hl">工程实践极致追求</span>的职业态度。</div>
+            <div class="book-meta">
+              <span class="year"><span class="y-tag">年</span>2008</span>
+              <span class="author">Robert C. Martin<span class="sep">·</span>著</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="book b4">
+          <div class="book-num">04</div>
+          <div class="book-body">
+            <div class="book-title-row">
+              <span class="book-title">设计模式</span>
+              <span class="book-en">Design Patterns — Elements of Reusable Object-Oriented Software</span>
+            </div>
+            <div class="book-desc"><span class="hl">GoF 四人帮</span>的经典设计模式合集，至今仍是<span class="hl">软件架构学习</span>的必修课与灵感来源。</div>
+            <div class="book-meta">
+              <span class="year"><span class="y-tag">年</span>1994</span>
+              <span class="author">GoF 四人帮<span class="sep">·</span>著</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-tag">EPILOGUE</span>
+      <span class="footer-text">经典并非凝固的历史，而是<span class="em">持续照进当下的光</span>——每一次重读，都是与实践的<span class="em">重新对话</span>。</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

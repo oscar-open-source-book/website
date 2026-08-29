@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源文化：协作与治理</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --gray: #B0BEC5;
+  --dark-bg: #0a1628;
+  --card-bg: #111f36;
+  --card-border: #1e3a5f;
+  --text-main: #E8EEF5;
+  --text-sub: #8FA4B8;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Microsoft YaHei', sans-serif;
+  background: #0a1628;
+  color: var(--text-main);
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #06101f 0%, #0a1628 40%, #0d1f3c 100%);
+  overflow: hidden;
+}
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(33,150,243,0.14) 0%, transparent 70%);
+  border-radius: 50%;
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -180px;
+  left: -180px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,188,212,0.10) 0%, transparent 70%);
+  border-radius: 50%;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 45px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+.header h1 {
+  font-size: 36px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #2196F3 0%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.header .divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00BCD4, transparent);
+  margin: 0 auto 10px;
+}
+.header .subtitle {
+  font-size: 15px;
+  color: var(--gray);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.header .subtitle .hl {
+  color: var(--cyan);
+  font-weight: 600;
+}
+.cards-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.card {
+  flex: 1;
+  background: linear-gradient(160deg, #111f36 0%, #0d1a2e 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 22px 18px;
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  transition: none;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #2196F3, #00BCD4);
+}
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(33,150,243,0.10) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.card-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: #2196F3;
+  opacity: 0.35;
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-family: 'Inter', sans-serif;
+}
+.card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(0,188,212,0.1));
+  border: 1px solid rgba(33,150,243,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 5px;
+  letter-spacing: 0.5px;
+}
+.card-en {
+  font-size: 10.5px;
+  color: var(--cyan);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.card p {
+  font-size: 12.5px;
+  color: var(--gray);
+  line-height: 1.7;
+  font-weight: 400;
+  position: relative;
+  z-index: 2;
+}
+.card-tags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  position: relative;
+  z-index: 2;
+}
+.tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(33,150,243,0.12);
+  border: 1px solid rgba(33,150,243,0.28);
+  color: var(--cyan);
+  font-weight: 500;
+}
+.bottom-section {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 18px 26px;
+  background: linear-gradient(135deg, rgba(17,31,54,0.7) 0%, rgba(13,26,46,0.4) 100%);
+  border: 1px solid rgba(33,150,243,0.18);
+  border-radius: 12px;
+  margin-top: auto;
+}
+.gears-svg {
+  flex-shrink: 0;
+  width: 240px;
+  height: 130px;
+}
+.summary-text {
+  flex: 1;
+}
+.summary-text h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.summary-text p {
+  font-size: 12.5px;
+  color: var(--gray);
+  line-height: 1.7;
+  font-weight: 400;
+}
+.kw {
+  color: #2196F3;
+  font-weight: 600;
+}
+.kw2 {
+  color: #00BCD4;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <h1><span>开源文化：协作与治理</span></h1>
+      <div class="divider"></div>
+      <p class="subtitle"><span><span class="hl">开放</span> / <span class="hl">贡献</span> / <span class="hl">平等</span> —— 开源社区三大文化支柱</span></p>
+    </div>
+
+    <div class="cards-row">
+      <div class="card">
+        <span class="card-num">01</span>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#2196F3" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3><span>开放透明</span></h3>
+        <div class="card-en"><span>Open & Transparent</span></div>
+        <p><span>决策过程、代码变更、社区讨论均公开进行，透明度是社区信任的基石。</span></p>
+        <div class="card-tags">
+          <span class="tag">公开决策</span>
+          <span class="tag">代码审计</span>
+          <span class="tag">社区讨论</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-num">02</span>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L3 9l6-1 3-6z" stroke="#2196F3" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3><span>唯才是举</span></h3>
+        <div class="card-en"><span>Meritocracy</span></div>
+        <p><span>以技术贡献与社区影响力衡量话语权，能力优先于资历与职级。</span></p>
+        <div class="card-tags">
+          <span class="tag">技术优先</span>
+          <span class="tag">贡献评价</span>
+          <span class="tag">能力导向</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-num">03</span>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M4 20l6-6 4 4 6-12" stroke="#2196F3" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="4" cy="20" r="1.5" fill="#00BCD4"/>
+            <circle cx="10" cy="14" r="1.5" fill="#00BCD4"/>
+            <circle cx="14" cy="18" r="1.5" fill="#00BCD4"/>
+            <circle cx="20" cy="6" r="1.5" fill="#00BCD4"/>
+          </svg>
+        </div>
+        <h3><span>渐进式参与</span></h3>
+        <div class="card-en"><span>Progressive Engagement</span></div>
+        <p><span>新人从简单 Issue 开始逐步深入，社区提供友好的 Onboarding 路径。</span></p>
+        <div class="card-tags">
+          <span class="tag">友好入门</span>
+          <span class="tag">Issue 引导</span>
+          <span class="tag">Onboarding</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-num">04</span>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="8" height="8" rx="1.5" stroke="#2196F3" stroke-width="1.5"/>
+            <rect x="13" y="3" width="8" height="8" rx="1.5" stroke="#00BCD4" stroke-width="1.5"/>
+            <rect x="3" y="13" width="8" height="8" rx="1.5" stroke="#00BCD4" stroke-width="1.5"/>
+            <rect x="13" y="13" width="8" height="8" rx="1.5" stroke="#2196F3" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3><span>多元治理模式</span></h3>
+        <div class="card-en"><span>Diverse Governance</span></div>
+        <p><span>从个人主导到委员会制再到基金会托管，不同项目适配不同治理结构。</span></p>
+        <div class="card-tags">
+          <span class="tag">BDFL 模式</span>
+          <span class="tag">委员会制</span>
+          <span class="tag">基金会</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <svg class="gears-svg" viewBox="0 0 240 130" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowhead" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <polygon points="0 0, 7 2.5, 0 5" fill="#00BCD4"/>
+          </marker>
+        </defs>
+
+        <g transform="translate(52,65)">
+          <circle r="32" fill="none" stroke="#2196F3" stroke-width="4.5" stroke-dasharray="9 3.5" opacity="0.7"/>
+          <circle r="32" fill="none" stroke="#00BCD4" stroke-width="1" opacity="0.4"/>
+          <circle r="26" fill="#111f36" stroke="#2196F3" stroke-width="1.5"/>
+          <circle r="9" fill="#0a1628" stroke="#00BCD4" stroke-width="1"/>
+          <g stroke="#2196F3" stroke-width="1.8">
+            <line x1="-17" y1="0" x2="-25" y2="0"/>
+            <line x1="17" y1="0" x2="25" y2="0"/>
+            <line x1="0" y1="-17" x2="0" y2="-25"/>
+            <line x1="0" y1="17" x2="0" y2="25"/>
+            <line x1="-12" y1="-12" x2="-18" y2="-18"/>
+            <line x1="12" y1="12" x2="18" y2="18"/>
+            <line x1="-12" y1="12" x2="-18" y2="18"/>
+            <line x1="12" y1="-12" x2="18" y2="-18"/>
+          </g>
+          <circle r="4" fill="#00BCD4" opacity="0.5"/>
+        </g>
+        <text x="52" y="112" text-anchor="middle" fill="#00BCD4" font-size="11" font-weight="700" font-family="Inter">开放</text>
+
+        <path d="M90,65 L106,65" stroke="#00BCD4" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <g transform="translate(120,65)">
+          <circle r="40" fill="none" stroke="#2196F3" stroke-width="5" stroke-dasharray="11 3.5" opacity="0.7"/>
+          <circle r="40" fill="none" stroke="#00BCD4" stroke-width="1" opacity="0.4"/>
+          <circle r="33" fill="#152642" stroke="#2196F3" stroke-width="1.5"/>
+          <circle r="11" fill="#0a1628" stroke="#00BCD4" stroke-width="1"/>
+          <g stroke="#2196F3" stroke-width="1.8">
+            <line x1="-21" y1="0" x2="-31" y2="0"/>
+            <line x1="21" y1="0" x2="31" y2="0"/>
+            <line x1="0" y1="-21" x2="0" y2="-31"/>
+            <line x1="0" y1="21" x2="0" y2="31"/>
+            <line x1="-15" y1="-15" x2="-22" y2="-22"/>
+            <line x1="15" y1="15" x2="22" y2="22"/>
+            <line x1="-15" y1="15" x2="-22" y2="22"/>
+            <line x1="15" y1="-15" x2="22" y2="-22"/>
+          </g>
+          <circle r="4" fill="#00BCD4" opacity="0.5"/>
+        </g>
+        <text x="120" y="114" text-anchor="middle" fill="#00BCD4" font-size="11" font-weight="700" font-family="Inter">贡献</text>
+
+        <path d="M168,65 L182,65" stroke="#00BCD4" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <g transform="translate(188,65)">
+          <circle r="32" fill="none" stroke="#2196F3" stroke-width="4.5" stroke-dasharray="9 3.5" opacity="0.7"/>
+          <circle r="32" fill="none" stroke="#00BCD4" stroke-width="1" opacity="0.4"/>
+          <circle r="26" fill="#111f36" stroke="#2196F3" stroke-width="1.5"/>
+          <circle r="9" fill="#0a1628" stroke="#00BCD4" stroke-width="1"/>
+          <g stroke="#2196F3" stroke-width="1.8">
+            <line x1="-17" y1="0" x2="-25" y2="0"/>
+            <line x1="17" y1="0" x2="25" y2="0"/>
+            <line x1="0" y1="-17" x2="0" y2="-25"/>
+            <line x1="0" y1="17" x2="0" y2="25"/>
+            <line x1="-12" y1="-12" x2="-18" y2="-18"/>
+            <line x1="12" y1="12" x2="18" y2="18"/>
+            <line x1="-12" y1="12" x2="-18" y2="18"/>
+            <line x1="12" y1="-12" x2="18" y2="-18"/>
+          </g>
+          <circle r="4" fill="#00BCD4" opacity="0.5"/>
+        </g>
+        <text x="188" y="112" text-anchor="middle" fill="#00BCD4" font-size="11" font-weight="700" font-family="Inter">平等</text>
+      </svg>
+
+      <div class="summary-text">
+        <h4><span>文化内核 · 协作机制 · 社区活力</span></h4>
+        <p><span>开源社区的文化内核可以用"<span class="kw">开放、贡献、平等</span>"概括。透明的协作机制让任何人都能监督与参与决策，<span class="kw2">Meritocracy</span> 原则保障了社区活力，理解这些文化基因有助于布道者更有效地引导新人。</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

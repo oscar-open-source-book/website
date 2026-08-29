@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>黑客伦理起源</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+:root {
+  --bg-main: #1E1E2E;
+  --bg-card: #2A2A3E;
+  --bg-card-hover: #323248;
+  --silver: #B0BEC5;
+  --silver-dim: #78909C;
+  --cyan: #00BCD4;
+  --cyan-dim: #0097A7;
+  --green-term: #66BB6A;
+  --amber: #FFB74D;
+  --red-term: #EF5350;
+  --text-main: #E0E0E0;
+  --text-dim: #90A4AE;
+  --border: #37474F;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-main);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(0,188,212,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(0,188,212,0.04) 0%, transparent 50%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,188,212,0.015) 0px, rgba(0,188,212,0.015) 1px, transparent 1px, transparent 40px);
+  pointer-events: none;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 50px 35px 50px;
+  box-sizing: border-box;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--silver-dim);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 18px;
+}
+.top-bar .left-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.top-bar .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  display: inline-block;
+}
+.dot-r { background: var(--red-term); }
+.dot-y { background: var(--amber); }
+.dot-g { background: var(--green-term); }
+.top-bar .path {
+  color: var(--cyan);
+  letter-spacing: 0.5px;
+}
+.top-bar .page-num {
+  color: var(--silver);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 3px;
+}
+
+/* Header */
+.header-section {
+  margin-bottom: 20px;
+}
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.title-prefix {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  color: var(--cyan);
+  font-weight: 500;
+}
+.main-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--silver);
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(0,188,212,0.15);
+}
+.title-underline {
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan) 0%, var(--cyan-dim) 30%, transparent 80%);
+  margin: 8px 0 12px 0;
+}
+.subtitle {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 1200px;
+}
+.subtitle .hl {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* Main content grid */
+.main-grid {
+  display: grid;
+  grid-template-columns: 560px 1fr;
+  gap: 24px;
+  margin-top: 18px;
+}
+
+/* Left panel - code block */
+.code-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #222238;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--silver-dim);
+}
+.code-header .filename {
+  color: var(--amber);
+}
+.code-body {
+  padding: 18px 20px 20px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 2;
+}
+.code-body .line {
+  display: flex;
+  gap: 12px;
+}
+.code-body .line-num {
+  color: var(--silver-dim);
+  min-width: 22px;
+  text-align: right;
+  user-select: none;
+}
+.code-body .prompt {
+  color: var(--cyan);
+  margin-right: 8px;
+}
+.code-body .cmd {
+  color: var(--text-main);
+}
+.code-body .key {
+  color: var(--amber);
+}
+.code-block {
+  background: #181828;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--cyan);
+  border-radius: 4px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.9;
+}
+.code-block .var-name {
+  color: var(--green-term);
+}
+.code-block .val {
+  color: var(--amber);
+}
+.code-block .str {
+  color: var(--cyan);
+}
+.code-block .comment {
+  color: var(--silver-dim);
+  font-style: italic;
+}
+
+/* Timeline section */
+.timeline-panel {
+  display: flex;
+  flex-direction: column;
+}
+.timeline-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.timeline-header .tag {
+  background: rgba(0,188,212,0.12);
+  border: 1px solid var(--cyan-dim);
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.timeline-axis {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 4px 0 14px 0;
+  padding: 0 40px;
+}
+.timeline-axis::before {
+  content: '';
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan-dim) 0%, var(--cyan) 50%, var(--cyan-dim) 100%);
+  transform: translateY(-50%);
+}
+.tl-node {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.tl-node .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--cyan);
+  border: 3px solid var(--bg-main);
+  box-shadow: 0 0 10px rgba(0,188,212,0.5);
+  z-index: 2;
+}
+.tl-node .year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.tl-node .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--silver-dim);
+}
+.tl-node.spacer { flex: 2; }
+.tl-node.mid { }
+
+/* Right side cards */
+.cards-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  flex: 1;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  position: relative;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  background: var(--cyan);
+  border-radius: 0 2px 2px 0;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  background: rgba(0,188,212,0.1);
+  border: 1px solid var(--cyan-dim);
+  padding: 1px 7px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+}
+.card-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--silver);
+}
+.card-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--silver-dim);
+  margin-bottom: 8px;
+  padding-left: 36px;
+}
+.card-body {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.card-body .hl {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* Bottom bar */
+.bottom-bar {
+  margin-top: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+}
+.bottom-bar .prompt {
+  color: var(--cyan);
+  font-weight: 700;
+}
+.bottom-bar .formula {
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+.bottom-bar .formula .op {
+  color: var(--amber);
+}
+.bottom-bar .formula .term {
+  color: var(--cyan);
+}
+.bottom-bar .cursor {
+  display: inline-block;
+  width: 8px;
+  height: 18px;
+  background: var(--cyan);
+  margin-left: 6px;
+  animation: blink 1s step-end infinite;
+  vertical-align: -2px;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* corner decorations */
+.corner-deco {
+  position: absolute;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--silver-dim);
+  opacity: 0.4;
+}
+.corner-deco.tl { top: 6px; left: 12px; }
+.corner-deco.tr { top: 6px; right: 12px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="left-dots">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+        <span style="margin-left:14px" class="path">~/hacker-ethics/origin.md</span>
+      </div>
+      <div class="page-num">PAGE 03 / CONTENTS</div>
+    </div>
+
+    <div class="header-section">
+      <div class="title-row">
+        <span class="title-prefix">$ cat</span>
+        <span class="main-title">黑客伦理起源</span>
+      </div>
+      <div class="title-underline"></div>
+      <p class="subtitle">
+        黑客伦理源自早期计算机科学实验室，强调<span class="hl">信息自由</span>、<span class="hl">共享</span>与<span class="hl">对技术的热爱</span>，这些价值观深刻影响了后来的<span class="hl">开源运动</span>。
+      </p>
+    </div>
+
+    <div class="main-grid">
+
+      <!-- Left: code block panel -->
+      <div class="code-panel">
+        <div class="code-header">
+          <span><span class="filename">hacker_ethics.origin</span> &mdash; read-only</span>
+          <span>[ utf-8 ]  <span style="color:var(--green-term)">●</span> synced</span>
+        </div>
+        <div class="code-body">
+          <div class="line">
+            <span class="line-num">01</span>
+            <span><span class="prompt">$</span> <span class="cmd">init hacker_ethics --origin</span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">02</span>
+            <span><span style="color:var(--silver-dim)">// loading historical data...</span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">03</span>
+            <span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">04</span>
+            <span>
+              <span class="code-block">
+                <div><span class="var-name">const ORIGIN</span> = <span style="color:var(--text-main)">{</span></div>
+                <div>&nbsp;&nbsp;<span class="var-name">born</span>: <span class="val">"1950s"</span>,</div>
+                <div>&nbsp;&nbsp;<span class="var-name">location</span>: <span class="str">"MIT 实验室"</span>,</div>
+                <div>&nbsp;&nbsp;<span class="var-name">systematized</span>: <span class="val">1984</span>,</div>
+                <div>&nbsp;&nbsp;<span class="var-name">author</span>: <span class="str">"利维·史蒂文"</span></div>
+                <div>&nbsp;&nbsp;<span style="color:var(--text-main)">}</span>;</div>
+              </span>
+            </span>
+          </div>
+          <div class="line">
+            <span class="line-num">05</span>
+            <span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">06</span>
+            <span><span class="prompt">$</span> <span class="cmd">git log --oneline | head -2</span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">07</span>
+            <span style="color:var(--green-term)">a3f8c21</span> <span style="color:var(--text-main)">[1950s]</span> <span style="color:var(--text-dim)">萌芽于 MIT 实验室</span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">08</span>
+            <span style="color:var(--amber)">b7e1d09</span> <span style="color:var(--text-main)">[1984 ]</span> <span style="color:var(--text-dim)">利维《黑客伦理》系统化</span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">09</span>
+            <span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">10</span>
+            <span><span class="prompt">$</span> <span class="cmd">echo <span class="str">"info_free &gt; closed_garden"</span></span></span>
+          </div>
+          <div class="line">
+            <span class="line-num">11</span>
+            <span style="color:var(--cyan)">&gt;&gt;&gt;</span> <span style="color:var(--green-term)">true</span><span class="cursor" style="margin-left:4px"></span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: timeline + cards -->
+      <div class="timeline-panel">
+        <div class="timeline-header">
+          <span>&gt;&gt; TIMELINE</span>
+          <span class="tag">KEY EVENTS</span>
+          <span style="flex:1"></span>
+          <span>2 nodes · 4 aspects</span>
+        </div>
+
+        <div class="timeline-axis">
+          <div class="tl-node">
+            <span class="year">1950s</span>
+            <span class="dot"></span>
+            <span class="label">MIT 实验室 · 萌芽</span>
+          </div>
+          <div class="tl-node spacer"></div>
+          <div class="tl-node">
+            <span class="year">1984</span>
+            <span class="dot"></span>
+            <span class="label">利维《黑客伦理》</span>
+          </div>
+        </div>
+
+        <div class="cards-area">
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-num">// 01</span>
+              <span class="card-title">萌芽于 MIT</span>
+            </div>
+            <div class="card-meta">20世纪 50-60 年代</div>
+            <div class="card-body">
+              <span class="hl">MIT 人工智能实验室</span>成为黑客文化摇篮，技术人员以热情和创造力推动早期计算研究。
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-num">// 02</span>
+              <span class="card-title">《黑客伦理》</span>
+            </div>
+            <div class="card-meta">1984 · 史蒂文·利维</div>
+            <div class="card-body">
+              系统总结黑客伦理<span class="hl">六条原则</span>，将散落在社区中的价值观凝聚为清晰的纲领性宣言。
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-num">// 03</span>
+              <span class="card-title">与开源关系</span>
+            </div>
+            <div class="card-meta">思想源头 · 一脉相承</div>
+            <div class="card-body">
+              黑客伦理是<span class="hl">自由软件运动</span>和<span class="hl">开源精神</span>的直接思想源头，深刻塑造了现代协作开发模式。
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-num">// 04</span>
+              <span class="card-title">传播影响</span>
+            </div>
+            <div class="card-meta">社区 · 书籍 · 全球</div>
+            <div class="card-body">
+              通过<span class="hl">技术社区</span>和<span class="hl">书籍出版</span>，伦理观念扩散至全球开发者，成为数字时代的通用准则。
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span class="prompt">$</span>
+      <span class="formula">
+        echo "<span class="term">黑客精神</span> <span class="op">=</span> <span class="term">信息自由</span> <span class="op">+</span> <span class="term">技术热爱</span> <span class="op">+</span> <span class="term">开放共享</span>"
+      </span>
+      <span class="cursor"></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

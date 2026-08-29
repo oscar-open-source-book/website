@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源的另类答案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000000;
+  --gray:#888888;
+  --line:#000000;
+  --paper:#F5F5F5;
+  --paper-2:#EFEFEF;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans SC",sans-serif;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--paper);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:70px 90px;box-sizing:border-box;}
+
+/* 顶部/底部极细引导线 */
+.frame-top{position:absolute;left:90px;right:90px;top:44px;height:1px;background:var(--ink);opacity:.9;}
+.frame-bottom{position:absolute;left:90px;right:90px;bottom:44px;height:1px;background:var(--ink);opacity:.9;}
+.corner{position:absolute;font-family:"Noto Sans SC",sans-serif;font-size:12px;letter-spacing:.24em;color:var(--ink);}
+.corner.tl{left:90px;top:56px;}
+.corner.tr{right:90px;top:56px;}
+.corner.bl{left:90px;bottom:56px;}
+.corner.br{right:90px;bottom:56px;}
+
+/* CSS 圆 —— 独占 与 共享 的相交 */
+.circles{position:absolute;right:110px;top:150px;width:420px;height:420px;z-index:1;pointer-events:none;}
+.circle{position:absolute;width:280px;height:280px;border-radius:50%;border:1.2px solid var(--ink);}
+.circle.a{left:0;top:30px;background:rgba(0,0,0,0.04);}
+.circle.b{right:0;top:110px;background:rgba(0,0,0,0.04);}
+.circles .lbl{position:absolute;font-family:"Noto Serif SC",serif;font-size:13px;letter-spacing:.35em;color:var(--ink);opacity:.75;}
+.circles .lbl.l1{left:22px;top:150px;}
+.circles .lbl.l2{right:22px;top:230px;}
+.circles .lbl.l3{left:180px;top:262px;font-size:12px;letter-spacing:.5em;color:var(--gray);}
+
+/* 章节序号 */
+.chap-tag{position:absolute;left:90px;top:120px;display:flex;align-items:baseline;gap:18px;z-index:2;}
+.chap-num{font-family:"Noto Serif SC",serif;font-weight:700;font-size:72px;line-height:1;letter-spacing:-0.02em;}
+.chap-meta{display:flex;flex-direction:column;gap:6px;}
+.chap-meta .k{font-family:"Noto Sans SC",sans-serif;font-size:11px;letter-spacing:.4em;color:var(--gray);}
+.chap-meta .v{font-family:"Noto Serif SC",serif;font-size:15px;letter-spacing:.28em;color:var(--ink);}
+
+/* 中央标题区 */
+.center{position:absolute;left:0;right:0;top:250px;display:flex;flex-direction:column;align-items:center;gap:22px;z-index:2;}
+.title{
+  font-family:"Noto Serif SC",serif;
+  font-weight:900;
+  font-size:150px;
+  letter-spacing:0.06em;
+  line-height:1;
+  color:var(--ink);
+  margin:0;
+  white-space:nowrap;
+}
+.rule{
+  width:960px;
+  height:1px;
+  background:var(--ink);
+  position:relative;
+  margin:6px 0 2px 0;
+}
+.rule::before,.rule::after{
+  content:"";
+  position:absolute;
+  top:-2px;
+  width:5px;height:5px;background:var(--ink);
+  border-radius:50%;
+}
+.rule::before{left:-3px;}
+.rule::after{right:-3px;}
+.subtitle{
+  font-family:"Noto Sans SC",sans-serif;
+  font-weight:300;
+  font-size:22px;
+  letter-spacing:0.28em;
+  color:var(--gray);
+  margin:0;
+}
+.subtitle b{font-weight:500;color:var(--ink);letter-spacing:0.28em;}
+
+/* 叙事段 + 三卡 */
+.footer{position:absolute;left:90px;right:90px;bottom:110px;display:flex;gap:36px;z-index:2;}
+.narrative{
+  flex:1.1;
+  border-left:1px solid var(--ink);
+  padding:6px 0 6px 22px;
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:13.5px;
+  line-height:1.9;
+  color:var(--ink);
+  letter-spacing:0.02em;
+}
+.narrative .mark{font-family:"Noto Serif SC",serif;font-weight:600;color:var(--ink);}
+.cards{
+  flex:1.9;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.card{
+  border:1px solid var(--ink);
+  padding:16px 16px 14px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  background:transparent;
+  position:relative;
+}
+.card .no{
+  position:absolute;top:-11px;left:14px;
+  background:var(--paper);
+  padding:0 8px;
+  font-family:"Noto Serif SC",serif;
+  font-size:12px;
+  letter-spacing:.35em;
+  color:var(--gray);
+}
+.card h4{
+  margin:0;
+  font-family:"Noto Serif SC",serif;
+  font-weight:700;
+  font-size:19px;
+  letter-spacing:0.12em;
+  color:var(--ink);
+}
+.card p{
+  margin:0;
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:12px;
+  line-height:1.75;
+  color:#333;
+  letter-spacing:0.01em;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- 顶部/底部极简框架 -->
+    <div class="frame-top"></div>
+    <div class="frame-bottom"></div>
+    <div class="corner tl">CHAPTER</div>
+    <div class="corner tr">极简叙事 · MINIMAL</div>
+    <div class="corner bl">OPEN SOURCE / 知识产权重构</div>
+    <div class="corner br">— 04 —</div>
+
+    <!-- CSS 圆：独占 ∩ 共享 -->
+    <div class="circles" aria-hidden="true">
+      <div class="circle a"></div>
+      <div class="circle b"></div>
+      <span class="lbl l1">独占</span>
+      <span class="lbl l2">共享</span>
+      <span class="lbl l3">重叠</span>
+    </div>
+
+    <!-- 章节序号 -->
+    <div class="chap-tag">
+      <div class="chap-num">04</div>
+      <div class="chap-meta">
+        <div class="k">SECTION</div>
+        <div class="v">CHAPTER FOUR</div>
+      </div>
+    </div>
+
+    <!-- 中央标题 -->
+    <div class="center">
+      <h1 class="title">开源的另类答案</h1>
+      <div class="rule"></div>
+      <p class="subtitle">当 <b>&ldquo;拥有&rdquo;</b> 被重新定义为 <b>&ldquo;共享&rdquo;</b></p>
+    </div>
+
+    <!-- 叙事 + 三要点 -->
+    <div class="footer">
+      <div class="narrative">
+        如果说传统论证都在问<span class="mark">&ldquo;谁应当拥有&rdquo;</span>，开源给出的回答是<span class="mark">&ldquo;我们应当如何共享&rdquo;</span>。开源许可证保留了版权结构，却把<span class="mark">&ldquo;独占&rdquo;</span>这一核心权力让渡给社群；它不是在拒绝知识产权，而是在<span class="mark">重写知识产权</span>。
+      </div>
+      <div class="cards">
+        <div class="card">
+          <span class="no">01</span>
+          <h4>不是不要 IP</h4>
+          <p>开源并非否定知识产权，而是把它嵌入一份可复制、可修改的授权契约。</p>
+        </div>
+        <div class="card">
+          <span class="no">02</span>
+          <h4>授权即所有权</h4>
+          <p>许可证把权利束拆分重排，允许再分发，但约束行为的边界。</p>
+        </div>
+        <div class="card">
+          <span class="no">03</span>
+          <h4>共同创造</h4>
+          <p>作者、贡献者、使用者共同决定&ldquo;什么算正当使用&rdquo;。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>标志性事件与信号</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1A1E2E;
+  --card:#222738;
+  --klien:#002FA7;
+  --klien-light:#1E3FD9;
+  --cyan:#00BCD4;
+  --text-main:#E8ECF5;
+  --text-sub:#9AA5BD;
+  --line:#2A3248;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Inter',sans-serif;color:var(--text-main);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 30% 10%, rgba(0,47,167,0.18) 0%, transparent 55%),radial-gradient(ellipse at 80% 90%, rgba(0,188,212,0.10) 0%, transparent 50%),var(--bg);}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Header */
+.head{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:44px;background:var(--cyan);border-radius:3px;}
+.title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:38px;letter-spacing:1px;color:var(--text-main);}
+.title .accent{color:var(--cyan);}
+.narrative{font-size:14px;line-height:1.7;color:var(--text-sub);max-width:1460px;}
+.narrative .hl{color:var(--cyan);font-weight:500;}
+
+/* Quadrant area */
+.quad-area{position:relative;flex:0 0 460px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;padding:14px 10px;}
+
+/* Cross lines */
+.cross-h{position:absolute;left:14px;right:14px;top:50%;height:1px;background:linear-gradient(90deg,transparent 0%,var(--klien) 10%,var(--cyan) 50%,var(--klien) 90%,transparent 100%);transform:translateY(-0.5px);z-index:2;}
+.cross-v{position:absolute;top:14px;bottom:14px;left:50%;width:1px;background:linear-gradient(180deg,transparent 0%,var(--klien) 10%,var(--cyan) 50%,var(--klien) 90%,transparent 100%);transform:translateX(-0.5px);z-index:2;}
+.center-dot{position:absolute;left:50%;top:50%;width:14px;height:14px;border-radius:50%;background:var(--cyan);transform:translate(-50%,-50%);z-index:3;box-shadow:0 0 0 6px rgba(0,188,212,0.15),0 0 18px rgba(0,188,212,0.5);}
+.center-ring{position:absolute;left:50%;top:50%;width:36px;height:36px;border-radius:50%;border:1px solid var(--cyan);transform:translate(-50%,-50%);z-index:3;opacity:0.5;}
+
+.quad{position:relative;background:linear-gradient(135deg,rgba(0,47,167,0.10) 0%,rgba(34,39,56,0.85) 60%);border:1px solid var(--klien);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;overflow:hidden;}
+.quad::before{content:'';position:absolute;top:0;left:0;width:38px;height:2px;background:var(--cyan);}
+
+.quad-head{display:flex;align-items:center;gap:12px;}
+.geo-icon{width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.quad-label{font-size:11px;color:var(--cyan);letter-spacing:2px;font-weight:500;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.quad-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;color:var(--text-main);line-height:1.25;}
+.quad-body{font-size:12.5px;line-height:1.65;color:var(--text-sub);}
+.quad-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+.tag{font-size:10.5px;padding:3px 9px;border:1px solid var(--klien-light);color:var(--cyan);border-radius:11px;letter-spacing:0.5px;}
+.tag.solid{background:var(--klien);color:var(--text-main);border-color:var(--klien);}
+
+/* Geo icons */
+.icon-diamond{width:20px;height:20px;background:var(--cyan);transform:rotate(45deg);border-radius:3px;position:relative;}
+.icon-diamond::after{content:'';position:absolute;inset:5px;border:1px solid var(--bg);border-radius:2px;}
+.icon-hex{width:26px;height:30px;background:none;position:relative;}
+.icon-hex::before{content:'';position:absolute;inset:0;border:1.5px solid var(--cyan);clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);background:rgba(0,188,212,0.15);}
+.icon-triangle{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:24px solid var(--cyan);}
+.icon-triangle-wrap{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;}
+.icon-triangle-wrap::after{content:'';position:absolute;width:10px;height:10px;border:1.5px solid var(--klien-light);border-radius:50%;top:4px;left:4px;}
+.icon-triangle-wrap::before{content:'';position:absolute;width:10px;height:10px;background:var(--cyan);border-radius:50%;bottom:4px;right:4px;}
+.icon-cross{width:32px;height:32px;position:relative;}
+.icon-cross::before{content:'';position:absolute;left:50%;top:5px;bottom:5px;width:2px;background:var(--cyan);transform:translateX(-50%);}
+.icon-cross::after{content:'';position:absolute;top:50%;left:5px;right:5px;height:2px;background:var(--cyan);transform:translateY(-50%);}
+.icon-cross-dots{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.icon-cross-dots span{width:6px;height:6px;border-radius:50%;background:var(--bg);}
+.icon-arrow-split{position:relative;width:36px;height:36px;}
+.icon-arrow-split::before{content:'';position:absolute;left:6px;top:6px;width:14px;height:2px;background:var(--cyan);}
+.icon-arrow-split::after{content:'';position:absolute;left:20px;top:14px;width:12px;height:12px;border-top:2px solid var(--cyan);border-right:2px solid var(--cyan);transform:rotate(-45deg);border-radius:2px 2px 0 0;}
+.icon-arrow-split-line{position:absolute;left:6px;top:24px;width:14px;height:2px;background:var(--klien-light);}
+
+/* Footer data cards */
+.footer{display:flex;gap:16px;margin-top:18px;}
+.dcard{flex:1;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--cyan);border-radius:8px;padding:12px 18px;display:flex;align-items:center;gap:16px;}
+.dcard-label{font-size:11px;color:var(--text-sub);letter-spacing:1.5px;flex-shrink:0;width:130px;}
+.dcard-divider{width:1px;height:40px;background:var(--line);flex-shrink:0;}
+.dcard-value{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:var(--cyan);flex-shrink:0;}
+.dcard-note{font-size:11.5px;color:var(--text-sub);line-height:1.5;}
+
+/* Decorative corner dots */
+.corner-dots{position:absolute;display:grid;grid-template-columns:repeat(3,4px);gap:6px;}
+.corner-dots span{width:4px;height:4px;background:var(--klien-light);border-radius:50%;opacity:0.6;}
+.corner-tl{top:16px;left:16px;}
+.corner-tr{top:16px;right:16px;}
+.corner-br{bottom:16px;right:16px;}
+.corner-bl{bottom:16px;left:16px;}
+
+/* Bottom bar line */
+.footer-top{height:1px;background:linear-gradient(90deg,transparent,var(--klien) 20%,var(--cyan) 50%,var(--klien) 80%,transparent);margin-top:6px;opacity:0.6;}
+
+.footer-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:10.5px;color:var(--text-sub);letter-spacing:1px;}
+.footer-meta .dot-line{display:flex;align-items:center;gap:6px;}
+.footer-meta .mini-dot{width:5px;height:5px;background:var(--cyan);border-radius:50%;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="corner-dots corner-tl"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="corner-dots corner-tr"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="corner-dots corner-bl"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="corner-dots corner-br"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+    <div class="head">
+      <div class="title-row">
+        <div class="title-bar"></div>
+        <div class="title">标志性事件<span class="accent">与信号</span></div>
+      </div>
+      <div class="narrative">
+        近年来一系列标志性事件让<span class="hl">"Owner 终结"</span>从理论讨论走向现实关切——无论是创始人被解雇、治理模式强制改革，还是社区因理念分歧而分裂，这些信号共同指向一个事实：<span class="hl">开源项目无法再依赖单一所有者作为永恒锚点</span>。
+      </div>
+    </div>
+
+    <div class="quad-area">
+      <div class="cross-h"></div>
+      <div class="cross-v"></div>
+      <div class="center-ring"></div>
+      <div class="center-dot"></div>
+
+      <!-- TL: Node.js & npm -->
+      <div class="quad">
+        <div class="quad-head">
+          <div class="geo-icon"><div class="icon-diamond"></div></div>
+          <div>
+            <div class="quad-label">SIGNAL / 01</div>
+            <div class="quad-title">Node.js 与 npm</div>
+          </div>
+        </div>
+        <div class="quad-body">npm 创始人事件暴露了<span style="color:var(--cyan)">单一 owner</span>对基础设施级项目的系统性风险——当项目命脉系于一人之手，整个生态都将承受不可预见的治理震荡。</div>
+        <div class="quad-tags">
+          <span class="tag solid">基础设施</span>
+          <span class="tag">单点风险</span>
+          <span class="tag">供应链安全</span>
+        </div>
+      </div>
+
+      <!-- TR: Python 治理转型 -->
+      <div class="quad">
+        <div class="quad-head">
+          <div class="geo-icon"><div class="icon-hex"></div></div>
+          <div>
+            <div class="quad-label">SIGNAL / 02</div>
+            <div class="quad-title">Python 治理转型</div>
+          </div>
+        </div>
+        <div class="quad-body">Python 从 <span style="color:var(--cyan)">BDFL 制</span>转向<span style="color:var(--cyan)">指导委员会</span>，被视为开源治理现代化的标志性案例——权力从个人让渡给机构，奠定可传承的治理范式。</div>
+        <div class="quad-tags">
+          <span class="tag solid">治理现代化</span>
+          <span class="tag">BDFL → 委员会</span>
+          <span class="tag">可传承</span>
+        </div>
+      </div>
+
+      <!-- BL: Apache / Linux 基金会 -->
+      <div class="quad">
+        <div class="quad-head">
+          <div class="geo-icon"><div class="icon-cross"><div class="icon-cross-dots"><span></span></div></div></div>
+          <div>
+            <div class="quad-label">SIGNAL / 03</div>
+            <div class="quad-title">Apache / Linux 基金会</div>
+          </div>
+        </div>
+        <div class="quad-body">基金会模式提供了<span style="color:var(--cyan)">去中心化的治理框架</span>，但商业化与社区利益之间的张力仍未消解——多方共治之下，价值分配始终是核心议题。</div>
+        <div class="quad-tags">
+          <span class="tag solid">基金会模式</span>
+          <span class="tag">去中心化</span>
+          <span class="tag">商业 vs 社区</span>
+        </div>
+      </div>
+
+      <!-- BR: Fork 现象 -->
+      <div class="quad">
+        <div class="quad-head">
+          <div class="geo-icon">
+            <div class="icon-arrow-split"><div class="icon-arrow-split-line"></div></div>
+          </div>
+          <div>
+            <div class="quad-label">SIGNAL / 04</div>
+            <div class="quad-title">Fork 现象频现</div>
+          </div>
+        </div>
+        <div class="quad-body">Vim 与 Neovim、Babel 与尤雨溪争议等 fork 事件，反映了<span style="color:var(--cyan)">所有权分歧的公开化</span>——代码分叉的背后，往往是治理理念与话语权之争。</div>
+        <div class="quad-tags">
+          <span class="tag solid">代码分叉</span>
+          <span class="tag">Vim / Neovim</span>
+          <span class="tag">理念分歧</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-top"></div>
+    <div class="footer">
+      <div class="dcard">
+        <div class="dcard-label">标志性 FORK 事件</div>
+        <div class="dcard-divider"></div>
+        <div class="dcard-value">Neovim / Bun / Deno</div>
+        <div class="dcard-note">因治理或路线分歧产生的衍生项目，映射社区所有权博弈</div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-label">治理转型案例</div>
+        <div class="dcard-divider"></div>
+        <div class="dcard-value">Python Steering Committee</div>
+        <div class="dcard-note">2018 年起 BDFL 权力正式移交委员会，开启制度治理新纪元</div>
+      </div>
+    </div>
+
+    <div class="footer-meta">
+      <div class="dot-line"><span class="mini-dot"></span><span>FOUR SIGNALS · ONE CONCLUSION</span></div>
+      <div>标志性事件与信号 / 2024</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

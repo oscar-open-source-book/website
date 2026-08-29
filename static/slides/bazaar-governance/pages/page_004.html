@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>治理数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2196F3;
+  --primary-dark:#1565C0;
+  --cyan:#00BCD4;
+  --gray:#B0BEC5;
+  --bg-deep:#0A0E1A;
+  --bg-card:#10162A;
+  --bg-card2:#0D1324;
+  --border:#1E2A4A;
+  --text-main:#E8EEF7;
+  --text-mute:#8896B0;
+  --glow:0 0 30px rgba(33,150,243,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter','Roboto Mono',sans-serif;
+  color:var(--text-main);
+  background:var(--bg-deep);
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(33,150,243,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 100%, rgba(0,188,212,0.10) 0%, transparent 50%),
+    linear-gradient(180deg,#0A0E1A 0%,#0C1226 50%,#0A0E1A 100%);
+}
+#bg::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:42px 60px 36px 60px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+/* Header */
+.header{margin-bottom:18px;}
+.eyebrow{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;color:var(--cyan);letter-spacing:3px;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:12px;
+}
+.eyebrow::before{
+  content:"";display:inline-block;width:32px;height:1px;background:var(--cyan);
+}
+.eyebrow::after{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);
+}
+h1{
+  font-family:'Rajdhani',sans-serif;
+  font-size:58px;font-weight:700;
+  background:linear-gradient(135deg,#fff 0%, #2196F3 50%, #00BCD4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:2px;line-height:1;
+  display:inline-block;
+}
+.title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:14px;}
+.subtitle{
+  font-size:14px;color:var(--gray);max-width:520px;line-height:1.7;
+  padding-bottom:8px;
+  border-left:2px solid var(--primary);
+  padding-left:14px;
+}
+.header-stats{
+  display:flex;gap:24px;align-items:center;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;color:var(--text-mute);letter-spacing:1px;
+  padding-bottom:6px;
+}
+.header-stats .stat{display:flex;align-items:center;gap:6px;}
+.header-stats .dot{width:6px;height:6px;border-radius:50%;background:var(--primary);}
+.header-stats .dot.c{background:var(--cyan);}
+
+/* KPI Cards */
+.kpi-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+  margin-bottom:20px;
+}
+.kpi{
+  position:relative;
+  background:linear-gradient(160deg,#10162A 0%,#0D1324 100%);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px 20px 16px 20px;
+  overflow:hidden;
+  transition:transform 0.3s;
+}
+.kpi::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--primary),var(--cyan),transparent);
+}
+.kpi::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  background:radial-gradient(circle,rgba(33,150,243,0.15),transparent 70%);
+  border-radius:50%;
+}
+.kpi .kpi-tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--cyan);letter-spacing:2px;
+  margin-bottom:8px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.kpi .kpi-tag .idx{color:var(--text-mute);}
+.kpi-num{
+  font-family:'Rajdhani',sans-serif;
+  font-size:44px;font-weight:700;
+  color:#fff;line-height:1;
+  text-shadow:0 0 20px rgba(33,150,243,0.4);
+  margin-bottom:6px;
+}
+.kpi-num .unit{font-size:22px;color:var(--primary);margin-left:2px;}
+.kpi-label{
+  font-size:13px;font-weight:600;color:var(--text-main);
+  margin-bottom:6px;
+}
+.kpi-desc{
+  font-family:'Roboto Mono',monospace;
+  font-size:10.5px;color:var(--gray);line-height:1.6;
+  border-top:1px solid var(--border);
+  padding-top:8px;
+}
+.kpi .bar{
+  margin-top:10px;height:3px;border-radius:2px;
+  background:rgba(33,150,243,0.12);
+  position:relative;overflow:hidden;
+}
+.kpi .bar span{position:absolute;left:0;top:0;height:100%;border-radius:2px;
+  background:linear-gradient(90deg,var(--primary),var(--cyan));
+}
+.kpi.k1 .bar span{width:92%;}
+.kpi.k2 .bar span{width:65%;}
+.kpi.k3 .bar span{width:55%;}
+.kpi.k4 .bar span{width:40%;}
+
+/* Bottom Area */
+.bottom-area{
+  display:grid;grid-template-columns:1.15fr 1fr;gap:24px;
+  flex:1;
+}
+/* Five points */
+.points{
+  background:linear-gradient(160deg,#10162A 0%,#0B1124 100%);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:20px 22px;
+  position:relative;
+}
+.points::before{
+  content:"";position:absolute;top:0;right:0;width:80px;height:80px;
+  background:radial-gradient(circle at top right,rgba(0,188,212,0.12),transparent 70%);
+}
+.points-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.points-head .left{display:flex;align-items:center;gap:10px;}
+.points-head .icon{
+  width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--primary),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;color:#fff;
+}
+.points-head h2{
+  font-family:'Rajdhani',sans-serif;
+  font-size:22px;font-weight:600;letter-spacing:1px;color:#fff;
+}
+.points-head .badge{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--cyan);
+  border:1px solid rgba(0,188,212,0.3);
+  border-radius:20px;padding:4px 10px;letter-spacing:1px;
+}
+.points-list{display:flex;flex-direction:column;gap:9px;}
+.point{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:8px 10px;border-radius:8px;
+  background:rgba(33,150,243,0.03);
+  border-left:2px solid transparent;
+  transition:all 0.3s;
+}
+.point:hover{border-left-color:var(--primary);background:rgba(33,150,243,0.06);}
+.point .pn{
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;font-weight:500;color:var(--cyan);
+  min-width:22px;
+  padding-top:1px;
+}
+.point .pc{flex:1;}
+.point .pt{
+  font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;
+  display:flex;align-items:center;gap:8px;
+}
+.point .pt .tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:9px;color:var(--gray);
+  border:1px solid var(--border);
+  border-radius:3px;padding:1px 6px;font-weight:400;
+}
+.point .pd{
+  font-size:11.5px;color:var(--gray);line-height:1.55;
+  font-family:'Inter',sans-serif;
+}
+
+/* Right panel - metrics + closing */
+.right-panel{display:flex;flex-direction:column;gap:16px;}
+
+.metrics-box{
+  background:linear-gradient(160deg,#10162A 0%,#0B1124 100%);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px 22px;
+  flex:1;
+  position:relative;overflow:hidden;
+}
+.metrics-box::after{
+  content:"";position:absolute;bottom:-50px;left:-50px;width:150px;height:150px;
+  background:radial-gradient(circle,rgba(33,150,243,0.08),transparent 70%);
+}
+.mb-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.mb-head h3{
+  font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:600;color:#fff;letter-spacing:1px;
+}
+.mb-head .live{
+  font-family:'Roboto Mono',monospace;font-size:10px;color:var(--cyan);
+  display:flex;align-items:center;gap:6px;
+}
+.mb-head .live::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 6px var(--cyan);
+}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.metric-cell{
+  background:rgba(10,14,26,0.6);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 12px;
+  position:relative;
+}
+.metric-cell .mc-l{
+  font-family:'Roboto Mono',monospace;
+  font-size:9px;color:var(--text-mute);letter-spacing:1px;margin-bottom:4px;
+}
+.metric-cell .mc-v{
+  font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;color:#fff;line-height:1;
+}
+.metric-cell .mc-v .u{font-size:13px;color:var(--primary);margin-left:2px;}
+.metric-cell .mc-b{
+  margin-top:6px;height:3px;border-radius:2px;
+  background:rgba(33,150,243,0.1);position:relative;overflow:hidden;
+}
+.metric-cell .mc-b span{position:absolute;left:0;top:0;height:100%;
+  background:linear-gradient(90deg,var(--primary),var(--cyan));border-radius:2px;
+}
+.mc-1 .mc-b span{width:85%;}
+.mc-2 .mc-b span{width:72%;}
+.mc-3 .mc-b span{width:60%;}
+.mc-4 .mc-b span{width:48%;}
+
+/* Trend mini chart */
+.trend-box{
+  background:rgba(10,14,26,0.6);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 14px 12px 14px;
+}
+.trend-box .tb-h{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.trend-box .tb-h .lb{font-size:11px;color:var(--gray);}
+.trend-box .tb-h .lb strong{color:#fff;font-weight:600;}
+.trend-box .tb-h .val{
+  font-family:'Roboto Mono',monospace;font-size:11px;color:var(--cyan);
+}
+.trend-bars{
+  display:flex;align-items:flex-end;gap:5px;height:36px;
+}
+.trend-bars .tb{
+  flex:1;background:linear-gradient(180deg,var(--cyan),rgba(0,188,212,0.2));
+  border-radius:2px 2px 0 0;
+  position:relative;
+}
+.trend-bars .tb.peak{background:linear-gradient(180deg,var(--primary),rgba(33,150,243,0.2));box-shadow:0 0 8px rgba(33,150,243,0.4);}
+
+/* Closing */
+.closing{
+  background:linear-gradient(135deg,rgba(33,150,243,0.12) 0%,rgba(0,188,212,0.08) 100%);
+  border:1px solid rgba(33,150,243,0.25);
+  border-radius:10px;
+  padding:14px 20px;
+  display:flex;align-items:center;gap:14px;
+  position:relative;
+}
+.closing::before{
+  content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:70%;background:linear-gradient(180deg,var(--primary),var(--cyan));
+  border-radius:0 2px 2px 0;
+}
+.closing-icon{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:18px;color:#fff;
+  flex-shrink:0;
+}
+.closing-text{
+  font-size:13px;color:#fff;line-height:1.6;
+}
+.closing-text strong{color:var(--cyan);font-weight:600;}
+
+/* Footer bar */
+.footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:14px;
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--text-mute);letter-spacing:1px;
+  padding-top:10px;border-top:1px solid var(--border);
+}
+.footer .fl{display:flex;align-items:center;gap:16px;}
+.footer .fl span{display:flex;align-items:center;gap:5px;}
+.footer .fl .d{width:5px;height:5px;border-radius:50%;background:var(--primary);}
+.footer .fl .d.c{background:var(--cyan);}
+.footer .fl .d.g{background:var(--gray);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="eyebrow"><span>OPEN SOURCE GOVERNANCE · DATA INSIGHT</span></div>
+      <div class="title-row">
+        <h1>治理数据</h1>
+        <div class="subtitle">
+          以量化视角审视开源治理的规模与挑战，<br>
+          为社区领导者与企业贡献者提供决策参照的<br>
+          关键数据集合与结构性洞察。
+        </div>
+      </div>
+      <div class="header-stats">
+        <span class="stat"><span class="dot"></span>4 KEY METRICS</span>
+        <span class="stat"><span class="dot c"></span>5 INSIGHTS</span>
+        <span class="stat"><span class="dot"></span>2022 DATA SNAPSHOT</span>
+        <span class="stat"><span class="dot g"></span>STRUCTURED OVERVIEW</span>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi k1">
+        <div class="kpi-tag"><span>01 · DEVELOPER ECOSYSTEM</span><span class="idx">/KPI</span></div>
+        <div class="kpi-num">7,300<span class="unit">万+</span></div>
+        <div class="kpi-label">GitHub 活跃开发者</div>
+        <div class="kpi-desc">2022 年数据 / 全球代码协作主平台</div>
+        <div class="bar"><span></span></div>
+      </div>
+      <div class="kpi k2">
+        <div class="kpi-tag"><span>02 · CORE PROJECT</span><span class="idx">/KPI</span></div>
+        <div class="kpi-num">3,500<span class="unit">+</span></div>
+        <div class="kpi-label">Kubernetes 贡献者</div>
+        <div class="kpi-desc">来自超过 700 家公司 / CNCF 旗舰项目</div>
+        <div class="bar"><span></span></div>
+      </div>
+      <div class="kpi k3">
+        <div class="kpi-tag"><span>03 · FOUNDATION</span><span class="idx">/KPI</span></div>
+        <div class="kpi-num">150<span class="unit">+</span></div>
+        <div class="kpi-label">CNCF 托管项目</div>
+        <div class="kpi-desc">基金会治理模式 / 涵盖沙箱至毕业级</div>
+        <div class="bar"><span></span></div>
+      </div>
+      <div class="kpi k4">
+        <div class="kpi-tag"><span>04 · LICENSING</span><span class="idx">/KPI</span></div>
+        <div class="kpi-num">80<span class="unit">+</span></div>
+        <div class="kpi-label">开源许可证数量</div>
+        <div class="kpi-desc">主流 OSI 批准 / 涵盖多种授权策略</div>
+        <div class="bar"><span></span></div>
+      </div>
+    </div>
+
+    <div class="bottom-area">
+
+      <div class="points">
+        <div class="points-head">
+          <div class="left">
+            <div class="icon">05</div>
+            <h2>核心洞察要点</h2>
+          </div>
+          <div class="badge">FIVE KEY INSIGHTS</div>
+        </div>
+        <div class="points-list">
+          <div class="point">
+            <span class="pn">01</span>
+            <div class="pc">
+              <div class="pt"><span>项目规模</span><span class="tag">SCALE</span></div>
+              <div class="pd">大型项目如 Kubernetes 拥有数千贡献者，治理复杂度高，需要结构化的决策流程与角色分工。</div>
+            </div>
+          </div>
+          <div class="point">
+            <span class="pn">02</span>
+            <div class="pc">
+              <div class="pt"><span>决策频率</span><span class="tag">DECISION</span></div>
+              <div class="pd">核心项目每年通过数百个 RFC 和提案，持续输出技术决策并协调跨组织利益相关方。</div>
+            </div>
+          </div>
+          <div class="point">
+            <span class="pn">03</span>
+            <div class="pc">
+              <div class="pt"><span>基金会作用</span><span class="tag">FOUNDATION</span></div>
+              <div class="pd">提供法律、财务与品牌支持，降低治理风险，为项目提供中立的托管与知识产权保障。</div>
+            </div>
+          </div>
+          <div class="point">
+            <span class="pn">04</span>
+            <div class="pc">
+              <div class="pt"><span>社区健康</span><span class="tag">HEALTH</span></div>
+              <div class="pd">通过贡献者保留率、活动度等指标评估社区活力，识别流失风险并及时干预。</div>
+            </div>
+          </div>
+          <div class="point">
+            <span class="pn">05</span>
+            <div class="pc">
+              <div class="pt"><span>趋势观察</span><span class="tag">TREND</span></div>
+              <div class="pd">更多项目采用开放治理，向基金会托管模式发展，构建可持续的长期生态架构。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <div class="metrics-box">
+          <div class="mb-head">
+            <h3>关键指标快照</h3>
+            <span class="live">LIVE INDICATORS</span>
+          </div>
+          <div class="metric-grid">
+            <div class="metric-cell mc-1">
+              <div class="mc-l">CONTRIBUTOR RETENTION</div>
+              <div class="mc-v">85<span class="u">%</span></div>
+              <div class="mc-b"><span></span></div>
+            </div>
+            <div class="metric-cell mc-2">
+              <div class="mc-l">ANNUAL RFC / 提案</div>
+              <div class="mc-v">300<span class="u">+</span></div>
+              <div class="mc-b"><span></span></div>
+            </div>
+            <div class="metric-cell mc-3">
+              <div class="mc-l">FOUNDED PROJECTS</div>
+              <div class="mc-v">60<span class="u">%</span></div>
+              <div class="mc-b"><span></span></div>
+            </div>
+            <div class="metric-cell mc-4">
+              <div class="mc-l">LIC. COMPLIANCE</div>
+              <div class="mc-v">48<span class="u">%</span></div>
+              <div class="mc-b"><span></span></div>
+            </div>
+          </div>
+          <div class="trend-box">
+            <div class="tb-h">
+              <span class="lb"><strong>基金会托管项目</strong> · 年度趋势</span>
+              <span class="val">↑ +22% YoY</span>
+            </div>
+            <div class="trend-bars">
+              <div class="tb" style="height:30%;"></div>
+              <div class="tb" style="height:42%;"></div>
+              <div class="tb" style="height:50%;"></div>
+              <div class="tb" style="height:58%;"></div>
+              <div class="tb" style="height:65%;"></div>
+              <div class="tb peak" style="height:80%;"></div>
+              <div class="tb peak" style="height:92%;"></div>
+              <div class="tb peak" style="height:100%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="closing">
+          <div class="closing-icon">∞</div>
+          <div class="closing-text">
+            通过<strong>量化数据</strong>，更清晰地看到开源治理的<strong>规模与挑战</strong>——让每一个决策都建立在可衡量的事实之上。
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="fl">
+        <span><span class="d"></span>PRIMARY #2196F3</span>
+        <span><span class="d c"></span>ACCENT #00BCD4</span>
+        <span><span class="d g"></span>AUX #B0BEC5</span>
+      </div>
+      <div class="fr">GOVERNANCE DATA · OPEN SOURCE INSIGHTS · 2022</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

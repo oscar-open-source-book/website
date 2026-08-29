@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>社区协作的独特模式</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #00BCD4;
+  --primary-glow: rgba(0, 188, 212, 0.4);
+  --accent: #FF7043;
+  --text-main: #ECEFF1;
+  --text-dim: #90A4AE;
+  --bg-dark: #0A0E1A;
+  --bg-card: #111827;
+  --bg-card2: #0D1424;
+  --border: rgba(0, 188, 212, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 10%, rgba(0,188,212,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 85% 90%, rgba(255,112,67,0.06) 0%, transparent 45%),
+              #080C16;
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0,188,212,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header { text-align: center; margin-bottom: 22px; }
+.header h1 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--text-main);
+  text-shadow: 0 0 20px var(--primary-glow);
+  display: inline-block;
+}
+.header h1::before { content: '> '; color: var(--primary); }
+.header h1::after { content: ' <'; color: var(--primary); }
+.header .subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-top: 8px;
+  letter-spacing: 1px;
+  line-height: 1.6;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.header .accent-line {
+  width: 80px;
+  height: 2px;
+  background: var(--primary);
+  margin: 12px auto 0;
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* Main content */
+.main {
+  display: flex;
+  gap: 30px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Left: 4 cards */
+.cards-col {
+  width: 680px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+}
+.card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+.card .card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--primary);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.card .card-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card .card-title .icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(0,188,212,0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.card .card-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+.card .card-desc .hl { color: var(--primary); font-weight: 600; }
+.card .card-desc .hl-accent { color: var(--accent); font-weight: 600; }
+.card .card-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent);
+  border: 1px solid rgba(255,112,67,0.3);
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+
+/* Right: Network diagram */
+.network-col {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(13,20,36,0.8) 0%, rgba(8,12,22,0.9) 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.network-col .net-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.network-col .net-header .net-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--primary);
+  letter-spacing: 2px;
+}
+.network-col .net-header .net-dots {
+  display: flex;
+  gap: 5px;
+}
+.network-col .net-header .net-dots span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--primary); opacity: 0.4;
+}
+.network-col .net-header .net-dots span:nth-child(1) { opacity: 1; }
+.network-col .net-header .net-dots span:nth-child(2) { opacity: 0.7; background: var(--accent); }
+.net-body {
+  flex: 1;
+  position: relative;
+}
+.net-body svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.net-legend {
+  padding: 8px 20px 10px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px;
+}
+.net-legend .leg-item { display: flex; align-items: center; gap: 5px; }
+.net-legend .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+.net-legend .leg-dot.cyan { background: var(--primary); box-shadow: 0 0 6px var(--primary-glow); }
+.net-legend .leg-dot.orange { background: var(--accent); }
+
+/* Pulse animation */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; r: 4; }
+  50% { opacity: 1; r: 7; }
+}
+@keyframes flow-line {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -20; }
+}
+@keyframes float-node {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Bottom */
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 20px;
+}
+.data-card {
+  background: linear-gradient(90deg, rgba(0,188,212,0.12) 0%, rgba(0,188,212,0.02) 100%);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+.data-card .dc-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--primary);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.data-card .dc-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+}
+.data-card .dc-content {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+.data-card .dc-content .kw { color: var(--text-main); font-weight: 600; }
+.data-card .dc-content .kw-accent { color: var(--accent); font-weight: 600; }
+
+.tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  text-align: right;
+  white-space: nowrap;
+  position: relative;
+  padding-left: 20px;
+}
+.tagline::before {
+  content: '//';
+  color: var(--accent);
+  margin-right: 6px;
+}
+.tagline .glow {
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary-glow);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <h1><span>社区协作的独特模式</span></h1>
+      <div class="subtitle">开源书籍的协作模式是其区别于传统出版的最大亮点——从问题反馈到内容贡献再到版本发布，整个流程借助 Git 工作流实现透明化与自动化，让每个参与者都能感受到自己对作品的实际贡献。</div>
+      <div class="accent-line"></div>
+    </div>
+
+    <div class="main">
+      <!-- Left: 4 cards -->
+      <div class="cards-col">
+        <div class="card">
+          <div class="card-num">01 / FEEDBACK</div>
+          <div class="card-title"><span class="icon">🐛</span><span>Issue 反馈闭环</span></div>
+          <div class="card-desc">读者通过 <span class="hl">GitHub Issue</span> 提出问题或建议，作者及时响应并形成 <span class="hl-accent">持续改进循环</span>，每一次反馈都被记录与追踪。</div>
+          <div class="card-tag">CLOSED LOOP</div>
+        </div>
+        <div class="card">
+          <div class="card-num">02 / CONTRIBUTE</div>
+          <div class="card-title"><span class="icon">🔀</span><span>PR 贡献内容</span></div>
+          <div class="card-desc">贡献者可直接提交 <span class="hl">修改或新增章节</span>，经审核后合并入主分支，成为 <span class="hl-accent">正式内容</span>，人人可参与共建。</div>
+          <div class="card-tag">MERGE</div>
+        </div>
+        <div class="card">
+          <div class="card-num">03 / TRANSLATE</div>
+          <div class="card-title"><span class="icon">🌐</span><span>翻译协作网络</span></div>
+          <div class="card-desc">多语言翻译由 <span class="hl">社区志愿者</span>认领，通过统一工作流确保 <span class="hl-accent">译文与原文同步</span>，打破语言壁垒。</div>
+          <div class="card-tag">i18n</div>
+        </div>
+        <div class="card">
+          <div class="card-num">04 / RELEASE</div>
+          <div class="card-title"><span class="icon">📦</span><span>版本发布机制</span></div>
+          <div class="card-desc">利用 <span class="hl">Git Tag</span> 标记版本，自动生成 <span class="hl-accent">变更记录</span>，读者可清晰追踪每一次更新迭代。</div>
+          <div class="card-tag">v1.x</div>
+        </div>
+      </div>
+
+      <!-- Right: Network diagram -->
+      <div class="network-col">
+        <div class="net-header">
+          <span class="net-title">// COLLABORATION_NETWORK.TOPOLOGY</span>
+          <div class="net-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="net-body">
+          <svg viewBox="0 0 720 480" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.6"/>
+                <stop offset="60%" stop-color="#00BCD4" stop-opacity="0.1"/>
+                <stop offset="100%" stop-color="#00BCD4" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#00BCD4" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="6"/>
+              </filter>
+            </defs>
+
+            <!-- Outer ring dashed -->
+            <circle cx="360" cy="240" r="180" fill="none" stroke="rgba(0,188,212,0.15)" stroke-width="1" stroke-dasharray="4 6"/>
+            <circle cx="360" cy="240" r="130" fill="none" stroke="rgba(0,188,212,0.1)" stroke-width="1" stroke-dasharray="2 8"/>
+
+            <!-- Center glow -->
+            <circle cx="360" cy="240" r="100" fill="url(#centerGlow)"/>
+
+            <!-- Connection lines with flow animation -->
+            <line x1="360" y1="240" x2="360" y2="70" stroke="#00BCD4" stroke-width="2" stroke-dasharray="6 4" style="animation: flow-line 3s linear infinite; opacity: 0.7;" filter="url(#glow)"/>
+            <line x1="360" y1="240" x2="540" y2="240" stroke="#00BCD4" stroke-width="2" stroke-dasharray="6 4" style="animation: flow-line 3.5s linear infinite; opacity: 0.7;" filter="url(#glow)"/>
+            <line x1="360" y1="240" x2="360" y2="410" stroke="#FF7043" stroke-width="2" stroke-dasharray="6 4" style="animation: flow-line 4s linear infinite; opacity: 0.6;" filter="url(#glow)"/>
+            <line x1="360" y1="240" x2="180" y2="240" stroke="#00BCD4" stroke-width="2" stroke-dasharray="6 4" style="animation: flow-line 2.8s linear infinite; opacity: 0.7;" filter="url(#glow)"/>
+
+            <!-- Inter-node lines (weaker) -->
+            <line x1="360" y1="70" x2="540" y2="240" stroke="rgba(0,188,212,0.15)" stroke-width="1" stroke-dasharray="2 6"/>
+            <line x1="540" y1="240" x2="360" y2="410" stroke="rgba(0,188,212,0.15)" stroke-width="1" stroke-dasharray="2 6"/>
+            <line x1="360" y1="410" x2="180" y2="240" stroke="rgba(255,112,67,0.15)" stroke-width="1" stroke-dasharray="2 6"/>
+            <line x1="180" y1="240" x2="360" y2="70" stroke="rgba(0,188,212,0.15)" stroke-width="1" stroke-dasharray="2 6"/>
+
+            <!-- Pulse dots on lines -->
+            <circle cx="360" cy="155" r="4" fill="#00BCD4" filter="url(#glow)" style="animation: pulse-glow 2s ease-in-out infinite;"/>
+            <circle cx="450" cy="240" r="4" fill="#00BCD4" filter="url(#glow)" style="animation: pulse-glow 2.5s ease-in-out infinite 0.3s;"/>
+            <circle cx="360" cy="325" r="4" fill="#FF7043" filter="url(#glow)" style="animation: pulse-glow 2.2s ease-in-out infinite 0.5s;"/>
+            <circle cx="270" cy="240" r="4" fill="#00BCD4" filter="url(#glow)" style="animation: pulse-glow 1.8s ease-in-out infinite 0.7s;"/>
+
+            <!-- Center: Book node -->
+            <g>
+              <rect x="325" y="205" width="70" height="70" rx="6" fill="#0D1424" stroke="#00BCD4" stroke-width="2" filter="url(#glow)"/>
+              <line x1="360" y1="205" x2="360" y2="275" stroke="#00BCD4" stroke-width="1.5" opacity="0.6"/>
+              <line x1="335" y1="222" x2="355" y2="222" stroke="#00BCD4" stroke-width="1" opacity="0.5"/>
+              <line x1="335" y1="232" x2="355" y2="232" stroke="#00BCD4" stroke-width="1" opacity="0.5"/>
+              <line x1="335" y1="242" x2="355" y2="242" stroke="#00BCD4" stroke-width="1" opacity="0.5"/>
+              <line x1="365" y1="222" x2="385" y2="222" stroke="#00BCD4" stroke-width="1" opacity="0.5"/>
+              <line x1="365" y1="232" x2="385" y2="232" stroke="#00BCD4" stroke-width="1" opacity="0.5"/>
+              <line x1="365" y1="242" x2="385" y2="242" stroke="#00BCD4" stroke-width="1" opacity="0.5"/>
+              <text x="360" y="298" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#00BCD4" letter-spacing="1">BOOK</text>
+              <text x="360" y="313" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#90A4AE">主仓库</text>
+            </g>
+
+            <!-- Top node: 作者 -->
+            <g style="animation: float-node 4s ease-in-out infinite;">
+              <circle cx="360" cy="70" r="35" fill="url(#nodeGlow)"/>
+              <circle cx="360" cy="70" r="26" fill="#0D1424" stroke="#00BCD4" stroke-width="2"/>
+              <text x="360" y="66" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#ECEFF1">作者</text>
+              <text x="360" y="82" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#00BCD4" letter-spacing="1">AUTHOR</text>
+            </g>
+
+            <!-- Right node: 译者 -->
+            <g style="animation: float-node 4.5s ease-in-out infinite 0.5s;">
+              <circle cx="540" cy="240" r="35" fill="url(#nodeGlow)"/>
+              <circle cx="540" cy="240" r="26" fill="#0D1424" stroke="#00BCD4" stroke-width="2"/>
+              <text x="540" y="236" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#ECEFF1">译者</text>
+              <text x="540" y="252" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#00BCD4" letter-spacing="1">TRANS</text>
+            </g>
+
+            <!-- Bottom node: 审校 -->
+            <g style="animation: float-node 3.8s ease-in-out infinite 1s;">
+              <circle cx="360" cy="410" r="35" fill="url(#nodeGlow)"/>
+              <circle cx="360" cy="410" r="26" fill="#0D1424" stroke="#FF7043" stroke-width="2"/>
+              <text x="360" y="406" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#ECEFF1">审校</text>
+              <text x="360" y="422" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#FF7043" letter-spacing="1">REVIEW</text>
+            </g>
+
+            <!-- Left node: 读者 -->
+            <g style="animation: float-node 4.2s ease-in-out infinite 0.3s;">
+              <circle cx="180" cy="240" r="35" fill="url(#nodeGlow)"/>
+              <circle cx="180" cy="240" r="26" fill="#0D1424" stroke="#00BCD4" stroke-width="2"/>
+              <text x="180" y="236" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#ECEFF1">读者</text>
+              <text x="180" y="252" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#00BCD4" letter-spacing="1">READER</text>
+            </g>
+
+            <!-- Data flow labels -->
+            <text x="290" y="140" font-family="JetBrains Mono" font-size="9" fill="#00BCD4" opacity="0.7">PR →</text>
+            <text x="460" y="225" font-family="JetBrains Mono" font-size="9" fill="#00BCD4" opacity="0.7">i18n →</text>
+            <text x="295" y="330" font-family="JetBrains Mono" font-size="9" fill="#FF7043" opacity="0.7">← Review</text>
+            <text x="225" y="225" font-family="JetBrains Mono" font-size="9" fill="#00BCD4" opacity="0.7">Issue →</text>
+          </svg>
+        </div>
+        <div class="net-legend">
+          <div class="leg-item"><span class="leg-dot cyan"></span> 数据流</div>
+          <div class="leg-item"><span class="leg-dot orange"></span> 审核流</div>
+          <div class="leg-item"><span style="margin-left:auto; color: var(--text-dim);">NODES: 4  |  EDGES: 8  |  STATUS: ACTIVE</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="data-card">
+        <span class="dc-label">COMMON_PLATFORMS</span>
+        <span class="dc-divider"></span>
+        <span class="dc-content">常见协作平台：<span class="kw">GitHub</span> / <span class="kw">Gitee</span>，<span class="kw-accent">Issue</span>、<span class="kw-accent">PR</span>、<span class="kw-accent">Release</span> 三大核心功能</span>
+      </div>
+      <div class="tagline"><span>透明化的 Git 工作流，让每一次协作都<span class="glow">留下印记</span>。</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>黑客伦理与新造王者</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#1E2A38;
+  --bg-deep:#16202C;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --text-main:#EAF1FA;
+  --text-dim:#8AA0B4;
+  --line:#2A3A4F;
+  --card-bg:rgba(33,150,243,0.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{font-family:'JetBrains Mono','Inter',monospace;color:var(--text-main);background:#0E1720;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 950px 640px at 80% 38%, rgba(33,150,243,0.28), rgba(22,32,44,1) 62%);}
+#ct{position:absolute;inset:0;z-index:1;padding:58px 72px 52px 72px;box-sizing:border-box;}
+
+.tag-row{display:flex;align-items:center;gap:18px;margin-bottom:18px;}
+.tag-row .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);}
+.tag-row .tag-text{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.22em;color:var(--text-dim);font-weight:500;}
+.tag-row .tag-line{flex:0 0 60px;height:1px;background:linear-gradient(90deg,var(--primary),transparent);}
+.tag-row .tag-en{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.28em;color:var(--primary);font-weight:600;}
+
+.hero-title{font-family:'Inter','Helvetica Neue',sans-serif;font-weight:900;font-size:112px;line-height:1.02;letter-spacing:-0.02em;color:var(--text-main);}
+.hero-title .l2{color:var(--accent);text-shadow:0 0 28px rgba(0,229,255,0.35);}
+.hero-sub{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:0.14em;color:var(--text-dim);font-weight:500;}
+.hero-sub .sep{color:var(--primary);margin:0 10px;}
+.hero-sub .date{color:var(--text-main);}
+
+.divider{margin-top:26px;width:220px;height:2px;background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 60%,transparent 100%);}
+
+.cards{position:absolute;left:72px;top:430px;width:720px;display:flex;flex-direction:column;gap:14px;}
+.card{position:relative;padding:14px 22px 14px 24px;background:var(--card-bg);border-left:3px solid var(--primary);border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);}
+.card .head{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.card .num{font-family:'Inter',sans-serif;font-weight:900;font-size:20px;color:var(--accent);letter-spacing:0.02em;}
+.card .name{font-family:'Inter','Helvetica Neue',sans-serif;font-weight:700;font-size:18px;color:var(--text-main);letter-spacing:0.02em;}
+.card .desc{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.55;color:var(--text-dim);font-weight:400;padding-left:32px;}
+
+.hero-image{position:absolute;right:72px;top:58px;width:700px;height:390px;overflow:hidden;border:1px solid var(--line);}
+.hero-image img{width:100%;height:100%;object-fit:cover;display:block;}
+.hero-image-cap{position:absolute;right:72px;top:460px;width:700px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.28em;color:var(--text-dim);font-weight:500;}
+.hero-image-cap .accent{color:var(--accent);}
+
+.stat-panel{position:absolute;right:72px;top:498px;width:700px;}
+.stat-panel .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.stat-item{padding:12px 14px;background:rgba(33,150,243,0.05);border:1px solid var(--line);}
+.stat-item .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.24em;color:var(--text-dim);font-weight:500;margin-bottom:6px;}
+.stat-item .value{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:var(--text-main);letter-spacing:0.02em;}
+.stat-item .value .hl{color:var(--accent);}
+
+.keywords{position:absolute;right:72px;top:640px;width:700px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.keywords .kw{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--text-dim);padding:5px 10px;border:1px solid var(--line);}
+.keywords .kw.hot{color:var(--accent);border-color:var(--primary);}
+.keywords .kw-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.24em;color:var(--primary);font-weight:600;margin-right:4px;}
+
+.footer{position:absolute;left:72px;right:72px;bottom:46px;display:flex;justify-content:space-between;align-items:flex-end;}
+.footer .left-block{display:flex;align-items:center;gap:22px;}
+.footer .meta{display:flex;flex-direction:column;gap:4px;}
+.footer .meta .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.24em;color:var(--text-dim);font-weight:500;}
+.footer .meta .v{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--text-main);font-weight:600;letter-spacing:0.04em;}
+.footer .meta .v .hl{color:var(--accent);}
+.footer .vline{width:1px;height:36px;background:var(--line);}
+.footer .right-block{display:flex;align-items:center;gap:14px;}
+.footer .right-block .mark{font-family:'Inter',sans-serif;font-weight:900;font-size:14px;color:var(--primary);letter-spacing:0.06em;}
+.footer .right-block .rule{flex:0 0 40px;height:1px;background:linear-gradient(90deg,transparent,var(--primary));}
+.footer .right-block .page{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.24em;color:var(--text-dim);font-weight:500;}
+.footer .right-block .page .hl{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="tag-row">
+      <span class="dot"></span>
+      <span class="tag-text">OPEN SOURCE · READING SHARE</span>
+      <span class="tag-line"></span>
+      <span class="tag-en">/ 001 · COVER</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="l1">黑客伦理</span>
+      <br>
+      <span class="l2">与新造王者</span>
+    </h1>
+
+    <p class="hero-sub">
+      <span class="label">开源之道阅读分享</span><span class="sep">·</span><span class="date">2020年11月</span>
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="head">
+          <span class="num">01</span>
+          <span class="name">主题溯源</span>
+        </div>
+        <p class="desc">从经典黑客伦理出发，审视当代开源运动的精神延续与变革。</p>
+      </div>
+      <div class="card">
+        <div class="head">
+          <span class="num">02</span>
+          <span class="name">记录身份</span>
+        </div>
+        <p class="desc">开源之道·适兕，以阅读分享的形式追溯开源文化的根脉与演进。</p>
+      </div>
+      <div class="card">
+        <div class="head">
+          <span class="num">03</span>
+          <span class="name">版本标识</span>
+        </div>
+        <p class="desc">V3.0 版本，标志着对前序内容的深化与系统性更新。</p>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="../images/page_001_hero.png" alt="暗黑科技抽象背景配图">
+    </div>
+
+    <div class="hero-image-cap">
+      <span>FIG. 001 / ETHICAL MATRIX</span>
+      <span class="accent">/ 2752 × 1536</span>
+    </div>
+
+    <div class="stat-panel">
+      <div class="grid">
+        <div class="stat-item">
+          <div class="label">FOCUS · 01</div>
+          <div class="value">黑客<span class="hl">伦理</span></div>
+        </div>
+        <div class="stat-item">
+          <div class="label">FOCUS · 02</div>
+          <div class="value">开源<span class="hl">之道</span></div>
+        </div>
+        <div class="stat-item">
+          <div class="label">FOCUS · 03</div>
+          <div class="value">新造<span class="hl">王者</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="keywords">
+      <span class="kw-title">KEYWORDS</span>
+      <span class="kw hot">HACKER ETHICS</span>
+      <span class="kw hot">FOSS</span>
+      <span class="kw">OPEN SOURCE</span>
+      <span class="kw">COMMUNITY</span>
+      <span class="kw">V3.0</span>
+    </div>
+
+    <div class="footer">
+      <div class="left-block">
+        <div class="meta">
+          <span class="k">分享时间</span>
+          <span class="v">2020年11月</span>
+        </div>
+        <span class="vline"></span>
+        <div class="meta">
+          <span class="k">内容版本</span>
+          <span class="v"><span class="hl">V3.0</span></span>
+        </div>
+        <span class="vline"></span>
+        <div class="meta">
+          <span class="k">主办社区</span>
+          <span class="v">开源之道</span>
+        </div>
+      </div>
+      <div class="right-block">
+        <span class="mark">CODE / CULTURE</span>
+        <span class="rule"></span>
+        <span class="page"><span class="hl">COVER</span> · 01 / 01</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

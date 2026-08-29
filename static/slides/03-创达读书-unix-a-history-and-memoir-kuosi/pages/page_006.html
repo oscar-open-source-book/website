@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>UNIX的诞生与早期</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+:root{
+  --bg:#0E1319;
+  --bg2:#161D26;
+  --panel:#1B2532;
+  --panel2:#1F2B3A;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --muted:#B0BEC5;
+  --dim:#7890A2;
+  --text:#E6EEF7;
+  --line:rgba(33,150,243,0.28);
+  --glow:rgba(0,229,255,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:#000;}
+body{font-family:'Inter','Noto Sans SC',sans-serif;color:var(--text);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:radial-gradient(1200px 700px at 78% -10%, rgba(33,150,243,0.10), transparent 60%),linear-gradient(180deg,#0B1016 0%,#0E1319 55%,#0A0E14 100%);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(180deg, rgba(33,150,243,0.05), transparent 30%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 3px);
+  pointer-events:none;
+}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 56px 38px 56px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* ---- Header ---- */
+.header{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:16px;}
+.title-wrap{display:flex;flex-direction:column;gap:6px;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.28em;color:var(--accent);text-transform:uppercase;}
+.eyebrow .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);margin-right:10px;vertical-align:1px;animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+h1{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:700;font-size:38px;letter-spacing:-0.5px;color:var(--text);}
+h1 .hl{color:var(--primary);}
+h1 .hl2{color:var(--accent);text-shadow:0 0 18px var(--glow);}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.stamp{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:0.18em;}
+.coord{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);}
+.coord b{color:var(--accent);font-weight:500;}
+
+/* ---- Terminal ---- */
+.terminal{height:292px;background:linear-gradient(180deg,#070A0E 0%, #0A1017 100%);border:1px solid rgba(33,150,243,0.35);border-radius:10px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.terminal::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 4px);pointer-events:none;z-index:3;mix-blend-mode:overlay;}
+.terminal::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 100% at 50% 0%, rgba(33,150,243,0.10), transparent 60%);pointer-events:none;z-index:2;}
+.tbar{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid rgba(33,150,243,0.2);background:rgba(10,16,23,0.7);z-index:4;}
+.tdots{display:flex;gap:7px;}
+.tdots i{width:10px;height:10px;border-radius:50%;display:block;}
+.tdots i:nth-child(1){background:#FF5F57;box-shadow:0 0 6px #FF5F57;}
+.tdots i:nth-child(2){background:#FEBC2E;box-shadow:0 0 6px #FEBC2E;}
+.tdots i:nth-child(3){background:#28C840;box-shadow:0 0 6px #28C840;}
+.ttitle{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:0.05em;}
+.ttitle b{color:var(--accent);font-weight:500;}
+.tpath{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:0.08em;}
+.tbody{flex:1;padding:14px 20px 10px 20px;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.7;color:var(--muted);z-index:4;overflow:hidden;}
+.tbody .prompt{color:#28C840;font-weight:500;}
+.tbody .user{color:var(--accent);}
+.tbody .cmd{color:var(--text);}
+.tbody .flag{color:#FEBC2E;}
+.tbody .str{color:#FF9800;}
+.tbody .ok{color:#28C840;}
+.tbody .info{color:var(--dim);}
+.tbody .key{color:var(--primary);}
+.tbody .dim{color:#5A6E82;}
+.tbody .row{white-space:pre;}
+.cursor{display:inline-block;width:8px;height:15px;background:var(--accent);vertical-align:-2px;margin-left:2px;box-shadow:0 0 8px var(--accent);animation:blink 1s infinite;}
+.term-footer{display:flex;align-items:center;justify-content:space-between;padding:6px 20px;border-top:1px solid rgba(33,150,243,0.18);background:rgba(8,12,18,0.6);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:0.05em;z-index:4;}
+.term-footer .ok{color:#28C840;}
+.term-footer .blue{color:var(--primary);}
+.term-footer .cy{color:var(--accent);}
+
+/* ---- Narrative ---- */
+.narrative{margin-top:14px;display:flex;align-items:center;gap:18px;padding:14px 22px;background:linear-gradient(90deg, rgba(33,150,243,0.12), rgba(0,229,255,0.04) 60%, transparent);border-left:3px solid var(--primary);border-radius:4px;}
+.narr-icon{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;color:var(--accent);line-height:1;text-shadow:0 0 14px var(--glow);}
+.narr-text{font-family:'Inter','Noto Sans SC',sans-serif;font-size:14.5px;line-height:1.65;color:var(--text);}
+.narr-text .em{color:var(--accent);font-weight:600;}
+.narr-text .em2{color:var(--primary);font-weight:600;}
+.narr-text .dim{color:var(--muted);}
+
+/* ---- KPI cards ---- */
+.kpi-row{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.kpi{position:relative;background:linear-gradient(160deg,#18222F 0%,#111821 100%);border:1px solid var(--line);border-radius:8px;padding:14px 18px 12px 22px;display:flex;align-items:center;gap:16px;overflow:hidden;}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.kpi::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.15),transparent 70%);pointer-events:none;}
+.kpi-icon{width:54px;height:54px;flex:0 0 54px;border-radius:8px;background:rgba(33,150,243,0.14);border:1px solid rgba(33,150,243,0.35);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--accent);font-size:22px;letter-spacing:-1px;}
+.kpi-body{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0;}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--dim);letter-spacing:0.18em;text-transform:uppercase;}
+.kpi-value{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:600;font-size:18px;color:var(--text);}
+.kpi-value .big{color:var(--accent);font-size:22px;}
+.kpi-sub{font-size:11.5px;color:var(--muted);line-height:1.4;}
+
+/* ---- Four points ---- */
+.points{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;}
+.point{display:flex;align-items:flex-start;gap:12px;padding:10px 14px 10px 14px;background:rgba(24,34,48,0.55);border:1px solid rgba(33,150,243,0.16);border-radius:6px;position:relative;}
+.pnum{flex:0 0 34px;display:flex;flex-direction:column;align-items:center;gap:2px;padding-top:1px;}
+.pnum .bar{width:3px;height:18px;background:var(--primary);box-shadow:0 0 6px rgba(33,150,243,0.6);}
+.pnum .n{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;color:var(--accent);}
+.pbody{flex:1;min-width:0;}
+.ptitle{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:600;font-size:14px;color:var(--text);margin-bottom:3px;display:flex;align-items:center;gap:8px;}
+.ptitle .tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--dim);border:1px solid rgba(176,190,197,0.25);padding:1px 6px;border-radius:3px;letter-spacing:0.08em;font-weight:400;}
+.ptext{font-size:12px;color:var(--muted);line-height:1.55;}
+.ptext .cy{color:var(--accent);font-family:'JetBrains Mono',monospace;font-weight:500;}
+.ptext .bl{color:var(--primary);font-weight:500;}
+
+/* ---- Footer bar ---- */
+.footer{margin-top:10px;display:flex;align-items:center;justify-content:space-between;padding:6px 10px 0 10px;border-top:1px dashed rgba(33,150,243,0.18);}
+.ftext{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--dim);letter-spacing:0.1em;}
+.ftext .cy{color:var(--accent);}
+.ftext .bl{color:var(--primary);}
+.fdots{display:flex;gap:6px;}
+.fdots i{width:18px;height:3px;background:rgba(176,190,197,0.25);display:block;border-radius:1px;}
+.fdots i.on{background:var(--accent);box-shadow:0 0 6px var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-wrap">
+        <div class="eyebrow"><span class="dot"></span>CHAPTER 01 · ORIGIN LOG · 1969</div>
+        <h1>UNIX <span class="hl">的诞生</span>与<span class="hl2">早期</span></h1>
+      </div>
+      <div class="header-right">
+        <div class="stamp">BEL Labs · Murray Hill, NJ</div>
+        <div class="coord"><b>01111010</b> &nbsp;/&nbsp; PDP-7 &nbsp;/&nbsp; V1</div>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="tbar">
+        <div class="tdots"><i></i><i></i><i></i></div>
+        <div class="ttitle"><b>pdp7</b> — /usr/rsc/mts — 80×24</div>
+        <div class="tpath">login: <span style="color:var(--accent)">ken</span> @ pdp-7</div>
+      </div>
+      <div class="tbody">
+<div class="row"><span class="info">DEC PDP-7 terminal ready  —  09 Aug 1969  02:14:07</span></div>
+<div class="row"><span class="prompt"><span class="user">thompson@pdp7</span>:<span class="dim">/usr/src</span>$ </span><span class="cmd">ls -la</span></div>
+<div class="row"><span class="info">drwxr-xr-x  4  sys  sys     1024  1969-08-09  bin</span></div>
+<div class="row"><span class="info">drwxr-xr-x  2  sys  sys      512  1969-08-09  <span class="ok">libc.a</span></span></div>
+<div class="row"><span class="info">-rwxr-xr-x  1  ken  sys    42176  1969-08-09  <span class="ok">ed</span></span></div>
+<div class="row"><span class="info">-rwxr-xr-x  1  ken  sys     1216  1969-08-09  <span class="ok">sh</span></span></div>
+<div class="row"><span class="prompt"><span class="user">ken@pdp7</span>:<span class="dim">/usr/src</span>$ </span><span class="cmd">whoami</span> <span class="dim"># 从一台退役机器上萌芽</span></div>
+<div class="row"><span class="ok">root_of_unix</span></div>
+<div class="row"><span class="prompt"><span class="user">ken@pdp7</span>:<span class="dim">/usr/src</span>$ </span><span class="cmd">cat </span><span class="str">/etc/motd</span></div>
+<div class="row"><span class="key">UNIX</span><span class="dim"> &lt;— </span><span class="ok">not another MULTICS.</span></div>
+<div class="row"><span class="dim">  a small kernel, a shared file system, and one idea:</span></div>
+<div class="row"><span class="dim">  <span class="cy">"write everything in C"</span>   # 1973</span></div>
+<div class="row"><span class="prompt"><span class="user">ken@pdp7</span>:<span class="dim">/usr/src</span>$ </span><span class="cursor"></span></div>
+      </div>
+      <div class="term-footer">
+        <span><span class="ok">●</span> connected</span>
+        <span>mem <span class="blue">8K</span> · tty <span class="cy">pt2</span> · v1</span>
+        <span>UPTIME <span class="cy">00:00:00</span> · BOOT 1969-08-09</span>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="narr-icon">$</div>
+      <div class="narr-text">
+        UNIX 的故事始于一场<span class="em">失败</span>——<span class="dim">Multics 项目的崩溃</span>反而为贝尔实验室留下了一群才华横溢却无项目可做的工程师。正是这段空窗期，让 <span class="em2">Ritchie 与 Thompson</span> 在一台退役的 <span class="em">PDP-7</span> 上，做出了<span class="em2">改变计算史</span>的决定。
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-icon">'69</div>
+        <div class="kpi-body">
+          <div class="kpi-label">BIRTH YEAR · 诞生年份</div>
+          <div class="kpi-value"><span class="big">1969</span> &nbsp;·&nbsp; 第一版 UNIX</div>
+          <div class="kpi-sub">V1 于 1969 年 8 月在 PDP-7 上首次运行</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon">DEC</div>
+        <div class="kpi-body">
+          <div class="kpi-label">HARDWARE · 初版机器</div>
+          <div class="kpi-value"><span class="big">PDP-7</span> &nbsp;·&nbsp; DEC 迷你计算机</div>
+          <div class="kpi-sub">8K 字内存 · 18 位字长 · 退役后重获新生</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon">C</div>
+        <div class="kpi-body">
+          <div class="kpi-label">LANGUAGE · 语言选择</div>
+          <div class="kpi-value"><span class="big">C</span> &nbsp;·&nbsp; 1973 年重写</div>
+          <div class="kpi-sub">用 C 重写内核 · 赋予 UNIX 前所未有的可移植性</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="points">
+      <div class="point">
+        <div class="pnum"><span class="bar"></span><span class="n">01</span></div>
+        <div class="pbody">
+          <div class="ptitle"><span>Multics 失败</span><span class="tag">1960s</span></div>
+          <div class="ptext">IBM-GE 联合项目<span class="bl">规模失控</span>，贝尔实验室退出后，把<span class="cy">进程、分时、文件系统</span>等理念作为技术遗产留下。</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum"><span class="bar"></span><span class="n">02</span></div>
+        <div class="pbody">
+          <div class="ptitle"><span>PDP-7 实验</span><span class="tag">1969</span></div>
+          <div class="ptext">Ritchie 与 Thompson 在一台<span class="bl">退役 PDP-7</span> 上重建<span class="cy">文件系统与编辑器</span>，成为 UNIX 的最初雏形。</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum"><span class="bar"></span><span class="n">03</span></div>
+        <div class="pbody">
+          <div class="ptitle"><span>多用户设计</span><span class="tag">CORE</span></div>
+          <div class="ptext">从诞生之初即追求<span class="bl">多用户、多任务</span>能力，奠定现代操作系统的<span class="cy">核心范式</span>。</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="pnum"><span class="bar"></span><span class="n">04</span></div>
+        <div class="pbody">
+          <div class="ptitle"><span>C 语言绑定</span><span class="tag">1973</span></div>
+          <div class="ptext">用 C 重写内核，使 UNIX 获得<span class="bl">前所未有的可移植性</span>，成为其<span class="cy">长寿的基石</span>。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="ftext">// <span class="cy">log:1969</span> · unix · <span class="bl">"portability is survival"</span></span>
+      <span class="fdots"><i class="on"></i><i></i><i></i><i></i></span>
+      <span class="ftext">01 / 04 &nbsp; <span class="cy">·</span> &nbsp; UNIX · ORIGIN</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

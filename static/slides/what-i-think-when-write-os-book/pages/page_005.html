@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>创作心得与方法</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #00BCD4;
+  --primary-dim: rgba(0,188,212,0.4);
+  --primary-soft: rgba(0,188,212,0.12);
+  --accent: #FF7043;
+  --neutral: #ECEFF1;
+  --bg-dark: #0A1628;
+  --bg-card: #0F1F35;
+  --text-main: #ECEFF1;
+  --text-sub: rgba(236, 239, 241, 0.6);
+  --text-dim: rgba(236, 239, 241, 0.35);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #0A1628;
+  overflow: hidden;
+}
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.bg-glow {
+  position: absolute;
+  top: -250px;
+  right: -200px;
+  width: 750px;
+  height: 750px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.13) 0%, transparent 65%);
+}
+.bg-glow-2 {
+  position: absolute;
+  bottom: -280px;
+  left: -180px;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,112,67,0.07) 0%, transparent 65%);
+}
+.bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(0,188,212,0.22) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,112,67,0.18) 1px, transparent 1px);
+  background-size: 130px 130px, 190px 190px;
+  background-position: 0 0, 65px 65px;
+  opacity: 0.45;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  margin-bottom: 16px;
+}
+.chapter-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.chapter-tag .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--primary);
+}
+.top-line {
+  flex: 1;
+  height: 1px;
+  margin: 0 28px;
+  background: linear-gradient(90deg, transparent, var(--primary-dim) 35%, var(--primary-dim) 65%, transparent);
+  position: relative;
+}
+.top-line::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+.top-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+.main-area {
+  flex: 1;
+  display: flex;
+  gap: 40px;
+  margin-bottom: 16px;
+  min-height: 0;
+}
+.left-col {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  flex-shrink: 0;
+}
+.left-col::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--primary) 0%, var(--primary) 35%, rgba(0,188,212,0.1) 100%);
+  box-shadow: 0 0 10px var(--primary);
+}
+.left-content {
+  padding-left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+.big-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 76px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(0,188,212,0.25);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.big-number .slash {
+  color: var(--accent);
+  font-weight: 500;
+}
+.big-number .total {
+  color: var(--text-dim);
+  font-size: 32px;
+  font-weight: 400;
+}
+.main-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--neutral);
+  line-height: 1.25;
+  letter-spacing: 2px;
+}
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text-sub);
+  line-height: 1.75;
+  max-width: 420px;
+}
+.title-divider {
+  width: 56px;
+  height: 2px;
+  background: var(--primary);
+  margin: 2px 0;
+  box-shadow: 0 0 8px var(--primary);
+}
+.tag-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--primary);
+  border: 1px solid var(--primary-dim);
+  padding: 5px 12px;
+  border-radius: 2px;
+  letter-spacing: 1.5px;
+  background: rgba(0,188,212,0.04);
+}
+
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.image-frame {
+  width: 895px;
+  height: 500px;
+  border: 1px solid rgba(0,188,212,0.28);
+  padding: 8px;
+  background: rgba(15, 31, 53, 0.55);
+  position: relative;
+  box-shadow: 0 0 50px rgba(0,188,212,0.08), inset 0 0 60px rgba(0,188,212,0.02);
+}
+.image-frame::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 22px;
+  height: 22px;
+  border-top: 2px solid var(--primary);
+  border-left: 2px solid var(--primary);
+}
+.image-frame::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 22px;
+  height: 22px;
+  border-bottom: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
+}
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.image-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2.5px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 895px;
+}
+.image-caption .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary-dim));
+}
+.image-caption .line.right {
+  background: linear-gradient(90deg, var(--primary-dim), transparent);
+}
+
+.bottom-section {
+  height: 164px;
+  display: flex;
+  gap: 18px;
+  border-top: 1px solid rgba(0,188,212,0.22);
+  padding-top: 22px;
+  position: relative;
+}
+.bottom-section::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100px;
+  height: 1px;
+  background: var(--primary);
+  box-shadow: 0 0 6px var(--primary);
+}
+.point-card {
+  flex: 1;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 12px 20px;
+  background: rgba(15, 31, 53, 0.5);
+  border-left: 2px solid var(--primary);
+}
+.point-card .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+  min-width: 44px;
+}
+.point-card .content {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.point-card .title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--neutral);
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.point-card .title .mark {
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  box-shadow: 0 0 6px var(--primary);
+}
+.point-card.accent {
+  border-left-color: var(--accent);
+}
+.point-card.accent .num {
+  color: var(--accent);
+}
+.point-card.accent .title .mark {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+.point-card .desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--text-sub);
+  line-height: 1.65;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-dots"></div>
+  </div>
+  <div id="ct">
+    <div class="top-bar">
+      <div class="chapter-tag">
+        <span class="dot"></span>
+        <span>章节 · 04</span>
+      </div>
+      <div class="top-line"></div>
+      <div class="top-meta">
+        <span>创作 · 方法 · 流程</span>
+      </div>
+    </div>
+
+    <div class="main-area">
+      <div class="left-col">
+        <div class="left-content">
+          <div class="big-number">
+            <span>04</span><span class="slash">/</span><span class="total">10</span>
+          </div>
+          <div class="title-divider"></div>
+          <h1 class="main-title"><span>创作心得<br>与方法</span></h1>
+          <div class="subtitle"><span>写作的过程、工具与组织逻辑</span></div>
+          <div class="tag-row">
+            <span class="tag"><span>流程</span></span>
+            <span class="tag"><span>工具</span></span>
+            <span class="tag"><span>架构</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="image-frame">
+          <img src="../images/page_005_section_flow.png" alt="三条发光青蓝流程线从左侧进入画面，各自纹理和强度不同，逐渐汇聚到右侧一个明亮发光节点的示意图">
+        </div>
+        <div class="image-caption">
+          <span class="line"></span>
+          <span>多线并行 · 汇聚成流 · 统一产出</span>
+          <span class="line right"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="point-card">
+        <div class="num"><span>01</span></div>
+        <div class="content">
+          <div class="title"><span class="mark"></span><span>写作节奏</span></div>
+          <div class="desc"><span>如何在工作之余保持稳定的输出节奏，避免热情耗尽。</span></div>
+        </div>
+      </div>
+      <div class="point-card accent">
+        <div class="num"><span>02</span></div>
+        <div class="content">
+          <div class="title"><span class="mark"></span><span>工具链选型</span></div>
+          <div class="desc"><span>从 Markdown 编辑器到版本管理，选择适配开源写作流程的工具。</span></div>
+        </div>
+      </div>
+      <div class="point-card">
+        <div class="num"><span>03</span></div>
+        <div class="content">
+          <div class="title"><span class="mark"></span><span>内容架构</span></div>
+          <div class="desc"><span>如何设计书籍的章节结构与知识递进关系。</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源的商业与经济学</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #0d1421;
+  --bg-2: #101a2c;
+  --panel: #2D3748;
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --text: #F5F7FA;
+  --muted: #A0AECC;
+  --line: rgba(33,150,243,0.28);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 1600px; height: 900px; overflow: hidden;
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.wrapper { position: relative; width: 1600px; height: 900px; overflow: hidden; margin: 0 auto; }
+
+#bg { position: absolute; inset: 0; z-index: 0; }
+#bg .base {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 38%, #1a2a48 0%, #0d1421 55%, #060b14 100%);
+}
+#bg .grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.10) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 900px 700px at 50% 45%, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.35) 70%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 900px 700px at 50% 45%, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.35) 70%, transparent 100%);
+}
+#bg .grid-fine {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.05) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.6;
+}
+#bg .glow-1 {
+  position: absolute; left: -200px; top: -160px;
+  width: 620px; height: 620px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.32) 0%, rgba(33,150,243,0) 65%);
+  filter: blur(10px);
+}
+#bg .glow-2 {
+  position: absolute; right: -180px; bottom: -220px;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.28) 0%, rgba(0,188,212,0) 65%);
+  filter: blur(10px);
+}
+#bg .stars { position: absolute; inset: 0; }
+#bg .stars i {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: #fff; opacity: 0.7;
+  box-shadow: 0 0 4px #fff, 0 0 8px rgba(33,150,243,0.6);
+}
+
+#ct { position: absolute; inset: 0; z-index: 1; padding: 46px 70px; display: flex; flex-direction: column; }
+
+/* ===== Header row: brand + corner tags ===== */
+.top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 30px; }
+
+.brand { display: flex; align-items: center; gap: 16px; }
+.brand-mark {
+  width: 54px; height: 54px;
+  border: 1.5px solid var(--primary);
+  background: linear-gradient(135deg, rgba(33,150,243,0.25), rgba(0,188,212,0.15));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 20px; color: #fff;
+  position: relative; letter-spacing: 0;
+}
+.brand-mark::after {
+  content: ''; position: absolute; inset: 6px;
+  border: 1px solid rgba(0,188,212,0.5);
+}
+.brand-text .title-cn { font-size: 17px; font-weight: 600; letter-spacing: 4px; color: #fff; }
+.brand-text .sub-en { font-size: 10.5px; color: var(--cyan); letter-spacing: 3.5px; margin-top: 4px; font-weight: 500; }
+
+.corner-tags { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+.tag {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 11px 20px;
+  border: 1px solid var(--line);
+  background: rgba(45,55,72,0.55);
+  backdrop-filter: blur(6px);
+  font-size: 13px; letter-spacing: 1px; color: #dbe6f5;
+  position: relative;
+}
+.tag::before {
+  content: ''; width: 8px; height: 8px;
+  background: var(--cyan); border-radius: 50%;
+  box-shadow: 0 0 12px var(--cyan);
+}
+.tag .k { color: var(--muted); font-size: 11px; letter-spacing: 2.5px; padding-right: 12px; border-right: 1px solid rgba(255,255,255,0.15); }
+.tag .v { color: #fff; font-weight: 600; }
+
+/* ===== Hero: title + subtitle ===== */
+.hero { text-align: center; margin-top: 34px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 16px;
+  color: var(--cyan); font-size: 13px; letter-spacing: 6.5px;
+  font-weight: 500; margin-bottom: 18px;
+}
+.eyebrow .dot { width: 8px; height: 8px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 12px var(--cyan); }
+.eyebrow .bar { width: 40px; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan)); }
+
+h1 {
+  font-size: 104px; font-weight: 800;
+  letter-spacing: 10px; line-height: 1.08;
+  color: #fff;
+  background: linear-gradient(180deg, #ffffff 0%, #b9dcff 60%, #4f9be8 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 60px rgba(33,150,243,0.2);
+  margin-bottom: 26px;
+  position: relative;
+}
+h1 .amp {
+  color: var(--cyan);
+  -webkit-text-fill-color: var(--cyan);
+  font-weight: 300; font-style: italic;
+  padding: 0 8px;
+}
+
+.subtitle-wrap { display: flex; align-items: center; justify-content: center; gap: 22px; }
+.subtitle-wrap .line {
+  height: 1px; width: 90px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+.subtitle {
+  font-size: 22px; letter-spacing: 5.5px;
+  color: #cfd8e3; font-weight: 300;
+}
+.subtitle b { color: var(--cyan); font-weight: 600; }
+
+.tagline { margin-top: 16px; font-size: 13px; color: var(--muted); letter-spacing: 3px; font-weight: 300; }
+
+/* ===== Three pillars ===== */
+.pillars {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 22px; margin-top: 38px;
+}
+.pillar {
+  position: relative;
+  padding: 22px 24px 22px;
+  background: linear-gradient(180deg, rgba(45,55,72,0.72) 0%, rgba(15,22,36,0.85) 100%);
+  border: 1px solid rgba(33,150,243,0.22);
+  border-top: 1px solid rgba(33,150,243,0.5);
+}
+.pillar::before {
+  content: ''; position: absolute; top: -1px; left: 0; width: 55px; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+.pillar::after {
+  content: ''; position: absolute; bottom: -1px; right: 0; width: 55px; height: 2px;
+  background: linear-gradient(-90deg, var(--primary), var(--cyan));
+}
+.pillar-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 12px; }
+.pillar-num {
+  font-family: 'Inter', monospace;
+  font-size: 34px; font-weight: 800;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0;
+}
+.pillar-title-cn { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: 2.5px; }
+.pillar-title-en { font-size: 10.5px; color: var(--muted); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 2px; }
+.pillar-desc { font-size: 13.5px; color: #c8d4e8; line-height: 1.75; letter-spacing: 0.5px; }
+.pillar-desc b { color: var(--cyan); font-weight: 600; }
+
+/* ===== Bottom row ===== */
+.bottom-row {
+  margin-top: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 22px;
+  border-top: 1px solid rgba(33,150,243,0.18);
+  gap: 30px;
+}
+.meta-card {
+  display: flex; align-items: center; gap: 14px;
+  flex: 1;
+}
+.meta-icon {
+  width: 40px; height: 40px;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', monospace;
+  font-size: 12px; font-weight: 700; color: var(--cyan);
+  background: rgba(33,150,243,0.08);
+  flex-shrink: 0;
+}
+.meta-body .mk { font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; }
+.meta-body .mv { font-size: 15px; color: #fff; letter-spacing: 1px; font-weight: 600; margin-top: 3px; }
+
+.right-side { display: flex; align-items: center; gap: 26px; }
+.penguin {
+  position: relative; width: 82px; height: 96px;
+  flex-shrink: 0;
+}
+.penguin .body {
+  position: absolute; left: 8px; top: 4px;
+  width: 66px; height: 80px;
+  background: linear-gradient(180deg, #142238 0%, #0b1220 100%);
+  border: 1.5px solid rgba(0,188,212,0.55);
+  border-radius: 50% 50% 45% 45% / 42% 42% 55% 55%;
+  box-shadow: 0 0 22px rgba(0,188,212,0.28);
+}
+.penguin .eye-l, .penguin .eye-r {
+  position: absolute; width: 9px; height: 9px; background: #0a0f1a;
+  border-radius: 50%; top: 22px;
+  border: 1.5px solid rgba(0,188,212,0.6);
+}
+.penguin .eye-l { left: 26px; }
+.penguin .eye-r { right: 26px; }
+.penguin .eye-l::after, .penguin .eye-r::after {
+  content: ''; position: absolute; width: 3px; height: 3px; background: var(--cyan);
+  border-radius: 50%; top: 1px; right: 1px; box-shadow: 0 0 4px var(--cyan);
+}
+.penguin .beak {
+  position: absolute; top: 34px; left: 50%; transform: translateX(-50%);
+  width: 16px; height: 9px; background: var(--cyan);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  box-shadow: 0 0 10px rgba(0,188,212,0.7);
+}
+.penguin .belly {
+  position: absolute; top: 46px; left: 50%; transform: translateX(-50%);
+  width: 36px; height: 30px;
+  background: linear-gradient(180deg, rgba(0,188,212,0.2), rgba(33,150,243,0.15));
+  border-radius: 50% 50% 55% 55% / 45% 45% 60% 60%;
+  border: 1px solid rgba(0,188,212,0.28);
+}
+.penguin .foot-l, .penguin .foot-r {
+  position: absolute; bottom: -2px; width: 20px; height: 8px;
+  background: var(--cyan); opacity: 0.85;
+  clip-path: polygon(0 60%, 100% 60%, 90% 100%, 10% 100%);
+}
+.penguin .foot-l { left: 18px; }
+.penguin .foot-r { right: 18px; }
+
+.code-panel {
+  border: 1px solid rgba(33,150,243,0.35);
+  background: rgba(13,20,33,0.85);
+  padding: 12px 16px 12px 18px;
+  font-family: 'Inter', monospace;
+  font-size: 11.5px; line-height: 1.7;
+  color: #b8c8e0;
+  position: relative;
+  min-width: 250px;
+  letter-spacing: 0.5px;
+}
+.code-panel .tag { font-size: 9.5px; color: var(--muted); letter-spacing: 2px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; padding: 0; border: 0; background: transparent; }
+.code-panel .tag::before { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 6px var(--cyan); content: ''; display: inline-block; }
+.code-panel .k { color: var(--primary); }
+.code-panel .s { color: var(--cyan); }
+.code-panel .c { color: #68779a; font-style: italic; }
+.code-panel .p { color: #dbe6f5; }
+
+/* decorative corner brackets */
+.corner { position: absolute; width: 26px; height: 26px; z-index: 2; }
+.corner::before, .corner::after { content: ''; position: absolute; background: var(--primary); }
+.corner.tl { top: 22px; left: 22px; }
+.corner.tl::before { top: 0; left: 0; width: 26px; height: 1.5px; }
+.corner.tl::after { top: 0; left: 0; width: 1.5px; height: 26px; }
+.corner.tr { top: 22px; right: 22px; }
+.corner.tr::before { top: 0; right: 0; width: 26px; height: 1.5px; }
+.corner.tr::after { top: 0; right: 0; width: 1.5px; height: 26px; }
+.corner.bl { bottom: 22px; left: 22px; }
+.corner.bl::before { bottom: 0; left: 0; width: 26px; height: 1.5px; }
+.corner.bl::after { bottom: 0; left: 0; width: 1.5px; height: 26px; }
+.corner.br { bottom: 22px; right: 22px; }
+.corner.br::before { bottom: 0; right: 0; width: 26px; height: 1.5px; }
+.corner.br::after { bottom: 0; right: 0; width: 1.5px; height: 26px; }
+
+/* floating particles */
+.particle {
+  position: absolute; width: 4px; height: 4px;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  border-radius: 50%;
+  opacity: 0.8;
+  z-index: 1;
+}
+.particle.b { background: var(--primary); box-shadow: 0 0 8px var(--primary); }
+.particle.s { width: 3px; height: 3px; opacity: 0.6; }
+
+/* bottom left mini label */
+.folio {
+  position: absolute; left: 30px; bottom: 32px;
+  z-index: 2;
+  font-family: 'Inter', monospace;
+  font-size: 10px; color: var(--muted); letter-spacing: 2.5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.folio::before { content: ''; width: 22px; height: 1px; background: var(--primary); }
+
+.folio-r {
+  position: absolute; right: 30px; bottom: 32px;
+  z-index: 2;
+  font-family: 'Inter', monospace;
+  font-size: 10px; color: var(--muted); letter-spacing: 2.5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.folio-r::after { content: ''; width: 22px; height: 1px; background: var(--cyan); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div id="bg">
+    <div class="base"></div>
+    <div class="grid-fine"></div>
+    <div class="grid"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="stars">
+      <i style="left:8%;top:12%;"></i>
+      <i style="left:15%;top:30%;opacity:0.4;"></i>
+      <i style="left:22%;top:8%;opacity:0.5;"></i>
+      <i style="left:88%;top:15%;"></i>
+      <i style="left:92%;top:40%;opacity:0.5;"></i>
+      <i style="left:78%;top:75%;opacity:0.4;"></i>
+      <i style="left:6%;top:68%;opacity:0.5;"></i>
+      <i style="left:12%;top:88%;"></i>
+      <i style="left:95%;top:82%;opacity:0.6;"></i>
+      <i style="left:45%;top:6%;opacity:0.4;"></i>
+      <i style="left:60%;top:92%;opacity:0.5;"></i>
+    </div>
+  </div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="particle" style="left:12%;top:22%;"></div>
+  <div class="particle b" style="left:18%;top:58%;"></div>
+  <div class="particle s" style="left:8%;top:78%;"></div>
+  <div class="particle" style="left:88%;top:24%;"></div>
+  <div class="particle b" style="left:82%;top:52%;"></div>
+  <div class="particle s" style="left:95%;top:64%;"></div>
+
+  <div id="ct">
+
+    <div class="top-row">
+      <div class="brand">
+        <div class="brand-mark">⟨/⟩</div>
+        <div class="brand-text">
+          <div class="title-cn">开源 · 经济学分享</div>
+          <div class="sub-en">OPEN SOURCE · ECONOMICS SHARING</div>
+        </div>
+      </div>
+
+      <div class="corner-tags">
+        <div class="tag"><span class="k">SHARING DATE</span><span class="v">分享时间　2023 年 9 月</span></div>
+        <div class="tag"><span class="k">CORE THEME</span><span class="v">核心主题　Linux 与 OSS 经济学</span></div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="eyebrow"><span class="bar"></span><span class="dot"></span><span>OPEN SOURCE &nbsp;·&nbsp; ECONOMICS &nbsp;·&nbsp; 2023</span><span class="dot"></span><span class="bar"></span></div>
+      <h1>开源的商业<span class="amp">与</span>经济学</h1>
+      <div class="subtitle-wrap">
+        <span class="line"></span>
+        <div class="subtitle">2023-09　·　<b>Linux</b> 与开源软件的价值重塑</div>
+        <span class="line"></span>
+      </div>
+      <div class="tagline">A BUSINESS-PERSPECTIVE READING OF GLOBAL DIGITAL INFRASTRUCTURE</div>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-num">01</div>
+          <div>
+            <div class="pillar-title-cn">开源之书记录</div>
+            <div class="pillar-title-en">ARCHIVE &amp; SOURCE</div>
+          </div>
+        </div>
+        <div class="pillar-desc">本次分享基于 <b>2023 年 9 月</b>的开源布道资料整理而成，回溯开源社区的历史坐标与关键节点。</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-num">02</div>
+          <div>
+            <div class="pillar-title-cn">主题聚焦</div>
+            <div class="pillar-title-en">FOCUS &amp; FRAME</div>
+          </div>
+        </div>
+        <div class="pillar-desc">探索 <b>Linux 与开源软件</b>背后的商业模型与经济学逻辑，拆解免费供给背后的价值流转机制。</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-num">03</div>
+          <div>
+            <div class="pillar-title-cn">分享脉络</div>
+            <div class="pillar-title-en">NARRATIVE &amp; FLOW</div>
+          </div>
+        </div>
+        <div class="pillar-desc">从<b>历史演进、商业模式、生态价值</b>到未来趋势逐层展开，勾勒一条清晰的分析主线。</div>
+      </div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="meta-card">
+        <div class="meta-icon">09 / 23</div>
+        <div class="meta-body">
+          <div class="mk">SESSION</div>
+          <div class="mv">基于商业视角的开源经济学专题分享</div>
+        </div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-icon">4 · 层</div>
+        <div class="meta-body">
+          <div class="mk">DEPTH</div>
+          <div class="mv">历史 · 商业 · 生态 · 趋势</div>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div class="code-panel">
+          <div class="tag">TALKING POINTS</div>
+          <div><span class="c">// 全球数字基础设施</span></div>
+          <div><span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="s">layer</span> <span class="k">of</span> <span class="s">oss</span><span class="p">) {</span></div>
+          <div>&nbsp;&nbsp;<span class="s">value</span> <span class="p">=</span> <span class="s">economics</span><span class="p">(</span><span class="s">layer</span><span class="p">)</span><span class="p">;</span></div>
+          <div><span class="p">}</span></div>
+        </div>
+
+        <div class="penguin">
+          <div class="body"></div>
+          <div class="belly"></div>
+          <div class="eye-l"></div>
+          <div class="eye-r"></div>
+          <div class="beak"></div>
+          <div class="foot-l"></div>
+          <div class="foot-r"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="folio">TALK · 2023 · OPEN SOURCE ECONOMICS</div>
+  <div class="folio-r">COVER · 01 / OPENING</div>
+
+</div>
+</body>
+</html>
