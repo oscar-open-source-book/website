@@ -5,149 +5,211 @@
 <head>
 <meta charset="UTF-8">
 <title>开源精神的四个原点</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Noto+Serif+SC:wght@600;700;900&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="../assets/echarts.min.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
 :root{
-  --wine:#880E4F;
+  --bg:#F7F3EC;
+  --paper:#FBF8F2;
+  --primary:#880E4F;
+  --primary-dark:#6B0A3E;
   --gold:#C9A227;
-  --gold-deep:#A98A20;
-  --cream:#F7F3EC;
-  --ink:#2B1F23;
-  --gray:#6E5F52;
-  --line:rgba(136,14,79,.20);
-  --rule:rgba(136,14,79,.45);
+  --gold-deep:#A88420;
+  --ink:#2A2320;
+  --ink-soft:#4A4038;
+  --muted:#8A8178;
+  --hair:#DDD6C7;
+  --hair-strong:#C7BFAE;
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{font-family:'Source Sans 3','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ink);font-size:16px;line-height:1.5}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream)}
-#bg{position:absolute;inset:0;z-index:0;pointer-events:none}
-#bg::before{content:'';position:absolute;top:34px;left:0;right:0;height:2px;background:var(--gold);opacity:.55}
-#bg::after{content:'';position:absolute;bottom:34px;left:0;right:0;height:1px;background:var(--wine);opacity:.18}
-#bg .bg-corner{position:absolute;top:60px;right:60px;width:108px;height:108px;border:1px solid rgba(201,162,39,.35)}
-#bg .bg-corner::before{content:'';position:absolute;inset:8px;border:1px solid rgba(201,162,39,.20)}
-#bg .bg-mark{position:absolute;bottom:44px;right:72px;font-family:'Playfair Display','Noto Serif SC',serif;font-size:11px;letter-spacing:5px;color:rgba(136,14,79,.5);font-style:italic}
-#ct{position:absolute;inset:0;z-index:1;padding:54px 60px 50px}
 
-.head{display:flex;flex-direction:column}
-.kicker{font-size:11.5px;letter-spacing:5.5px;color:var(--gold-deep);font-weight:600;text-transform:uppercase;margin-bottom:12px}
-.title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:52px;font-weight:800;color:var(--wine);line-height:1.05;letter-spacing:1px;margin:0}
-.intro{font-size:15.5px;line-height:1.75;color:var(--ink);max-width:1480px;margin-top:16px}
-.intro strong{color:var(--wine);font-weight:700;font-family:'Playfair Display','Noto Serif SC',serif}
-.divider{display:flex;align-items:center;gap:14px;margin-top:16px}
-.divider .dot{width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0}
-.divider .line{flex:1;height:1px;background:var(--gold);opacity:.55}
-.divider .side{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:var(--gold-deep);letter-spacing:3px}
+*{margin:0;padding:0;box-sizing:border-box;}
 
-.quad-wrap{margin-top:18px;height:452px;position:relative}
-.quad-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:100%;border-left:1px solid rgba(201,162,39,.42)}
-.quad-row{display:contents}
-.quad-row:nth-child(1) .q-item:nth-child(1),
-.quad-row:nth-child(1) .q-item:nth-child(2){border-bottom:1px solid var(--line)}
-.q-item:nth-child(2){border-left:1px solid rgba(201,162,39,.42)}
+html,body{background:var(--bg);}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
 
-.q-item{padding:22px 32px 18px;display:flex;flex-direction:column}
-.q-head{display:flex;gap:22px;align-items:flex-start}
-.q-badge{width:66px;height:66px;border-radius:50%;background:var(--gold);border:1px solid var(--gold-deep);box-shadow:inset 0 0 0 4px var(--cream),inset 0 0 0 5px rgba(169,138,32,.55);color:#3A2A10;font-family:'Playfair Display','Noto Serif SC',serif;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:0;line-height:1}
-.q-content{flex:1;min-width:0}
-.q-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:26px;font-weight:700;color:var(--wine);margin:0 0 10px 0;letter-spacing:.5px;line-height:1.15}
-.q-desc{font-size:15px;line-height:1.72;color:#3A2A2E;margin:0}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
 
-.footer-section{margin-top:20px;height:126px;display:flex;flex-direction:column}
-.footer-top{display:flex;align-items:center;gap:16px}
-.footer-top .line{flex:1;height:1px;background:var(--rule)}
-.footer-top .label{font-family:'Playfair Display',serif;font-style:italic;font-size:11.5px;letter-spacing:5px;color:var(--gold-deep);font-weight:600;text-transform:uppercase;flex-shrink:0}
-.cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:36px;margin-top:16px;flex:1}
-.card{padding-left:22px;border-left:2px solid var(--gold);display:flex;flex-direction:column;justify-content:center}
-.card-num{font-family:'Playfair Display','Noto Serif SC',serif;font-size:40px;font-weight:800;color:var(--wine);line-height:1;letter-spacing:.5px;margin-bottom:8px}
-.card-num small{font-size:20px;font-weight:700;color:var(--gold-deep);margin-left:3px}
-.card-label{font-size:12.5px;letter-spacing:2.5px;color:var(--gray);text-transform:uppercase;font-weight:600}
+#bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.bg-corner{position:absolute;width:110px;height:110px;}
+.bg-corner.tl{top:22px;left:22px;}
+.bg-corner.br{bottom:22px;right:22px;transform:rotate(180deg);}
+.bg-mark{position:absolute;font-family:'Playfair Display',serif;font-style:italic;font-weight:600;color:rgba(201,162,39,0.08);letter-spacing:0.02em;}
+.bg-mark-1{top:100px;right:70px;font-size:96px;}
+.bg-mark-2{bottom:230px;left:40px;font-size:96px;}
+.bg-hair{position:absolute;left:60px;right:60px;height:1px;background:var(--hair);}
+.bg-hair.top{top:24px;}
+.bg-hair.bottom{bottom:24px;}
+
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 40px;display:flex;flex-direction:column;}
+
+/* Header */
+.masthead{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:0.32em;color:var(--muted);text-transform:uppercase;font-weight:500;margin-bottom:14px;}
+.masthead .center{color:var(--gold-deep);letter-spacing:0.4em;}
+
+.header-block{position:relative;padding-top:16px;}
+.header-eyebrow{font-size:12px;letter-spacing:0.36em;color:var(--gold-deep);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+.header-eyebrow::before{content:'';display:inline-block;width:32px;height:1px;background:var(--gold);}
+.header-eyebrow::after{content:'';display:inline-block;width:80px;height:1px;background:var(--hair-strong);}
+
+h1{font-family:'Playfair Display','Noto Serif SC',serif;color:var(--primary);font-size:76px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;}
+h1 .accent{color:var(--primary-dark);font-style:italic;}
+
+.intro{max-width:1180px;margin-top:18px;font-size:16px;line-height:1.85;color:var(--ink-soft);font-weight:400;}
+.intro strong{color:var(--primary);font-weight:600;font-family:'Noto Serif SC',serif;}
+
+.hair{height:1px;background:var(--hair-strong);position:relative;margin:20px 0 18px;}
+.hair::before,.hair::after{content:'';position:absolute;top:-3px;width:6px;height:6px;border:1px solid var(--gold);background:var(--bg);transform:rotate(45deg);}
+.hair::before{left:0;}
+.hair::after{right:0;}
+
+/* Quadrants */
+.origins{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;position:relative;margin-bottom:14px;min-height:0;}
+.origins::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--hair);}
+.origins::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:var(--hair);}
+
+.q{padding:14px 44px 14px 0;display:flex;flex-direction:column;position:relative;min-height:0;}
+.q.q2{padding-left:52px;padding-right:0;}
+.q.q3{padding-right:44px;padding-left:0;}
+.q.q4{padding-left:52px;}
+
+.q-head{display:flex;align-items:center;gap:18px;margin-bottom:14px;}
+.badge{width:54px;height:54px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#3A2D0B;flex-shrink:0;position:relative;}
+.badge::after{content:'';position:absolute;inset:-5px;border:1px solid var(--gold);border-radius:50%;opacity:0.45;}
+
+.q-head-text{display:flex;flex-direction:column;}
+.q-title-cn{font-family:'Noto Serif SC','Playfair Display',serif;color:var(--primary);font-size:26px;font-weight:700;line-height:1.15;letter-spacing:0.01em;}
+.q-title-en{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--gold-deep);letter-spacing:0.22em;margin-top:5px;font-weight:500;}
+
+.q-desc{font-size:14.5px;line-height:1.85;color:var(--ink-soft);max-width:560px;margin-bottom:14px;}
+.q-desc em{color:var(--primary);font-style:normal;font-weight:600;font-family:'Noto Serif SC',serif;}
+
+.q-sig{margin-top:auto;padding-top:12px;border-top:1px solid var(--hair);display:flex;align-items:center;gap:12px;font-size:11.5px;color:var(--muted);letter-spacing:0.14em;font-weight:500;}
+.q-sig .dot{width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+.q-sig .cite{font-family:'Playfair Display',serif;font-style:italic;color:var(--primary);font-size:13px;letter-spacing:0.06em;font-weight:600;}
+
+/* KPI strip */
+.kpi{display:flex;background:var(--paper);border-top:2px solid var(--gold);border-bottom:1px solid var(--hair);padding:18px 40px;position:relative;}
+.kpi::before,.kpi::after{content:'';position:absolute;top:-6px;width:8px;height:8px;background:var(--gold);}
+.kpi::before{left:0;}
+.kpi::after{right:0;}
+
+.kpi-item{flex:1;display:flex;flex-direction:column;align-items:flex-start;padding:0 30px;position:relative;}
+.kpi-item + .kpi-item::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:1px;background:var(--hair-strong);}
+.kpi-label{font-size:11px;color:var(--gold-deep);letter-spacing:0.26em;font-weight:600;margin-bottom:8px;text-transform:uppercase;}
+.kpi-value{font-family:'Playfair Display',serif;color:var(--primary);font-size:46px;font-weight:700;line-height:1;letter-spacing:-0.02em;display:flex;align-items:baseline;gap:6px;}
+.kpi-value .unit{font-family:'Noto Serif SC',serif;font-size:16px;color:var(--ink-soft);font-weight:500;letter-spacing:0.06em;}
+.kpi-note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.55;font-weight:400;letter-spacing:0.04em;}
+
+/* Footer */
+.page-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:10.5px;color:var(--muted);letter-spacing:0.26em;font-weight:500;text-transform:uppercase;}
+.page-footer .center{color:var(--gold-deep);letter-spacing:0.4em;}
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <div class="bg-corner"></div>
-    <div class="bg-mark">No. 04 — OPEN SOURCE</div>
+    <svg class="bg-corner tl" viewBox="0 0 100 100" fill="none">
+      <path d="M2 30 L2 2 L30 2" stroke="#C9A227" stroke-width="1"/>
+      <path d="M14 22 L14 14 L22 14" stroke="#880E4F" stroke-width="0.6"/>
+    </svg>
+    <svg class="bg-corner br" viewBox="0 0 100 100" fill="none">
+      <path d="M2 30 L2 2 L30 2" stroke="#C9A227" stroke-width="1"/>
+      <path d="M14 22 L14 14 L22 14" stroke="#880E4F" stroke-width="0.6"/>
+    </svg>
+    <div class="bg-mark bg-mark-1">IV</div>
+    <div class="bg-mark bg-mark-2">§</div>
+    <div class="bg-hair top"></div>
+    <div class="bg-hair bottom"></div>
   </div>
+
   <div id="ct">
-    <div class="head">
-      <div class="kicker">EDITORIAL · 杂志专题 · VOL.04</div>
-      <h1 class="title">开源精神的四个原点</h1>
-      <p class="intro">开源的精神源头，藏在<strong>「自由软件」</strong>与<strong>「开放源码」</strong>两条支流的交汇处。理解这四条基本命题，就能读懂为什么布道者与开发者愿意无偿付出时间与名誉。</p>
-      <div class="divider">
-        <span class="dot"></span>
-        <span class="line"></span>
-        <span class="side">Four Origins</span>
-        <span class="line"></span>
-        <span class="dot"></span>
+    <div class="masthead">
+      <span>FEATURE · 编者手记 / Editor's Column</span>
+      <span class="center">№ 04</span>
+      <span>VOL. XXIV &nbsp;·&nbsp; OPEN SOURCE</span>
+    </div>
+
+    <div class="header-block">
+      <div class="header-eyebrow">四个原点 · FOUR ORIGINS OF OPEN SOURCE</div>
+      <h1>开源精神的<span class="accent">四个原点</span></h1>
+      <p class="intro">开源的精神源头，藏在 <strong>「自由软件」</strong>与<strong>「开放源码」</strong>两条支流的交汇处。理解这四条基本命题，就能读懂为什么布道者与开发者愿意无偿付出时间与名誉。</p>
+    </div>
+
+    <div class="hair"></div>
+
+    <div class="origins">
+      <div class="q q1">
+        <div class="q-head">
+          <div class="badge">01</div>
+          <div class="q-head-text">
+            <div class="q-title-cn">自由与共享</div>
+            <div class="q-title-en">Freedom &amp; Sharing</div>
+          </div>
+        </div>
+        <p class="q-desc">四自由原则为<em>软件自由基金会（FSF）</em>确立，此后成为今天所有开源运动的<em>宪法级共识</em>——运行、学习、修改、再分发，皆属正当权利。</p>
+        <div class="q-sig"><span class="dot"></span><span class="cite">RMS · 1985</span><span>四自由 · Four Freedoms</span></div>
+      </div>
+
+      <div class="q q2">
+        <div class="q-head">
+          <div class="badge">02</div>
+          <div class="q-head-text">
+            <div class="q-title-cn">协作而非竞争</div>
+            <div class="q-title-en">Collaboration, not Competition</div>
+          </div>
+        </div>
+        <p class="q-desc">Linus 的「<em>好品味</em>」哲学——把好代码、好设计公开出来，让全球开发者共同雕琢。个体创造力由此被放大成<em>集体智慧</em>。</p>
+        <div class="q-sig"><span class="dot"></span><span class="cite">Linus · 1991</span><span>好品味 · Good Taste</span></div>
+      </div>
+
+      <div class="q q3">
+        <div class="q-head">
+          <div class="badge">03</div>
+          <div class="q-head-text">
+            <div class="q-title-cn">透明即信任</div>
+            <div class="q-title-en">Transparency is Trust</div>
+          </div>
+        </div>
+        <p class="q-desc">公开代码与公开决策，让社区在<em>可验证</em>的基础上彼此托付。信任不由承诺建立，而由一次一次提交记录与公开讨论累积。</p>
+        <div class="q-sig"><span class="dot"></span><span class="cite">Eric S. Raymond</span><span>The Cathedral &amp; the Bazaar</span></div>
+      </div>
+
+      <div class="q q4">
+        <div class="q-head">
+          <div class="badge">04</div>
+          <div class="q-head-text">
+            <div class="q-title-cn">布道者责任</div>
+            <div class="q-title-en">The Evangelist's Charge</div>
+          </div>
+        </div>
+        <p class="q-desc">开源倡导者的核心使命，是让价值被<em>更多人看见</em>并愿意加入。布道者承担荣誉、名誉与风险，把社区从少数人推向世界。</p>
+        <div class="q-sig"><span class="dot"></span><span class="cite">Evangelism</span><span>价值传播 · Value Propagation</span></div>
       </div>
     </div>
-    <div class="quad-wrap">
-      <div class="quad-grid">
-        <div class="quad-row">
-          <div class="q-item">
-            <div class="q-head">
-              <div class="q-badge"><span>01</span></div>
-              <div class="q-content">
-                <h2 class="q-title">自由与共享</h2>
-                <p class="q-desc">四自由原则由软件自由基金会确立，成为今天所有开源运动的宪法。</p>
-              </div>
-            </div>
-          </div>
-          <div class="q-item">
-            <div class="q-head">
-              <div class="q-badge"><span>02</span></div>
-              <div class="q-content">
-                <h2 class="q-title">协作而非竞争</h2>
-                <p class="q-desc">Linus 的"好品味"哲学，把个体创造力放大成集体智慧。</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="quad-row">
-          <div class="q-item">
-            <div class="q-head">
-              <div class="q-badge"><span>03</span></div>
-              <div class="q-content">
-                <h2 class="q-title">透明即信任</h2>
-                <p class="q-desc">公开代码与公开决策，让社区在可验证的基础上彼此托付。</p>
-              </div>
-            </div>
-          </div>
-          <div class="q-item">
-            <div class="q-head">
-              <div class="q-badge"><span>04</span></div>
-              <div class="q-content">
-                <h2 class="q-title">布道者责任</h2>
-                <p class="q-desc">开源倡导者的核心使命，是让价值被更多人看见并愿意加入。</p>
-              </div>
-            </div>
-          </div>
-        </div>
+
+    <div class="kpi">
+      <div class="kpi-item">
+        <div class="kpi-label">OPEN SOURCE DEFINITION</div>
+        <div class="kpi-value">1.0<span class="unit">定义</span></div>
+        <div class="kpi-note">开源定义 · 十三条 · 1999</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-label">OSI LICENSES</div>
+        <div class="kpi-value">110<span class="unit">+</span></div>
+        <div class="kpi-note">OSI 收录许可证 · 全球通用</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-label">GLOBAL OPEN REPOS</div>
+        <div class="kpi-value">4.7<span class="unit">亿</span></div>
+        <div class="kpi-note">全球开源项目数 · 累计</div>
       </div>
     </div>
-    <div class="footer-section">
-      <div class="footer-top">
-        <span class="label">DATA · 收束数据</span>
-        <span class="line"></span>
-      </div>
-      <div class="cards">
-        <div class="card">
-          <div class="card-num">OSD 1.0</div>
-          <div class="card-label">开源定义</div>
-        </div>
-        <div class="card">
-          <div class="card-num">110<small>+</small></div>
-          <div class="card-label">OSI 收录许可证</div>
-        </div>
-        <div class="card">
-          <div class="card-num">4.7<small>亿</small></div>
-          <div class="card-label">全球开源项目数</div>
-        </div>
-      </div>
+
+    <div class="page-footer">
+      <span>开源精神的四个原点 · Four Origins of Open Source</span>
+      <span class="center">— § —</span>
+      <span>FEATURE / 04</span>
     </div>
   </div>
 </div>

@@ -1,596 +1,499 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
-<title>开源之书 · 2024 十月月刊</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>开源之书 · 2024 十月</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Source+Sans+3:wght@300;400;600&family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;600&display=swap');
+
 :root{
   --wine:#880E4F;
-  --wine-dark:#5A0A35;
+  --wine-deep:#5A0A33;
   --gold:#C9A227;
-  --gold-soft:#E6CC7A;
+  --gold-soft:#E0BE5C;
   --cream:#F7F3EC;
-  --cream-deep:#EFE7D6;
-  --ink:#241820;
-  --ink-soft:#4A3A42;
-  --rule:#D8C9A8;
+  --cream-warm:#EFE7D6;
+  --ink:#2A1A20;
+  --grey:#8B7F78;
+  --line:#D9CDB8;
 }
+
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{width:1600px;height:900px;overflow:hidden;background:#1a0d16;}
+
+html,body{width:100%;height:100%;background:#E8E1D2;}
+
 body{
-  font-family:"Source Sans 3","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  font-family:'Source Sans 3','Noto Sans SC',sans-serif;
   color:var(--ink);
-  -webkit-font-smoothing:antialiased;
 }
+
 .wrapper{
   width:1600px;height:900px;position:relative;overflow:hidden;
   margin:0 auto;
   background:var(--cream);
 }
-#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
-#ct{position:absolute;inset:0;z-index:2;padding:52px 72px;box-sizing:border-box;}
 
-/* ===== 背景装饰层 ===== */
-.bg-tint{
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 68px 44px 68px;}
+
+/* ---------- 背景装饰 ---------- */
+.bg-grain{
   position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse at 20% 15%, rgba(201,162,39,0.10), transparent 55%),
-    radial-gradient(ellipse at 85% 90%, rgba(136,14,79,0.08), transparent 60%);
-}
-.bg-paper{
-  position:absolute;inset:0;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(136,14,79,0.03) 0 1px, transparent 1px 3px);
-  opacity:0.7;
-}
-/* 大号数字水印 */
-.watermark{
-  position:absolute;
-  font-family:"Playfair Display",serif;
-  font-weight:900;
-  font-style:italic;
-  color:var(--wine);
-  opacity:0.055;
-  line-height:0.85;
-  letter-spacing:-0.04em;
-  user-select:none;
-}
-.wm-left{
-  left:-40px;top:80px;
-  font-size:640px;
-  transform:rotate(-4deg);
-}
-.wm-right{
-  right:-80px;bottom:-160px;
-  font-size:520px;
-  color:var(--gold);
-  opacity:0.07;
-  transform:rotate(3deg);
+  background:radial-gradient(ellipse at 30% 20%, rgba(201,162,39,0.10), transparent 55%),
+             radial-gradient(ellipse at 85% 85%, rgba(136,14,79,0.08), transparent 60%);
 }
 
-/* ===== 杂志边框 ===== */
-.mag-frame{
-  position:absolute;
-  inset:28px;
-  border:1.5px solid var(--wine);
-  pointer-events:none;
-}
-.mag-frame::before,.mag-frame::after{
-  content:"";
-  position:absolute;
-  border:1.5px solid var(--wine);
-}
-.mag-frame::before{
-  inset:5px;
-}
-/* 四角装饰 */
-.corner{
-  position:absolute;
-  width:64px;height:64px;
-  pointer-events:none;
-}
-.corner svg{width:100%;height:100%;display:block;}
-.c-tl{top:14px;left:14px;}
-.c-tr{top:14px;right:14px;transform:scaleX(-1);}
-.c-bl{bottom:14px;left:14px;transform:scaleY(-1);}
-.c-br{bottom:14px;right:14px;transform:scale(-1,-1);}
-
-/* ===== 顶部刊头 ===== */
-.masthead{
-  position:relative;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 6px 14px 6px;
-  border-bottom:1.2px solid var(--wine);
-}
-.masthead .left,.masthead .right{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  font-size:11px;
-  letter-spacing:0.32em;
-  text-transform:uppercase;
-  color:var(--wine-dark);
-  font-weight:600;
-}
-.masthead .dot{
-  width:6px;height:6px;background:var(--gold);
-  display:inline-block;transform:rotate(45deg);
-}
-.masthead .center{
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:15px;
-  letter-spacing:0.14em;
-  color:var(--wine);
-}
-
-/* ===== 标题区 ===== */
-.hero{
-  position:relative;
-  margin-top:34px;
-  text-align:center;
-  padding:14px 0 22px;
-}
-.kicker{
-  display:inline-flex;
-  align-items:center;
-  gap:16px;
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:17px;
-  letter-spacing:0.36em;
-  color:var(--wine);
-  margin-bottom:14px;
-}
-.kicker .bar{
-  width:60px;height:1px;background:var(--gold);
-}
-.title{
-  font-family:"Playfair Display","Noto Serif SC",serif;
-  font-weight:900;
-  font-size:186px;
-  line-height:0.92;
-  color:var(--wine);
-  letter-spacing:0.02em;
-  position:relative;
-  text-shadow:
-    2px 2px 0 rgba(201,162,39,0.18);
-}
-.title .quote-mark{
-  color:var(--gold);
-  font-style:italic;
-  font-size:0.85em;
-}
-.subtitle-wrap{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:22px;
-  margin-top:22px;
-}
-.subtitle-wrap .line{
-  width:120px;height:1px;background:var(--gold);
-  position:relative;
-}
-.subtitle-wrap .line::after{
-  content:"";
-  position:absolute;top:-3px;left:50%;
-  width:7px;height:7px;
-  background:var(--gold);
-  transform:translateX(-50%) rotate(45deg);
-}
-.subtitle{
-  font-family:"Noto Serif SC","Playfair Display",serif;
-  font-weight:600;
-  font-size:24px;
-  letter-spacing:0.22em;
-  color:var(--wine-dark);
-}
-.subtitle .sep{
-  color:var(--gold);
-  margin:0 12px;
-  font-weight:400;
-}
-.hero-tag{
-  margin-top:14px;
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:13px;
-  letter-spacing:0.44em;
-  color:var(--ink-soft);
-  opacity:0.75;
-}
-
-/* ===== 三栏看点 ===== */
-.features{
-  position:relative;
-  margin-top:34px;
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:0;
-  border-top:2px solid var(--wine);
-  border-bottom:2px solid var(--wine);
-}
-.feature{
-  padding:26px 28px 24px;
-  position:relative;
-  min-height:172px;
-}
-.feature + .feature{
-  border-left:1px solid var(--rule);
-}
-.feature .num{
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-weight:700;
-  font-size:52px;
-  line-height:1;
-  color:var(--gold);
-  display:flex;
-  align-items:baseline;
-  gap:10px;
-}
-.feature .num .of{
-  font-size:12px;
-  letter-spacing:0.28em;
-  color:var(--wine);
-  font-family:"Source Sans 3",sans-serif;
-  font-style:normal;
-  font-weight:600;
-  text-transform:uppercase;
-}
-.feature .ftitle{
-  margin-top:10px;
-  font-family:"Noto Serif SC","Playfair Display",serif;
-  font-weight:900;
-  font-size:30px;
-  color:var(--wine);
-  letter-spacing:0.06em;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.feature .ftitle .en{
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-weight:400;
-  font-size:13px;
-  color:var(--gold);
-  letter-spacing:0.14em;
-}
-.feature .fdivider{
-  width:36px;height:2px;background:var(--wine);
-  margin:12px 0 10px;
-}
-.feature .fdesc{
-  font-size:14.5px;
-  line-height:1.7;
-  color:var(--ink);
-  letter-spacing:0.02em;
-}
-.feature .tag{
-  position:absolute;
-  top:14px;right:18px;
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:12px;
-  letter-spacing:0.24em;
-  color:var(--ink-soft);
-  opacity:0.65;
-}
-
-/* ===== 底部区 ===== */
-.foot{
-  margin-top:24px;
-  display:grid;
-  grid-template-columns:1.35fr 1fr;
-  gap:38px;
-  align-items:stretch;
-}
-.editor-letter{
-  position:relative;
-  padding:18px 22px 18px 60px;
-  border-left:3px solid var(--wine);
-  background:linear-gradient(90deg, rgba(239,231,214,0.55), rgba(247,243,236,0));
-}
-.editor-letter .qmark{
-  position:absolute;
-  left:14px;top:6px;
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-weight:900;
-  font-size:74px;
-  line-height:1;
-  color:var(--gold);
-  opacity:0.55;
-}
-.editor-letter .lead{
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:12px;
-  letter-spacing:0.34em;
-  color:var(--wine);
-  text-transform:uppercase;
-  margin-bottom:8px;
-  font-weight:600;
-}
-.editor-letter .body{
-  font-family:"Noto Serif SC",serif;
-  font-size:14px;
-  line-height:1.75;
-  color:var(--ink);
-  letter-spacing:0.02em;
-}
-.editor-letter .body b{
-  color:var(--wine);
-  font-weight:700;
-}
-.editor-letter .sign{
-  margin-top:10px;
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:13px;
-  color:var(--ink-soft);
-  letter-spacing:0.14em;
-}
-
-.kpis{
-  display:grid;
-  grid-template-rows:auto auto;
-  gap:12px;
-}
-.kpi-row{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-.kpi{
+/* 边框细线 */
+.frame{
+  position:absolute;left:32px;top:32px;right:32px;bottom:32px;
   border:1px solid var(--wine);
-  padding:12px 10px 10px;
-  text-align:center;
-  background:var(--cream);
+  pointer-events:none;
+}
+.frame-inner{
+  position:absolute;left:40px;top:40px;right:40px;bottom:40px;
+  border:1px solid rgba(136,14,79,0.25);
+  pointer-events:none;
+}
+
+/* 四角金色小方 */
+.corner{position:absolute;width:14px;height:14px;background:var(--gold);}
+.corner.tl{left:32px;top:32px;}
+.corner.tr{right:32px;top:32px;}
+.corner.bl{left:32px;bottom:32px;}
+.corner.br{right:32px;bottom:32px;}
+
+/* 竖排小标签 */
+.vtag{
+  position:absolute;
+  writing-mode:vertical-rl;
+  font-family:'Source Sans 3','Noto Sans SC',sans-serif;
+  font-size:11px;letter-spacing:6px;color:var(--wine);
+  text-transform:uppercase;
+  font-weight:600;
+}
+.vtag.left{left:52px;top:130px;}
+.vtag.right{right:52px;top:130px;}
+
+/* ---------- 内容 ---------- */
+
+/* Masthead */
+.masthead{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--wine);
   position:relative;
 }
-.kpi .n{
-  font-family:"Playfair Display",serif;
-  font-weight:900;
-  font-style:italic;
-  font-size:44px;
-  line-height:1;
+.masthead::after{
+  content:"";position:absolute;left:0;right:0;bottom:-6px;
+  border-bottom:1px solid var(--wine);
+}
+.mast-left{
+  display:flex;align-items:center;gap:14px;
+}
+.mast-emblem{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--wine);
   color:var(--gold);
-  letter-spacing:-0.02em;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:18px;
+  letter-spacing:1px;
 }
-.kpi .n .plus{
-  font-size:26px;
-  vertical-align:top;
-  margin-left:1px;
+.mast-title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:700;font-size:16px;letter-spacing:4px;color:var(--wine);
 }
-.kpi .n .unit{
-  font-size:15px;
-  font-style:normal;
-  color:var(--wine);
-  margin-left:2px;
-  font-weight:700;
-  letter-spacing:0.08em;
+.mast-sub{
+  font-family:'Source Sans 3','Noto Sans SC',sans-serif;
+  font-size:11px;letter-spacing:3px;color:var(--grey);
+  margin-top:2px;text-transform:uppercase;
 }
-.kpi .l{
-  margin-top:6px;
-  font-size:11px;
-  letter-spacing:0.28em;
-  color:var(--ink-soft);
-  font-weight:600;
-  text-transform:uppercase;
+.mast-right{
+  text-align:right;
+  font-family:'Source Sans 3','Noto Sans SC',sans-serif;
 }
-.kpi .lcn{
-  font-size:12px;
-  color:var(--wine-dark);
-  letter-spacing:0.16em;
-  margin-top:1px;
-  font-family:"Noto Sans SC",sans-serif;
-  font-weight:500;
+.mast-issue{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:20px;color:var(--wine);letter-spacing:2px;
 }
-.colophon{
-  grid-column:1/-1;
-  display:flex;
-  justify-content:space-between;
+.mast-date{
+  font-size:11px;letter-spacing:3px;color:var(--grey);
+  text-transform:uppercase;margin-top:2px;
+}
+
+/* Hero */
+.hero{
+  margin-top:28px;
+  display:grid;grid-template-columns:1fr auto;
   align-items:center;
-  padding-top:8px;
-  border-top:1px dashed var(--wine);
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:12.5px;
-  letter-spacing:0.24em;
-  color:var(--wine-dark);
+  gap:40px;
+  padding:0 8px;
 }
-.colophon .brand{
-  font-family:"Noto Serif SC",serif;
-  font-style:normal;
-  font-weight:700;
-  letter-spacing:0.3em;
-  font-size:12px;
-  color:var(--wine);
-}
-.colophon .issue{
+.hero-main{position:relative;}
+.hero-kicker{
+  font-family:'Source Sans 3','Noto Sans SC',sans-serif;
+  font-size:12px;letter-spacing:8px;color:var(--gold);
+  font-weight:600;margin-bottom:8px;
   display:flex;align-items:center;gap:10px;
 }
-.colophon .issue .star{color:var(--gold);}
+.hero-kicker::before,
+.hero-kicker::after{
+  content:"";flex:0 0 40px;height:1px;background:var(--gold);
+}
+.hero-title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:900;
+  font-size:132px;
+  line-height:1.02;
+  color:var(--wine);
+  letter-spacing:6px;
+  position:relative;
+}
+.hero-title .dot{color:var(--gold);}
+.hero-sub{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:500;
+  font-size:22px;color:var(--ink);
+  letter-spacing:5px;
+  margin-top:14px;
+}
+.hero-sub .sep{color:var(--gold);margin:0 12px;}
 
-/* 底部微条 */
-.foot-strip{
-  position:absolute;
-  left:72px;right:72px;
-  bottom:44px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:11px;
-  letter-spacing:0.32em;
-  color:var(--ink-soft);
-  opacity:0.85;
+/* 装饰印章 */
+.seal{
+  width:140px;height:140px;border-radius:50%;
+  border:2px solid var(--gold);
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(-8deg);
 }
-.foot-strip .rule{
-  flex:1;
-  height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  margin:0 18px;
+.seal::before{
+  content:"";position:absolute;inset:8px;border-radius:50%;
+  border:1px dashed var(--gold);
 }
+.seal-inner{
+  text-align:center;
+  font-family:'Playfair Display',serif;
+  color:var(--wine);
+}
+.seal-yy{font-size:28px;font-weight:900;letter-spacing:2px;line-height:1;}
+.seal-mm{font-size:12px;letter-spacing:4px;margin-top:6px;font-weight:700;}
+.seal-since{font-size:9px;letter-spacing:3px;color:var(--gold);margin-top:4px;}
+
+/* 引导语 */
+.lede-wrap{
+  margin-top:26px;
+  display:grid;
+  grid-template-columns:140px 1fr 220px;
+  gap:36px;
+  align-items:stretch;
+  padding:22px 8px 22px 8px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+.lede-wrap::before{
+  content:"";position:absolute;left:8px;top:-1px;width:180px;height:2px;background:var(--wine);
+}
+.lede-tag{
+  display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid var(--line);
+  padding-right:20px;
+}
+.lede-tag-en{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:26px;color:var(--wine);line-height:1;
+}
+.lede-tag-cn{
+  font-family:'Noto Serif SC',serif;font-weight:700;
+  font-size:16px;color:var(--wine);margin-top:8px;letter-spacing:4px;
+}
+.lede-tag-lb{
+  font-size:10px;letter-spacing:3px;color:var(--gold);
+  margin-top:10px;text-transform:uppercase;
+}
+.lede-text{
+  font-family:'Noto Serif SC',serif;
+  font-size:16.5px;line-height:1.85;color:var(--ink);
+  font-weight:400;
+}
+.lede-text .em{color:var(--wine);font-weight:700;}
+.lede-text .first{
+  font-family:'Playfair Display',serif;
+  font-size:56px;font-weight:900;color:var(--wine);
+  float:left;line-height:0.9;margin:4px 10px 0 0;
+}
+.lede-side{
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:flex-end;
+  border-left:1px solid var(--line);
+  padding-left:20px;
+}
+.side-line{
+  width:100%;height:1px;background:var(--gold);
+  margin:8px 0;
+}
+.side-num{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:46px;color:var(--wine);line-height:1;
+  letter-spacing:1px;
+}
+.side-num-lb{
+  font-size:11px;letter-spacing:3px;color:var(--grey);
+  text-transform:uppercase;margin-top:4px;text-align:right;
+  width:100%;
+}
+.side-quote{
+  font-family:'Noto Serif SC',serif;font-style:italic;
+  font-size:12.5px;color:var(--grey);line-height:1.55;
+  text-align:right;width:100%;margin-top:10px;
+}
+
+/* 三栏卡片 */
+.three-col{
+  margin-top:26px;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  padding:0 8px;
+}
+.col-card{
+  position:relative;
+  padding:22px 20px 20px 20px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(255,253,247,0.6) 0%, rgba(239,231,214,0.35) 100%);
+  min-height:200px;
+}
+.col-card::before{
+  content:"";position:absolute;left:0;top:0;
+  width:100%;height:3px;background:var(--wine);
+}
+.col-num{
+  display:flex;align-items:baseline;gap:10px;margin-bottom:12px;
+}
+.col-num-big{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:44px;color:var(--gold);line-height:1;letter-spacing:2px;
+}
+.col-num-lb{
+  font-size:10px;letter-spacing:4px;color:var(--grey);
+  text-transform:uppercase;
+}
+.col-title-cn{
+  font-family:'Noto Serif SC',serif;font-weight:700;
+  font-size:22px;color:var(--wine);
+  letter-spacing:2px;
+  margin-bottom:6px;
+}
+.col-title-en{
+  font-family:'Playfair Display',serif;font-weight:500;
+  font-size:12px;color:var(--gold);
+  letter-spacing:3px;margin-bottom:14px;
+  text-transform:uppercase;
+}
+.col-desc{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:13px;line-height:1.75;color:var(--ink);
+}
+.col-divider{
+  width:36px;height:2px;background:var(--gold);
+  margin:12px 0;
+}
+.col-dot{
+  position:absolute;right:16px;top:16px;
+  width:8px;height:8px;border-radius:50%;background:var(--wine);
+}
+
+/* 底部横条 */
+.footer{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:2px solid var(--wine);
+  position:relative;
+}
+.footer::before{
+  content:"";position:absolute;left:0;top:-7px;
+  border-top:1px solid var(--wine);width:100%;
+}
+.footer-grid{
+  display:grid;grid-template-columns:repeat(3,1fr) 2fr;
+  gap:24px;align-items:center;
+}
+.badge{
+  display:flex;align-items:baseline;gap:12px;
+  padding:0 4px;
+  border-left:2px solid var(--gold);
+  padding-left:16px;
+}
+.badge:first-child{border-left:none;padding-left:0;}
+.badge-num{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:42px;color:var(--wine);line-height:1;letter-spacing:1px;
+}
+.badge-num .unit{font-size:18px;color:var(--gold);margin-left:2px;font-weight:700;}
+.badge-lb{
+  display:flex;flex-direction:column;
+}
+.badge-lb-cn{
+  font-family:'Noto Serif SC',serif;font-weight:600;
+  font-size:13px;color:var(--ink);letter-spacing:2px;
+}
+.badge-lb-en{
+  font-size:9px;letter-spacing:3px;color:var(--grey);
+  text-transform:uppercase;margin-top:2px;
+}
+.signature{
+  text-align:right;
+  padding-left:20px;
+  border-left:1px solid var(--line);
+}
+.sig-vol{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:24px;color:var(--wine);letter-spacing:3px;
+}
+.sig-by{
+  font-family:'Noto Sans SC',sans-serif;font-size:11px;
+  letter-spacing:4px;color:var(--grey);
+  margin-top:4px;
+}
+.sig-by .gold{color:var(--gold);font-weight:600;}
+
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <div class="bg-tint"></div>
-    <div class="bg-paper"></div>
-    <div class="watermark wm-left">10</div>
-    <div class="watermark wm-right">X</div>
+    <div class="bg-grain"></div>
+    <div class="frame"></div>
+    <div class="frame-inner"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <div class="vtag left">THE OPEN SOURCE GAZETTE · MONTHLY</div>
+    <div class="vtag right">READING · SHARING · OPENING</div>
   </div>
 
   <div id="ct">
 
-    <!-- 装饰边框 -->
-    <div class="mag-frame"></div>
-    <div class="corner c-tl">
-      <svg viewBox="0 0 64 64" fill="none">
-        <path d="M2 30 V2 H30" stroke="#880E4F" stroke-width="2"/>
-        <path d="M8 30 V8 H30" stroke="#C9A227" stroke-width="1"/>
-        <circle cx="14" cy="14" r="2.5" fill="#C9A227"/>
-      </svg>
-    </div>
-    <div class="corner c-tr">
-      <svg viewBox="0 0 64 64" fill="none">
-        <path d="M2 30 V2 H30" stroke="#880E4F" stroke-width="2"/>
-        <path d="M8 30 V8 H30" stroke="#C9A227" stroke-width="1"/>
-        <circle cx="14" cy="14" r="2.5" fill="#C9A227"/>
-      </svg>
-    </div>
-    <div class="corner c-bl">
-      <svg viewBox="0 0 64 64" fill="none">
-        <path d="M2 30 V2 H30" stroke="#880E4F" stroke-width="2"/>
-        <path d="M8 30 V8 H30" stroke="#C9A227" stroke-width="1"/>
-        <circle cx="14" cy="14" r="2.5" fill="#C9A227"/>
-      </svg>
-    </div>
-    <div class="corner c-br">
-      <svg viewBox="0 0 64 64" fill="none">
-        <path d="M2 30 V2 H30" stroke="#880E4F" stroke-width="2"/>
-        <path d="M8 30 V8 H30" stroke="#C9A227" stroke-width="1"/>
-        <circle cx="14" cy="14" r="2.5" fill="#C9A227"/>
-      </svg>
-    </div>
-
-    <!-- 顶部刊头 -->
+    <!-- Masthead -->
     <div class="masthead">
-      <div class="left">
-        <span><span>适兕团队</span></span>
-        <span class="dot"></span>
-        <span><span>SHISI EDITORIAL</span></span>
+      <div class="mast-left">
+        <div class="mast-emblem">SS</div>
+        <div>
+          <div class="mast-title">SHISI · OPEN SOURCE MONTHLY</div>
+          <div class="mast-sub">适兕月刊 · 开源布道与阅读分享</div>
+        </div>
       </div>
-      <div class="center"><span>· The Open Source Journal ·</span></div>
-      <div class="right">
-        <span><span>OCTOBER 2024</span></span>
-        <span class="dot"></span>
-        <span><span>VOL. 10 · ISSUE 10</span></span>
+      <div class="mast-right">
+        <div class="mast-issue">No. 001 · Vol. X</div>
+        <div class="mast-date">OCTOBER · MMXXIV · ¥ 00.00</div>
       </div>
     </div>
 
-    <!-- 主标题 -->
+    <!-- Hero -->
     <div class="hero">
-      <div class="kicker">
-        <span class="bar"></span>
-        <span>A MONTHLY OF CODE &amp; BOOKS</span>
-        <span class="bar"></span>
+      <div class="hero-main">
+        <div class="hero-kicker">A MONTHLY EDITORIAL ON OPEN SOURCE</div>
+        <h1 class="hero-title">开源<span class="dot">·</span>之书</h1>
+        <div class="hero-sub">2024 十月<span class="sep">·</span>开源布道与阅读分享月刊</div>
       </div>
-      <h1 class="title">
-        开源之书
-      </h1>
-      <div class="subtitle-wrap">
-        <span class="line"></span>
-        <span class="subtitle">
-          2024 十月<span class="sep">·</span>开源布道与阅读分享月刊
-        </span>
-        <span class="line"></span>
-      </div>
-      <div class="hero-tag">
-        <span>READ  ·  CODE  ·  GATHER  ·  SHARE</span>
-      </div>
-    </div>
-
-    <!-- 三栏看点 -->
-    <div class="features">
-      <div class="feature">
-        <span class="tag">FEATURE · 01</span>
-        <div class="num"><span>I</span><span class="of">/ III</span></div>
-        <div class="ftitle"><span>适兕主笔</span><span class="en">— Editor's Lead</span></div>
-        <div class="fdivider"></div>
-        <p class="fdesc">开源之道·适兕团队本期共读栏目主编策划，以编辑之手串起代码与文本、思想与实践的双重叙事。</p>
-      </div>
-      <div class="feature">
-        <span class="tag">FEATURE · 02</span>
-        <div class="num"><span>II</span><span class="of">/ III</span></div>
-        <div class="ftitle"><span>十篇精选</span><span class="en">— Ten Reads</span></div>
-        <div class="fdivider"></div>
-        <p class="fdesc">从哲学思考到落地实践，串起一条完整的开源阅读路径，让每一篇被选择的文章都对得起它的位置。</p>
-      </div>
-      <div class="feature">
-        <span class="tag">FEATURE · 03</span>
-        <div class="num"><span>III</span><span class="of">/ III</span></div>
-        <div class="ftitle"><span>月度回顾</span><span class="en">— Monthly Echo</span></div>
-        <div class="fdivider"></div>
-        <p class="fdesc">回顾 2024 年十月开源社区重要事件与思想共鸣，凝练出属于这个月的技术脉搏与人文回声。</p>
-      </div>
-    </div>
-
-    <!-- 底部 -->
-    <div class="foot">
-      <div class="editor-letter">
-        <div class="qmark">"</div>
-        <div class="lead">Editor's Note · 编辑寄语</div>
-        <p class="body">本期《开源之书》以<b>"阅读即开源"</b>为母题，将开源布道与书籍共读交织成一份杂志体月刊。适兕团队邀你翻开这一页，进入代码之外、思想之内的开源现场。</p>
-        <div class="sign">— 适兕编辑部 · Shisi Editorial</div>
-      </div>
-      <div class="kpis">
-        <div class="kpi-row">
-          <div class="kpi">
-            <div class="n">10</div>
-            <div class="l">OCT 2024</div>
-            <div class="lcn">发行月份</div>
-          </div>
-          <div class="kpi">
-            <div class="n">10</div>
-            <div class="l">Books</div>
-            <div class="lcn">推荐书目</div>
-          </div>
-          <div class="kpi">
-            <div class="n">320<span class="plus">+</span></div>
-            <div class="l">Readers</div>
-            <div class="lcn">共读人数</div>
-          </div>
-        </div>
-        <div class="colophon">
-          <span class="brand">适兕团队出品</span>
-          <span class="issue">
-            <span class="star">✦</span>
-            <span>ISSUE 10 · OCT 2024</span>
-            <span class="star">✦</span>
-          </span>
+      <div class="seal">
+        <div class="seal-inner">
+          <div class="seal-yy">10/24</div>
+          <div class="seal-mm">ISSUE · XXIV</div>
+          <div class="seal-since">— EST. MMXXIV —</div>
         </div>
       </div>
     </div>
 
-    <!-- 底部微条 -->
-    <div class="foot-strip">
-      <span>— OPEN SOURCE  ·  VOL.X  ·  OCT 2024 —</span>
-      <span class="rule"></span>
-      <span>PRINTED FOR THE COMMUNITY  ·  PRINTED FOR READING</span>
+    <!-- Lede -->
+    <div class="lede-wrap">
+      <div class="lede-tag">
+        <div class="lede-tag-en">Lede</div>
+        <div class="lede-tag-cn">本期导言</div>
+        <div class="lede-tag-lb">Editor's Note</div>
+      </div>
+      <div class="lede-text">
+        <span class="first">本</span>期《开源之书》以<span class="em">「阅读即开源」</span>为母题，将开源布道与书籍共读交织成一份杂志体月刊。适兕团队邀你翻开这一页，进入代码之外、思想之内的开源现场——从哲学的思辨到工程的落地，从社区的共读到思想的共鸣，一切都在这一册之内。
+      </div>
+      <div class="lede-side">
+        <div class="side-line"></div>
+        <div class="side-num">10<span style="color:var(--gold);font-size:22px;">/31</span></div>
+        <div class="side-num-lb">Pages Within</div>
+        <div class="side-quote">"Reading is open-sourcing the mind."</div>
+        <div class="side-line"></div>
+      </div>
+    </div>
+
+    <!-- Three Column Cards -->
+    <div class="three-col">
+      <div class="col-card">
+        <div class="col-dot"></div>
+        <div class="col-num">
+          <span class="col-num-big">01</span>
+          <span class="col-num-lb">FEATURE · 主笔</span>
+        </div>
+        <div class="col-title-cn">适兕主笔</div>
+        <div class="col-title-en">Editor-in-Chief's Voice</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">开源之道——适兕团队本期共读栏目主编策划，以一册之重，写下关于开源、阅读与思想自由的第一篇编者按。</div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-dot"></div>
+        <div class="col-num">
+          <span class="col-num-big">02</span>
+          <span class="col-num-lb">SELECTED · 精选</span>
+        </div>
+        <div class="col-title-cn">十篇精选</div>
+        <div class="col-title-en">Ten Curated Chapters</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">从哲学思考到落地实践，串起一条完整的开源阅读路径，每一篇都是一次思想的开源提交。</div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-dot"></div>
+        <div class="col-num">
+          <span class="col-num-big">03</span>
+          <span class="col-num-lb">REVIEW · 回顾</span>
+        </div>
+        <div class="col-title-cn">月度回顾</div>
+        <div class="col-title-en">October in Review</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">回顾 2024 年十月开源社区的重要事件与思想共鸣，记录那些被代码和文字共同点亮的瞬间。</div>
+      </div>
+    </div>
+
+    <!-- Footer badges -->
+    <div class="footer">
+      <div class="footer-grid">
+        <div class="badge">
+          <div class="badge-num">2024<span class="unit">·10</span></div>
+          <div class="badge-lb">
+            <span class="badge-lb-cn">发行月份</span>
+            <span class="badge-lb-en">Issue Date</span>
+          </div>
+        </div>
+        <div class="badge">
+          <div class="badge-num">10<span class="unit">本</span></div>
+          <div class="badge-lb">
+            <span class="badge-lb-cn">推荐书目</span>
+            <span class="badge-lb-en">Recommended Books</span>
+          </div>
+        </div>
+        <div class="badge">
+          <div class="badge-num">320<span class="unit">+</span></div>
+          <div class="badge-lb">
+            <span class="badge-lb-cn">共读人数</span>
+            <span class="badge-lb-en">Co-Readers</span>
+          </div>
+        </div>
+        <div class="signature">
+          <div class="sig-vol">VOL.01 / NO.10</div>
+          <div class="sig-by"><span class="gold">适兕出品</span> · SHISI EDITION · MMXXIV</div>
+        </div>
+      </div>
     </div>
 
   </div>

@@ -1,463 +1,439 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <title>卷一 · 开源哲学</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;500;700;900&family=Source+Sans+3:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
-:root {
-  --wine: #880E4F;
-  --wine-deep: #6E0A41;
-  --wine-soft: #A8346B;
-  --gold: #C9A227;
-  --gold-deep: #A8861C;
-  --cream: #F7F3EC;
-  --cream-warm: #EFE8DA;
-  --ink: #2A241E;
-  --ink-soft: #4A4238;
-  --muted: #7C7268;
-  --rule: #D9CDBB;
-}
+  :root {
+    --wine: #880E4F;
+    --wine-soft: #A8326B;
+    --gold: #C9A227;
+    --gold-soft: #D9B94C;
+    --cream: #F7F3EC;
+    --cream-warm: #F3EDDF;
+    --ink: #1E1518;
+    --ink-soft: #5A4A4E;
+    --ink-fade: #8A7A7E;
+    --line: #D6CCBA;
+    --line-soft: #E7DECD;
+  }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body { width: 1600px; height: 900px; overflow: hidden; background: var(--cream); }
+  body {
+    font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: #E8DFCC;
+    -webkit-font-smoothing: antialiased;
+  }
 
-body {
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  color: var(--ink);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--cream);
+  }
 
-.wrapper {
-  width: 1600px;
-  height: 900px;
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
-  background: var(--cream);
-}
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--cream);
+  }
 
-#bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    linear-gradient(180deg, #FBF8F1 0%, var(--cream) 22%, var(--cream) 78%, #EFE7D8 100%);
-}
+  #bg .frame {
+    position: absolute;
+    top: 26px; left: 26px; right: 26px; bottom: 26px;
+    border: 1px solid var(--line);
+    pointer-events: none;
+  }
 
-#bg .frame-line {
-  position: absolute;
-  left: 60px;
-  right: 60px;
-  height: 1px;
-  background: var(--rule);
-  opacity: .55;
-}
+  #bg .top-bar, #bg .bot-bar {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.42em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    background: var(--cream);
+    padding: 0 22px;
+  }
 
-#bg .frame-line.top { top: 42px; }
-#bg .frame-line.bottom { bottom: 42px; }
+  #bg .top-bar { top: 40px; }
+  #bg .bot-bar { bottom: 40px; }
 
-#ct {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  padding: 60px;
-  box-sizing: border-box;
-}
+  #bg .corner {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    border: 1px solid var(--gold);
+  }
+  #bg .corner.tl { top: 44px; left: 44px; border-right: none; border-bottom: none; }
+  #bg .corner.tr { top: 44px; right: 44px; border-left: none; border-bottom: none; }
+  #bg .corner.bl { bottom: 44px; left: 44px; border-right: none; border-top: none; }
+  #bg .corner.br { bottom: 44px; right: 44px; border-left: none; border-top: none; }
 
-/* ===== Header ===== */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  font-size: 12px;
-  letter-spacing: 5px;
-  color: var(--muted);
-  padding: 4px 0 0;
-  margin-top: 2px;
-}
-.header .head-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.header .head-mark {
-  width: 9px;
-  height: 9px;
-  background: var(--wine);
-}
-.header .head-right {
-  color: var(--gold-deep);
-  letter-spacing: 3px;
-}
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 108px 84px 100px;
+    display: flex;
+    flex-direction: column;
+  }
 
-/* ===== Main grid ===== */
-.content {
-  margin-top: 46px;
-  display: grid;
-  grid-template-rows: 1fr auto auto;
-  height: 748px;
-}
+  .main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 340px 1fr 440px;
+    gap: 40px;
+    align-items: end;
+  }
 
-/* ===== Band 1 : anchor + title + quote ===== */
-.band {
-  display: grid;
-  grid-template-columns: 300px 1fr 400px;
-  column-gap: 48px;
-  align-items: center;
-  padding: 12px 0 34px;
-}
+  /* Left column: chapter numeral */
+  .left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
 
-.anchor-col {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
+  .left .kicker {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.55em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-left: 2px;
+  }
 
-.num-label {
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  font-size: 12px;
-  letter-spacing: 5px;
-  color: var(--gold-deep);
-  font-weight: 500;
-  padding-left: 6px;
-  margin-bottom: -22px;
-}
+  .left .kicker-cn {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 13px;
+    letter-spacing: 0.5em;
+    color: var(--wine);
+    font-weight: 500;
+    padding-left: 4px;
+    margin-top: -6px;
+  }
 
-.num-label-cn {
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  font-size: 12px;
-  letter-spacing: 6px;
-  color: var(--muted);
-  padding-left: 6px;
-  margin-bottom: 14px;
-}
+  .numeral {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 300px;
+    font-weight: 900;
+    line-height: 0.82;
+    color: var(--wine);
+    letter-spacing: -0.05em;
+    position: relative;
+    padding-left: 4px;
+    margin-top: 4px;
+  }
 
-.num-01 {
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-size: 380px;
-  line-height: .82;
-  font-weight: 700;
-  color: var(--wine);
-  letter-spacing: -18px;
-  margin-left: -8px;
-}
+  .numeral::after {
+    content: '';
+    position: absolute;
+    right: -4px;
+    top: 32px;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
 
-.anchor-line {
-  width: 260px;
-  height: 3px;
-  background: var(--wine);
-  margin-top: 22px;
-  margin-left: 4px;
-}
+  .sep-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+    padding-left: 6px;
+  }
 
-.title-col {
-  padding-left: 4px;
-}
+  .sep-row .line {
+    width: 172px;
+    height: 1.5px;
+    background: var(--wine);
+  }
 
-.chapter-eyebrow {
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  font-size: 12px;
-  letter-spacing: 6px;
-  color: var(--gold-deep);
-  font-weight: 500;
-  margin-bottom: 24px;
-}
+  .sep-row .tag {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    color: var(--ink);
+    font-weight: 500;
+  }
 
-.chapter-title {
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-weight: 700;
-  font-size: 66px;
-  line-height: 1.14;
-  color: var(--wine-deep);
-  letter-spacing: 2px;
-}
+  /* Middle: title */
+  .center {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 6px;
+  }
 
-.chapter-subtitle {
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  font-weight: 400;
-  font-size: 18px;
-  color: var(--ink-soft);
-  line-height: 1.85;
-  margin-top: 24px;
-  letter-spacing: 1.4px;
-  max-width: 560px;
-}
+  .title-en {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    color: var(--gold);
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    padding-left: 2px;
+  }
 
-.quote-col {
-  position: relative;
-  padding: 4px 0 4px 26px;
-  border-left: 1px solid var(--rule);
-}
+  .title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 62px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
 
-.quote-mark {
-  position: absolute;
-  left: 24px;
-  top: -22px;
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-size: 88px;
-  color: var(--gold);
-  line-height: 1;
-  font-style: italic;
-  font-weight: 400;
-}
+  .title .dot {
+    color: var(--wine);
+    font-weight: 400;
+    padding: 0 6px;
+    font-size: 52px;
+    position: relative;
+    top: -6px;
+  }
 
-.quote-text {
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 21px;
-  line-height: 2;
-  color: var(--ink-soft);
-  letter-spacing: .8px;
-}
+  .subtitle {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17.5px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    font-weight: 400;
+    max-width: 500px;
+    letter-spacing: 0.04em;
+    padding-left: 2px;
+  }
 
-.quote-attrib {
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  font-size: 12px;
-  letter-spacing: 5px;
-  color: var(--gold-deep);
-  margin-top: 22px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+  .subtitle .em {
+    color: var(--wine);
+    font-weight: 500;
+    font-style: italic;
+  }
 
-.quote-attrib .attr-line {
-  width: 30px;
-  height: 1px;
-  background: var(--gold);
-}
+  /* Right: pull quote */
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 6px;
+    position: relative;
+  }
 
-/* ===== Divider ===== */
-.divider-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 26px;
-  padding: 0 6px;
-}
+  .quote-mark {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 120px;
+    line-height: 0.7;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.05em;
+  }
 
-.divider-line {
-  height: 1px;
-  background: var(--rule);
-}
+  .quote-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14.5px;
+    line-height: 1.85;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    border-left: 2px solid var(--wine);
+    padding: 4px 0 4px 24px;
+    margin-left: 4px;
+  }
 
-.divider-dots {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.divider-dots .dot {
-  width: 5px;
-  height: 5px;
-  background: var(--wine);
-  border-radius: 50%;
-}
-.divider-dots .dot.mid {
-  background: var(--gold);
-}
+  .quote-text .em {
+    color: var(--wine);
+    font-weight: 600;
+  }
 
-/* ===== Catalog ===== */
-.catalog {
-  padding: 28px 6px 4px;
-}
+  .quote-caption {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 26px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--ink-fade);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
 
-.catalog-row {
-  display: grid;
-  grid-template-columns: 68px 260px 1fr auto;
-  align-items: center;
-  padding: 20px 10px;
-  border-bottom: 1px solid var(--rule);
-  gap: 22px;
-}
-.catalog-row:last-child {
-  border-bottom: none;
-}
+  .quote-caption .dot {
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
 
-.catalog-marker {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.catalog-marker .mark-square {
-  width: 10px;
-  height: 10px;
-  background: var(--wine);
-}
-.catalog-marker .mark-num {
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-size: 17px;
-  color: var(--gold-deep);
-  font-weight: 700;
-  letter-spacing: 1px;
-}
+  /* Footer: TOC band */
+  .foot-divider {
+    height: 1px;
+    background: var(--line);
+    margin: 40px 0 26px;
+    position: relative;
+  }
 
-.catalog-title {
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-size: 27px;
-  color: var(--wine-deep);
-  font-weight: 700;
-  letter-spacing: 3px;
-  line-height: 1.2;
-}
+  .foot-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 108px;
+    height: 2.5px;
+    background: var(--wine);
+  }
 
-.catalog-desc {
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  font-size: 16px;
-  color: var(--ink-soft);
-  line-height: 1.7;
-  letter-spacing: .8px;
-}
+  .foot-divider::after {
+    content: 'CONTENTS · 本期脉络';
+    position: absolute;
+    right: 0;
+    top: -9px;
+    background: var(--cream);
+    padding: 0 16px 0 22px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.42em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
 
-.catalog-page {
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-size: 22px;
-  color: var(--gold-deep);
-  font-weight: 400;
-  font-style: italic;
-  letter-spacing: 2px;
-  min-width: 42px;
-  text-align: right;
-}
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 56px;
+  }
 
-/* ===== Footer ===== */
-.footer {
-  position: absolute;
-  bottom: 26px;
-  left: 60px;
-  right: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  font-size: 11px;
-  letter-spacing: 5px;
-  color: var(--muted);
-}
+  .toc-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
 
-.footer .foot-mark {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.footer .foot-mark .dot {
-  width: 6px;
-  height: 6px;
-  background: var(--wine);
-}
-.footer .foot-mark .dot.gold {
-  background: var(--gold);
-}
+  .toc-item .idx {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--wine);
+    line-height: 1;
+    padding-top: 2px;
+    font-style: italic;
+  }
 
-.footer .foot-page {
-  color: var(--gold-deep);
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-style: italic;
-  letter-spacing: 2px;
-  font-size: 13px;
-}
+  .toc-item .txt {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    border-left: 1px solid var(--line);
+    padding-left: 14px;
+  }
+
+  .toc-item .head {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+  }
+
+  .toc-item .detail {
+    font-family: 'Noto Sans SC', 'Source Sans 3', sans-serif;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--ink-fade);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <div class="frame-line top"></div>
-    <div class="frame-line bottom"></div>
+    <div class="frame"></div>
+    <span class="top-bar">VOLUME I &nbsp;·&nbsp; OPEN SOURCE PHILOSOPHY &nbsp;·&nbsp; AN EDITORIAL READING</span>
+    <span class="bot-bar">MMXXV &nbsp;·&nbsp; ISSUE 01 &nbsp;·&nbsp; A CHAPTER OPENING</span>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
   </div>
+
   <div id="ct">
+    <div class="main">
 
-    <div class="header">
-      <div class="head-left">
-        <span class="head-mark"></span>
-        <span>VOL. I &nbsp;·&nbsp; OPEN SOURCE PHILOSOPHY</span>
-      </div>
-      <div class="head-right">
-        <span>CHAPTER TRANSITION</span>
-      </div>
-    </div>
-
-    <div class="content">
-
-      <div class="band">
-        <div class="anchor-col">
-          <div class="num-label"><span>CHAPTER</span></div>
-          <div class="num-label-cn"><span>第&nbsp;一&nbsp;卷</span></div>
-          <div class="num-01"><span>01</span></div>
-          <div class="anchor-line"></div>
-        </div>
-
-        <div class="title-col">
-          <div class="chapter-eyebrow"><span>SECTION 01 · CONTENTS</span></div>
-          <h1 class="chapter-title"><span>卷一 · 开源哲学</span></h1>
-          <p class="chapter-subtitle"><span>从代码公共到思想开源，重读这一代人的共同信仰。</span></p>
-        </div>
-
-        <div class="quote-col">
-          <div class="quote-mark"><span>&ldquo;</span></div>
-          <p class="quote-text"><span>卷一开始回到原点：开源不只是技术社区的运动，也是哲学、政治与伦理的现场。本期将邀请你用三本书，重新理解自己为何愿意布道。</span></p>
-          <div class="quote-attrib">
-            <span class="attr-line"></span>
-            <span>EDITOR&rsquo;S NOTE</span>
-          </div>
+      <div class="left">
+        <div class="kicker">CHAPTER 01</div>
+        <div class="kicker-cn">卷 一</div>
+        <div class="numeral"><span>01</span></div>
+        <div class="sep-row">
+          <div class="line"></div>
+          <span class="tag">序 章</span>
         </div>
       </div>
 
-      <div class="divider-row">
-        <div class="divider-line"></div>
-        <div class="divider-dots">
+      <div class="center">
+        <div class="title-en">Volume One &nbsp;·&nbsp; The Gospel of Open Source</div>
+        <h1 class="title"><span>卷一</span><span class="dot">·</span><span>开源哲学</span></h1>
+        <p class="subtitle">从<span class="em">代码公共</span>到<span class="em">思想开源</span>，重读这一代人的共同信仰。</p>
+      </div>
+
+      <div class="right">
+        <div class="quote-mark"><span>"</span></div>
+        <p class="quote-text">
+          卷一开始回到原点：<span class="em">开源不只是技术社区的运动</span>，也是哲学、政治与伦理的现场。本期将邀请你用三本书，重新理解自己为何愿意布道。
+        </p>
+        <div class="quote-caption">
           <span class="dot"></span>
-          <span class="dot mid"></span>
-          <span class="dot"></span>
-        </div>
-        <div class="divider-line"></div>
-      </div>
-
-      <div class="catalog">
-        <div class="catalog-row">
-          <div class="catalog-marker">
-            <span class="mark-square"></span>
-            <span class="mark-num">01</span>
-          </div>
-          <div class="catalog-title"><span>什么是开源</span></div>
-          <div class="catalog-desc"><span>开放不只是许可证，更是一种协作哲学与创作伦理。</span></div>
-          <div class="catalog-page"><span>p. 08</span></div>
-        </div>
-        <div class="catalog-row">
-          <div class="catalog-marker">
-            <span class="mark-square"></span>
-            <span class="mark-num">02</span>
-          </div>
-          <div class="catalog-title"><span>为什么布道</span></div>
-          <div class="catalog-desc"><span>当代码之外还有思想的自由，布道者承担的是启蒙与连接。</span></div>
-          <div class="catalog-page"><span>p. 12</span></div>
-        </div>
-        <div class="catalog-row">
-          <div class="catalog-marker">
-            <span class="mark-square"></span>
-            <span class="mark-num">03</span>
-          </div>
-          <div class="catalog-title"><span>本期脉络</span></div>
-          <div class="catalog-desc"><span>以三本书为经纬，回答开源何以成为生活方式。</span></div>
-          <div class="catalog-page"><span>p. 18</span></div>
+          <span>EDITOR'S NOTE &nbsp;·&nbsp; 编辑手记</span>
         </div>
       </div>
 
     </div>
 
-    <div class="footer">
-      <div class="foot-mark">
-        <span class="dot"></span>
-        <span class="dot gold"></span>
-        <span>OPEN SOURCE PHILOSOPHY · CHAPTER ONE</span>
+    <div class="foot-divider"></div>
+
+    <div class="foot-grid">
+      <div class="toc-item">
+        <div class="idx">i</div>
+        <div class="txt">
+          <div class="head">什么是开源</div>
+          <div class="detail">开放不只是许可证，更是一种协作哲学与创作伦理。</div>
+        </div>
       </div>
-      <div class="foot-page"><span>MMXXV / I</span></div>
+      <div class="toc-item">
+        <div class="idx">ii</div>
+        <div class="txt">
+          <div class="head">为什么布道</div>
+          <div class="detail">当代码之外还有思想的自由，布道者承担的是启蒙与连接。</div>
+        </div>
+      </div>
+      <div class="toc-item">
+        <div class="idx">iii</div>
+        <div class="txt">
+          <div class="head">本期脉络</div>
+          <div class="detail">以三本书为经纬，回答开源何以成为生活方式。</div>
+        </div>
+      </div>
     </div>
 
   </div>
