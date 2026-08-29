@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源发展时间线</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root{
+  --bg:#0A1220;
+  --bg-2:#121E30;
+  --card:#111C2E;
+  --card-2:#0E1826;
+  --border:rgba(33,150,243,.22);
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --accent-2:#4FC3F7;
+  --text:#F5F7FA;
+  --text-2:#B0BEC5;
+  --text-3:#78909C;
+  --grid:rgba(255,255,255,.03);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#050912}
+body{
+  font-family:'Inter','Noto Sans SC',system-ui,sans-serif;
+  color:var(--text);
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg)}
+
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.bg-grid{position:absolute;inset:0;background-image:
+  linear-gradient(rgba(33,150,243,.055) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(33,150,243,.055) 1px,transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:radial-gradient(130% 85% at 50% 50%, #000 40%, transparent 100%);
+          mask-image:radial-gradient(130% 85% at 50% 50%, #000 40%, transparent 100%);
+}
+.bg-glow-1{position:absolute;width:900px;height:900px;left:-280px;top:-380px;
+  background:radial-gradient(circle at center,rgba(33,150,243,.20),rgba(33,150,243,.06) 45%,transparent 70%);
+  filter:blur(8px)}
+.bg-glow-2{position:absolute;width:1000px;height:1000px;right:-320px;bottom:-420px;
+  background:radial-gradient(circle at center,rgba(0,188,212,.17),rgba(0,188,212,.05) 45%,transparent 70%);
+  filter:blur(8px)}
+.bg-vignette{position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 55%,transparent 30%,rgba(5,10,20,.65) 100%)}
+
+#ct{position:absolute;inset:0;z-index:1;padding:42px 60px;box-sizing:border-box;display:flex;flex-direction:column}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.header-left{display:flex;flex-direction:column;gap:10px;max-width:1080px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;color:var(--accent);font-weight:500;display:flex;align-items:center;gap:10px}
+.eyebrow-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.title{font-size:56px;font-weight:800;letter-spacing:2px;line-height:1;color:var(--text);
+  background:linear-gradient(90deg,#FFFFFF 0%,#B3E5FC 55%,#4FC3F7 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{font-size:15px;color:var(--text-2);line-height:1.55;max-width:920px;font-weight:300}
+.subtitle b{color:var(--accent-2);font-weight:600}
+
+.header-right{display:flex;align-items:center;gap:26px}
+.stat{text-align:right}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--accent);letter-spacing:1px;line-height:1}
+.stat-lbl{font-size:10px;color:var(--text-3);letter-spacing:3px;margin-top:6px}
+.divider-v{width:1px;height:44px;background:linear-gradient(180deg,transparent,rgba(33,150,243,.5),transparent)}
+
+/* Timeline */
+.timeline-section{flex:1;position:relative;padding:20px 0 10px;margin-top:6px}
+.timeline-wrap{position:relative;width:100%;height:430px;padding:0 20px}
+.timeline-band{position:absolute;left:80px;right:80px;top:50%;transform:translateY(-50%);height:3px;
+  background:linear-gradient(90deg,
+    rgba(33,150,243,0) 0%,
+    rgba(33,150,243,.45) 6%,
+    #2196F3 50%,
+    #00BCD4 94%,
+    rgba(0,188,212,0) 100%);
+  border-radius:2px;
+  box-shadow:0 0 18px rgba(33,150,243,.6),0 0 44px rgba(0,188,212,.35)}
+.timeline-band::before{content:'';position:absolute;left:0;right:0;top:-6px;height:15px;
+  background:linear-gradient(90deg,transparent 0%,rgba(33,150,243,.35) 20%,rgba(0,188,212,.55) 80%,transparent 100%);
+  filter:blur(8px);border-radius:8px}
+.timeline-band::after{content:'';position:absolute;left:0;right:0;top:-14px;height:31px;
+  background:linear-gradient(90deg,transparent,rgba(33,150,243,.15),rgba(0,188,212,.18),transparent);
+  filter:blur(22px);border-radius:20px}
+
+.timeline-items{position:relative;display:flex;justify-content:space-between;align-items:center;height:100%;z-index:2}
+.t-item{width:200px;display:flex;flex-direction:column;align-items:center;position:relative}
+
+/* Above dot */
+.t-up{height:180px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:14px;gap:6px}
+.t-year{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:800;color:var(--accent);letter-spacing:1.5px;line-height:1;
+  text-shadow:0 0 16px rgba(0,188,212,.55)}
+.t-label{font-size:14px;font-weight:700;letter-spacing:3px;color:var(--text);padding:3px 12px;border:1px solid rgba(0,188,212,.35);border-radius:20px;background:rgba(10,18,32,.55);backdrop-filter:blur(4px)}
+
+/* Below dot */
+.t-dn{height:180px;width:100%;display:flex;flex-direction:column;align-items:center;padding-top:16px;gap:9px}
+.t-title{font-size:18px;font-weight:700;color:var(--text);letter-spacing:1px;text-align:center}
+.t-desc{font-size:11.5px;color:var(--text-2);text-align:center;line-height:1.6;max-width:190px}
+
+/* Dot */
+.t-dot{width:22px;height:22px;border-radius:50%;position:relative;z-index:3;
+  background:radial-gradient(circle at 30% 30%,#B3E5FC 0%,#2196F3 50%,#1565C0 100%);
+  box-shadow:0 0 0 5px rgba(0,188,212,.28),0 0 0 12px rgba(33,150,243,.14),0 0 26px rgba(33,150,243,.85)}
+.t-dot::before{content:'';position:absolute;inset:-9px;border-radius:50%;
+  border:1px solid rgba(0,188,212,.45);
+  animation:ripple 2.6s ease-out infinite}
+.t-item:nth-child(2) .t-dot::before{animation-delay:.4s}
+.t-item:nth-child(3) .t-dot::before{animation-delay:.8s}
+.t-item:nth-child(4) .t-dot::before{animation-delay:1.2s}
+.t-item:nth-child(5) .t-dot::before{animation-delay:1.6s}
+@keyframes ripple{0%{transform:scale(.7);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+
+/* Below-dot variants for alternating layout */
+.t-item.alt .t-up{padding-bottom:14px;justify-content:flex-end}
+.t-item.alt .t-dn{padding-top:16px}
+
+/* Connector line to dot for alt items */
+.t-item .t-up::after,
+.t-item .t-dn::before{content:'';position:absolute;left:50%;width:1px;background:linear-gradient(180deg,rgba(0,188,212,.5),transparent);transform:translateX(-.5px)}
+.t-item .t-up::after{bottom:0;height:100%;background:linear-gradient(180deg,transparent 0%,rgba(0,188,212,.35) 100%)}
+.t-item .t-dn::before{top:0;height:100%;background:linear-gradient(180deg,rgba(0,188,212,.35) 0%,transparent 100%)}
+
+/* Data bar */
+.data-bar{display:flex;align-items:stretch;justify-content:space-between;gap:10px;padding:18px 22px;
+  background:linear-gradient(180deg,rgba(17,28,46,.85),rgba(14,24,38,.85));
+  border:1px solid var(--border);
+  border-radius:10px;
+  backdrop-filter:blur(6px);
+  box-shadow:0 8px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(33,150,243,.08)}
+.data-bar::before{content:'';position:absolute}
+.dp-title{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent);font-weight:600;padding-right:14px;border-right:1px solid rgba(33,150,243,.2);align-self:center}
+.dp-title-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent)}
+.dp-item{flex:1;display:flex;align-items:baseline;gap:8px;position:relative}
+.dp-item + .dp-item::before{content:'';position:absolute;left:-5px;top:12%;height:76%;width:1px;background:linear-gradient(180deg,transparent,rgba(33,150,243,.35),transparent)}
+.dp-year{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#4FC3F7;letter-spacing:.5px}
+.dp-text{font-size:11.5px;color:var(--text-2);line-height:1.4}
+.dp-text b{color:var(--text);font-weight:600}
+
+/* Footer */
+.footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:11px;color:var(--text-3);letter-spacing:1.5px;font-family:'JetBrains Mono',monospace}
+.footer-line{flex:1;height:1px;margin:0 20px;background:linear-gradient(90deg,transparent,rgba(33,150,243,.35),rgba(0,188,212,.35),transparent)}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-vignette"></div>
+  </div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span class="eyebrow-dot"></span><span>OPEN SOURCE · TIMELINE · 1983 → 2024</span></div>
+        <h1 class="title"><span>开源发展时间线</span></h1>
+        <p class="subtitle"><span>从 1983 年 GNU 计划发端，到 2024 年 AI 开源模型集中爆发——四十余年演进，见证社区自治走向 AI 时代的集体智能。</span></p>
+      </div>
+      <div class="header-right">
+        <div class="stat"><div class="stat-num"><span>41</span></div><div class="stat-lbl"><span>YEARS</span></div></div>
+        <div class="divider-v"></div>
+        <div class="stat"><div class="stat-num"><span>5</span></div><div class="stat-lbl"><span>KEY NODES</span></div></div>
+      </div>
+    </div>
+
+    <div class="timeline-section">
+      <div class="timeline-wrap">
+        <div class="timeline-band"></div>
+        <div class="timeline-items">
+          <div class="t-item">
+            <div class="t-up">
+              <div class="t-year"><span>1983</span></div>
+              <div class="t-label"><span>GNU</span></div>
+            </div>
+            <div class="t-dot"></div>
+            <div class="t-dn">
+              <div class="t-title"><span>GNU 宣言</span></div>
+              <div class="t-desc"><span>Stallman 发布 GNU 宣言，宣告自由软件运动正式发端，为社区自治的开源文化奠基。</span></div>
+            </div>
+          </div>
+
+          <div class="t-item alt">
+            <div class="t-up">
+              <div class="t-year"><span>1989</span></div>
+              <div class="t-label"><span>LINUX</span></div>
+            </div>
+            <div class="t-dot"></div>
+            <div class="t-dn">
+              <div class="t-title"><span>Linux 内核</span></div>
+              <div class="t-desc"><span>Linus Torvalds 公开 Linux 内核源代码，Unix 级操作系统从此走向公开协作开发。</span></div>
+            </div>
+          </div>
+
+          <div class="t-item">
+            <div class="t-up">
+              <div class="t-year"><span>1998</span></div>
+              <div class="t-label"><span>OSS</span></div>
+            </div>
+            <div class="t-dot"></div>
+            <div class="t-dn">
+              <div class="t-title"><span>开放源代码运动</span></div>
+              <div class="t-desc"><span>OSI 正式定义"开放源代码"标准，开源理念从技术社区走向产业共识与商业实践。</span></div>
+            </div>
+          </div>
+
+          <div class="t-item alt">
+            <div class="t-up">
+              <div class="t-year"><span>2007</span></div>
+              <div class="t-label"><span>GITHUB</span></div>
+            </div>
+            <div class="t-dot"></div>
+            <div class="t-dn">
+              <div class="t-title"><span>GitHub 上线</span></div>
+              <div class="t-desc"><span>Web 化的代码托管让协作门槛骤降，开源贡献从技术精英扩展至全球数千万开发者。</span></div>
+            </div>
+          </div>
+
+          <div class="t-item">
+            <div class="t-up">
+              <div class="t-year"><span>2024</span></div>
+              <div class="t-label"><span>AI 浪潮</span></div>
+            </div>
+            <div class="t-dot"></div>
+            <div class="t-dn">
+              <div class="t-title"><span>AI 开源爆发</span></div>
+              <div class="t-desc"><span>Llama、Mistral、Qwen 等开源大模型集中发布，开源迈向 AI 时代的集体智能纪元。</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-bar">
+      <div class="dp-title"><span class="dp-title-dot"></span><span>DATA POINTS</span></div>
+      <div class="dp-item"><span class="dp-year"><span>1983</span></span><span class="dp-text"><span><b>GNU 项目</b>启动</span></span></div>
+      <div class="dp-item"><span class="dp-year"><span>1991</span></span><span class="dp-text"><span><b>Linux 0.01</b>发布</span></span></div>
+      <div class="dp-item"><span class="dp-year"><span>1998</span></span><span class="dp-text"><span><b>OSI</b> 定义开源</span></span></div>
+      <div class="dp-item"><span class="dp-year"><span>2007</span></span><span class="dp-text"><span><b>GitHub</b> 上线</span></span></div>
+      <div class="dp-item"><span class="dp-year"><span>2024</span></span><span class="dp-text"><span><b>LLM</b> 开源年</span></span></div>
+    </div>
+
+    <div class="footer">
+      <span>SENSE NOVA · OPEN SOURCE EVOLUTION</span>
+      <div class="footer-line"></div>
+      <span>社区自治 → 集体智能</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

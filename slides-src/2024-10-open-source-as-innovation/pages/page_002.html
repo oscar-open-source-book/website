@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>章节过渡页 · 开源的诞生与演进</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2196F3;
+    --accent: #00BCD4;
+    --bg: #2D3748;
+    --bg-deep: #1A202C;
+    --text-main: #F7FAFC;
+    --text-sub: #CBD5E0;
+    --text-mute: #718096;
+    --line: rgba(33, 150, 243, 0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 1600px;
+    height: 900px;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-main);
+    background: var(--bg-deep);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--bg);
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(ellipse at 15% 30%, rgba(33, 150, 243, 0.12) 0%, rgba(33, 150, 243, 0) 55%),
+                linear-gradient(135deg, #1A202C 0%, #2D3748 50%, #1E2A3A 100%);
+  }
+
+  #bg::before {
+    content: '';
+    position: absolute;
+    left: -100px;
+    top: -100px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 188, 212, 0.08) 0%, rgba(0, 188, 212, 0) 70%);
+    pointer-events: none;
+  }
+
+  #bg::after {
+    content: '';
+    position: absolute;
+    right: 20%;
+    bottom: -80px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(33, 150, 243, 0.06) 0%, rgba(33, 150, 243, 0) 70%);
+    pointer-events: none;
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 70px 80px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 520px 1fr;
+    grid-template-rows: 1fr auto;
+    column-gap: 40px;
+    row-gap: 0;
+  }
+
+  /* === 顶部品牌行 === */
+  .top-bar {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .top-bar .brand { display: flex; align-items: center; gap: 12px; }
+  .top-bar .brand-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .top-bar .brand-cn { color: var(--text-sub); letter-spacing: 0.15em; font-weight: 400; }
+
+  /* === 左侧：章节编号 + 标题 === */
+  .left-col {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding-top: 30px;
+  }
+
+  .chapter-tag {
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .chapter-tag::before {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .chapter-num {
+    font-size: 260px;
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    background: linear-gradient(135deg, #2196F3 0%, #00BCD4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .chapter-num::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    bottom: 18px;
+    width: 120px;
+    height: 3px;
+    background: var(--primary);
+    opacity: 0.5;
+    border-radius: 2px;
+  }
+
+  .main-title {
+    font-size: 46px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+    margin-top: 20px;
+    letter-spacing: 0.02em;
+  }
+
+  .sub-title-en {
+    font-size: 15px;
+    color: var(--text-sub);
+    margin-top: 18px;
+    letter-spacing: 0.18em;
+    font-weight: 400;
+    line-height: 1.6;
+    opacity: 0.85;
+  }
+
+  .sub-title-cn {
+    font-size: 14px;
+    color: var(--text-mute);
+    margin-top: 6px;
+    letter-spacing: 0.12em;
+    font-weight: 300;
+  }
+
+  /* === 右侧：装饰图 + caption === */
+  .right-col {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding-top: 30px;
+    padding-right: 10px;
+  }
+
+  .deco-frame {
+    position: relative;
+    width: 900px;
+    height: 500px;
+  }
+
+  .deco-frame::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: -20px;
+    right: 20px;
+    bottom: 20px;
+    border: 1px solid rgba(33, 150, 243, 0.2);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .deco-frame img {
+    width: 900px;
+    height: 500px;
+    object-fit: cover;
+    display: block;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(33, 150, 243, 0.15);
+  }
+
+  .deco-caption {
+    margin-top: 18px;
+    align-self: flex-end;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .deco-caption::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  /* === 底部：三个时代节点 + 收束语 === */
+  .bottom-band {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 30px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .nodes-row {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr 1px 1fr;
+    gap: 30px;
+    align-items: stretch;
+  }
+
+  .node-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .node-label {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .node-text {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-sub);
+    font-weight: 400;
+  }
+
+  .node-divider {
+    width: 1px;
+    background: linear-gradient(to bottom, transparent 0%, var(--line) 30%, var(--line) 70%, transparent 100%);
+  }
+
+  .closing {
+    font-size: 12px;
+    color: var(--text-mute);
+    line-height: 1.7;
+    letter-spacing: 0.05em;
+    font-weight: 300;
+    padding-left: 14px;
+    border-left: 2px solid var(--primary);
+    opacity: 0.85;
+  }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>OPEN SOURCE</span>
+        <span class="brand-cn">· 起源与演进</span>
+      </div>
+      <div>CHAPTER TRANSITION · 01 / 06</div>
+    </div>
+
+    <div class="left-col">
+      <div class="chapter-tag"><span>CHAPTER</span></div>
+      <div class="chapter-num">01</div>
+      <h1 class="main-title">开源的诞生与演进</h1>
+      <div class="sub-title-en">Chapter 01 · 起源、里程碑与理念</div>
+      <div class="sub-title-cn">Origin · Milestones · Philosophy</div>
+    </div>
+
+    <div class="right-col">
+      <div class="deco-frame">
+        <img src="../images/page_002_deco.png" alt="开源演进抽象节点图">
+      </div>
+      <div class="deco-caption"><span>从 GNU 到 AI：一条流动的开源脉络</span></div>
+    </div>
+
+    <div class="bottom-band">
+      <div class="nodes-row">
+        <div class="node-item">
+          <div class="node-label"><span>1983 · GNU</span></div>
+          <div class="node-text"><span>从 GNU 到 OSS：三十年间，一场软件自由运动的展开</span></div>
+        </div>
+        <div class="node-divider"></div>
+        <div class="node-item">
+          <div class="node-label"><span>MILESTONES</span></div>
+          <div class="node-text"><span>里程碑：GPL、Apache、Linux Foundation</span></div>
+        </div>
+        <div class="node-divider"></div>
+        <div class="node-item">
+          <div class="node-label"><span>2023-24 · AI</span></div>
+          <div class="node-text"><span>AI 时代：模型与数据成为新的开源载体</span></div>
+        </div>
+      </div>
+      <div class="closing">
+        <span>开源的故事始于 Richard Stallman 对软件自由的呼吁，历经 GPL、Apache、Linux 内核等里程碑，直至 2023-2024 年 AI 模型把开源边界再次拓展。</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
