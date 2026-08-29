@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>GenAI开源全景图</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1A1F2E;
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-main: #EAF2FF;
+  --text-sub: #A5B4CC;
+  --border: rgba(33, 150, 243, 0.28);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+}
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse at top left, rgba(33,150,243,0.18), transparent 55%), radial-gradient(ellipse at bottom right, rgba(0,188,212,0.14), transparent 55%); }
+#ct { position: absolute; inset: 0; z-index: 1; padding: 40px 60px; }
+
+.grid-decor {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+
+.header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; gap: 30px; }
+.title-block { max-width: 1120px; }
+.eyebrow {
+  font-size: 12px; letter-spacing: 4px; font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+h1 {
+  font-size: 44px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.05;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #EAF2FF 0%, #2196F3 60%, #00BCD4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.subtitle { font-size: 14px; line-height: 1.7; color: var(--text-sub); max-width: 1080px; }
+.subtitle b { color: var(--text-main); font-weight: 600; }
+.subtitle .k { color: var(--accent); font-weight: 600; }
+.badge {
+  padding: 10px 16px; border: 1px solid var(--border); border-radius: 22px;
+  font-size: 12px; color: var(--accent); letter-spacing: 2px; font-weight: 600;
+  background: rgba(0,188,212,0.06); white-space: nowrap; margin-top: 8px;
+}
+
+.stack { display: flex; flex-direction: column; gap: 8px; }
+.layer {
+  display: grid; grid-template-columns: 280px 1fr 220px; align-items: stretch;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+  min-height: 78px;
+}
+.layer-1 { background: linear-gradient(90deg, rgba(33,150,243,0.22), rgba(33,150,243,0.04)); }
+.layer-2 { background: linear-gradient(90deg, rgba(33,150,243,0.20), rgba(33,150,243,0.04)); }
+.layer-3 { background: linear-gradient(90deg, rgba(0,188,212,0.18), rgba(33,150,243,0.04)); }
+.layer-4 { background: linear-gradient(90deg, rgba(0,188,212,0.22), rgba(0,188,212,0.05)); }
+
+.layer-accent {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+.layer-header {
+  padding: 12px 18px 12px 24px;
+  background: rgba(0,0,0,0.18);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.layer-tag-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.layer-num {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #0d1424; font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  letter-spacing: 0;
+}
+.layer-tag {
+  font-size: 11px; color: var(--accent); letter-spacing: 2.5px; font-weight: 600;
+}
+.layer-name { font-size: 19px; font-weight: 700; color: var(--text-main); margin-bottom: 3px; letter-spacing: -0.2px; }
+.layer-desc { font-size: 11.5px; color: var(--text-sub); line-height: 1.4; }
+.layer-content {
+  padding: 12px 18px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.chip {
+  padding: 6px 13px; border-radius: 7px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  font-size: 12.5px; color: var(--text-main);
+  font-weight: 500; letter-spacing: 0.2px;
+}
+.chip.hot {
+  background: rgba(0,188,212,0.16);
+  border-color: rgba(0,188,212,0.5);
+  color: var(--accent); font-weight: 600;
+}
+.layer-role {
+  padding: 12px 18px; border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: center;
+  background: rgba(0,0,0,0.22);
+}
+.role-label { font-size: 10px; color: var(--accent); letter-spacing: 2.5px; margin-bottom: 5px; font-weight: 700; }
+.role-text { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+
+.footer-row {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.5fr;
+  gap: 12px;
+  align-items: stretch;
+}
+.kpi {
+  border-radius: 12px; padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.20), rgba(0,188,212,0.05));
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.kpi-glow {
+  position: absolute; right: -30px; top: -30px;
+  width: 90px; height: 90px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,188,212,0.25), transparent 70%);
+  pointer-events: none;
+}
+.kpi-value { font-size: 34px; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 8px; letter-spacing: -1px; position: relative; }
+.kpi-label { font-size: 11.5px; color: var(--text-sub); line-height: 1.45; position: relative; }
+.summary {
+  border-radius: 12px; padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(0,188,212,0.22), rgba(33,150,243,0.10));
+  border: 1px solid rgba(0,188,212,0.5);
+  display: flex; align-items: center; gap: 14px;
+}
+.summary-mark {
+  font-size: 34px; color: var(--accent); font-weight: 800; line-height: 1;
+  flex-shrink: 0;
+}
+.summary-text { font-size: 12.5px; line-height: 1.55; color: var(--text-main); font-weight: 400; }
+.summary-text strong { color: var(--accent); font-weight: 800; font-size: 14px; display: block; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-decor"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="title-block">
+        <div class="eyebrow">OPEN SOURCE ECOSYSTEM · FULL STACK VIEW</div>
+        <h1>GenAI 开源全景图</h1>
+        <p class="subtitle">GenAI 开源生态已形成从基座模型到应用层的完整栈：<b>模型层</b>有 <span class="k">Llama</span>、<span class="k">Mistral</span>、<span class="k">Qwen</span> 等多元选择；<b>框架层</b> <span class="k">transformers</span> 与 <span class="k">LangChain</span> 成为事实标准；<b>部署层</b> <span class="k">vLLM</span>、<span class="k">Ollama</span> 让本地推理成为可能；<b>应用层</b> Agent 框架将 GenAI 能力推向业务落地——理解这一全景是有效布道的前提。</p>
+      </div>
+      <div class="badge">FULL STACK · 2024</div>
+    </div>
+
+    <div class="stack">
+      <div class="layer layer-4">
+        <div class="layer-accent"></div>
+        <div class="layer-header">
+          <div class="layer-tag-row">
+            <div class="layer-num">L4</div>
+            <div class="layer-tag">APPLICATION</div>
+          </div>
+          <div class="layer-name">应用层：场景驱动</div>
+          <div class="layer-desc">推动 GenAI 走向真实业务场景</div>
+        </div>
+        <div class="layer-content">
+          <div class="chip hot">AutoGen</div>
+          <div class="chip hot">CrewAI</div>
+          <div class="chip">MetaGPT</div>
+          <div class="chip">LangGraph</div>
+          <div class="chip">Dify</div>
+          <div class="chip">n8n</div>
+        </div>
+        <div class="layer-role">
+          <div class="role-label">ROLE</div>
+          <div class="role-text">多智能体协作 · 工作流编排 · 业务自动化</div>
+        </div>
+      </div>
+
+      <div class="layer layer-3">
+        <div class="layer-accent"></div>
+        <div class="layer-header">
+          <div class="layer-tag-row">
+            <div class="layer-num">L3</div>
+            <div class="layer-tag">DEPLOYMENT</div>
+          </div>
+          <div class="layer-name">部署层：本地化能力</div>
+          <div class="layer-desc">让开发者可在本地运行大规模模型</div>
+        </div>
+        <div class="layer-content">
+          <div class="chip hot">vLLM</div>
+          <div class="chip hot">Ollama</div>
+          <div class="chip">LM Studio</div>
+          <div class="chip">TGI</div>
+          <div class="chip">SGLang</div>
+          <div class="chip">Ktransformers</div>
+        </div>
+        <div class="layer-role">
+          <div class="role-label">ROLE</div>
+          <div class="role-text">高性能推理 · 本地运行 · 私有化部署</div>
+        </div>
+      </div>
+
+      <div class="layer layer-2">
+        <div class="layer-accent"></div>
+        <div class="layer-header">
+          <div class="layer-tag-row">
+            <div class="layer-num">L2</div>
+            <div class="layer-tag">FRAMEWORK</div>
+          </div>
+          <div class="layer-name">框架层：工具丰富</div>
+          <div class="layer-desc">提供从训练到应用的完整支持</div>
+        </div>
+        <div class="layer-content">
+          <div class="chip">PyTorch</div>
+          <div class="chip hot">transformers</div>
+          <div class="chip hot">LangChain</div>
+          <div class="chip">LlamaIndex</div>
+          <div class="chip">Hugging Face</div>
+          <div class="chip">Qdrant</div>
+        </div>
+        <div class="layer-role">
+          <div class="role-label">ROLE</div>
+          <div class="role-text">训练推理一体 · RAG 编排 · 事实标准</div>
+        </div>
+      </div>
+
+      <div class="layer layer-1">
+        <div class="layer-accent"></div>
+        <div class="layer-header">
+          <div class="layer-tag-row">
+            <div class="layer-num">L1</div>
+            <div class="layer-tag">MODEL</div>
+          </div>
+          <div class="layer-name">模型层：多元开放</div>
+          <div class="layer-desc">代表不同定位的开源基座模型</div>
+        </div>
+        <div class="layer-content">
+          <div class="chip hot">Llama 3</div>
+          <div class="chip hot">Mistral Large</div>
+          <div class="chip hot">Qwen 2</div>
+          <div class="chip">Yi</div>
+          <div class="chip">DeepSeek</div>
+          <div class="chip">Baichuan</div>
+        </div>
+        <div class="layer-role">
+          <div class="role-label">ROLE</div>
+          <div class="role-text">通用对话 · 领域专精 · 多模态基座</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <div class="kpi">
+        <div class="kpi-glow"></div>
+        <div class="kpi-value">50+</div>
+        <div class="kpi-label">主流可商用开源大语言模型<br>全球开源基座模型数量</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-glow"></div>
+        <div class="kpi-value">3000万+</div>
+        <div class="kpi-label">transformers 月下载量<br>HuggingFace 平台公开数据</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-glow"></div>
+        <div class="kpi-value">10万+</div>
+        <div class="kpi-label">vLLM GitHub Star<br>反映开源社区热度</div>
+      </div>
+      <div class="summary">
+        <div class="summary-mark">→</div>
+        <div class="summary-text"><strong>理解全景是布道前提</strong>掌握分层架构，才能精准定位技术选型、把握生态脉络，把开源 GenAI 能力真正转化为业务价值。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

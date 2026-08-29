@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>时代背景：GenAI开源浪潮</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --bg-1:#0F1424;
+  --bg-2:#1A1F2E;
+  --bg-3:#232B45;
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --text:#EAF2FB;
+  --text-dim:#A6B5CC;
+  --text-muted:#6E7C99;
+  --line:rgba(33,150,243,0.22);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;padding:0;
+  font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  color:var(--text);
+  background:#0B0F1C;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:
+    radial-gradient(1100px 720px at 88% 118%, rgba(33,150,243,0.22), transparent 62%),
+    radial-gradient(900px 620px at 6% -12%, rgba(0,188,212,0.16), transparent 62%),
+    linear-gradient(135deg, #0C1122 0%, #141B30 52%, #0B0F1C 100%);
+}
+
+/* ---------- Background decoration ---------- */
+#bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+
+.grid-overlay{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.055) 1px, transparent 1px);
+  background-size:64px 64px;
+}
+
+.orb-a{
+  position:absolute;left:-180px;top:-200px;
+  width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.32), transparent 68%);
+  filter:blur(14px);
+}
+.orb-b{
+  position:absolute;right:-220px;bottom:-260px;
+  width:640px;height:640px;border-radius:50%;
+  background:radial-gradient(circle, rgba(0,188,212,0.20), transparent 66%);
+  filter:blur(16px);
+}
+
+/* Corner brackets */
+.corner{position:absolute;width:60px;height:60px;pointer-events:none;}
+.corner::before,.corner::after{content:'';position:absolute;background:var(--primary);box-shadow:0 0 10px rgba(33,150,243,0.7);}
+.corner.tl{top:34px;left:34px;}
+.corner.tl::before{top:0;left:0;width:60px;height:2px;}
+.corner.tl::after{top:0;left:0;width:2px;height:60px;}
+.corner.tr{top:34px;right:34px;}
+.corner.tr::before{top:0;right:0;width:60px;height:2px;}
+.corner.tr::after{top:0;right:0;width:2px;height:60px;}
+.corner.bl{bottom:34px;left:34px;}
+.corner.bl::before{bottom:0;left:0;width:60px;height:2px;}
+.corner.bl::after{bottom:0;left:0;width:2px;height:60px;}
+.corner.br{bottom:34px;right:34px;}
+.corner.br::before{bottom:0;right:0;width:60px;height:2px;}
+.corner.br::after{bottom:0;right:0;width:2px;height:60px;}
+
+/* ---------- Content ---------- */
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:60px 72px;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:520px 1fr;
+  gap:64px;
+  height:100%;
+}
+
+/* ===== Left: chapter number ===== */
+.chapter{
+  position:relative;
+  display:flex;flex-direction:column;
+  padding:24px 20px 30px 0;
+}
+
+.chapter-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:13px;letter-spacing:0.42em;color:var(--accent);
+  font-weight:600;
+  margin-bottom:10px;
+}
+.chapter-tag::before{
+  content:'';display:inline-block;
+  width:34px;height:2px;background:var(--accent);
+  box-shadow:0 0 8px rgba(0,188,212,0.7);
+}
+
+.big-num{
+  font-family:'Inter',sans-serif;
+  font-weight:900;
+  font-size:360px;
+  line-height:0.85;
+  letter-spacing:-0.05em;
+  margin:0;
+  padding:0;
+  color:var(--primary);
+  text-shadow:
+    0 0 22px rgba(33,150,243,0.60),
+    0 0 60px rgba(33,150,243,0.35),
+    0 0 110px rgba(33,150,243,0.18);
+  position:relative;
+}
+
+.big-num-outline{
+  position:absolute;
+  left:-10px;top:12px;
+  color:transparent;
+  -webkit-text-stroke:2px rgba(0,188,212,0.30);
+  filter:blur(0.4px);
+  pointer-events:none;
+  user-select:none;
+}
+
+.chapter-label{
+  margin-top:26px;
+  font-size:26px;font-weight:700;
+  color:var(--text);
+  letter-spacing:0.06em;
+}
+.chapter-label-en{
+  margin-top:6px;
+  font-size:12px;font-weight:500;
+  color:var(--text-muted);
+  letter-spacing:0.36em;
+}
+
+.chapter-bar{
+  display:flex;align-items:center;gap:12px;
+  margin-top:22px;
+  font-size:12px;letter-spacing:0.32em;
+  color:var(--text-dim);
+  font-weight:500;
+}
+.chapter-bar-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent);
+}
+.chapter-bar-line{
+  flex:1;height:1px;
+  background:linear-gradient(90deg, rgba(0,188,212,0.7), rgba(33,150,243,0.06));
+}
+
+/* ===== Right: content ===== */
+.content{
+  display:flex;flex-direction:column;
+  gap:16px;
+  padding-top:6px;
+}
+
+.eyebrow{
+  font-size:12px;font-weight:600;
+  color:var(--accent);
+  letter-spacing:0.36em;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{
+  content:'';width:26px;height:1px;background:var(--accent);
+}
+
+h1.title{
+  margin:0;
+  font-size:58px;
+  font-weight:800;
+  letter-spacing:-0.01em;
+  line-height:1.1;
+  color:var(--text);
+}
+
+.subtitle{
+  margin:0;
+  font-size:19px;
+  color:var(--text-dim);
+  font-weight:400;
+  line-height:1.5;
+  max-width:900px;
+}
+
+.points{
+  display:flex;flex-direction:column;
+  gap:10px;
+  margin-top:2px;
+}
+
+.point{
+  position:relative;
+  padding:12px 16px 12px 28px;
+  background:rgba(33,150,243,0.055);
+  border:1px solid rgba(33,150,243,0.14);
+  border-left:2px solid var(--primary);
+  border-radius:4px;
+  display:grid;
+  grid-template-columns:24px 240px 1fr;
+  align-items:center;
+  column-gap:16px;
+}
+.point::before{
+  content:'';
+  position:absolute;left:-2px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow:0 0 8px rgba(33,150,243,0.6);
+}
+.point-num{
+  font-family:'Inter',sans-serif;
+  font-size:15px;font-weight:700;
+  color:var(--primary);
+  letter-spacing:0.06em;
+}
+.point-title{
+  font-size:18px;font-weight:700;color:var(--text);
+  letter-spacing:0.01em;
+}
+.point-desc{
+  font-size:13.5px;color:var(--text-dim);
+  line-height:1.5;
+}
+
+/* KPI row */
+.kpi-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.kpi{
+  position:relative;
+  padding:16px 22px;
+  background:linear-gradient(135deg, rgba(33,150,243,0.10), rgba(0,188,212,0.04));
+  border:1px solid rgba(33,150,243,0.28);
+  border-radius:6px;
+  display:flex;flex-direction:column;gap:4px;
+  overflow:hidden;
+}
+.kpi::after{
+  content:'';position:absolute;
+  right:-40px;top:-40px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.18), transparent 70%);
+  pointer-events:none;
+}
+.kpi-value{
+  font-family:'Inter',sans-serif;
+  font-size:40px;font-weight:800;color:var(--primary);
+  line-height:1;
+  letter-spacing:-0.02em;
+  text-shadow:0 0 14px rgba(33,150,243,0.55);
+}
+.kpi-value .plus{font-size:30px;font-weight:700;margin-left:2px;}
+.kpi-label{
+  font-size:12px;color:var(--text);font-weight:600;
+  letter-spacing:0.10em;
+}
+.kpi-source{
+  font-size:10.5px;color:var(--text-muted);
+  letter-spacing:0.04em;
+}
+
+/* Narrative */
+.narrative{
+  position:relative;
+  padding:14px 20px 14px 22px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.09), rgba(0,188,212,0.02));
+  border-radius:4px;
+  font-size:13px;line-height:1.7;
+  color:var(--text-dim);
+}
+.narrative::before{
+  content:'';position:absolute;
+  left:0;top:8px;bottom:8px;width:3px;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow:0 0 10px rgba(33,150,243,0.5);
+}
+.narrative strong{color:var(--text);font-weight:600;}
+
+/* Footer */
+.footer{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--text-muted);
+  letter-spacing:0.32em;font-weight:500;
+  padding-top:4px;
+}
+.footer .foot-left{display:flex;align-items:center;gap:10px;}
+.footer .foot-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--primary);
+  box-shadow:0 0 8px var(--primary);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-overlay"></div>
+    <div class="orb-a"></div>
+    <div class="orb-b"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+  </div>
+
+  <div id="ct">
+    <div class="layout">
+      <!-- Left chapter number -->
+      <div class="chapter">
+        <span class="chapter-tag"><span>CHAPTER</span></span>
+        <div style="position:relative;">
+          <div class="big-num">01</div>
+          <div class="big-num-outline">01</div>
+        </div>
+        <div class="chapter-label">时代背景</div>
+        <div class="chapter-label-en">THE GENAI OPEN-SOURCE WAVE</div>
+        <div class="chapter-bar">
+          <span class="chapter-bar-dot"></span>
+          <span>SECTION ONE</span>
+          <span class="chapter-bar-line"></span>
+        </div>
+      </div>
+
+      <!-- Right content -->
+      <div class="content">
+        <span class="eyebrow"><span>SECTION · 01 / 时代背景</span></span>
+
+        <h1 class="title">GenAI 开源浪潮</h1>
+
+        <p class="subtitle">为什么此刻参与开源，比以往任何时候都重要</p>
+
+        <div class="points">
+          <div class="point">
+            <span class="point-num"><span>01</span></span>
+            <span class="point-title">大模型开放化趋势</span>
+            <span class="point-desc"><span>Llama、Mistral、Qwen 等头部模型厂商纷纷转向开源路线</span></span>
+          </div>
+          <div class="point">
+            <span class="point-num"><span>02</span></span>
+            <span class="point-title">基础设施成熟</span>
+            <span class="point-desc"><span>vLLM、TGI、Ollama 等推理框架让本地部署门槛大幅降低</span></span>
+          </div>
+          <div class="point">
+            <span class="point-num"><span>03</span></span>
+            <span class="point-title">生态链完整化</span>
+            <span class="point-desc"><span>从预训练到微调、推理、应用的开源工具链日趋完善</span></span>
+          </div>
+          <div class="point">
+            <span class="point-num"><span>04</span></span>
+            <span class="point-title">社区参与降低门槛</span>
+            <span class="point-desc"><span>开源之书记录等项目降低技术传播门槛，让非顶尖工程师也能参与</span></span>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi">
+            <div class="kpi-value"><span>10亿<span class="plus">+</span></span></div>
+            <div class="kpi-label"><span>Llama 系列下载量</span></div>
+            <div class="kpi-source"><span>Meta Llama 系列模型在 HuggingFace 累计下载</span></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-value"><span>50<span class="plus">+</span></span></div>
+            <div class="kpi-label"><span>开源推理引擎</span></div>
+            <div class="kpi-source"><span>主流 GenAI 推理框架和运行时</span></div>
+          </div>
+        </div>
+
+        <div class="narrative">
+          <span>2024 年是 GenAI 开源的爆发之年。头部实验室纷纷开放模型权重，推理基础设施日趋成熟，开源工具链从训练到部署形成完整闭环。<strong>开源之书记录</strong>正是这一浪潮中社区参与和知识传播的关键节点——我们不仅消费开源成果，更通过记录和布道推动生态繁荣。</span>
+        </div>
+
+        <div class="footer">
+          <span class="foot-left"><span class="foot-dot"></span><span>OPEN SOURCE · COMMUNITY · RECORD</span></span>
+          <span>PAGE 02</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
