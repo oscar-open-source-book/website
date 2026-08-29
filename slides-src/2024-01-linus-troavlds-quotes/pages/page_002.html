@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>其人 · 其事 — 章节过渡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #002FA7;
+    --primary-deep: #001A6B;
+    --accent: #E64A19;
+    --neutral: #ECEFF1;
+    --neutral-2: #F7F8F9;
+    --ink: #0A1929;
+    --muted: #6B7580;
+    --line: #D5DCE3;
+    --line-soft: #E6E9EC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+    background: #ECEFF1;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: #ECEFF1;
+  }
+  #bg { position: absolute; inset: 0; z-index: 0; }
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,47,167,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,47,167,0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .bg-corner {
+    position: absolute;
+    top: 0; right: 0;
+    width: 440px; height: 440px;
+    background-image: radial-gradient(circle at 100% 0%, rgba(0,47,167,0.12) 0%, rgba(0,47,167,0) 68%);
+  }
+  .bg-corner-2 {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 360px; height: 360px;
+    background-image: radial-gradient(circle at 0% 100%, rgba(230,74,25,0.08) 0%, rgba(230,74,25,0) 68%);
+  }
+  #ct {
+    position: absolute; inset: 0;
+    z-index: 1;
+    padding: 50px 72px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 30px;
+  }
+  .brand-mark {
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .brand-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .brand-sub {
+    font-family: 'Noto Sans SC', sans-serif;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    font-size: 12px;
+    font-weight: 400;
+    padding-left: 14px;
+    border-left: 1px solid var(--line);
+  }
+  .page-num {
+    display: flex; align-items: baseline; gap: 8px;
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    color: var(--primary);
+  }
+  .pn-cur { font-size: 30px; font-weight: 700; line-height: 1; }
+  .pn-sep { font-size: 20px; color: var(--muted); }
+  .pn-tot { font-size: 15px; color: var(--muted); }
+
+  .main-content {
+    display: grid;
+    grid-template-columns: 760px 1fr;
+    gap: 60px;
+    flex: 1;
+    margin-bottom: 24px;
+  }
+
+  .hero-copy {
+    position: relative;
+    padding-top: 4px;
+  }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 12.5px;
+    color: var(--primary);
+    letter-spacing: 0.32em;
+    font-weight: 600;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+  .hero-eyebrow .bar {
+    width: 44px; height: 2px; background: var(--accent);
+  }
+  .hero-title {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 128px;
+    line-height: 1;
+    font-weight: 900;
+    color: var(--primary);
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .hero-title .dot-mid {
+    color: var(--accent);
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 100px;
+    margin: 0 6px;
+    position: relative;
+    top: -6px;
+  }
+  .hero-sub {
+    font-family: 'Noto Serif SC', 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: #334155;
+    margin-bottom: 28px;
+    letter-spacing: 0.05em;
+  }
+  .hero-rule {
+    width: 68px; height: 3px;
+    background: var(--primary);
+    margin-bottom: 26px;
+  }
+  .hero-text {
+    font-size: 16px;
+    line-height: 1.95;
+    color: #2D3748;
+    max-width: 640px;
+  }
+  .hero-text .em {
+    color: var(--primary);
+    font-weight: 700;
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  }
+  .hero-text .em-a {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .hero-name {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .hero-name .name-en {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: none;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 18px;
+    padding-top: 4px;
+  }
+  .tl-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .tl-eyebrow .bar {
+    width: 24px; height: 1px; background: var(--accent);
+  }
+  .tl-list {
+    position: relative;
+    padding-left: 34px;
+  }
+  .tl-line {
+    position: absolute;
+    left: 7px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: var(--primary);
+    opacity: 0.28;
+  }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: 20px;
+    padding: 14px 0;
+    position: relative;
+    align-items: start;
+  }
+  .tl-item + .tl-item {
+    border-top: 1px dashed var(--line-soft);
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -34px;
+    top: 24px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ECEFF1;
+    border: 3px solid var(--primary);
+  }
+  .tl-item:nth-child(4)::before {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .tl-year {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    padding-top: 4px;
+  }
+  .tl-item:nth-child(4) .tl-year {
+    color: var(--accent);
+  }
+  .tl-year .yr-tail {
+    font-size: 20px;
+    color: var(--muted);
+    font-family: 'Noto Sans SC', sans-serif;
+    margin-left: 4px;
+    letter-spacing: 0.06em;
+  }
+  .tl-desc {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #334155;
+  }
+  .tl-desc b {
+    color: var(--primary);
+    font-weight: 700;
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    letter-spacing: 0.02em;
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .kpi-card {
+    background: #FFFFFF;
+    padding: 18px 22px 20px;
+    position: relative;
+    border-top: 3px solid var(--primary);
+    border-left: 1px solid var(--line-soft);
+    border-right: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .kpi-card .kpi-index {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--line);
+  }
+  .kpi-card .kpi-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.24em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .kpi-card .kpi-value {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .kpi-card .kpi-desc {
+    font-size: 12.5px;
+    color: #4A5568;
+    line-height: 1.5;
+  }
+  .kpi-card.accent {
+    border-top-color: var(--accent);
+  }
+  .kpi-card.accent .kpi-value {
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-corner"></div>
+    <div class="bg-corner-2"></div>
+  </div>
+
+  <div id="ct">
+    <header class="page-header">
+      <div class="brand-mark">
+        <span class="brand-dot"></span>
+        <span>OPEN SOURCE&nbsp;&nbsp;·&nbsp;&nbsp;PIONEERS</span>
+        <span class="brand-sub">开源先锋 · 章节过渡</span>
+      </div>
+      <div class="page-num">
+        <span class="pn-cur">03</span>
+        <span class="pn-sep">/</span>
+        <span class="pn-tot">12</span>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <section class="hero-copy">
+        <div class="hero-eyebrow">
+          <span class="bar"></span>
+          <span>CHAPTER · 03 &nbsp; PROLOGUE</span>
+        </div>
+        <h1 class="hero-title">其人<span class="dot-mid">·</span>其事</h1>
+        <div class="hero-sub">从一位程序员开始的故事</div>
+        <div class="hero-rule"></div>
+        <p class="hero-text">
+          一个芬兰学生的毕业设计，如何长成<span class="em">今天约 99% 云服务器</span>、几乎所有智能手机与大部分超算的地基；而 <span class="em-a">Git</span>，又重塑了全球开发者的协作方式。
+        </p>
+        <div class="hero-name">
+          <span class="name-en">Linus Torvalds</span>
+          <span>芬兰 · 赫尔辛基 · 坦佩雷大学</span>
+        </div>
+      </section>
+
+      <section class="timeline">
+        <div class="tl-eyebrow">
+          <span class="bar"></span>
+          <span>KEY&nbsp;YEARS&nbsp;&nbsp;·&nbsp;&nbsp;关键年份</span>
+        </div>
+        <div class="tl-list">
+          <div class="tl-line"></div>
+
+          <div class="tl-item">
+            <div class="tl-year">1969</div>
+            <div class="tl-desc">生于芬兰 <b>赫尔辛基</b>；后毕业于 <b>坦佩雷大学</b> 计算机系。</div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-year">1991</div>
+            <div class="tl-desc">发布 <b>Linux 内核 0.01</b>，一段个人实验从此改变世界。</div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-year">2005</div>
+            <div class="tl-desc">发布版本控制工具 <b>Git</b>，重塑全球软件协作范式。</div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-year">至今<span class="yr-tail">~</span></div>
+            <div class="tl-desc">仍作为 <b>Linux 内核</b>首席维护者亲自 review 提交；<b>Linaro</b> 董事与 <b>Torvalds 基金会</b>发起人。</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="kpi-row">
+      <div class="kpi-card">
+        <span class="kpi-index">01</span>
+        <div class="kpi-label">Linux 内核诞生</div>
+        <div class="kpi-value">1991·09·17</div>
+        <div class="kpi-desc">0.01 版本首次对外发布</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-index">02</span>
+        <div class="kpi-label">Git 发布</div>
+        <div class="kpi-value">2005·04</div>
+        <div class="kpi-desc">Linus 亲手打造的第一版</div>
+      </div>
+      <div class="kpi-card accent">
+        <span class="kpi-index">03</span>
+        <div class="kpi-label">服务器市场占有率</div>
+        <div class="kpi-value">≈ 90%</div>
+        <div class="kpi-desc">Linux 主导全球云计算底座</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-index">04</span>
+        <div class="kpi-label">Android 内核基础</div>
+        <div class="kpi-value">Linux</div>
+        <div class="kpi-desc">全球数十亿终端运行其上</div>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

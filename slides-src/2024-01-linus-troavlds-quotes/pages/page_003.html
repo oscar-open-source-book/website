@@ -1,0 +1,578 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>为什么是开源</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800;900&family=Noto+Serif+SC:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --klein: #002FA7;
+    --klein-dark: #001F70;
+    --klein-light: #4A6BB8;
+    --klein-mid: #1F3FA0;
+    --terracotta: #E64A19;
+    --gray-bg: #ECEFF1;
+    --gray-line: #D8DEE4;
+    --gray-text: #6B7280;
+    --text-main: #1E293B;
+    --text-light: #4A5568;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-main);
+    background: #FFFFFF;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: #FFFFFF;
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .bg-accent-tl {
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 900px;
+    background: var(--klein);
+  }
+
+  .bg-corner-tr {
+    position: absolute;
+    top: 0; right: 0;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle at 100% 0%, rgba(0,47,167,0.05) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .bg-corner-bl {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle at 0% 100%, rgba(230,74,25,0.045) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 50px 64px 42px 64px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+  }
+
+  .header-left {
+    max-width: 900px;
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    color: var(--terracotta);
+    letter-spacing: 6px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .eyebrow .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    margin-right: 12px;
+    vertical-align: 2px;
+  }
+
+  h1.title {
+    font-family: 'Noto Serif SC', 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 62px;
+    color: var(--klein);
+    margin: 0 0 12px 0;
+    line-height: 1.08;
+    letter-spacing: 1px;
+  }
+
+  .subtitle {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--text-light);
+    margin: 0;
+    letter-spacing: 1px;
+  }
+
+  .subtitle::before {
+    content: '—— ';
+    color: var(--terracotta);
+    font-weight: 700;
+  }
+
+  .header-right {
+    text-align: right;
+    padding-top: 8px;
+  }
+
+  .kicker-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 34px;
+    color: var(--klein);
+    line-height: 1;
+  }
+
+  .kicker-lbl {
+    font-size: 11px;
+    color: var(--gray-text);
+    letter-spacing: 4px;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  .kicker-bar {
+    width: 44px; height: 3px;
+    background: var(--terracotta);
+    margin-left: auto;
+    margin-top: 12px;
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    gap: 52px;
+    min-height: 0;
+  }
+
+  .col-left {
+    width: 762px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .card {
+    flex: 1;
+    position: relative;
+    padding: 18px 22px 18px 34px;
+    border-left: 3px solid var(--klein);
+    background: linear-gradient(90deg, rgba(0,47,167,0.035) 0%, rgba(0,47,167,0) 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card-num {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 36px;
+    color: rgba(0,47,167,0.10);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .card-head .marker {
+    display: inline-block;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--klein);
+    box-shadow: 0 0 0 4px rgba(0,47,167,0.10);
+    flex-shrink: 0;
+  }
+
+  .card-head .h {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--klein);
+    letter-spacing: 1px;
+  }
+
+  .card-detail {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--text-light);
+    padding-left: 21px;
+  }
+
+  .col-right {
+    width: 610px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart-card {
+    background: linear-gradient(160deg, #F7F9FC 0%, #FFFFFF 100%);
+    border: 1px solid var(--gray-line);
+    border-radius: 4px;
+    padding: 14px 20px 12px 20px;
+    position: relative;
+  }
+
+  .chart-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 56px; height: 3px;
+    background: var(--terracotta);
+  }
+
+  .chart-card-title {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--klein);
+    margin: 4px 0 6px 0;
+    letter-spacing: 2px;
+  }
+
+  .chart-card-sub {
+    font-size: 11px;
+    color: var(--gray-text);
+    letter-spacing: 3px;
+    font-weight: 500;
+  }
+
+  .network-svg {
+    width: 100%;
+    display: block;
+  }
+
+  .chart-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--gray-line);
+  }
+
+  .foot-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--gray-text);
+    letter-spacing: 1.5px;
+  }
+
+  .foot-item .sw {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .sw-a { background: var(--terracotta); }
+  .sw-b { background: var(--klein); }
+  .sw-c { background: var(--klein-light); }
+
+  .stats {
+    display: flex;
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 14px 18px;
+    background: #FFFFFF;
+    border: 1px solid var(--gray-line);
+    border-top: 3px solid var(--klein);
+    position: relative;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 42px;
+    color: var(--klein);
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  .stat-plus {
+    color: var(--terracotta);
+    font-weight: 800;
+  }
+
+  .stat-lbl {
+    font-size: 12px;
+    color: var(--gray-text);
+    margin-top: 6px;
+    letter-spacing: 2px;
+    font-weight: 500;
+  }
+
+  .stat-en {
+    font-size: 10px;
+    color: #9AA3AF;
+    margin-top: 3px;
+    letter-spacing: 2px;
+    font-weight: 400;
+  }
+
+  .narrative {
+    margin-top: 14px;
+    padding: 12px 20px 12px 24px;
+    background: var(--gray-bg);
+    border-left: 3px solid var(--terracotta);
+    position: relative;
+  }
+
+  .narrative-quote {
+    position: absolute;
+    top: -8px;
+    right: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 46px;
+    color: rgba(230,74,25,0.18);
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .narrative p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.85;
+    color: var(--text-main);
+  }
+
+  .narrative strong {
+    color: var(--klein);
+    font-weight: 700;
+  }
+
+  .narrative em {
+    color: var(--terracotta);
+    font-weight: 700;
+    font-style: normal;
+    padding: 0 2px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    margin-top: 14px;
+    border-top: 1px solid var(--gray-line);
+    font-size: 11px;
+    color: var(--gray-text);
+    letter-spacing: 3px;
+  }
+
+  .footer-left { display: flex; align-items: center; gap: 12px; }
+  .footer-dot {
+    width: 6px; height: 6px;
+    background: var(--klein);
+    border-radius: 50%;
+  }
+  .footer-right { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: 2px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-accent-tl"></div>
+    <div class="bg-corner-tr"></div>
+    <div class="bg-corner-bl"></div>
+  </div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span class="dot"></span>WHY OPEN SOURCE · 为什么是开源</div>
+        <h1 class="title">为什么是开源</h1>
+        <div class="subtitle">他的答案里没有道德说教</div>
+      </div>
+      <div class="header-right">
+        <div class="kicker-num">04</div>
+        <div class="kicker-lbl">CASE STUDY</div>
+        <div class="kicker-bar"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="col-left">
+        <div class="card">
+          <div class="card-num">01</div>
+          <div class="card-head"><span class="marker"></span><span class="h">兴趣驱动</span></div>
+          <div class="card-detail">Linux 起于个人对内核的好奇与热爱，而非任何商业计划或理想主义的宣言。它先是一个人的手工艺品，才长成世界的操作系统。</div>
+        </div>
+        <div class="card">
+          <div class="card-num">02</div>
+          <div class="card-head"><span class="marker"></span><span class="h">效率优先</span></div>
+          <div class="card-detail">他相信聪明人一起看代码，比单打独斗更快解决问题。开放意味着把最好的头脑拉到同一张桌子上，让 Bug 无处藏身。</div>
+        </div>
+        <div class="card">
+          <div class="card-num">03</div>
+          <div class="card-head"><span class="marker"></span><span class="h">对抗封闭</span></div>
+          <div class="card-detail">他厌恶厂商对源码的独占，希望用户能自由修改系统。代码只有在你手里，才真正属于你——这是使用，也是权利。</div>
+        </div>
+        <div class="card">
+          <div class="card-num">04</div>
+          <div class="card-head"><span class="marker"></span><span class="h">工具属性</span></div>
+          <div class="card-detail">在他眼里，开源首先是工程手段，其次才是社会运动。它存在的意义是让软件变好，而不是让世界变得高尚。</div>
+        </div>
+      </div>
+
+      <div class="col-right">
+        <div class="chart-card">
+          <div class="chart-card-title">全球协作网络 · GLOBAL NETWORK</div>
+          <div class="chart-card-sub">GLOBAL COLLABORATION NETWORK</div>
+
+          <svg class="network-svg" viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#002FA7" stop-opacity="0.10"/>
+                <stop offset="70%" stop-color="#002FA7" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="gCenter" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#FF8A65"/>
+                <stop offset="60%" stop-color="#E64A19"/>
+                <stop offset="100%" stop-color="#B23812"/>
+              </radialGradient>
+            </defs>
+
+            <!-- ambient glow behind center -->
+            <circle cx="280" cy="150" r="120" fill="url(#gGlow)"/>
+
+            <!-- concentric reference rings -->
+            <circle cx="280" cy="150" r="42" fill="none" stroke="#002FA7" stroke-opacity="0.10" stroke-dasharray="2 4"/>
+            <circle cx="280" cy="150" r="80" fill="none" stroke="#002FA7" stroke-opacity="0.09" stroke-dasharray="2 5"/>
+            <circle cx="280" cy="150" r="125" fill="none" stroke="#002FA7" stroke-opacity="0.08" stroke-dasharray="2 6"/>
+
+            <!-- inner ring lines -->
+            <g stroke="#002FA7" stroke-opacity="0.48" stroke-width="1">
+              <line x1="280" y1="150" x2="280" y2="108"/>
+              <line x1="280" y1="150" x2="321" y2="150"/>
+              <line x1="280" y1="150" x2="280" y2="192"/>
+              <line x1="280" y1="150" x2="239" y2="150"/>
+              <line x1="280" y1="150" x2="310" y2="120"/>
+              <line x1="280" y1="150" x2="310" y2="180"/>
+              <line x1="280" y1="150" x2="250" y2="180"/>
+              <line x1="280" y1="150" x2="250" y2="120"/>
+            </g>
+
+            <!-- outer ring lines -->
+            <g stroke="#002FA7" stroke-opacity="0.32" stroke-width="0.9">
+              <line x1="280" y1="150" x2="280" y2="45"/>
+              <line x1="280" y1="150" x2="348" y2="59"/>
+              <line x1="280" y1="150" x2="403" y2="82"/>
+              <line x1="280" y1="150" x2="419" y2="150"/>
+              <line x1="280" y1="150" x2="403" y2="218"/>
+              <line x1="280" y1="150" x2="348" y2="241"/>
+              <line x1="280" y1="150" x2="280" y2="255"/>
+              <line x1="280" y1="150" x2="212" y2="241"/>
+              <line x1="280" y1="150" x2="157" y2="218"/>
+              <line x1="280" y1="150" x2="141" y2="150"/>
+              <line x1="280" y1="150" x2="157" y2="82"/>
+              <line x1="280" y1="150" x2="212" y2="59"/>
+            </g>
+
+            <!-- outermost nodes -->
+            <g fill="#FFFFFF" stroke="#002FA7" stroke-width="1.6">
+              <circle cx="280" cy="45" r="4.5"/>
+              <circle cx="348" cy="59" r="4.5"/>
+              <circle cx="403" cy="82" r="4.5"/>
+              <circle cx="419" cy="150" r="4.5"/>
+              <circle cx="403" cy="218" r="4.5"/>
+              <circle cx="348" cy="241" r="4.5"/>
+              <circle cx="280" cy="255" r="4.5"/>
+              <circle cx="212" cy="241" r="4.5"/>
+              <circle cx="157" cy="218" r="4.5"/>
+              <circle cx="141" cy="150" r="4.5"/>
+              <circle cx="157" cy="82" r="4.5"/>
+              <circle cx="212" cy="59" r="4.5"/>
+            </g>
+
+            <!-- inner nodes -->
+            <g fill="#002FA7">
+              <circle cx="280" cy="108" r="4"/>
+              <circle cx="321" cy="150" r="4"/>
+              <circle cx="280" cy="192" r="4"/>
+              <circle cx="239" cy="150" r="4"/>
+              <circle cx="310" cy="120" r="3"/>
+              <circle cx="310" cy="180" r="3"/>
+              <circle cx="250" cy="180" r="3"/>
+              <circle cx="250" cy="120" r="3"/>
+            </g>
+
+            <!-- center node -->
+            <circle cx="280" cy="150" r="17" fill="none" stroke="#002FA7" stroke-opacity="0.16" stroke-width="1.2"/>
+            <circle cx="280" cy="150" r="13" fill="url(#gCenter)"/>
+            <circle cx="280" cy="150" r="5" fill="#FFFFFF" opacity="0.5"/>
+          </svg>
+
+          <div class="chart-foot">
+            <div class="foot-item"><span class="sw sw-a"></span><span>核心节点 · Linus</span></div>
+            <div class="foot-item"><span class="sw sw-b"></span><span>内圈协作</span></div>
+            <div class="foot-item"><span class="sw sw-c"></span><span>全球贡献者</span></div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-num">30,000<span class="stat-plus">+</span></div>
+            <div class="stat-lbl">Linux 内核贡献者</div>
+            <div class="stat-en">Kernel Contributors</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">100<span class="stat-plus">+</span></div>
+            <div class="stat-lbl">跨越国家 / 地区</div>
+            <div class="stat-en">Countries &amp; Regions</div>
+          </div>
+        </div>
+
+        <div class="narrative">
+          <div class="narrative-quote">"</div>
+          <p>很多人把开源当作一场<em>道德运动</em>，但 Linus 反复强调，开源对他而言<strong>首先是让软件变好的方法</strong>。他不在意"主义"，只在意在更短的时间里写出更好的代码——这恰恰是它最有生命力的地方。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <span class="footer-dot"></span>
+        <span>SENSENOVA · 关于开源的一堂课</span>
+      </div>
+      <div class="footer-right">— 04 / WHY OPEN SOURCE</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

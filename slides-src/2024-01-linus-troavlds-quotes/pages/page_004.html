@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Linus 的影响力</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#002FA7;
+  --blue-soft:#1a4bc7;
+  --orange:#E64A19;
+  --gray-bg:#ECEFF1;
+  --gray-line:#D6DBE0;
+  --gray-text:#6B7280;
+  --gray-soft:#9AA4B0;
+  --ink:#0F172A;
+  --white:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  font-size:16px;
+  color:var(--ink);
+  background:var(--gray-bg);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--gray-bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 72px;}
+
+/* subtle grid texture */
+.grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(0,47,167,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,47,167,0.05) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+.grid-vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.75), rgba(236,239,241,0) 60%);
+}
+
+/* top area */
+.top{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--gray-line);
+}
+.brand{
+  display:flex;flex-direction:column;gap:6px;
+}
+.eyebrow{
+  display:flex;align-items:center;gap:10px;
+  font-size:12px;letter-spacing:0.22em;
+  color:var(--gray-soft);
+  font-weight:500;
+  text-transform:uppercase;
+}
+.eyebrow .dot{
+  width:8px;height:8px;background:var(--orange);border-radius:50%;
+  box-shadow:0 0 0 3px rgba(230,74,25,0.15);
+}
+.title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:900;
+  font-size:56px;
+  color:var(--blue);
+  letter-spacing:-0.01em;
+  line-height:1.05;
+  margin-top:2px;
+}
+.subtitle{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:500;
+  font-size:20px;
+  color:var(--ink);
+  opacity:0.75;
+  letter-spacing:0.02em;
+  margin-top:6px;
+}
+.meta{
+  text-align:right;
+  display:flex;flex-direction:column;gap:6px;align-items:flex-end;
+}
+.meta .tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:0.2em;color:var(--gray-soft);
+  font-weight:600;text-transform:uppercase;
+}
+.meta .tag .bar{width:28px;height:2px;background:var(--blue);}
+.meta .date{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:14px;color:var(--gray-text);letter-spacing:0.05em;
+}
+
+/* KPI dashboard */
+.kpi-section{
+  padding-top:28px;
+  padding-bottom:22px;
+}
+.kpi-row{
+  display:grid;
+  gap:16px;
+}
+.kpi-row-1{
+  grid-template-columns:repeat(3,1fr);
+  margin-bottom:18px;
+}
+.kpi-row-2{
+  grid-template-columns:repeat(2,1fr);
+  max-width:1040px;
+}
+.kpi{
+  background:var(--white);
+  border:1px solid var(--gray-line);
+  border-top:3px solid var(--blue);
+  padding:22px 24px 20px;
+  position:relative;
+  min-height:214px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.kpi .idx{
+  position:absolute;top:14px;right:16px;
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:13px;font-weight:700;color:var(--gray-soft);
+  letter-spacing:0.05em;
+}
+.kpi-label{
+  font-size:12px;letter-spacing:0.18em;
+  color:var(--gray-text);
+  font-weight:600;
+  text-transform:uppercase;
+}
+.kpi-number{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:900;
+  color:var(--blue);
+  font-size:82px;
+  line-height:1;
+  letter-spacing:-0.02em;
+  margin-top:8px;
+  margin-bottom:10px;
+}
+.kpi-number .unit{
+  font-size:38px;font-weight:700;
+  color:var(--blue-soft);
+  margin-left:2px;
+}
+.kpi-number .plus{
+  color:var(--orange);
+  font-size:64px;
+}
+.kpi-name{
+  font-size:15px;
+  color:var(--ink);
+  font-weight:600;
+  margin-bottom:6px;
+}
+.kpi-note{
+  font-size:12.5px;
+  color:var(--gray-text);
+  line-height:1.55;
+  border-top:1px solid var(--gray-line);
+  padding-top:8px;
+}
+
+/* bottom area */
+.bottom{
+  position:absolute;
+  left:72px;right:72px;
+  bottom:52px;
+  display:grid;
+  grid-template-columns:440px 1fr;
+  gap:44px;
+  align-items:flex-start;
+}
+.narrative{
+  padding:18px 22px;
+  border-left:3px solid var(--orange);
+  background:rgba(255,255,255,0.7);
+  position:relative;
+}
+.narrative .quote-mark{
+  position:absolute;
+  top:-6px;right:14px;
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:56px;color:var(--blue);
+  opacity:0.15;
+  font-weight:900;line-height:1;
+}
+.narrative p{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:14.5px;
+  line-height:1.75;
+  color:var(--ink);
+  font-weight:500;
+}
+.tags{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+.tag-item{
+  background:var(--white);
+  border:1px solid var(--gray-line);
+  padding:12px 12px 12px;
+  position:relative;
+}
+.tag-item .num{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:11px;font-weight:700;
+  color:var(--orange);
+  letter-spacing:0.1em;
+  margin-bottom:4px;
+}
+.tag-item .name{
+  font-size:13px;font-weight:700;
+  color:var(--blue);
+  margin-bottom:6px;
+  letter-spacing:0.02em;
+}
+.tag-item .desc{
+  font-size:11px;line-height:1.5;
+  color:var(--gray-text);
+}
+
+/* footer strip */
+.footer-strip{
+  position:absolute;
+  left:72px;right:72px;
+  bottom:22px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:10px;letter-spacing:0.2em;
+  color:var(--gray-soft);
+  font-weight:600;
+  text-transform:uppercase;
+}
+.footer-strip .line{
+  flex:1;height:1px;background:var(--gray-line);
+  margin:0 20px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-bg"></div>
+    <div class="grid-vignette"></div>
+  </div>
+  <div id="ct">
+
+    <!-- TOP -->
+    <div class="top">
+      <div class="brand">
+        <div class="eyebrow">
+          <span class="dot"></span>
+          <span>INFLUENCE INDEX · 影响力面板</span>
+        </div>
+        <div class="title">Linus 的影响力</div>
+        <div class="subtitle">被低估的数字</div>
+      </div>
+      <div class="meta">
+        <div class="tag"><span class="bar"></span><span>DATA DASHBOARD</span></div>
+        <div class="date">2024 / Overview Report</div>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-section">
+      <div class="kpi-row kpi-row-1">
+
+        <div class="kpi">
+          <div class="idx">01</div>
+          <div>
+            <div class="kpi-label">Top-1000 超算占比</div>
+            <div class="kpi-number">100<span class="unit">%</span></div>
+            <div class="kpi-name">全球超算 · Linux 全覆盖</div>
+          </div>
+          <div class="kpi-note">TOP500 与 TOP1000 榜单中，100% 的超级计算机运行 Linux 或其衍生系统。</div>
+        </div>
+
+        <div class="kpi">
+          <div class="idx">02</div>
+          <div>
+            <div class="kpi-label">Android 装机量</div>
+            <div class="kpi-number">30<span class="unit">亿</span><span class="plus">+</span></div>
+            <div class="kpi-name">移动设备 · 内核支撑</div>
+          </div>
+          <div class="kpi-note">Android 系统基于 Linux 内核，全球累计装机量突破 30 亿台。</div>
+        </div>
+
+        <div class="kpi">
+          <div class="idx">03</div>
+          <div>
+            <div class="kpi-label">GitHub 仓库数</div>
+            <div class="kpi-number">4.4<span class="unit">亿</span><span class="plus">+</span></div>
+            <div class="kpi-name">版本控制 · Git 生态</div>
+          </div>
+          <div class="kpi-note">GitHub 平台上超过 4.4 亿仓库以 Linus 主导设计的 Git 作为版本控制系统。</div>
+        </div>
+
+      </div>
+
+      <div class="kpi-row kpi-row-2">
+
+        <div class="kpi">
+          <div class="idx">04</div>
+          <div>
+            <div class="kpi-label">内核代码行数</div>
+            <div class="kpi-number">≈ 3000<span class="unit">万</span></div>
+            <div class="kpi-name">Linux 内核 · 工程规模</div>
+          </div>
+          <div class="kpi-note">Linux 内核源码行数约 3000 万行，横跨数十万模块与数千万级代码路径。</div>
+        </div>
+
+        <div class="kpi">
+          <div class="idx">05</div>
+          <div>
+            <div class="kpi-label">内核贡献者</div>
+            <div class="kpi-number">30,000<span class="plus">+</span></div>
+            <div class="kpi-name">社区协作 · 万人参与</div>
+          </div>
+          <div class="kpi-note">来自全球 150 多个国家的开发者参与 Linux 内核维护与迭代。</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="bottom">
+      <div class="narrative">
+        <div class="quote-mark">"</div>
+        <p>Linus 一人之笔，催生了今天几乎不可见的底层基础设施。无论用户是否知道他的名字，只要使用云端服务、智能手机或服务器，就正在运行他参与塑造的代码。</p>
+      </div>
+      <div class="tags">
+        <div class="tag-item">
+          <div class="num">/ 01</div>
+          <div class="name">Linux 渗透</div>
+          <div class="desc">全球前 1000 台超级计算机 100% 使用 Linux 衍生系统</div>
+        </div>
+        <div class="tag-item">
+          <div class="num">/ 02</div>
+          <div class="name">移动设备</div>
+          <div class="desc">Android 基于 Linux 内核覆盖超 30 亿台设备</div>
+        </div>
+        <div class="tag-item">
+          <div class="num">/ 03</div>
+          <div class="name">Git 普及</div>
+          <div class="desc">GitHub 上超 4.4 亿仓库以 Git 为版本控制</div>
+        </div>
+        <div class="tag-item">
+          <div class="num">/ 04</div>
+          <div class="name">内核规模</div>
+          <div class="desc">源码约 3000 万行，社区贡献者超 3 万</div>
+        </div>
+        <div class="tag-item">
+          <div class="num">/ 05</div>
+          <div class="name">商业价值</div>
+          <div class="desc">基于 Linux 的云计算市场年规模超千亿美元</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-strip">
+      <span>SENSENOVA · DASHBOARD</span>
+      <span class="line"></span>
+      <span>INFLUENCE / 影响力报告</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
