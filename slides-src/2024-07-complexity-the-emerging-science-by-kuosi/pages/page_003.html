@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>复杂性的核心思想</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Noto+Serif+SC:wght@400;600;900&family=Source+Sans+Pro:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --gold:#C8A96E;
+  --grey:#607D8B;
+  --paper:#F7F4EE;
+  --paper-2:#EDE7DA;
+  --line:#D8CFBE;
+  --ink:#1B2A3A;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+html,body{width:1600px;height:900px;overflow:hidden;}
+
+body{
+  font-family:"Source Sans Pro","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  font-size:16px;
+  color:var(--ink);
+  background:var(--paper);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:var(--paper);
+}
+
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(1200px 700px at 85% 15%, rgba(200,169,110,0.10), transparent 60%),
+    radial-gradient(900px 600px at 10% 90%, rgba(13,33,55,0.06), transparent 55%),
+    var(--paper);
+}
+
+#ct{position:absolute;inset:0;z-index:1;padding:56px 72px;}
+
+/* ---------- Top masthead ---------- */
+.masthead{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+}
+.masthead .brand{
+  font-family:"Playfair Display",serif;
+  font-weight:600;
+  letter-spacing:0.22em;
+  font-size:14px;
+  color:var(--navy);
+  text-transform:uppercase;
+}
+.masthead .brand span{color:var(--gold);}
+.masthead .meta{
+  display:flex;align-items:center;gap:22px;
+  font-size:12px;letter-spacing:0.28em;
+  color:var(--grey);text-transform:uppercase;
+}
+.masthead .meta .dot{width:6px;height:6px;background:var(--gold);border-radius:50%;display:inline-block;}
+
+/* ---------- Main grid ---------- */
+.main{
+  display:grid;
+  grid-template-columns: 620px 1fr;
+  gap:56px;
+  margin-top:34px;
+  height:720px;
+}
+
+/* Left column: giant numeral + title */
+.left{
+  position:relative;
+  display:flex;flex-direction:column;
+}
+
+.kicker{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:14px;
+}
+.kicker .rule{width:56px;height:2px;background:var(--gold);}
+.kicker .txt{
+  font-size:12px;letter-spacing:0.42em;color:var(--gold);
+  text-transform:uppercase;font-weight:600;
+}
+
+.numeral{
+  font-family:"Playfair Display","Noto Serif SC",serif;
+  font-weight:800;
+  font-size:440px;
+  line-height:0.78;
+  color:var(--navy);
+  letter-spacing:-0.04em;
+  position:relative;
+  margin-left:-8px;
+  margin-top:-24px;
+}
+.numeral::after{
+  content:"";
+  position:absolute;
+  left:52%;top:8%;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 0 6px rgba(200,169,110,0.15);
+}
+
+.title-wrap{margin-top:8px;position:relative;z-index:2;}
+.title{
+  font-family:"Noto Serif SC","Playfair Display",serif;
+  font-weight:900;
+  font-size:64px;
+  line-height:1.08;
+  color:var(--navy);
+  letter-spacing:0.01em;
+}
+.title .accent{color:var(--gold);font-style:italic;font-family:"Playfair Display",serif;font-weight:600;}
+
+.subtitle{
+  margin-top:16px;
+  display:flex;align-items:center;gap:16px;
+  font-size:16px;
+  color:var(--grey);
+  letter-spacing:0.02em;
+}
+.subtitle .bar{width:36px;height:1px;background:var(--grey);opacity:0.6;}
+.subtitle .en{
+  font-family:"Playfair Display",serif;font-style:italic;
+  color:var(--grey);font-size:15px;
+}
+
+/* Right column: narrative + decor */
+.right{
+  position:relative;
+  display:flex;flex-direction:column;
+  padding-top:6px;
+}
+
+.narrative-card{
+  position:relative;
+  padding:34px 34px 32px 34px;
+  background:linear-gradient(180deg, rgba(13,33,55,0.03), rgba(200,169,110,0.05));
+  border-left:3px solid var(--gold);
+}
+.narrative-card .label{
+  font-family:"Playfair Display",serif;
+  font-style:italic;font-size:14px;color:var(--gold);
+  letter-spacing:0.18em;text-transform:uppercase;
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.narrative-card .label .num{
+  font-family:"Playfair Display",serif;font-style:normal;
+  font-weight:700;color:var(--navy);
+  background:var(--gold);
+  width:26px;height:26px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:13px;
+}
+.narrative-card .quote{
+  font-family:"Noto Serif SC","Playfair Display",serif;
+  font-size:20px;line-height:1.7;
+  color:var(--ink);
+  font-weight:400;
+}
+.narrative-card .quote .hi{color:var(--navy);font-weight:600;}
+.narrative-card .quote .g{color:var(--gold);font-weight:600;}
+.narrative-card .quote .em{
+  font-family:"Playfair Display",serif;font-style:italic;
+  color:var(--navy);
+}
+
+/* Decorative fractal cluster */
+.fractal{
+  position:absolute;
+  right:0;top:230px;
+  width:260px;height:260px;
+  pointer-events:none;
+  opacity:0.85;
+}
+.fractal .ring{
+  position:absolute;border-radius:50%;
+  border:1px solid var(--gold);
+}
+.fractal .r1{width:240px;height:240px;left:10px;top:10px;}
+.fractal .r2{width:170px;height:170px;left:45px;top:45px;border-color:rgba(13,33,55,0.28);}
+.fractal .r3{width:100px;height:100px;left:80px;top:80px;border-color:var(--gold);}
+.fractal .r4{width:40px;height:40px;left:110px;top:110px;background:var(--navy);border:none;}
+.fractal .cross{
+  position:absolute;left:130px;top:130px;width:0;height:0;
+}
+.fractal .cross::before,.fractal .cross::after{
+  content:"";position:absolute;background:var(--gold);
+}
+.fractal .cross::before{left:-6px;top:0;width:12px;height:2px;}
+.fractal .cross::after{left:0;top:-6px;width:2px;height:12px;}
+.fractal .dot{
+  position:absolute;width:8px;height:8px;border-radius:50%;
+  background:var(--gold);
+}
+.fractal .d1{left:0;top:130px;}
+.fractal .d2{left:250px;top:130px;}
+.fractal .d3{left:130px;top:0;}
+.fractal .d4{left:130px;top:250px;}
+.fractal .diagonal{
+  position:absolute;left:0;top:0;width:260px;height:260px;
+}
+.fractal .diagonal .l{
+  position:absolute;background:rgba(13,33,55,0.18);
+}
+.fractal .diagonal .l1{left:-20px;top:130px;width:300px;height:1px;transform:rotate(45deg);transform-origin:left center;}
+.fractal .diagonal .l2{left:-20px;top:130px;width:300px;height:1px;transform:rotate(-45deg);transform-origin:left center;}
+
+/* Two concept cards */
+.concepts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:26px;
+}
+.card{
+  position:relative;
+  padding:22px 22px 22px 22px;
+  background:#FFFFFF;
+  border-top:2px solid var(--navy);
+  box-shadow:0 10px 24px -18px rgba(13,33,55,0.25);
+}
+.card .tag{
+  display:flex;align-items:center;gap:10px;
+  font-size:11px;letter-spacing:0.32em;
+  color:var(--gold);font-weight:700;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.card .tag .n{
+  font-family:"Playfair Display",serif;font-style:italic;
+  font-size:20px;color:var(--navy);letter-spacing:0;
+  font-weight:700;
+}
+.card h3{
+  font-family:"Noto Serif SC",serif;
+  font-weight:700;font-size:22px;color:var(--navy);
+  line-height:1.25;margin-bottom:10px;
+}
+.card p{
+  font-size:14.5px;line-height:1.65;
+  color:var(--grey);
+}
+.card .en{
+  font-family:"Playfair Display",serif;font-style:italic;
+  font-size:12.5px;color:var(--gold);
+  margin-top:10px;letter-spacing:0.06em;
+}
+.card .marker{
+  position:absolute;right:18px;top:18px;
+  font-family:"Playfair Display",serif;font-style:italic;
+  color:var(--line);font-size:34px;font-weight:700;
+}
+
+/* Footer */
+.footer{
+  position:absolute;left:72px;right:72px;bottom:36px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  font-size:11px;letter-spacing:0.32em;
+  color:var(--grey);text-transform:uppercase;
+}
+.footer .fl{display:flex;align-items:center;gap:16px;}
+.footer .fl .sq{width:8px;height:8px;background:var(--gold);}
+.footer .fr{display:flex;align-items:center;gap:14px;}
+.footer .fr .dot{width:5px;height:5px;background:var(--navy);border-radius:50%;}
+.footer .fr .pg{color:var(--navy);font-weight:700;letter-spacing:0.28em;}
+
+/* Left-column decorative corner ticks */
+.tick{position:absolute;color:var(--gold);font-family:"Playfair Display",serif;font-size:12px;letter-spacing:0.3em;}
+.tick.tl{left:0;top:-4px;}
+
+/* Section indicator on right */
+.section-side{
+  position:absolute;
+  right:-14px;top:8px;
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  font-size:11px;letter-spacing:0.5em;
+  color:var(--grey);text-transform:uppercase;
+}
+.section-side .accent{color:var(--gold);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Masthead -->
+    <div class="masthead">
+      <div class="brand">The Complexity <span>Review</span></div>
+      <div class="meta">
+        <span>Issue 01</span>
+        <span class="dot"></span>
+        <span>Editorial · Chapter Opener</span>
+        <span class="dot"></span>
+        <span>秋 · 二〇二五</span>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+      <!-- LEFT: numeral + title -->
+      <div class="left">
+        <div class="tick tl">— SECTION OPENER —</div>
+        <div class="kicker">
+          <span class="rule"></span>
+          <span class="txt">Chapter One</span>
+        </div>
+
+        <div class="numeral">Ⅰ</div>
+
+        <div class="title-wrap">
+          <h1 class="title">复杂性的<span class="accent">核心</span>思想</h1>
+          <div class="subtitle">
+            <span class="bar"></span>
+            <span>PART&nbsp;Ⅰ — 从简单到复杂的认知跃迁</span>
+          </div>
+          <div class="subtitle" style="margin-top:6px;">
+            <span class="bar"></span>
+            <span class="en">From Simplicity to Emergence · A Cognitive Leap</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: narrative + concepts + decor -->
+      <div class="right">
+
+        <!-- Narrative pull-quote -->
+        <div class="narrative-card">
+          <div class="label">
+            <span class="num">01</span>
+            <span>The Central Thesis</span>
+          </div>
+          <p class="quote">
+            复杂性的<span class="hi">核心命题</span>是：当你面对一个足够<span class="g">复杂且相互连接</span>的系统时，传统的<span class="em">还原分析</span>方法就失效了。你必须换一种思维——关注<span class="hi">关系</span>、<span class="hi">模式</span>、<span class="hi">涌现行为</span>。
+          </p>
+        </div>
+
+        <!-- Fractal decoration (pure CSS) -->
+        <div class="fractal" aria-hidden="true">
+          <div class="diagonal">
+            <span class="l l1"></span>
+            <span class="l l2"></span>
+          </div>
+          <div class="ring r1"></div>
+          <div class="ring r2"></div>
+          <div class="ring r3"></div>
+          <div class="ring r4"></div>
+          <div class="cross"></div>
+          <span class="dot d1"></span>
+          <span class="dot d2"></span>
+          <span class="dot d3"></span>
+          <span class="dot d4"></span>
+        </div>
+
+        <!-- Two concept cards -->
+        <div class="concepts">
+          <div class="card">
+            <span class="marker">§ 1</span>
+            <div class="tag"><span class="n">i.</span><span>The Limit</span></div>
+            <h3>还原论的局限</h3>
+            <p>将系统拆成零件、逐一分解，无法真正理解整体的行为——因为整体的意义存在于零件之间的关系之中，而非零件本身。</p>
+            <div class="en">Reductionism · breaking apart ≠ understanding</div>
+          </div>
+
+          <div class="card">
+            <span class="marker">§ 2</span>
+            <div class="tag"><span class="n">ii.</span><span>The Definition</span></div>
+            <h3>涌现的定义</h3>
+            <p>整体的属性不能从部分中推导——温度之于分子、意识之于神经元、秩序之于混沌，皆是从相互连接中<em>涌现</em>出的新层次。</p>
+            <div class="en">Emergence · whole &gt; sum of parts</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="fl">
+        <span class="sq"></span>
+        <span>The Complexity Review · Editorial No.01</span>
+      </div>
+      <div class="fr">
+        <span>Part</span>
+        <span class="dot"></span>
+        <span class="pg">Ⅰ / Ⅳ</span>
+        <span class="dot"></span>
+        <span>核心思想 · Core Ideas</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
