@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Ostrom的治理原则</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --navy:#0D2137;
+  --navy-soft:#1E3A5F;
+  --red:#C0392B;
+  --red-soft:#E74C3C;
+  --bg:#F8F9FA;
+  --ink:#2C3E50;
+  --muted:#6B7C93;
+  --line:#DDE3EA;
+  --accent-bg:#EAF0F6;
+  --paper:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.6;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .grid{position:absolute;inset:0;background-image:linear-gradient(to right,rgba(13,33,55,0.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(13,33,55,0.03) 1px,transparent 1px);background-size:80px 80px;}
+#bg .corner{position:absolute;top:-120px;right:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(13,33,55,0.08),rgba(13,33,55,0) 70%);}
+#bg .corner-2{position:absolute;bottom:-160px;left:-160px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,0.06),rgba(192,57,43,0) 70%);}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px;}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--navy);padding-bottom:18px;margin-bottom:26px;}
+.header .title-block{display:flex;align-items:baseline;gap:22px;}
+.header .badge{display:inline-block;background:var(--navy);color:#fff;font-size:12px;letter-spacing:2px;padding:5px 12px;font-weight:500;}
+header h1, .header h1{font-family:"Noto Serif SC","Source Han Serif SC",serif;font-size:44px;font-weight:700;color:var(--navy);letter-spacing:1px;line-height:1.1;}
+.header .subtitle{font-family:"Noto Serif SC",serif;font-size:15px;color:var(--muted);font-style:italic;letter-spacing:0.5px;}
+.header .meta{font-size:12px;color:var(--muted);letter-spacing:2px;text-align:right;}
+.header .meta .k{color:var(--red);font-weight:700;}
+
+/* Body grid */
+.body{display:grid;grid-template-columns:470px 1fr;gap:44px;height:calc(100% - 118px);}
+
+/* Left column */
+.left{display:flex;flex-direction:column;gap:20px;}
+.intro-card{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--navy);padding:22px 22px 20px;position:relative;}
+.intro-card::before{content:"";position:absolute;top:22px;left:-4px;width:4px;height:36px;background:var(--red);}
+.intro-card .tag{font-size:11px;letter-spacing:3px;color:var(--red);font-weight:700;margin-bottom:8px;}
+.intro-card h2{font-family:"Noto Serif SC",serif;font-size:22px;color:var(--navy);font-weight:700;margin-bottom:10px;line-height:1.35;}
+.intro-card p{font-size:14px;color:var(--ink);line-height:1.75;}
+.intro-card .pull{margin-top:14px;padding:10px 14px;background:var(--accent-bg);font-family:"Noto Serif SC",serif;font-size:14px;color:var(--navy);border-left:3px solid var(--navy);font-style:italic;line-height:1.6;}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.stat{background:var(--paper);border:1px solid var(--line);padding:18px 16px;position:relative;overflow:hidden;}
+.stat::after{content:"";position:absolute;top:0;right:0;width:40px;height:40px;background:linear-gradient(135deg,transparent 50%,var(--accent-bg) 50%);}
+.stat .label{font-size:11px;letter-spacing:2px;color:var(--muted);font-weight:500;margin-bottom:8px;}
+.stat .num{font-family:"Noto Serif SC",serif;font-size:44px;color:var(--red);font-weight:900;line-height:1;letter-spacing:-1px;}
+.stat .num .unit{font-size:18px;color:var(--navy);margin-left:4px;font-weight:700;}
+.stat .cap{margin-top:8px;font-size:12px;color:var(--ink);line-height:1.55;}
+
+.nobel{background:var(--navy);color:#fff;padding:16px 20px;display:flex;align-items:center;gap:14px;}
+.nobel .medal{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F5C97A,#C0392B 70%);flex-shrink:0;box-shadow:0 0 0 2px rgba(255,255,255,0.2) inset;}
+.nobel .txt{font-size:12px;line-height:1.55;}
+.nobel .txt .name{font-family:"Noto Serif SC",serif;font-size:14px;font-weight:700;letter-spacing:1px;}
+.nobel .txt .year{color:#F5C97A;font-weight:700;}
+
+/* Right column */
+.right{display:flex;flex-direction:column;}
+.right-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+.right-head .r-title{font-family:"Noto Serif SC",serif;font-size:20px;color:var(--navy);font-weight:700;letter-spacing:1px;}
+.right-head .r-note{font-size:12px;color:var(--muted);letter-spacing:1px;}
+.principles{display:flex;flex-direction:column;gap:10px;flex:1;}
+.principle{display:grid;grid-template-columns:60px 1fr;gap:18px;padding:12px 14px;background:var(--paper);border:1px solid var(--line);position:relative;}
+.principle::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--navy);}
+.principle .num-circle{width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;font-family:"Noto Serif SC",serif;font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;align-self:center;letter-spacing:0;box-shadow:0 2px 0 rgba(13,33,55,0.15);}
+.principle .content .p-title{font-family:"Noto Serif SC",serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:0.5px;}
+.principle .content .p-title .en{font-family:"Source Sans Pro","Noto Sans SC",sans-serif;font-size:11px;color:var(--red);letter-spacing:2px;font-weight:600;margin-left:8px;text-transform:uppercase;}
+.principle .content .p-desc{font-size:13px;color:var(--ink);line-height:1.65;}
+.principle .content .p-desc .kw{color:var(--red);font-weight:600;}
+.principle .content .p-desc .n{color:var(--navy);font-weight:600;}
+
+/* Footer */
+.footer{position:absolute;bottom:16px;left:60px;right:60px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);letter-spacing:2px;border-top:1px solid var(--line);padding-top:10px;}
+.footer .quote{font-family:"Noto Serif SC",serif;font-style:italic;color:var(--navy-soft);letter-spacing:0.5px;font-size:12px;}
+.footer .page{color:var(--red);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid"></div>
+    <div class="corner"></div>
+    <div class="corner-2"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <span class="badge">第 06 章</span>
+        <h1>Ostrom的治理原则</h1>
+      </div>
+      <div class="meta">
+        <div style="font-family:'Noto Serif SC',serif;font-size:14px;color:var(--navy);letter-spacing:1px;font-weight:600;margin-bottom:4px;">Design Principles for CPR Governance</div>
+        <div>虚拟公地 <span class="k">·</span> 社区自治 <span class="k">·</span> 制度演化</div>
+      </div>
+    </div>
+
+    <div class="body">
+
+      <!-- LEFT -->
+      <div class="left">
+        <div class="intro-card">
+          <div class="tag">THEORETICAL FOUNDATION</div>
+          <h2>公共资源治理的先驱者</h2>
+          <p><b>Elinor Ostrom</b> 因在<b>公共资源治理</b>领域的开创性研究获得诺贝尔经济学奖，被誉为公共选择学派首位女性得主。她总结出的八条设计原则，至今仍适用于虚拟公地治理。</p>
+          <div class="pull">"有效治理不依赖中央强制，而依赖社区自我组织能力与外部制度环境的协同。"</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="label">DESIGN PRINCIPLES</div>
+            <div class="num">8<span class="unit">条</span></div>
+            <div class="cap">自 1990 年提出至今，仍是公共资源治理理论基石</div>
+          </div>
+          <div class="stat">
+            <div class="label">APPLICATIONS</div>
+            <div class="num">150<span class="unit">+</span></div>
+            <div class="cap">已被应用到各类数字社区与开源项目治理框架中</div>
+          </div>
+        </div>
+
+        <div class="nobel">
+          <div class="medal"></div>
+          <div class="txt">
+            <div class="name">Elinor Ostrom · <span class="year">2009 诺贝尔经济学奖</span></div>
+            <div style="opacity:0.85;">Indiana University · Bloomington</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right">
+        <div class="right-head">
+          <div class="r-title">五条治理原则 · 应用于虚拟公地</div>
+          <div class="r-note">FIVE PRINCIPLES ADAPTED FOR DIGITAL COMMONS</div>
+        </div>
+
+        <div class="principles">
+          <div class="principle">
+            <div class="num-circle">01</div>
+            <div class="content">
+              <div class="p-title">界定边界 <span class="en">Boundary Definition</span></div>
+              <div class="p-desc">明确哪些资源属于<span class="kw">虚拟公地</span>，哪些可私有化。<span class="n">License 声明</span>即是治理的第一步，划定代码与知识的合法流动边界。</div>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="num-circle">02</div>
+            <div class="content">
+              <div class="p-title">本地适配规则 <span class="en">Local Adaptation</span></div>
+              <div class="p-desc">治理规则不应照搬外部模板，而应反映<span class="kw">社区自身文化与技术约束</span>，在演化中动态调优。</div>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="num-circle">03</div>
+            <div class="content">
+              <div class="p-title">分级惩罚 <span class="en">Graduated Sanctions</span></div>
+              <div class="p-desc">从 <span class="n">Warning</span> 到 <span class="n">Banning</span> 的渐进式执法，比一刀切更能<span class="kw">维持社区凝聚力</span>，给予纠偏机会。</div>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="num-circle">04</div>
+            <div class="content">
+              <div class="p-title">低成本冲突解决 <span class="en">Low-cost Conflict Resolution</span></div>
+              <div class="p-desc"><span class="n">GitHub Discussion 加投票</span>等轻量级争议调解机制，优于重量级法律手段，让分歧在社区内部闭合。</div>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="num-circle">05</div>
+            <div class="content">
+              <div class="p-title">外部层级认可 <span class="en">External Recognition</span></div>
+              <div class="p-desc"><span class="n">企业内部赞助、基金会背书</span>为虚拟公地提供制度性保障，让治理获得跨层级合法性。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="quote">"Nobody cares as much as a group of co-responsible people."</div>
+      <div>OSTROM · DESIGN PRINCIPLES &nbsp;&nbsp;<span class="page">— 06 —</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

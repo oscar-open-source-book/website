@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>02 · 什么是虚拟公地</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --primary: #0D2137;
+    --accent: #C0392B;
+    --bg: #F8F9FA;
+    --line: #D8DCE3;
+    --line-light: #E5E7EB;
+    --muted: #5B6470;
+    --text: #1A1F2B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--bg);
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* subtle decorative marks on the background layer */
+  .bg-mark-tl {
+    position: absolute;
+    top: 32px;
+    left: 60px;
+    width: 4px;
+    height: 40px;
+    background: var(--accent);
+  }
+  .bg-mark-br {
+    position: absolute;
+    bottom: 32px;
+    right: 60px;
+    width: 120px;
+    height: 1px;
+    background: var(--line);
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 44px 60px 40px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Top meta bar ---------- */
+  .top-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line-light);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+  }
+  .top-meta-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .top-meta-sep {
+    color: var(--line);
+    margin: 0 4px;
+  }
+  .top-meta-title {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.22em;
+    font-size: 12px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 56px;
+    align-items: start;
+    margin-top: 26px;
+  }
+
+  .num-block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 6px;
+  }
+  .num-tag {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.32em;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .big-num {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 268px;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 0.86;
+    letter-spacing: -0.03em;
+    position: relative;
+    display: block;
+  }
+  .num-underline {
+    width: 108px;
+    height: 4px;
+    background: var(--accent);
+    margin-top: 22px;
+  }
+  .num-caption {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.28em;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+
+  .title-block {
+    padding-top: 4px;
+  }
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.34em;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .kicker-line {
+    display: inline-block;
+    width: 44px;
+    height: 2px;
+    background: var(--accent);
+  }
+  .chapter-title {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.18;
+    letter-spacing: 0.01em;
+    margin-bottom: 20px;
+  }
+  .chapter-sub {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 22px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    padding-left: 22px;
+    border-left: 3px solid var(--primary);
+  }
+
+  /* ---------- Narrative ---------- */
+  .narrative {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .narrative-bar {
+    width: 3px;
+    background: var(--primary);
+    align-self: stretch;
+    min-height: 64px;
+    flex-shrink: 0;
+  }
+  .narrative-text {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 16px;
+    color: var(--primary);
+    line-height: 1.75;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .narrative-text em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ---------- Cards ---------- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 30px;
+  }
+  .card {
+    background: #FFFFFF;
+    border-top: 3px solid var(--primary);
+    border-left: 1px solid var(--line-light);
+    border-right: 1px solid var(--line-light);
+    border-bottom: 1px solid var(--line-light);
+    padding: 18px 18px 20px;
+    position: relative;
+    min-height: 152px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-num {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line-light);
+    letter-spacing: 0.02em;
+  }
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .card-desc strong {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* ---------- Stats ---------- */
+  .stats {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 2px solid var(--primary);
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    align-items: center;
+    gap: 44px;
+  }
+  .stats-divider {
+    width: 1px;
+    height: 74px;
+    background: var(--line);
+    justify-self: center;
+  }
+  .stat {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    flex-direction: row;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .stat-value {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 54px;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .stat-value .stat-plus {
+    color: var(--accent);
+    font-size: 36px;
+    font-weight: 700;
+    margin-left: 2px;
+  }
+  .stat-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.03em;
+  }
+  .stat-right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-mark-tl"></div>
+    <div class="bg-mark-br"></div>
+  </div>
+  <div id="ct">
+
+    <div class="top-meta">
+      <div class="top-meta-left">
+        <span class="dot"></span>
+        <span>CHAPTER &nbsp;·&nbsp; SECTION DIVIDER</span>
+      </div>
+      <div>
+        <span class="top-meta-title">虚拟公地与开源治理</span>
+        <span class="top-meta-sep">/</span>
+        <span>VIRTUAL COMMONS</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="num-block">
+        <div class="num-tag">CHAPTER</div>
+        <div class="big-num">02</div>
+        <div class="num-underline"></div>
+        <div class="num-caption">SECTION &nbsp;·&nbsp; 02 / 05</div>
+      </div>
+      <div class="title-block">
+        <div class="kicker">
+          <span class="kicker-line"></span>
+          <span>第二章节 · PART TWO</span>
+        </div>
+        <h1 class="chapter-title">什么是虚拟公地</h1>
+        <div class="chapter-sub">从物理公地到数字资源的范式迁移</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="narrative-bar"></div>
+      <p class="narrative-text">
+        虚拟公地是对传统公共池塘概念的数字化延伸——物理公地面临<em>过度放牧</em>，虚拟公地则面临 <em>fork 泛滥、垃圾提交、恶意依赖投毒</em>等新型退化形式，理解这一概念是讨论保护机制的前提。
+      </p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-num">01</div>
+        <h3 class="card-title">概念溯源</h3>
+        <p class="card-desc">虚拟公地脱胎于 <strong>Elinor Ostrom</strong> 的公共资源治理理论，指可被多人同时访问与使用的数字资源池。</p>
+      </div>
+      <div class="card">
+        <div class="card-num">02</div>
+        <h3 class="card-title">涵盖范围</h3>
+        <p class="card-desc"><strong>开源代码库、公共数据集、维基文档、API 接口</strong>、共享硬件设计文件等数字资源均在其列。</p>
+      </div>
+      <div class="card">
+        <div class="card-num">03</div>
+        <h3 class="card-title">核心特征</h3>
+        <p class="card-desc"><strong>非排他性</strong>——难以阻止他人使用；<strong>竞争性强</strong>——过度使用会耗散质量与维护者精力。</p>
+      </div>
+      <div class="card">
+        <div class="card-num">04</div>
+        <h3 class="card-title">为何重要</h3>
+        <p class="card-desc">虚拟公地是<strong>数字文明的公共基础设施</strong>，其退化将影响整个技术生态的可持续性。</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div>
+          <div class="stat-value">4000<span style="font-size:36px;">万</span><span class="stat-plus">+</span></div>
+          <div class="stat-desc">全球开源项目数 · GitHub 托管仓库持续增长</div>
+        </div>
+        <div class="stat-label">OPEN<br>SOURCES</div>
+      </div>
+      <div class="stats-divider"></div>
+      <div class="stat">
+        <div>
+          <div class="stat-value">1<span style="font-size:36px;">亿</span><span class="stat-plus">+</span></div>
+          <div class="stat-desc">活跃贡献者总数 · 参与开源贡献的开发者</div>
+        </div>
+        <div class="stat-label">CONTRIB<br>UTORS</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

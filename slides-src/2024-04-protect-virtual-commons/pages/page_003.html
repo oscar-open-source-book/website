@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>虚拟公地的退化模式</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0D2137;
+  --accent: #C0392B;
+  --bg: #F8F9FA;
+  --card-bg: #FFFFFF;
+  --text: #0D2137;
+  --text-sub: #4A5C73;
+  --text-muted: #8697AE;
+  --border: #DDE1E7;
+  --border-soft: #E5E9F0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+#bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle at 100% 0%, rgba(13, 33, 55, 0.03), transparent 70%);
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle at 0% 100%, rgba(192, 57, 43, 0.035), transparent 70%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 60px 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.header {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 60px;
+  align-items: center;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.eyebrow .dot { color: var(--accent); margin: 0 6px; }
+.title {
+  font-family: 'Noto Serif SC', 'Georgia', serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  position: relative;
+  padding-bottom: 12px;
+}
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background: var(--accent);
+}
+.subtitle {
+  font-family: 'Noto Serif SC', 'Georgia', serif;
+  font-size: 15px;
+  color: var(--text-sub);
+  font-style: italic;
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
+}
+.narrative {
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text-sub);
+  max-width: 900px;
+  padding: 12px 22px;
+  border-left: 3px solid var(--accent);
+  background: rgba(13, 33, 55, 0.02);
+}
+.narrative b { color: var(--primary); font-weight: 700; }
+.icon-box {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(13, 33, 55, 0.06);
+}
+.icon-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.icon-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 2px;
+  margin-top: 12px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  flex: 1;
+}
+.card {
+  background: var(--card-bg);
+  border-top: 3px solid var(--accent);
+  border-left: 1px solid var(--border-soft);
+  border-right: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+  padding: 22px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(13, 33, 55, 0.04);
+}
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+.icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  background: rgba(13, 33, 55, 0.05);
+  border-radius: 3px;
+}
+.icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.card-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.3;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bullet {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--text-sub);
+  padding-left: 16px;
+  position: relative;
+}
+.bullet::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 600;
+  line-height: 1.65;
+}
+.bullet b { color: var(--primary); font-weight: 700; }
+.data-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  padding: 16px 28px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 3px;
+  position: relative;
+  align-items: center;
+}
+.data-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 3px;
+  background: var(--accent);
+}
+.data-stat {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 20px;
+  align-items: center;
+}
+.data-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+.data-content {
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+.data-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+.data-num .unit { font-size: 20px; color: rgba(255, 255, 255, 0.7); margin-left: 2px; }
+.data-source {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 4px;
+  line-height: 1.4;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <div class="header-text">
+        <div class="eyebrow"><span>VIRTUAL COMMONS</span><span class="dot">·</span><span>退化模式</span></div>
+        <h1 class="title"><span>虚拟公地的退化模式</span></h1>
+        <div class="subtitle"><span>五种慢性衰退的识别与治理框架</span></div>
+        <p class="narrative"><span>虚拟公地的退化并非单一原因，而是<b>多因素叠加的慢性衰退过程</b>。维护者倦怠是<b>底层推力</b>，供应链攻击是<b>外部冲击</b>，碎片化是<b>结构性浪费</b>，文档荒废是<b>认知税累积</b>，治理真空是<b>系统性失灵</b>。保护虚拟公地需要从这五个维度同时发力。</span></p>
+      </div>
+      <div class="header-icon">
+        <div class="icon-box"><img src="../images/page_003_icon-set.png" alt="五种退化模式的抽象学术图标组合"></div>
+        <div class="icon-caption"><span>FIG.01 · 五种退化模式视觉锚点</span></div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-num"><span>I</span></div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="1"/><circle cx="9.5" cy="9.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="14.5" cy="9.5" r="0.9" fill="currentColor" stroke="none"/><path d="M8.5 15.5 Q12 12.5 15.5 15.5"/></svg>
+        </div>
+        <div class="card-title"><span>维护者倦怠</span></div>
+        <ul class="bullets">
+          <li class="bullet"><span>核心维护者长期<b>无偿付出</b>，累积性疲劳不可逆</span></li>
+          <li class="bullet"><span>项目响应速度<b>骤降</b>，issue 积压可达数百</span></li>
+          <li class="bullet"><span>Burnout 蔓延至<b>整代维护者</b></span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>II</span></div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3.5 L18 6.5 L18 12.5 C18 16.5 15 19.5 12 21 C9 19.5 6 16.5 6 12.5 L6 6.5 Z"/><path d="M9.5 12 L11.5 14 L15 10" stroke="#C0392B" stroke-width="1.8"/></svg>
+        </div>
+        <div class="card-title"><span>依赖投毒</span></div>
+        <ul class="bullets">
+          <li class="bullet"><span><b>Typosquatting</b> / 供应链攻击注入恶意代码</span></li>
+          <li class="bullet"><span>npm 生态单日曾出现<b>数百起</b>事件</span></li>
+          <li class="bullet"><span>依赖链<b>信任传导</b>放大风险</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>III</span></div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><rect x="4" y="4" width="8" height="8"/><rect x="13" y="4" width="7" height="5"/><rect x="13" y="11" width="7" height="9"/><rect x="4" y="14" width="8" height="6"/><path d="M12 12 L13 11" stroke="#C0392B"/></svg>
+        </div>
+        <div class="card-title"><span>碎片化浪费</span></div>
+        <ul class="bullets">
+          <li class="bullet"><span>无节制 <b>fork</b> 产生大量重复代码库</span></li>
+          <li class="bullet"><span>社区<b>注意力</b>被严重稀释</span></li>
+          <li class="bullet"><span><b>测试覆盖</b>下降，安全漏洞累积</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>IV</span></div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M6 3.5 L15 3.5 L19 7.5 L19 20.5 L6 20.5 Z"/><path d="M15 3.5 L15 7.5 L19 7.5"/><path d="M8.5 11.5 L15.5 11.5"/><path d="M8.5 14.5 L15.5 14.5" opacity="0.4"/><path d="M8.5 17.5 L13 17.5" stroke-dasharray="2 2" opacity="0.3"/></svg>
+        </div>
+        <div class="card-title"><span>文档荒废</span></div>
+        <ul class="bullets">
+          <li class="bullet"><span>文档更新<b>滞后于</b>代码演进</span></li>
+          <li class="bullet"><span>新贡献者<b>入门成本</b>持续攀升</span></li>
+          <li class="bullet"><span><b>认知税</b>累积抑制外部贡献</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>V</span></div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5" stroke-dasharray="2 2"/></svg>
+        </div>
+        <div class="card-title"><span>治理真空</span></div>
+        <ul class="bullets">
+          <li class="bullet"><span>缺乏明确<b>决策流程</b></span></li>
+          <li class="bullet"><span>社区在关键分歧上<b>陷入僵局</b></span></li>
+          <li class="bullet"><span><b>路线图</b>停滞，项目方向迷失</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="data-bar">
+      <div class="data-stat">
+        <div class="data-label"><span>SUPPLY CHAIN<br>攻击事件</span></div>
+        <div class="data-content">
+          <div class="data-num"><span>200</span><span class="unit">+/月</span></div>
+          <div class="data-source"><span>npm 投毒事件统计 · 2023 年供应链安全报告</span></div>
+        </div>
+      </div>
+      <div class="data-stat">
+        <div class="data-label"><span>BURNOUT<br>维护者倦怠</span></div>
+        <div class="data-content">
+          <div class="data-num"><span>54</span><span class="unit">%</span></div>
+          <div class="data-source"><span>核心维护者 burnout 比例 · 千位以上核心维护者调查</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
