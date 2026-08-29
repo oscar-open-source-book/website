@@ -5,307 +5,404 @@
 <head>
 <meta charset="UTF-8">
 <title>开源布道：操作系统与经济增长</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
 :root{
   --navy:#0D2137;
-  --navy-2:#122a45;
+  --navy-2:#122A45;
+  --navy-3:#1B3A5C;
   --cream:#F5F0E6;
-  --cream-2:#EBE3D0;
+  --cream-dim:rgba(245,240,230,.62);
+  --cream-faint:rgba(245,240,230,.34);
   --red:#E53935;
-  --red-dim:#C42F2B;
-  --gold:#C9A227;
-  --ink:#0D2137;
-  --muted:#5A6B7C;
-  --rule:rgba(13,33,55,.25);
+  --red-soft:rgba(229,57,53,.85);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{width:100%;height:100%;}
+html,body{width:100%;height:100%;overflow:hidden;}
 body{
-  font-family:'Noto Sans SC','PingFang SC',sans-serif;
-  background:#0a1626;
-  color:var(--ink);
+  font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  color:var(--cream);
+  background:#000;
+  font-weight:400;
   -webkit-font-smoothing:antialiased;
-  overflow:hidden;
 }
+.serif{font-family:"Noto Serif SC","Songti SC",serif;}
 .wrapper{
-  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
-  background:var(--cream);
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  background:var(--navy);
 }
-#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
-#bg .hero-img{
-  position:absolute;top:0;right:0;height:100%;
-  width:1060px;
-  object-fit:cover;object-position:center;
-  opacity:.95;
+#bg{position:absolute;inset:0;z-index:0;}
+.bg-grad{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 55%, var(--navy) 100%);
 }
-#bg .hero-veil{
-  position:absolute;top:0;right:0;height:100%;
-  width:1100px;
-  background:linear-gradient(100deg, var(--cream) 0%, rgba(245,240,230,.55) 24%, rgba(245,240,230,0) 52%);
+.bg-frame{
+  position:absolute;
+  top:22px;left:22px;right:22px;bottom:22px;
+  border:1px solid rgba(245,240,230,.10);
+  pointer-events:none;
+  z-index:2;
 }
-#bg .top-tint{
-  position:absolute;top:0;left:0;right:0;height:120px;
-  background:linear-gradient(to bottom, rgba(245,240,230,.4), rgba(245,240,230,0));
-}
-#ct{position:absolute;inset:0;z-index:1;}
+#ct{position:absolute;inset:0;z-index:1;padding:0;}
 
-/* ===== Header ===== */
-.masthead{
-  position:absolute;top:52px;left:72px;right:72px;
-  display:flex;justify-content:space-between;align-items:center;
+/* ==================== Top editorial strip ==================== */
+.top-strip{
+  position:absolute;
+  top:50px;left:64px;right:64px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.28em;
+  color:var(--cream-dim);
+  text-transform:uppercase;
 }
-.mh-left{display:flex;align-items:center;gap:14px;}
-.brand{
-  font-family:'IBM Plex Mono',monospace;
-  font-weight:600;font-size:13px;letter-spacing:.34em;
-  color:var(--navy);
+.top-strip .rule{
+  flex:0 0 44px;
+  height:1px;
+  background:rgba(245,240,230,.45);
 }
-.brand::before{
-  content:'';display:inline-block;width:8px;height:8px;
-  background:var(--red);border-radius:50%;
-  margin-right:14px;transform:translateY(-2px);
+.top-strip .dot{
+  width:6px;height:6px;
+  background:var(--red);
+  display:inline-block;
 }
-.mh-sep{width:1px;height:20px;background:var(--rule);}
-.mh-cn{
-  font-family:'Noto Serif SC',serif;
-  font-size:14px;color:var(--navy);
-  letter-spacing:.28em;font-weight:500;
-}
-.mh-issue{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:12px;color:var(--muted);letter-spacing:.22em;
-}
-.mh-issue b{color:var(--navy);font-weight:600;margin-right:2px;}
+.top-strip .grow{flex:1;}
+.top-strip .issue{color:var(--cream);}
 
-/* ===== Meta strip above title ===== */
-.meta-strip{
-  position:absolute;left:72px;top:150px;
-  display:flex;align-items:center;gap:22px;
+/* ==================== Hero image (right ~45%) ==================== */
+.hero-img{
+  position:absolute;
+  top:108px;
+  right:64px;
+  width:720px;
+  height:720px;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  z-index:1;
+  border:1px solid rgba(245,240,230,.16);
+  box-shadow:0 40px 80px -20px rgba(0,0,0,.55);
 }
-.m-tag{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:11px;letter-spacing:.3em;
-  color:var(--cream);background:var(--red);
-  padding:7px 16px;font-weight:600;
+.hero-tag{
+  position:absolute;
+  top:88px;
+  right:64px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  z-index:2;
 }
-.m-sep{width:44px;height:1px;background:var(--navy);opacity:.55;}
-.m-sub{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:11px;letter-spacing:.3em;color:var(--muted);
+.hero-tag .tag-box{
+  border:1px solid rgba(229,57,53,.75);
+  color:var(--red-soft);
+  padding:6px 14px;
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.26em;
+}
+.hero-tag .tag-line{
+  width:60px;
+  height:1px;
+  background:rgba(245,240,230,.4);
 }
 
-/* ===== Title block ===== */
-.title-block{position:absolute;left:72px;top:206px;max-width:940px;}
-.title-block h1{
-  font-family:'Noto Serif SC',serif;
-  font-size:96px;font-weight:900;
-  color:var(--navy);line-height:1.02;
-  letter-spacing:.02em;
+/* ==================== Left content column ==================== */
+.content{
+  position:absolute;
+  top:132px;
+  left:64px;
+  width:744px;
+}
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  color:var(--cream-dim);
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:13px;
+  letter-spacing:.32em;
   margin-bottom:26px;
-}
-.title-block .divider-row{
-  display:flex;align-items:center;gap:16px;
-  margin-bottom:18px;
-}
-.title-block .divider-row .bar-red{width:76px;height:4px;background:var(--red);}
-.title-block .divider-row .bar-thin{width:120px;height:1px;background:var(--navy);opacity:.45;}
-.title-block .divider-row .tag-en{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:12px;color:var(--muted);letter-spacing:.32em;
   font-weight:500;
 }
-.subtitle-cn{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:17px;color:var(--ink);
-  letter-spacing:.18em;font-weight:500;
-  margin-bottom:10px;
+.eyebrow .line{
+  width:46px;
+  height:1px;
+  background:rgba(245,240,230,.55);
 }
-.subtitle-en{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:12.5px;color:var(--muted);
-  letter-spacing:.24em;font-weight:400;
-  font-style:italic;
+.eyebrow .red-dot{
+  width:7px;height:7px;
+  background:var(--red);
+}
+.eyebrow .en{
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:10px;
+  letter-spacing:.4em;
+  color:var(--cream-faint);
+  margin-left:6px;
 }
 
-/* ===== Key points ===== */
-.points{
-  position:absolute;left:72px;bottom:230px;
-  display:flex;gap:26px;width:1456px;
+.title-block{
+  margin-bottom:24px;
 }
-.point{
-  flex:1;
-  background:rgba(245,240,230,.92);
-  border-left:3px solid var(--red);
-  padding:20px 22px 20px 22px;
-  position:relative;
-  min-height:150px;
+.title-main{
+  font-family:"Noto Serif SC",serif;
+  font-weight:900;
+  font-size:78px;
+  line-height:1.02;
+  letter-spacing:.02em;
+  color:var(--cream);
 }
-.point .idx{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:11px;letter-spacing:.3em;
-  color:var(--red);margin-bottom:12px;
+.title-main .accent{color:var(--red);}
+.title-main .sub{
+  display:block;
+  font-size:44px;
+  font-weight:600;
+  margin-top:8px;
+  letter-spacing:.04em;
+  color:var(--cream);
+}
+.title-main .sub .amp{
+  color:var(--cream-dim);
+  font-weight:400;
+  font-style:italic;
+  font-family:"Noto Serif SC",serif;
+  padding:0 8px;
+}
+
+.subtitle{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:15px;
+  letter-spacing:.16em;
+  color:var(--cream-dim);
+  margin-bottom:32px;
+  font-weight:400;
+}
+.subtitle .bar{
+  width:32px;
+  height:1px;
+  background:rgba(229,57,53,.9);
+}
+.subtitle .sep{
+  color:var(--red);
   font-weight:600;
 }
-.point h3{
-  font-family:'Noto Serif SC',serif;
-  font-size:19px;font-weight:700;
-  color:var(--navy);margin-bottom:9px;
-  letter-spacing:.05em;line-height:1.3;
-}
-.point p{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:13px;line-height:1.75;
-  color:#2b3a4b;font-weight:400;
-  letter-spacing:.02em;
-}
 
-/* ===== Footer ===== */
-.footer{
-  position:absolute;left:72px;right:72px;bottom:52px;
-  display:flex;justify-content:space-between;align-items:flex-end;
-  gap:36px;
+.lead{
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:15px;
+  line-height:2.0;
+  color:var(--cream-dim);
+  max-width:640px;
+  letter-spacing:.03em;
+  font-weight:400;
 }
-.closing{max-width:1000px;}
-.closing .rule{
-  width:60px;height:2px;background:var(--red);margin-bottom:14px;
-}
-.closing .c-label{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:10.5px;letter-spacing:.34em;
-  color:var(--muted);margin-bottom:10px;
+.lead .hl{
+  color:var(--cream);
   font-weight:500;
 }
-.closing .c-text{
-  font-family:'Noto Serif SC',serif;
-  font-size:18px;line-height:1.7;
-  color:var(--navy);font-weight:500;
-  letter-spacing:.04em;
-  max-width:960px;
+.lead .hl-red{
+  color:var(--red);
+  font-weight:600;
 }
-.speaker-card{
-  display:flex;align-items:center;gap:16px;
-  padding:12px 20px 12px 16px;
-  background:var(--navy);
-  color:var(--cream);
-  position:relative;
-}
-.speaker-card .avatar{
-  width:52px;height:52px;border-radius:50%;
-  background:linear-gradient(135deg,#F5F0E6 0%,#C9A227 100%);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Noto Serif SC',serif;
-  color:var(--navy);font-weight:900;font-size:20px;
-  border:2px solid var(--red);
-  letter-spacing:0;
-}
-.speaker-card .sc-txt .sc-name{
-  font-family:'Noto Serif SC',serif;
-  font-size:20px;font-weight:700;letter-spacing:.18em;
-  color:var(--cream);
-}
-.speaker-card .sc-txt .sc-role{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:11.5px;letter-spacing:.16em;
-  color:#B8C4D0;margin-top:4px;font-weight:400;
-}
-.speaker-card::after{
-  content:'SHARE SPEAKER';
-  position:absolute;top:-9px;right:12px;
-  font-family:'IBM Plex Mono',monospace;
-  font-size:9px;letter-spacing:.3em;
-  color:var(--red);font-weight:600;
-  background:var(--navy);padding:0 8px;
+.lead-quote{
+  font-family:"Noto Serif SC",serif;
+  font-size:36px;
+  line-height:.5;
+  color:var(--red);
+  vertical-align:-14px;
+  margin-right:4px;
+  font-weight:700;
 }
 
-/* Page number */
-.page-num{
-  position:absolute;bottom:16px;left:72px;
-  font-family:'IBM Plex Mono',monospace;
-  font-size:10.5px;letter-spacing:.3em;
-  color:var(--muted);
+/* ==================== Bottom left tagline ==================== */
+.tagline{
+  position:absolute;
+  left:64px;
+  bottom:96px;
+  display:flex;
+  align-items:center;
+  gap:18px;
 }
-.page-num b{color:var(--red);font-weight:700;margin-right:4px;}
-.page-num-r{
-  position:absolute;bottom:16px;right:72px;
-  font-family:'IBM Plex Mono',monospace;
-  font-size:10.5px;letter-spacing:.3em;
-  color:var(--muted);
+.tagline .badge{
+  border:1px solid rgba(245,240,230,.4);
+  padding:10px 16px;
+  font-family:"Noto Serif SC",serif;
+  font-size:14px;
+  letter-spacing:.14em;
+  color:var(--cream);
+  font-weight:500;
+}
+.tagline .txt{
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:12px;
+  letter-spacing:.32em;
+  color:var(--cream-faint);
+  text-transform:uppercase;
+}
+
+/* ==================== Bottom bar ==================== */
+.footer-bar{
+  position:absolute;
+  left:64px;right:64px;bottom:44px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  z-index:5;
+}
+.footer-left{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+}
+.footer-mark{
+  font-family:"Noto Serif SC",serif;
+  font-size:20px;
+  font-weight:700;
+  color:var(--red);
+  letter-spacing:.04em;
+}
+.footer-meta{
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:10px;
+  color:var(--cream-faint);
+  letter-spacing:.24em;
+  line-height:1.7;
+}
+.footer-meta .em{
+  color:var(--cream-dim);
+  font-weight:500;
+}
+
+.signature{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.sig-label{
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:10px;
+  color:var(--cream-faint);
+  letter-spacing:.36em;
+  writing-mode:vertical-rl;
+  line-height:1.5;
+}
+.sig-block{
+  text-align:right;
+  padding-right:4px;
+  border-right:2px solid var(--red);
+  padding:4px 14px 4px 20px;
+}
+.sig-name{
+  font-family:"Noto Serif SC",serif;
+  font-size:30px;
+  font-weight:700;
+  color:var(--cream);
+  letter-spacing:.22em;
+  line-height:1;
+}
+.sig-role{
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:10px;
+  color:var(--cream-dim);
+  letter-spacing:.24em;
+  margin-top:10px;
+  font-weight:400;
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <img class="hero-img" src="../images/page_001_hero.png" alt="开源代码流与半透明地球交织的抽象视觉">
-    <div class="hero-veil"></div>
-    <div class="top-tint"></div>
+    <div class="bg-grad"></div>
   </div>
+  <div class="bg-frame"></div>
   <div id="ct">
 
-    <div class="masthead">
-      <div class="mh-left">
-        <div class="brand">OPEN SOURCE QUARTERLY</div>
-        <div class="mh-sep"></div>
-        <div class="mh-cn">开源之书 · 月度专题</div>
-      </div>
-      <div class="mh-issue"><b>VOL.10</b> &nbsp;·&nbsp; 2024 / OCT</div>
+    <!-- Top editorial strip -->
+    <div class="top-strip">
+      <span>开 源 之 书</span>
+      <span class="rule"></span>
+      <span class="dot"></span>
+      <span>OPEN&nbsp;SOURCE&nbsp;BOOKS</span>
+      <span class="grow"></span>
+      <span>VOL.&nbsp;04</span>
+      <span style="color:var(--cream-faint);">·</span>
+      <span>OCT&nbsp;2024</span>
+      <span class="grow"></span>
+      <span class="issue">ISSUE&nbsp;001&nbsp;/&nbsp;开 源 布 道</span>
     </div>
 
-    <div class="meta-strip">
-      <span class="m-tag">COVER STORY</span>
-      <span class="m-sep"></span>
-      <span class="m-sub">EDITORIAL FEATURE · 封面专题</span>
+    <!-- Hero image right -->
+    <div class="hero-tag">
+      <div class="tag-line"></div>
+      <div class="tag-box">HERO · 2024</div>
+    </div>
+    <img src="../images/page_001_hero.png" class="hero-img" alt="流动的源代码流与半透明地球交织的抽象编辑封面艺术图">
+
+    <!-- Left content -->
+    <div class="content">
+      <div class="eyebrow">
+        <span class="line"></span>
+        <span>COVER STORY&nbsp;·&nbsp;开 源 与 经 济</span>
+        <span class="red-dot"></span>
+        <span class="en">2024.10</span>
+      </div>
+
+      <div class="title-block">
+        <h1 class="title-main">
+          开源布道<span class="accent">：</span>
+          <span class="sub">操作系统 <span class="amp">&amp;</span> 经济增长</span>
+        </h1>
+      </div>
+
+      <div class="subtitle">
+        <span class="bar"></span>
+        <span>2024 年 10 月</span>
+        <span class="sep">·</span>
+        <span>开 源 之 书 记 录</span>
+        <span class="sep">·</span>
+        <span>适 兕 分 享</span>
+      </div>
+
+      <div class="lead">
+        <span class="lead-quote">"</span>本期聚焦开源操作系统如何驱动全球经济增长与创新生态——从 <span class="hl">Linux</span> 到 <span class="hl">Android</span>、从 <span class="hl">openEuler</span> 到 <span class="hl">OpenHarmony</span>，开源操作系统已深度嵌入全球基础设施，其<span class="hl-red">经济影响力远超软件本身</span>。
+      </div>
     </div>
 
-    <div class="title-block">
-      <h1>开源布道<br>操作系统与经济增长</h1>
-      <div class="divider-row">
-        <div class="bar-red"></div>
-        <div class="bar-thin"></div>
-        <span class="tag-en">OCT 2024 · OPEN SOURCE RECORD</span>
-      </div>
-      <div class="subtitle-cn">2024年10月 · 开源之书记录 · 适兕分享</div>
-      <div class="subtitle-en">Where Open-Source OS Meets Global Economic Growth</div>
+    <!-- Tagline -->
+    <div class="tagline">
+      <div class="badge">开源之道 · 持续布道</div>
+      <div class="txt">CODE BEHIND ECONOMY</div>
     </div>
 
-    <div class="points">
-      <div class="point">
-        <div class="idx">01 / 阅读分享主题</div>
-        <h3>操作系统 × 全球经济增长</h3>
-        <p>聚焦开源操作系统如何驱动全球经济增长与创新生态，从基础软件到产业协同的多维观察。</p>
+    <!-- Footer bar -->
+    <div class="footer-bar">
+      <div class="footer-left">
+        <span class="footer-mark">开源之书</span>
+        <div class="footer-meta">
+          <div class="em">OPEN SOURCE BOOKS · OCT 2024</div>
+          <div>操作系统&nbsp;·&nbsp;经济增长&nbsp;·&nbsp;开源生态</div>
+        </div>
       </div>
-      <div class="point">
-        <div class="idx">02 / 分享人</div>
-        <h3>适兕 · 开源之道社区代表</h3>
-        <p>持续布道开源文化与工程实践，连接开发者社区与产业需求，推动开源生态的长期繁荣。</p>
-      </div>
-      <div class="point">
-        <div class="idx">03 / 开源之书 · 10月场</div>
-        <h3>代码背后的经济力量</h3>
-        <p>本期选取操作系统与经济增长交叉视角，探索底层开源代码如何重塑全球产业格局。</p>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div class="closing">
-        <div class="rule"></div>
-        <div class="c-label">CLOSING NOTE · 编者按</div>
-        <div class="c-text">从 Linux 到 Android，从 openEuler 到 OpenHarmony，开源操作系统已深度嵌入全球基础设施，其经济影响力远超软件本身。</div>
-      </div>
-      <div class="speaker-card">
-        <div class="avatar">适兕</div>
-        <div class="sc-txt">
-          <div class="sc-name">适兕</div>
-          <div class="sc-role">开源之道 · 社区代表</div>
+      <div class="signature">
+        <span class="sig-label">主讲嘉宾</span>
+        <div class="sig-block">
+          <div class="sig-name">适 兕</div>
+          <div class="sig-role">开 源 之 道 · 社 区 代 表</div>
         </div>
       </div>
     </div>
-
-    <div class="page-num"><b>01</b> / 24</div>
-    <div class="page-num-r">OSEN — ISSUE 10</div>
 
   </div>
 </div>
