@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二章 · 编码自由</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --navy-soft:#1a3554;
+  --gold:#C9A227;
+  --gold-soft:#d9b84a;
+  --paper:#F5F2EC;
+  --paper-warm:#EEE9DE;
+  --ink:#2b2b2b;
+  --ink-mute:#5a5a5a;
+  --rule:rgba(13,33,55,0.14);
+  --serif:'Playfair Display','Noto Serif SC',serif;
+  --sans:'Source Sans 3','Noto Sans SC','PingFang SC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;overflow:hidden;background:#eae5da;}
+body{
+  font-family:var(--sans);
+  font-size:16px;
+  color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--paper);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(1200px 700px at 15% 20%, rgba(201,162,39,0.06), transparent 60%),
+    radial-gradient(900px 600px at 90% 90%, rgba(13,33,55,0.05), transparent 60%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 72px 52px 72px;}
+
+/* Page frame — editorial hairlines */
+.frame-top, .frame-bot{
+  position:absolute;left:72px;right:72px;height:1px;background:var(--rule);
+}
+.frame-top{top:38px;}
+.frame-bot{bottom:38px;}
+.frame-mark{
+  position:absolute;font-family:var(--sans);font-size:11px;letter-spacing:0.32em;
+  color:var(--navy);text-transform:uppercase;font-weight:500;
+}
+.frame-mark.tl{top:18px;left:72px;}
+.frame-mark.tr{top:18px;right:72px;color:var(--ink-mute);letter-spacing:0.28em;}
+.frame-mark.bl{bottom:18px;left:72px;color:var(--ink-mute);letter-spacing:0.28em;}
+.frame-mark.br{bottom:18px;right:72px;font-family:var(--serif);font-style:italic;
+  font-size:12px;letter-spacing:0.14em;text-transform:none;color:var(--gold);font-weight:500;}
+
+/* Main grid */
+.grid{
+  position:relative;
+  margin-top:24px;
+  display:grid;
+  grid-template-columns: 620px 1fr;
+  gap:72px;
+  height:720px;
+}
+
+/* Left column */
+.left{
+  position:relative;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding-top:8px;
+}
+.chapter-label{
+  font-family:var(--sans);
+  font-size:12px;letter-spacing:0.42em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;
+  display:flex;align-items:center;gap:14px;
+}
+.chapter-label .dash{display:inline-block;width:44px;height:1px;background:var(--gold);}
+
+.big-num-wrap{position:relative;margin-top:10px;}
+.big-num{
+  font-family:var(--serif);
+  font-weight:500;
+  font-size:520px;
+  line-height:0.82;
+  color:var(--navy);
+  letter-spacing:-0.04em;
+  font-feature-settings:"lnum" 1;
+}
+.gold-rule{
+  width:200px;height:3px;background:var(--gold);
+  margin-top:26px;position:relative;
+}
+.gold-rule::after{
+  content:"";position:absolute;right:-14px;top:0;width:9px;height:9px;
+  background:var(--gold);transform:rotate(45deg);
+}
+.num-caption{
+  margin-top:22px;
+  font-family:var(--serif);font-style:italic;
+  color:var(--navy-soft);font-size:19px;letter-spacing:0.02em;
+  line-height:1.5;
+  max-width:440px;
+}
+.num-caption .accent{color:var(--gold);font-weight:600;font-style:normal;letter-spacing:0.08em;}
+
+.left-footer{
+  display:flex;align-items:center;gap:20px;
+  font-family:var(--sans);font-size:11px;letter-spacing:0.34em;
+  text-transform:uppercase;color:var(--ink-mute);
+}
+.left-footer .dot{width:5px;height:5px;background:var(--navy);border-radius:50%;}
+.left-footer .line{flex:0 0 60px;height:1px;background:var(--rule);}
+
+/* Right column */
+.right{
+  position:relative;
+  padding-top:8px;
+  display:flex;flex-direction:column;
+  height:100%;
+}
+.top-meta{
+  font-family:var(--sans);font-size:11px;letter-spacing:0.38em;
+  text-transform:uppercase;color:var(--ink-mute);font-weight:500;
+  display:flex;align-items:center;gap:12px;
+}
+.top-meta .bar{width:28px;height:1px;background:var(--gold);}
+
+.zh-title{
+  margin-top:34px;
+  font-family:var(--serif);
+  color:var(--navy);
+  line-height:1.05;
+}
+.zh-title .part{
+  font-size:22px;letter-spacing:0.22em;
+  color:var(--gold);font-weight:600;
+  font-family:var(--serif);
+  display:block;margin-bottom:14px;
+}
+.zh-title .main{
+  font-size:96px;font-weight:600;letter-spacing:0.06em;
+  line-height:1.02;
+}
+.zh-title .main .dot{color:var(--gold);margin:0 8px;font-weight:400;}
+
+.en-sub{
+  margin-top:22px;
+  font-family:var(--serif);
+  font-style:italic;
+  color:var(--gold);
+  font-size:28px;
+  font-weight:400;
+  letter-spacing:0.02em;
+  line-height:1.3;
+}
+
+.narrative{
+  margin-top:34px;
+  font-family:var(--serif);
+  color:var(--navy-soft);
+  font-size:18px;
+  line-height:1.9;
+  max-width:720px;
+  letter-spacing:0.015em;
+  text-align:justify;
+}
+.narrative::first-letter{
+  font-family:var(--serif);
+  font-weight:700;
+  color:var(--gold);
+  font-size:52px;
+  line-height:0.85;
+  float:left;
+  margin:6px 10px 0 0;
+}
+
+/* Points block */
+.points{
+  margin-top:auto;
+  border-top:1px solid var(--rule);
+  padding-top:22px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:28px;
+}
+.point{
+  position:relative;
+  padding-left:38px;
+}
+.point .num{
+  position:absolute;left:0;top:2px;
+  font-family:var(--serif);
+  font-size:14px;
+  color:var(--gold);
+  font-weight:700;
+  letter-spacing:0.08em;
+  width:28px;
+}
+.point .num::after{
+  content:"";position:absolute;left:0;bottom:-6px;
+  width:22px;height:1px;background:var(--gold);
+}
+.point h4{
+  font-family:var(--serif);
+  color:var(--navy);
+  font-size:19px;
+  font-weight:600;
+  letter-spacing:0.04em;
+  margin-bottom:8px;
+}
+.point p{
+  font-family:var(--sans);
+  color:var(--ink-mute);
+  font-size:13.5px;
+  line-height:1.65;
+  letter-spacing:0.01em;
+}
+
+/* Decorative gold dot cluster (top-right corner) */
+.deco-dots{
+  position:absolute;
+  right:72px;top:74px;
+  display:grid;grid-template-columns:repeat(6,6px);grid-gap:8px;
+  opacity:0.9;
+}
+.deco-dots span{width:4px;height:4px;background:var(--gold);border-radius:50%;display:block;}
+.deco-dots span:nth-child(3n){background:var(--navy);opacity:0.35;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- editorial hairline frame -->
+    <div class="frame-top"></div>
+    <div class="frame-bot"></div>
+    <div class="frame-mark tl">SenseNova · Open Source Doctrine</div>
+    <div class="frame-mark tr">Chapter 02 / 05</div>
+    <div class="frame-mark bl">Edition Vol.I — 2025</div>
+    <div class="frame-mark br">— an essay on engineering liberty —</div>
+
+    <!-- deco dots -->
+    <div class="deco-dots">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="grid">
+
+      <!-- LEFT -->
+      <div class="left">
+        <div>
+          <div class="chapter-label"><span class="dash"></span><span>Chapter · Two</span></div>
+          <div class="big-num-wrap">
+            <div class="big-num">02</div>
+            <div class="gold-rule"></div>
+          </div>
+          <div class="num-caption">
+            A chapter on <span class="accent">engineer's liberty</span> — <br>
+            the quiet rebellion of forks, patches &amp; pull requests.
+          </div>
+        </div>
+        <div class="left-footer">
+          <span>Section</span>
+          <span class="dot"></span>
+          <span class="line"></span>
+          <span>Coding Freedom</span>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right">
+        <div class="top-meta">
+          <span class="bar"></span>
+          <span>Part II · The Open-Source Ethos</span>
+        </div>
+
+        <div class="zh-title">
+          <span class="part">第 二 章</span>
+          <div class="main">编码<span class="dot">·</span>自由</div>
+        </div>
+
+        <div class="en-sub">Freedom to write, to fork, to ship.</div>
+
+        <div class="narrative">
+          编码自由是开源精神在工程现场的具体展开。它既是对私有协议的反抗，也是开发者自治的宣言——工具、流程、发布节奏都掌握在贡献者自己手中，而不再受制于单一厂商的路线图。
+        </div>
+
+        <div class="points">
+          <div class="point">
+            <div class="num">I.</div>
+            <h4>工具的自由</h4>
+            <p>编辑器、编译器、构建器皆可选可换，工程栈由团队自主拼装。</p>
+          </div>
+          <div class="point">
+            <div class="num">II.</div>
+            <h4>代码的自由</h4>
+            <p>可读、可改、可复制、可重分发，任何一行都向所有人开放。</p>
+          </div>
+          <div class="point">
+            <div class="num">III.</div>
+            <h4>发布的自由</h4>
+            <p>任何人都能把改进推回主线，主线由贡献而非头衔定义。</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

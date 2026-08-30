@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之道 · 适兕的阅读笔记</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;600;700;900&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F2EC;
+    --ink: #0D2137;
+    --ink-soft: #2A3B54;
+    --gold: #C9A227;
+    --gold-soft: #D4B45A;
+    --muted: #8A8577;
+    --line: rgba(13,33,55,0.14);
+    --serif: "Playfair Display", "Noto Serif SC", "Songti SC", serif;
+    --sans: "Source Sans Pro", "Noto Sans SC", "PingFang SC", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--bg);
+  }
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--bg);
+  }
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--bg);
+  }
+  #bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(1200px 700px at 88% -10%, rgba(201,162,39,0.08), transparent 60%),
+      radial-gradient(900px 600px at -5% 110%, rgba(13,33,55,0.06), transparent 55%);
+  }
+  /* subtle paper grain via tiny dots */
+  #bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(13,33,55,0.045) 1px, transparent 1.5px);
+    background-size: 22px 22px;
+    opacity: 0.5;
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 54px 84px 48px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Masthead */
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .masthead .brand {
+    font-family: var(--serif);
+    font-size: 15px;
+    letter-spacing: 0.32em;
+    color: var(--ink);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .masthead .brand .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin: 0 10px 2px;
+    vertical-align: middle;
+  }
+  .masthead .meta {
+    text-align: right;
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.7;
+  }
+  .masthead .meta strong {
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+  }
+
+  /* Title block */
+  .title-block {
+    margin-top: 34px;
+    position: relative;
+    padding-right: 240px;
+  }
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.42em;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .eyebrow::after {
+    content: "";
+    flex: 1;
+    max-width: 220px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.55;
+  }
+  h1.maintitle {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 168px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-left: -6px;
+  }
+  h1.maintitle .cn {
+    font-family: "Noto Serif SC", "Playfair Display", serif;
+    letter-spacing: 0.04em;
+  }
+  .subtitle-wrap {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .gold-line {
+    width: 68px;
+    height: 2px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+  .subtitle .by {
+    font-family: var(--sans);
+    font-style: normal;
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.22em;
+    margin-left: 14px;
+    text-transform: uppercase;
+  }
+
+  /* Quote */
+  .quote {
+    margin-top: 26px;
+    max-width: 900px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 22px;
+    border-left: 2px solid var(--gold);
+  }
+  .quote::before {
+    content: "\201C";
+    position: absolute;
+    left: -8px;
+    top: -18px;
+    font-family: var(--serif);
+    font-size: 46px;
+    color: var(--gold);
+    line-height: 1;
+    font-style: normal;
+  }
+
+  /* Bracket decoration */
+  .bracket {
+    position: absolute;
+    right: 60px;
+    top: 60px;
+    font-family: var(--serif);
+    font-size: 340px;
+    line-height: 0.85;
+    color: var(--ink);
+    opacity: 0.09;
+    letter-spacing: -0.02em;
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bracket .lb { color: var(--ink); }
+  .bracket .rb { color: var(--ink); }
+
+  /* Three columns */
+  .columns {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 44px;
+    padding: 22px 0 22px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .col {
+    position: relative;
+    padding-top: 6px;
+  }
+  .col .num {
+    font-family: var(--serif);
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .col .num::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .col h3 {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+  .col h3 .en {
+    display: block;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    margin-top: 4px;
+  }
+  .col p {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-top: 10px;
+  }
+
+  /* Footer: data + imprint */
+  .footer {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1.15fr 1.15fr 1fr;
+    gap: 44px;
+    align-items: end;
+    padding-top: 18px;
+  }
+  .stat .value {
+    font-family: var(--serif);
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .stat .value .plus {
+    color: var(--gold);
+    font-size: 42px;
+    font-weight: 400;
+  }
+  .stat .label {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+    font-weight: 600;
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+  .stat .note {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+  .imprint {
+    text-align: right;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.9;
+  }
+  .imprint strong {
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: 0.24em;
+  }
+  .imprint .rule {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 6px 0 8px auto;
+  }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <div id="ct">
+    <!-- masthead -->
+    <div class="masthead">
+      <div class="brand"><span>READING</span><span class="dot"></span><span>NOTES</span><span class="dot"></span><span>VOL. 01</span></div>
+      <div class="meta">
+        <div><strong>ISSUE 2024 / 01</strong></div>
+        <div>An Editorial on Open Source</div>
+      </div>
+    </div>
+
+    <!-- title -->
+    <div class="title-block">
+      <div class="bracket"><span class="lb">{</span><span class="rb">}</span></div>
+      <div class="eyebrow"><span>Chapter One · 开篇</span></div>
+      <h1 class="maintitle"><span class="cn">开源之道</span></h1>
+      <div class="subtitle-wrap">
+        <div class="gold-line"></div>
+        <div class="subtitle">
+          coding-freedom-and-thinking-culture
+          <span class="by">· 适兕的阅读笔记</span>
+        </div>
+      </div>
+      <div class="quote">
+        这是一份关于开源之道的阅读与分享记录。我们相信代码是自由的载体，开源是思想的公共花园。
+      </div>
+    </div>
+
+    <!-- three columns -->
+    <div class="columns">
+      <div class="col">
+        <div class="num"><span>I</span><span>CODING FREEDOM</span></div>
+        <h3>编码自由<span class="en">The Declaration in Code</span></h3>
+        <p>从 GNU 到 Linux，程序员用代码书写思想解放的宣言，把"自由"翻译成可运行的机器语言。</p>
+      </div>
+      <div class="col">
+        <div class="num"><span>II</span><span>THINKING CULTURE</span></div>
+        <h3>思想文化<span class="en">A Collective Ethos</span></h3>
+        <p>开源不只是技术，更是一种集体智慧与共享伦理，是工程师们共同守护的公共知识体系。</p>
+      </div>
+      <div class="col">
+        <div class="num"><span>III</span><span>SHARING FORWARD</span></div>
+        <h3>布道分享<span class="en">An Open Garden</span></h3>
+        <p>以阅读为路径，把开源精神带进更多人的视野，让自由与协作在文字与代码之间延续。</p>
+      </div>
+    </div>
+
+    <!-- footer stats -->
+    <div class="footer">
+      <div class="stat">
+        <div class="value">3<span class="plus">亿+</span></div>
+        <div class="label">开源社区贡献者 · 全球</div>
+        <div class="note">GitHub、GitLab 等公开平台累计活跃账号</div>
+      </div>
+      <div class="stat">
+        <div class="value">4<span class="plus">亿+</span></div>
+        <div class="label">公共仓库数量</div>
+        <div class="note">GitHub 公开 repo 数量（2024）</div>
+      </div>
+      <div class="imprint">
+        <div><strong>READING NOTES</strong></div>
+        <div class="rule"></div>
+        <div>BY · 适兕</div>
+        <div>EDITION · CHAPTER ONE</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

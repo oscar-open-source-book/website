@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第三章 · 思考文化</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D2137;
+    --navy-soft: #1A3550;
+    --gold: #C9A227;
+    --gold-soft: #D9B955;
+    --cream: #F5F2EC;
+    --cream-warm: #EFEAD9;
+    --gray: #6E6E6E;
+    --gray-light: #9A968B;
+    --rule: #D8D2C3;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    background: #E8E2D2;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--cream);
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Subtle cream texture + faint paper lines */
+  .paper-texture {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(201,162,39,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(13,33,55,0.04) 0%, transparent 45%);
+  }
+
+  .page-rule-top {
+    position: absolute;
+    top: 56px;
+    left: 60px;
+    right: 60px;
+    height: 1px;
+    background: var(--navy);
+    opacity: 0.15;
+  }
+
+  .page-rule-bottom {
+    position: absolute;
+    bottom: 56px;
+    left: 60px;
+    right: 60px;
+    height: 1px;
+    background: var(--navy);
+    opacity: 0.15;
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 60px;
+  }
+
+  /* ─── Top Header ─── */
+  .top-bar {
+    position: absolute;
+    top: 78px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  .top-bar .brand {
+    font-weight: 600;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .top-bar .brand .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .top-bar .meta {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .top-bar .meta .sep {
+    width: 24px;
+    height: 1px;
+    background: var(--gray-light);
+  }
+
+  /* ─── Main Grid ─── */
+  .stage {
+    position: absolute;
+    top: 130px;
+    left: 60px;
+    right: 60px;
+    bottom: 100px;
+    display: grid;
+    grid-template-columns: 520px 1fr;
+    gap: 70px;
+  }
+
+  /* ─── Left: Chapter Number ─── */
+  .left-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 10px;
+  }
+
+  .chapter-label {
+    font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .chapter-label .line {
+    width: 42px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .chapter-label .cn {
+    color: var(--navy);
+    letter-spacing: 0.28em;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 500;
+  }
+
+  .big-number {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 260px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    margin-top: 24px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .big-number .gold-accent {
+    color: var(--gold);
+  }
+
+  .number-underline {
+    width: 200px;
+    height: 3px;
+    background: var(--gold);
+    margin-top: 8px;
+  }
+
+  .number-caption {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--gray);
+    margin-top: 22px;
+    letter-spacing: 0.02em;
+  }
+
+  .number-caption::before {
+    content: '"';
+    color: var(--gold);
+    font-size: 34px;
+    line-height: 0;
+    margin-right: 4px;
+    vertical-align: -6px;
+  }
+
+  .number-caption::after {
+    content: '"';
+    color: var(--gold);
+    font-size: 34px;
+    line-height: 0;
+    margin-left: 4px;
+    vertical-align: -6px;
+  }
+
+  /* ─── Right: Title + Points ─── */
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 6px;
+  }
+
+  .kicker {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .title-cn {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 96px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.0;
+    letter-spacing: 0.08em;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+  }
+
+  .title-cn .cn {
+    font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  }
+
+  .title-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 30px;
+    color: var(--navy-soft);
+    margin-top: 16px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .title-subtitle .gold-tick {
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    vertical-align: middle;
+    margin-right: 14px;
+    margin-bottom: 5px;
+  }
+
+  .divider-double {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .divider-double .ln1 {
+    flex: 1;
+    height: 1px;
+    background: var(--navy);
+    opacity: 0.8;
+  }
+
+  .divider-double .ln2 {
+    flex: 1;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  .divider-double .diamond {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  /* ─── Three Points ─── */
+  .points {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+  }
+
+  .point {
+    position: relative;
+    padding: 14px 14px 14px 18px;
+    border-left: 2px solid var(--gold);
+  }
+
+  .point .pnum {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .point .ptitle {
+    font-family: 'Noto Serif SC', 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .point .pdesc {
+    font-family: 'Noto Sans SC', 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--gray);
+    font-weight: 400;
+  }
+
+  .point .pdesc em {
+    color: var(--navy);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ─── Bottom Quote ─── */
+  .quote-area {
+    position: absolute;
+    left: 60px;
+    right: 60px;
+    bottom: 74px;
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    color: var(--gold);
+    line-height: 0.6;
+    font-weight: 700;
+    margin-top: 14px;
+  }
+
+  .quote-body {
+    flex: 1;
+  }
+
+  .quote-text {
+    font-family: 'Noto Serif SC', 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--navy-soft);
+    letter-spacing: 0.02em;
+  }
+
+  .quote-text strong {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--navy);
+    background: linear-gradient(transparent 65%, rgba(201,162,39,0.28) 65%);
+    padding: 0 2px;
+  }
+
+  .quote-attrib {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.38em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .quote-attrib .bar {
+    width: 22px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  /* ─── Corner marks ─── */
+  .corner {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--navy);
+    opacity: 0.35;
+  }
+  .corner.tl { top: 44px; left: 44px; border-right: none; border-bottom: none; }
+  .corner.tr { top: 44px; right: 44px; border-left: none; border-bottom: none; }
+  .corner.bl { bottom: 44px; left: 44px; border-right: none; border-top: none; }
+  .corner.br { bottom: 44px; right: 44px; border-left: none; border-top: none; }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="paper-texture"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+  </div>
+
+  <div id="ct">
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="brand"><span class="dot"></span><span>OPEN SOURCE · THINKING CULTURE</span></div>
+      <div class="meta">
+        <span>CHAPTER TRANSITION</span>
+        <span class="sep"></span>
+        <span>PART III / IV</span>
+      </div>
+    </div>
+
+    <div class="stage">
+      <!-- LEFT: huge 03 -->
+      <div class="left-col">
+        <div>
+          <div class="chapter-label">
+            <span class="line"></span>
+            <span>Chapter</span>
+            <span class="cn">第 三 章</span>
+          </div>
+          <div class="big-number">0<span class="gold-accent">3</span></div>
+          <div class="number-underline"></div>
+          <div class="number-caption">Where code becomes conversation</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: title + points -->
+      <div class="right-col">
+        <div class="kicker">CHAPTER  THREE · 03</div>
+        <h1 class="title-cn">
+          <span class="cn">思考文化</span>
+        </h1>
+        <div class="title-subtitle">
+          <span class="gold-tick"></span>Reading, writing, discussing
+        </div>
+
+        <div class="divider-double">
+          <span class="ln1"></span>
+          <span class="diamond"></span>
+          <span class="ln2"></span>
+          <span class="diamond"></span>
+          <span class="ln1"></span>
+        </div>
+
+        <div class="points">
+          <div class="point">
+            <div class="pnum">— I. INPUT</div>
+            <div class="ptitle">阅读即输入</div>
+            <div class="pdesc">开源布道，从<em>读一本好书</em>、看一段源码开始。理解他人走过的路，是一切贡献的起点。</div>
+          </div>
+          <div class="point">
+            <div class="pnum">— II. GROWTH</div>
+            <div class="ptitle">讨论即生长</div>
+            <div class="pdesc"><em>Issue</em>、<em>Mailing List</em>、<em>RFC</em> 是思维的公共场——观点在交锋中变得锋利。</div>
+          </div>
+          <div class="point">
+            <div class="pnum">— III. GIVING BACK</div>
+            <div class="ptitle">分享即回馈</div>
+            <div class="pdesc">把学到的<em>写回去</em>——文档、教程、博客、演讲，让下一个人更快上手。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom quote -->
+    <div class="quote-area">
+      <div class="quote-mark">“</div>
+      <div class="quote-body">
+        <div class="quote-text">
+          开源不只是把<strong>代码</strong>放出来，更是把<strong>思考</strong>也放出来。Mailing List 上的长文辩论、RFC 里的设计权衡、教程与博客中的经验沉淀，共同构成了开源的另一种基础设施——<strong>思考文化</strong>。
+        </div>
+        <div class="quote-attrib">
+          <span class="bar"></span>
+          <span>ON OPEN SOURCE THINKING</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

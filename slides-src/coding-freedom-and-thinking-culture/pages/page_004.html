@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源生态的数字</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Source+Sans+Pro:wght@300;400;600;700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="../assets/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#F5F2EC;
+    --ink:#0D2137;
+    --ink-soft:#3B4A5C;
+    --muted:#7A8699;
+    --gold:#C9A227;
+    --gold-soft:#E4C76B;
+    --rule:#0D2137;
+    --paper:#EFE9DD;
+    --serif:'Playfair Display','Noto Serif SC',Georgia,serif;
+    --sans:'Source Sans Pro','Noto Sans SC','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e8e4dc;}
+  body{font-family:var(--sans);color:var(--ink);}
+  .wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+  #bg{position:absolute;inset:0;z-index:0;}
+  #ct{position:absolute;inset:0;z-index:1;padding:44px 60px 36px 60px;}
+
+  /* background decorations */
+  .paper-tint{position:absolute;inset:0;background:
+    linear-gradient(180deg,#F7F4ED 0%,#F5F2EC 55%,#EFE9DD 100%);}
+  .paper-noise{position:absolute;inset:0;opacity:.35;background:
+    radial-gradient(circle at 12% 18%,rgba(201,162,39,.06),transparent 40%),
+    radial-gradient(circle at 88% 82%,rgba(13,33,55,.05),transparent 45%);}
+  .corner-mark{position:absolute;top:26px;right:60px;font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:13px;letter-spacing:.24em;text-transform:uppercase;}
+  .corner-mark::before{content:"";display:inline-block;width:26px;height:1px;background:var(--gold);vertical-align:middle;margin-right:10px;transform:translateY(-3px);}
+
+  /* header */
+  .header{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:14px;}
+  .header-left{display:flex;align-items:baseline;gap:22px;}
+  .kicker{font-family:var(--serif);font-style:italic;font-weight:600;color:var(--gold);font-size:20px;letter-spacing:.14em;}
+  .page-title{font-family:var(--serif);font-weight:800;color:var(--ink);font-size:64px;line-height:1;letter-spacing:.01em;}
+  .page-num{font-family:var(--serif);font-weight:400;color:var(--ink-soft);font-size:14px;letter-spacing:.3em;text-transform:uppercase;}
+  .page-num b{color:var(--gold);font-weight:700;}
+
+  /* lead */
+  .lead{margin-top:14px;display:flex;align-items:flex-start;gap:18px;padding-bottom:14px;border-bottom:1px solid rgba(13,33,55,.25);}
+  .lead .mark{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:48px;line-height:.7;font-weight:700;}
+  .lead p{font-family:var(--serif);font-size:16.5px;line-height:1.55;color:var(--ink-soft);max-width:1250px;font-weight:400;}
+  .lead p b{color:var(--ink);font-weight:700;}
+
+  /* main grid */
+  .main{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+
+  /* KPI column */
+  .kpi-col{display:flex;flex-direction:column;gap:10px;position:relative;padding-right:20px;border-right:1px solid rgba(13,33,55,.22);}
+  .col-head{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:6px;border-bottom:1px solid var(--ink);}
+  .col-head .lbl{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--ink);}
+  .col-head .sub{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:13px;letter-spacing:.06em;}
+
+  .kpi{display:grid;grid-template-columns:170px 1fr;gap:14px;align-items:center;padding:6px 0;border-bottom:1px dashed rgba(13,33,55,.22);}
+  .kpi:last-child{border-bottom:none;}
+  .kpi-num{font-family:var(--serif);font-weight:900;color:var(--ink);font-size:52px;line-height:.95;letter-spacing:-.01em;text-align:left;}
+  .kpi-num .unit{font-size:22px;font-weight:700;color:var(--gold);margin-left:2px;letter-spacing:0;}
+  .kpi-num .plus{font-size:36px;color:var(--gold);vertical-align:12px;margin-left:2px;}
+  .kpi-body{padding-left:14px;border-left:2px solid var(--gold);}
+  .kpi-tag{font-family:var(--sans);font-weight:700;font-size:14.5px;color:var(--ink);letter-spacing:.02em;line-height:1.25;}
+  .kpi-src{font-family:var(--sans);font-weight:400;font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35;font-style:italic;}
+
+  /* Chart column */
+  .chart-col{display:flex;flex-direction:column;}
+  .chart-title{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:6px;border-bottom:1px solid var(--ink);}
+  .chart-title .t{font-family:var(--serif);font-weight:700;font-size:19px;color:var(--ink);letter-spacing:.01em;}
+  .chart-title .t em{font-style:italic;color:var(--gold);font-weight:600;font-size:14px;margin-left:6px;letter-spacing:.08em;}
+  .chart-title .sub{font-family:var(--sans);font-weight:400;font-size:11.5px;color:var(--muted);font-style:italic;letter-spacing:.02em;}
+  .chart-sub-note{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:13.5px;line-height:1.5;margin-top:6px;padding-left:12px;border-left:2px solid var(--gold);}
+  #chart_1{width:700px;height:340px;margin-top:2px;}
+  .chart-foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:8px;border-top:1px solid rgba(13,33,55,.22);}
+  .chart-foot .lg{display:flex;gap:16px;font-family:var(--sans);font-size:11.5px;color:var(--ink-soft);}
+  .chart-foot .lg .d{display:inline-block;width:14px;height:8px;margin-right:6px;vertical-align:middle;}
+  .chart-foot .lg .d.navy{background:var(--ink);}
+  .chart-foot .lg .d.gold{background:var(--gold);}
+  .chart-foot .src{font-family:var(--serif);font-style:italic;font-size:11.5px;color:var(--muted);}
+
+  /* footer */
+  .footer{position:absolute;left:60px;right:60px;bottom:26px;display:flex;align-items:center;justify-content:space-between;border-top:2px solid var(--ink);padding-top:10px;}
+  .footer .motto{font-family:var(--serif);font-style:italic;font-weight:700;font-size:18px;color:var(--ink);letter-spacing:.02em;}
+  .footer .motto .accent{color:var(--gold);}
+  .footer .meta{font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:.24em;text-transform:uppercase;}
+  .footer .meta b{color:var(--ink);font-weight:700;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="paper-tint"></div>
+    <div class="paper-noise"></div>
+  </div>
+  <div id="ct">
+    <div class="corner-mark">Open Source · Dossier</div>
+
+    <div class="header">
+      <div class="header-left">
+        <div class="kicker">Feature 04</div>
+        <div class="page-title">开源生态的数字</div>
+        <div class="kicker">By the numbers</div>
+      </div>
+      <div class="page-num">Vol. II &nbsp;·&nbsp; Page <b>04</b></div>
+    </div>
+
+    <div class="lead">
+      <div class="mark">"</div>
+      <p>开源早已不是极客的小圈子。从<b>操作系统</b>到<b>AI 大模型</b>，从<b>浏览器</b>到<b>云基础设施</b>，开源已成为现代软件栈的默认层。数字背后的故事，是数十万志愿者与企业共同搭建的协作网络。</p>
+    </div>
+
+    <div class="main">
+      <!-- LEFT: KPIs -->
+      <div class="kpi-col">
+        <div class="col-head">
+          <span class="lbl">The Numbers</span>
+          <span class="sub">— 五组核心数据</span>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-num">4<span class="unit">亿</span><span class="plus">+</span></div>
+          <div class="kpi-body">
+            <div class="kpi-tag">GitHub 公开仓库</div>
+            <div class="kpi-src">GitHub 2024 年公开数据 · Public repositories</div>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-num">95<span class="unit">%</span></div>
+          <div class="kpi-body">
+            <div class="kpi-tag">大型企业使用开源占比</div>
+            <div class="kpi-src">Flexera《State of the Software Supply Chain》</div>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-num">2<span class="unit">亿</span><span class="plus">+</span></div>
+          <div class="kpi-body">
+            <div class="kpi-tag">全球开发者规模</div>
+            <div class="kpi-src">Stack Overflow 开发者调研估算</div>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-num">60<span class="unit">万</span><span class="plus">+</span></div>
+          <div class="kpi-body">
+            <div class="kpi-tag">Hugging Face 开源 AI 模型</div>
+            <div class="kpi-src">截至 2024 年 · Open AI models on Hugging Face</div>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-num">600<span class="plus">+</span></div>
+          <div class="kpi-body">
+            <div class="kpi-tag">CII 认证项目</div>
+            <div class="kpi-src">核心基础设施倡议 · Critical Infrastructure Initiative</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Chart -->
+      <div class="chart-col">
+        <div class="chart-title">
+          <div class="t">主要编程语言分布<em>Language Share</em></div>
+          <div class="sub">公开仓库占比 · %</div>
+        </div>
+        <div class="chart-sub-note">Python、JavaScript、Java 长期占据前三——AI 时代 Python 强势登顶，Web 生态依然是最广阔的开源土壤。</div>
+
+        <div id="chart_1" style="width:700px;height:340px;"></div>
+
+        <div class="chart-foot">
+          <div class="lg">
+            <span><span class="d navy"></span>第一梯队 · Top Tier</span>
+            <span><span class="d gold"></span>第二梯队 · Emerging</span>
+          </div>
+          <div class="src">数据来源 · GitHub Octoverse 综合整理</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="motto">开源是数字世界的<span class="accent">公共基础设施</span>。</div>
+      <div class="meta">Open Source Quarterly · <b>2024 / Q4</b></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var el = document.getElementById('chart_1');
+  var chart = echarts.init(el, null, {renderer:'svg'});
+
+  var data = [
+    {name:'TypeScript',  value:13.2, tier:1},
+    {name:'C#',          value:6.8,  tier:1},
+    {name:'C++',         value:5.4,  tier:1},
+    {name:'C',           value:4.2,  tier:1},
+    {name:'PHP',         value:3.6,  tier:0},
+    {name:'Go',          value:2.9,  tier:0},
+    {name:'Rust',        value:2.1,  tier:0},
+    {name:'Java',        value:9.6,  tier:1},
+    {name:'JavaScript',  value:17.8, tier:1},
+    {name:'Python',      value:22.4, tier:1}
+  ];
+
+  chart.setOption({
+    backgroundColor:'transparent',
+    animation:false,
+    grid:{left:96, right:66, top:8, bottom:22},
+    xAxis:{
+      type:'value',
+      max:26,
+      axisLine:{lineStyle:{color:'#0D2137'}},
+      axisTick:{lineStyle:{color:'#0D2137'}},
+      axisLabel:{color:'#3B4A5C',fontFamily:'Source Sans Pro',fontSize:11,formatter:'{value}%'},
+      splitLine:{lineStyle:{color:'rgba(13,33,55,.10)',type:'dashed'}}
+    },
+    yAxis:{
+      type:'category',
+      data:data.map(function(d){return d.name;}),
+      axisLine:{lineStyle:{color:'#0D2137'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#0D2137',fontFamily:'Playfair Display',fontSize:13,fontWeight:600}
+    },
+    series:[{
+      type:'bar',
+      data:data.map(function(d){
+        return {
+          value:d.value,
+          itemStyle:{
+            color: d.tier===1 ? '#0D2137' : '#C9A227',
+            borderRadius:[0,3,3,0]
+          }
+        };
+      }),
+      barWidth:14,
+      label:{
+        show:true,
+        position:'right',
+        color:'#0D2137',
+        fontFamily:'Playfair Display',
+        fontWeight:700,
+        fontSize:12,
+        formatter:'{c}%'
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>

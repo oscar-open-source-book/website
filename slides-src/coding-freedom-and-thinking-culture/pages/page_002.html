@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一章 · 开源精神</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+SC:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --navy-deep: #081729;
+  --navy-light: #16324F;
+  --gold: #C9A227;
+  --gold-light: #E4C76B;
+  --gold-dim: #7A6420;
+  --cream: #F5F2EC;
+  --cream-dim: #A8A196;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  color: var(--cream);
+  background: var(--navy-deep);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--navy);
+}
+
+#bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+
+#bg .grain {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 700px at 20% 30%, rgba(201,162,39,0.08), transparent 60%),
+    radial-gradient(900px 600px at 85% 80%, rgba(201,162,39,0.05), transparent 65%),
+    radial-gradient(700px 500px at 60% 20%, rgba(22,50,79,0.5), transparent 70%);
+}
+
+#bg .v-line {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(245,242,236,0.05);
+}
+
+#bg .v-line.a { left: 30%; }
+#bg .v-line.b { left: 78%; }
+#bg .v-line.c { left: 62%; background: rgba(201,162,39,0.1); }
+
+#bg .corner-tl {
+  position: absolute;
+  top: 40px; left: 40px;
+  width: 60px; height: 60px;
+  border-top: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+  opacity: 0.6;
+}
+
+#bg .corner-br {
+  position: absolute;
+  bottom: 40px; right: 40px;
+  width: 60px; height: 60px;
+  border-bottom: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+  opacity: 0.6;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(201,162,39,0.35);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+}
+
+.header .left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header .dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.header .mid {
+  color: var(--gold);
+  letter-spacing: 0.4em;
+  font-weight: 500;
+}
+
+.header .right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header .right .sep {
+  width: 32px; height: 1px;
+  background: var(--gold);
+  opacity: 0.6;
+}
+
+/* Main grid */
+.main {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 640px 1px 1fr;
+  gap: 0;
+  height: 620px;
+  position: relative;
+}
+
+/* Left: big 01 */
+.left-col {
+  position: relative;
+  padding-top: 20px;
+  padding-right: 30px;
+}
+
+.chapter-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.chapter-label-cn {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  letter-spacing: 0.6em;
+  color: var(--cream);
+  margin-bottom: 18px;
+  font-weight: 400;
+}
+
+.big-number {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 460px;
+  font-weight: 900;
+  line-height: 0.82;
+  color: var(--gold);
+  letter-spacing: -0.04em;
+  margin-left: -18px;
+  position: relative;
+}
+
+.big-number::after {
+  content: '';
+  position: absolute;
+  bottom: 40px;
+  left: 20px;
+  width: 240px;
+  height: 2px;
+  background: var(--cream);
+  opacity: 0.3;
+}
+
+.left-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.left-footer .bar {
+  width: 80px; height: 2px;
+  background: var(--gold);
+}
+
+.left-footer .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--cream);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.left-footer .of {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.4em;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+}
+
+/* Divider */
+.divider {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(201,162,39,0.4) 20%, rgba(201,162,39,0.4) 80%, transparent);
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -4px;
+  width: 9px; height: 9px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+/* Right column */
+.right-col {
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.right-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.45em;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.right-eyebrow .dash {
+  width: 40px; height: 1px;
+  background: var(--gold);
+}
+
+.title-cn {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-size: 58px;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+}
+
+.title-cn .accent {
+  color: var(--gold);
+}
+
+.title-en {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-light);
+  letter-spacing: 0.03em;
+  margin-top: -6px;
+}
+
+.gold-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, var(--gold) 0%, var(--gold) 30%, rgba(201,162,39,0.2) 100%);
+  margin-top: 4px;
+}
+
+.intro {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-size: 14.5px;
+  line-height: 1.9;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+  max-width: 720px;
+  position: relative;
+  padding-left: 20px;
+  border-left: 2px solid var(--gold);
+}
+
+.intro .drop {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.intro-en {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* Bottom bar: 3 insights */
+.bottom {
+  position: absolute;
+  left: 70px;
+  right: 70px;
+  bottom: 42px;
+  border-top: 1px solid rgba(201,162,39,0.3);
+  padding-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.item {
+  position: relative;
+  padding-left: 0;
+}
+
+.item .idx {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.item .idx::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--gold);
+}
+
+.item h4 {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gold-light);
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+.item p {
+  font-family: 'Noto Sans SC', 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--cream-dim);
+  letter-spacing: 0.06em;
+}
+
+/* Footer */
+.foot {
+  position: absolute;
+  left: 70px;
+  right: 70px;
+  bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+}
+
+.foot .center-marks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.foot .center-marks span {
+  display: inline-block;
+  width: 4px; height: 4px;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+.foot .center-marks .lg {
+  width: 40px; height: 1px;
+  background: var(--gold);
+  opacity: 0.4;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grain"></div>
+    <div class="v-line a"></div>
+    <div class="v-line b"></div>
+    <div class="v-line c"></div>
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+  </div>
+
+  <div id="ct">
+    <!-- Header -->
+    <div class="header">
+      <div class="left">
+        <span class="dot"></span>
+        <span>OPEN SOURCE · 章 · CHAPTER TRANSITION</span>
+      </div>
+      <div class="mid">— MMXXIV · 编辑特刊 —</div>
+      <div class="right">
+        <span>PART I</span>
+        <span class="sep"></span>
+        <span>OF IV</span>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Left: huge 01 -->
+      <div class="left-col">
+        <div class="chapter-label">CHAPTER ONE</div>
+        <div class="chapter-label-cn">第 一 章</div>
+        <div class="big-number">01</div>
+        <div class="left-footer">
+          <div class="bar"></div>
+          <div class="num">Ⅰ</div>
+          <div class="of">— of Ⅳ chapters</div>
+        </div>
+      </div>
+
+      <!-- Vertical divider -->
+      <div class="divider"></div>
+
+      <!-- Right column -->
+      <div class="right-col">
+        <div class="right-eyebrow">
+          <span class="dash"></span>
+          <span>THE OPEN SOURCE SPIRIT</span>
+        </div>
+
+        <div class="title-cn">开源<span class="accent">精神</span></div>
+        <div class="title-en">Where code becomes commons.</div>
+
+        <div class="gold-line"></div>
+
+        <div class="intro">
+          <span class="drop">开</span>源精神并非一夜诞生。它从 Unix 时代的工程师互助开始，经 GNU 自由软件运动奠基，到 Linux、Apache、Mozilla 等社区走向全球化协作，最终形成今天以协议为契约、以社区为组织形式的文化。
+        </div>
+        <div class="intro-en">— from Unix, GNU to the global commons —</div>
+      </div>
+    </div>
+
+    <!-- Bottom: three parallel insights -->
+    <div class="bottom">
+      <div class="item">
+        <div class="idx">Ⅰ. 从个人到社区</div>
+        <h4>FROM PRIVATE TO COMMONS</h4>
+        <p>开源把代码从私有资产推向公共知识，让知识跨越组织边界自由流转。</p>
+      </div>
+      <div class="item">
+        <div class="idx">Ⅱ. 协议即契约</div>
+        <h4>LICENSE AS CONTRACT</h4>
+        <p>GPL、MIT、Apache 定义了共享的边界，为协作提供法律与道德的双重锚点。</p>
+      </div>
+      <div class="item">
+        <div class="idx">Ⅲ. 共同作者</div>
+        <h4>SHARED AUTHORSHIP</h4>
+        <p>贡献者署名机制让每一次协作留下痕迹，也让集体创作有据可寻。</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="foot">
+      <div>© OPEN SOURCE ANTHOLOGY</div>
+      <div class="center-marks">
+        <span class="lg"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="lg"></span>
+      </div>
+      <div>P. 012 — CHAPTER OPENING</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
