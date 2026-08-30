@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>开源之路 · 章节过渡</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #2196F3;
+        --accent:  #00E5FF;
+        --neutral: #ECEFF1;
+        --bg-dark: #061129;
+        --text-dim: rgba(236, 239, 241, 0.7);
+        --text-mute: rgba(236, 239, 241, 0.55);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+        color: var(--neutral);
+        background: var(--bg-dark);
+      }
+      .wrapper {
+        width: 1600px;
+        height: 900px;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+      }
+      #bg { position: absolute; inset: 0; z-index: 0; }
+      .bg-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+      .bg-mask {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, rgba(6,17,41,0.94) 0%, rgba(6,17,41,0.72) 42%, rgba(6,17,41,0.35) 70%, rgba(6,17,41,0.55) 100%);
+        z-index: 1;
+      }
+      .bg-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 20% 40%, rgba(33,150,243,0.10) 0%, transparent 55%);
+        z-index: 2;
+      }
+      #ct { position: absolute; inset: 0; z-index: 3; padding: 60px 72px; }
+
+      /* Top-left meta */
+      .meta {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: var(--text-mute);
+        font-size: 13px;
+        letter-spacing: 0.32em;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+      .meta .dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 12px var(--accent);
+      }
+      .meta .line {
+        width: 60px; height: 1px;
+        background: linear-gradient(90deg, var(--accent), transparent);
+      }
+
+      /* Main layout */
+      .hero {
+        display: grid;
+        grid-template-columns: 620px 1fr;
+        gap: 60px;
+        align-items: center;
+        margin-top: 40px;
+        height: 500px;
+      }
+
+      /* Left: giant number */
+      .chapter-num {
+        position: relative;
+        font-weight: 900;
+        font-size: 460px;
+        line-height: 0.85;
+        letter-spacing: -0.04em;
+        color: var(--primary);
+        text-shadow:
+          0 0 40px rgba(33,150,243,0.55),
+          0 0 80px rgba(0,229,255,0.35);
+        font-family: 'Inter', sans-serif;
+      }
+      .chapter-num .glow {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        font: inherit;
+        color: var(--accent);
+        opacity: 0.35;
+        filter: blur(28px);
+        pointer-events: none;
+      }
+      .chapter-label {
+        margin-top: 8px;
+        font-size: 14px;
+        letter-spacing: 0.4em;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .chapter-label::before {
+        content: "";
+        display: inline-block;
+        width: 36px;
+        height: 2px;
+        background: var(--accent);
+        vertical-align: middle;
+        margin-right: 14px;
+        margin-bottom: 4px;
+        box-shadow: 0 0 8px var(--accent);
+      }
+
+      /* Right: title */
+      .title-block {
+        padding-right: 20px;
+      }
+      .eyebrow {
+        color: var(--accent);
+        font-size: 14px;
+        letter-spacing: 0.42em;
+        font-weight: 600;
+        margin-bottom: 22px;
+      }
+      .title {
+        font-size: 92px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        line-height: 1.05;
+        margin: 0 0 26px 0;
+        color: var(--neutral);
+      }
+      .title .stroke {
+        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .subtitle {
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--text-dim);
+        line-height: 1.6;
+        max-width: 640px;
+        letter-spacing: 0.05em;
+        border-left: 2px solid var(--accent);
+        padding-left: 20px;
+      }
+
+      /* Stair timeline */
+      .timeline {
+        position: absolute;
+        left: 72px;
+        right: 72px;
+        bottom: 178px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+      }
+      .stage {
+        position: relative;
+        padding: 22px 24px 22px 28px;
+        background: rgba(6, 17, 41, 0.62);
+        border-left: 3px solid var(--primary);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .stage:nth-child(1) { transform: translateY(46px); border-left-color: rgba(33,150,243,0.55); }
+      .stage:nth-child(2) { transform: translateY(20px); border-left-color: var(--primary); }
+      .stage:nth-child(3) { transform: translateY(0);    border-left-color: var(--accent); box-shadow: 0 0 24px rgba(0,229,255,0.20); }
+      .stage .num {
+        font-size: 12px;
+        letter-spacing: 0.3em;
+        color: var(--accent);
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .stage .name {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--neutral);
+        margin-bottom: 8px;
+        letter-spacing: 0.08em;
+      }
+      .stage .desc {
+        font-size: 13px;
+        color: var(--text-mute);
+        line-height: 1.65;
+      }
+
+      /* Bottom narrative */
+      .footer {
+        position: absolute;
+        left: 72px;
+        right: 72px;
+        bottom: 56px;
+        display: flex;
+        align-items: flex-start;
+        gap: 22px;
+      }
+      .footer .bar {
+        width: 44px;
+        height: 2px;
+        background: var(--accent);
+        box-shadow: 0 0 10px var(--accent);
+        flex-shrink: 0;
+        margin-top: 12px;
+      }
+      .footer .quote {
+        font-size: 14px;
+        line-height: 1.8;
+        color: var(--text-dim);
+        letter-spacing: 0.03em;
+        max-width: 1380px;
+      }
+      .footer .quote em {
+        color: var(--accent);
+        font-style: normal;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div id="bg">
+        <img class="bg-image" src="../images/page_002_section_bg.png" alt="" />
+        <div class="bg-mask"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <div id="ct">
+        <div class="meta">
+          <span class="dot"></span>
+          <span>CHAPTER</span>
+          <span class="line"></span>
+          <span>开源之路 · 成长轨迹</span>
+        </div>
+
+        <div class="hero">
+          <div>
+            <div class="chapter-num">
+              <span class="glow">01</span>
+              <span>01</span>
+            </div>
+            <div class="chapter-label">SECTION ONE</div>
+          </div>
+          <div class="title-block">
+            <div class="eyebrow">OPEN SOURCE JOURNEY</div>
+            <h1 class="title">开源<span class="stroke">之路</span></h1>
+            <div class="subtitle">从参与者到推动者的身份蜕变</div>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="stage">
+            <div class="num">STAGE 01</div>
+            <div class="name">缘起</div>
+            <div class="desc">最初接触开源的契机，以及第一次向项目提交贡献的故事。</div>
+          </div>
+          <div class="stage">
+            <div class="num">STAGE 02</div>
+            <div class="name">深耕</div>
+            <div class="desc">长期参与多个开源项目，积累社区经验与技术能力。</div>
+          </div>
+          <div class="stage">
+            <div class="num">STAGE 03</div>
+            <div class="name">布道</div>
+            <div class="desc">从技术贡献走向生态推动，传播开源文化与治理理念。</div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="bar"></div>
+          <div class="quote">
+            每一个开源布道者的起点都不同，但共同点是：<em>开源不仅是一种技术选择，更是一种价值观的认同</em>。从最初向项目提交第一行代码，到后来在社区中建立秩序、推动生态，角色在变化，但对开源的信念从未改变。
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>初入开源世界</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2196F3;
+    --accent: #00E5FF;
+    --text-main: #ECEFF1;
+    --text-secondary: rgba(236,239,241,0.72);
+    --text-muted: rgba(236,239,241,0.5);
+    --bg-deep: #060B15;
+    --card-bg: rgba(13, 22, 36, 0.65);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+  #bg { position: absolute; inset: 0; z-index: 0; background: linear-gradient(160deg, #04070E 0%, #071528 45%, #0A1B30 100%); }
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(33,150,243,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(33,150,243,0.055) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+  .glow-primary {
+    position: absolute; top: -180px; left: -160px; width: 560px; height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0) 68%);
+    filter: blur(8px); pointer-events: none;
+  }
+  .glow-accent {
+    position: absolute; bottom: -200px; right: -200px; width: 620px; height: 620px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,0.16) 0%, rgba(0,229,255,0) 68%);
+    filter: blur(8px); pointer-events: none;
+  }
+  .glow-center {
+    position: absolute; top: 380px; right: 480px; width: 380px; height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(33,150,243,0.09) 0%, rgba(33,150,243,0) 65%);
+    filter: blur(10px); pointer-events: none;
+  }
+  .corner-tl {
+    position: absolute; top: 40px; left: 40px; width: 48px; height: 48px;
+    border-top: 2px solid var(--primary); border-left: 2px solid var(--primary);
+    opacity: 0.7;
+  }
+  .corner-br {
+    position: absolute; bottom: 40px; right: 40px; width: 48px; height: 48px;
+    border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent);
+    opacity: 0.65;
+  }
+  #ct { position: absolute; inset: 0; z-index: 1; padding: 60px; box-sizing: border-box; }
+  .layout { display: flex; flex-direction: column; height: 100%; }
+
+  .header { margin-bottom: 38px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-size: 12px; letter-spacing: 5px; color: var(--accent);
+    text-transform: uppercase; font-weight: 600; margin-bottom: 16px;
+  }
+  .eyebrow::before {
+    content: ''; display: block; width: 34px; height: 1.5px; background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+  .header-row { display: flex; align-items: baseline; gap: 34px; margin-bottom: 22px; }
+  h1 {
+    font-size: 48px; font-weight: 800; letter-spacing: 2px; color: var(--text-main);
+    line-height: 1.1;
+  }
+  h1 .highlight { color: var(--accent); }
+  h1 .accent-underline {
+    display: inline-block; position: relative;
+    padding: 0 4px;
+  }
+  h1 .accent-underline::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 2px; box-shadow: 0 0 10px var(--accent);
+  }
+  .subtitle {
+    font-size: 13px; letter-spacing: 5px; color: var(--text-muted); font-weight: 300;
+    padding-bottom: 8px;
+  }
+  .lede {
+    max-width: 1240px; font-size: 16px; line-height: 1.85;
+    color: rgba(236,239,241,0.72); font-weight: 300; letter-spacing: 0.4px;
+    padding-left: 18px; border-left: 2px solid; border-image: linear-gradient(180deg, var(--primary), var(--accent)) 1;
+  }
+  .lede .k { color: var(--accent); font-weight: 500; }
+  .lede .m { color: var(--text-main); font-weight: 500; }
+
+  .body { flex: 1; display: grid; grid-template-columns: 41% 59%; gap: 42px; min-height: 0; }
+
+  /* ==== LEFT: TIMELINE ==== */
+  .left-section { position: relative; padding: 20px 20px 20px 0; }
+  .section-header {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 32px;
+    padding-left: 4px;
+  }
+  .section-num {
+    font-family: 'Inter', monospace; font-size: 34px; font-weight: 800;
+    color: var(--accent); line-height: 1; letter-spacing: -1px;
+    text-shadow: 0 0 18px rgba(0,229,255,0.45);
+  }
+  .section-title {
+    font-size: 20px; font-weight: 600; color: var(--text-main); letter-spacing: 2px;
+  }
+  .section-sub {
+    font-size: 11px; color: var(--text-muted); letter-spacing: 3.5px;
+    font-weight: 400; margin-top: 5px;
+  }
+  .timeline {
+    position: relative; height: 642px; padding-left: 100px;
+  }
+  .timeline-line {
+    position: absolute; left: 48px; top: 115px; height: 420px; width: 2px;
+    background: linear-gradient(180deg,
+      rgba(0,229,255,0) 0%,
+      rgba(0,229,255,0.6) 8%,
+      rgba(33,150,243,0.7) 50%,
+      rgba(0,229,255,0.6) 92%,
+      rgba(0,229,255,0) 100%);
+    box-shadow: 0 0 12px rgba(33,150,243,0.45);
+  }
+  .timeline-dots {
+    position: absolute; left: 48px; top: 0; width: 2px; height: 642px;
+  }
+  .timeline-dots .dot {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--bg-deep);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 12px rgba(0,229,255,0.7), inset 0 0 6px rgba(0,229,255,0.4);
+  }
+  .timeline-dots .dot-1 { top: 115px; }
+  .timeline-dots .dot-2 { top: 255px; }
+  .timeline-dots .dot-3 { top: 395px; }
+  .timeline-dots .dot-4 { top: 535px; }
+
+  .timeline-items { position: relative; }
+  .timeline-item {
+    height: 120px; display: flex; flex-direction: column;
+    justify-content: center; position: relative; padding-right: 8px;
+  }
+  .timeline-item:first-child { margin-top: 55px; }
+  .timeline-item + .timeline-item { margin-top: 10px; }
+  .item-head {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 12px;
+  }
+  .item-icon {
+    width: 34px; height: 34px; display: inline-flex;
+    align-items: center; justify-content: center;
+    border: 1px solid rgba(0,229,255,0.4); border-radius: 6px;
+    color: var(--accent);
+    background: linear-gradient(135deg, rgba(33,150,243,0.14), rgba(0,229,255,0.06));
+    box-shadow: 0 0 12px rgba(0,229,255,0.18);
+    flex-shrink: 0;
+  }
+  .item-icon svg { width: 20px; height: 20px; stroke-width: 1.8; }
+  .item-title-wrap { display: flex; flex-direction: column; gap: 2px; }
+  .item-num {
+    font-size: 10px; letter-spacing: 3px; color: rgba(0,229,255,0.7);
+    font-weight: 500; font-family: 'Inter', monospace;
+  }
+  .item-title {
+    font-size: 19px; font-weight: 700; color: var(--text-main); letter-spacing: 1px;
+    line-height: 1.1;
+  }
+  .item-desc {
+    font-size: 14px; line-height: 1.7; color: rgba(236,239,241,0.6);
+    font-weight: 300; padding-left: 48px;
+  }
+
+  /* ==== RIGHT: CARDS ==== */
+  .right-section {
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 20px; padding-left: 14px;
+  }
+  .card {
+    position: relative; height: 296px; padding: 36px 42px;
+    background: var(--card-bg); border-radius: 10px;
+    border: 1px solid rgba(33,150,243,0.28);
+    display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(0,229,255,0.08);
+    overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0; border-radius: 10px;
+    background: radial-gradient(ellipse at 85% 20%, rgba(0,229,255,0.09), transparent 55%);
+    pointer-events: none;
+  }
+  .card-glow {
+    position: absolute; left: 42px; right: 42px; top: 0; height: 1px;
+    background: linear-gradient(90deg, rgba(0,229,255,0) 0%, rgba(0,229,255,0.65) 50%, rgba(0,229,255,0) 100%);
+  }
+  .card-corner-tl {
+    position: absolute; top: 16px; left: 16px; width: 22px; height: 22px;
+    border-top: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent);
+    opacity: 0.7;
+  }
+  .card-corner-br {
+    position: absolute; bottom: 16px; right: 16px; width: 22px; height: 22px;
+    border-bottom: 1.5px solid var(--primary); border-right: 1.5px solid var(--primary);
+    opacity: 0.65;
+  }
+  .card-content { position: relative; flex: 1; display: flex; flex-direction: column; }
+  .card-overline {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 12px; letter-spacing: 4px; color: var(--accent);
+    font-weight: 500;
+  }
+  .card-overline .o-dot {
+    width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent); flex-shrink: 0;
+  }
+  .card-divider {
+    margin: 24px 0 22px 0; height: 1px;
+    background: linear-gradient(90deg, rgba(33,150,243,0) 0%, rgba(33,150,243,0.4) 15%, rgba(0,229,255,0.5) 50%, rgba(33,150,243,0.4) 85%, rgba(33,150,243,0) 100%);
+  }
+  .card-hero {
+    display: flex; align-items: baseline; gap: 14px;
+    margin-top: 6px; margin-bottom: 14px;
+  }
+  .card-hero-value {
+    font-size: 60px; font-weight: 800; line-height: 1; letter-spacing: 1px;
+    background: linear-gradient(135deg, #ECEFF1 0%, var(--accent) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px rgba(0,229,255,0.15);
+  }
+  .card-hero-unit {
+    font-size: 20px; font-weight: 500; color: rgba(236,239,241,0.55);
+    letter-spacing: 1px;
+  }
+  .card-annotation {
+    font-size: 15px; line-height: 1.75; color: rgba(236,239,241,0.62);
+    font-weight: 300;
+  }
+  .card-annotation .num {
+    color: var(--accent); font-weight: 600;
+  }
+  .card-annotation .k {
+    color: var(--text-main); font-weight: 500;
+  }
+
+  .footer-line {
+    position: absolute; bottom: 26px; left: 60px; right: 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: rgba(236,239,241,0.4); letter-spacing: 3px;
+    font-family: 'Inter', monospace;
+  }
+  .footer-line .line-l {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .footer-line .f-dot {
+    width: 5px; height: 5px; background: var(--accent); border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="glow-primary"></div>
+    <div class="glow-accent"></div>
+    <div class="glow-center"></div>
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+  </div>
+  <div id="ct">
+    <div class="layout">
+      <div class="header">
+        <div class="eyebrow">CHAPTER 01 · OPEN SOURCE ONBOARDING</div>
+        <div class="header-row">
+          <h1><span class="accent-underline">初入</span><span class="highlight">开源</span>世界</h1>
+          <span class="subtitle">FROM USER TO CONTRIBUTOR</span>
+        </div>
+        <div class="lede">
+          初识开源时，许多人只是<span class="k">使用者</span>。但真正的成长始于<span class="k">第一次提交</span>——<span class="m">阅读源码、理解设计哲学、参与社区讨论</span>，这些看似微小的行为构成了开源贡献者的基本素养。技术能力重要，但<span class="m">沟通能力和开放心态</span>同样是社区核心竞争力。
+        </div>
+      </div>
+
+      <div class="body">
+        <!-- LEFT: TIMELINE -->
+        <div class="left-section">
+          <div class="section-header">
+            <span class="section-num">01</span>
+            <div>
+              <div class="section-title">成长四节点</div>
+              <div class="section-sub">GROWTH MILESTONES</div>
+            </div>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-line"></div>
+            <div class="timeline-dots">
+              <div class="dot dot-1"></div>
+              <div class="dot dot-2"></div>
+              <div class="dot dot-3"></div>
+              <div class="dot dot-4"></div>
+            </div>
+
+            <div class="timeline-items">
+              <div class="timeline-item">
+                <div class="item-head">
+                  <span class="item-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="8 6 3 12 8 18"></polyline>
+                      <polyline points="16 6 21 12 16 18"></polyline>
+                    </svg>
+                  </span>
+                  <div class="item-title-wrap">
+                    <div class="item-num">STEP · 01</div>
+                    <div class="item-title">第一行代码</div>
+                  </div>
+                </div>
+                <div class="item-desc">通过阅读源码、提交小修补，初步理解开源协作模式与代码审查流程</div>
+              </div>
+
+              <div class="timeline-item">
+                <div class="item-head">
+                  <span class="item-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 5.5C4 4.7 4.7 4 5.5 4h5C11.4 4 12 4.6 12 5.5v13c0-.8-.6-1.4-1.5-1.4h-5C4.7 17.1 4 17.8 4 18.5v-13z"></path>
+                      <path d="M20 5.5C20 4.7 19.3 4 18.5 4h-5C12.6 4 12 4.6 12 5.5v13c0-.8.6-1.4 1.5-1.4h5c.8 0 1.5.7 1.5 1.4v-13z"></path>
+                    </svg>
+                  </span>
+                  <div class="item-title-wrap">
+                    <div class="item-num">STEP · 02</div>
+                    <div class="item-title">阅读源码</div>
+                  </div>
+                </div>
+                <div class="item-desc">系统阅读经典开源项目的设计文档与架构，建立技术视野与工程思维</div>
+              </div>
+
+              <div class="timeline-item">
+                <div class="item-head">
+                  <span class="item-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 5h16v11H8l-4 4z"></path>
+                      <circle cx="9" cy="10.5" r="0.9" fill="currentColor"></circle>
+                      <circle cx="12" cy="10.5" r="0.9" fill="currentColor"></circle>
+                      <circle cx="15" cy="10.5" r="0.9" fill="currentColor"></circle>
+                    </svg>
+                  </span>
+                  <div class="item-title-wrap">
+                    <div class="item-num">STEP · 03</div>
+                    <div class="item-title">社区讨论</div>
+                  </div>
+                </div>
+                <div class="item-desc">学会在 issue 中清晰描述问题、在 PR 中尊重贡献者意见</div>
+              </div>
+
+              <div class="timeline-item">
+                <div class="item-head">
+                  <span class="item-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <polyline points="8 12 11 15 16 9"></polyline>
+                    </svg>
+                  </span>
+                  <div class="item-title-wrap">
+                    <div class="item-num">STEP · 04</div>
+                    <div class="item-title">第一次合并</div>
+                  </div>
+                </div>
+                <div class="item-desc">意识到开源不仅是"用"，更重要的是"共建"——这是角色转变的起点</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: INSIGHT CARDS -->
+        <div class="right-section">
+          <div class="card">
+            <div class="card-glow"></div>
+            <div class="card-corner-tl"></div>
+            <div class="card-corner-br"></div>
+            <div class="card-content">
+              <div class="card-overline">
+                <span class="o-dot"></span>
+                <span>INSIGHT · 01</span>
+              </div>
+              <div class="card-divider"></div>
+              <div class="card-hero">
+                <div class="card-hero-value">约 5%</div>
+                <div class="card-hero-unit">贡献者</div>
+              </div>
+              <div class="card-annotation">
+                <span class="k">开源贡献者比例</span>——全球 GitHub 活跃用户中，仅有<span class="num"> 约 5% </span>贡献了实质性代码。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-glow"></div>
+            <div class="card-corner-tl"></div>
+            <div class="card-corner-br"></div>
+            <div class="card-content">
+              <div class="card-overline">
+                <span class="o-dot"></span>
+                <span>INSIGHT · 02</span>
+              </div>
+              <div class="card-divider"></div>
+              <div class="card-hero">
+                <div class="card-hero-value">数周至数月</div>
+                <div class="card-hero-unit">前置阅读</div>
+              </div>
+              <div class="card-annotation">
+                <span class="k">阅读源码时间</span>——理解一个成熟开源项目，通常需要<span class="num"> 数周至数月 </span>大量前置阅读。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-line">
+      <span class="line-l"><span class="f-dot"></span><span>OPEN SOURCE LEARNING PATH</span></span>
+      <span>CH.01 / ONBOARDING</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>我的开源经历与感悟</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1:#050B16;
+  --bg-2:#0A1930;
+  --bg-3:#0F2547;
+  --primary:#2196F3;
+  --accent:#00E5FF;
+  --text-main:#ECEFF1;
+  --text-dim:#8FA3BD;
+  --line:rgba(33,150,243,0.18);
+  --card-bg:rgba(33,150,243,0.06);
+  --card-border:rgba(0,229,255,0.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:#050B16;}
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  color:var(--text-main);
+  overflow:hidden;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#050B16 0%,#0A1930 45%,#0F2547 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:2;padding:70px 90px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* --- background decorative network --- */
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(33,150,243,0.06) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at 30% 40%,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.4) 55%,rgba(0,0,0,0) 90%);
+  -webkit-mask-image:radial-gradient(ellipse at 30% 40%,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.4) 55%,rgba(0,0,0,0) 90%);
+}
+.bg-glow-1{
+  position:absolute;width:900px;height:900px;left:-260px;top:-320px;
+  background:radial-gradient(circle,rgba(33,150,243,0.28) 0%,rgba(33,150,243,0) 60%);
+  filter:blur(20px);
+}
+.bg-glow-2{
+  position:absolute;width:800px;height:800px;right:-200px;bottom:-260px;
+  background:radial-gradient(circle,rgba(0,229,255,0.20) 0%,rgba(0,229,255,0) 60%);
+  filter:blur(20px);
+}
+svg.net{position:absolute;inset:0;width:100%;height:100%;}
+.net-line{stroke:rgba(33,150,243,0.35);stroke-width:1;fill:none;}
+.net-line-2{stroke:rgba(0,229,255,0.28);stroke-width:1;fill:none;stroke-dasharray:3 5;}
+.net-node{fill:rgba(33,150,243,0.75);}
+.net-node-a{fill:rgba(0,229,255,0.9);}
+.net-node-hollow{fill:transparent;stroke:rgba(0,229,255,0.6);stroke-width:1.2;}
+
+/* --- corner brackets --- */
+.bracket{position:absolute;width:60px;height:60px;z-index:1;}
+.bracket-tl{top:36px;left:36px;border-top:2px solid var(--accent);border-left:2px solid var(--accent);}
+.bracket-tr{top:36px;right:36px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);}
+.bracket-bl{bottom:36px;left:36px;border-bottom:2px solid var(--primary);border-left:2px solid var(--primary);}
+.bracket-br{bottom:36px;right:36px;border-bottom:2px solid var(--primary);border-right:2px solid var(--primary);}
+
+/* --- top meta bar --- */
+.top-meta{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+.top-meta .brand{display:flex;align-items:center;gap:14px;}
+.top-meta .brand .dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent);}
+.top-meta .brand .txt{color:var(--text-main);font-weight:500;letter-spacing:4px;}
+.top-meta .brand .code{color:var(--primary);font-family:'Inter',monospace;font-weight:600;}
+.top-meta .path{display:flex;gap:22px;align-items:center;}
+.top-meta .path .seg{color:var(--text-dim);}
+.top-meta .path .cur{color:var(--accent);font-weight:600;}
+.top-meta .path .sep{color:rgba(33,150,243,0.4);}
+
+/* --- main content --- */
+.main{flex:1;display:grid;grid-template-columns:1.15fr 0.85fr;gap:60px;align-items:center;padding:40px 0 20px 0;}
+.title-block{position:relative;}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;padding:8px 18px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:2px;font-size:13px;letter-spacing:5px;color:var(--accent);font-weight:500;margin-bottom:28px;}
+.eyebrow .bar{width:22px;height:2px;background:var(--accent);}
+.subtitle-pre{font-size:20px;color:var(--text-dim);letter-spacing:8px;font-weight:400;margin-bottom:14px;}
+.title{
+  font-size:132px;font-weight:900;line-height:1.02;letter-spacing:-4px;
+  color:var(--text-main);margin-bottom:6px;
+}
+.title .accent{color:transparent;-webkit-text-stroke:2px var(--accent);background:none;position:relative;}
+.title .glow{color:var(--primary);text-shadow:0 0 40px rgba(33,150,243,0.6);}
+.title-en{font-size:22px;letter-spacing:6px;color:var(--text-dim);font-weight:300;margin-top:18px;margin-bottom:34px;}
+.title-en .slash{color:var(--accent);margin:0 12px;}
+.subtitle{font-size:22px;color:var(--text-main);font-weight:400;line-height:1.7;letter-spacing:1px;max-width:760px;}
+.subtitle .em{color:var(--accent);font-weight:600;}
+.tag-line{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap;}
+.tag{padding:8px 16px;background:rgba(33,150,243,0.10);border:1px solid rgba(33,150,243,0.35);color:var(--text-main);font-size:13px;letter-spacing:2px;font-weight:500;}
+.tag .hash{color:var(--accent);margin-right:6px;}
+
+/* --- right side: signature / info panel --- */
+.side-panel{position:relative;display:flex;flex-direction:column;gap:24px;padding-left:40px;border-left:1px solid rgba(33,150,243,0.25);}
+.side-panel::before{
+  content:"";position:absolute;left:-4px;top:0;width:8px;height:80px;background:var(--accent);box-shadow:0 0 16px var(--accent);
+}
+.role-card{background:var(--card-bg);border:1px solid var(--card-border);padding:24px 26px;position:relative;}
+.role-card .label{font-size:11px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
+.role-card .value{font-size:20px;color:var(--text-main);font-weight:600;line-height:1.4;}
+.role-card .sub{font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.6;}
+.role-card .corner{position:absolute;top:-1px;right:-1px;width:14px;height:14px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);}
+.role-card.primary{border-color:rgba(0,229,255,0.45);background:linear-gradient(135deg,rgba(33,150,243,0.14) 0%,rgba(0,229,255,0.06) 100%);}
+.role-card.primary .value{color:var(--accent);font-size:22px;}
+
+.quote-block{padding:20px 24px;border-left:3px solid var(--primary);background:rgba(255,255,255,0.02);}
+.quote-block .q{font-size:15px;color:var(--text-main);line-height:1.75;font-style:italic;}
+.quote-block .attr{font-size:12px;color:var(--text-dim);margin-top:10px;letter-spacing:2px;}
+
+/* --- bottom tag strip --- */
+.bottom-strip{
+  display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:20px;align-items:stretch;
+  padding-top:24px;border-top:1px solid rgba(33,150,243,0.25);
+}
+.chapter{position:relative;padding:16px 18px 14px 20px;background:rgba(10,25,48,0.55);border:1px solid rgba(33,150,243,0.20);}
+.chapter .num{position:absolute;top:10px;right:14px;font-size:36px;font-weight:800;color:rgba(33,150,243,0.15);line-height:1;font-family:'Inter',sans-serif;}
+.chapter .cn{font-size:16px;font-weight:700;color:var(--accent);letter-spacing:3px;margin-bottom:6px;}
+.chapter .en{font-size:10px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+.chapter .desc{font-size:12px;color:var(--text-main);opacity:0.85;line-height:1.6;}
+.chapter .accent-line{width:24px;height:2px;background:var(--accent);margin-bottom:10px;}
+
+.signature{
+  padding:14px 22px 14px 26px;background:linear-gradient(135deg,rgba(33,150,243,0.18),rgba(0,229,255,0.08));
+  border:1px solid var(--card-border);position:relative;
+}
+.signature::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);
+}
+.signature .name{font-size:22px;font-weight:800;color:var(--text-main);letter-spacing:4px;line-height:1;}
+.signature .meta{font-size:11px;color:var(--text-dim);letter-spacing:2px;margin-top:8px;}
+.signature .stamp{position:absolute;top:8px;right:10px;font-size:9px;color:var(--accent);letter-spacing:2px;border:1px solid var(--accent);padding:2px 6px;}
+
+/* footer line */
+.footer-line{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-dim);letter-spacing:3px;margin-top:14px;}
+.footer-line .lhs{display:flex;gap:18px;align-items:center;}
+.footer-line .lhs .glyph{color:var(--accent);font-weight:700;}
+.footer-line .rhs{display:flex;gap:18px;align-items:center;}
+.footer-line .rhs .ver{color:var(--primary);font-family:'Inter',monospace;font-weight:600;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <svg class="net" viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <!-- connection lines -->
+      <g class="net-line">
+        <line x1="120" y1="180" x2="290" y2="120"/>
+        <line x1="290" y1="120" x2="470" y2="200"/>
+        <line x1="470" y1="200" x2="640" y2="140"/>
+        <line x1="640" y1="140" x2="820" y2="220"/>
+        <line x1="290" y1="120" x2="380" y2="290"/>
+        <line x1="380" y1="290" x2="560" y2="330"/>
+        <line x1="560" y1="330" x2="470" y2="200"/>
+        <line x1="560" y1="330" x2="760" y2="410"/>
+        <line x1="820" y1="220" x2="760" y2="410"/>
+        <line x1="760" y1="410" x2="960" y2="380"/>
+        <line x1="960" y1="380" x2="1140" y2="290"/>
+        <line x1="1140" y1="290" x2="1330" y2="360"/>
+        <line x1="1330" y1="360" x2="1500" y2="280"/>
+        <line x1="1330" y1="360" x2="1440" y2="500"/>
+        <line x1="1140" y1="290" x2="1260" y2="180"/>
+      </g>
+      <g class="net-line-2">
+        <line x1="200" y1="720" x2="400" y2="780"/>
+        <line x1="400" y1="780" x2="620" y2="720"/>
+        <line x1="620" y1="720" x2="820" y2="800"/>
+        <line x1="820" y1="800" x2="1040" y2="740"/>
+        <line x1="1040" y1="740" x2="1260" y2="800"/>
+        <line x1="1260" y1="800" x2="1460" y2="730"/>
+        <line x1="400" y1="780" x2="380" y2="580"/>
+        <line x1="620" y1="720" x2="720" y2="580"/>
+        <line x1="1040" y1="740" x2="1160" y2="560"/>
+      </g>
+      <!-- nodes -->
+      <circle class="net-node" cx="120" cy="180" r="4"/>
+      <circle class="net-node-a" cx="290" cy="120" r="5"/>
+      <circle class="net-node" cx="470" cy="200" r="3"/>
+      <circle class="net-node-hollow" cx="640" cy="140" r="6"/>
+      <circle class="net-node-a" cx="820" cy="220" r="4"/>
+      <circle class="net-node" cx="380" cy="290" r="3"/>
+      <circle class="net-node-hollow" cx="560" cy="330" r="7"/>
+      <circle class="net-node-a" cx="760" cy="410" r="5"/>
+      <circle class="net-node" cx="960" cy="380" r="3"/>
+      <circle class="net-node-a" cx="1140" cy="290" r="4"/>
+      <circle class="net-node-hollow" cx="1330" cy="360" r="6"/>
+      <circle class="net-node" cx="1500" cy="280" r="3"/>
+      <circle class="net-node-a" cx="1260" cy="180" r="3"/>
+      <circle class="net-node" cx="1440" cy="500" r="4"/>
+      <circle class="net-node-hollow" cx="200" cy="720" r="6"/>
+      <circle class="net-node-a" cx="400" cy="780" r="4"/>
+      <circle class="net-node" cx="620" cy="720" r="3"/>
+      <circle class="net-node-hollow" cx="820" cy="800" r="7"/>
+      <circle class="net-node-a" cx="1040" cy="740" r="4"/>
+      <circle class="net-node" cx="1260" cy="800" r="3"/>
+      <circle class="net-node-hollow" cx="1460" cy="730" r="6"/>
+      <circle class="net-node" cx="380" cy="580" r="2"/>
+      <circle class="net-node-a" cx="720" cy="580" r="3"/>
+      <circle class="net-node" cx="1160" cy="560" r="3"/>
+    </svg>
+  </div>
+
+  <div class="bracket bracket-tl"></div>
+  <div class="bracket bracket-tr"></div>
+  <div class="bracket bracket-bl"></div>
+  <div class="bracket bracket-br"></div>
+
+  <div id="ct">
+    <!-- top meta -->
+    <div class="top-meta">
+      <div class="brand">
+        <span class="dot"></span>
+        <span class="txt">OPEN SOURCE · SALON</span>
+        <span class="code">// vol.12</span>
+      </div>
+      <div class="path">
+        <span class="seg">~/open-source</span>
+        <span class="sep">/</span>
+        <span class="cur">sharing-session-2024.12</span>
+      </div>
+    </div>
+
+    <!-- main -->
+    <div class="main">
+      <div class="title-block">
+        <div class="eyebrow"><span class="bar"></span><span>OPEN · SOURCE · JOURNAL</span></div>
+        <div class="subtitle-pre">A Personal Reflection</div>
+        <h1 class="title">
+          <span class="glow">我的开源</span><br>
+          经历与<span class="accent">感悟</span>
+        </h1>
+        <div class="title-en">My Open Source Journey <span class="slash">/</span> Insights &amp; Beliefs</div>
+        <div class="subtitle">
+          一场关于<span class="em">开源信仰</span>与<span class="em">实践</span>的分享 —— 以亲历者视角，回顾从开源项目参与者到开源生态推动者的成长路径。
+        </div>
+        <div class="tag-line">
+          <span class="tag"><span class="hash">#</span>亲历者视角</span>
+          <span class="tag"><span class="hash">#</span>信仰与实践</span>
+          <span class="tag"><span class="hash">#</span>生态推动</span>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="role-card primary">
+          <span class="corner"></span>
+          <div class="label">Speaker</div>
+          <div class="value">庄 表 伟</div>
+          <div class="sub">开源布道者 · 阅读践行者 · 生态参与者</div>
+        </div>
+        <div class="role-card">
+          <div class="label">Session</div>
+          <div class="value">开源之记 · 2024.12</div>
+          <div class="sub">线下沙龙 · 开源布道与阅读分享</div>
+        </div>
+        <div class="quote-block">
+          <div class="q">"开源不只是一段代码，更是一种共享信念；写作与阅读，是这段路上最安静的同行者。"</div>
+          <div class="attr">— 分享自述</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- bottom chapter strip -->
+    <div class="bottom-strip">
+      <div class="chapter">
+        <span class="num">01</span>
+        <div class="accent-line"></div>
+        <div class="cn">布道者视角</div>
+        <div class="en">Advocate</div>
+        <div class="desc">从参与者到推动者，角色转变背后的核心思考</div>
+      </div>
+      <div class="chapter">
+        <span class="num">02</span>
+        <div class="accent-line"></div>
+        <div class="cn">阅读分享</div>
+        <div class="en">Reading</div>
+        <div class="desc">深度阅读与社区实践，对开源文化的理解与洞察</div>
+      </div>
+      <div class="chapter">
+        <span class="num">03</span>
+        <div class="accent-line"></div>
+        <div class="cn">开源之记</div>
+        <div class="en">Journal</div>
+        <div class="desc">2024年12月线下沙龙 · 布道与阅读主题分享</div>
+      </div>
+      <div class="signature">
+        <span class="stamp">VOL.12</span>
+        <div class="name">庄 表 伟</div>
+        <div class="meta">2024.12 · 开源之书记录</div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="footer-line">
+      <div class="lhs">
+        <span class="glyph">◆</span>
+        <span>OPEN SOURCE · JOURNAL · SIGNED</span>
+      </div>
+      <div class="rhs">
+        <span class="ver">cover · 01 / 1</span>
+        <span>◆</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

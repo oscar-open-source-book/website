@@ -1,0 +1,231 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源项目实践</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --bg:#050B18;
+  --bg-2:#08131F;
+  --accent:#2196F3;
+  --accent2:#00E5FF;
+  --text-main:#E8F4FF;
+  --text-dim:#8EA5BC;
+  --border:rgba(33,150,243,0.28);
+  --border-strong:rgba(33,150,243,0.55);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text-main);font-size:16px;line-height:1.5;overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;background:
+  radial-gradient(circle at 8% 12%, rgba(33,150,243,0.18), transparent 55%),
+  radial-gradient(circle at 92% 88%, rgba(0,229,255,0.14), transparent 55%),
+  linear-gradient(135deg, #050B18 0%, #08131F 50%, #050B18 100%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 34px 60px;}
+
+/* Background decorative grid */
+.grid-decor{position:absolute;inset:0;background-image:
+  linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+background-size:48px 48px;z-index:1;pointer-events:none;}
+.corner{position:absolute;width:80px;height:80px;border:1px solid var(--border);z-index:1;}
+.corner.tl{top:24px;left:24px;border-right:none;border-bottom:none;}
+.corner.tr{top:24px;right:24px;border-left:none;border-bottom:none;}
+.corner.bl{bottom:24px;left:24px;border-right:none;border-top:none;}
+.corner.br{bottom:24px;right:24px;border-left:none;border-top:none;}
+
+/* Title */
+.page-title{height:44px;display:flex;align-items:center;gap:18px;margin-bottom:16px;}
+.title-tag{display:flex;align-items:center;gap:10px;padding:5px 14px;border:1px solid var(--border);border-radius:2px;background:rgba(33,150,243,0.08);color:var(--accent2);font-size:11px;letter-spacing:0.28em;font-weight:600;flex-shrink:0;}
+.title-tag::before{content:'';width:6px;height:6px;background:var(--accent2);box-shadow:0 0 8px var(--accent2);border-radius:50%;}
+h1{font-size:32px;font-weight:800;letter-spacing:0.1em;line-height:1;color:var(--text-main);}
+.title-line{flex:1;height:1px;background:linear-gradient(90deg, var(--border-strong), rgba(33,150,243,0.05));}
+.title-meta{font-size:11px;letter-spacing:0.25em;color:var(--text-dim);font-family:'Inter';font-weight:500;flex-shrink:0;}
+
+/* Quadrants layout */
+.quadrants{height:410px;position:relative;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;}
+
+/* Center hub decoration */
+.hub{position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%);pointer-events:none;z-index:2;}
+.hub::before,.hub::after{content:'';position:absolute;background:linear-gradient(90deg,transparent,rgba(0,229,255,0.5),transparent);top:50%;height:1px;width:100%;}
+.hub::after{background:linear-gradient(180deg,transparent,rgba(0,229,255,0.5),transparent);left:50%;width:1px;height:100%;}
+.hub-node{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border:1px solid var(--accent2);background:rgba(0,229,255,0.08);display:flex;align-items:center;justify-content:center;color:var(--accent2);font-size:10px;letter-spacing:0.2em;font-weight:700;font-family:'Inter';box-shadow:0 0 30px rgba(0,229,255,0.4),inset 0 0 20px rgba(0,229,255,0.15);}
+.hub-node::before{content:'';position:absolute;inset:-14px;border:1px dashed rgba(0,229,255,0.35);animation:none;}
+
+/* Quadrant card */
+.quad-card{position:relative;background:rgba(11,25,40,0.6);border:1px solid var(--border);padding:18px 22px;display:flex;flex-direction:column;overflow:hidden;}
+.quad-card::before{content:'';position:absolute;top:0;left:0;width:60px;height:1px;background:var(--accent2);box-shadow:0 0 8px var(--accent2);}
+.quad-card::after{content:'';position:absolute;bottom:0;right:0;width:60px;height:1px;background:var(--accent2);box-shadow:0 0 8px var(--accent2);}
+.q-corner{position:absolute;width:10px;height:10px;border:1px solid var(--accent);opacity:0.7;}
+.q-corner.tr{top:0;right:0;border-left:none;border-bottom:none;}
+.q-corner.bl{bottom:0;left:0;border-right:none;border-top:none;}
+
+.q-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.q-num{width:30px;height:30px;border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Inter';font-size:14px;font-weight:700;color:var(--accent2);background:rgba(33,150,243,0.1);box-shadow:0 0 12px rgba(33,150,243,0.3);flex-shrink:0;letter-spacing:0;}
+.q-title{font-size:18px;font-weight:700;color:var(--text-main);letter-spacing:0.05em;}
+.q-title-en{font-size:10px;color:var(--text-dim);letter-spacing:0.2em;font-weight:500;margin-top:2px;}
+.q-desc{font-size:14px;line-height:1.6;color:var(--text-dim);margin-bottom:12px;letter-spacing:0.02em;}
+
+.q-bullets{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;flex:1;}
+.q-bullets li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-main);line-height:1.55;padding:6px 10px;background:rgba(33,150,243,0.05);border-left:2px solid var(--accent);}
+.q-bullets li .marker{width:5px;height:5px;background:var(--accent2);box-shadow:0 0 6px var(--accent2);flex-shrink:0;margin-top:8px;}
+
+/* Q2 KPI box */
+.q2-kpi{background:linear-gradient(135deg, rgba(33,150,243,0.14), rgba(0,229,255,0.04));border:1px solid var(--border-strong);padding:10px 16px 10px 16px;position:relative;margin-bottom:10px;}
+.q2-kpi::before{content:'';position:absolute;top:0;right:0;width:8px;height:8px;border-top:1px solid var(--accent2);border-right:1px solid var(--accent2);}
+.q2-kpi::after{content:'';position:absolute;bottom:0;left:0;width:8px;height:8px;border-bottom:1px solid var(--accent2);border-left:1px solid var(--accent2);}
+.kpi-head{font-size:11px;color:var(--accent2);letter-spacing:0.15em;font-weight:600;margin-bottom:6px;text-transform:uppercase;}
+.kpi-value{font-size:32px;font-weight:800;line-height:1;color:var(--text-main);letter-spacing:0.02em;font-family:'Inter';text-shadow:0 0 20px rgba(0,229,255,0.3);margin-bottom:8px;}
+.kpi-bottom{font-size:12px;color:var(--text-dim);line-height:1.5;}
+.kpi-bottom b{color:var(--accent2);font-weight:700;font-family:'Inter';font-size:14px;}
+.kpi-bottom .sep{margin:0 6px;color:rgba(33,150,243,0.5);}
+
+/* Narrative */
+.narrative{height:222px;margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:18px 26px;background:linear-gradient(90deg, rgba(33,150,243,0.08), rgba(0,229,255,0.04) 60%, rgba(33,150,243,0.08));border:1px solid var(--border);position:relative;align-items:center;}
+.narrative::before{content:'';position:absolute;top:-1px;left:0;width:120px;height:2px;background:var(--accent2);box-shadow:0 0 10px var(--accent2);}
+.narrative::after{content:'';position:absolute;bottom:-1px;right:0;width:120px;height:2px;background:var(--accent2);box-shadow:0 0 10px var(--accent2);}
+.n-text{display:flex;flex-direction:column;gap:8px;padding-left:16px;border-left:2px solid var(--accent);}
+.n-title{font-size:13px;color:var(--accent2);letter-spacing:0.25em;font-weight:600;}
+.n-text p{font-size:14.5px;line-height:1.7;color:var(--text-main);letter-spacing:0.02em;}
+.n-text p .highlight{color:var(--accent2);font-weight:600;}
+.n-kpi-bar{display:flex;gap:14px;align-items:stretch;}
+.kpi-item{flex:1;border:1px solid var(--border-strong);background:rgba(33,150,243,0.06);padding:12px 16px;position:relative;display:flex;flex-direction:column;justify-content:center;gap:4px;}
+.kpi-item::before{content:'';position:absolute;top:0;left:0;width:24px;height:1px;background:var(--accent2);}
+.kpi-item::after{content:'';position:absolute;bottom:0;right:0;width:24px;height:1px;background:var(--accent2);}
+.kpi-item .k-num{font-size:32px;font-weight:800;color:var(--accent2);font-family:'Inter';line-height:1;text-shadow:0 0 15px rgba(0,229,255,0.4);letter-spacing:0.01em;}
+.kpi-item .k-lbl{font-size:11px;color:var(--text-dim);letter-spacing:0.1em;line-height:1.4;}
+
+/* Footer */
+.footer{margin-top:16px;height:32px;display:flex;align-items:center;justify-content:center;gap:18px;}
+.footer .foot-line{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--border-strong));}
+.footer .foot-line.r{background:linear-gradient(90deg,var(--border-strong),transparent);}
+.footer .foot-text{font-size:13px;letter-spacing:0.15em;color:var(--text-main);font-weight:500;}
+.footer .foot-text .accent{color:var(--accent2);font-weight:700;letter-spacing:0.2em;margin:0 2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="grid-decor"></div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <div id="ct">
+    <div class="page-title">
+      <div class="title-tag"><span>OPEN SOURCE · 2024</span></div>
+      <h1><span>开源项目实践</span></h1>
+      <div class="title-line"></div>
+      <div class="title-meta"><span>FOUR DIMENSIONS / 4 QUADRANTS</span></div>
+    </div>
+
+    <div class="quadrants">
+      <div class="hub"><div class="hub-node"><span>OS</span></div></div>
+
+      <div class="quad-card">
+        <div class="q-corner tr"></div>
+        <div class="q-corner bl"></div>
+        <div class="q-head">
+          <div class="q-num"><span>01</span></div>
+          <div>
+            <div class="q-title"><span>深度参与</span></div>
+            <div class="q-title-en"><span>DEEP CONTRIBUTION</span></div>
+          </div>
+        </div>
+        <div class="q-desc"><span>在 Apache 基金会等组织中担任核心贡献者，参与架构设计与版本发布全流程。</span></div>
+        <ul class="q-bullets">
+          <li><span class="marker"></span><span>担任核心贡献者，深度参与项目架构设计</span></li>
+          <li><span class="marker"></span><span>主导版本发布与跨团队协作</span></li>
+          <li><span class="marker"></span><span>建立技术影响力与代码审核话语权</span></li>
+        </ul>
+      </div>
+
+      <div class="quad-card">
+        <div class="q-corner tr"></div>
+        <div class="q-corner bl"></div>
+        <div class="q-head">
+          <div class="q-num"><span>02</span></div>
+          <div>
+            <div class="q-title"><span>中国开源实践</span></div>
+            <div class="q-title-en"><span>CHINA OPEN-SOURCE</span></div>
+          </div>
+        </div>
+        <div class="q-desc"><span>关注 Apache SeaTunnel 等中国主导项目在国际社区中的影响力提升。</span></div>
+        <div class="q2-kpi">
+          <div class="kpi-head"><span>KEY INDICATOR</span></div>
+          <div class="kpi-value"><span>300+</span></div>
+          <div class="kpi-bottom"><span>Apache 顶级项目 <b>300+</b><span class="sep">·</span>中国贡献者占比 <b>20%</b></span></div>
+        </div>
+        <ul class="q-bullets">
+          <li><span class="marker"></span><span>Apache SeaTunnel 影响力跃升</span></li>
+          <li><span class="marker"></span><span>中国开发者贡献者占比 <b style="color:var(--accent2);">≈20%</b></span></li>
+        </ul>
+      </div>
+
+      <div class="quad-card">
+        <div class="q-corner tr"></div>
+        <div class="q-corner bl"></div>
+        <div class="q-head">
+          <div class="q-num"><span>03</span></div>
+          <div>
+            <div class="q-title"><span>治理经验</span></div>
+            <div class="q-title-en"><span>GOVERNANCE EXPERTISE</span></div>
+          </div>
+        </div>
+        <div class="q-desc"><span>从技术贡献延伸到社区治理，理解委员会制度与决策流程。</span></div>
+        <ul class="q-bullets">
+          <li><span class="marker"></span><span>理解 Apache 委员会制度运作机制</span></li>
+          <li><span class="marker"></span><span>掌握社区决策流程与投票机制</span></li>
+          <li><span class="marker"></span><span>提升治理话语权与社区参与度</span></li>
+        </ul>
+      </div>
+
+      <div class="quad-card">
+        <div class="q-corner tr"></div>
+        <div class="q-corner bl"></div>
+        <div class="q-head">
+          <div class="q-num"><span>04</span></div>
+          <div>
+            <div class="q-title"><span>企业落地</span></div>
+            <div class="q-title-en"><span>ENTERPRISE ADOPTION</span></div>
+          </div>
+        </div>
+        <div class="q-desc"><span>推动开源项目在产业中的实际落地，弥合开源与商业之间的鸿沟。</span></div>
+        <ul class="q-bullets">
+          <li><span class="marker"></span><span>推动开源技术对接产业实际需求</span></li>
+          <li><span class="marker"></span><span>弥合开源生态与商业应用的鸿沟</span></li>
+          <li><span class="marker"></span><span>构建开发者与企业的价值桥梁</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="n-text">
+        <div class="n-title"><span>INSIGHT · 叙事观点</span></div>
+        <p><span>开源实践不止于代码，从技术贡献到社区治理、从个人参与到组织运营，每个阶段都需要不同能力。中国开发者在国际开源社区中发挥<span class="highlight">越来越重要的作用</span>，但也面临<span class="highlight">治理话语权与知识产权保护</span>等现实挑战。</span></p>
+      </div>
+      <div class="n-kpi-bar">
+        <div class="kpi-item">
+          <div class="k-num"><span>300+</span></div>
+          <div class="k-lbl"><span>Apache 顶级项目<br>（截至 2024 年）</span></div>
+        </div>
+        <div class="kpi-item">
+          <div class="k-num"><span>20%</span></div>
+          <div class="k-lbl"><span>中国贡献者在 Apache<br>基金会中占比</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="foot-line"></span>
+      <div class="foot-text"><span>开源生态中<span class="accent">中国力量</span>持续崛起 · 从贡献者走向治理者</span></div>
+      <span class="foot-line r"></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
