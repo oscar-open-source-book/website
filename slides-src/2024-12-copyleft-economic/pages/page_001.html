@@ -1,81 +1,465 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>开源布道：Copyleft 经济学</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@300;400;600;700;900&display=swap');
-:root{
-  --navy:#0D2137;
-  --red:#B32424;
-  --cream:#F5F2EB;
-  --ink:#1a1a1a;
-  --gray:#6b6b6b;
-  --line:#0D2137;
-  --card-line:#0D2137;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;color:var(--ink);background:#eee;}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
-#bg{position:absolute;inset:0;z-index:0;
-  background:radial-gradient(ellipse at 72% 42%, rgba(13,33,55,0.05) 0%, transparent 60%);}
-#ct{position:absolute;inset:0;z-index:1;padding:56px 60px 50px;box-sizing:border-box;
-  display:flex;flex-direction:column;gap:28px;}
-.serif{font-family:Georgia,'Noto Serif SC',serif;}
-.mono{font-family:'Courier New','Consolas',monospace;}
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@300;500&display=swap');
 
-.header{border-top:2px solid var(--navy);border-bottom:1px solid var(--navy);padding:14px 0 12px;display:flex;justify-content:space-between;align-items:center;}
-.header-left{display:flex;align-items:center;gap:22px;}
-.logo-box{border:1.5px solid var(--navy);padding:8px 15px;display:flex;flex-direction:column;align-items:center;line-height:1;}
-.logo-latin{font-family:Georgia,serif;font-weight:700;font-size:16px;letter-spacing:0.14em;color:var(--navy);}
-.logo-cn{font-size:9px;letter-spacing:0.4em;color:var(--navy);margin-top:5px;padding-left:0.4em;}
-.header-issue{display:flex;align-items:center;gap:20px;font-size:11.5px;color:var(--navy);letter-spacing:0.22em;}
-.header-issue .diamond{color:var(--red);font-size:9px;}
-.header-issue .issue-latin{font-family:Georgia,serif;font-weight:700;}
-.header-issue .issue-mid{color:var(--gray);letter-spacing:0.28em;}
+  :root{
+    --navy: #0D2137;
+    --cream: #F5F2EB;
+    --red: #B32424;
+    --ink: #1a1a1a;
+    --muted: #6b6558;
+    --line: rgba(13,33,55,0.18);
+  }
 
-.main{flex:1;display:flex;gap:50px;}
-.col-l{width:805px;display:flex;flex-direction:column;gap:24px;}
-.col-r{flex:1;height:780px;position:relative;}
+  *{box-sizing:border-box;margin:0;padding:0;}
 
-.title-block{padding-top:6px;}
-.kicker{font-family:Georgia,serif;font-size:12px;letter-spacing:0.42em;color:var(--navy);margin-bottom:22px;display:flex;align-items:center;gap:14px;}
-.kicker-dot{width:6px;height:6px;background:var(--red);display:inline-block;transform:rotate(45deg);}
-.main-title{font-family:Georgia,'Noto Serif SC',serif;font-size:78px;font-weight:700;color:var(--navy);line-height:1.05;letter-spacing:0.005em;}
-.main-title .en{font-family:Georgia,serif;font-weight:700;letter-spacing:-0.005em;}
-.main-title .accent{color:var(--red);}
-.divider{display:flex;align-items:center;gap:14px;margin-top:22px;}
-.divider .line{flex:1;height:1px;background:var(--navy);}
-.divider .diamond{width:10px;height:10px;background:var(--red);transform:rotate(45deg);}
-.subtitle{font-family:Georgia,'Noto Serif SC',serif;font-size:17px;color:var(--navy);letter-spacing:0.12em;margin-top:18px;font-weight:400;}
-.subtitle .sub-sep{color:var(--red);margin:0 12px;font-family:'Courier New',monospace;}
+  html,body{width:1600px;height:900px;overflow:hidden;}
 
-.narrative{font-size:14.5px;line-height:1.9;color:#2b2b2b;max-width:765px;padding-left:18px;border-left:3px solid var(--navy);}
-.narrative .hl{color:var(--red);font-weight:700;}
-.narrative .navy{color:var(--navy);font-weight:700;}
+  body{
+    font-family: "Helvetica Neue", "Noto Sans SC", "PingFang SC", Arial, sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+  }
 
-.tags{display:flex;align-items:center;gap:12px;font-size:10.5px;letter-spacing:0.3em;color:var(--gray);position:relative;padding-left:18px;margin-top:6px;}
-.tags::before{content:'';width:8px;height:8px;background:var(--red);transform:rotate(45deg);margin-right:12px;}
-.tags .tag{color:var(--navy);}
-.tags .tag .t{font-family:Georgia,serif;font-weight:700;letter-spacing:0.3em;}
+  .wrapper{
+    width:1600px;
+    height:900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+  }
 
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px;}
-.card{background:#FBF9F3;border-top:2.5px solid var(--navy);padding:22px 20px 24px;}
-.card-num{font-family:Georgia,serif;font-size:13px;color:var(--red);letter-spacing:0.35em;margin-bottom:14px;}
-.card-label{font-family:Georgia,'Noto Serif SC',serif;font-size:12px;color:var(--navy);letter-spacing:0.22em;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(13,33,55,0.2);}
-.card-title{font-size:15px;color:var(--ink);margin-bottom:10px;font-weight:500;line-height:1.3;}
-.card-desc{font-size:12px;color:#555;line-height:1.65;}
+  #bg{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--cream);
+  }
 
-.footer{border-top:1.5px solid var(--navy);padding-top:14px;display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:0.35em;color:var(--navy);position:relative;}
-.footer::before{content:'';position:absolute;top:6px;left:0;right:0;height:1px;background:var(--navy);}
-.footer-left{font-family:Georgia,serif;font-weight:700;}
-.footer-mid{color:var(--gray);}
-.footer-right{display:flex;align-items:center;gap:12px;}
-.footer-right .page{font-family:Georgia,serif;font-weight:700;color:var(--red);font-size:12px;letter-spacing:0.15em;}
+  #bg::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(13,33,55,0.04), transparent 55%),
+      radial-gradient(circle at 85% 85%, rgba(179,36,36,0.05), transparent 50%);
+  }
 
-.visual{width:100%;height:100%;}
+  #ct{
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 48px 60px 40px 60px;
+    display: grid;
+    grid-template-columns: 780px 1fr;
+    gap: 40px;
+  }
+
+  /* ---------- LEFT COLUMN ---------- */
+  .left{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-right: 40px;
+  }
+
+  .masthead{
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--navy);
+  }
+
+  .masthead .brand{
+    font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+    font-weight: 900;
+    font-size: 30px;
+    letter-spacing: 2px;
+    color: var(--navy);
+  }
+
+  .masthead .brand-en{
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .issue-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding-bottom: 20px;
+  }
+
+  .issue-row .date{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--muted);
+  }
+
+  .issue-row .badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px;
+    background: var(--red);
+    color: var(--cream);
+    font-family: "Noto Sans SC", sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 500;
+  }
+
+  .issue-row .badge .dot{
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cream);
+  }
+
+  .title-block{
+    margin-top: 22px;
+    position: relative;
+  }
+
+  .kicker{
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--red);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .main-title{
+    font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+    font-weight: 900;
+    font-size: 84px;
+    line-height: 1.02;
+    color: var(--navy);
+    letter-spacing: -1px;
+  }
+
+  .main-title .accent{
+    color: var(--red);
+    font-style: italic;
+    font-family: "Playfair Display", "Noto Serif SC", Georgia, serif;
+  }
+
+  .subtitle-en{
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--muted);
+    margin-top: 14px;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+  }
+
+  .rule{
+    margin-top: 26px;
+    height: 1px;
+    background: var(--line);
+    position: relative;
+  }
+
+  .rule::before{
+    content: "";
+    position: absolute;
+    left: 0; top: -2px;
+    width: 60px; height: 5px;
+    background: var(--red);
+  }
+
+  .meta-list{
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .meta-item{
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 18px;
+    align-items: start;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .meta-item:last-child{border-bottom: none;}
+
+  .meta-item .label{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--red);
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+
+  .meta-item .value{
+    font-family: "Noto Sans SC", "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy);
+  }
+
+  /* ---------- RIGHT COLUMN (editorial illustration) ---------- */
+  .right{
+    position: relative;
+    background: var(--navy);
+    color: var(--cream);
+    padding: 40px 40px 32px 40px;
+    overflow: hidden;
+  }
+
+  .right::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(179,36,36,0.15), transparent 45%),
+      radial-gradient(circle at 75% 75%, rgba(245,242,235,0.06), transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Code symbol background layer */
+  .code-bg{
+    position: absolute;
+    inset: 0;
+    font-family: "JetBrains Mono", monospace;
+    color: rgba(245,242,235,0.08);
+    font-size: 200px;
+    font-weight: 500;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .code-bg .c1{
+    position: absolute;
+    top: -30px; left: -20px;
+  }
+  .code-bg .c2{
+    position: absolute;
+    top: 220px; right: -30px;
+    font-size: 260px;
+    color: rgba(179,36,36,0.09);
+  }
+  .code-bg .c3{
+    position: absolute;
+    bottom: -50px; left: 40px;
+    font-size: 140px;
+    color: rgba(245,242,235,0.06);
+  }
+  .code-bg .c4{
+    position: absolute;
+    top: 380px; left: 30px;
+    font-size: 60px;
+    color: rgba(179,36,36,0.18);
+  }
+  .code-bg .c5{
+    position: absolute;
+    top: 130px; left: 210px;
+    font-size: 48px;
+    color: rgba(245,242,235,0.1);
+  }
+
+  .right-inner{
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .top-strip{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(245,242,235,0.25);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: rgba(245,242,235,0.7);
+  }
+
+  .top-strip .vol{color: var(--red); font-weight: 500;}
+
+  .vertical-label{
+    position: absolute;
+    right: 18px;
+    top: 90px;
+    writing-mode: vertical-rl;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: rgba(245,242,235,0.5);
+    z-index: 3;
+  }
+
+  .vertical-label-red{
+    position: absolute;
+    left: 18px;
+    bottom: 120px;
+    writing-mode: vertical-rl;
+    font-family: "Noto Sans SC", sans-serif;
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: var(--red);
+    z-index: 3;
+    font-weight: 500;
+  }
+
+  /* Balance scale illustration */
+  .scale-wrap{
+    position: relative;
+    margin: 30px auto 20px auto;
+    width: 460px;
+    height: 340px;
+  }
+
+  .scale-wrap svg{
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .center-caption{
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .center-caption .copyleft{
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 900;
+    font-size: 42px;
+    color: var(--cream);
+    letter-spacing: 2px;
+    line-height: 1;
+    text-shadow: 0 2px 20px rgba(13,33,55,0.6);
+  }
+
+  .center-caption .copyleft .rev{
+    color: var(--red);
+  }
+
+  .center-caption .zh{
+    font-family: "Noto Serif SC", serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--cream);
+    margin-top: 8px;
+    letter-spacing: 12px;
+    padding-left: 12px;
+  }
+
+  .bottom-strip{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 14px;
+    border-top: 1px solid rgba(245,242,235,0.25);
+  }
+
+  .barcode{
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 46px;
+  }
+
+  .barcode .bar{
+    background: var(--cream);
+    width: 2px;
+    height: 100%;
+  }
+
+  .barcode-meta{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    margin-left: 12px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: rgba(245,242,235,0.8);
+    letter-spacing: 1.5px;
+  }
+
+  .issue-code{
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--red);
+    letter-spacing: 1px;
+    text-align: right;
+  }
+
+  .issue-code .big{
+    display: block;
+    font-size: 30px;
+    font-weight: 900;
+    font-style: normal;
+    color: var(--cream);
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-top: 4px;
+  }
+
+  /* ---------- BOTTOM NARRATIVE ---------- */
+  .narrative{
+    position: absolute;
+    left: 60px;
+    right: 60px;
+    bottom: 14px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px;
+    background: rgba(245,242,235,0.9);
+    border-left: 3px solid var(--red);
+  }
+
+  .narrative .tag{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--red);
+    white-space: nowrap;
+  }
+
+  .narrative .text{
+    font-family: "Noto Serif SC", Georgia, serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--navy);
+  }
+
+  .narrative .text em{
+    color: var(--red);
+    font-style: normal;
+    font-weight: 700;
+  }
+
 </style>
 </head>
 <body>
@@ -83,193 +467,154 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;color
   <div id="bg"></div>
   <div id="ct">
 
-    <div class="header">
-      <div class="header-left">
-        <div class="logo-box">
-          <div class="logo-latin">OSQ</div>
-          <div class="logo-cn">开源之书</div>
+    <!-- LEFT COLUMN -->
+    <div class="left">
+
+      <div class="masthead">
+        <div class="brand"><span>开源之书记录</span></div>
+        <div class="brand-en"><span>Open Source Chronicle</span></div>
+      </div>
+
+      <div class="issue-row">
+        <div class="date"><span>ISSUE · 2024 / 12 · 分享会</span></div>
+        <div class="badge"><span class="dot"></span><span>COPYLEFT ECON.</span></div>
+      </div>
+
+      <div class="title-block">
+        <div class="kicker"><span>A Special Report on Code &amp; Contract</span></div>
+        <div class="main-title">
+          <span>开源布道</span><br>
+          <span class="accent">Copyleft</span> 经济学
+        </div>
+        <div class="subtitle-en"><span>On the Legal, Economic &amp; Communal Anatomy of Copyleft Licenses.</span></div>
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="meta-list">
+        <div class="meta-item">
+          <div class="label"><span>分享主题</span></div>
+          <div class="value"><span>聚焦 Copyleft 的法学内核、经济学属性与产业现实</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="label"><span>阅读来源</span></div>
+          <div class="value"><span>取自 2024-12 期《开源之书记录》，围绕许可证与商业模式</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="label"><span>分享目标</span></div>
+          <div class="value"><span>理解代码自由背后的经济逻辑，让开源布道有理论支撑</span></div>
         </div>
       </div>
-      <div class="header-issue">
-        <span class="diamond">◆</span>
-        <span class="issue-latin">OPEN SOURCE QUARTERLY</span>
-        <span class="issue-mid">·</span>
-        <span>2024 年 十二月号</span>
-        <span class="issue-mid">·</span>
-        <span>VOL. 12 / NO. 42</span>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right">
+
+      <div class="code-bg">
+        <div class="c1">{ }</div>
+        <div class="c2">; ; ;</div>
+        <div class="c3">/* */</div>
+        <div class="c4">=&gt;</div>
+        <div class="c5">// return license;</div>
+      </div>
+
+      <div class="vertical-label"><span>OPEN SOURCE · LEGAL · ECONOMIC</span></div>
+      <div class="vertical-label-red"><span>数字文明的底层契约</span></div>
+
+      <div class="right-inner">
+
+        <div class="top-strip">
+          <div><span>NO.12 / VOL. 2024</span></div>
+          <div class="vol"><span>ISSUE 2024 · 12</span></div>
+        </div>
+
+        <div class="scale-wrap">
+          <svg viewBox="0 0 460 340" xmlns="http://www.w3.org/2000/svg">
+            <!-- Central pillar -->
+            <line x1="230" y1="40" x2="230" y2="290" stroke="#F5F2EB" stroke-width="2"/>
+            <!-- Top ornament -->
+            <circle cx="230" cy="40" r="6" fill="#B32424"/>
+            <!-- Crossbeam -->
+            <line x1="60" y1="90" x2="400" y2="90" stroke="#F5F2EB" stroke-width="2"/>
+            <!-- Pivot -->
+            <circle cx="230" cy="90" r="5" fill="#F5F2EB"/>
+            <circle cx="230" cy="90" r="2" fill="#0D2137"/>
+
+            <!-- Left chain -->
+            <line x1="90" y1="90" x2="90" y2="170" stroke="rgba(245,242,235,0.6)" stroke-width="1" stroke-dasharray="3,4"/>
+            <line x1="60" y1="90" x2="60" y2="170" stroke="rgba(245,242,235,0.6)" stroke-width="1" stroke-dasharray="3,4"/>
+            <line x1="120" y1="90" x2="120" y2="170" stroke="rgba(245,242,235,0.6)" stroke-width="1" stroke-dasharray="3,4"/>
+            <!-- Left pan -->
+            <path d="M 40 170 Q 90 220 140 170" stroke="#B32424" stroke-width="2" fill="none"/>
+            <path d="M 40 170 L 140 170" stroke="#B32424" stroke-width="2" fill="none"/>
+            <!-- Left label: LAW -->
+            <text x="90" y="245" text-anchor="middle" font-family="Playfair Display, serif" font-size="18" font-weight="700" fill="#F5F2EB" letter-spacing="3">LAW</text>
+            <text x="90" y="264" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="12" fill="rgba(245,242,235,0.6)" letter-spacing="4">法学</text>
+
+            <!-- Right chain -->
+            <line x1="340" y1="90" x2="340" y2="170" stroke="rgba(245,242,235,0.6)" stroke-width="1" stroke-dasharray="3,4"/>
+            <line x1="370" y1="90" x2="370" y2="170" stroke="rgba(245,242,235,0.6)" stroke-width="1" stroke-dasharray="3,4"/>
+            <line x1="400" y1="90" x2="400" y2="170" stroke="rgba(245,242,235,0.6)" stroke-width="1" stroke-dasharray="3,4"/>
+            <!-- Right pan -->
+            <path d="M 320 170 Q 370 220 420 170" stroke="#B32424" stroke-width="2" fill="none"/>
+            <path d="M 320 170 L 420 170" stroke="#B32424" stroke-width="2" fill="none"/>
+            <!-- Right label: ECON -->
+            <text x="370" y="245" text-anchor="middle" font-family="Playfair Display, serif" font-size="18" font-weight="700" fill="#F5F2EB" letter-spacing="3">ECON.</text>
+            <text x="370" y="264" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="12" fill="rgba(245,242,235,0.6)" letter-spacing="4">经济学</text>
+
+            <!-- Base -->
+            <rect x="180" y="290" width="100" height="6" fill="#F5F2EB"/>
+            <line x1="160" y1="302" x2="300" y2="302" stroke="rgba(245,242,235,0.4)" stroke-width="1"/>
+            <text x="230" y="322" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(245,242,235,0.5)" letter-spacing="4">LICENSE × COMMUNITY</text>
+          </svg>
+
+          <div class="center-caption">
+            <div class="copyleft"><span>C<span class="rev">⃝</span>Pyleft</span></div>
+            <div class="zh"><span>数字文明 · 底层契约</span></div>
+          </div>
+        </div>
+
+        <div class="bottom-strip">
+          <div>
+            <div class="barcode" id="barcode"></div>
+          </div>
+          <div class="issue-code">
+            <span>NO.</span>
+            <span class="big">12 / 2024</span>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div class="main">
-      <div class="col-l">
-
-        <div class="title-block">
-          <div class="kicker"><span class="kicker-dot"></span>SHARE COVERAGE · 分享现场</div>
-          <div class="main-title">开源布道<span class="accent">：</span><br><span class="en">Copyleft</span> <span class="accent">经济学</span></div>
-          <div class="divider">
-            <span class="line"></span>
-            <span class="diamond"></span>
-            <span class="line"></span>
-          </div>
-          <div class="subtitle">开源之书记录<span class="sub-sep">·</span>2024-12<span class="sub-sep">·</span>分享</div>
-        </div>
-
-        <p class="narrative">
-          本次分享从<span class="navy">开源之书记录</span> Copyleft 经济专题出发，试图在<span class="hl">法学</span>、<span class="hl">经济学</span>与<span class="hl">社区</span>三个维度重新审视 Copyleft 许可证。它不仅是一份法律声明，更是数字文明运行的底层契约，理解它才能理解开源为什么可持续。
-        </p>
-
-        <div class="tags">
-          <span class="tag">COPYRIGHT</span>
-          <span>·</span>
-          <span class="tag">COMMUNITY</span>
-          <span>·</span>
-          <span class="tag">LAW &amp; ECONOMICS</span>
-          <span>·</span>
-          <span class="tag">COVER STORY</span>
-        </div>
-
-        <div class="cards">
-          <div class="card">
-            <div class="card-num">— 01</div>
-            <div class="card-label">分享主题 / THEME</div>
-            <div class="card-title">聚焦 Copyleft 的法学内核、经济学属性与产业现实</div>
-            <div class="card-desc">许可证即契约，代码即资本；一次跨越法学与产业的双重视角。</div>
-          </div>
-          <div class="card">
-            <div class="card-num">— 02</div>
-            <div class="card-label">阅读来源 / SOURCE</div>
-            <div class="card-title">取自 2024-12 期刊号开源之书记录</div>
-            <div class="card-desc">围绕许可证设计与商业模式展开，梳理当代开源治理样本。</div>
-          </div>
-          <div class="card">
-            <div class="card-num">— 03</div>
-            <div class="card-label">分享目标 / GOAL</div>
-            <div class="card-title">理解代码自由背后的经济逻辑</div>
-            <div class="card-desc">让开源布道有理论支撑，让持续贡献有可持续的动力机制。</div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="col-r">
-        <svg class="visual" viewBox="0 0 595 780" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="1" width="593" height="778" fill="none" stroke="#0D2137" stroke-opacity="0.14" stroke-width="1"/>
-
-          <g transform="translate(42, 42)" font-family="'Courier New', monospace" font-size="12" fill="#0D2137">
-            <text>/* 开源之书记录 · ISSUE 42 */</text>
-          </g>
-
-          <g transform="translate(553, 42)" font-family="'Courier New', monospace" font-size="12" fill="#0D2137">
-            <text text-anchor="end">{ </text>
-          </g>
-
-          <g font-family="'Courier New', monospace">
-            <g transform="translate(60, 100)">
-              <text font-size="20" fill="#0D2137"><tspan font-style="italic" fill="#B32424" font-weight="700">if</tspan><tspan> (code == "free") {</tspan></text>
-            </g>
-            <g transform="translate(85, 132)">
-              <text font-size="18" fill="#0D2137"><tspan font-style="italic" fill="#B32424" font-weight="700">while</tspan>(open) share();</text>
-            </g>
-            <g transform="translate(60, 164)">
-              <text font-size="18" fill="#0D2137">// Copyleft v1.0</text>
-            </g>
-            <g transform="translate(360, 118)">
-              <text font-size="30" fill="#0D2137">[ ]</text>
-            </g>
-            <g transform="translate(475, 148)">
-              <text font-size="17" fill="#0D2137">&lt; / &gt;</text>
-            </g>
-          </g>
-
-          <g stroke="#0D2137" stroke-width="1" fill="none">
-            <path d="M 40 200 L 40 225 M 40 225 L 65 225"/>
-            <path d="M 555 200 L 555 225 M 555 225 L 530 225"/>
-          </g>
-
-          <g fill="#0D2137" font-family="Georgia, serif" font-size="10" letter-spacing="3">
-            <text x="50" y="248" fill="#B32424" font-weight="700">FIG.</text>
-            <text x="90" y="248">01</text>
-          </g>
-
-          <line x1="40" y1="270" x2="555" y2="270" stroke="#0D2137" stroke-width="0.5" stroke-opacity="0.4"/>
-
-          <line x1="130" y1="410" x2="465" y2="410" stroke="#0D2137" stroke-width="3"/>
-
-          <g stroke="#0D2137" stroke-width="1.2" fill="none">
-            <line x1="140" y1="410" x2="108" y2="460"/>
-            <line x1="140" y1="410" x2="172" y2="460"/>
-            <line x1="455" y1="410" x2="423" y2="460"/>
-            <line x1="455" y1="410" x2="487" y2="460"/>
-          </g>
-
-          <path d="M 78 460 Q 90 490 108 490 L 172 490 Q 190 490 202 460 Z" fill="#0D2137"/>
-          <path d="M 393 460 Q 405 490 423 490 L 487 490 Q 505 490 517 460 Z" fill="#0D2137"/>
-
-          <text x="140" y="478" font-family="Georgia, serif" font-size="13" fill="#F5F2EB" text-anchor="middle" font-weight="700" letter-spacing="1">法</text>
-          <text x="455" y="478" font-family="Georgia, serif" font-size="13" fill="#F5F2EB" text-anchor="middle" font-weight="700" letter-spacing="1">经</text>
-
-          <g transform="translate(296, 300)">
-            <text font-family="Georgia, serif" font-size="10" fill="#0D2137" text-anchor="end" letter-spacing="1">A</text>
-            <text x="14" font-family="Georgia, serif" font-size="10" fill="#0D2137" letter-spacing="1">Z</text>
-          </g>
-
-          <rect x="290" y="180" width="15" height="225" fill="#0D2137"/>
-          <circle cx="297.5" cy="410" r="10" fill="#B32424"/>
-          <circle cx="297.5" cy="410" r="4" fill="#F5F2EB"/>
-
-          <rect x="284" y="150" width="27" height="30" fill="#0D2137"/>
-          <line x1="297.5" y1="125" x2="297.5" y2="150" stroke="#0D2137" stroke-width="2"/>
-          <circle cx="297.5" cy="118" r="6" fill="none" stroke="#0D2137" stroke-width="1.5"/>
-          <circle cx="297.5" cy="118" r="2" fill="#B32424"/>
-
-          <rect x="245" y="420" width="105" height="24" fill="#F5F2EB" stroke="#0D2137" stroke-width="2"/>
-          <rect x="252" y="430" width="91" height="6" fill="#B32424"/>
-
-          <g font-family="'Courier New', monospace" fill="#0D2137">
-            <text x="60" y="510" font-size="14" font-style="italic" fill="#B32424" font-weight="700">function</text>
-            <text x="132" y="510" font-size="14">balance(code, rights) {</text>
-            <text x="75" y="536" font-size="14" fill="#0D2137">return freedom * <tspan fill="#B32424" font-weight="700">community</tspan>;</text>
-            <text x="60" y="562" font-size="14">}</text>
-          </g>
-
-          <g transform="translate(498, 528)">
-            <text font-family="'Courier New', monospace" font-size="14" fill="#0D2137">{ }</text>
-          </g>
-
-          <g font-family="'Courier New', monospace">
-            <text x="60" y="602" font-size="12" fill="#0D2137">// 数字文明的底层契约</text>
-            <text x="60" y="622" font-size="12" fill="#0D2137"><tspan fill="#B32424" font-weight="700">&gt;_</tspan> git clone freedom --recursive</text>
-            <text x="60" y="642" font-size="12" fill="#0D2137">&gt;_ <tspan fill="#B32424" font-weight="700">sudo</tspan> make community</text>
-          </g>
-
-          <g stroke="#0D2137" stroke-width="0.5" stroke-opacity="0.4">
-            <line x1="60" y1="668" x2="535" y2="668"/>
-          </g>
-          <g fill="#0D2137" font-family="Georgia, serif" font-size="9" letter-spacing="2">
-            <text x="60" y="682">// END OF SHARE</text>
-            <text x="535" y="682" text-anchor="end">NO. 42</text>
-          </g>
-
-          <g transform="translate(60, 705)" fill="#0D2137">
-            <text font-family="Georgia, serif" font-size="13" letter-spacing="1" font-style="italic">「 法 · 经 · 社 」</text>
-          </g>
-          <g transform="translate(485, 705)" fill="#B32424" font-family="'Courier New', monospace" font-size="10">
-            <text text-anchor="end" font-weight="700">● SHARE</text>
-          </g>
-        </svg>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div class="footer-left">P.01 · COVER STORY</div>
-      <div class="footer-mid">OPEN SOURCE QUARTERLY · ISSUE 42 · DEC 2024</div>
-      <div class="footer-right">
-        <span>BY 开源之书记录编辑部</span>
-        <span class="page">42</span>
+    <!-- BOTTOM NARRATIVE -->
+    <div class="narrative">
+      <div class="tag"><span>EDITOR'S NOTE</span></div>
+      <div class="text">
+        <span>本次分享从开源之书记录 Copyleft 经济专题出发，试图在<em>法学、经济学与社区</em>三个维度重新审视 Copyleft 许可证——它不仅是法律声明，更是<em>数字文明运行的底层契约</em>。</span>
       </div>
     </div>
 
   </div>
 </div>
+
+<script>
+(function(){
+  const bars = [
+    1,2,1,3,1,2,1,1,3,2,1,3,1,1,2,3,1,2,1,3,
+    1,1,2,1,3,1,2,1,1,3,2,1,1,3,1,2,1,1,3,1,
+    2,1,1,3,1,2,1,3,1,1,2,1,1,3,1,2,1
+  ];
+  const bc = document.getElementById('barcode');
+  bars.forEach(function(w){
+    var b = document.createElement('div');
+    b.className = 'bar';
+    b.style.width = w + 'px';
+    b.style.background = (w >= 3) ? '#B32424' : '#F5F2EB';
+    bc.appendChild(b);
+  });
+})();
+</script>
 </body>
 </html>
