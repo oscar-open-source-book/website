@@ -7,315 +7,432 @@
 <title>第一篇 · 网络操作系统</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Source+Serif+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Source+Serif+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#0D2137;
-  --deep:#1A5276;
-  --grey-bg:#ECEFF1;
-  --grey-2:#D5DBDF;
-  --grey-3:#9AA6AE;
-  --ink:#1B2836;
-  --paper:#F5F6F8;
-  --line:#C8D0D6;
+  --teal:#1A5276;
+  --line:#8A96A3;
+  --hair:#C7CDD4;
+  --paper:#ECEFF1;
+  --paper-2:#E3E7EB;
+  --ink-soft:#3F4B57;
+  --ink-mute:#7A8590;
+  --serif:"Noto Serif SC","Source Serif Pro","Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"Noto Sans SC","Source Sans 3","Source Sans Pro","Helvetica Neue",Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{width:1600px;height:900px;}
+html,body{background:#D9DDE1;}
 body{
-  font-family:"Noto Sans SC","Source Serif Pro",sans-serif;
-  font-size:16px;
-  color:var(--ink);
-  background:#E4E7EA;
+  font-family:var(--sans);
+  color:var(--navy);
   -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
 }
 .wrapper{
-  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
-  background:linear-gradient(135deg,#EEF1F3 0%,#E2E6E9 55%,#D8DEE3 100%);
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:var(--paper);
 }
 #bg{position:absolute;inset:0;z-index:0;}
-#bg .grid{
+#bg .paper-tex{
   position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(13,33,55,0.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(13,33,55,0.04) 1px,transparent 1px);
-  background-size:80px 80px;
+  background:radial-gradient(120% 80% at 15% 10%, #F5F7F8 0%, #ECEFF1 45%, #E1E5E9 100%);
 }
-#bg .corner-tl{
-  position:absolute;top:0;left:0;width:260px;height:260px;
-  background:radial-gradient(circle at top left,rgba(13,33,55,0.10),transparent 70%);
+#bg .rule-v{
+  position:absolute;top:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom,transparent 0%,rgba(13,33,55,.10) 12%,rgba(13,33,55,.10) 88%,transparent 100%);
 }
-#bg .corner-br{
-  position:absolute;bottom:0;right:0;width:380px;height:380px;
-  background:radial-gradient(circle at bottom right,rgba(26,82,118,0.10),transparent 70%);
+#bg .rule-v.a{left:60px;}
+#bg .rule-v.b{right:60px;}
+#bg .corner{
+  position:absolute;font-family:var(--sans);
+  font-size:11px;letter-spacing:.28em;
+  color:var(--ink-mute);text-transform:uppercase;
 }
-#bg .side-bar{
-  position:absolute;left:0;top:0;bottom:0;width:8px;
-  background:linear-gradient(180deg,var(--navy) 0%,var(--deep) 100%);
+#bg .corner.tl{top:38px;left:82px;}
+#bg .corner.tr{top:38px;right:82px;text-align:right;}
+#bg .corner.br{bottom:36px;right:82px;text-align:right;}
+#bg .corner.bl{bottom:36px;left:82px;}
+#bg .dot{
+  position:absolute;width:4px;height:4px;border-radius:50%;
+  background:var(--navy);opacity:.35;
 }
-#ct{position:absolute;inset:0;z-index:1;padding:60px;box-sizing:border-box;}
+#bg .dot.d1{top:110px;left:78px;}
+#bg .dot.d2{top:110px;right:78px;}
 
-/* ===== Top meta row ===== */
-.meta{
-  display:flex;justify-content:space-between;align-items:center;
-  font-size:12px;letter-spacing:0.24em;color:var(--deep);
-  padding-bottom:14px;border-bottom:1px solid var(--line);
-  font-weight:500;
-}
-.meta .left{display:flex;align-items:center;gap:14px;}
-.meta .dot{width:6px;height:6px;background:var(--deep);border-radius:50%;display:inline-block;}
-.meta .right{color:var(--grey-3);letter-spacing:0.18em;}
+#ct{position:absolute;inset:0;z-index:1;padding:60px;}
 
-/* ===== Hero ===== */
+.top-line{
+  position:absolute;top:70px;left:60px;right:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--sans);
+  font-size:12px;letter-spacing:.34em;color:var(--teal);
+  text-transform:uppercase;
+}
+.top-line .seg{display:flex;align-items:center;gap:14px;}
+.top-line .seg .bar{width:44px;height:1px;background:var(--teal);opacity:.65;}
+.top-line .seg .thin{width:22px;height:1px;background:var(--teal);opacity:.4;}
+
 .hero{
-  position:relative;
-  margin-top:34px;
-  display:flex;align-items:flex-start;gap:60px;
-  height:420px;
+  position:absolute;
+  top:150px;left:60px;right:60px;bottom:290px;
+  display:grid;
+  grid-template-columns:640px 1fr;
+  gap:60px;
+  align-items:center;
 }
-/* Decorative "01" */
+
 .chapter-num{
   position:relative;
-  font-family:"Source Serif Pro","Noto Serif SC",serif;
-  font-weight:300;
-  font-size:380px;
-  line-height:0.82;
-  color:transparent;
-  -webkit-text-stroke:2px rgba(13,33,55,0.55);
-  letter-spacing:-0.03em;
-  flex-shrink:0;
-  width:360px;
-  padding-top:10px;
+  font-family:var(--serif);
+  font-weight:900;
+  font-size:420px;
+  line-height:.82;
+  color:var(--navy);
+  letter-spacing:-.04em;
   user-select:none;
 }
-.chapter-num .label{
-  position:absolute;
-  top:14px;right:-30px;
-  font-family:"Noto Sans SC",sans-serif;
-  font-size:11px;
-  letter-spacing:0.4em;
-  color:var(--deep);
-  font-weight:500;
+.chapter-num .num{
+  position:relative;
+  color:var(--navy);
   -webkit-text-stroke:0;
-  writing-mode:vertical-rl;
-  transform:rotate(180deg);
 }
-.hero-body{
-  flex:1;
-  padding-top:34px;
-  position:relative;
+.chapter-num .ghost{
+  position:absolute;
+  top:6px;left:8px;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(13,33,55,.18);
+  pointer-events:none;
 }
-.kicker{
-  display:flex;align-items:center;gap:16px;
-  font-size:12px;letter-spacing:0.5em;color:var(--deep);
-  font-weight:500;
-  margin-bottom:22px;
-}
-.kicker .rule{width:56px;height:1px;background:var(--deep);}
-.main-title{
-  font-family:"Source Serif Pro","Noto Serif SC",serif;
+.chapter-num .stamp{
+  position:absolute;
+  top:-14px;left:6px;
+  font-family:var(--sans);
+  font-size:12px;letter-spacing:.42em;
+  color:var(--teal);
+  text-transform:uppercase;
   font-weight:600;
-  font-size:78px;
-  line-height:1.08;
-  color:var(--navy);
-  letter-spacing:0.02em;
-  margin-bottom:8px;
 }
-.main-title .sep{
-  color:var(--deep);
-  font-weight:300;
-  font-style:italic;
-  margin:0 6px;
-  font-size:64px;
-  vertical-align:6px;
+.chapter-num .stamp .dotsep{
+  display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--teal);vertical-align:middle;margin:0 8px 3px;
 }
-.main-title .part{color:var(--deep);font-weight:400;font-size:52px;letter-spacing:0.08em;margin-right:14px;vertical-align:6px;}
-.subtitle-wrap{
-  margin-top:24px;
-  display:flex;align-items:center;gap:22px;
-}
-.subtitle-wrap .hline{
-  width:64px;height:1px;background:var(--grey-3);flex-shrink:0;
-}
-.subtitle{
-  font-family:"Noto Serif SC",serif;
-  font-size:22px;
-  color:var(--navy);
-  font-weight:300;
-  letter-spacing:0.05em;
-}
-.subtitle .em{color:var(--deep);font-weight:400;}
 
-/* ===== Three cards ===== */
-.cards{
-  position:absolute;
-  left:60px;right:60px;
-  bottom:150px;
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:24px;
-}
-.card{
-  background:rgba(245,246,248,0.72);
-  border:1px solid var(--line);
-  border-top:3px solid var(--navy);
-  padding:22px 24px 24px;
+.title-block{
+  padding-left:8px;
+  border-left:1px solid var(--hair);
+  padding-left:44px;
   position:relative;
-  min-height:172px;
 }
-.card .idx{
+.title-block .kicker{
+  font-family:var(--sans);
+  font-size:13px;letter-spacing:.4em;
+  color:var(--teal);
+  text-transform:uppercase;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:14px;
+}
+.title-block .kicker .kbar{
+  display:inline-block;width:28px;height:1px;background:var(--teal);
+}
+.title-block h1{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:72px;
+  line-height:1.12;
+  color:var(--navy);
+  letter-spacing:.02em;
+}
+.title-block h1 .accent{
+  color:var(--teal);
+  font-style:italic;
+  font-weight:600;
+}
+.title-block .rule{
+  width:220px;height:1px;
+  background:var(--navy);
+  opacity:.55;
+  margin:28px 0 22px;
+  position:relative;
+}
+.title-block .rule::after{
+  content:"";
   position:absolute;
-  top:14px;right:16px;
-  font-family:"Source Serif Pro",serif;
-  font-size:13px;
-  letter-spacing:0.15em;
-  color:var(--grey-3);
-  font-weight:400;
+  right:0;top:-2px;
+  width:5px;height:5px;
+  background:var(--navy);
 }
-.card .tag{
-  font-family:"Noto Sans SC",sans-serif;
-  font-size:11px;
-  letter-spacing:0.35em;
-  color:var(--deep);
+.title-block .subtitle{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:22px;
+  line-height:1.55;
+  color:var(--ink-soft);
+  letter-spacing:.03em;
+  max-width:640px;
+}
+.title-block .subtitle em{
+  font-style:italic;
+  color:var(--teal);
   font-weight:500;
+}
+.title-block .meta{
+  margin-top:26px;
+  display:flex;align-items:center;gap:22px;
+  font-family:var(--sans);
+  font-size:12px;letter-spacing:.32em;
+  color:var(--ink-mute);
+  text-transform:uppercase;
+}
+.title-block .meta .sep{width:14px;height:1px;background:var(--line);}
+
+/* narrative */
+.narrative-wrap{
+  position:absolute;
+  left:60px;right:60px;bottom:196px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+}
+.narrative-line{
+  display:flex;align-items:center;gap:18px;
+}
+.narrative-line .nlabel{
+  font-family:var(--sans);
+  font-size:11px;letter-spacing:.42em;
+  color:var(--teal);
+  text-transform:uppercase;
+  font-weight:600;
+  white-space:nowrap;
+}
+.narrative-line .nline{
+  flex:0 0 40px;height:1px;background:var(--navy);opacity:.5;
+}
+.narrative-line .narrow{
+  flex:1;height:1px;background:var(--hair);
+}
+.narrative{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:17px;
+  line-height:1.85;
+  color:var(--ink-soft);
+  letter-spacing:.02em;
+  max-width:1300px;
+  padding-left:88px;
+  position:relative;
+}
+.narrative::before{
+  content:"¶";
+  position:absolute;
+  left:64px;top:-2px;
+  font-family:var(--serif);
+  font-size:22px;
+  color:var(--teal);
+  opacity:.75;
+}
+.narrative b{
+  color:var(--navy);
+  font-weight:600;
+  font-family:var(--serif);
+}
+
+/* three guide blocks */
+.guides{
+  position:absolute;
+  left:60px;right:60px;bottom:74px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  border-top:1px solid var(--hair);
+  padding-top:22px;
+}
+.guide{
+  padding:0 28px;
+  position:relative;
+}
+.guide + .guide::before{
+  content:"";
+  position:absolute;
+  left:0;top:6px;bottom:6px;
+  width:1px;background:var(--hair);
+}
+.guide .gnum{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:12px;
+  color:var(--teal);
+  letter-spacing:.24em;
+  margin-bottom:6px;
+}
+.guide .glabel{
+  font-family:var(--sans);
+  font-size:11px;
+  letter-spacing:.42em;
+  color:var(--ink-mute);
+  text-transform:uppercase;
+  font-weight:600;
   margin-bottom:10px;
 }
-.card .title{
-  font-family:"Source Serif Pro","Noto Serif SC",serif;
-  font-size:22px;
-  color:var(--navy);
+.guide .gtitle{
+  font-family:var(--serif);
   font-weight:600;
-  margin-bottom:14px;
-  letter-spacing:0.02em;
-  line-height:1.3;
+  font-size:19px;
+  color:var(--navy);
+  letter-spacing:.04em;
+  margin-bottom:10px;
 }
-.card .divider{
-  width:36px;height:2px;background:var(--deep);
-  margin-bottom:12px;
-}
-.card .body{
-  font-size:14px;
-  line-height:1.75;
-  color:#33424F;
-  font-weight:400;
-}
-.card .body b{color:var(--navy);font-weight:600;}
-
-/* ===== Bottom narrative ===== */
-.narrative{
-  position:absolute;
-  left:60px;right:60px;
-  bottom:56px;
-  display:flex;align-items:flex-start;gap:24px;
-  padding-top:20px;
-  border-top:1px solid var(--line);
-}
-.narrative .quote-mark{
-  font-family:"Source Serif Pro",serif;
-  font-size:48px;
-  color:var(--deep);
-  line-height:0.7;
+.guide .gbody{
+  font-family:var(--sans);
+  font-size:13.5px;
+  line-height:1.7;
+  color:var(--ink-soft);
   font-weight:300;
-  flex-shrink:0;
-  margin-top:6px;
 }
-.narrative .text{
-  font-family:"Noto Serif SC",serif;
-  font-size:15px;
-  line-height:1.85;
-  color:var(--ink);
-  font-weight:400;
-  letter-spacing:0.02em;
-  flex:1;
-}
-.narrative .text .accent{color:var(--navy);font-weight:600;}
-.narrative .text .accent2{color:var(--deep);font-weight:500;}
-.narrative .stamp{
-  flex-shrink:0;
-  font-size:11px;
-  letter-spacing:0.3em;
-  color:var(--grey-3);
+.guide .gbody em{
+  font-style:normal;
+  color:var(--navy);
   font-weight:500;
-  padding:6px 12px;
-  border:1px solid var(--grey-3);
-  align-self:flex-start;
-  margin-top:4px;
+}
+
+/* footer */
+.footer{
+  position:absolute;
+  left:60px;right:60px;bottom:32px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--sans);
+  font-size:10.5px;
+  letter-spacing:.36em;
+  color:var(--ink-mute);
+  text-transform:uppercase;
+}
+.footer .fl{display:flex;align-items:center;gap:14px;}
+.footer .fl .fb{width:20px;height:1px;background:var(--line);}
+.footer .fr{display:flex;align-items:center;gap:14px;}
+.footer .fr .fb{width:20px;height:1px;background:var(--line);}
+.footer .mid{
+  font-family:var(--serif);
+  font-style:italic;
+  letter-spacing:.18em;
+  color:var(--teal);
+  font-size:11px;
+  text-transform:none;
+}
+
+/* subtle background watermark */
+.watermark{
+  position:absolute;
+  right:-40px;top:40px;
+  font-family:var(--serif);
+  font-size:520px;
+  font-weight:300;
+  font-style:italic;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(13,33,55,.045);
+  line-height:1;
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
+
   <div id="bg">
-    <div class="grid"></div>
-    <div class="corner-tl"></div>
-    <div class="corner-br"></div>
-    <div class="side-bar"></div>
+    <div class="paper-tex"></div>
+    <div class="rule-v a"></div>
+    <div class="rule-v b"></div>
+    <div class="watermark">N</div>
   </div>
+
   <div id="ct">
 
-    <div class="meta">
-      <div class="left">
-        <span class="dot"></span>
-        <span>PART ONE / OF FIVE</span>
+    <div class="top-line">
+      <div class="seg">
+        <span class="bar"></span>
+        <span>Chapter I / III</span>
       </div>
-      <div class="right">SECTION HEADER · 开篇章节</div>
+      <div class="seg">
+        <span>Network Operating Systems</span>
+        <span class="thin"></span>
+      </div>
+      <div class="seg">
+        <span>White-paper Series</span>
+        <span class="bar"></span>
+      </div>
     </div>
 
     <div class="hero">
       <div class="chapter-num">
-        01
-        <span class="label">CHAPTER NO.</span>
+        <span class="stamp"><span class="dotsep"></span>Chapter Number</span>
+        <span class="ghost">01</span>
+        <span class="num">01</span>
       </div>
-      <div class="hero-body">
+
+      <div class="title-block">
         <div class="kicker">
-          <span class="rule"></span>
-          <span>开篇 · 篇章导语</span>
+          <span class="kbar"></span>
+          <span>Part One &nbsp;·&nbsp; 章节 · 壹</span>
         </div>
-        <h1 class="main-title">
-          <span class="part">第一篇</span><span class="sep">·</span>网络操作系统
-        </h1>
-        <div class="subtitle-wrap">
-          <span class="hline"></span>
-          <div class="subtitle">承载<span class="em">转发与控制面</span>的开源操作系统族谱</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="cards">
-      <div class="card">
-        <span class="idx">01</span>
-        <div class="tag">READING FOCUS</div>
-        <div class="title">阅读重点</div>
-        <div class="divider"></div>
-        <div class="body">
-          聚焦 <b>SONiC</b>、<b>VyOS</b>、<b>Open Network Linux</b> 三大代表，以及当代<b>电信级转发面</b>的实现路径。
-        </div>
-      </div>
-      <div class="card">
-        <span class="idx">02</span>
-        <div class="tag">EVALUATION DIMENSIONS</div>
-        <div class="title">评估维度</div>
-        <div class="divider"></div>
-        <div class="body">
-          从 <b>转发性能</b>、<b>控制面协议栈</b>、<b>运维体验</b>、<b>社区健康度</b> 四个横切面切入，衡量项目的成熟度与可持续性。
-        </div>
-      </div>
-      <div class="card">
-        <span class="idx">03</span>
-        <div class="tag">GUIDING QUESTIONS</div>
-        <div class="title">阅读问题</div>
-        <div class="divider"></div>
-        <div class="body">
-          贯穿全篇的三条主线：<b>谁在做</b>、<b>谁在用</b>、<b>如何演化</b>——由此串起项目、生态与路线。
+        <h1>第一篇 <span class="accent">·</span> 网络<br>操作系统</h1>
+        <div class="rule"></div>
+        <div class="subtitle">承载<em>转发</em>与<em>控制面</em>的开源<br>操作系统族谱</div>
+        <div class="meta">
+          <span>Part I</span>
+          <span class="sep"></span>
+          <span>SONiC &nbsp;/&nbsp; VyOS &nbsp;/&nbsp; ONL</span>
+          <span class="sep"></span>
+          <span>Telecom Forwarding</span>
         </div>
       </div>
     </div>
 
-    <div class="narrative">
-      <div class="quote-mark">"</div>
-      <div class="text">
-        进入第一篇章：<span class="accent">网络操作系统</span>。我们将沿着<span class="accent2">白盒交换机生态</span>、<span class="accent2">路由协议栈</span>与<span class="accent2">电信转发面</span>三条主线，梳理当下最有代表性的开源项目，为后续的基础设施栈铺垫直觉。
+    <div class="narrative-wrap">
+      <div class="narrative-line">
+        <span class="nlabel">Prologue · 引言</span>
+        <span class="nline"></span>
+        <span class="narrow"></span>
       </div>
-      <div class="stamp">PROLOGUE</div>
+      <p class="narrative">
+        进入第一篇章：<b>网络操作系统</b>。我们将沿着<b>白盒交换机生态</b>、<b>路由协议栈</b>与<b>电信转发面</b>三条主线，梳理当下最有代表性的开源项目，为后续的基础设施栈铺垫直觉。
+      </p>
+    </div>
+
+    <div class="guides">
+      <div class="guide">
+        <div class="gnum">i.</div>
+        <div class="glabel">Reading Focus</div>
+        <div class="gtitle">阅读重点</div>
+        <div class="gbody"><em>SONiC</em>、<em>VyOS</em>、<em>Open Network Linux</em> 与电信级转发面</div>
+      </div>
+      <div class="guide">
+        <div class="gnum">ii.</div>
+        <div class="glabel">Evaluation Axes</div>
+        <div class="gtitle">评估维度</div>
+        <div class="gbody"><em>转发性能</em>、<em>控制面协议栈</em>、<em>运维体验</em> 与 <em>社区健康度</em></div>
+      </div>
+      <div class="guide">
+        <div class="gnum">iii.</div>
+        <div class="glabel">Reading Questions</div>
+        <div class="gtitle">阅读问题</div>
+        <div class="gbody"><em>谁在做</em>、<em>谁在用</em>、<em>如何演化</em> —— 三条主线贯穿本篇</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="fl">
+        <span class="fb"></span>
+        <span>Chapter 01</span>
+        <span class="fb"></span>
+      </div>
+      <div class="mid">Network Operating Systems &nbsp;·&nbsp; A White-paper Chapter</div>
+      <div class="fr">
+        <span>Page 03 / 32</span>
+        <span class="fb"></span>
+      </div>
     </div>
 
   </div>

@@ -1,0 +1,532 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>主流开源网络OS图谱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Source+Serif+Pro:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D2137;
+    --indigo: #1A5276;
+    --bg-gray: #ECEFF1;
+    --card-bg: #FFFFFF;
+    --text-main: #1a2332;
+    --text-muted: #5a6a7a;
+    --line: #d5dbe1;
+    --accent-light: #e6ecf2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #dfe3e7; }
+  body {
+    font-family: "Noto Sans SC", "Source Sans Pro", sans-serif;
+    color: var(--text-main);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--bg-gray);
+  }
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(180deg, #f6f8fa 0%, #ECEFF1 40%, #E4E9ED 100%);
+  }
+  #bg::before {
+    content: "";
+    position: absolute;
+    left: -120px;
+    top: -120px;
+    width: 460px;
+    height: 460px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(13,33,55,0.08), rgba(13,33,55,0) 70%);
+    pointer-events: none;
+  }
+  #bg::after {
+    content: "";
+    position: absolute;
+    right: -140px;
+    bottom: -140px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(26,82,118,0.10), rgba(26,82,118,0) 70%);
+    pointer-events: none;
+  }
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 48px 64px 40px 64px;
+  }
+
+  /* 顶部页眉 */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .header-left { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow {
+    font-family: "Source Serif Pro", "Noto Serif SC", serif;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    color: var(--indigo);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .title {
+    font-family: "Noto Serif SC", "Source Serif Pro", serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .title .accent-bar {
+    display: inline-block;
+    width: 6px;
+    height: 34px;
+    background: var(--navy);
+    vertical-align: -6px;
+    margin-right: 14px;
+  }
+  .header-right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .page-meta {
+    font-family: "Source Serif Pro", serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+  }
+  .page-num {
+    font-family: "Source Serif Pro", serif;
+    font-size: 20px;
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  /* 引导叙述 */
+  .lede {
+    font-family: "Noto Sans SC", "Source Sans Pro", sans-serif;
+    font-size: 15px;
+    color: var(--text-main);
+    line-height: 1.75;
+    max-width: 1470px;
+    margin: 6px 0 22px 0;
+    display: flex;
+    gap: 14px;
+  }
+  .lede .quote-mark {
+    font-family: "Source Serif Pro", serif;
+    font-size: 40px;
+    color: var(--indigo);
+    line-height: 0.9;
+    flex-shrink: 0;
+  }
+  .lede p {
+    flex: 1;
+  }
+  .lede strong {
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  /* 卡片网格 */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(13,33,55,0.04), 0 6px 20px rgba(13,33,55,0.05);
+    min-height: 358px;
+  }
+  .row1 .card { grid-column: span 2; }
+  .row2 .card { grid-column: span 3; }
+
+  .card-top {
+    background: var(--navy);
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+  }
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .badge-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Source Serif Pro", serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+  .badge-name {
+    font-family: "Noto Serif SC", serif;
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 0.03em;
+    color: #fff;
+  }
+  .badge-en {
+    font-family: "Source Serif Pro", serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.18em;
+    font-weight: 400;
+  }
+
+  .card-body {
+    padding: 14px 18px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    font-size: 11px;
+    padding: 3px 9px;
+    background: var(--accent-light);
+    color: var(--indigo);
+    border: 1px solid #cfd8e0;
+    border-radius: 2px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .chip.solid {
+    background: var(--indigo);
+    color: #fff;
+    border-color: var(--indigo);
+  }
+  .divider {
+    height: 1px;
+    background: var(--line);
+    margin: 2px 0;
+  }
+  .label {
+    font-family: "Source Serif Pro", serif;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    color: var(--indigo);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .label::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: var(--indigo);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .pos {
+    font-size: 13.5px;
+    color: var(--text-main);
+    line-height: 1.55;
+  }
+  .pos .em { color: var(--navy); font-weight: 600; }
+  .users {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+  }
+  .users .k {
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* 中央"控制面串联"连接卡 —— 用 FRRouting 卡片突出显示 */
+  .card.feature {
+    background: linear-gradient(180deg, #0D2137 0%, #142d49 100%);
+    border-color: var(--navy);
+  }
+  .card.feature .card-top {
+    background: rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+  }
+  .card.feature .card-body {
+    color: #e6ecf2;
+  }
+  .card.feature .pos { color: #e6ecf2; }
+  .card.feature .pos .em { color: #fff; }
+  .card.feature .users { color: #b8c6d3; border-top-color: rgba(255,255,255,0.18); }
+  .card.feature .users .k { color: #fff; }
+  .card.feature .chip {
+    background: rgba(255,255,255,0.10);
+    color: #cfd8e0;
+    border-color: rgba(255,255,255,0.20);
+  }
+  .card.feature .chip.solid {
+    background: #cfd8e0;
+    color: var(--navy);
+    border-color: #cfd8e0;
+  }
+  .card.feature .label { color: #cfd8e0; }
+  .card.feature .label::before { background: #cfd8e0; }
+  .card.feature .divider { background: rgba(255,255,255,0.14); }
+
+  /* 底部收束 */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+    margin-top: 6px;
+  }
+  .footer-note {
+    font-family: "Noto Sans SC", serif;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+  .footer-note .k {
+    color: var(--navy);
+    font-weight: 700;
+    font-family: "Noto Serif SC", serif;
+  }
+  .footer-tag {
+    font-family: "Source Serif Pro", serif;
+    font-size: 11px;
+    color: var(--indigo);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- 顶部页眉 -->
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow">OPEN-SOURCE NETWORK OS · LANDSCAPE MAP</div>
+        <div class="title"><span class="accent-bar"></span>主流开源网络OS图谱</div>
+      </div>
+      <div class="header-right">
+        <div class="page-meta">CHAPTER · 内容页</div>
+        <div class="page-num">04</div>
+      </div>
+    </div>
+
+    <!-- 引导叙述 -->
+    <div class="lede">
+      <div class="quote-mark">"</div>
+      <p>主流开源网络OS按使用场景大致分为三类——面向<strong>数据中心白盒交换机</strong>的 SONiC 与 ONL、面向<strong>广域网与 SD-WAN</strong>的 VyOS、以及面向<strong>电信转发面</strong>的 Cloudnet+ 等方案；而 <strong>FRRouting</strong> 作为共同的路由协议守护进程集合，把这些方案在<strong>控制面</strong>上串联起来。</p>
+    </div>
+
+    <!-- 上排：三张卡片 -->
+    <div class="grid row1">
+      <!-- 卡片 1: SONiC -->
+      <div class="card">
+        <div class="card-top">
+          <div class="badge">
+            <div class="badge-num">01</div>
+            <div>
+              <div class="badge-name">SONiC</div>
+              <div class="badge-en">Software for Open Networking in the Cloud</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chips">
+            <span class="chip solid">数据中心</span>
+            <span class="chip">白盒交换机</span>
+            <span class="chip">模块化</span>
+          </div>
+          <div class="divider"></div>
+          <div>
+            <div class="label">项目定位</div>
+            <div class="pos">由 <span class="em">Microsoft</span> 发起、社区共建的<strong>模块化网络操作系统</strong>；以容器化微服务架构编排交换面与路由面，成为白盒交换机与数据中心网络的<strong>事实标配</strong>。</div>
+          </div>
+          <div class="users">
+            <span class="k">典型用户：</span>Microsoft Azure、Facebook / Meta、Arista、Nvidia、戴尔、思科（白盒系列）
+          </div>
+        </div>
+      </div>
+
+      <!-- 卡片 2: VyOS -->
+      <div class="card">
+        <div class="card-top">
+          <div class="badge">
+            <div class="badge-num">02</div>
+            <div>
+              <div class="badge-name">VyOS</div>
+              <div class="badge-en">Enterprise Routing on Linux</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chips">
+            <span class="chip solid">广域网</span>
+            <span class="chip">SD-WAN</span>
+            <span class="chip">路由全栈</span>
+          </div>
+          <div class="divider"></div>
+          <div>
+            <div class="label">项目定位</div>
+            <div class="pos">基于 <span class="em">Linux 内核</span> 的企业级路由器；<strong>BGP / OSPF / IS-IS / BFD</strong> 全协议栈齐备，配合防火墙、VPN 与 QoS，是分支互联与 <strong>SD-WAN</strong> 场景的利器。</div>
+          </div>
+          <div class="users">
+            <span class="k">典型用户：</span>中小企业分支机构、MSP / ISP、SD-WAN 服务商、企业边缘互联
+          </div>
+        </div>
+      </div>
+
+      <!-- 卡片 3: Open Network Linux -->
+      <div class="card">
+        <div class="card-top">
+          <div class="badge">
+            <div class="badge-num">03</div>
+            <div>
+              <div class="badge-name">Open Network Linux</div>
+              <div class="badge-en">Arista Community-Edition OS</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chips">
+            <span class="chip solid">数据中心</span>
+            <span class="chip">企业级</span>
+            <span class="chip">完整 OS</span>
+          </div>
+          <div class="divider"></div>
+          <div>
+            <div class="label">项目定位</div>
+            <div class="pos">由 <span class="em">Arista Networks</span> 开源的完整交换操作系统，与 Arista EOS 同源；面向 <strong>企业级数据中心</strong>，提供生产级稳定性与全协议特性，社区版可持续迭代。</div>
+          </div>
+          <div class="users">
+            <span class="k">典型用户：</span>Arista 合作伙伴、企业数据中心、白盒厂商、教育与研究实验室
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 下排：两张卡片，居中 -->
+    <div class="grid row2">
+      <!-- 卡片 4: ONL & Cloudnet+ -->
+      <div class="card">
+        <div class="card-top">
+          <div class="badge">
+            <div class="badge-num">04</div>
+            <div>
+              <div class="badge-name">ONL &amp; Cloudnet+</div>
+              <div class="badge-en">Carrier-Grade Forwarding Plane</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chips">
+            <span class="chip solid">电信转发面</span>
+            <span class="chip">运营商主导</span>
+            <span class="chip">云化网络</span>
+          </div>
+          <div class="divider"></div>
+          <div>
+            <div class="label">项目定位</div>
+            <div class="pos">
+              <span class="em">ONL</span>（由 Dell、Nvidia、VMware 等电信侧厂商共建）与 <span class="em">Cloudnet+</span>（中国信通院主导）代表运营商阵营的开源方向：前者聚焦 <strong>白盒数据中心交换机的操作系统</strong>，后者面向 <strong>电信级转发面与云化网络</strong>，覆盖 vRouter、vSwitch、SDN 网关等场景。
+            </div>
+          </div>
+          <div class="users">
+            <span class="k">典型用户：</span>中国移动 / 电信 / 联通、欧洲电信运营联盟、大型政企云网络、SDN 厂商联合生态
+          </div>
+        </div>
+      </div>
+
+      <!-- 卡片 5: FRRouting —— 控制面串联 -->
+      <div class="card feature">
+        <div class="card-top">
+          <div class="badge">
+            <div class="badge-num">05</div>
+            <div>
+              <div class="badge-name">FRRouting</div>
+              <div class="badge-en">The Common Routing Control Plane</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chips">
+            <span class="chip solid">控制面</span>
+            <span class="chip">守护进程集合</span>
+            <span class="chip">跨 OS 通用</span>
+          </div>
+          <div class="divider"></div>
+          <div>
+            <div class="label">项目定位</div>
+            <div class="pos">
+              由思科 Quagga 与 Zebra 演化而来的<strong>路由协议守护进程集合</strong>：bgpd、ospfd、isisd、zebra、bfd、pimd… 以模块化、事件驱动方式运行，<span class="em">支撑上述各 OS 的控制面</span>，是开源网络世界事实上的<strong>控制面通用组件</strong>。
+            </div>
+          </div>
+          <div class="users">
+            <span class="k">典型用户：</span>SONiC / VyOS / ONL 内建调用；Linux 主机路由器、网络功能虚拟化 (NFV)、SDN 控制器南向对接
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部收束 -->
+    <div class="footer">
+      <div class="footer-note">
+        <span class="k">叙事主线｜</span>
+        五类方案虽各有所专，但都依赖 <strong>FRRouting</strong> 提供的路由协议守护进程 —— <strong>转发面分立、控制面同源</strong>，是当代开源网络OS图谱最耐人寻味的结构特征。
+      </div>
+      <div class="footer-tag">END · CHAPTER 04</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

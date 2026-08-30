@@ -1,0 +1,604 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之道·网络与OS的丰饶</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600&family=Source+Serif+Pro:wght@400;600;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --navy-2: #1A5276;
+  --gray-hi: #ECEFF1;
+  --gray-mid: #90A4AE;
+  --ink-soft: #37474F;
+  --paper: #FAFBFC;
+  --line: #1A5276;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  color: var(--navy);
+  background: #E8ECEF;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #F7F8F9 0%, #ECEFF1 60%, #E1E5E8 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: -120px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle at center, rgba(26,82,118,0.10) 0%, rgba(26,82,118,0) 70%);
+}
+
+#bg::after {
+  content: "";
+  position: absolute;
+  bottom: -140px;
+  right: -140px;
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(circle at center, rgba(13,33,55,0.12) 0%, rgba(13,33,55,0) 70%);
+}
+
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(13,33,55,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13,33,55,0.035) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+}
+
+.frame-border {
+  position: absolute;
+  inset: 28px;
+  border: 1px solid rgba(13,33,55,0.18);
+  pointer-events: none;
+}
+
+.frame-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--navy);
+}
+.frame-corner.tl { top: 22px; left: 22px; border-top: 2px solid; border-left: 2px solid; }
+.frame-corner.tr { top: 22px; right: 22px; border-top: 2px solid; border-right: 2px solid; }
+.frame-corner.bl { bottom: 22px; left: 22px; border-bottom: 2px solid; border-left: 2px solid; }
+.frame-corner.br { bottom: 22px; right: 22px; border-bottom: 2px solid; border-right: 2px solid; }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 64px 72px;
+}
+
+/* Header strip */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(13,33,55,0.25);
+  color: var(--navy);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-mark {
+  width: 10px;
+  height: 10px;
+  background: var(--navy);
+  display: inline-block;
+}
+
+.header-right {
+  font-family: "Source Serif Pro", "Noto Serif SC", serif;
+  font-style: italic;
+  color: var(--navy-2);
+  letter-spacing: 0.1em;
+  text-transform: none;
+  font-size: 13px;
+}
+
+/* Main grid */
+.main {
+  display: grid;
+  grid-template-columns: 1fr 470px;
+  gap: 44px;
+  margin-top: 40px;
+  height: calc(100% - 40px - 46px);
+}
+
+.left-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.36em;
+  color: var(--navy-2);
+  font-weight: 600;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--navy-2), transparent);
+  max-width: 220px;
+}
+
+.title {
+  font-family: "Noto Serif SC", "Source Serif Pro", Georgia, serif;
+  font-size: 82px;
+  font-weight: 900;
+  line-height: 1.08;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.title .dot {
+  color: var(--navy-2);
+  padding: 0 6px;
+  font-weight: 400;
+}
+
+.title-en {
+  font-family: "Source Serif Pro", Georgia, serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  font-family: "Noto Serif SC", "Source Serif Pro", Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--navy-2);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--navy);
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.subtitle .stamp {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  background: var(--navy);
+  color: #FAFBFC;
+  padding: 4px 10px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-weight: 500;
+}
+
+/* Meta rows */
+.meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.meta-row {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 18px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(26,82,118,0.35);
+}
+
+.meta-row:last-child { border-bottom: none; }
+
+.meta-label {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--navy-2);
+  font-weight: 700;
+  font-family: "Noto Sans SC", sans-serif;
+  position: relative;
+  padding-left: 12px;
+}
+
+.meta-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 1px;
+  background: var(--navy);
+}
+
+.meta-value {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.meta-value strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.meta-value .tag {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  border: 1px solid rgba(26,82,118,0.4);
+  color: var(--navy-2);
+  margin: 0 3px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+/* Reading note */
+.reading-note {
+  margin-top: auto;
+  background: rgba(255,255,255,0.55);
+  border-left: 3px solid var(--navy);
+  padding: 18px 22px 18px 22px;
+  position: relative;
+}
+
+.reading-note::before {
+  content: "READING NOTE · 卷首导读";
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: var(--navy);
+  color: #FAFBFC;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  padding: 3px 10px;
+  font-weight: 600;
+  font-family: "Noto Sans SC", sans-serif;
+}
+
+.reading-note p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  text-align: justify;
+  font-family: "Noto Serif SC", "Source Serif Pro", Georgia, serif;
+  font-weight: 400;
+}
+
+.reading-note p .hl {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Right col - topology */
+.right-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.topo-frame {
+  position: relative;
+  border: 1px solid rgba(13,33,55,0.25);
+  background: rgba(255,255,255,0.35);
+  padding: 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.topo-title {
+  font-family: "Noto Serif SC", serif;
+  font-size: 14px;
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.topo-sub {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: var(--navy-2);
+  font-weight: 600;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  font-family: "Noto Sans SC", sans-serif;
+}
+
+.topo-svg-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topo-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid rgba(26,82,118,0.25);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--navy);
+  flex-shrink: 0;
+}
+
+.legend-dot.mid { background: var(--navy-2); }
+.legend-dot.outer { background: transparent; border: 1px solid var(--navy); }
+
+/* Footer */
+.footer {
+  position: absolute;
+  left: 72px;
+  right: 72px;
+  bottom: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--navy-2);
+  letter-spacing: 0.24em;
+  padding-top: 12px;
+  border-top: 1px solid rgba(13,33,55,0.25);
+  font-weight: 500;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-left .bar {
+  width: 32px;
+  height: 1px;
+  background: var(--navy);
+}
+
+.footer-right {
+  font-family: "Source Serif Pro", Georgia, serif;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-lines"></div>
+  </div>
+
+  <div class="frame-border"></div>
+  <div class="frame-corner tl"></div>
+  <div class="frame-corner tr"></div>
+  <div class="frame-corner bl"></div>
+  <div class="frame-corner br"></div>
+
+  <div id="ct">
+    <div class="header">
+      <div class="header-left">
+        <span class="header-mark"></span>
+        <span>OPEN SOURCE · NETWORK &amp; OS ATLAS · VOL. 01</span>
+      </div>
+      <div class="header-right">阅读笔记 · Reading Notes for the Field</div>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="eyebrow">封面 · COVER PAGE · 2024 / 12</div>
+
+        <h1 class="title">
+          开源之道<span class="dot">·</span><br>
+          网络与OS的丰饶
+        </h1>
+        <div class="title-en">The Path of Open Source — Network &amp; Operating Systems of Abundance</div>
+
+        <div class="subtitle">
+          <span class="stamp">2024 · 12</span>
+          <span>网络操作系统与基础设施的开源版图 · 阅读分享</span>
+        </div>
+
+        <div class="meta-list">
+          <div class="meta-row">
+            <div class="meta-label">角色定位</div>
+            <div class="meta-value">本次分享定位为一场关于 <strong>网络与OS基座开源生态</strong> 的深度阅读</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">覆盖范围</div>
+            <div class="meta-value">
+              涵盖 <span class="tag">SONiC</span><span class="tag">VyOS</span><span class="tag">OpenDaylight</span><span class="tag">ONOS</span><span class="tag">OVN</span><span class="tag">Istio</span> 等主流项目
+            </div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">阅读目标</div>
+            <div class="meta-value">构建 <strong>开源网络基座的坐标系</strong>，并给出实践与共建路径</div>
+          </div>
+        </div>
+
+        <div class="reading-note">
+          <p>
+            在算力与连接同时被重新定义的今天，<span class="hl">网络操作系统与基础设施软件栈</span> 成为承载云、AI、边缘与电信演进的公共底座。本次分享以阅读笔记的形式，把散落于 <span class="hl">GitHub、CNCF、OPNFV 与电信联盟</span> 中的开源项目串成一张可用的地图，与大家一起走进这份丰饶。
+          </p>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="topo-frame">
+          <div class="topo-title">网络与 OS 开源基座 · 拓扑速写</div>
+          <div class="topo-sub">TOPOLOGY OF THE STACK · SKETCH</div>
+
+          <div class="topo-svg-wrap">
+            <svg class="topo-svg" viewBox="0 0 400 380" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="1" cy="1" r="0.8" fill="#1A5276" opacity="0.18"/>
+                </pattern>
+              </defs>
+              <rect x="0" y="0" width="400" height="380" fill="url(#dots)"/>
+
+              <!-- Layer labels -->
+              <text x="14" y="60" font-family="Noto Sans SC" font-size="10" fill="#1A5276" letter-spacing="2" font-weight="600">L3 · APP</text>
+              <text x="14" y="170" font-family="Noto Sans SC" font-size="10" fill="#1A5276" letter-spacing="2" font-weight="600">L2 · SDN</text>
+              <text x="14" y="285" font-family="Noto Sans SC" font-size="10" fill="#1A5276" letter-spacing="2" font-weight="600">L1 · OS</text>
+
+              <line x1="80" y1="55" x2="390" y2="55" stroke="#1A5276" stroke-width="0.5" stroke-dasharray="2 3" opacity="0.5"/>
+              <line x1="80" y1="165" x2="390" y2="165" stroke="#1A5276" stroke-width="0.5" stroke-dasharray="2 3" opacity="0.5"/>
+              <line x1="80" y1="280" x2="390" y2="280" stroke="#1A5276" stroke-width="0.5" stroke-dasharray="2 3" opacity="0.5"/>
+
+              <!-- Layer 3 nodes -->
+              <g>
+                <circle cx="140" cy="55" r="10" fill="#0D2137"/>
+                <circle cx="230" cy="55" r="8" fill="#0D2137"/>
+                <circle cx="320" cy="55" r="10" fill="#0D2137"/>
+                <text x="140" y="59" font-size="8" fill="#FAFBFC" text-anchor="middle" font-family="Noto Sans SC" font-weight="700">AI</text>
+                <text x="230" y="59" font-size="8" fill="#FAFBFC" text-anchor="middle" font-family="Noto Sans SC" font-weight="700">CLOUD</text>
+                <text x="320" y="59" font-size="8" fill="#FAFBFC" text-anchor="middle" font-family="Noto Sans SC" font-weight="700">EDGE</text>
+                <text x="140" y="34" font-size="10" fill="#0D2137" text-anchor="middle" font-family="Noto Serif SC" font-weight="600">算力</text>
+                <text x="230" y="34" font-size="10" fill="#0D2137" text-anchor="middle" font-family="Noto Serif SC" font-weight="600">应用</text>
+                <text x="320" y="34" font-size="10" fill="#0D2137" text-anchor="middle" font-family="Noto Serif SC" font-weight="600">边缘</text>
+              </g>
+
+              <!-- Layer 2 nodes -->
+              <g>
+                <circle cx="120" cy="165" r="12" fill="#1A5276"/>
+                <circle cx="200" cy="165" r="12" fill="#1A5276"/>
+                <circle cx="280" cy="165" r="12" fill="#1A5276"/>
+                <circle cx="360" cy="165" r="12" fill="#1A5276"/>
+                <text x="120" y="192" font-size="10" fill="#0D2137" text-anchor="middle" font-family="Noto Sans SC" font-weight="600">Istio</text>
+                <text x="200" y="192" font-size="10" fill="#0D2137" text-anchor="middle" font-family="Noto Sans SC" font-weight="600">OpenDaylight</text>
+                <text x="280" y="192" font-size="10" fill="#0D2137" text-anchor="middle" font-family="Noto Sans SC" font-weight="600">ONOS</text>
+                <text x="360" y="192" font-size="10" fill="#0D2137" text-anchor="middle" font-family="Noto Sans SC" font-weight="600">OVN</text>
+              </g>
+
+              <!-- Layer 1 nodes -->
+              <g>
+                <circle cx="150" cy="280" r="11" fill="none" stroke="#0D2137" stroke-width="1.8"/>
+                <circle cx="250" cy="280" r="11" fill="none" stroke="#0D2137" stroke-width="1.8"/>
+                <text x="150" y="284" font-size="9" fill="#0D2137" text-anchor="middle" font-family="Noto Sans SC" font-weight="700">SONiC</text>
+                <text x="250" y="284" font-size="9" fill="#0D2137" text-anchor="middle" font-family="Noto Sans SC" font-weight="700">VyOS</text>
+                <text x="150" y="308" font-size="10" fill="#1A5276" text-anchor="middle" font-family="Noto Serif SC" font-weight="600">网络OS</text>
+                <text x="250" y="308" font-size="10" fill="#1A5276" text-anchor="middle" font-family="Noto Serif SC" font-weight="600">网络OS</text>
+              </g>
+
+              <!-- Connections L1 -> L2 -->
+              <line x1="150" y1="270" x2="120" y2="177" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="150" y1="270" x2="200" y2="177" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="150" y1="270" x2="280" y2="177" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="250" y1="270" x2="200" y2="177" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="250" y1="270" x2="280" y2="177" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="250" y1="270" x2="360" y2="177" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+
+              <!-- Connections L2 -> L3 -->
+              <line x1="120" y1="153" x2="140" y2="65" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="200" y1="153" x2="230" y2="63" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="200" y1="153" x2="320" y2="65" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="280" y1="153" x2="230" y2="63" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="280" y1="153" x2="320" y2="65" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+              <line x1="360" y1="153" x2="320" y2="65" stroke="#0D2137" stroke-width="0.8" opacity="0.55"/>
+
+              <!-- Bottom caption -->
+              <line x1="20" y1="340" x2="380" y2="340" stroke="#0D2137" stroke-width="0.5" opacity="0.5"/>
+              <text x="200" y="358" font-size="9" fill="#1A5276" text-anchor="middle" font-family="Source Serif Pro, Noto Serif SC" font-style="italic">
+                从网络 OS 到 SDN 控制平面，再到应用与算力
+              </text>
+              <text x="200" y="372" font-size="8" fill="#90A4AE" text-anchor="middle" font-family="Noto Sans SC" letter-spacing="2">
+                NETWORK OS → SDN → APPLICATION &amp; COMPUTE
+              </text>
+            </svg>
+          </div>
+
+          <div class="legend">
+            <div class="legend-item"><span class="legend-dot"></span><span>核心项目 · Core</span></div>
+            <div class="legend-item"><span class="legend-dot mid"></span><span>SDN 控制面 · Control</span></div>
+            <div class="legend-item"><span class="legend-dot outer"></span><span>网络操作系统 · NOS</span></div>
+            <div class="legend-item"><span style="width:14px;height:1px;background:#0D2137;opacity:0.6"></span><span>依赖关系 · Relation</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <span class="bar"></span>
+        <span>READING SHARED · OPEN SOURCE ATLAS · 2024 · 12</span>
+      </div>
+      <div class="footer-right">— 卷首 · Prologue —</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
