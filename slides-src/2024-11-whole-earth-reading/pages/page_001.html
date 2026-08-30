@@ -1,0 +1,564 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源布道 · Whole Earth 阅读分享</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4F1EA;
+  --paper: #EFEAE0;
+  --ink: #0D2137;
+  --ink-2: #1A3350;
+  --ink-3: #3D5570;
+  --accent: #C05B3C;
+  --muted: #8C8578;
+  --line: rgba(13,33,55,0.14);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1600px; height: 900px; overflow: hidden; background: var(--bg); }
+body { font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif; color: var(--ink); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg { position: absolute; inset: 0; z-index: 0; }
+#ct { position: absolute; inset: 0; z-index: 1; padding: 60px; box-sizing: border-box; }
+
+/* ===== Background decorations ===== */
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(13,33,55,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13,33,55,0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+.bg-vignette {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 60%;
+  height: 70%;
+  background: radial-gradient(ellipse at center, rgba(13,33,55,0.045), transparent 70%);
+}
+
+/* ===== Globe rings (right side decoration) ===== */
+.globe {
+  position: absolute;
+  right: 190px;
+  top: 160px;
+  width: 400px;
+  height: 400px;
+  z-index: 0;
+}
+.globe .ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.ring-1 { width: 400px; height: 400px; border: 1.2px solid rgba(13,33,55,0.28); }
+.ring-2 { width: 340px; height: 340px; border: 1px dashed rgba(13,33,55,0.18); }
+.ring-3 { width: 280px; height: 280px; border: 0.8px solid rgba(13,33,55,0.14); }
+.ring-4 { width: 220px; height: 220px; border: 1px solid rgba(192,91,60,0.32); }
+.ring-5 { width: 160px; height: 160px; border: 0.8px solid rgba(13,33,55,0.16); }
+.ring-6 { width: 100px; height: 100px; border: 1px solid rgba(13,33,55,0.24); }
+
+/* meridian (ellipse) */
+.meridian {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(13,33,55,0.2);
+}
+.meridian-a { width: 400px; height: 170px; }
+.meridian-b { width: 400px; height: 100px; }
+
+/* inner dot */
+.globe .dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 6px rgba(192,91,60,0.14);
+}
+
+/* globe caption */
+.globe-cap {
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.42em;
+  color: var(--ink);
+  opacity: 0.55;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.globe-cap::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.5;
+  margin: 6px auto 0;
+}
+
+/* ===== Page content layout ===== */
+.cover {
+  display: grid;
+  grid-template-columns: 760px 1fr;
+  gap: 40px;
+  height: 100%;
+  width: 100%;
+}
+
+/* ===== Left column ===== */
+.left-col { position: relative; height: 100%; display: flex; flex-direction: column; }
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  letter-spacing: 0.32em;
+  font-weight: 600;
+  color: var(--ink-2);
+  text-transform: uppercase;
+}
+.eyebrow .mark {
+  display: inline-block;
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+}
+.eyebrow .num {
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.25em;
+}
+
+.page-title {
+  margin-top: 22px;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-weight: 800;
+  font-size: 72px;
+  line-height: 1.02;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.page-title .cn {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-weight: 900;
+}
+.page-title .en {
+  font-style: italic;
+  font-weight: 700;
+  color: var(--accent);
+}
+.page-title .dot {
+  color: var(--accent);
+  padding: 0 0.15em;
+  font-weight: 400;
+}
+
+.subtitle-area {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.subtitle-line {
+  width: 56px;
+  height: 1.5px;
+  background: var(--ink);
+  flex-shrink: 0;
+}
+.subtitle {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
+.subtitle .dot { color: var(--accent); margin: 0 8px; }
+.subtitle .date { color: var(--muted); font-weight: 400; }
+
+/* Cards */
+.cards {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 18px;
+  padding: 16px 20px 16px 22px;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--ink);
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  background: var(--accent);
+}
+.card .num-badge {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+  padding-top: 6px;
+}
+.card .num-badge .small {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  display: block;
+  margin-top: 6px;
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+}
+.card .head {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+.card .detail {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+/* Divider line between cards and footer */
+.divider-line {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.divider-line .line {
+  flex: 1;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.22;
+}
+.divider-line .tag {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.35em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Footer quote */
+.footer {
+  margin-top: 22px;
+  padding: 20px 0 0 0;
+  position: relative;
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 1px;
+  background: var(--accent);
+}
+.footer .quote-mark {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 54px;
+  color: var(--accent);
+  line-height: 1;
+  font-weight: 700;
+  font-style: italic;
+}
+.footer .body {
+  padding-left: 46px;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+.footer .body .strong {
+  color: var(--ink);
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ===== Right column ===== */
+.right-col { position: relative; height: 100%; }
+
+/* Editorial badge */
+.badge {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  width: 122px;
+  height: 122px;
+  background: var(--ink);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg);
+  box-shadow: 0 12px 26px rgba(13,33,55,0.28);
+  z-index: 2;
+}
+.badge::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(244,241,234,0.5);
+  border-radius: 50%;
+}
+.badge::after {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  border: 1px dashed rgba(244,241,234,0.22);
+  border-radius: 50%;
+}
+.badge .vol {
+  font-family: 'Playfair Display', serif;
+  font-size: 10px;
+  letter-spacing: 0.38em;
+  font-weight: 600;
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+.badge .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+  font-style: italic;
+}
+.badge .stamp {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  font-weight: 600;
+  margin-top: 6px;
+  opacity: 0.75;
+}
+
+/* Vertical spine marker on left */
+.v-spine {
+  position: absolute;
+  left: -42px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 2;
+}
+.v-spine .bar {
+  width: 1px;
+  height: 60px;
+  background: var(--ink);
+}
+.v-spine .dot-l {
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.v-spine .label {
+  writing-mode: vertical-rl;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 10px;
+  letter-spacing: 0.42em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ===== Page bottom marks ===== */
+.page-mark-bottom {
+  position: absolute;
+  bottom: 22px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  color: var(--muted);
+  z-index: 3;
+}
+.page-mark-bottom .dot {
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.page-mark-left {
+  position: absolute;
+  bottom: 22px;
+  left: 60px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  color: var(--muted);
+  z-index: 3;
+}
+.page-mark-left .accent-line {
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-vignette"></div>
+
+    <!-- Globe latitude/longitude ring -->
+    <div class="globe">
+      <div class="globe-cap">MERIDIAN · 0°</div>
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="ring ring-4"></div>
+      <div class="ring ring-5"></div>
+      <div class="ring ring-6"></div>
+      <div class="meridian meridian-a"></div>
+      <div class="meridian meridian-b"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <div id="ct">
+    <div class="cover">
+      <!-- LEFT COLUMN -->
+      <div class="left-col">
+        <div class="v-spine">
+          <div class="bar"></div>
+          <div class="dot-l"></div>
+          <div class="label">Vol. 11 · 2024</div>
+          <div class="dot-l"></div>
+          <div class="bar"></div>
+        </div>
+
+        <div class="eyebrow">
+          <span class="mark"></span>
+          <span>OPEN SOURCE READING · SHARE</span>
+          <span class="num">— 2024</span>
+        </div>
+
+        <h1 class="page-title">
+          <span class="cn">开源布道</span><span class="dot">·</span><span class="en">Whole Earth</span><br>
+          <span class="cn">阅读分享</span>
+        </h1>
+
+        <div class="subtitle-area">
+          <div class="subtitle-line"></div>
+          <div class="subtitle"><span class="date">2024 年 11 月</span><span class="dot">·</span>从整体目录到开源之道</div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="num-badge">01<span class="small">TOPIC</span></div>
+            <div class="content">
+              <div class="head">主题定位</div>
+              <div class="detail">分享一段连接思想史与开源精神的阅读之旅，探索 Whole Earth 的当代回响。</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="num-badge">02<span class="small">READING</span></div>
+            <div class="content">
+              <div class="head">推荐阅读</div>
+              <div class="detail">围绕 Stewart Brand 的《整体目录》及相关作品，展开一场开源布道式的深度讨论。</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="num-badge">03<span class="small">FORMAT</span></div>
+            <div class="content">
+              <div class="head">活动形式</div>
+              <div class="detail">15 分钟主题分享加 10 分钟开放问答，欢迎所有对开源文化感兴趣的伙伴参与。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider-line">
+          <div class="line"></div>
+          <div class="tag">Epilogue</div>
+          <div class="line"></div>
+        </div>
+
+        <div class="footer">
+          <div class="quote-mark">"</div>
+          <div class="body">
+            本次分享以<span class="strong">《Whole Earth》</span>为线索，回溯从 1960 年代《整体目录》到今天开源社区的精神脉络，希望让每位读者看见连接的价值与布道的意义。
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="right-col">
+        <div class="badge">
+          <div class="vol">VOL. 011</div>
+          <div class="num">11</div>
+          <div class="stamp">2024 · NOV</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-mark-left">
+      <div class="accent-line"></div>
+      <span>ISSUE 11 · 2024 · WHOLE EARTH</span>
+    </div>
+    <div class="page-mark-bottom">
+      <span>P. 01</span>
+      <span class="dot"></span>
+      <span>OPEN SOURCE BISHOP</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
