@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一章 · 开源简史</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root {
+    --primary: #2196F3;
+    --accent: #00BCD4;
+    --muted: #B0BEC5;
+    --bg-0: #050912;
+    --bg-1: #0A1428;
+    --bg-2: #0F1E36;
+    --line: rgba(33, 150, 243, 0.35);
+    --line-soft: rgba(176, 190, 197, 0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Inter', 'Roboto', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: #EAF2FB;
+    background: var(--bg-0);
+    overflow: hidden;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(ellipse at 50% 35%, #0E2045 0%, #071128 45%, #04080F 100%);
+  }
+
+  #bg .grid-layer {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(33, 150, 243, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(33, 150, 243, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 85%);
+  }
+
+  #bg .dot-layer {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0, 188, 212, 0.55) 1.2px, transparent 1.6px);
+    background-size: 40px 40px;
+    opacity: 0.45;
+    mask-image: radial-gradient(ellipse at 50% 60%, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 60%, black 0%, transparent 75%);
+  }
+
+  #bg .glow-a {
+    position: absolute;
+    left: -200px;
+    top: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(33, 150, 243, 0.22) 0%, transparent 65%);
+    filter: blur(20px);
+  }
+
+  #bg .glow-b {
+    position: absolute;
+    right: -200px;
+    bottom: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(0, 188, 212, 0.20) 0%, transparent 65%);
+    filter: blur(20px);
+  }
+
+  #bg .horizon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.6) 20%, rgba(0,188,212,0.7) 50%, rgba(33,150,243,0.6) 80%, transparent 100%);
+    box-shadow: 0 0 12px rgba(33,150,243,0.5);
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 56px 80px;
+  }
+
+  /* Header row */
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+  }
+
+  .top-row .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .top-row .brand .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .top-row .page-no {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* Chapter label */
+  .chapter-label {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.35em;
+    color: var(--accent);
+  }
+
+  .chapter-label .bar {
+    width: 48px;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  /* Timeline with arrows */
+  .timeline {
+    position: relative;
+    margin-top: 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .timeline .track {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(33,150,243,0.15) 0%, rgba(33,150,243,0.85) 50%, rgba(0,188,212,0.85) 100%);
+  }
+
+  .timeline .track::before,
+  .timeline .track::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+  }
+
+  .timeline .track::before { left: 0; }
+  .timeline .track::after { right: 0; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+  .arrow {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+  }
+
+  .arrow.left {
+    left: 0;
+    color: var(--primary);
+    flex-direction: row-reverse;
+  }
+
+  .arrow.right {
+    right: 0;
+    color: var(--accent);
+  }
+
+  .arrow svg { display: block; }
+
+  /* Main title */
+  .title-wrap {
+    text-align: center;
+    margin-top: 46px;
+  }
+
+  .main-title {
+    font-size: 92px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(180deg, #FFFFFF 0%, #7FC4FF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 24px rgba(33,150,243,0.35));
+  }
+
+  .main-title .sep {
+    display: inline-block;
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
+    font-weight: 400;
+    margin: 0 18px;
+    vertical-align: 4px;
+    font-size: 64px;
+    filter: drop-shadow(0 0 10px var(--accent));
+  }
+
+  .subtitle {
+    margin-top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.22em;
+  }
+
+  .subtitle .hi {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .subtitle .arrow-yr {
+    color: var(--primary);
+    margin: 0 10px;
+  }
+
+  /* Three columns */
+  .columns {
+    margin-top: 42px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 36px;
+    position: relative;
+  }
+
+  .col {
+    position: relative;
+    padding: 22px 24px 22px 24px;
+    background: linear-gradient(180deg, rgba(15,30,54,0.75) 0%, rgba(7,17,40,0.55) 100%);
+    border: 1px solid rgba(33,150,243,0.28);
+    border-top: 2px solid var(--primary);
+    backdrop-filter: blur(4px);
+  }
+
+  .col::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  .col .idx {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.3em;
+    margin-bottom: 8px;
+  }
+
+  .col .idx .num {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .col h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .col .head-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    padding: 3px 10px;
+    border: 1px solid rgba(0,188,212,0.4);
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  .col p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .col p .strong {
+    color: #EAF2FB;
+    font-weight: 600;
+  }
+
+  .col p .accent {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Divider dots between columns */
+  .dividers {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    pointer-events: none;
+  }
+
+  .dividers.d1 { left: calc(33.333% - 18px); }
+  .dividers.d2 { left: calc(66.666% - 18px); }
+
+  .dividers .d {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    opacity: 0.7;
+  }
+
+  /* Footer narrative */
+  .narrative {
+    position: absolute;
+    left: 80px;
+    right: 80px;
+    bottom: 46px;
+    padding: 18px 26px;
+    border-left: 3px solid var(--accent);
+    background: linear-gradient(90deg, rgba(0,188,212,0.10) 0%, rgba(0,188,212,0.02) 100%);
+    font-size: 14px;
+    line-height: 1.7;
+    color: #C8D4E0;
+  }
+
+  .narrative .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin-right: 14px;
+    padding: 2px 8px;
+    border: 1px solid rgba(0,188,212,0.5);
+    vertical-align: 2px;
+  }
+
+  .narrative .highlight {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .narrative .highlight-2 {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* Corner marks */
+  .corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: rgba(33,150,243,0.55);
+  }
+  .corner.tl { top: 22px; left: 22px; border-top: 1px solid; border-left: 1px solid; }
+  .corner.tr { top: 22px; right: 22px; border-top: 1px solid; border-right: 1px solid; }
+  .corner.bl { bottom: 22px; left: 22px; border-bottom: 1px solid; border-left: 1px solid; }
+  .corner.br { bottom: 22px; right: 22px; border-bottom: 1px solid; border-right: 1px solid; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-layer"></div>
+    <div class="dot-layer"></div>
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+  </div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div id="ct">
+    <!-- Top row -->
+    <div class="top-row">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>OPEN SOURCE · A TIMELINE</span>
+      </div>
+      <div class="page-no">03 / SECTION HEADER</div>
+    </div>
+
+    <!-- Chapter label -->
+    <div class="chapter-label">
+      <span class="bar"></span>
+      <span>CHAPTER ONE · 章节导览</span>
+    </div>
+
+    <!-- Timeline with arrows -->
+    <div class="timeline">
+      <div class="track"></div>
+      <div class="arrow left">
+        <svg width="42" height="14" viewBox="0 0 42 14">
+          <line x1="2" y1="7" x2="40" y2="7" stroke="#2196F3" stroke-width="1.5"/>
+          <polygon points="2,7 12,2 12,12" fill="#2196F3"/>
+        </svg>
+        <span>← 1983 · GNU</span>
+      </div>
+      <div class="arrow right">
+        <span>2023+ · 数字基础设施</span>
+        <svg width="42" height="14" viewBox="0 0 42 14">
+          <line x1="2" y1="7" x2="40" y2="7" stroke="#00BCD4" stroke-width="1.5"/>
+          <polygon points="40,7 30,2 30,12" fill="#00BCD4"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Main title -->
+    <div class="title-wrap">
+      <div class="main-title">
+        <span>第一章</span><span class="sep">·</span><span>开源简史</span>
+      </div>
+      <div class="subtitle">
+        FREE SOFTWARE <span class="hi">TO</span> OPEN SOURCE
+        <span class="arrow-yr">·</span>
+        <span class="hi">1983</span>
+        <span class="arrow-yr">→</span>
+        <span class="hi">TODAY</span>
+      </div>
+    </div>
+
+    <!-- Three columns -->
+    <div class="columns">
+      <div class="dividers d1">
+        <span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span>
+      </div>
+      <div class="dividers d2">
+        <span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span>
+      </div>
+
+      <div class="col">
+        <div class="idx">PHASE <span class="num">01</span> · 1983</div>
+        <h3>从理想主义出发</h3>
+        <div class="head-tag">IDEOLOGICAL IGNITION</div>
+        <p><span class="strong">GNU 计划</span>由 Richard Stallman 发起，联合《<span class="accent">自由软件宣言</span>》将「软件即文化」从口号变为实践——用户拥有运行、学习、修改与再分发的四项自由，Copyleft 由此诞生。</p>
+      </div>
+
+      <div class="col">
+        <div class="idx">PHASE <span class="num">02</span> · 1997</div>
+        <h3>制度化时刻</h3>
+        <div class="head-tag">INSTITUTIONAL TURN</div>
+        <p><span class="strong">Open Source Initiative</span> 由 Eric S. Raymond 更名提出，将 Copyleft 写入<span class="accent">商业可识别的许可文本</span>，让企业得以合规参与——开源从反文化立场走向产业级共识。</p>
+      </div>
+
+      <div class="col">
+        <div class="idx">PHASE <span class="num">03</span> · 2023</div>
+        <h3>经济规模跃迁</h3>
+        <div class="head-tag">INFRASTRUCTURAL SCALE</div>
+        <p>全球开源生态规模突破<span class="accent">7,000 亿美元</span>，从操作系统、编程语言到云原生与 AI 框架，开源已成为<span class="strong">数字经济的关键基础设施底层</span>。</p>
+      </div>
+    </div>
+
+    <!-- Bottom narrative -->
+    <div class="narrative">
+      <span class="tag">本章主线</span>
+      从 <span class="highlight-2">1983 年 GNU 计划</span>点燃的火苗，到 <span class="highlight">1997 年 OSI</span> 的制度化转型，再到 <span class="highlight-2">今日</span>成为数字经济基础设施——<span class="highlight">Copyleft</span> 是贯穿始终的法律骨架，也是这一章要讲清楚的历史锚点。
+    </div>
+  </div>
+</div>
+</body>
+</html>
