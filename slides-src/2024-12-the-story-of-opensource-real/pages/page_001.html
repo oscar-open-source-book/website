@@ -5,258 +5,205 @@
 <head>
 <meta charset="UTF-8">
 <title>开源之道·2024纪实</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#050912;
-    --bg-2:#081221;
-    --cyan:#2196F3;
-    --cyan-glow:#4FC3F7;
-    --orange:#FF9800;
-    --orange-glow:#FFB74D;
-    --gray:#E0E0E0;
-    --dim:#8FA0B6;
-    --dim-2:#5A6A80;
-    --line:rgba(33,150,243,.18);
-    --font:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
-    --mono:'JetBrains Mono',ui-monospace,'Courier New',monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{width:100%;height:100%;background:var(--bg);font-family:var(--font);color:var(--gray);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+:root{
+  --primary:#2196F3;
+  --primary-glow:#42A5F5;
+  --accent:#FF9800;
+  --neutral:#E0E0E0;
+  --bg-0:#050912;
+  --bg-1:#0A1428;
+  --bg-2:#0F1B33;
+  --text-main:#EAF2FB;
+  --text-dim:#8AA0BC;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter','SF Pro Display','Noto Sans SC',sans-serif;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg-0);}
+#bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 50% 45%, #0F2A5C 0%, #0A1428 35%, #050912 75%);}
+#bg .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at center, black 40%, transparent 80%);}
+#bg .glow-1{position:absolute;top:-200px;left:-150px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle, rgba(33,150,243,0.35) 0%, transparent 60%);filter:blur(20px);}
+#bg .glow-2{position:absolute;bottom:-250px;right:-200px;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle, rgba(255,152,0,0.18) 0%, transparent 60%);filter:blur(30px);}
+#bg .code-lines{position:absolute;left:0;right:0;top:0;bottom:0;overflow:hidden;opacity:0.12;font-family:'SF Mono','Menlo',monospace;font-size:12px;color:var(--primary);letter-spacing:1px;}
+#bg .code-lines .col{position:absolute;top:0;height:100%;writing-mode:vertical-rl;text-orientation:mixed;line-height:1.6;}
+#bg .particles{position:absolute;inset:0;}
+#bg .p{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--primary-glow);box-shadow:0 0 8px var(--primary-glow);opacity:0.7;}
 
-  .wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:#04070F;}
+#ct{position:absolute;inset:0;z-index:1;padding:60px 80px;box-sizing:border-box;display:flex;flex-direction:column;}
 
-  /* ─── Background ─── */
-  #bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
-  .bg-base{position:absolute;inset:0;background:radial-gradient(140% 100% at 50% 45%, #0B1F3A 0%, #050912 55%, #03060C 100%);}
-  .bg-cyan-l{position:absolute;width:1000px;height:1000px;left:-280px;top:-320px;background:radial-gradient(circle, rgba(33,150,243,.45) 0%, rgba(33,150,243,.15) 35%, transparent 65%);filter:blur(30px);}
-  .bg-cyan-r{position:absolute;width:900px;height:900px;right:-250px;top:-100px;background:radial-gradient(circle, rgba(33,150,243,.35) 0%, rgba(33,150,243,.1) 40%, transparent 70%);filter:blur(30px);}
-  .bg-orange{position:absolute;width:600px;height:600px;left:35%;bottom:-260px;background:radial-gradient(circle, rgba(255,152,0,.22) 0%, rgba(255,152,0,.06) 45%, transparent 70%);filter:blur(35px);}
-  .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,.055) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 90% 80% at 50% 50%, black 40%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 50%, black 40%, transparent 100%);}
-  .bg-svg{position:absolute;inset:0;width:100%;height:100%;opacity:.9;}
+/* Header */
+.header{display:flex;justify-content:space-between;align-items:center;font-size:13px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+.header .brand{display:flex;align-items:center;gap:12px;color:var(--neutral);}
+.header .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 12px var(--primary);}
+.header .meta{display:flex;align-items:center;gap:20px;}
+.header .meta .tag{padding:6px 14px;border:1px solid rgba(255,152,0,0.4);color:var(--accent);border-radius:2px;font-size:11px;letter-spacing:2px;}
 
-  /* ─── Content ─── */
-  #ct{position:absolute;inset:0;z-index:1;padding:48px 64px 40px 64px;}
+/* Main title area */
+.title-area{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;margin-top:-20px;}
+.eyebrow{display:flex;align-items:center;gap:18px;margin-bottom:24px;font-size:14px;letter-spacing:8px;color:var(--primary-glow);text-transform:uppercase;}
+.eyebrow .line{width:60px;height:1px;background:linear-gradient(90deg, transparent, var(--primary-glow), transparent);}
+.main-title{font-size:150px;font-weight:900;line-height:1;letter-spacing:-2px;background:linear-gradient(180deg, #FFFFFF 0%, #B3D9FF 50%, #2196F3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 40px rgba(33,150,243,0.35));position:relative;}
+.main-title .year{color:var(--accent);-webkit-text-fill-color:var(--accent);font-weight:900;}
+.main-title .sep{color:var(--primary-glow);-webkit-text-fill-color:var(--primary-glow);margin:0 10px;font-weight:300;}
+.subtitle{margin-top:28px;font-size:24px;font-weight:400;color:var(--neutral);letter-spacing:4px;}
+.subtitle .em{color:var(--accent);font-weight:500;}
+.subtitle .divider{display:inline-block;width:6px;height:6px;background:var(--primary);border-radius:50%;vertical-align:middle;margin:0 18px 4px;}
 
-  /* Top bar */
-  .top{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim-2);}
-  .top-l{display:flex;align-items:center;gap:14px;}
-  .top-l .dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;box-shadow:0 0 12px var(--cyan-glow);}
-  .top-l .brand{color:var(--cyan-glow);font-weight:600;}
-  .top-l .sep{color:var(--dim-2);}
-  .top-r{display:flex;align-items:center;gap:18px;}
-  .top-r .tag{padding:5px 12px;border:1px solid rgba(33,150,243,.35);color:var(--cyan-glow);border-radius:2px;letter-spacing:.28em;font-size:10.5px;}
-  .top-r .vol{color:var(--dim);}
+/* Info cards */
+.cards{display:flex;gap:24px;justify-content:center;margin-top:48px;width:100%;max-width:1200px;}
+.card{flex:1;padding:18px 22px;background:rgba(15,27,51,0.5);border:1px solid rgba(33,150,243,0.25);border-radius:6px;backdrop-filter:blur(10px);position:relative;text-align:left;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary);border-radius:6px 0 0 6px;}
+.card .card-label{font-size:11px;letter-spacing:3px;color:var(--primary-glow);margin-bottom:8px;font-weight:600;}
+.card .card-value{font-size:15px;color:var(--text-main);line-height:1.5;font-weight:400;}
+.card .card-value strong{color:var(--accent);font-weight:600;}
 
-  /* Hero center */
-  .hero{margin-top:70px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:5;}
-  .eyebrow{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.4em;color:var(--cyan-glow);padding:8px 22px;border:1px solid rgba(33,150,243,.35);border-radius:2px;background:rgba(33,150,243,.06);margin-bottom:28px;}
-  .eyebrow .diamond{width:6px;height:6px;background:var(--orange);transform:rotate(45deg);box-shadow:0 0 8px var(--orange-glow);}
+/* KPI row */
+.kpi-row{display:flex;justify-content:center;gap:120px;margin-top:38px;align-items:flex-end;}
+.kpi{text-align:center;position:relative;}
+.kpi-num{font-size:78px;font-weight:900;line-height:1;color:var(--primary);letter-spacing:-2px;text-shadow:0 0 30px rgba(33,150,243,0.5);font-family:'Inter',sans-serif;}
+.kpi-num .plus{color:var(--accent);font-size:60px;vertical-align:top;margin-left:2px;}
+.kpi-label{margin-top:12px;font-size:13px;color:var(--neutral);letter-spacing:3px;font-weight:500;}
+.kpi-context{margin-top:6px;font-size:11px;color:var(--text-dim);letter-spacing:1px;line-height:1.5;}
+.kpi-divider{width:1px;height:80px;background:linear-gradient(180deg, transparent, rgba(33,150,243,0.4), transparent);}
 
-  .title-wrap{position:relative;width:100%;display:flex;justify-content:center;align-items:center;}
-  .title-cn{font-size:150px;font-weight:900;letter-spacing:.04em;line-height:1.02;background:linear-gradient(180deg, #FFFFFF 0%, #E0E8F2 55%, #A8C4E4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 60px rgba(33,150,243,.35);position:relative;z-index:2;}
-  .title-year{font-family:var(--mono);font-size:96px;font-weight:800;letter-spacing:.02em;color:var(--cyan);text-shadow:0 0 40px rgba(33,150,243,.5);margin:0 18px;position:relative;z-index:2;}
-  .title-year::before,.title-year::after{content:'';position:absolute;top:50%;width:110px;height:2px;background:linear-gradient(90deg, transparent, var(--cyan-glow), transparent);}
-  .title-year::before{right:calc(100% + 22px);}
-  .title-year::after{left:calc(100% + 22px);}
-  .title-year .yr{color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;text-shadow:0 0 40px rgba(79,195,247,.7);}
+/* Footer */
+.footer{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-dim);letter-spacing:2px;margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);}
+.footer .nodes{display:flex;align-items:center;gap:6px;}
+.footer .nodes .n{width:6px;height:6px;border-radius:50%;background:var(--primary);opacity:0.6;}
+.footer .nodes .n:nth-child(2){background:var(--accent);opacity:1;box-shadow:0 0 8px var(--accent);}
+.footer .nodes .n:nth-child(4){background:var(--primary-glow);opacity:0.9;}
+.footer .nodes .conn{width:14px;height:1px;background:rgba(255,255,255,0.2);}
+.footer .oss-mark{display:flex;align-items:center;gap:8px;color:var(--neutral);}
+.footer .oss-mark .ico{width:14px;height:14px;border:1.5px solid var(--primary);border-radius:50%;position:relative;}
+.footer .oss-mark .ico::before{content:'';position:absolute;inset:3px;border:1px solid var(--accent);border-radius:50%;}
 
-  .subtitle{margin-top:26px;font-size:23px;font-weight:500;color:var(--gray);letter-spacing:.06em;}
-  .subtitle .accent{color:var(--orange);font-weight:700;}
-  .subtitle .dash{color:var(--cyan-glow);margin:0 12px;font-weight:400;}
+/* Corner brackets */
+.corner{position:absolute;width:36px;height:36px;border-color:var(--primary);z-index:2;opacity:0.7;}
+.corner.tl{top:36px;left:36px;border-top:2px solid;border-left:2px solid;}
+.corner.tr{top:36px;right:36px;border-top:2px solid;border-right:2px solid;}
+.corner.bl{bottom:36px;left:36px;border-bottom:2px solid;border-left:2px solid;}
+.corner.br{bottom:36px;right:36px;border-bottom:2px solid;border-right:2px solid;}
 
-  .divider{display:flex;align-items:center;gap:16px;margin-top:22px;}
-  .divider .line{width:140px;height:1px;background:linear-gradient(90deg,transparent,rgba(33,150,243,.6),transparent);}
-  .divider .dot{width:5px;height:5px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan-glow);}
+/* Decorative side lines */
+.side-tick{position:absolute;left:60px;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;letter-spacing:6px;font-size:10px;color:var(--text-dim);opacity:0.7;}
+.side-tick.right{left:auto;right:60px;}
 
-  .tagline{margin-top:20px;font-size:15px;color:var(--dim);letter-spacing:.12em;font-weight:300;line-height:1.7;max-width:960px;}
-  .tagline em{color:var(--cyan-glow);font-style:normal;font-weight:500;}
-
-  /* Metrics */
-  .metrics{margin-top:38px;display:flex;gap:36px;justify-content:center;}
-  .metric{position:relative;padding:22px 42px;background:rgba(33,150,243,.05);border:1px solid rgba(33,150,243,.28);border-radius:4px;min-width:340px;}
-  .metric::before{content:'';position:absolute;top:-1px;left:-1px;width:16px;height:16px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);}
-  .metric::after{content:'';position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-bottom:2px solid var(--orange);border-right:2px solid var(--orange);}
-  .metric-lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.28em;color:var(--cyan-glow);text-transform:uppercase;margin-bottom:8px;font-weight:500;}
-  .metric-num{font-size:52px;font-weight:900;color:#FFFFFF;line-height:1;letter-spacing:-.02em;font-family:var(--font);text-shadow:0 0 24px rgba(33,150,243,.4);}
-  .metric-num .plus{color:var(--orange);font-weight:800;font-size:44px;margin-left:4px;}
-  .metric-cap{margin-top:8px;font-size:12.5px;color:var(--dim);letter-spacing:.06em;line-height:1.5;}
-
-  /* Bottom info */
-  .info{margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;position:relative;z-index:5;}
-  .info-item{position:relative;padding:18px 22px 18px 26px;background:linear-gradient(90deg, rgba(33,150,243,.08), rgba(33,150,243,.02));border-left:3px solid var(--cyan);}
-  .info-item:nth-child(2){border-left-color:var(--orange);}
-  .info-item:nth-child(3){border-left-color:var(--cyan-glow);}
-  .info-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-  .info-idx{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.2em;font-weight:600;}
-  .info-item:nth-child(2) .info-idx{color:var(--orange-glow);}
-  .info-item:nth-child(3) .info-idx{color:var(--cyan-glow);}
-  .info-key{font-family:var(--mono);font-size:10.5px;letter-spacing:.32em;color:var(--dim-2);text-transform:uppercase;padding-left:10px;border-left:1px solid rgba(255,255,255,.12);}
-  .info-val{font-size:15px;color:var(--gray);line-height:1.55;font-weight:500;}
-  .info-val strong{color:#FFFFFF;font-weight:700;}
-  .info-val .hi{color:var(--cyan-glow);font-weight:600;}
-
-  /* Bottom bar */
-  .bottom{position:absolute;left:64px;right:64px;bottom:18px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--dim-2);letter-spacing:.22em;z-index:5;}
-  .bottom .bl{display:flex;align-items:center;gap:10px;}
-  .bottom .bl .square{width:6px;height:6px;background:var(--orange);transform:rotate(45deg);}
-  .bottom .br{display:flex;align-items:center;gap:10px;color:var(--cyan-glow);}
-
-  /* Code streams */
-  .code-stream{position:absolute;font-family:var(--mono);font-size:10.5px;line-height:1.75;color:rgba(79,195,247,.32);letter-spacing:.05em;z-index:1;user-select:none;}
-  .code-stream.left{left:22px;top:170px;text-align:left;white-space:pre;}
-  .code-stream.right{right:22px;top:170px;text-align:right;white-space:pre;}
-  .code-stream .op{color:rgba(255,152,0,.55);}
-  .code-stream .str{color:rgba(255,183,77,.42);}
-  .code-stream .kw{color:rgba(144,202,249,.6);}
-
-  /* Corner brackets */
-  .corner{position:absolute;width:28px;height:28px;z-index:2;}
-  .corner.tl{top:20px;left:20px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);}
-  .corner.tr{top:20px;right:20px;border-top:2px solid var(--cyan);border-right:2px solid var(--cyan);}
-  .corner.bl{bottom:20px;left:20px;border-bottom:2px solid var(--orange);border-left:2px solid var(--orange);}
-  .corner.br{bottom:20px;right:20px;border-bottom:2px solid var(--orange);border-right:2px solid var(--orange);}
+/* SVG node network */
+.node-svg{position:absolute;pointer-events:none;opacity:0.35;}
+.node-svg.top-left{top:120px;left:120px;}
+.node-svg.top-right{top:120px;right:120px;}
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <div class="bg-base"></div>
-    <div class="bg-grid"></div>
-    <div class="bg-cyan-l"></div>
-    <div class="bg-cyan-r"></div>
-    <div class="bg-orange"></div>
-    <svg class="bg-svg" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="glow1" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#2196F3" stop-opacity="0"/>
-          <stop offset="0.5" stop-color="#2196F3" stop-opacity=".6"/>
-          <stop offset="1" stop-color="#2196F3" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="glow2" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#FF9800" stop-opacity="0"/>
-          <stop offset="0.5" stop-color="#FF9800" stop-opacity=".55"/>
-          <stop offset="1" stop-color="#FF9800" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <line x1="0" y1="72" x2="1600" y2="72" stroke="url(#glow1)" stroke-width="1"/>
-      <line x1="0" y1="828" x2="1600" y2="828" stroke="url(#glow2)" stroke-width="1"/>
-      <circle cx="800" cy="450" r="360" fill="none" stroke="rgba(33,150,243,.08)" stroke-width="1" stroke-dasharray="4 8"/>
-      <circle cx="800" cy="450" r="480" fill="none" stroke="rgba(33,150,243,.05)" stroke-width="1"/>
-      <g fill="rgba(33,150,243,.45)">
-        <circle cx="120" cy="500" r="2"/>
-        <circle cx="200" cy="620" r="1.5"/>
-        <circle cx="1480" cy="320" r="2"/>
-        <circle cx="1400" cy="560" r="1.5"/>
-        <circle cx="90" cy="300" r="1.5"/>
-        <circle cx="1510" cy="700" r="2"/>
-        <circle cx="1350" cy="180" r="1.5"/>
-        <circle cx="260" cy="770" r="1.5"/>
-      </g>
-      <g stroke="rgba(33,150,243,.2)" stroke-width="1" fill="none">
-        <path d="M 120 500 L 260 380 L 460 460 L 200 620 Z"/>
-        <path d="M 1480 320 L 1350 200 L 1350 460 L 1400 560 Z"/>
-      </g>
-    </svg>
+    <div class="grid"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="code-lines">
+      <div class="col" style="left:60px;">import open_source; init(2024)</div>
+      <div class="col" style="left:180px;">def share(knowledge): return truth</div>
+      <div class="col" style="left:320px;">git commit -m "记录真实"</div>
+      <div class="col" style="right:200px;"># Open Source Way</div>
+      <div class="col" style="right:80px;">community.push(contributors)</div>
+    </div>
+    <div class="particles">
+      <div class="p" style="top:12%;left:15%;"></div>
+      <div class="p" style="top:25%;left:85%;background:#FF9800;box-shadow:0 0 8px #FF9800;"></div>
+      <div class="p" style="top:40%;left:8%;"></div>
+      <div class="p" style="top:55%;left:92%;"></div>
+      <div class="p" style="top:70%;left:20%;background:#FF9800;box-shadow:0 0 8px #FF9800;"></div>
+      <div class="p" style="top:78%;left:78%;"></div>
+      <div class="p" style="top:18%;left:55%;"></div>
+      <div class="p" style="top:82%;left:45%;"></div>
+    </div>
   </div>
 
+  <svg class="node-svg top-left" width="200" height="140" viewBox="0 0 200 140">
+    <line x1="20" y1="30" x2="90" y2="60" stroke="#2196F3" stroke-width="1"/>
+    <line x1="90" y1="60" x2="170" y2="40" stroke="#2196F3" stroke-width="1"/>
+    <line x1="90" y1="60" x2="60" y2="110" stroke="#2196F3" stroke-width="1"/>
+    <line x1="90" y1="60" x2="150" y2="100" stroke="#FF9800" stroke-width="1"/>
+    <circle cx="20" cy="30" r="4" fill="#2196F3"/>
+    <circle cx="90" cy="60" r="6" fill="#FF9800"/>
+    <circle cx="170" cy="40" r="4" fill="#2196F3"/>
+    <circle cx="60" cy="110" r="4" fill="#2196F3"/>
+    <circle cx="150" cy="100" r="4" fill="#42A5F5"/>
+  </svg>
+  <svg class="node-svg top-right" width="200" height="140" viewBox="0 0 200 140">
+    <line x1="180" y1="30" x2="110" y2="70" stroke="#2196F3" stroke-width="1"/>
+    <line x1="110" y1="70" x2="30" y2="50" stroke="#2196F3" stroke-width="1"/>
+    <line x1="110" y1="70" x2="50" y2="120" stroke="#FF9800" stroke-width="1"/>
+    <line x1="110" y1="70" x2="170" y2="110" stroke="#2196F3" stroke-width="1"/>
+    <circle cx="180" cy="30" r="4" fill="#2196F3"/>
+    <circle cx="110" cy="70" r="6" fill="#FF9800"/>
+    <circle cx="30" cy="50" r="4" fill="#2196F3"/>
+    <circle cx="50" cy="120" r="4" fill="#42A5F5"/>
+    <circle cx="170" cy="110" r="4" fill="#2196F3"/>
+  </svg>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="side-tick">OPEN · SOURCE · WAY · 2024</div>
+  <div class="side-tick right">CODE · COMMUNITY · FUTURE</div>
+
   <div id="ct">
-    <div class="corner tl"></div>
-    <div class="corner tr"></div>
-    <div class="corner bl"></div>
-    <div class="corner br"></div>
-
-    <div class="code-stream left">
-<span class="kw">const</span> open <span class="op">=</span> {
-  share <span class="op">:</span> <span class="str">'code'</span>,
-  trust <span class="op">:</span> <span class="str">'culture'</span>,
-  collab <span class="op">:</span> <span class="str">'motion'</span>
-};
-
-<span class="kw">git</span> clone future
-<span class="kw">git</span> commit <span class="op">-</span>m
-  <span class="str">"real stories"</span>
-<span class="kw">git</span> push origin 2024</div>
-
-    <div class="code-stream right">
-// open-source.md
-<span class="kw">export</span> <span class="kw">default</span> trust;
-
-// community.json
-{
-  "contributors" <span class="op">:</span> <span class="str">"1B+"</span>,
-  "repos" <span class="op">:</span> <span class="str">"500M+"</span>
-}
-
-<span class="kw">#</span> a movement <span class="kw">not</span>
-<span class="kw">#</span> just a repository</div>
-
-    <div class="top">
-      <div class="top-l">
-        <span class="dot"></span>
-        <span class="brand">OPEN·SOURCE·DO</span>
-        <span class="sep">|</span>
-        <span>2024 · 纪实</span>
-      </div>
-      <div class="top-r">
-        <span class="tag">COVER</span>
-        <span class="vol">VOL. 04 / 2024</span>
+    <div class="header">
+      <div class="brand"><span class="dot"></span><span>开源之道 · OPEN SOURCE WAY</span></div>
+      <div class="meta">
+        <span>2024 ANNUAL CHRONICLE</span>
+        <span class="tag">CONFIDENTIAL · 布道实录</span>
       </div>
     </div>
 
-    <div class="hero">
-      <div class="eyebrow"><span class="diamond"></span><span>OPEN SOURCE · 2024 DOCS</span><span class="diamond"></span></div>
-      <div class="title-wrap">
-        <span class="title-cn">开源之道</span>
-        <span class="title-year"><span class="yr">2024</span></span>
-      </div>
-      <div class="subtitle"><span>开源布道</span><span class="dash">与</span><span>阅读分享</span><span class="dash">—</span><span>适兕带你走进开源的<span class="accent">真实故事</span></span></div>
-      <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
-      <p class="tagline">开源不仅仅是代码的共享，更是一种<em>信任与协作</em>的文化运动 —— 在地缘政治博弈与 AI 浪潮交织的 2024，社区经历着深刻变革。</p>
-    </div>
+    <div class="title-area">
+      <div class="eyebrow"><span class="line"></span><span>OPEN SOURCE · 2024 · CHRONICLE</span><span class="line"></span></div>
+      <h1 class="main-title"><span>开源之道</span><span class="sep">·</span><span class="year">2024</span><span>纪实</span></h1>
+      <p class="subtitle">开源布道与阅读分享<span class="divider"></span><span class="em">适兕</span>带你走进开源的真实故事</p>
 
-    <div class="metrics">
-      <div class="metric">
-        <div class="metric-lbl">GLOBAL · OPEN SOURCE PROJECTS</div>
-        <div class="metric-num">5亿<span class="plus">+</span></div>
-        <div class="metric-cap">GitHub 注册仓库数量 · 截至 2024 年底</div>
-      </div>
-      <div class="metric">
-        <div class="metric-lbl">GLOBAL · ACTIVE CONTRIBUTORS</div>
-        <div class="metric-num">1亿<span class="plus">+</span></div>
-        <div class="metric-cap">全球活跃开发者社区规模 · 2024</div>
-      </div>
-    </div>
-
-    <div class="info">
-      <div class="info-item">
-        <div class="info-head">
-          <span class="info-idx">01</span>
-          <span class="info-key">主题 · THEME</span>
+      <div class="cards">
+        <div class="card">
+          <div class="card-label">主 题 · THEME</div>
+          <div class="card-value">记录 <strong>2024</strong> 年开源世界的关键故事与社区动态</div>
         </div>
-        <div class="info-val">记录 <strong>2024</strong> 年开源世界的<span class="hi">关键故事</span>与<span class="hi">社区动态</span>，还原真实的技术演进脉络。</div>
-      </div>
-      <div class="info-item">
-        <div class="info-head">
-          <span class="info-idx">02</span>
-          <span class="info-key">讲者 · SPEAKER</span>
+        <div class="card">
+          <div class="card-label">讲 者 · SPEAKER</div>
+          <div class="card-value"><strong>开源之道 · 适兕</strong> — 开源布道者与阅读分享人</div>
         </div>
-        <div class="info-val">开源之道 · <strong>适兕</strong><br>开源布道者 / 阅读分享人</div>
-      </div>
-      <div class="info-item">
-        <div class="info-head">
-          <span class="info-idx">03</span>
-          <span class="info-key">形式 · FORMAT</span>
+        <div class="card">
+          <div class="card-label">形 式 · FORMAT</div>
+          <div class="card-value">融合数据洞察、案例故事与思想分享的 <strong>圆桌式布道</strong></div>
         </div>
-        <div class="info-val">融合<span class="hi">数据洞察</span>、<span class="hi">案例故事</span>与<span class="hi">思想分享</span>的圆桌式布道。</div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-num">5<span>亿</span><span class="plus">+</span></div>
+          <div class="kpi-label">全球开源项目</div>
+          <div class="kpi-context">GitHub 注册仓库数量 · 截至 2024 年底</div>
+        </div>
+        <div class="kpi-divider"></div>
+        <div class="kpi">
+          <div class="kpi-num">1<span>亿</span><span class="plus">+</span></div>
+          <div class="kpi-label">开源贡献者</div>
+          <div class="kpi-context">全球活跃开发者社区规模</div>
+        </div>
       </div>
     </div>
 
-    <div class="bottom">
-      <div class="bl"><span class="square"></span><span>OPEN SOURCE IS A MOVEMENT</span></div>
-      <div class="br">SINCE 1998 · A TRUST · A CULTURE · A FUTURE</div>
+    <div class="footer">
+      <div class="nodes">
+        <span class="n"></span><span class="conn"></span>
+        <span class="n"></span><span class="conn"></span>
+        <span class="n"></span><span class="conn"></span>
+        <span class="n"></span>
+      </div>
+      <div class="oss-mark"><span class="ico"></span><span>OPEN SOURCE · COMMUNITY DRIVEN · 2024</span></div>
+      <div class="brand-mini">© 开源之道 · 适兕 · 2024</div>
     </div>
   </div>
 </div>

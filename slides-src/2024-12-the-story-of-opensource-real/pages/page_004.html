@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源生态全景图</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+:root{
+  --bg-dark:#0B1119;
+  --bg-panel:#141D29;
+  --blue-primary:#2196F3;
+  --blue-light:#42A5F5;
+  --blue-lighter:#90CAF9;
+  --blue-dark:#1565C0;
+  --blue-deep:#0D47A1;
+  --blue-deepest:#093057;
+  --orange:#FF9800;
+  --orange-bright:#FFB74D;
+  --text-main:#E0E0E0;
+  --text-muted:#90A4AE;
+  --border:#263243;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;background:#000;color:var(--text-main);overflow:hidden}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:#0B1119}
+#bg{position:absolute;inset:0;z-index:0;background:linear-gradient(140deg,#0B1119 0%,#0F1926 45%,#0B1119 100%)}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(33,150,243,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.045) 1px,transparent 1px);background-size:56px 56px;opacity:0.55}
+.bg-glow-1{position:absolute;top:-180px;left:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.28) 0%,rgba(33,150,243,0) 70%);filter:blur(30px)}
+.bg-glow-2{position:absolute;bottom:-220px;right:-120px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,152,0,0.14) 0%,rgba(255,152,0,0) 70%);filter:blur(40px)}
+#ct{position:absolute;inset:0;z-index:1;padding:52px 60px;box-sizing:border-box;display:grid;grid-template-columns:500px 1fr;grid-template-rows:1fr auto;gap:36px}
+.left-col{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:28px}
+.arch{grid-column:2;grid-row:1;display:flex;align-items:center;justify-content:center;position:relative}
+.kpis{grid-column:1 / -1;grid-row:2;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.eyebrow{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--blue-lighter);letter-spacing:4px;font-weight:500}
+.eyebrow .badge{background:var(--blue-primary);color:#fff;padding:5px 14px;border-radius:4px;font-weight:700;font-size:12px;letter-spacing:2px}
+.eyebrow .line{flex:1;height:1px;background:linear-gradient(90deg,var(--blue-primary),transparent)}
+h1{font-size:64px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1.05;margin-top:6px}
+h1 .accent{color:var(--orange)}
+.narrative{font-size:15px;line-height:1.9;color:var(--text-main);padding:20px 22px;background:rgba(33,150,243,0.06);border-left:3px solid var(--blue-primary);border-radius:0 8px 8px 0}
+.narrative .hl{color:var(--orange);font-weight:600}
+.feat{display:flex;flex-direction:column;gap:12px}
+.feat .fhead{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text-muted);letter-spacing:3px;font-weight:600}
+.feat .fhead .dot{width:8px;height:8px;background:var(--orange);border-radius:50%}
+.feat-item{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:rgba(255,152,0,0.06);border:1px solid rgba(255,152,0,0.25);border-radius:10px}
+.feat-item .idx{font-size:22px;font-weight:800;color:var(--orange);line-height:1;flex-shrink:0;font-family:'Inter',sans-serif}
+.feat-item .ftxt{font-size:13px;color:var(--text-main);line-height:1.55}
+.feat-item .ftxt b{color:#fff;font-weight:600}
+.arch-inner{position:relative;width:100%;height:600px}
+.arch-title{position:absolute;top:0;left:0;display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text-muted);letter-spacing:3px;font-weight:600}
+.arch-title .l{width:36px;height:1px;background:var(--blue-primary)}
+.arch-title .r{width:100%;height:1px;background:linear-gradient(90deg,var(--blue-primary),transparent)}
+.arch-svg{position:absolute;top:34px;left:0;width:100%;height:540px}
+.kpi{background:linear-gradient(135deg,rgba(33,150,243,0.10) 0%,rgba(20,29,41,0.85) 100%);border:1px solid rgba(33,150,243,0.35);border-radius:14px;padding:22px 26px;display:flex;gap:22px;align-items:center;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--blue-primary),var(--blue-deep))}
+.kpi .icon{width:64px;height:64px;border-radius:12px;background:rgba(33,150,243,0.14);border:1px solid rgba(33,150,243,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.kpi .body{display:flex;flex-direction:column;gap:4px}
+.kpi .label{font-size:12px;color:var(--text-muted);letter-spacing:2px;font-weight:500}
+.kpi .value{font-size:38px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.05;display:flex;align-items:baseline;gap:4px}
+.kpi .value .accent{color:var(--orange)}
+.kpi .value .suffix{font-size:16px;color:var(--text-main);font-weight:500;margin-left:4px}
+.kpi .caption{font-size:11px;color:var(--text-muted);line-height:1.4;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+  </div>
+  <div id="ct">
+    <div class="left-col">
+      <div>
+        <div class="eyebrow"><span class="badge">2024 · 开源洞察</span><span class="line"></span></div>
+        <h1>开源生态<span class="accent">全景图</span></h1>
+      </div>
+      <div class="narrative">
+        开源生态已形成从<span class="hl">底层操作系统</span>到<span class="hl">顶层 AI 模型</span>的全栈覆盖。<br>
+        理解这一分层结构，有助于定位自身在社区中的角色与贡献路径。
+      </div>
+      <div class="feat">
+        <div class="fhead"><span class="dot"></span><span>2024 KEY SHIFT · AI 模型层爆发</span></div>
+        <div class="feat-item">
+          <div class="idx">01</div>
+          <div class="ftxt"><b>开源大模型涌现</b>——Llama 系列、Mistral、Qwen 接连发布，打破传统大厂垄断格局</div>
+        </div>
+        <div class="feat-item">
+          <div class="idx">02</div>
+          <div class="ftxt"><b>中小团队深度参与</b>——从"用得起"到"玩得转"，AI 创新门槛大幅下降</div>
+        </div>
+      </div>
+    </div>
+    <div class="arch">
+      <div class="arch-inner">
+        <div class="arch-title"><span class="l"></span><span>OPEN SOURCE STACK · 分层架构</span><span class="r"></span></div>
+        <svg class="arch-svg" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" style="fill:var(--blue-primary)"/>
+            </marker>
+          </defs>
+          <line x1="500" y1="486" x2="500" y2="40" style="stroke:var(--blue-primary);stroke-width:1.5;stroke-dasharray:5 5" marker-end="url(#arr)"/>
+          <text x="514" y="260" style="fill:var(--text-muted);font-size:12px;letter-spacing:5px;font-family:'Inter',sans-serif">DEPENDENCY ↑</text>
+
+          <g>
+            <rect x="20" y="410" width="960" height="100" rx="10" style="fill:var(--blue-deepest);stroke:rgba(33,150,243,0.45);stroke-width:1"/>
+            <rect x="20" y="410" width="6" height="100" style="fill:var(--blue-primary)"/>
+            <text x="48" y="452" style="fill:#fff;font-size:22px;font-weight:700;letter-spacing:1px;font-family:'Inter',sans-serif">基础设施层</text>
+            <text x="48" y="480" style="fill:var(--blue-lighter);font-size:12px;letter-spacing:2px;font-family:'Inter',sans-serif">INFRASTRUCTURE · 现代计算底座</text>
+            <text x="48" y="497" style="fill:var(--text-muted);font-size:12px;font-family:'Inter',sans-serif">支撑分布式系统与现代计算能力</text>
+            <g>
+              <rect x="500" y="435" width="102" height="48" rx="6" style="fill:rgba(255,255,255,0.06);stroke:rgba(33,150,243,0.55)"/>
+              <text x="551" y="463" style="fill:#fff;font-size:15px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Linux</text>
+            </g>
+            <g>
+              <rect x="615" y="435" width="132" height="48" rx="6" style="fill:rgba(255,255,255,0.06);stroke:rgba(33,150,243,0.55)"/>
+              <text x="681" y="463" style="fill:#fff;font-size:15px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Kubernetes</text>
+            </g>
+            <g>
+              <rect x="760" y="435" width="100" height="48" rx="6" style="fill:rgba(255,255,255,0.06);stroke:rgba(33,150,243,0.55)"/>
+              <text x="810" y="463" style="fill:#fff;font-size:15px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Docker</text>
+            </g>
+            <g>
+              <rect x="873" y="435" width="82" height="48" rx="6" style="fill:rgba(255,255,255,0.06);stroke:rgba(33,150,243,0.55)"/>
+              <text x="914" y="463" style="fill:#fff;font-size:15px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Nginx</text>
+            </g>
+          </g>
+
+          <g>
+            <rect x="100" y="310" width="800" height="90" rx="10" style="fill:var(--blue-deep);stroke:rgba(33,150,243,0.55);stroke-width:1"/>
+            <rect x="100" y="310" width="6" height="90" style="fill:var(--blue-primary)"/>
+            <text x="128" y="348" style="fill:#fff;font-size:22px;font-weight:700;letter-spacing:1px;font-family:'Inter',sans-serif">应用框架层</text>
+            <text x="128" y="372" style="fill:var(--blue-lighter);font-size:12px;letter-spacing:2px;font-family:'Inter',sans-serif">APPLICATION · 赋能上层开发</text>
+            <text x="128" y="388" style="fill:var(--text-muted);font-size:12px;font-family:'Inter',sans-serif">支撑业务逻辑与跨平台能力</text>
+            <g>
+              <rect x="500" y="330" width="78" height="42" rx="6" style="fill:rgba(255,255,255,0.07);stroke:rgba(33,150,243,0.6)"/>
+              <text x="539" y="357" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">React</text>
+            </g>
+            <g>
+              <rect x="587" y="330" width="80" height="42" rx="6" style="fill:rgba(255,255,255,0.07);stroke:rgba(33,150,243,0.6)"/>
+              <text x="627" y="357" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Spring</text>
+            </g>
+            <g>
+              <rect x="676" y="330" width="90" height="42" rx="6" style="fill:rgba(255,255,255,0.07);stroke:rgba(33,150,243,0.6)"/>
+              <text x="721" y="357" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">PyTorch</text>
+            </g>
+            <g>
+              <rect x="775" y="330" width="76" height="42" rx="6" style="fill:rgba(255,255,255,0.07);stroke:rgba(33,150,243,0.6)"/>
+              <text x="813" y="357" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Vue</text>
+            </g>
+          </g>
+
+          <g>
+            <rect x="180" y="210" width="640" height="90" rx="10" style="fill:var(--blue-dark);stroke:var(--orange);stroke-width:2"/>
+            <rect x="180" y="210" width="6" height="90" style="fill:var(--orange)"/>
+            <text x="208" y="248" style="fill:#fff;font-size:22px;font-weight:700;letter-spacing:1px;font-family:'Inter',sans-serif">AI 模型层</text>
+            <text x="208" y="272" style="fill:var(--orange);font-size:12px;letter-spacing:2px;font-weight:600;font-family:'Inter',sans-serif">AI MODELS · 2024 爆发核心</text>
+            <text x="208" y="288" style="fill:var(--text-muted);font-size:12px;font-family:'Inter',sans-serif">重塑 AI 生态与开发范式</text>
+            <g>
+              <rect x="500" y="230" width="90" height="42" rx="6" style="fill:rgba(255,152,0,0.18);stroke:var(--orange);stroke-width:1.5"/>
+              <text x="545" y="257" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Llama</text>
+            </g>
+            <g>
+              <rect x="600" y="230" width="92" height="42" rx="6" style="fill:rgba(255,152,0,0.18);stroke:var(--orange);stroke-width:1.5"/>
+              <text x="646" y="257" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Mistral</text>
+            </g>
+            <g>
+              <rect x="702" y="230" width="86" height="42" rx="6" style="fill:rgba(255,152,0,0.18);stroke:var(--orange);stroke-width:1.5"/>
+              <text x="745" y="257" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Qwen</text>
+            </g>
+            <g>
+              <rect x="798" y="230" width="98" height="42" rx="6" style="fill:rgba(255,152,0,0.18);stroke:var(--orange);stroke-width:1.5"/>
+              <text x="847" y="257" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Stable Diffusion</text>
+            </g>
+          </g>
+
+          <g>
+            <rect x="260" y="110" width="480" height="90" rx="10" style="fill:var(--blue-primary);stroke:rgba(255,255,255,0.3);stroke-width:1"/>
+            <rect x="260" y="110" width="6" height="90" style="fill:#fff"/>
+            <text x="288" y="148" style="fill:#fff;font-size:22px;font-weight:700;letter-spacing:1px;font-family:'Inter',sans-serif">工具链层</text>
+            <text x="288" y="172" style="fill:rgba(255,255,255,0.8);font-size:12px;letter-spacing:2px;font-family:'Inter',sans-serif">TOOLING · 连接开发者生态</text>
+            <text x="288" y="188" style="fill:rgba(255,255,255,0.7);font-size:12px;font-family:'Inter',sans-serif">打通从代码到模型的完整链路</text>
+            <g>
+              <rect x="500" y="130" width="82" height="42" rx="6" style="fill:rgba(0,0,0,0.22);stroke:rgba(255,255,255,0.55)"/>
+              <text x="541" y="157" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">VS Code</text>
+            </g>
+            <g>
+              <rect x="590" y="130" width="60" height="42" rx="6" style="fill:rgba(0,0,0,0.22);stroke:rgba(255,255,255,0.55)"/>
+              <text x="620" y="157" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Git</text>
+            </g>
+            <g>
+              <rect x="658" y="130" width="100" height="42" rx="6" style="fill:rgba(0,0,0,0.22);stroke:rgba(255,255,255,0.55)"/>
+              <text x="708" y="157" style="fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif">Hugging Face</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#42A5F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="label">KUBERNETES 容器规模</div>
+          <div class="value">数亿<span class="suffix">实例</span></div>
+          <div class="caption">全球在运行容器实例数</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#42A5F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="label">PYTORCH 月活开发者</div>
+          <div class="value"><span class="accent">1000 万</span><span class="suffix">+</span></div>
+          <div class="caption">全球机器学习开发者规模</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#42A5F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="label">GITHUB 十万星标项目</div>
+          <div class="value"><span class="accent">1000</span><span class="suffix">+</span></div>
+          <div class="caption">年度热门开源项目数</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
