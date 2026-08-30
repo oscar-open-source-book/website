@@ -6,388 +6,364 @@
 <meta charset="UTF-8">
 <title>Part 01 · 概念界定</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
-  :root {
-    --navy: #0D2137;
-    --navy-2: #1A3350;
-    --red: #B32424;
-    --red-light: #D94343;
-    --cream: #F5F2EB;
-    --cream-2: #EDE8DA;
-    --ink: #1A1A1A;
-    --muted: #6B6558;
-    --rule: #C9C2B0;
-  }
+:root {
+  --navy: #0D2137;
+  --red: #B32424;
+  --cream: #F5F2EB;
+  --cream-2: #EDE8DC;
+  --ink: #1a2431;
+  --muted: #5a6473;
+  --rule: #0D2137;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: #E9E5DB;
-    font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
-  }
+body {
+  font-family: "Helvetica Neue", "PingFang SC", "Noto Sans SC", sans-serif;
+  color: var(--navy);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+}
 
-  .wrapper {
-    width: 1600px;
-    height: 900px;
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto;
-    background: var(--cream);
-  }
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
 
-  #bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: var(--cream);
-  }
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #F5F2EB 0%, #EFEAE0 100%);
+}
 
-  #ct {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    padding: 56px 80px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-  }
+/* Subtle paper texture dots */
+#bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(13,33,55,0.05) 1px, transparent 1px);
+  background-size: 6px 6px;
+  opacity: 0.5;
+}
 
-  /* ===== Masthead ===== */
-  .masthead {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 18px;
-    border-bottom: 1.5px solid var(--navy);
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 11px;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--navy);
-  }
-  .mast-left { display: flex; align-items: center; gap: 20px; }
-  .mast-left::before {
-    content: '';
-    display: block;
-    width: 26px;
-    height: 1.5px;
-    background: var(--red);
-  }
-  .mast-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: var(--red);
-    border-radius: 50%;
-    margin: 0 4px;
-    transform: translateY(-2px);
-  }
-  .mast-right {
-    font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.38em;
-    color: var(--muted);
-  }
-  .mast-right span:last-child { color: var(--navy); font-weight: 700; }
+#bg::after {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(179,36,36,0.10), rgba(179,36,36,0) 70%);
+}
 
-  /* ===== Top Section ===== */
-  .top-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    padding: 50px 0 46px;
-    align-items: center;
-    min-height: 250px;
-  }
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 80px 52px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 0;
+}
 
-  .part-block {
-    position: relative;
-    padding-left: 4px;
-  }
-  .part-number {
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 176px;
-    font-weight: 900;
-    line-height: 0.9;
-    color: var(--navy);
-    letter-spacing: -0.04em;
-    position: relative;
-  }
-  .part-number::after {
-    content: '';
-    display: block;
-    width: 90px;
-    height: 6px;
-    background: var(--red);
-    margin-top: 18px;
-  }
-  .chapter-label {
-    font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.44em;
-    color: var(--muted);
-    margin: 14px 0 6px;
-    text-transform: uppercase;
-  }
-  .chapter-title {
-    font-family: 'Noto Serif SC', 'Playfair Display', serif;
-    font-size: 50px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: 0.14em;
-    line-height: 1.15;
-  }
+/* Top masthead row */
+.masthead {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(13,33,55,0.35);
+  font-family: "Helvetica Neue", "PingFang SC", "Noto Sans SC", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.masthead .left { display: flex; gap: 32px; align-items: center; }
+.masthead .brand { font-weight: 700; }
+.masthead .brand em { color: var(--red); font-style: normal; }
+.masthead .right { display: flex; gap: 28px; }
+.masthead .right span { color: var(--muted); }
 
-  .quote-block {
-    position: relative;
-    padding-left: 34px;
-    font-family: 'Noto Serif SC', 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 17px;
-    line-height: 2.05;
-    color: var(--ink);
-  }
-  .quote-block::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 6px;
-    bottom: 6px;
-    width: 2.5px;
-    background: var(--red);
-  }
-  .quote-label {
-    display: block;
-    font-style: normal;
-    font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
-    font-size: 10.5px;
-    letter-spacing: 0.42em;
-    color: var(--red);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .quote-block span {
-    display: block;
-  }
+/* Left: hero chapter number */
+.hero {
+  grid-column: 1;
+  grid-row: 2;
+  position: relative;
+  padding-top: 24px;
+  padding-right: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  /* ===== Divider ===== */
-  .section-divider {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-bottom: 34px;
-  }
-  .divider-line {
-    flex: 1;
-    height: 1px;
-    background: var(--rule);
-  }
-  .divider-dot {
-    width: 7px;
-    height: 7px;
-    background: var(--navy);
-    transform: rotate(45deg);
-  }
-  .divider-label {
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 11px;
-    letter-spacing: 0.36em;
-    color: var(--navy);
-    text-transform: uppercase;
-  }
-  .divider-cn {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.28em;
-    font-style: normal;
-    margin-left: 6px;
-  }
+.hero .kicker {
+  font-size: 13px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
 
-  /* ===== Three Modules ===== */
-  .core-modules {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    flex: 1;
-    padding-top: 22px;
-    border-top: 1.5px solid var(--navy);
-  }
-  .module {
-    position: relative;
-    padding: 8px 4px 0;
-  }
-  .module + .module::before {
-    content: '';
-    position: absolute;
-    left: -20px;
-    top: 12px;
-    bottom: 24px;
-    width: 1px;
-    background: var(--rule);
-  }
-  .module-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    font-weight: 400;
-    color: var(--red);
-    line-height: 1;
-    letter-spacing: 0.02em;
-    font-style: italic;
-  }
-  .module-underline {
-    width: 42px;
-    height: 2px;
-    background: var(--navy);
-    margin: 18px 0 18px;
-  }
-  .module-cat {
-    font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
-    font-size: 10.5px;
-    letter-spacing: 0.42em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .module-title {
-    font-family: 'Noto Serif SC', 'Playfair Display', serif;
-    font-size: 30px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: 0.08em;
-    margin-bottom: 20px;
-    line-height: 1.2;
-  }
-  .module-text {
-    font-family: 'Noto Serif SC', 'PingFang SC', serif;
-    font-size: 15px;
-    line-height: 1.95;
-    color: #2E2A22;
-    letter-spacing: 0.01em;
-  }
+.hero .big-num {
+  font-family: "Playfair Display", "Noto Serif SC", Georgia, serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.82;
+  color: var(--navy);
+  letter-spacing: -0.04em;
+  position: relative;
+  display: inline-block;
+}
+.hero .big-num .period {
+  color: var(--red);
+  font-style: italic;
+}
 
-  /* ===== Footer ===== */
-  .footer-bar {
-    margin-top: 30px;
-    padding-top: 18px;
-    border-top: 1px solid var(--rule);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
-    font-size: 10.5px;
-    letter-spacing: 0.38em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .footer-right {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .footer-tag {
-    font-family: 'Playfair Display', serif;
-    color: var(--navy);
-    font-weight: 700;
-  }
-  .footer-page { color: var(--navy); font-weight: 700; }
+.hero .part-line {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-top: 18px;
+}
+.hero .part-tag {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 28px;
+  color: var(--navy);
+  font-weight: 400;
+}
+.hero .part-dash {
+  width: 44px;
+  height: 2px;
+  background: var(--red);
+  transform: translateY(-6px);
+}
+.hero .part-title-cn {
+  font-family: "Noto Serif SC", Georgia, serif;
+  font-weight: 900;
+  font-size: 60px;
+  line-height: 1.05;
+  color: var(--navy);
+  letter-spacing: 0.02em;
+  margin-top: 6px;
+}
+.hero .subtitle {
+  margin-top: 22px;
+  font-family: "Noto Serif SC", Georgia, serif;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 620px;
+  font-weight: 400;
+  border-left: 3px solid var(--red);
+  padding-left: 18px;
+}
 
-  /* ===== Corner Decoration ===== */
-  .corner-tl, .corner-br {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    z-index: 2;
-  }
-  .corner-tl {
-    top: 32px;
-    left: 32px;
-    border-top: 1.5px solid var(--navy);
-    border-left: 1.5px solid var(--navy);
-  }
-  .corner-br {
-    bottom: 32px;
-    right: 32px;
-    border-bottom: 1.5px solid var(--navy);
-    border-right: 1.5px solid var(--navy);
-  }
+/* Right: three kernels */
+.kernels {
+  grid-column: 2;
+  grid-row: 2;
+  padding-top: 34px;
+  padding-left: 40px;
+  padding-right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-left: 1px solid rgba(13,33,55,0.22);
+}
+
+.kernels-head {
+  font-family: "Helvetica Neue", "PingFang SC", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.kernels-head .dot { color: var(--red); margin: 0 6px; }
+
+.kernel {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 20px;
+  padding: 18px 0 20px 0;
+  border-bottom: 1px solid rgba(13,33,55,0.18);
+}
+.kernel:last-child { border-bottom: none; }
+
+.kernel .num {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--red);
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+
+.kernel .body { padding-top: 4px; }
+.kernel .en {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.kernel .title {
+  font-family: "Noto Serif SC", Georgia, serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.kernel .desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+/* Bottom quote */
+.footer-quote {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin-top: 14px;
+  padding: 22px 40px 4px 40px;
+  border-top: 2px solid var(--navy);
+  display: grid;
+  grid-template-columns: 62px 1fr auto;
+  gap: 26px;
+  align-items: start;
+}
+
+.footer-quote .mark {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 120px;
+  line-height: 0.7;
+  color: var(--red);
+  font-weight: 900;
+  font-style: italic;
+}
+.footer-quote .text {
+  font-family: "Noto Serif SC", Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--navy);
+  max-width: 1150px;
+  font-weight: 400;
+}
+.footer-quote .text strong {
+  font-weight: 700;
+  color: var(--red);
+  font-style: normal;
+}
+.footer-quote .signature {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: right;
+  letter-spacing: 0.14em;
+  padding-top: 8px;
+  line-height: 1.6;
+}
+.footer-quote .signature .bar {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--red);
+  margin: 8px 0 6px auto;
+}
+
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg"></div>
   <div id="ct">
-    <div class="corner-tl"></div>
-    <div class="corner-br"></div>
 
-    <!-- Masthead -->
     <div class="masthead">
-      <div class="mast-left">
-        <span>OPEN SOURCE STUDIES · A CHAPTER DIVIDER</span>
+      <div class="left">
+        <span class="brand">CO <em>/</em> PYRIGHT</span>
+        <span>The Reading Notebook</span>
       </div>
-      <div class="mast-right">
-        <span>VOL. 06</span><span class="mast-dot"></span><span>PART 01 / 04</span>
-      </div>
-    </div>
-
-    <!-- Top: Part Number + Quote -->
-    <div class="top-section">
-      <div class="part-block">
-        <div class="part-number"><span>Part 01</span></div>
-        <div class="chapter-label"><span>Chapter · 章节启幕</span></div>
-        <h1 class="chapter-title"><span>概念界定</span></h1>
-      </div>
-      <div class="quote-block">
-        <div class="quote-label"><span>Foreword · 编者按</span></div>
-        <span>在进入具体许可证之前，需要先厘清 Copyleft 到底在讨论什么。它既是一个法律条款，也是一个社区治理工具，更是一种关于数字资产应如何被共享的立场。理解这三重内核，是读懂后面所有章节的钥匙。</span>
+      <div class="right">
+        <span>Volume I</span>
+        <span>Section 01 / 06</span>
+        <span>章节扉页</span>
       </div>
     </div>
 
-    <!-- Divider -->
-    <div class="section-divider">
-      <span class="divider-line"></span>
-      <span class="divider-label">THREE INTERIORS<span class="divider-cn">· 三重内核 ·</span></span>
-      <span class="divider-dot"></span>
-      <span class="divider-line"></span>
+    <div class="hero">
+      <div class="kicker"><span>Section · Chapter</span></div>
+      <div class="big-num">01<span class="period">.</span></div>
+      <div class="part-line">
+        <span class="part-tag"><span>Part 01</span></span>
+        <span class="part-dash"></span>
+      </div>
+      <div class="part-title-cn"><span>概念界定</span></div>
+      <div class="subtitle"><span>定义 Copyleft：法学、社区、意识形态三重内核 —— 在进入具体许可证文本之前，先为这套话语立一根锚。</span></div>
     </div>
 
-    <!-- Three Modules -->
-    <div class="core-modules">
-      <div class="module">
-        <div class="module-num"><span>01</span></div>
-        <div class="module-underline"></div>
-        <div class="module-cat"><span>Law · 法学属性</span></div>
-        <h3 class="module-title"><span>法学属性</span></h3>
-        <p class="module-text"><span>派生作品必须以相同许可证发布，确保自由向下传递。</span></p>
+    <div class="kernels">
+      <div class="kernels-head"><span>The Three Cores</span><span class="dot">·</span><span>三重内核</span></div>
+
+      <div class="kernel">
+        <div class="num">01</div>
+        <div class="body">
+          <div class="en">Legal Attribute</div>
+          <div class="title"><span>法学属性</span></div>
+          <div class="desc"><span>派生作品必须以相同许可证发布，确保自由可以向下传递，让每一份继承而来的代码都不再成为私有垄断。</span></div>
+        </div>
       </div>
-      <div class="module">
-        <div class="module-num"><span>02</span></div>
-        <div class="module-underline"></div>
-        <div class="module-cat"><span>Community · 社区机制</span></div>
-        <h3 class="module-title"><span>社区机制</span></h3>
-        <p class="module-text"><span>代码流向公共池，贡献者同时是受益者，形成共享回路。</span></p>
+
+      <div class="kernel">
+        <div class="num">02</div>
+        <div class="body">
+          <div class="en">Community Mechanism</div>
+          <div class="title"><span>社区机制</span></div>
+          <div class="desc"><span>代码流向公共池，贡献者同时也是受益者，形成一份共享的回路 —— 谁投入，谁就从中被反哺。</span></div>
+        </div>
       </div>
-      <div class="module">
-        <div class="module-num"><span>03</span></div>
-        <div class="module-underline"></div>
-        <div class="module-cat"><span>Ideology · 意识形态</span></div>
-        <h3 class="module-title"><span>意识形态</span></h3>
-        <p class="module-text"><span>数字文明的基本法：代码应当像思想一样流通。</span></p>
+
+      <div class="kernel">
+        <div class="num">03</div>
+        <div class="body">
+          <div class="en">Ideology</div>
+          <div class="title"><span>意识形态</span></div>
+          <div class="desc"><span>数字文明的基本法，代码应当像思想一样自由流通，而不是像商品一样被层层封装。</span></div>
+        </div>
       </div>
     </div>
 
-    <!-- Footer -->
-    <div class="footer-bar">
-      <div class="footer-left"><span>COPYLEFT · DEFINITIONS &amp; DISCOURSE</span></div>
-      <div class="footer-right">
-        <span class="footer-tag">§ 01</span>
-        <span>CONCEPTUAL FRAMING</span>
-        <span class="footer-page">P. 01</span>
+    <div class="footer-quote">
+      <div class="mark"><span>“</span></div>
+      <div class="text">
+        <span>在进入具体许可证之前，需要先厘清 Copyleft 到底在讨论什么。它既是<strong>一个法律条款</strong>，也是<strong>一个社区治理工具</strong>，更是<strong>一种关于数字资产应如何被共享的立场</strong>。理解这三重内核，是读懂后面所有章节的钥匙。</span>
+      </div>
+      <div class="signature">
+        <span>Preface</span>
+        <span class="bar"></span>
+        <span>Editor's Note</span>
       </div>
     </div>
+
   </div>
 </div>
 </body>
