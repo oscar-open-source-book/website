@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>四年的贡献切片</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --primary-dark: #1976D2;
+  --primary-light: #64B5F6;
+  --primary-tint: #E3F2FD;
+  --accent: #FF9800;
+  --accent-dark: #F57C00;
+  --accent-tint: #FFF3E0;
+  --bg: #ECEFF1;
+  --bg-soft: #F5F7F9;
+  --card: #FFFFFF;
+  --text-main: #1A2332;
+  --text-secondary: #4A5568;
+  --text-muted: #718096;
+  --border: #E2E8F0;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { margin: 0; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(160deg, #F8FAFC 0%, #ECEFF1 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+.blob1 {
+  width: 620px;
+  height: 620px;
+  top: -220px;
+  left: -200px;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.28), transparent 70%);
+}
+.blob2 {
+  width: 480px;
+  height: 480px;
+  bottom: -180px;
+  right: -160px;
+  background: radial-gradient(circle, rgba(255, 152, 0, 0.22), transparent 70%);
+}
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(33, 150, 243, 0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(33, 150, 243, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 52px 64px 44px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.title-block { display: flex; flex-direction: column; gap: 10px; }
+.title-row { display: flex; align-items: center; gap: 18px; }
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  padding: 6px 14px;
+  border-radius: 4px;
+}
+.tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  display: inline-block;
+}
+.title-main {
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.title-main .accent-char { color: var(--primary); }
+.subtitle {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.4px;
+}
+.subtitle .op {
+  color: var(--primary);
+  font-weight: 700;
+  padding: 0 3px;
+}
+.subtitle .accent-dot { color: var(--accent); padding: 0 2px; font-weight: 700; }
+
+.header-side {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.side-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  background: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(26, 35, 50, 0.06);
+  border: 1px solid var(--border);
+}
+.side-badge .year {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+}
+.side-badge .year-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+}
+
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 44px;
+  min-height: 0;
+}
+
+.matrix-wrap {
+  position: relative;
+  width: 480px;
+  height: 480px;
+  align-self: center;
+  margin-left: 20px;
+}
+.matrix-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 480px;
+  height: 480px;
+  object-fit: contain;
+  display: block;
+}
+.quad {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-main);
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 6px 18px rgba(33, 150, 243, 0.18);
+  border: 1px solid rgba(33, 150, 243, 0.22);
+  letter-spacing: 0.5px;
+}
+.quad-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+}
+.quad-cn { color: var(--primary-dark); }
+.quad-en {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  padding-top: 2px;
+}
+.quad-tl { top: 12px; left: 12px; }
+.quad-tr { top: 12px; right: 12px; }
+.quad-bl { bottom: 12px; left: 12px; }
+.quad-br { bottom: 12px; right: 12px; }
+.quad-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(28px, -50%);
+  background: linear-gradient(135deg, #fff 0%, #FFF8EC 100%);
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 8px 22px rgba(255, 152, 0, 0.28);
+  font-size: 13px;
+  color: var(--accent-dark);
+  padding: 7px 14px;
+  gap: 8px;
+}
+.quad-center .dot-glow {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.22);
+  display: inline-block;
+}
+
+.right-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.kpi-card {
+  position: relative;
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px 22px;
+  display: grid;
+  grid-template-columns: 158px 1fr;
+  align-items: center;
+  gap: 22px;
+  box-shadow: 0 8px 22px rgba(26, 35, 50, 0.06);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--primary);
+}
+.kpi-num-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  border-right: 1px dashed var(--border);
+  height: 100%;
+  padding-right: 16px;
+  gap: 4px;
+}
+.kpi-num {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-num .plus {
+  font-size: 26px;
+  color: var(--accent);
+  margin-left: 2px;
+  font-weight: 700;
+}
+.kpi-num-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.kpi-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.kpi-info-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.kpi-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-tint);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.kpi-icon svg { width: 18px; height: 18px; }
+.kpi-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.kpi-subtitle {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+.kpi-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.footer {
+  margin-top: 24px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius: 14px;
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(33, 150, 243, 0.25);
+}
+.footer-ornament {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 5px;
+  font-weight: 600;
+}
+.footer-line {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  line-height: 1.5;
+}
+.footer-line .accent-orange {
+  color: #FFD54F;
+  font-weight: 700;
+}
+.footer-line .sep {
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 10px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-lines"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+  </div>
+  <div id="ct">
+    <div class="header">
+      <div class="title-block">
+        <div class="title-row">
+          <span class="tag-pill"><span class="tag-dot"></span>CHAPTER 05</span>
+          <h1 class="title-main">四年的<span class="accent-char">贡献切片</span></h1>
+        </div>
+        <div class="subtitle">读 <span class="op">·</span> 写 <span class="op">·</span> 讲 <span class="op">·</span> 馈 <span class="accent-dot">—</span> 四种贡献形态</div>
+      </div>
+      <div class="header-side">
+        <div class="side-badge">
+          <div class="year">04<span style="color:var(--accent);font-size:22px;">Y</span></div>
+          <div class="year-label">OPEN SOURCE YEARS</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="matrix-wrap">
+        <img class="matrix-img" src="../images/page_005_matrix.png" alt="四象限贡献矩阵：读、写、讲、馈">
+        <div class="quad quad-tl">
+          <span class="quad-num">01</span>
+          <span class="quad-cn">读</span>
+          <span class="quad-en">READ</span>
+        </div>
+        <div class="quad quad-tr">
+          <span class="quad-num">02</span>
+          <span class="quad-cn">写</span>
+          <span class="quad-en">WRITE</span>
+        </div>
+        <div class="quad quad-bl">
+          <span class="quad-num">03</span>
+          <span class="quad-cn">讲</span>
+          <span class="quad-en">SHARE</span>
+        </div>
+        <div class="quad quad-br">
+          <span class="quad-num">04</span>
+          <span class="quad-cn">馈</span>
+          <span class="quad-en">GIVE BACK</span>
+        </div>
+        <div class="quad quad-center">
+          <span class="dot-glow"></span>
+          开源贡献者
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="kpi-card">
+          <div class="kpi-num-block">
+            <div class="kpi-num">100<span class="plus">+</span></div>
+            <div class="kpi-num-label">书籍·论文·长文</div>
+          </div>
+          <div class="kpi-info">
+            <div class="kpi-info-head">
+              <span class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/><path d="M4 4.5v15A2.5 2.5 0 0 0 6.5 22H20"/></svg>
+              </span>
+              <div>
+                <div class="kpi-title">阅读与学习</div>
+                <div class="kpi-subtitle">READ · LEARN</div>
+              </div>
+            </div>
+            <div class="kpi-desc">六年累计阅读技术书籍与论文百篇以上，覆盖后端、前端与 AI 领域。</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-num-block">
+            <div class="kpi-num">300<span class="plus">+</span></div>
+            <div class="kpi-num-label">笔记与教程</div>
+          </div>
+          <div class="kpi-info">
+            <div class="kpi-info-head">
+              <span class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </span>
+              <div>
+                <div class="kpi-title">写文章与文档</div>
+                <div class="kpi-subtitle">WRITE · DOCUMENT</div>
+              </div>
+            </div>
+            <div class="kpi-desc">在博客、开源文档和 README 中留下数百篇笔记与教程，供后来者查阅。</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-num-block">
+            <div class="kpi-num">40<span class="plus">+</span></div>
+            <div class="kpi-num-label">线上线下合计</div>
+          </div>
+          <div class="kpi-info">
+            <div class="kpi-info-head">
+              <span class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              </span>
+              <div>
+                <div class="kpi-title">公开分享与布道</div>
+                <div class="kpi-subtitle">SHARE · SPEAK</div>
+              </div>
+            </div>
+            <div class="kpi-desc">从线上直播到线下沙龙，把个人理解讲清楚，让更多新人找到起点。</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-num-block">
+            <div class="kpi-num">1500<span class="plus">+</span></div>
+            <div class="kpi-num-label">社群与 Issue</div>
+          </div>
+          <div class="kpi-info">
+            <div class="kpi-info-head">
+              <span class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <div>
+                <div class="kpi-title">回馈社群</div>
+                <div class="kpi-subtitle">GIVE BACK · COMMUNITY</div>
+              </div>
+            </div>
+            <div class="kpi-desc">参与答疑、审核 PR、维护 issue，让每一次提问都能被认真回应。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-ornament">◆ NARRATIVE ◆</span>
+      <div class="footer-line">
+        开源的四种语言：<span class="accent-orange">用眼睛读、用键盘写、用嘴巴讲、用心回馈</span>——它们彼此呼应，共同构成一个完整贡献者的日常图景。
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源六年 · 时光纪念</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --primary-dark: #1565C0;
+  --primary-light: #64B5F6;
+  --primary-lighter: #BBDEFB;
+  --amber: #FF9800;
+  --amber-light: #FFB74D;
+  --neutral: #ECEFF1;
+  --neutral-dark: #CFD8DC;
+  --text-main: #12354E;
+  --text-sub: #4A6B84;
+  --white: #FFFFFF;
+  --font-main: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #64B5F6 0%, #2196F3 45%, #1565C0 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* 光晕 */
+.glow-1 {
+  position: absolute;
+  top: -200px;
+  left: -200px;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 60%);
+  filter: blur(20px);
+}
+
+.glow-2 {
+  position: absolute;
+  bottom: -250px;
+  right: -150px;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,152,0,0.22) 0%, rgba(255,152,0,0) 65%);
+  filter: blur(20px);
+}
+
+.glow-3 {
+  position: absolute;
+  top: 30%;
+  right: 20%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 60%);
+}
+
+/* 装饰圆点矩阵 */
+.dot-grid {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  display: grid;
+  grid-template-columns: repeat(8, 10px);
+  grid-template-rows: repeat(6, 10px);
+  gap: 18px;
+  opacity: 0.4;
+}
+.dot-grid span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+}
+
+/* 装饰线条 */
+.deco-line {
+  position: absolute;
+  background: rgba(255,255,255,0.18);
+}
+.line-1 {
+  top: 120px;
+  left: 0;
+  width: 280px;
+  height: 1px;
+}
+.line-2 {
+  bottom: 220px;
+  right: 0;
+  width: 220px;
+  height: 1px;
+}
+
+/* 环形装饰 */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.ring-1 {
+  width: 500px;
+  height: 500px;
+  bottom: -200px;
+  left: -180px;
+}
+.ring-2 {
+  width: 300px;
+  height: 300px;
+  bottom: -100px;
+  left: -80px;
+  border-color: rgba(255,255,255,0.15);
+}
+.ring-3 {
+  width: 640px;
+  height: 640px;
+  top: -280px;
+  right: -240px;
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* 半透明方块 */
+.sq {
+  position: absolute;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.sq-1 { width: 140px; height: 140px; top: 90px; right: 220px; transform: rotate(15deg); }
+.sq-2 { width: 80px; height: 80px; bottom: 340px; left: 90px; transform: rotate(-8deg); background: rgba(255,152,0,0.15); border-color: rgba(255,152,0,0.3); }
+.sq-3 { width: 60px; height: 60px; top: 300px; right: 120px; transform: rotate(20deg); }
+
+/* SVG 开源符号散布 */
+.icon-deco {
+  position: absolute;
+  color: rgba(255,255,255,0.35);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部 */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 3px;
+}
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.top-meta {
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.top-meta .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0 4px rgba(255,152,0,0.2);
+}
+
+/* 主体 */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-top: 40px;
+}
+
+.tag {
+  color: var(--white);
+  font-size: 14px;
+  letter-spacing: 8px;
+  font-weight: 500;
+  padding: 8px 24px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 32px;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 40px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.year-side {
+  color: rgba(255,255,255,0.35);
+  font-size: 88px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.year-side.right { color: rgba(255,152,0,0.5); }
+
+.title-main {
+  color: var(--white);
+  font-size: 96px;
+  font-weight: 900;
+  letter-spacing: 10px;
+  line-height: 1.15;
+  text-shadow: 0 6px 30px rgba(0,0,0,0.2);
+}
+
+.title-main .accent {
+  color: var(--amber-light);
+}
+
+.subtitle-wrap {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.sub-line {
+  width: 60px;
+  height: 1px;
+  background: rgba(255,255,255,0.5);
+}
+
+.subtitle {
+  color: rgba(255,255,255,0.92);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 6px;
+}
+
+.subtitle .arrow {
+  color: var(--amber);
+  font-weight: 700;
+  margin: 0 8px;
+}
+
+/* 六年徽标 */
+.six-badge {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 42px;
+  padding: 20px 36px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+}
+
+.six-num {
+  font-size: 72px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.six-divider {
+  width: 1px;
+  height: 56px;
+  background: rgba(255,255,255,0.35);
+}
+
+.six-text .k {
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  margin-bottom: 6px;
+}
+.six-text .s {
+  color: rgba(255,255,255,0.75);
+  font-size: 13px;
+  letter-spacing: 3px;
+}
+
+/* 卡片 */
+.cards {
+  position: absolute;
+  bottom: 60px;
+  left: 60px;
+  right: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+  min-height: 150px;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--amber));
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.card-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.card-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  letter-spacing: 3px;
+  margin-bottom: 2px;
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 2px;
+}
+
+.card-desc {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+}
+
+/* 页脚 */
+.footer {
+  position: absolute;
+  bottom: 18px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255,255,255,0.65);
+  font-size: 11px;
+  letter-spacing: 3px;
+  z-index: 2;
+}
+
+.footer .line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+  margin: 0 20px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="glow-3"></div>
+
+    <div class="dot-grid">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="deco-line line-1"></div>
+    <div class="deco-line line-2"></div>
+
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+
+    <div class="sq sq-1"></div>
+    <div class="sq sq-2"></div>
+    <div class="sq sq-3"></div>
+
+    <!-- 开源符号 SVG -->
+    <svg class="icon-deco" style="top:180px; left:80px;" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/>
+    </svg>
+    <svg class="icon-deco" style="top:520px; left:120px; color: rgba(255,152,0,0.4);" width="38" height="38" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18 22l-6-3.6L6 22l1.5-7.2L2 10l7.1-1.1L12 2z"/>
+    </svg>
+    <svg class="icon-deco" style="bottom:270px; right:130px; color: rgba(255,255,255,0.4);" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/>
+      <path d="M8.5 6h4a4 4 0 014 4v0M8.5 18h4a4 4 0 004-4v0"/>
+    </svg>
+    <svg class="icon-deco" style="top:600px; right:80px; color: rgba(255,255,255,0.35);" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>
+    </svg>
+    <svg class="icon-deco" style="top:280px; right:400px; color: rgba(255,255,255,0.3);" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/>
+    </svg>
+    <svg class="icon-deco" style="bottom:420px; left:60px; color: rgba(255,152,0,0.35);" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M5 4l14 8-14 8V4z"/>
+    </svg>
+  </div>
+
+  <div id="ct">
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-mark">&lt;/&gt;</div>
+        <span>OPEN SOURCE · MEMO</span>
+      </div>
+      <div class="top-meta">
+        <span class="dot"></span>
+        <span>第 6 期 · 纪念特辑</span>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="tag">SINCE 2019 · ANNIVERSARY</div>
+
+      <div class="title-row">
+        <span class="year-side left">2019</span>
+        <h1 class="title-main">开源六年<span class="accent"> · </span>时光纪念</h1>
+        <span class="year-side right">2025</span>
+      </div>
+
+      <div class="subtitle-wrap">
+        <span class="sub-line"></span>
+        <div class="subtitle">开源布道与阅读分享 <span class="arrow">→</span> 六年光阴 · 一路同行</div>
+        <span class="sub-line"></span>
+      </div>
+
+      <div class="six-badge">
+        <div class="six-num">6</div>
+        <div class="six-divider"></div>
+        <div class="six-text">
+          <div class="k">YEARS JOURNEY</div>
+          <div class="s">从第一次 commit 到成为布道者</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/>
+              <path d="M8.5 6h4a4 4 0 014 4M8.5 18h4a4 4 0 004-4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-tag">CHAPTER 01</div>
+            <div class="card-title">六年同行</div>
+          </div>
+        </div>
+        <div class="card-desc">从 2019 年初识到 2025 年沉淀，一路见证开源文化的成长与共鸣。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2V5z"/>
+              <path d="M4 19a2 2 0 002 2h12"/>
+              <path d="M8 7h8M8 11h6"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-tag">CHAPTER 02</div>
+            <div class="card-title">代码之外</div>
+          </div>
+        </div>
+        <div class="card-desc">阅读、分享、布道、回馈，把开源精神融入日常实践与文字之中。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18 22l-6-3.6L6 22l1.5-7.2L2 10l7.1-1.1L12 2z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-tag">CHAPTER 03</div>
+            <div class="card-title">致敬同行者</div>
+          </div>
+        </div>
+        <div class="card-desc">向所有在深夜 commit、在清晨读论文、在群聊里答疑的伙伴致意。</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>OPEN SOURCE JOURNEY</span>
+      <span class="line"></span>
+      <span>2019 — 2025 · 时光纪念</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
