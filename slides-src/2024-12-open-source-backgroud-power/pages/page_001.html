@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录 · 2024年12月刊</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --red: #C0392B;
+  --cream: #F5F1E8;
+  --cream-dark: #E8E1D0;
+  --ink-soft: #4A5568;
+  --line: #0D2137;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--navy);
+  background: #ddd;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Subtle paper grain via layered lines */
+.bg-lines {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(13,33,55,0.02) 0px, rgba(13,33,55,0.02) 1px, transparent 1px, transparent 3px);
+}
+
+.bg-corner-tl {
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(13,33,55,0.15);
+  border-right: none;
+  border-bottom: none;
+}
+
+.bg-corner-br {
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(13,33,55,0.15);
+  border-left: none;
+  border-top: none;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 64px;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--navy);
+}
+
+.masthead-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.masthead-tag {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.masthead-tag .dot {
+  color: var(--red);
+  margin: 0 8px;
+}
+
+.masthead-meta {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--ink-soft);
+  padding-left: 16px;
+  border-left: 1px solid rgba(13,33,55,0.25);
+}
+
+/* Seal */
+.seal-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.meta-tags {
+  text-align: right;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+.meta-tags .k {
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-right: 6px;
+}
+
+.seal {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif SC', serif;
+  position: relative;
+  transform: rotate(-8deg);
+  box-shadow: 0 0 0 3px var(--red), 0 0 0 4px rgba(192,57,43,0.25);
+}
+
+.seal::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1.5px solid rgba(255,255,255,0.7);
+  border-radius: 50%;
+}
+
+.seal .seal-cn {
+  font-size: 11px;
+  letter-spacing: 4px;
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+.seal .seal-date {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.seal .seal-sub {
+  font-size: 9px;
+  letter-spacing: 3px;
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+/* ===== HERO TITLE ===== */
+.hero {
+  margin-top: 46px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 18px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 8px;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.hero-eyebrow .rule {
+  width: 90px;
+  height: 1px;
+  background: var(--red);
+}
+
+.title-main {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 128px;
+  line-height: 1;
+  color: var(--navy);
+  letter-spacing: 12px;
+  padding-left: 12px;
+  position: relative;
+}
+
+.title-main .char-accent {
+  color: var(--red);
+}
+
+.title-underline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.title-underline .l {
+  width: 220px;
+  height: 1px;
+  background: var(--navy);
+  opacity: 0.4;
+}
+
+.title-underline .diamond {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  transform: rotate(45deg);
+}
+
+.subtitle {
+  margin-top: 20px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 6px;
+}
+
+.subtitle .sep {
+  color: var(--red);
+  margin: 0 12px;
+}
+
+.subtitle-en {
+  margin-top: 8px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--ink-soft);
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+/* ===== INDEX ROW ===== */
+.index {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr;
+  gap: 30px;
+  padding: 26px 40px;
+  border-top: 1px solid rgba(13,33,55,0.25);
+  border-bottom: 1px solid rgba(13,33,55,0.25);
+}
+
+.divider-v {
+  background: rgba(13,33,55,0.2);
+}
+
+.idx-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.idx-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.idx-head {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 2px;
+  line-height: 1.2;
+}
+
+.idx-head .role {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 4px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.idx-detail {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+  margin-top: 4px;
+}
+
+/* ===== FOOTER NARRATIVE ===== */
+.footer {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 30px;
+  align-items: end;
+}
+
+.footer-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-mark .big {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 56px;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1;
+}
+
+.footer-mark .sm {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--red);
+}
+
+.narrative {
+  border-left: 2px solid var(--red);
+  padding: 6px 0 6px 20px;
+}
+
+.narrative .label {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--red);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.narrative .text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--navy);
+  letter-spacing: 0.5px;
+}
+
+.narrative .text .em {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.footer-r {
+  text-align: right;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 10.5px;
+  letter-spacing: 3px;
+  color: var(--ink-soft);
+  line-height: 1.9;
+}
+
+.footer-r .strong {
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* Bottom rule */
+.bottom-rule {
+  position: absolute;
+  bottom: 20px;
+  left: 64px;
+  right: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(13,33,55,0.3);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--ink-soft);
+}
+
+.bottom-rule .b-r {
+  color: var(--red);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-lines"></div>
+    <div class="bg-corner-tl"></div>
+    <div class="bg-corner-br"></div>
+  </div>
+
+  <div id="ct">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="masthead-left">
+        <div class="masthead-tag"><span>开源</span><span class="dot">·</span><span>之书</span><span class="dot">·</span><span>记录</span></div>
+        <div class="masthead-meta">THE OPEN-SOURCE LEDGER · VOL. 12</div>
+      </div>
+      <div class="seal-wrap">
+        <div class="meta-tags">
+          <div><span class="k">发行月份</span>2024.12 · 年度收官特刊</div>
+          <div><span class="k">策划角色</span>开源之道 · 适兕（编辑 · 布道者）</div>
+          <div><span class="k">ISSUE</span>№ 12 / 2024 · 仅供翻阅与分享</div>
+        </div>
+        <div class="seal">
+          <div class="seal-cn">特刊</div>
+          <div class="seal-date">2024.12</div>
+          <div class="seal-sub">DECEMBER</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO TITLE -->
+    <div class="hero">
+      <div class="hero-eyebrow">
+        <span class="rule"></span>
+        <span>MONTHLY · DECEMBER EDITION</span>
+        <span class="rule"></span>
+      </div>
+      <div class="title-main">
+        开源<span class="char-accent">之</span>书记录
+      </div>
+      <div class="title-underline">
+        <div class="l"></div>
+        <div class="diamond"></div>
+        <div class="l"></div>
+      </div>
+      <div class="subtitle">
+        2024 年 12 月刊<span class="sep">·</span>布道与阅读的特辑
+      </div>
+      <div class="subtitle-en">A SPECIAL ISSUE ON EVANGELISM & READING</div>
+    </div>
+
+    <!-- INDEX ROW -->
+    <div class="index">
+      <div class="idx-col">
+        <div class="idx-num">— 01 / 编者 —</div>
+        <div class="idx-head">
+          <span class="role">角色 · ROLE</span>
+          开源之道 · 适兕
+        </div>
+        <div class="idx-detail">以编辑视角记录开源世界的脉搏、声音与人心，把每一段代码背后的取舍与温度写进纸页。</div>
+      </div>
+      <div class="divider-v"></div>
+      <div class="idx-col">
+        <div class="idx-num">— 02 / 主题 —</div>
+        <div class="idx-head">
+          <span class="role">主题 · THEME</span>
+          开源布道与阅读
+        </div>
+        <div class="idx-detail">从经典书刊到社区实践，从布道者的独白到阅读者的注解，重新理解开源的持续力量。</div>
+      </div>
+      <div class="divider-v"></div>
+      <div class="idx-col">
+        <div class="idx-num">— 03 / 发行 —</div>
+        <div class="idx-head">
+          <span class="role">发行 · ISSUE</span>
+          2024 · 十二月
+        </div>
+        <div class="idx-detail">献给每一位把代码写进公共知识的人，也献给愿意在年末翻回这一册、再续一段开源叙事的你。</div>
+      </div>
+    </div>
+
+    <!-- FOOTER NARRATIVE -->
+    <div class="footer">
+      <div class="footer-mark">
+        <div class="big">12</div>
+        <div class="sm">DECEMBER · 2024</div>
+      </div>
+      <div class="narrative">
+        <div class="label">编 者 叙 事 · EDITOR'S NOTE</div>
+        <div class="text">
+          这是一本写给<span class="em">开源人</span>的十二月特刊：既有关于代码与自由的沉思，也有可以被翻阅、被分享的书单与故事。<span class="em">适兕</span>站在编辑席上，带你翻开这本属于开源者的记录。
+        </div>
+      </div>
+      <div class="footer-r">
+        <div><span class="strong">EDITOR</span> 开源之道 · 适兕</div>
+        <div><span class="strong">FORMAT</span> 杂志封面 · 16:9</div>
+        <div><span class="strong">PRINT</span> 奶油底 · 藏蓝 · 印章红</div>
+      </div>
+    </div>
+
+    <!-- BOTTOM RULE -->
+    <div class="bottom-rule">
+      <span>OPEN SOURCE LEDGER · 2024 · DEC</span>
+      <span class="b-r">— 翻页 · TURN THE PAGE —</span>
+      <span>NO.12 / 2024 · 适兕 编辑部</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
