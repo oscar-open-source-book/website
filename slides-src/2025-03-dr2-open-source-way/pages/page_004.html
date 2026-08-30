@@ -1,0 +1,501 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>全球开源生态速览</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #F5F1EA;
+  --ink: #0D2137;
+  --accent: #C23D2E;
+  --text-main: #0D2137;
+  --text-muted: #5A6470;
+  --text-faint: #8A929E;
+  --hairline: rgba(13, 33, 55, 0.15);
+  --hairline-strong: rgba(13, 33, 55, 0.35);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 1600px; height: 900px;
+  font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  color: var(--text-main);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  width: 1600px; height: 900px;
+  position: relative; overflow: hidden; margin: 0 auto;
+}
+
+#bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(180deg, #F5F1EA 0%, #EFE9DE 100%);
+}
+
+#ct {
+  position: absolute; inset: 0; z-index: 1;
+  padding: 42px 80px 30px;
+  box-sizing: border-box;
+  display: flex; flex-direction: column;
+}
+
+/* ===== Top header ===== */
+.header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 60px;
+}
+
+.header-title {
+  flex: 1;
+}
+
+.eyebrow {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 11px; letter-spacing: 0.32em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.eyebrow-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+
+.eyebrow-line {
+  width: 60px; height: 1px;
+  background: var(--hairline-strong);
+}
+
+h1.title {
+  font-family: 'Playfair Display', 'Noto Serif SC', 'Songti SC', serif;
+  font-size: 62px; font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+}
+
+.subtitle {
+  margin-top: 16px;
+  font-size: 15px; color: var(--text-muted);
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.55;
+  max-width: 780px;
+}
+
+.subtitle em {
+  font-style: normal;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.header-meta {
+  text-align: right;
+  padding-top: 6px;
+  border-left: 1px solid var(--hairline);
+  padding-left: 24px;
+  min-width: 200px;
+  flex-shrink: 0;
+}
+
+.header-meta .issue {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 32px; font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.header-meta .meta-line {
+  font-size: 10px; letter-spacing: 0.28em;
+  color: var(--text-faint);
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+.header-meta .meta-2 {
+  font-size: 10px; letter-spacing: 0.24em;
+  color: var(--text-faint);
+  margin-top: 6px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  text-transform: none;
+}
+
+/* ===== Section header ===== */
+.section-head {
+  display: flex; align-items: center; gap: 18px;
+  margin: 26px 0 14px;
+}
+
+.section-head .sec-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px; letter-spacing: 0.24em;
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.section-head .sec-title {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-size: 14px; font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.section-head .sec-en {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px; letter-spacing: 0.24em;
+  color: var(--text-faint);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.section-head .line {
+  flex: 1; height: 1px; background: var(--hairline);
+}
+
+/* ===== KPI ===== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.kpi-card {
+  height: 188px;
+  padding: 20px 20px 18px;
+  background: #FBF7F0;
+  border: 1px solid var(--hairline);
+  position: relative;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; background: var(--ink);
+}
+
+.kpi-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  font-size: 10px; letter-spacing: 0.22em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.kpi-index {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.kpi-middle {
+  padding: 4px 0;
+}
+
+.kpi-number {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 50px; font-weight: 700;
+  color: var(--text-main);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-number em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.kpi-unit {
+  margin-top: 10px;
+  font-size: 10px; letter-spacing: 0.22em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.kpi-bottom {
+  border-top: 1px solid var(--hairline);
+  padding-top: 10px;
+}
+
+.kpi-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+
+.kpi-desc {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ===== Layer diagram ===== */
+.layer-diagram {
+  position: relative;
+  height: 360px;
+  margin-top: 4px;
+}
+
+.layer-svg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+
+/* ===== Footer ===== */
+.footer {
+  position: absolute;
+  bottom: 18px; left: 80px; right: 80px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 10.5px; color: var(--text-faint);
+  letter-spacing: 0.16em;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+}
+
+.footer-center {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  letter-spacing: 0.1em;
+}
+
+.footer-right {
+  display: flex; align-items: center; gap: 8px;
+}
+
+.footer-square {
+  width: 6px; height: 6px; background: var(--accent);
+  display: inline-block;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-title">
+        <div class="eyebrow">
+          <span class="eyebrow-line"></span>
+          <span>EDITORIAL · DASHBOARD</span>
+          <span class="eyebrow-dot"></span>
+          <span>FEATURE</span>
+        </div>
+        <h1 class="title">全球开源生态速览</h1>
+        <p class="subtitle">从基础设施到语言框架，从基金会治理到 AI 时代的模型开源——<em>数字之下，是相互支撑的生态</em>。</p>
+      </div>
+      <div class="header-meta">
+        <div class="issue">2025</div>
+        <div class="meta-line">OPEN SOURCE</div>
+        <div class="meta-line">GLOBAL ECOLOGY</div>
+        <div class="meta-2">A Visual Briefing</div>
+      </div>
+    </div>
+
+    <!-- Section 01: KPI -->
+    <div class="section-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">关键指标</span>
+      <span class="sec-en">Key Metrics</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-index">①</span>
+          <span>社区规模</span>
+        </div>
+        <div class="kpi-middle">
+          <div class="kpi-number">1<em> 亿+</em></div>
+          <div class="kpi-unit">Million+ Users</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-label">GitHub 开发者</div>
+          <div class="kpi-desc">全球最大开源平台用户</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-index">②</span>
+          <span>全球总量</span>
+        </div>
+        <div class="kpi-middle">
+          <div class="kpi-number">4<em> 亿+</em></div>
+          <div class="kpi-unit">Million+ Repos</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-label">公开仓库</div>
+          <div class="kpi-desc">跨领域累积的代码资产</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-index">③</span>
+          <span>TLP 项目</span>
+        </div>
+        <div class="kpi-middle">
+          <div class="kpi-number"><em>近 </em>350</div>
+          <div class="kpi-unit">Top-Level Projects</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-label">Apache 顶级项目</div>
+          <div class="kpi-desc">长期稳定的企业级项目数</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-index">④</span>
+          <span>毕业项目</span>
+        </div>
+        <div class="kpi-middle">
+          <div class="kpi-number">数十</div>
+          <div class="kpi-unit">Graduated Projects</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-label">CNCF 毕业项目</div>
+          <div class="kpi-desc">含 Kubernetes 等核心项目</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-index">⑤</span>
+          <span>数十万人维护</span>
+        </div>
+        <div class="kpi-middle">
+          <div class="kpi-number">三千万<em>+</em></div>
+          <div class="kpi-unit">Million+ Lines</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-label">Linux 内核代码行</div>
+          <div class="kpi-desc">数十万人共同维护</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Section 02: Ecosystem Stack -->
+    <div class="section-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">生态层级</span>
+      <span class="sec-en">Ecosystem Stack</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="layer-diagram">
+      <svg class="layer-svg" viewBox="0 0 1440 360" preserveAspectRatio="none">
+        <!-- AI tag connector -->
+        <line x1="380" y1="66" x2="380" y2="96" stroke="#C23D2E" stroke-width="1"/>
+        <line x1="1060" y1="66" x2="1060" y2="96" stroke="#C23D2E" stroke-width="1"/>
+        <line x1="380" y1="96" x2="1060" y2="96" stroke="#C23D2E" stroke-width="1"/>
+
+        <!-- AI tag background -->
+        <rect x="320" y="10" width="800" height="60" fill="#C23D2E" rx="0"/>
+
+        <!-- Layer 3: Governance (top) -->
+        <rect x="0" y="108" width="1440" height="76" fill="#FBF7F0" stroke="#0D2137" stroke-width="1"/>
+        <line x1="320" y1="108" x2="320" y2="184" stroke="#0D2137" stroke-width="1"/>
+        <text x="16" y="152" font-family="Playfair Display, Noto Serif SC, serif" font-size="26" font-weight="700" fill="#C23D2E">③</text>
+        <text x="52" y="135" font-family="Noto Serif SC, serif" font-size="14" font-weight="700" fill="#0D2137" letter-spacing="1.5">基金会治理</text>
+        <text x="52" y="158" font-family="Playfair Display, serif" font-size="10" fill="#8A929E" letter-spacing="2.5" font-style="italic">Governance</text>
+        <line x1="200" y1="128" x2="200" y2="164" stroke="rgba(13,33,55,0.2)" stroke-width="1"/>
+        <text x="360" y="136" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">Linux Foundation</text>
+        <text x="360" y="158" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">承载内核与核心基础设施的旗舰联盟</text>
+        <text x="680" y="136" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">Apache</text>
+        <text x="680" y="158" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">企业级中间件与服务的治理范式</text>
+        <text x="1020" y="136" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">CNCF</text>
+        <text x="1020" y="158" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">云原生技术的中立托管与社区</text>
+
+        <!-- Layer 2: Language & Framework -->
+        <rect x="0" y="192" width="1440" height="76" fill="#FFFFFF" stroke="#0D2137" stroke-width="1"/>
+        <line x1="320" y1="192" x2="320" y2="268" stroke="#0D2137" stroke-width="1"/>
+        <text x="16" y="236" font-family="Playfair Display, Noto Serif SC, serif" font-size="26" font-weight="700" fill="#C23D2E">②</text>
+        <text x="52" y="219" font-family="Noto Serif SC, serif" font-size="14" font-weight="700" fill="#0D2137" letter-spacing="1.5">语言与框架</text>
+        <text x="52" y="242" font-family="Playfair Display, serif" font-size="10" fill="#8A929E" letter-spacing="2.5" font-style="italic">Languages · Frameworks</text>
+        <line x1="200" y1="212" x2="200" y2="248" stroke="rgba(13,33,55,0.2)" stroke-width="1"/>
+        <text x="360" y="220" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">Python</text>
+        <text x="360" y="242" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">AI 与数据科学生态的默认语言</text>
+        <text x="680" y="220" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">Node.js</text>
+        <text x="680" y="242" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">Web 与实时协作的主流运行时</text>
+        <text x="1020" y="220" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">Rust</text>
+        <text x="1020" y="242" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">下一代系统编程与 AI 基础设施的崛起</text>
+
+        <!-- Layer 1: Infrastructure (bottom, widest visually via darker border) -->
+        <rect x="0" y="276" width="1440" height="76" fill="#F5F1EA" stroke="#0D2137" stroke-width="1.5"/>
+        <line x1="320" y1="276" x2="320" y2="352" stroke="#0D2137" stroke-width="1"/>
+        <text x="16" y="320" font-family="Playfair Display, Noto Serif SC, serif" font-size="26" font-weight="700" fill="#C23D2E">①</text>
+        <text x="52" y="303" font-family="Noto Serif SC, serif" font-size="14" font-weight="700" fill="#0D2137" letter-spacing="1.5">基础设施</text>
+        <text x="52" y="326" font-family="Playfair Display, serif" font-size="10" fill="#8A929E" letter-spacing="2.5" font-style="italic">Infrastructure</text>
+        <line x1="200" y1="296" x2="200" y2="332" stroke="rgba(13,33,55,0.2)" stroke-width="1"/>
+        <text x="360" y="304" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">Linux</text>
+        <text x="360" y="326" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">全球服务器与云端运行的基石</text>
+        <text x="680" y="304" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">Kubernetes</text>
+        <text x="680" y="326" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">容器编排与云原生事实标准</text>
+        <text x="1020" y="304" font-family="Noto Sans SC, Inter, sans-serif" font-size="14" font-weight="700" fill="#0D2137">Docker</text>
+        <text x="1020" y="326" font-family="Noto Sans SC, Inter, sans-serif" font-size="11.5" fill="#5A6470">现代软件开发交付的通用语言</text>
+      </svg>
+
+      <!-- AI tag overlay -->
+      <div class="ai-tag" style="position: absolute; top: 10px; left: 320px; width: 800px; height: 60px; color: #FBF7F0; display: flex; align-items: center; padding: 0 34px; gap: 22px;">
+        <svg width="26" height="26" viewBox="0 0 24 24" style="flex-shrink: 0;">
+          <circle cx="12" cy="12" r="2.6" fill="#FBF7F0"/>
+          <circle cx="4" cy="6" r="1.6" fill="#FBF7F0"/>
+          <circle cx="20" cy="6" r="1.6" fill="#FBF7F0"/>
+          <circle cx="4" cy="18" r="1.6" fill="#FBF7F0"/>
+          <circle cx="20" cy="18" r="1.6" fill="#FBF7F0"/>
+          <line x1="12" y1="12" x2="4" y2="6" stroke="#FBF7F0" stroke-width="1.1"/>
+          <line x1="12" y1="12" x2="20" y2="6" stroke="#FBF7F0" stroke-width="1.1"/>
+          <line x1="12" y1="12" x2="4" y2="18" stroke="#FBF7F0" stroke-width="1.1"/>
+          <line x1="12" y1="12" x2="20" y2="18" stroke="#FBF7F0" stroke-width="1.1"/>
+        </svg>
+        <span style="font-family: 'Playfair Display', 'Noto Serif SC', serif; font-size: 15px; font-weight: 700; letter-spacing: 0.04em; line-height: 1.3;">
+          AI 时代的开源<br>
+          <span style="font-size: 12.5px; font-weight: 400; opacity: 0.9; letter-spacing: 0.02em;">大模型开源权重与工具链成为新的增长极</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span>数据来源 · GitHub 官方 · Apache · CNCF · Linux Kernel</span>
+      <span class="footer-center">Editorial Data Briefing</span>
+      <span class="footer-right">
+        <span class="footer-square"></span>
+        <span>OPEN SOURCE ECOLOGY · 2025</span>
+      </span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
