@@ -1,0 +1,650 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之道·2024纪实</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --cyan: #2196F3;
+  --cyan-light: #64B5F6;
+  --cyan-glow: rgba(33, 150, 243, 0.35);
+  --amber: #FF9800;
+  --amber-soft: rgba(255, 152, 0, 0.18);
+  --neutral: #E0E0E0;
+  --muted: #90A4AE;
+  --ink: #05080F;
+  --ink-2: #0B1220;
+  --line: rgba(33, 150, 243, 0.22);
+  --line-soft: rgba(255, 255, 255, 0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--neutral);
+  background: var(--ink);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(160deg, #05080F 0%, #0A1428 55%, #05080F 100%);
+}
+
+/* 背景层 */
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-glow-1 {
+  position: absolute;
+  width: 900px; height: 900px;
+  left: -200px; top: -300px;
+  background: radial-gradient(circle, rgba(33,150,243,0.32) 0%, rgba(33,150,243,0) 65%);
+  filter: blur(20px);
+}
+
+.bg-glow-2 {
+  position: absolute;
+  width: 780px; height: 780px;
+  right: -180px; top: 200px;
+  background: radial-gradient(circle, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0) 65%);
+}
+
+.bg-glow-3 {
+  position: absolute;
+  width: 420px; height: 420px;
+  left: 55%; bottom: -140px;
+  background: radial-gradient(circle, rgba(255,152,0,0.16) 0%, rgba(255,152,0,0) 65%);
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.055) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0) 75%);
+          mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0) 75%);
+}
+
+.bg-lines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+}
+
+.corner-brackets {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.bracket {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border: 1.5px solid var(--cyan);
+  opacity: 0.75;
+}
+.bracket.tl { top: 28px; left: 28px; border-right: none; border-bottom: none; }
+.bracket.tr { top: 28px; right: 28px; border-left: none; border-bottom: none; }
+.bracket.bl { bottom: 28px; left: 28px; border-right: none; border-top: none; }
+.bracket.br { bottom: 28px; right: 28px; border-left: none; border-top: none; }
+
+/* 内容层 */
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 72px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部标题条 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.header-left {
+  display: flex; align-items: center; gap: 14px;
+}
+.header-left .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+.header-left .sep {
+  color: rgba(255,255,255,0.2);
+}
+.header-right {
+  display: flex; align-items: center; gap: 14px;
+}
+.header-right .mono {
+  color: var(--cyan-light);
+  font-family: 'Inter', monospace;
+  letter-spacing: 2px;
+}
+.header-right .amber-tag {
+  color: var(--amber);
+  border: 1px solid rgba(255,152,0,0.4);
+  padding: 4px 10px;
+  border-radius: 2px;
+  letter-spacing: 2px;
+  font-size: 11px;
+}
+
+/* 徽章 */
+.badge-wrap {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.badge-icon {
+  width: 60px; height: 60px;
+  position: relative;
+  flex-shrink: 0;
+}
+.badge-icon .hex {
+  position: absolute; inset: 0;
+}
+.badge-icon .core {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 26px;
+  color: var(--cyan);
+  font-weight: 700;
+  text-shadow: 0 0 12px var(--cyan-glow);
+}
+.badge-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 90px; height: 90px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.28) 0%, rgba(33,150,243,0) 65%);
+  z-index: -1;
+}
+.badge-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.badge-label .zh {
+  font-size: 13px;
+  letter-spacing: 5px;
+  color: var(--cyan-light);
+  font-weight: 600;
+}
+.badge-label .en {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  font-family: 'Inter', monospace;
+}
+.badge-wrap .rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line) 0%, transparent 100%);
+  position: relative;
+}
+.badge-wrap .rule::after {
+  content: '';
+  position: absolute;
+  right: 0; top: -3px;
+  width: 7px; height: 7px;
+  background: var(--cyan);
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+/* 主标题 */
+.title-block {
+  margin-top: 22px;
+  position: relative;
+}
+.title-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 6px;
+  margin-bottom: 8px;
+}
+.title-tag::before {
+  content: '';
+  width: 34px; height: 1px;
+  background: var(--cyan);
+}
+.title-main {
+  font-size: 118px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  line-height: 1.05;
+  color: #FFFFFF;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-shadow: 0 4px 40px rgba(33,150,243,0.35);
+}
+.title-main .accent {
+  color: var(--cyan);
+  text-shadow: 0 0 30px var(--cyan-glow);
+}
+.title-main .dot-mid {
+  color: var(--amber);
+  font-size: 96px;
+  text-shadow: 0 0 22px rgba(255,152,0,0.55);
+  margin: 0 4px;
+}
+.title-main .year {
+  background: linear-gradient(180deg, #64B5F6 0%, #1976D2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: 'Inter', monospace;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+.title-sub {
+  margin-top: 18px;
+  font-size: 22px;
+  color: var(--neutral);
+  letter-spacing: 3px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.title-sub .divider {
+  width: 28px; height: 1px;
+  background: var(--amber);
+  display: inline-block;
+}
+.title-sub .speaker {
+  color: var(--amber);
+  font-weight: 500;
+}
+
+/* 数据亮点 */
+.metrics {
+  margin-top: 34px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.metric {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 8px 0;
+}
+.metric-divider {
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, var(--line) 20%, var(--line) 80%, transparent 100%);
+  margin: 4px 24px;
+  position: relative;
+}
+.metric-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 8px; height: 8px;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+.metric-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.metric-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.metric-value .num {
+  font-size: 92px;
+  font-weight: 800;
+  color: var(--cyan);
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(33,150,243,0.45);
+  letter-spacing: -2px;
+  font-family: 'Inter', monospace;
+}
+.metric-value .plus {
+  font-size: 60px;
+  color: var(--cyan-light);
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 20px var(--cyan-glow);
+}
+.metric-label {
+  font-size: 13px;
+  color: var(--neutral);
+  letter-spacing: 4px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+.metric-context {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+}
+
+/* 底部信息卡 */
+.cards {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+}
+.card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(33,150,243,0.06) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(33,150,243,0.22);
+  border-radius: 6px;
+  padding: 18px 20px 18px 22px;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--cyan) 0%, transparent 100%);
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.card-head .label-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-head .cn {
+  color: var(--cyan-light);
+  font-size: 13px;
+  letter-spacing: 5px;
+  font-weight: 700;
+}
+.card-head .en {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-family: 'Inter', monospace;
+  text-transform: uppercase;
+}
+.card-head .icon {
+  color: var(--amber);
+  font-size: 18px;
+  opacity: 0.9;
+}
+.card-text {
+  font-size: 14px;
+  color: var(--neutral);
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+.card-text .hi {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+/* 页脚 */
+.footer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+.footer .foot-left {
+  display: flex; align-items: center; gap: 10px;
+}
+.footer .foot-left .dots {
+  display: flex; gap: 5px;
+}
+.footer .foot-left .dots span {
+  width: 4px; height: 4px;
+  background: var(--cyan);
+  opacity: 0.6;
+}
+.footer .foot-left .dots span:nth-child(2) { opacity: 1; box-shadow: 0 0 6px var(--cyan); }
+.footer .foot-left .dots span:nth-child(4) { opacity: 0.3; }
+.footer .foot-right {
+  display: flex; align-items: center; gap: 14px;
+  font-family: 'Inter', monospace;
+}
+.footer .foot-right .amber { color: var(--amber); }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-glow-3"></div>
+    <div class="bg-grid"></div>
+    <svg class="bg-lines" viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="ln1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#2196F3" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#2196F3" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="ln2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#2196F3" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- 节点网络 · 左侧 -->
+      <line x1="80" y1="240" x2="220" y2="180" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="220" y1="180" x2="360" y2="260" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="220" y1="180" x2="280" y2="80" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="80" y1="240" x2="180" y2="380" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="180" y1="380" x2="360" y2="260" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="180" y1="380" x2="120" y2="500" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="360" y1="260" x2="440" y2="340" stroke="url(#ln1)" stroke-width="1"/>
+      <circle cx="80" cy="240" r="4" fill="#2196F3" opacity="0.85"/>
+      <circle cx="220" cy="180" r="5" fill="#64B5F6"/>
+      <circle cx="360" cy="260" r="4" fill="#2196F3" opacity="0.7"/>
+      <circle cx="280" cy="80" r="3" fill="#2196F3" opacity="0.6"/>
+      <circle cx="180" cy="380" r="4" fill="#2196F3" opacity="0.7"/>
+      <circle cx="120" cy="500" r="3" fill="#64B5F6" opacity="0.5"/>
+      <circle cx="440" cy="340" r="3" fill="#2196F3" opacity="0.5"/>
+      <circle cx="220" cy="180" r="10" fill="none" stroke="#2196F3" stroke-opacity="0.4"/>
+      <!-- 节点网络 · 右上 -->
+      <line x1="1200" y1="90" x2="1340" y2="150" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="1340" y1="150" x2="1500" y2="90" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="1340" y1="150" x2="1420" y2="260" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="1420" y1="260" x2="1520" y2="220" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="1500" y1="90" x2="1540" y2="200" stroke="url(#ln1)" stroke-width="1"/>
+      <line x1="1540" y1="200" x2="1520" y2="220" stroke="url(#ln1)" stroke-width="1"/>
+      <circle cx="1200" cy="90" r="3" fill="#2196F3" opacity="0.7"/>
+      <circle cx="1340" cy="150" r="5" fill="#64B5F6"/>
+      <circle cx="1500" cy="90" r="3" fill="#2196F3" opacity="0.6"/>
+      <circle cx="1420" cy="260" r="4" fill="#FF9800" opacity="0.7"/>
+      <circle cx="1520" cy="220" r="3" fill="#2196F3" opacity="0.6"/>
+      <circle cx="1540" cy="200" r="3" fill="#2196F3" opacity="0.5"/>
+      <circle cx="1340" cy="150" r="10" fill="none" stroke="#64B5F6" stroke-opacity="0.35"/>
+      <!-- 大几何线 -->
+      <line x1="0" y1="720" x2="1600" y2="720" stroke="url(#ln1)" stroke-width="1" opacity="0.35"/>
+      <!-- 左下装饰圆环 -->
+      <circle cx="140" cy="820" r="60" fill="none" stroke="#2196F3" stroke-opacity="0.18"/>
+      <circle cx="140" cy="820" r="34" fill="none" stroke="#2196F3" stroke-opacity="0.12"/>
+      <!-- 右上代码括号 -->
+      <text x="1500" y="60" fill="#2196F3" opacity="0.25" font-family="Inter, monospace" font-size="80" font-weight="700">{</text>
+      <text x="1540" y="60" fill="#2196F3" opacity="0.25" font-family="Inter, monospace" font-size="80" font-weight="700">}</text>
+    </svg>
+    <div class="corner-brackets">
+      <div class="bracket tl"></div>
+      <div class="bracket tr"></div>
+      <div class="bracket bl"></div>
+      <div class="bracket br"></div>
+    </div>
+  </div>
+
+  <div id="ct">
+    <!-- 顶部标题条 -->
+    <div class="header">
+      <div class="header-left">
+        <span class="dot"></span>
+        <span>OPEN SOURCE DOCUMENTARY</span>
+        <span class="sep">/</span>
+        <span>2024 · ANNUAL</span>
+      </div>
+      <div class="header-right">
+        <span class="mono">// KEYNOTE 001</span>
+        <span class="amber-tag">LIVE · SHARED</span>
+      </div>
+    </div>
+
+    <!-- 徽章 -->
+    <div class="badge-wrap">
+      <div class="badge-icon">
+        <svg class="hex" viewBox="0 0 60 60">
+          <polygon points="30,4 54,17 54,43 30,56 6,43 6,17" fill="none" stroke="#2196F3" stroke-width="1.5" opacity="0.9"/>
+          <polygon points="30,14 46,22 46,38 30,46 14,38 14,22" fill="none" stroke="#64B5F6" stroke-width="1" opacity="0.5"/>
+        </svg>
+        <span class="core">{ }</span>
+      </div>
+      <div class="badge-label">
+        <span class="zh">开 · 源 · 之 · 道</span>
+        <span class="en">PATH · OF · OPEN · SOURCE · 2024</span>
+      </div>
+      <div class="rule"></div>
+    </div>
+
+    <!-- 主标题 -->
+    <div class="title-block">
+      <div class="title-tag">
+        <span>纪 实 · 2 0 2 4</span>
+      </div>
+      <div class="title-main">
+        <span>开源之道</span>
+        <span class="dot-mid">·</span>
+        <span class="year">2024</span>
+        <span>纪实</span>
+      </div>
+      <div class="title-sub">
+        <span class="divider"></span>
+        <span>开源布道与阅读分享</span>
+        <span style="color:var(--muted);">—</span>
+        <span class="speaker">适兕</span>
+        <span>带你走进开源的真实故事</span>
+      </div>
+    </div>
+
+    <!-- 数据亮点 -->
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-content">
+          <div class="metric-value">
+            <span class="num">5</span>
+            <span class="plus">亿+</span>
+          </div>
+          <div class="metric-label">全球开源项目</div>
+          <div class="metric-context">GITHUB 注册仓库数量 · 截至 2024 年底</div>
+        </div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-content">
+          <div class="metric-value">
+            <span class="num">1</span>
+            <span class="plus">亿+</span>
+          </div>
+          <div class="metric-label">开源贡献者</div>
+          <div class="metric-context">全球活跃开发者社区规模</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部信息卡 -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-head">
+          <div class="label-row">
+            <span class="cn">主题</span>
+            <span class="en">TOPIC</span>
+          </div>
+          <span class="icon">◈</span>
+        </div>
+        <div class="card-text">记录 <span class="hi">2024 年开源世界</span>的关键故事与社区动态</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="label-row">
+            <span class="cn">讲者</span>
+            <span class="en">SPEAKER</span>
+          </div>
+          <span class="icon">◆</span>
+        </div>
+        <div class="card-text"><span class="hi">开源之道 · 适兕</span> — 开源布道者与阅读分享人</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="label-row">
+            <span class="cn">形式</span>
+            <span class="en">FORMAT</span>
+          </div>
+          <span class="icon">◇</span>
+        </div>
+        <div class="card-text">融合 <span class="hi">数据洞察、案例故事与思想分享</span> 的圆桌式布道</div>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer">
+      <div class="foot-left">
+        <div class="dots">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span>TRUST · COLLABORATION · COMMUNITY</span>
+      </div>
+      <div class="foot-right">
+        <span>//</span>
+        <span class="amber">SENSE OF OPEN</span>
+        <span>//</span>
+        <span>2024 · DOC</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

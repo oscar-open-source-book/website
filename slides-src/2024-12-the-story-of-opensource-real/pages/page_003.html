@@ -1,0 +1,785 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源四大核心价值</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+:root {
+  --bg-0: #0A0E1A;
+  --bg-1: #0F1524;
+  --bg-2: #141B2E;
+  --card: #111726;
+  --card-hi: #172033;
+  --line: rgba(33, 150, 243, 0.18);
+  --line-strong: rgba(33, 150, 243, 0.4);
+  --blue: #2196F3;
+  --blue-2: #4FC3F7;
+  --blue-glow: rgba(33, 150, 243, 0.35);
+  --orange: #FF9800;
+  --orange-2: #FFB74D;
+  --text: #E8EEF7;
+  --text-dim: #A0AEC0;
+  --text-mute: #6B7A93;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg-0);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(160deg, #0A0E1A 0%, #0F1524 55%, #0B1224 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+}
+.blob-1 { width: 500px; height: 500px; background: var(--blue); top: -180px; left: -160px; opacity: 0.25; }
+.blob-2 { width: 420px; height: 420px; background: var(--blue-2); bottom: -140px; right: -120px; opacity: 0.18; }
+.blob-3 { width: 300px; height: 300px; background: var(--orange); top: 380px; left: 55%; opacity: 0.09; }
+
+.grid-frame {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  border: 1px solid rgba(33, 150, 243, 0.08);
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--blue);
+}
+.corner.tl { top: 20px; left: 20px; border-top: 2px solid var(--blue); border-left: 2px solid var(--blue); }
+.corner.tr { top: 20px; right: 20px; border-top: 2px solid var(--blue); border-right: 2px solid var(--blue); }
+.corner.bl { bottom: 20px; left: 20px; border-bottom: 2px solid var(--blue); border-left: 2px solid var(--blue); }
+.corner.br { bottom: 20px; right: 20px; border-bottom: 2px solid var(--blue); border-right: 2px solid var(--blue); }
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 42px 62px 42px 62px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HERO */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 22px;
+}
+.hero-left { max-width: 1020px; }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(33,150,243,0.08);
+  color: var(--blue-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--orange);
+}
+
+h1 {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 50px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  color: #FFFFFF;
+  margin-bottom: 14px;
+}
+h1 .hl {
+  color: var(--blue-2);
+  position: relative;
+  padding: 0 2px;
+}
+h1 .hl::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 3px;
+  background: var(--orange);
+  box-shadow: 0 0 12px var(--orange);
+}
+
+.sub {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 940px;
+  font-weight: 400;
+}
+.sub b {
+  color: var(--blue-2);
+  font-weight: 600;
+}
+
+/* HERO RIGHT */
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.brands {
+  display: flex;
+  gap: 8px;
+}
+.brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.03);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.brand-pill .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--blue);
+  border-radius: 50%;
+}
+.brand-pill:nth-child(2) .dot { background: var(--orange); }
+.brand-pill:nth-child(3) .dot { background: var(--blue-2); }
+
+.stats-strip {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(33,150,243,0.04);
+}
+.stat-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.stat-mini .v {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--blue-2);
+  letter-spacing: 0.5px;
+}
+.stat-mini .v .u {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-left: 2px;
+}
+.stat-mini .l {
+  font-size: 10px;
+  color: var(--text-mute);
+  letter-spacing: 1px;
+  margin-top: 2px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.strip-sep {
+  width: 1px;
+  height: 32px;
+  background: var(--line-strong);
+}
+
+/* CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.card {
+  position: relative;
+  padding: 22px 20px 20px 20px;
+  background: linear-gradient(180deg, rgba(33,150,243,0.08) 0%, rgba(33,150,243,0.02) 100%);
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  overflow: hidden;
+  height: 428px;
+  display: flex;
+  flex-direction: column;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--blue) 0%, var(--blue-2) 100%);
+}
+.card::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(33,150,243,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--orange);
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255,152,0,0.4);
+  border-radius: 4px;
+  background: rgba(255,152,0,0.06);
+}
+
+.icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0.04) 100%);
+  border: 1px solid rgba(33,150,243,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(33,150,243,0.15);
+}
+.icon svg { width: 28px; height: 28px; }
+
+.en {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--orange-2);
+  letter-spacing: 4px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.zh {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 34px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  line-height: 1.1;
+  position: relative;
+  z-index: 1;
+}
+.zh::after {
+  content: '';
+  display: block;
+  width: 38px;
+  height: 3px;
+  background: var(--blue);
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.desc {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-dim);
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+.desc b {
+  color: var(--blue-2);
+  font-weight: 600;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  position: relative;
+  z-index: 1;
+}
+.tag-mini {
+  padding: 3px 9px;
+  background: rgba(33,150,243,0.1);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--blue-2);
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+.tag-mini.orange {
+  background: rgba(255,152,0,0.08);
+  border-color: rgba(255,152,0,0.35);
+  color: var(--orange-2);
+}
+
+/* DATA STRIP */
+.data-strip {
+  display: grid;
+  grid-template-columns: 2.4fr 1fr;
+  gap: 18px;
+  flex: 1;
+}
+
+.data-card {
+  position: relative;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.08) 0%, rgba(33,150,243,0.02) 100%);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.data-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--orange);
+}
+.data-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255,152,0,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.dc-title {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.dc-en {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--orange-2);
+  letter-spacing: 2.5px;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.dc-zh {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+.dc-sub {
+  font-size: 11px;
+  color: var(--text-mute);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+}
+
+.free-list {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+.free-item {
+  flex: 1;
+  padding: 10px 6px;
+  background: rgba(33,150,243,0.08);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-align: center;
+}
+.free-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--blue-2);
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(33,150,243,0.4);
+}
+.free-label {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  color: var(--text);
+  margin-top: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.free-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-mute);
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+.lic-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 82px;
+  font-weight: 900;
+  color: var(--blue-2);
+  line-height: 1;
+  letter-spacing: -2px;
+  text-shadow: 0 0 24px rgba(33,150,243,0.4);
+  position: relative;
+  z-index: 1;
+  margin-right: 4px;
+}
+.lic-plus {
+  color: var(--orange);
+  font-size: 44px;
+  margin-left: 2px;
+  vertical-align: 4px;
+}
+.lic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+  margin-left: 10px;
+}
+.lic-list .lic-item { display: flex; align-items: center; gap: 6px; }
+.lic-list .lic-item::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--orange);
+  border-radius: 50%;
+}
+
+/* FOOTER */
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-mute);
+  letter-spacing: 1.5px;
+}
+.foot-left { display: flex; align-items: center; gap: 12px; }
+.foot-mark {
+  color: var(--orange);
+  font-weight: 700;
+}
+.foot-line {
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(90deg, var(--blue), transparent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="grid-frame"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+  </div>
+
+  <div id="ct">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-left">
+        <div class="tag"><span>OPEN SOURCE · CORE VALUES</span></div>
+        <h1>开源<span class="hl">四大核心价值</span></h1>
+        <div class="sub">开源的核心价值远不止<b>免费使用</b>，而是赋予用户<b>运行、研究、修改和分发</b>软件的四大自由权利——在 AI 大模型时代，这些价值对保障<b>技术民主化</b>具有关键意义。</div>
+      </div>
+      <div class="hero-right">
+        <div class="brands">
+          <div class="brand-pill"><span class="dot"></span>GNU · GPL</div>
+          <div class="brand-pill"><span class="dot"></span>OSI · Apache</div>
+          <div class="brand-pill"><span class="dot"></span>Mozilla · MIT</div>
+        </div>
+        <div class="stats-strip">
+          <div class="stat-mini">
+            <span class="v">4<span class="u">Freedoms</span></span>
+            <span class="l">FOUR FREEDOMS</span>
+          </div>
+          <div class="strip-sep"></div>
+          <div class="stat-mini">
+            <span class="v">200<span class="u">+ Licenses</span></span>
+            <span class="l">OSI CERTIFIED</span>
+          </div>
+          <div class="strip-sep"></div>
+          <div class="stat-mini">
+            <span class="v">100<span class="u">% Open</span></span>
+            <span class="l">FULLY AUDITABLE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 CARDS -->
+    <div class="cards">
+
+      <!-- Card 1: Freedom -->
+      <div class="card">
+        <div class="card-head">
+          <div class="num"><span>VALUE · 01</span></div>
+          <div class="icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 24 L20 32 L34 18" />
+              <path d="M8 24 L20 16" opacity="0.4"/>
+              <circle cx="38" cy="24" r="2" fill="#FF9800" stroke="none"/>
+              <path d="M6 10 L42 10 M6 38 L42 38" opacity="0.3"/>
+            </svg>
+          </div>
+        </div>
+        <div class="en"><span>FREE DOM</span></div>
+        <div class="zh"><span>自由</span></div>
+        <div class="desc">用户拥有<b>运行、研究、修改和分发</b>软件的四大自由权利，从代码源头到部署使用全程掌控。</div>
+        <div class="tags">
+          <span class="tag-mini">RUN</span>
+          <span class="tag-mini">STUDY</span>
+          <span class="tag-mini">MODIFY</span>
+          <span class="tag-mini orange">REDISTRIBUTE</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Collaboration -->
+      <div class="card">
+        <div class="card-head">
+          <div class="num"><span>VALUE · 02</span></div>
+          <div class="icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="14" cy="14" r="4"/>
+              <circle cx="34" cy="14" r="4"/>
+              <circle cx="24" cy="34" r="4"/>
+              <path d="M17 17 L21 30" />
+              <path d="M31 17 L27 30" />
+              <path d="M18 14 L30 14" opacity="0.6"/>
+              <circle cx="24" cy="24" r="1.5" fill="#FF9800" stroke="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="en"><span>COLLABORATION</span></div>
+        <div class="zh"><span>协作</span></div>
+        <div class="desc">全球开发者以<b>透明方式</b>协同贡献，围绕共同目标持续演进，代码库汇聚千万级贡献者智慧。</div>
+        <div class="tags">
+          <span class="tag-mini">CONTRIBUTE</span>
+          <span class="tag-mini">REVIE</span>
+          <span class="tag-mini">FORK</span>
+          <span class="tag-mini orange">GLOBAL</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Transparency -->
+      <div class="card">
+        <div class="card-head">
+          <div class="num"><span>VALUE · 03</span></div>
+          <div class="icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 24 C12 14 20 10 24 10 C28 10 36 14 42 24 C36 34 28 38 24 38 C20 38 12 34 6 24 Z"/>
+              <circle cx="24" cy="24" r="6"/>
+              <circle cx="24" cy="24" r="2.5" fill="#FF9800" stroke="none"/>
+              <path d="M24 6 L24 4" opacity="0.5"/>
+              <path d="M24 44 L24 42" opacity="0.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="en"><span>TRANSPARENCY</span></div>
+        <div class="zh"><span>透明</span></div>
+        <div class="desc">代码<b>公开可审计</b>，消除信息不对称带来的信任危机，让 AI 模型决策逻辑可验证、可追溯、可复核。</div>
+        <div class="tags">
+          <span class="tag-mini">AUDIT</span>
+          <span class="tag-mini">REVIEW</span>
+          <span class="tag-mini">TRACK</span>
+          <span class="tag-mini orange">TRUST</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Governance -->
+      <div class="card">
+        <div class="card-head">
+          <div class="num"><span>VALUE · 04</span></div>
+          <div class="icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="24" cy="24" r="10"/>
+              <path d="M24 4 L24 14"/>
+              <path d="M24 34 L24 44"/>
+              <path d="M4 24 L14 24"/>
+              <path d="M34 24 L44 24"/>
+              <path d="M9 9 L16 16" opacity="0.6"/>
+              <path d="M32 32 L39 39" opacity="0.6"/>
+              <path d="M39 9 L32 16" opacity="0.6"/>
+              <path d="M16 32 L9 39" opacity="0.6"/>
+              <circle cx="24" cy="24" r="3" fill="#FF9800" stroke="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="en"><span>GOVERNANCE</span></div>
+        <div class="zh"><span>自治</span></div>
+        <div class="desc">社区驱动的<b>决策机制</b>，多方治理避免单一商业实体垄断方向，保障项目长期演进的技术中立。</div>
+        <div class="tags">
+          <span class="tag-mini">VOTE</span>
+          <span class="tag-mini">COMMITTEE</span>
+          <span class="tag-mini">RFC</span>
+          <span class="tag-mini orange">NEUTRAL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATA STRIP -->
+    <div class="data-strip">
+      <div class="data-card">
+        <div class="dc-title">
+          <div class="dc-en"><span>FOUR FREEDOMS</span></div>
+          <div class="dc-zh"><span>四大自由</span></div>
+          <div class="dc-sub"><span>FOSS · DEFINITION</span></div>
+        </div>
+        <div class="free-list">
+          <div class="free-item">
+            <div class="free-num"><span>0</span></div>
+            <div class="free-label"><span>运行</span></div>
+            <div class="free-sub"><span>RUN</span></div>
+          </div>
+          <div class="free-item">
+            <div class="free-num"><span>1</span></div>
+            <div class="free-label"><span>研究</span></div>
+            <div class="free-sub"><span>STUDY</span></div>
+          </div>
+          <div class="free-item">
+            <div class="free-num"><span>2</span></div>
+            <div class="free-label"><span>修改</span></div>
+            <div class="free-sub"><span>MODIFY</span></div>
+          </div>
+          <div class="free-item">
+            <div class="free-num"><span>3</span></div>
+            <div class="free-label"><span>分发</span></div>
+            <div class="free-sub"><span>REDISTRIBUTE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-card">
+        <div class="dc-title">
+          <div class="dc-en"><span>OSI CERTIFIED</span></div>
+          <div class="dc-zh"><span>开源许可证</span></div>
+          <div class="lic-list">
+            <span class="lic-item">GPL · Apache</span>
+            <span class="lic-item">MIT · BSD · MPL</span>
+          </div>
+        </div>
+        <div class="lic-num"><span>200</span><span class="lic-plus">+</span></div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="foot">
+      <div class="foot-left">
+        <span class="foot-mark">◆</span>
+        <span>SOURCE · FOSS DEFINITION & OSI STANDARDS</span>
+        <div class="foot-line"></div>
+      </div>
+      <div class="foot-right">
+        <span>P.04 · CORE VALUES · OPEN SOURCE</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
