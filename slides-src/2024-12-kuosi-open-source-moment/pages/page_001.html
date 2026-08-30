@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录 · 2024年12月</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --primary-light: #64B5F6;
+  --accent: #00E5FF;
+  --neutral: #E8EAED;
+  --muted: #94A3B8;
+  --dim: #607080;
+  --bg-dark: #050A14;
+  --bg-mid: #0A1830;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --border: rgba(33, 150, 243, 0.22);
+  --border-strong: rgba(0, 229, 255, 0.4);
+  --font-display: 'Orbitron', 'Noto Sans SC', sans-serif;
+  --font-body: 'Inter', 'Noto Sans SC', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 1600px;
+  height: 900px;
+  overflow: hidden;
+  background: #050A14;
+  color: var(--neutral);
+  font-family: var(--font-body);
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bg-base {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg,
+      rgba(5, 10, 20, 1) 0%,
+      rgba(10, 24, 48, 0.9) 40%,
+      rgba(6, 15, 30, 1) 100%);
+}
+
+.bg-glow-1 {
+  position: absolute;
+  top: -200px;
+  left: -150px;
+  width: 750px;
+  height: 750px;
+  background: radial-gradient(circle, rgba(33,150,243,0.30) 0%, rgba(33,150,243,0) 65%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.bg-glow-2 {
+  position: absolute;
+  bottom: -260px;
+  right: -180px;
+  width: 850px;
+  height: 850px;
+  background: radial-gradient(circle, rgba(0,229,255,0.22) 0%, rgba(0,229,255,0) 65%);
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+.bg-glow-3 {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1200px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(33,150,243,0.14) 0%, rgba(33,150,243,0) 70%);
+  pointer-events: none;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: 0 0;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent), 0 0 16px rgba(0,229,255,0.5);
+  animation: float-pulse 6s ease-in-out infinite;
+  opacity: 0.75;
+}
+
+.p-blue {
+  background: var(--primary-light);
+  box-shadow: 0 0 8px var(--primary-light), 0 0 16px rgba(100,181,246,0.5);
+}
+
+.p-white {
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(255,255,255,0.8);
+  opacity: 0.55;
+}
+
+@keyframes float-pulse {
+  0%, 100% { transform: translate(0, 0); opacity: 0.4; }
+  50% { transform: translate(4px, -8px); opacity: 0.9; }
+}
+
+.corner-deco {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  pointer-events: none;
+}
+
+.corner-deco::before,
+.corner-deco::after {
+  content: '';
+  position: absolute;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.corner-deco.tl { top: 32px; left: 32px; }
+.corner-deco.tl::before { top: 0; left: 0; width: 44px; height: 2px; }
+.corner-deco.tl::after { top: 0; left: 0; width: 2px; height: 44px; }
+
+.corner-deco.tr { top: 32px; right: 32px; }
+.corner-deco.tr::before { top: 0; right: 0; width: 44px; height: 2px; }
+.corner-deco.tr::after { top: 0; right: 0; width: 2px; height: 44px; }
+
+.corner-deco.bl { bottom: 32px; left: 32px; }
+.corner-deco.bl::before { bottom: 0; left: 0; width: 44px; height: 2px; }
+.corner-deco.bl::after { bottom: 0; left: 0; width: 2px; height: 44px; }
+
+.corner-deco.br { bottom: 32px; right: 32px; }
+.corner-deco.br::before { bottom: 0; right: 0; width: 44px; height: 2px; }
+.corner-deco.br::after { bottom: 0; right: 0; width: 2px; height: 44px; }
+
+.halo-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.10);
+  box-shadow: inset 0 0 60px rgba(33,150,243,0.06);
+  pointer-events: none;
+}
+
+.halo-ring.small {
+  width: 560px;
+  height: 560px;
+  border-color: rgba(0,229,255,0.12);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 78px 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 12px;
+}
+
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.24em;
+  color: var(--primary-light);
+}
+
+.logo-mark .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent), 0 0 22px rgba(0,229,255,0.5);
+}
+
+.logo-mark .name {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.meta-info {
+  text-align: right;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: var(--dim);
+  line-height: 1.9;
+}
+
+.meta-info .ver {
+  color: var(--accent);
+  font-size: 11px;
+}
+
+.hero-center {
+  text-align: center;
+  padding-top: 18px;
+}
+
+.brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  margin-bottom: 26px;
+  padding: 8px 22px;
+  border: 1px solid var(--border-strong);
+  background: rgba(0, 229, 255, 0.05);
+  border-radius: 2px;
+  position: relative;
+}
+
+.brand-tag::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.title-main {
+  font-family: var(--font-display);
+  font-size: 108px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.14em;
+  line-height: 1.1;
+  margin-bottom: 22px;
+  text-shadow:
+    0 0 24px rgba(33,150,243,0.5),
+    0 0 60px rgba(33,150,243,0.3),
+    0 0 100px rgba(0,229,255,0.18);
+  position: relative;
+  display: inline-block;
+}
+
+.title-main::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.subtitle {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--primary-light);
+  letter-spacing: 0.28em;
+  padding-left: 0.28em;
+  margin-top: 26px;
+  position: relative;
+  display: inline-block;
+}
+
+.subtitle::before,
+.subtitle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,229,255,0.7));
+}
+
+.subtitle::before { left: -80px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.7)); }
+.subtitle::after { right: -80px; background: linear-gradient(90deg, rgba(0,229,255,0.7), transparent); }
+
+.hero-divider {
+  width: 100%;
+  height: 1px;
+  margin: 34px 0 26px 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(33,150,243,0.45) 50%, transparent 100%);
+  position: relative;
+}
+
+.hero-divider::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.points-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.point-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 22px 26px 24px 26px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.point-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent) 30%, var(--primary) 70%, transparent);
+}
+
+.point-card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(33,150,243,0.14), transparent 70%);
+  pointer-events: none;
+}
+
+.point-num {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 12px;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.point-num::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0,229,255,0.5), transparent);
+}
+
+.point-title {
+  font-family: 'Noto Sans SC', var(--font-body);
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: 0.06em;
+}
+
+.point-desc {
+  font-family: 'Noto Sans SC', var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.7;
+  letter-spacing: 0.03em;
+}
+
+.bottom-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+}
+
+.description {
+  flex: 1;
+  max-width: 960px;
+  padding: 20px 26px;
+  border-left: 2px solid var(--primary);
+  background: linear-gradient(90deg, rgba(33,150,243,0.08), transparent);
+  font-family: 'Noto Sans SC', var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--neutral);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.description::before {
+  content: 'OPEN SOURCE RECORD';
+  position: absolute;
+  top: -10px;
+  left: 26px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  background: var(--bg-dark);
+  padding: 2px 10px;
+  border: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.signature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+  min-width: 220px;
+}
+
+.signature .sig-line {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent));
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.signature .sig-name {
+  color: var(--primary-light);
+  font-weight: 600;
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-base"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-glow-3"></div>
+    <div class="bg-grid"></div>
+    <div class="halo-ring"></div>
+    <div class="halo-ring small"></div>
+    <div class="particles">
+      <div class="particle" style="top:8%;left:12%;width:4px;height:4px;animation-delay:0s;"></div>
+      <div class="particle p-blue" style="top:22%;left:26%;width:3px;height:3px;animation-delay:1.2s;"></div>
+      <div class="particle" style="top:14%;left:68%;width:5px;height:5px;animation-delay:0.6s;"></div>
+      <div class="particle p-white" style="top:30%;left:88%;width:3px;height:3px;animation-delay:1.8s;"></div>
+      <div class="particle" style="top:6%;left:52%;width:4px;height:4px;animation-delay:2.4s;"></div>
+      <div class="particle p-blue" style="top:42%;left:8%;width:3px;height:3px;animation-delay:3.0s;"></div>
+      <div class="particle" style="top:52%;left:94%;width:4px;height:4px;animation-delay:0.3s;"></div>
+      <div class="particle p-white" style="top:72%;left:18%;width:3px;height:3px;animation-delay:1.5s;"></div>
+      <div class="particle p-blue" style="top:82%;left:38%;width:4px;height:4px;animation-delay:2.1s;"></div>
+      <div class="particle" style="top:88%;left:72%;width:3px;height:3px;animation-delay:0.9s;"></div>
+      <div class="particle p-blue" style="top:60%;left:56%;width:4px;height:4px;animation-delay:2.7s;"></div>
+      <div class="particle p-white" style="top:38%;left:44%;width:2px;height:2px;animation-delay:3.3s;"></div>
+      <div class="particle" style="top:26%;left:58%;width:3px;height:3px;animation-delay:1.0s;"></div>
+      <div class="particle p-blue" style="top:18%;left:82%;width:4px;height:4px;animation-delay:2.9s;"></div>
+      <div class="particle p-white" style="top:66%;left:62%;width:2px;height:2px;animation-delay:0.5s;"></div>
+      <div class="particle" style="top:50%;left:28%;width:3px;height:3px;animation-delay:1.7s;"></div>
+      <div class="particle p-blue" style="top:10%;left:36%;width:4px;height:4px;animation-delay:3.5s;"></div>
+      <div class="particle" style="top:78%;left:86%;width:3px;height:3px;animation-delay:2.3s;"></div>
+      <div class="particle p-white" style="top:44%;left:78%;width:2px;height:2px;animation-delay:0.8s;"></div>
+      <div class="particle p-blue" style="top:84%;left:6%;width:3px;height:3px;animation-delay:1.4s;"></div>
+    </div>
+    <div class="corner-deco tl"></div>
+    <div class="corner-deco tr"></div>
+    <div class="corner-deco bl"></div>
+    <div class="corner-deco br"></div>
+  </div>
+
+  <div id="ct">
+    <div class="top-row">
+      <div class="logo-mark">
+        <span class="dot"></span>
+        <span class="name">OPEN·SOURCE</span>
+        <span>BOOK RECORD</span>
+      </div>
+      <div class="meta-info">
+        <div>2024 / 12 · VOL.12</div>
+        <div class="ver">OPEN·SOURCE·RECORD</div>
+      </div>
+    </div>
+
+    <div class="hero-center">
+      <div class="brand-tag"><span>适兕 · 开源之道</span></div>
+      <h1 class="title-main">开源之书记录</h1>
+      <div class="subtitle"><span>2024年12月 · 开源布道与阅读分享</span></div>
+      <div class="hero-divider"></div>
+
+      <div class="points-row">
+        <div class="point-card">
+          <div class="point-num"><span>01</span></div>
+          <div class="point-title">记录者的角色</div>
+          <div class="point-desc">以适兕之姿，持续书写开源之路的点点滴滴</div>
+        </div>
+        <div class="point-card">
+          <div class="point-num"><span>02</span></div>
+          <div class="point-title">2024年度回顾</div>
+          <div class="point-desc">凝聚全年阅读与实践的心路历程</div>
+        </div>
+        <div class="point-card">
+          <div class="point-num"><span>03</span></div>
+          <div class="point-title">开源布道使命</div>
+          <div class="point-desc">将自由精神传递给更多志同道合者</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="description">
+        <span>这是开源之道·适兕的 2024 年 12 月开篇记录，一份关于开源阅读与布道的年度回顾文档。从个人实践出发，分享开源路上的思考与感悟，邀请更多人加入开源的自由之旅。</span>
+      </div>
+      <div class="signature">
+        <div class="sig-line"></div>
+        <div class="sig-name">OPEN · SOURCE · WAY</div>
+        <div>BY SHI SI · DEC 2024</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
