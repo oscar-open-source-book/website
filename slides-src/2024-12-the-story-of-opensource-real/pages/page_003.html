@@ -1,38 +1,34 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <title>开源四大核心价值</title>
-<script src="../assets/echarts.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --bg-0: #0A0E1A;
-  --bg-1: #0F1524;
-  --bg-2: #141B2E;
-  --card: #111726;
-  --card-hi: #172033;
-  --line: rgba(33, 150, 243, 0.18);
-  --line-strong: rgba(33, 150, 243, 0.4);
-  --blue: #2196F3;
-  --blue-2: #4FC3F7;
-  --blue-glow: rgba(33, 150, 243, 0.35);
-  --orange: #FF9800;
-  --orange-2: #FFB74D;
-  --text: #E8EEF7;
-  --text-dim: #A0AEC0;
-  --text-mute: #6B7A93;
+  --primary: #2196F3;
+  --primary-light: #64B5F6;
+  --primary-dark: #0D47A1;
+  --accent: #FF9800;
+  --accent-light: #FFB74D;
+  --neutral: #E0E0E0;
+  --neutral-dark: #B0BEC5;
+  --bg: #0A1628;
+  --bg-2: #0F2440;
+  --card-bg: #0F2440;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
-  color: var(--text);
-  background: var(--bg-0);
+html, body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  color: var(--neutral);
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
 }
 
 .wrapper {
@@ -41,742 +37,610 @@ body {
   position: relative;
   overflow: hidden;
   margin: 0 auto;
-  background: linear-gradient(160deg, #0A0E1A 0%, #0F1524 55%, #0B1224 100%);
+  background: var(--bg);
 }
 
 #bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  overflow: hidden;
-}
-
-#bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
   background-image:
-    linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);
-  background-size: 46px 46px;
+    linear-gradient(rgba(33, 150, 243, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-#bg::after {
-  content: '';
+.glow-a {
   position: absolute;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
-}
-
-.blob {
-  position: absolute;
+  top: -260px;
+  right: -180px;
+  width: 720px;
+  height: 720px;
   border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.35;
-}
-.blob-1 { width: 500px; height: 500px; background: var(--blue); top: -180px; left: -160px; opacity: 0.25; }
-.blob-2 { width: 420px; height: 420px; background: var(--blue-2); bottom: -140px; right: -120px; opacity: 0.18; }
-.blob-3 { width: 300px; height: 300px; background: var(--orange); top: 380px; left: 55%; opacity: 0.09; }
-
-.grid-frame {
-  position: absolute;
-  top: 24px;
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
-  border: 1px solid rgba(33, 150, 243, 0.08);
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.28) 0%, rgba(33, 150, 243, 0.08) 40%, transparent 72%);
+  filter: blur(4px);
   pointer-events: none;
 }
 
-.corner {
+.glow-b {
   position: absolute;
-  width: 22px;
-  height: 22px;
-  border-color: var(--blue);
+  bottom: -240px;
+  left: -180px;
+  width: 620px;
+  height: 620px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 152, 0, 0.14) 0%, rgba(255, 152, 0, 0.05) 42%, transparent 72%);
+  filter: blur(4px);
+  pointer-events: none;
 }
-.corner.tl { top: 20px; left: 20px; border-top: 2px solid var(--blue); border-left: 2px solid var(--blue); }
-.corner.tr { top: 20px; right: 20px; border-top: 2px solid var(--blue); border-right: 2px solid var(--blue); }
-.corner.bl { bottom: 20px; left: 20px; border-bottom: 2px solid var(--blue); border-left: 2px solid var(--blue); }
-.corner.br { bottom: 20px; right: 20px; border-bottom: 2px solid var(--blue); border-right: 2px solid var(--blue); }
 
 #ct {
   position: absolute;
   inset: 0;
   z-index: 1;
-  padding: 42px 62px 42px 62px;
+  padding: 40px 60px 30px 60px;
   display: flex;
   flex-direction: column;
 }
 
-/* HERO */
+/* ============ HERO ============ */
 .hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 40px;
-  margin-bottom: 22px;
-}
-.hero-left { max-width: 1020px; }
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 16px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: rgba(33,150,243,0.08);
-  color: var(--blue-2);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 3px;
-  font-weight: 600;
-  margin-bottom: 14px;
-}
-.tag::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--orange);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--orange);
-}
-
-h1 {
-  font-family: 'Noto Sans SC', 'Inter', sans-serif;
-  font-size: 50px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  line-height: 1.1;
-  color: #FFFFFF;
-  margin-bottom: 14px;
-}
-h1 .hl {
-  color: var(--blue-2);
   position: relative;
-  padding: 0 2px;
-}
-h1 .hl::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -4px;
-  height: 3px;
-  background: var(--orange);
-  box-shadow: 0 0 12px var(--orange);
+  margin-bottom: 20px;
 }
 
-.sub {
-  font-size: 17px;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 940px;
-  font-weight: 400;
-}
-.sub b {
-  color: var(--blue-2);
-  font-weight: 600;
-}
-
-/* HERO RIGHT */
-.hero-right {
+.hero-top {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 14px;
-  padding-top: 4px;
+  align-items: flex-start;
+  gap: 22px;
+  margin-bottom: 10px;
 }
 
-.brands {
-  display: flex;
-  gap: 8px;
-}
-.brand-pill {
+.hero-tag {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: rgba(255,255,255,0.03);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-dim);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-.brand-pill .dot {
-  width: 6px;
-  height: 6px;
-  background: var(--blue);
-  border-radius: 50%;
-}
-.brand-pill:nth-child(2) .dot { background: var(--orange); }
-.brand-pill:nth-child(3) .dot { background: var(--blue-2); }
-
-.stats-strip {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  padding: 8px 16px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(33,150,243,0.04);
-}
-.stat-mini {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.stat-mini .v {
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--blue-2);
-  letter-spacing: 0.5px;
-}
-.stat-mini .v .u {
+  gap: 8px;
+  padding: 7px 16px;
+  background: rgba(33, 150, 243, 0.12);
+  border: 1px solid rgba(33, 150, 243, 0.42);
+  border-radius: 4px;
   font-size: 12px;
-  color: var(--text-dim);
+  color: var(--primary-light);
   font-weight: 600;
-  margin-left: 2px;
-}
-.stat-mini .l {
-  font-size: 10px;
-  color: var(--text-mute);
-  letter-spacing: 1px;
-  margin-top: 2px;
-  font-family: 'JetBrains Mono', monospace;
-}
-.strip-sep {
-  width: 1px;
-  height: 32px;
-  background: var(--line-strong);
+  letter-spacing: 4px;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
 }
 
-/* CARDS */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+.hero-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--primary), 0 0 4px rgba(33, 150, 243, 0.9);
+}
+
+.hero h1 {
+  font-size: 54px;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  display: flex;
+  align-items: center;
   gap: 18px;
+}
+
+.hero h1::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 54px;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: var(--neutral-dark);
+  line-height: 1.8;
+  max-width: 1240px;
+  margin-top: 8px;
+}
+
+.hl-blue { color: var(--primary-light); font-weight: 600; }
+.hl-orange { color: var(--accent-light); font-weight: 600; }
+.hl-white { color: #FFFFFF; font-weight: 600; }
+
+/* ============ QUAD GRID ============ */
+.quad {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
   margin-bottom: 18px;
 }
 
 .card {
+  background: linear-gradient(140deg, #12294A 0%, #0E1F38 100%);
+  border: 1px solid rgba(33, 150, 243, 0.22);
+  border-radius: 10px;
+  padding: 20px 26px;
   position: relative;
-  padding: 22px 20px 20px 20px;
-  background: linear-gradient(180deg, rgba(33,150,243,0.08) 0%, rgba(33,150,243,0.02) 100%);
-  border: 1px solid var(--line-strong);
-  border-radius: 14px;
   overflow: hidden;
-  height: 428px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
+
 .card::before {
   content: '';
   position: absolute;
-  left: 0;
   top: 0;
-  width: 4px;
+  left: 0;
+  width: 3px;
   height: 100%;
-  background: linear-gradient(180deg, var(--blue) 0%, var(--blue-2) 100%);
-}
-.card::after {
-  content: '';
-  position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle, rgba(33,150,243,0.15) 0%, transparent 70%);
-  border-radius: 50%;
+  background: linear-gradient(180deg, var(--primary) 0%, transparent 100%);
 }
 
-.card-head {
+.card-top {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 18px;
-  position: relative;
-  z-index: 1;
+  gap: 16px;
+  margin-bottom: 12px;
 }
 
-.num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--orange);
-  font-weight: 700;
-  letter-spacing: 2px;
-  padding: 4px 8px;
-  border: 1px solid rgba(255,152,0,0.4);
-  border-radius: 4px;
-  background: rgba(255,152,0,0.06);
-}
-
-.icon {
-  width: 58px;
-  height: 58px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0.04) 100%);
-  border: 1px solid rgba(33,150,243,0.4);
+.card-icon {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.28), rgba(33, 150, 243, 0.06));
+  border: 1px solid rgba(33, 150, 243, 0.5);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(33,150,243,0.15);
-}
-.icon svg { width: 28px; height: 28px; }
-
-.en {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--orange-2);
-  letter-spacing: 4px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  position: relative;
-  z-index: 1;
-}
-
-.zh {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 34px;
-  font-weight: 800;
-  color: #FFFFFF;
-  letter-spacing: 2px;
-  margin-bottom: 14px;
-  line-height: 1.1;
-  position: relative;
-  z-index: 1;
-}
-.zh::after {
-  content: '';
-  display: block;
-  width: 38px;
-  height: 3px;
-  background: var(--blue);
-  margin-top: 10px;
-  border-radius: 2px;
-}
-
-.desc {
-  font-size: 14.5px;
-  line-height: 1.75;
-  color: var(--text-dim);
-  position: relative;
-  z-index: 1;
-  flex: 1;
-}
-.desc b {
-  color: var(--blue-2);
-  font-weight: 600;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
-  position: relative;
-  z-index: 1;
-}
-.tag-mini {
-  padding: 3px 9px;
-  background: rgba(33,150,243,0.1);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--blue-2);
-  letter-spacing: 0.5px;
-  font-weight: 600;
-}
-.tag-mini.orange {
-  background: rgba(255,152,0,0.08);
-  border-color: rgba(255,152,0,0.35);
-  color: var(--orange-2);
-}
-
-/* DATA STRIP */
-.data-strip {
-  display: grid;
-  grid-template-columns: 2.4fr 1fr;
-  gap: 18px;
-  flex: 1;
-}
-
-.data-card {
-  position: relative;
-  padding: 18px 24px;
-  background: linear-gradient(90deg, rgba(33,150,243,0.08) 0%, rgba(33,150,243,0.02) 100%);
-  border: 1px solid var(--line-strong);
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.data-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--orange);
-}
-.data-card::after {
-  content: '';
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, rgba(255,152,0,0.1) 0%, transparent 70%);
-  border-radius: 50%;
-}
-
-.dc-title {
   flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-.dc-en {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--orange-2);
-  letter-spacing: 2.5px;
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-.dc-zh {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 17px;
-  font-weight: 700;
-  color: #FFFFFF;
-  letter-spacing: 1px;
-  margin-bottom: 3px;
-}
-.dc-sub {
-  font-size: 11px;
-  color: var(--text-mute);
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.5px;
+  color: var(--primary-light);
 }
 
-.free-list {
-  display: flex;
-  gap: 10px;
-  flex: 1;
-  position: relative;
-  z-index: 1;
-}
-.free-item {
-  flex: 1;
-  padding: 10px 6px;
-  background: rgba(33,150,243,0.08);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  text-align: center;
-}
-.free-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--blue-2);
-  line-height: 1;
-  text-shadow: 0 0 12px rgba(33,150,243,0.4);
-}
-.free-label {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 12px;
-  color: var(--text);
-  margin-top: 6px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-.free-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--text-mute);
-  margin-top: 2px;
-  letter-spacing: 0.5px;
-}
+.card-icon svg { width: 30px; height: 30px; }
 
-.lic-num {
-  font-family: 'Inter', sans-serif;
-  font-size: 82px;
-  font-weight: 900;
-  color: var(--blue-2);
-  line-height: 1;
-  letter-spacing: -2px;
-  text-shadow: 0 0 24px rgba(33,150,243,0.4);
-  position: relative;
-  z-index: 1;
-  margin-right: 4px;
-}
-.lic-plus {
-  color: var(--orange);
-  font-size: 44px;
-  margin-left: 2px;
-  vertical-align: 4px;
-}
-.lic-list {
+.card-head {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 3px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-dim);
-  letter-spacing: 0.5px;
-  position: relative;
-  z-index: 1;
-  margin-left: 10px;
-}
-.lic-list .lic-item { display: flex; align-items: center; gap: 6px; }
-.lic-list .lic-item::before {
-  content: '';
-  width: 4px;
-  height: 4px;
-  background: var(--orange);
-  border-radius: 50%;
+  padding-top: 2px;
 }
 
-/* FOOTER */
-.foot {
+.card-num {
+  font-size: 11px;
+  color: var(--primary-light);
+  font-weight: 600;
+  letter-spacing: 4px;
+  font-family: 'Inter', sans-serif;
+}
+
+.card-title {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-mute);
-  letter-spacing: 1.5px;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
 }
-.foot-left { display: flex; align-items: center; gap: 12px; }
-.foot-mark {
-  color: var(--orange);
+
+.card-title .cn {
+  font-size: 26px;
   font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 3px;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
-.foot-line {
-  height: 1px;
-  width: 60px;
-  background: linear-gradient(90deg, var(--blue), transparent);
+
+.card-title .en {
+  font-size: 13px;
+  color: var(--primary-light);
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+}
+
+.card-body {
+  font-size: 16px;
+  color: var(--neutral);
+  line-height: 1.65;
+  margin-bottom: 14px;
+  padding-left: 2px;
+}
+
+.card-tags {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-left: 2px;
+}
+
+.tag {
+  padding: 4px 12px;
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.28);
+  border-radius: 3px;
+  font-size: 12px;
+  color: var(--primary-light);
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.card-tag-orange {
+  background: rgba(255, 152, 0, 0.1);
+  border-color: rgba(255, 152, 0, 0.36);
+  color: var(--accent-light);
+}
+
+/* ============ FOOTER ============ */
+.footer {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+  height: 118px;
+}
+
+.stat-card {
+  position: relative;
+  padding: 18px 24px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #12294A 0%, #0C1B30 100%);
+  border: 1px solid rgba(33, 150, 243, 0.32);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.stat-card.orange {
+  border-color: rgba(255, 152, 0, 0.42);
+}
+
+.stat-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+.stat-top-bar.orange-bar {
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(33, 150, 243, 0.15);
+  border: 1px solid rgba(33, 150, 243, 0.4);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-light);
+  flex-shrink: 0;
+}
+
+.stat-icon svg { width: 20px; height: 20px; }
+
+.stat-icon.orange-icon {
+  background: rgba(255, 152, 0, 0.14);
+  border-color: rgba(255, 152, 0, 0.4);
+  color: var(--accent-light);
+}
+
+.stat-title-cn {
+  font-size: 20px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 2px;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+.stat-title-en {
+  font-size: 11px;
+  color: var(--neutral-dark);
+  letter-spacing: 3px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.four-freedoms {
+  display: flex;
+  gap: 8px;
+}
+
+.ff-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(33, 150, 243, 0.08);
+  border: 1px solid rgba(33, 150, 243, 0.18);
+  border-radius: 4px;
+}
+
+.ff-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0;
+  line-height: 1;
+  font-style: italic;
+}
+
+.ff-label {
+  font-size: 13px;
+  color: var(--neutral);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.stat-highlight {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.stat-number {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--accent);
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.stat-plus {
+  font-size: 22px;
+  color: var(--accent-light);
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+}
+
+.stat-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-text-main {
+  font-size: 14px;
+  color: var(--accent-light);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.stat-text-sub {
+  font-size: 11px;
+  color: var(--neutral-dark);
+  letter-spacing: 0.5px;
+  font-family: 'Inter', 'PingFang SC', sans-serif;
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="grid-frame"></div>
-    <div class="corner tl"></div>
-    <div class="corner tr"></div>
-    <div class="corner bl"></div>
-    <div class="corner br"></div>
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
   </div>
-
   <div id="ct">
     <!-- HERO -->
     <div class="hero">
-      <div class="hero-left">
-        <div class="tag"><span>OPEN SOURCE · CORE VALUES</span></div>
-        <h1>开源<span class="hl">四大核心价值</span></h1>
-        <div class="sub">开源的核心价值远不止<b>免费使用</b>，而是赋予用户<b>运行、研究、修改和分发</b>软件的四大自由权利——在 AI 大模型时代，这些价值对保障<b>技术民主化</b>具有关键意义。</div>
+      <div class="hero-top">
+        <span class="hero-tag"><span class="hero-dot"></span>OPEN SOURCE · 核心价值</span>
       </div>
-      <div class="hero-right">
-        <div class="brands">
-          <div class="brand-pill"><span class="dot"></span>GNU · GPL</div>
-          <div class="brand-pill"><span class="dot"></span>OSI · Apache</div>
-          <div class="brand-pill"><span class="dot"></span>Mozilla · MIT</div>
-        </div>
-        <div class="stats-strip">
-          <div class="stat-mini">
-            <span class="v">4<span class="u">Freedoms</span></span>
-            <span class="l">FOUR FREEDOMS</span>
-          </div>
-          <div class="strip-sep"></div>
-          <div class="stat-mini">
-            <span class="v">200<span class="u">+ Licenses</span></span>
-            <span class="l">OSI CERTIFIED</span>
-          </div>
-          <div class="strip-sep"></div>
-          <div class="stat-mini">
-            <span class="v">100<span class="u">% Open</span></span>
-            <span class="l">FULLY AUDITABLE</span>
-          </div>
-        </div>
-      </div>
+      <h1><span>开源四大核心价值</span></h1>
+      <p class="hero-sub">
+        开源的核心价值远不止<span class="hl-white">免费使用</span>，而是赋予用户<span class="hl-blue">完整自由的权利</span>；在 AI 大模型时代，当闭源模型集中化趋势加剧时，开源的<span class="hl-orange">透明与自治</span>成为保障<span class="hl-orange">技术民主化</span>的关键屏障。
+      </p>
     </div>
 
-    <!-- 4 CARDS -->
-    <div class="cards">
-
-      <!-- Card 1: Freedom -->
+    <!-- QUAD GRID -->
+    <div class="quad">
+      <!-- 1. Freedom -->
       <div class="card">
-        <div class="card-head">
-          <div class="num"><span>VALUE · 01</span></div>
-          <div class="icon">
-            <svg viewBox="0 0 48 48" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8 24 L20 32 L34 18" />
-              <path d="M8 24 L20 16" opacity="0.4"/>
-              <circle cx="38" cy="24" r="2" fill="#FF9800" stroke="none"/>
-              <path d="M6 10 L42 10 M6 38 L42 38" opacity="0.3"/>
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4.5" y="11" width="15" height="9" rx="1.5"/>
+              <path d="M8 11V7.5a4 4 0 0 1 8 0"/>
+              <circle cx="12" cy="15.5" r="1.3" fill="currentColor"/>
+              <line x1="12" y1="16.8" x2="12" y2="18"/>
             </svg>
           </div>
+          <div class="card-head">
+            <span class="card-num">VALUE · 01</span>
+            <div class="card-title">
+              <span class="cn">自由</span>
+              <span class="en">Freedom</span>
+            </div>
+          </div>
         </div>
-        <div class="en"><span>FREE DOM</span></div>
-        <div class="zh"><span>自由</span></div>
-        <div class="desc">用户拥有<b>运行、研究、修改和分发</b>软件的四大自由权利，从代码源头到部署使用全程掌控。</div>
-        <div class="tags">
-          <span class="tag-mini">RUN</span>
-          <span class="tag-mini">STUDY</span>
-          <span class="tag-mini">MODIFY</span>
-          <span class="tag-mini orange">REDISTRIBUTE</span>
+        <p class="card-body">
+          用户拥有对软件的<span class="hl-blue">四项基本自由权利</span>：可运行、可研究、可修改、可分发——从"使用权"升级到完整的<span class="hl-orange">创造与分享</span>权。
+        </p>
+        <div class="card-tags">
+          <span class="tag">01 运行</span>
+          <span class="tag">02 研究</span>
+          <span class="tag">03 修改</span>
+          <span class="tag">04 分发</span>
         </div>
       </div>
 
-      <!-- Card 2: Collaboration -->
+      <!-- 2. Collaboration -->
       <div class="card">
-        <div class="card-head">
-          <div class="num"><span>VALUE · 02</span></div>
-          <div class="icon">
-            <svg viewBox="0 0 48 48" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="14" cy="14" r="4"/>
-              <circle cx="34" cy="14" r="4"/>
-              <circle cx="24" cy="34" r="4"/>
-              <path d="M17 17 L21 30" />
-              <path d="M31 17 L27 30" />
-              <path d="M18 14 L30 14" opacity="0.6"/>
-              <circle cx="24" cy="24" r="1.5" fill="#FF9800" stroke="none"/>
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="7" r="2"/>
+              <circle cx="18" cy="7" r="2"/>
+              <circle cx="12" cy="17" r="2"/>
+              <line x1="7.5" y1="8.5" x2="10.7" y2="15.7"/>
+              <line x1="16.5" y1="8.5" x2="13.3" y2="15.7"/>
+              <line x1="8" y1="7" x2="16" y2="7"/>
             </svg>
           </div>
+          <div class="card-head">
+            <span class="card-num">VALUE · 02</span>
+            <div class="card-title">
+              <span class="cn">协作</span>
+              <span class="en">Collaboration</span>
+            </div>
+          </div>
         </div>
-        <div class="en"><span>COLLABORATION</span></div>
-        <div class="zh"><span>协作</span></div>
-        <div class="desc">全球开发者以<b>透明方式</b>协同贡献，围绕共同目标持续演进，代码库汇聚千万级贡献者智慧。</div>
-        <div class="tags">
-          <span class="tag-mini">CONTRIBUTE</span>
-          <span class="tag-mini">REVIE</span>
-          <span class="tag-mini">FORK</span>
-          <span class="tag-mini orange">GLOBAL</span>
+        <p class="card-body">
+          全球开发者以<span class="hl-blue">透明的方式</span>围绕共同目标协同贡献，打破地域与组织的壁垒，让创新以更低的门槛<span class="hl-orange">指数级加速</span>。
+        </p>
+        <div class="card-tags">
+          <span class="tag">全球社区</span>
+          <span class="tag">共同目标</span>
+          <span class="tag card-tag-orange">协同贡献</span>
         </div>
       </div>
 
-      <!-- Card 3: Transparency -->
+      <!-- 3. Transparency -->
       <div class="card">
-        <div class="card-head">
-          <div class="num"><span>VALUE · 03</span></div>
-          <div class="icon">
-            <svg viewBox="0 0 48 48" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 24 C12 14 20 10 24 10 C28 10 36 14 42 24 C36 34 28 38 24 38 C20 38 12 34 6 24 Z"/>
-              <circle cx="24" cy="24" r="6"/>
-              <circle cx="24" cy="24" r="2.5" fill="#FF9800" stroke="none"/>
-              <path d="M24 6 L24 4" opacity="0.5"/>
-              <path d="M24 44 L24 42" opacity="0.5"/>
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z"/>
+              <circle cx="12" cy="12" r="2.6"/>
+              <circle cx="12" cy="12" r="0.8" fill="currentColor"/>
             </svg>
           </div>
+          <div class="card-head">
+            <span class="card-num">VALUE · 03</span>
+            <div class="card-title">
+              <span class="cn">透明</span>
+              <span class="en">Transparency</span>
+            </div>
+          </div>
         </div>
-        <div class="en"><span>TRANSPARENCY</span></div>
-        <div class="zh"><span>透明</span></div>
-        <div class="desc">代码<b>公开可审计</b>，消除信息不对称带来的信任危机，让 AI 模型决策逻辑可验证、可追溯、可复核。</div>
-        <div class="tags">
-          <span class="tag-mini">AUDIT</span>
-          <span class="tag-mini">REVIEW</span>
-          <span class="tag-mini">TRACK</span>
-          <span class="tag-mini orange">TRUST</span>
+        <p class="card-body">
+          代码公开可审计，任何人都能验证每一行逻辑；从根本上<span class="hl-blue">消除信息不对称</span>带来的信任危机，建立可核查的<span class="hl-orange">技术真相</span>。
+        </p>
+        <div class="card-tags">
+          <span class="tag">代码公开</span>
+          <span class="tag">公开审计</span>
+          <span class="tag card-tag-orange">可核查</span>
         </div>
       </div>
 
-      <!-- Card 4: Governance -->
+      <!-- 4. Governance -->
       <div class="card">
-        <div class="card-head">
-          <div class="num"><span>VALUE · 04</span></div>
-          <div class="icon">
-            <svg viewBox="0 0 48 48" fill="none" stroke="#4FC3F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="24" cy="24" r="10"/>
-              <path d="M24 4 L24 14"/>
-              <path d="M24 34 L24 44"/>
-              <path d="M4 24 L14 24"/>
-              <path d="M34 24 L44 24"/>
-              <path d="M9 9 L16 16" opacity="0.6"/>
-              <path d="M32 32 L39 39" opacity="0.6"/>
-              <path d="M39 9 L32 16" opacity="0.6"/>
-              <path d="M16 32 L9 39" opacity="0.6"/>
-              <circle cx="24" cy="24" r="3" fill="#FF9800" stroke="none"/>
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="4.5" r="1.8"/>
+              <circle cx="4.5" cy="19" r="1.8"/>
+              <circle cx="12" cy="19" r="1.8"/>
+              <circle cx="19.5" cy="19" r="1.8"/>
+              <line x1="12" y1="6.3" x2="4.5" y2="17.2"/>
+              <line x1="12" y1="6.3" x2="12" y2="17.2"/>
+              <line x1="12" y1="6.3" x2="19.5" y2="17.2"/>
+              <line x1="6.3" y1="19" x2="17.7" y2="19"/>
             </svg>
           </div>
-        </div>
-        <div class="en"><span>GOVERNANCE</span></div>
-        <div class="zh"><span>自治</span></div>
-        <div class="desc">社区驱动的<b>决策机制</b>，多方治理避免单一商业实体垄断方向，保障项目长期演进的技术中立。</div>
-        <div class="tags">
-          <span class="tag-mini">VOTE</span>
-          <span class="tag-mini">COMMITTEE</span>
-          <span class="tag-mini">RFC</span>
-          <span class="tag-mini orange">NEUTRAL</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- DATA STRIP -->
-    <div class="data-strip">
-      <div class="data-card">
-        <div class="dc-title">
-          <div class="dc-en"><span>FOUR FREEDOMS</span></div>
-          <div class="dc-zh"><span>四大自由</span></div>
-          <div class="dc-sub"><span>FOSS · DEFINITION</span></div>
-        </div>
-        <div class="free-list">
-          <div class="free-item">
-            <div class="free-num"><span>0</span></div>
-            <div class="free-label"><span>运行</span></div>
-            <div class="free-sub"><span>RUN</span></div>
-          </div>
-          <div class="free-item">
-            <div class="free-num"><span>1</span></div>
-            <div class="free-label"><span>研究</span></div>
-            <div class="free-sub"><span>STUDY</span></div>
-          </div>
-          <div class="free-item">
-            <div class="free-num"><span>2</span></div>
-            <div class="free-label"><span>修改</span></div>
-            <div class="free-sub"><span>MODIFY</span></div>
-          </div>
-          <div class="free-item">
-            <div class="free-num"><span>3</span></div>
-            <div class="free-label"><span>分发</span></div>
-            <div class="free-sub"><span>REDISTRIBUTE</span></div>
+          <div class="card-head">
+            <span class="card-num">VALUE · 04</span>
+            <div class="card-title">
+              <span class="cn">自治</span>
+              <span class="en">Governance</span>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="data-card">
-        <div class="dc-title">
-          <div class="dc-en"><span>OSI CERTIFIED</span></div>
-          <div class="dc-zh"><span>开源许可证</span></div>
-          <div class="lic-list">
-            <span class="lic-item">GPL · Apache</span>
-            <span class="lic-item">MIT · BSD · MPL</span>
-          </div>
+        <p class="card-body">
+          社区驱动决策机制，避免单一商业实体垄断方向；技术演进路径由<span class="hl-blue">使用者共同决定</span>，守护生态的<span class="hl-orange">独立与多元</span>。
+        </p>
+        <div class="card-tags">
+          <span class="tag">社区驱动</span>
+          <span class="tag">避免垄断</span>
+          <span class="tag card-tag-orange">多方共治</span>
         </div>
-        <div class="lic-num"><span>200</span><span class="lic-plus">+</span></div>
       </div>
     </div>
 
     <!-- FOOTER -->
-    <div class="foot">
-      <div class="foot-left">
-        <span class="foot-mark">◆</span>
-        <span>SOURCE · FOSS DEFINITION & OSI STANDARDS</span>
-        <div class="foot-line"></div>
+    <div class="footer">
+      <div class="stat-card">
+        <div class="stat-top-bar"></div>
+        <div class="stat-top">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12l4 4 12-12"/>
+              <path d="M4 18l3 3"/>
+              <path d="M4 6l3-3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-title-cn">四大自由</div>
+            <div class="stat-title-en">FOUR FREEDOMS · 0 / 1 / 2 / 3</div>
+          </div>
+        </div>
+        <div class="four-freedoms">
+          <div class="ff-item">
+            <span class="ff-num">0</span>
+            <span class="ff-label">运行</span>
+          </div>
+          <div class="ff-item">
+            <span class="ff-num">1</span>
+            <span class="ff-label">修改</span>
+          </div>
+          <div class="ff-item">
+            <span class="ff-num">2</span>
+            <span class="ff-label">分发</span>
+          </div>
+          <div class="ff-item">
+            <span class="ff-num">3</span>
+            <span class="ff-label">改进</span>
+          </div>
+        </div>
       </div>
-      <div class="foot-right">
-        <span>P.04 · CORE VALUES · OPEN SOURCE</span>
+
+      <div class="stat-card orange">
+        <div class="stat-top-bar orange-bar"></div>
+        <div class="stat-top">
+          <div class="stat-icon orange-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l9 4.5v9L12 21 3 16.5v-9z"/>
+              <path d="M12 3v18"/>
+              <path d="M3 7.5l9 4.5 9-4.5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-title-cn">开源许可证</div>
+            <div class="stat-title-en">OSI CERTIFIED · LICENSES</div>
+          </div>
+        </div>
+        <div class="stat-highlight">
+          <span class="stat-number">200</span>
+          <span class="stat-plus">+</span>
+          <div class="stat-text">
+            <span class="stat-text-main">OSI 认证的主流许可证</span>
+            <span class="stat-text-sub">全球开发者共同遵守的公开协议</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
