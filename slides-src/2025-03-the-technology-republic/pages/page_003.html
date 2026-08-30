@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源的四个自由</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg-dark: #1A1A2E;
+  --bg-darker: #0D0D1A;
+  --text-main: #E8E8F0;
+  --text-muted: #8899B3;
+}
+body {
+  font-family: 'Inter', 'PingFang SC', 'Noto Sans SC', sans-serif;
+  background: #05050E;
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #1A1A2E 0%, #0D0D1A 100%);
+}
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -160px;
+  right: -120px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.22) 0%, transparent 65%);
+  border-radius: 50%;
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -180px;
+  left: -120px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.18) 0%, transparent 65%);
+  border-radius: 50%;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  height: 156px;
+  position: relative;
+}
+.neon-bar {
+  width: 46px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 3px;
+  box-shadow: 0 0 14px var(--accent);
+  margin-bottom: 20px;
+}
+.neon-bar::before,
+.neon-bar::after {
+  content: '';
+  display: none;
+}
+.title {
+  font-size: 52px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--accent);
+  margin-bottom: 16px;
+  line-height: 1.1;
+  text-shadow: 0 0 22px rgba(0, 188, 212, 0.55);
+}
+.title span {
+  position: relative;
+}
+.subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.subtitle span {
+  font-family: 'Inter', sans-serif;
+}
+.subtitle-line {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 920px;
+  letter-spacing: 0.3px;
+}
+.description span {
+  color: var(--text-muted);
+}
+
+/* Main content */
+.main {
+  display: grid;
+  grid-template-columns: 780px 600px;
+  gap: 60px;
+  margin-top: 26px;
+  height: 460px;
+}
+
+/* Cards column */
+.cards-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+.card {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.07), rgba(0, 188, 212, 0.03));
+  border: 1px solid rgba(33, 150, 243, 0.28);
+  border-radius: 10px;
+  padding: 20px 22px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+.card-number {
+  font-size: 68px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+  min-width: 64px;
+  font-family: 'Inter', sans-serif;
+  text-shadow: 0 0 22px rgba(0, 188, 212, 0.35);
+}
+.card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+.card-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+}
+.card-title span {
+  display: block;
+}
+.card-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+.card-desc span {
+  display: block;
+}
+
+/* Image column */
+.image-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.image-wrap {
+  width: 600px;
+  height: 335px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 42px rgba(33, 150, 243, 0.32);
+}
+.image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.image-caption {
+  margin-top: 18px;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--text-muted);
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+.image-caption span {
+  display: inline-block;
+}
+
+/* Network connections overlay */
+.network-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 780px;
+  height: 460px;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Timeline */
+.timeline {
+  margin-top: 32px;
+  background: linear-gradient(90deg, rgba(33, 150, 243, 0.07), rgba(0, 188, 212, 0.07));
+  border-top: 1px solid rgba(33, 150, 243, 0.28);
+  border-bottom: 1px solid rgba(33, 150, 243, 0.28);
+  padding: 20px 32px;
+  display: flex;
+  gap: 30px;
+  align-items: stretch;
+  height: 108px;
+  border-radius: 4px;
+}
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex: 1;
+  position: relative;
+}
+.timeline-line {
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  flex-shrink: 0;
+}
+.timeline-year {
+  font-size: 34px;
+  font-weight: 900;
+  color: var(--accent);
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+  flex-shrink: 0;
+  text-shadow: 0 0 16px rgba(0, 188, 212, 0.55);
+}
+.timeline-year span {
+  display: inline-block;
+}
+.timeline-text {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  padding-left: 22px;
+  border-left: 2px solid var(--primary);
+}
+.timeline-text span {
+  display: block;
+}
+
+/* Bottom accent */
+.bottom-accent {
+  position: absolute;
+  bottom: 18px;
+  right: 60px;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: rgba(0, 188, 212, 0.55);
+  font-family: 'Inter', sans-serif;
+}
+.bottom-accent span {
+  display: inline-block;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="neon-bar"></div>
+      <div class="title"><span>开源的四个自由</span></div>
+      <div class="subtitle"><span>The Four Freedoms of Open Source</span><span class="subtitle-line"></span></div>
+      <div class="description"><span>自由软件运动的四个自由源于 Richard Stallman 在 1985 年的系统性宣告，四个自由相互依存、缺一不可，共同定义了技术公民权框架，成为开源宪法的基石。</span></div>
+    </div>
+
+    <div class="main">
+      <div class="cards-col">
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-number">0</div>
+            <div class="card-text">
+              <div class="card-title"><span>自由 0 · 运行</span></div>
+              <div class="card-desc"><span>不受限制地运行程序，对数字枷锁的反抗</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-number">1</div>
+            <div class="card-text">
+              <div class="card-title"><span>自由 1 · 学习</span></div>
+              <div class="card-desc"><span>源代码公开使技术不再是黑箱，用户能阅读理解实现逻辑</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-number">2</div>
+            <div class="card-text">
+              <div class="card-title"><span>自由 2 · 修改</span></div>
+              <div class="card-desc"><span>用户有权修改源代码适应自身需求，奠定开源协作基础</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-number">3</div>
+            <div class="card-text">
+              <div class="card-title"><span>自由 3 · 分享</span></div>
+              <div class="card-desc"><span>可将修改版分享给他人，使知识流动成为可能</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-col">
+        <div class="image-wrap">
+          <img src="../images/page_003_icon_group.png" alt="运行、学习、修改、分享四个发光的几何图标">
+        </div>
+        <div class="image-caption"><span>FOUR FREEDOMS · ICONS</span></div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-line"></div>
+        <div class="timeline-year"><span>1985</span></div>
+        <div class="timeline-text"><span>FSF 成立 · Richard Stallman 在美国波士顿创立自由软件基金会</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-line"></div>
+        <div class="timeline-year"><span>1989</span></div>
+        <div class="timeline-text"><span>GPL 协议发布 · 通用公共许可证 GPL v1 首次发布，成为开源法律框架的基石</span></div>
+      </div>
+    </div>
+
+    <div class="bottom-accent"><span>OPEN SOURCE · 1985 — 1989 · FSF · GPL</span></div>
+
+  </div>
+</div>
+</body>
+</html>

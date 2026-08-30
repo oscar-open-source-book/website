@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源生态全景数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="../assets/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#0d0d1e;
+    --bg2:#1A1A2E;
+    --panel:#181833;
+    --panel2:#20203f;
+    --primary:#2196F3;
+    --primary2:#42A5F5;
+    --cyan:#00BCD4;
+    --cyan2:#26C6DA;
+    --text:#E8EEF7;
+    --text-dim:#9AA3B8;
+    --text-mute:#6B7390;
+    --border:rgba(33,150,243,0.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:100%;height:100%;background:#000;overflow:hidden;}
+  body{
+    font-family:'Inter','PingFang SC','Noto Sans SC',sans-serif;
+    color:var(--text);
+    display:flex;align-items:center;justify-content:center;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrapper{
+    width:1600px;height:900px;position:relative;overflow:hidden;
+    background:#0d0d1e;
+    margin:0 auto;
+  }
+  #bg{
+    position:absolute;inset:0;z-index:0;
+    background:radial-gradient(circle at 18% 22%, rgba(33,150,243,0.16) 0%, transparent 50%),
+               radial-gradient(circle at 82% 78%, rgba(0,188,212,0.14) 0%, transparent 55%),
+               #0d0d1e;
+  }
+  #bg::before{
+    content:'';position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(33,150,243,0.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(33,150,243,0.05) 1px,transparent 1px);
+    background-size:56px 56px;
+  }
+  #bg::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 0%,transparent 55%,rgba(0,0,0,0.55) 100%);
+  }
+  #ct{
+    position:absolute;inset:0;z-index:1;
+    padding:32px 48px 26px;
+    display:flex;flex-direction:column;gap:12px;
+  }
+
+  /* HEADER */
+  .header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+    position:relative;
+  }
+  .header::after{
+    content:'';position:absolute;left:0;bottom:-1px;width:180px;height:2px;
+    background:linear-gradient(90deg,var(--primary),var(--cyan),transparent);
+  }
+  .header-left{display:flex;align-items:center;gap:16px;}
+  .logo-dot{
+    width:40px;height:40px;border-radius:10px;
+    background:linear-gradient(135deg,var(--primary) 0%,var(--cyan) 100%);
+    position:relative;flex-shrink:0;
+    box-shadow:0 0 18px rgba(33,150,243,0.5);
+  }
+  .logo-dot::before{
+    content:'';position:absolute;inset:9px;
+    border:2px solid rgba(255,255,255,0.9);
+    border-radius:50%;
+  }
+  .logo-dot::after{
+    content:'';position:absolute;inset:16px;
+    background:rgba(255,255,255,0.9);border-radius:50%;
+  }
+  .title{
+    font-size:30px;font-weight:800;letter-spacing:1px;
+    background:linear-gradient(90deg,#fff 0%,#7CC5FF 60%,#7FFFE7 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .subtitle{font-size:11px;color:var(--text-mute);margin-top:2px;letter-spacing:3px;text-transform:uppercase;}
+  .header-right{display:flex;align-items:center;gap:16px;font-size:11px;color:var(--text-dim);letter-spacing:1px;}
+  .h-tag{
+    padding:6px 12px;border:1px solid var(--border);border-radius:4px;
+    background:rgba(33,150,243,0.08);
+    display:flex;align-items:center;gap:8px;
+  }
+  .h-tag .pulse{
+    width:7px;height:7px;border-radius:50%;background:var(--cyan);
+    box-shadow:0 0 10px var(--cyan);
+  }
+
+  /* LEAD */
+  .lead{
+    font-size:13.5px;line-height:1.75;color:var(--text-dim);
+    padding:10px 20px;
+    background:linear-gradient(90deg,rgba(33,150,243,0.14) 0%,rgba(0,188,212,0.06) 60%,transparent 100%);
+    border-left:3px solid var(--cyan);
+    border-radius:0 8px 8px 0;
+    position:relative;
+  }
+  .lead b{color:#fff;font-weight:700;}
+  .lead .hl-blue{color:var(--primary2);font-weight:700;}
+  .lead .hl-cyan{color:var(--cyan2);font-weight:700;}
+
+  /* KPI ROW */
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;height:128px;}
+  .kpi{
+    background:linear-gradient(150deg,#181833 0%,#0F0F22 100%);
+    border:1px solid var(--border);
+    border-radius:10px;padding:14px 16px 12px;
+    position:relative;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .kpi::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent 0%,var(--primary) 30%,var(--cyan) 70%,transparent 100%);
+  }
+  .kpi::after{
+    content:'';position:absolute;top:8px;right:14px;width:56px;height:56px;border-radius:50%;
+    background:radial-gradient(circle,var(--cyan) 0%,transparent 70%);
+    opacity:0.10;
+  }
+  .kpi-head{
+    font-size:11px;color:var(--text-mute);letter-spacing:2px;
+    display:flex;align-items:center;gap:8px;text-transform:uppercase;
+  }
+  .kpi-head .idx{
+    font-family:'Inter',monospace;font-size:10px;color:var(--cyan);
+    border:1px solid rgba(0,188,212,0.4);padding:2px 6px;border-radius:3px;
+  }
+  .kpi-num{
+    font-family:'Inter',sans-serif;
+    font-size:42px;font-weight:800;letter-spacing:-1px;line-height:1;
+    color:#fff;
+    text-shadow:0 0 18px rgba(33,150,243,0.75), 0 0 3px rgba(0,188,212,0.55);
+    display:flex;align-items:baseline;gap:3px;
+  }
+  .kpi-num .plus{font-size:24px;color:var(--cyan);font-weight:600;}
+  .kpi-num .u{font-size:15px;color:#A5C9F0;font-weight:600;margin-left:4px;}
+  .kpi-desc{
+    font-size:10.5px;color:var(--text-dim);line-height:1.4;
+    padding-top:8px;border-top:1px dashed rgba(33,150,243,0.18);
+  }
+  .kpi-desc b{color:var(--cyan2);font-weight:600;}
+
+  /* CHART ROW */
+  .chart-row{display:grid;grid-template-columns:1.12fr 1fr;gap:14px;height:368px;}
+  .chart-box{
+    background:linear-gradient(160deg,#181833 0%,#12122A 100%);
+    border:1px solid var(--border);
+    border-radius:10px;padding:14px 16px;
+    display:flex;flex-direction:column;position:relative;overflow:hidden;
+  }
+  .chart-box::before{
+    content:'';position:absolute;top:0;right:0;width:180px;height:80px;
+    background:radial-gradient(circle at 90% 10%,rgba(0,188,212,0.16),transparent 70%);
+    pointer-events:none;
+  }
+  .chart-title-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;position:relative;}
+  .ct-l .ct-main{font-size:15px;font-weight:700;color:#fff;letter-spacing:.5px;}
+  .ct-l .ct-sub{font-size:11px;color:var(--text-mute);margin-top:3px;letter-spacing:1px;}
+  .ct-r{
+    display:flex;gap:12px;align-items:center;
+    font-size:11px;color:var(--text-dim);
+  }
+  .ct-r b{color:var(--cyan2);font-weight:700;font-size:14px;margin-left:4px;}
+  .ct-r .sep{width:1px;height:14px;background:rgba(255,255,255,0.15);}
+  .chart-box .echart{flex:1;width:100%;}
+
+  /* BOTTOM INSIGHTS */
+  .bottom{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;height:102px;}
+  .insight{
+    background:linear-gradient(90deg,rgba(33,150,243,0.14) 0%,rgba(0,188,212,0.06) 100%);
+    border:1px solid var(--border);border-radius:8px;
+    padding:14px 16px;
+    display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;
+  }
+  .insight::after{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--primary),var(--cyan));
+  }
+  .insight .num{
+    font-family:'Inter',sans-serif;
+    font-size:32px;font-weight:800;color:var(--cyan);
+    text-shadow:0 0 12px rgba(0,188,212,0.5);
+    line-height:1;flex-shrink:0;width:44px;text-align:center;
+    font-style:italic;
+  }
+  .insight .txt{flex:1;}
+  .insight .lbl{font-size:13px;color:#fff;font-weight:700;margin-bottom:4px;}
+  .insight .lbl span{color:var(--cyan2);}
+  .insight .desc{font-size:11px;color:var(--text-dim);line-height:1.4;}
+
+  /* FOOTER */
+  .foot{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:10px;color:var(--text-mute);letter-spacing:2px;
+    padding-top:4px;border-top:1px solid rgba(255,255,255,0.06);
+  }
+  .foot .brand{color:var(--cyan2);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-left">
+        <div class="logo-dot"></div>
+        <div>
+          <div class="title">开源生态全景数据</div>
+          <div class="subtitle">OPEN SOURCE · GLOBAL LANDSCAPE · 2024</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="h-tag"><span class="pulse"></span>DATA SNAPSHOT</div>
+        <div>2010 → 2024</div>
+      </div>
+    </div>
+
+    <!-- LEAD -->
+    <div class="lead">
+      开源已从边缘的技术亚文化成长为全球软件产业的<b>底层基础设施</b>——从2010年到2024年，开源贡献者从约<span class="hl-blue">2000万</span>增长到<span class="hl-cyan">5000万以上</span>，企业采用率从约<span class="hl-blue">40%</span>跃升到<span class="hl-cyan">89%以上</span>，《技术共和国》描述的共同体已成为拥有<span class="hl-cyan">超过5000万公民</span>的现实组织。
+    </div>
+
+    <!-- KPI ROW -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-head"><span class="idx">01</span><span>全球开源贡献者</span></div>
+        <div class="kpi-num">5000<span class="u">万</span><span class="plus">+</span></div>
+        <div class="kpi-desc">GitHub 2023 报告数据 · <b>"技术共和国"</b>公民总数</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-head"><span class="idx">02</span><span>公开仓库总数</span></div>
+        <div class="kpi-num">4.4<span class="u">亿</span><span class="plus">+</span></div>
+        <div class="kpi-desc">GitHub 2024 统计 · 十年增长<b>近10倍</b></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-head"><span class="idx">03</span><span>企业使用率</span></div>
+        <div class="kpi-num">89<span class="u">%</span></div>
+        <div class="kpi-desc">超过89%的组织在<b>生产环境</b>使用开源软件</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-head"><span class="idx">04</span><span>FOSS 市场规模</span></div>
+        <div class="kpi-num">1150<span class="u">亿美元</span></div>
+        <div class="kpi-desc">2028 年预测 · 年复合增长率<b>超10%</b></div>
+      </div>
+    </div>
+
+    <!-- CHART ROW -->
+    <div class="chart-row">
+      <div class="chart-box">
+        <div class="chart-title-row">
+          <div class="ct-l">
+            <div class="ct-main">企业采用率爬升轨迹</div>
+            <div class="ct-sub">ENTERPRISE ADOPTION · 2010–2024</div>
+          </div>
+          <div class="ct-r">
+            <span>CAGR <b>+4.8%</b></span>
+            <span class="sep"></span>
+            <span>增幅 <b>+2.2×</b></span>
+          </div>
+        </div>
+        <div id="chart_1" class="echart" style="width:100%;height:100%;"></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title-row">
+          <div class="ct-l">
+            <div class="ct-main">头部开源项目 · 贡献者数量</div>
+            <div class="ct-sub">TOP OSS PROJECTS · CONTRIBUTORS</div>
+          </div>
+          <div class="ct-r">
+            <span>累计 <b>51K+</b></span>
+            <span class="sep"></span>
+            <span>TOP 3</span>
+          </div>
+        </div>
+        <div id="chart_2" class="echart" style="width:100%;height:100%;"></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM INSIGHTS -->
+    <div class="bottom">
+      <div class="insight">
+        <div class="num">01</div>
+        <div class="txt">
+          <div class="lbl">开发者规模体现<span>"开源民主化"</span></div>
+          <div class="desc">5000万+ 贡献者跨越企业、学术界与自由职业者三大阵营</div>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="num">02</div>
+        <div class="txt">
+          <div class="lbl">项目数量<span>十年增长近10倍</span></div>
+          <div class="desc">4.4亿+ 公开仓库构成全球最大的代码资产池</div>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="num">03</div>
+        <div class="txt">
+          <div class="lbl">企业采用率<span>从可选变为必需</span></div>
+          <div class="desc">89% 生产环境使用率 · 开源已成现代软件栈基石</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="foot">
+      <span>SOURCES · GITHUB RESEARCH / NAT LAWSON ASSOCIATES / IDCC · 2023–2024</span>
+      <span class="brand">OPEN SOURCE ECOSYSTEM · GLOBAL DATA</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var el1 = document.getElementById('chart_1');
+  var chart1 = echarts.init(el1, null, {renderer:'svg'});
+  chart1.setOption({
+    backgroundColor:'transparent',
+    grid:{left:38,right:14,top:18,bottom:26,containLabel:true},
+    tooltip:{show:false},
+    xAxis:{
+      type:'category',
+      data:['2010','2012','2014','2016','2018','2020','2022','2024'],
+      axisLine:{lineStyle:{color:'rgba(255,255,255,0.15)'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#9AA3B8',fontSize:10,fontFamily:'Inter'}
+    },
+    yAxis:{
+      type:'value',
+      min:0,max:100,
+      axisLine:{show:false},
+      axisTick:{show:false},
+      splitLine:{lineStyle:{color:'rgba(33,150,243,0.10)',type:'dashed'}},
+      axisLabel:{color:'#6B7390',fontSize:10,formatter:'{value}%',fontFamily:'Inter'}
+    },
+    series:[{
+      type:'bar',
+      data:[
+        {value:40},
+        {value:48},
+        {value:56},
+        {value:65},
+        {value:74},
+        {value:80},
+        {value:85},
+        {value:89}
+      ],
+      barWidth:'58%',
+      itemStyle:{
+        borderRadius:[4,4,0,0],
+        color:new echarts.graphic.LinearGradient(0,0,0,1,[
+          {offset:0,color:'#00BCD4'},
+          {offset:1,color:'#2196F3'}
+        ]),
+        shadowBlur:12,
+        shadowColor:'rgba(33,150,243,0.5)'
+      },
+      label:{
+        show:true,position:'top',color:'#fff',fontSize:10,fontWeight:600,fontFamily:'Inter',
+        formatter:function(p){
+          if(p.dataIndex===0 || p.dataIndex===7) return p.value+'%';
+          return '';
+        }
+      },
+      markLine:{
+        symbol:'none',silent:true,
+        lineStyle:{color:'rgba(255,255,255,0.18)',type:'dashed',width:1},
+        label:{show:false},
+        data:[{yAxis:40}]
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+
+(function(){
+  var el2 = document.getElementById('chart_2');
+  var chart2 = echarts.init(el2, null, {renderer:'svg'});
+  chart2.setOption({
+    backgroundColor:'transparent',
+    grid:{left:8,right:70,top:10,bottom:14,containLabel:true},
+    tooltip:{show:false},
+    xAxis:{
+      type:'value',
+      max:22000,
+      axisLine:{show:false},
+      axisTick:{show:false},
+      splitLine:{lineStyle:{color:'rgba(33,150,243,0.10)',type:'dashed'}},
+      axisLabel:{color:'#6B7390',fontSize:9,fontFamily:'Inter',
+        formatter:function(v){return (v/1000)+'K';}}
+    },
+    yAxis:{
+      type:'category',
+      data:['TensorFlow','Linux 内核','Kubernetes'],
+      axisLine:{lineStyle:{color:'rgba(255,255,255,0.12)'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#E8EEF7',fontSize:13,fontWeight:600,fontFamily:'Inter','Noto Sans SC',
+        formatter:function(v){return v;}}
+    },
+    series:[{
+      type:'bar',
+      data:[
+        {value:17000},
+        {value:15000},
+        {value:19000}
+      ],
+      barWidth:'50%',
+      itemStyle:{
+        borderRadius:[0,4,4,0],
+        color:new echarts.graphic.LinearGradient(0,0,1,0,[
+          {offset:0,color:'#2196F3'},
+          {offset:1,color:'#00BCD4'}
+        ]),
+        shadowBlur:12,
+        shadowColor:'rgba(0,188,212,0.4)'
+      },
+      label:{
+        show:true,position:'right',color:'#7FFFE7',fontSize:13,fontWeight:700,fontFamily:'Inter',
+        formatter:function(p){return '+'+(p.value/1000).toFixed(0)+'K';}
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>

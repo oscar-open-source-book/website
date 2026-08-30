@@ -1,0 +1,552 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>社区治理模式</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --bg: #1A1A2E;
+  --bg-2: #16162A;
+  --card: #20203C;
+  --card-border: rgba(33,150,243,0.35);
+  --text: #E8EAF2;
+  --text-dim: #9AA0B8;
+  --text-mute: #6B7192;
+  --grid: rgba(33,150,243,0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(33,150,243,0.12) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(0,188,212,0.10) 0%, transparent 40%),
+    linear-gradient(135deg, #1A1A2E 0%, #16162A 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.header-left { display: flex; flex-direction: column; gap: 6px; }
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.eyebrow .bar {
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  line-height: 1.15;
+}
+
+h1 .accent { color: var(--primary); }
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 6px;
+}
+
+.tag {
+  padding: 6px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 2px;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  background: rgba(33,150,243,0.06);
+}
+
+.tag.hot {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 30%, transparent 100%);
+  margin: 14px 0 20px 0;
+  opacity: 0.6;
+}
+
+/* Cards Row */
+.cards-wrap {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+/* Connecting lines behind cards */
+.connect-line {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cards-wrap::before {
+  content: '';
+  position: absolute;
+  top: 62px;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg,
+    rgba(33,150,243,0.4) 0,
+    rgba(33,150,243,0.4) 6px,
+    transparent 6px,
+    transparent 14px);
+  z-index: 0;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(32,32,60,0.95) 0%, rgba(22,22,42,0.95) 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 22px 20px 20px 20px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at bottom right, rgba(0,188,212,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.icon-box {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(33,150,243,0.08);
+  position: relative;
+}
+
+.icon-box svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.8;
+}
+
+.num {
+  font-family: 'Inter', monospace;
+  font-size: 12px;
+  color: var(--text-mute);
+  letter-spacing: 2px;
+}
+
+.card-tag {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  padding: 3px 8px;
+  border: 1px dashed rgba(0,188,212,0.5);
+  border-radius: 2px;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+
+.card-title-en {
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin-bottom: 14px;
+  flex: 1;
+}
+
+.card-features {
+  border-top: 1px solid rgba(33,150,243,0.2);
+  padding-top: 12px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.feature-item:last-child { margin-bottom: 0; }
+
+.feature-item .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+/* Data band */
+.databand {
+  background: linear-gradient(90deg, rgba(33,150,243,0.08) 0%, rgba(0,188,212,0.06) 100%);
+  border-top: 1px solid rgba(33,150,243,0.4);
+  border-bottom: 1px solid rgba(0,188,212,0.4);
+  padding: 16px 0 14px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+.databand::before {
+  content: 'KEY METRICS · 关键指标';
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  background: var(--bg);
+  padding: 0 8px;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.metric {
+  padding: 4px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid rgba(33,150,243,0.15);
+}
+
+.metric:last-child { border-right: none; }
+
+.metric-label {
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 1.5px;
+}
+
+.metric-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.metric-num {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.metric-unit {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.metric-detail {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* Footer insight */
+.insight {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  background: rgba(0,188,212,0.05);
+  border-left: 3px solid var(--accent);
+}
+
+.insight-tag {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border: 1px solid var(--accent);
+  font-weight: 600;
+}
+
+.insight-text {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+.insight-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span class="bar"></span><span>OPEN SOURCE GOVERNANCE · 技术共和国</span></div>
+        <h1>社区<span class="accent">治理模式</span></h1>
+        <div class="subtitle">四种治理范式 · 权力结构 · 制度张力</div>
+      </div>
+      <div class="header-right">
+        <div class="tag">CASE / BDFL · ASF · TEC · CORP</div>
+        <div class="tag hot">CH 04</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Cards -->
+    <div class="cards-wrap">
+
+      <!-- Card 1: BDFL -->
+      <div class="card">
+        <div class="card-head">
+          <div class="icon-box">
+            <span style="font-size:18px; color:var(--accent); font-weight:700; font-family:'Inter',monospace;">01</span>
+          </div>
+          <div class="num">TYPE / A</div>
+        </div>
+        <span class="card-tag">技术独裁</span>
+        <div class="card-title">BDFL 模式</div>
+        <div class="card-title-en">Benevolent Dictator For Life</div>
+        <div class="card-desc">仁慈的独裁者治理。以 Linus Torvalds 对 Linux 内核的经典实践为代表，单一权威掌握最终决策权，代码合并与方向把控高度集中。</div>
+        <div class="card-features">
+          <div class="feature-item"><span class="dot"></span><span>决策高效、执行力强</span></div>
+          <div class="feature-item"><span class="dot"></span><span>权力集中于个人</span></div>
+          <div class="feature-item"><span class="dot"></span><span>代表：Linux / Python / PHP</span></div>
+        </div>
+      </div>
+
+      <!-- Card 2: ASF -->
+      <div class="card">
+        <div class="card-head">
+          <div class="icon-box">
+            <span style="font-size:18px; color:var(--accent); font-weight:700; font-family:'Inter',monospace;">02</span>
+          </div>
+          <div class="num">TYPE / B</div>
+        </div>
+        <span class="card-tag">民主共和</span>
+        <div class="card-title">基金会治理</div>
+        <div class="card-title-en">Foundation · Apache Model</div>
+        <div class="card-desc">Apache Software Foundation 模式：社区驱动、投票决策、财务独立。开发者代表构成 PMC，最接近共和制的现代政治结构。</div>
+        <div class="card-features">
+          <div class="feature-item"><span class="dot"></span><span>社区驱动 · 投票决策</span></div>
+          <div class="feature-item"><span class="dot"></span><span>财务独立、非营利</span></div>
+          <div class="feature-item"><span class="dot"></span><span>代表：Apache / Node.js</span></div>
+        </div>
+      </div>
+
+      <!-- Card 3: TEC -->
+      <div class="card">
+        <div class="card-head">
+          <div class="icon-box">
+            <span style="font-size:18px; color:var(--accent); font-weight:700; font-family:'Intro',monospace;">03</span>
+          </div>
+          <div class="num">TYPE / C</div>
+        </div>
+        <span class="card-tag">制度制衡</span>
+        <div class="card-title">委员会制</div>
+        <div class="card-title-en">Committee · TEC Model</div>
+        <div class="card-desc">Kubernetes 等技术委员会（TEC）治理：引入结构化分权与角色轮替，通过任期、席位分配、议程管理实现权力的制度性平衡。</div>
+        <div class="card-features">
+          <div class="feature-item"><span class="dot"></span><span>结构化分权 · 角色轮替</span></div>
+          <div class="feature-item"><span class="dot"></span><span>制度化制衡机制</span></div>
+          <div class="feature-item"><span class="dot"></span><span>代表：Kubernetes TEC</span></div>
+        </div>
+      </div>
+
+      <!-- Card 4: Corporate -->
+      <div class="card">
+        <div class="card-head">
+          <div class="icon-box">
+            <span style="font-size:18px; color:var(--accent); font-weight:700; font-family:'Inter',monospace;">04</span>
+          </div>
+          <div class="num">TYPE / D</div>
+        </div>
+        <span class="card-tag">企业主导</span>
+        <div class="card-title">企业主导</div>
+        <div class="card-title-en">Corporate-Led Foundation</div>
+        <div class="card-desc">Red Hat、Google、Meta 等大厂主导的基金会模式。带来资金、工程与生态影响力，同时也埋下权力失衡与"社区治理"变质的隐忧。</div>
+        <div class="card-features">
+          <div class="feature-item"><span class="dot"></span><span>资源投入 · 生态扩张</span></div>
+          <div class="feature-item"><span class="dot"></span><span>权力失衡风险</span></div>
+          <div class="feature-item"><span class="dot"></span><span>代表：CNCF / Red Hat / Google</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Data band -->
+    <div class="databand">
+      <div class="metric">
+        <div class="metric-label">ASF 旗下活跃顶级项目</div>
+        <div class="metric-value">
+          <span class="metric-num">350</span>
+          <span class="metric-unit">+ 个项目</span>
+        </div>
+        <div class="metric-detail">规模最大的开源治理联盟 · 覆盖 Java / Python / 数据 / 基础设施</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">BDFL 典型项目</div>
+        <div class="metric-value">
+          <span class="metric-num">Linux</span>
+          <span class="metric-unit">/ Python</span>
+        </div>
+        <div class="metric-detail">Linus Torvalds · Guido van Rossum 单人决策典范</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Kubernetes TEC 设立</div>
+        <div class="metric-value">
+          <span class="metric-num">2022</span>
+          <span class="metric-unit">年</span>
+        </div>
+        <div class="metric-detail">技术委员会成立 · 制度化权力制衡的标志性节点</div>
+      </div>
+    </div>
+
+    <!-- Insight footer -->
+    <div class="insight">
+      <div class="insight-tag">INSIGHT</div>
+      <div class="insight-text">
+        《技术共和国》将开源治理与政治学中的政权类型对应——<strong>BDFL 是技术独裁</strong>，<strong>ASF 最接近民主共和</strong>，<strong>TEC 是制度化的权力制衡</strong>，而大厂影响力正在模糊"社区治理"与"企业治理"的边界——这正是技术共和国面临的根本张力。
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

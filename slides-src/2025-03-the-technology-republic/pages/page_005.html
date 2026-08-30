@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源运动简史 · 从UNIX社群到开源共和国</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --bg:#0A0E1A;
+  --bg-2:#1A1A2E;
+  --bg-3:#0F1424;
+  --text:#E8F1FF;
+  --text-dim:#8FA3BF;
+  --text-mute:#5A6B85;
+  --glow-blue:rgba(33,150,243,0.5);
+  --glow-cyan:rgba(0,188,212,0.5);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+html,body{
+  width:1600px;height:900px;
+  background:var(--bg);
+  font-family:'Inter','Noto Sans SC',system-ui,sans-serif;
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+}
+
+/* ============ BACKGROUND ============ */
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 1100px 700px at 15% 8%, rgba(33,150,243,0.18), transparent 65%),
+    radial-gradient(ellipse 900px 700px at 92% 95%, rgba(0,188,212,0.14), transparent 65%),
+    radial-gradient(ellipse 1400px 900px at 50% 50%, rgba(26,26,46,0.9), var(--bg) 75%);
+}
+
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.045) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+
+.code-flow{
+  position:absolute;
+  color:rgba(33,150,243,0.11);
+  font-family:'JetBrains Mono','Inter',monospace;
+  font-size:13px;
+  line-height:2.1;
+  white-space:pre;
+  user-select:none;
+  letter-spacing:0.02em;
+}
+.code-flow.cf1{top:-40px;left:0;width:1600px;animation:flowDown 90s linear infinite;}
+.code-flow.cf2{top:-40px;right:-80px;width:1600px;color:rgba(0,188,212,0.09);font-size:12px;animation:flowDown 120s linear infinite;animation-direction:reverse;}
+.code-flow.cf3{top:-40px;left:-200px;width:1600px;color:rgba(33,150,243,0.07);font-size:14px;animation:flowDown 150s linear infinite;}
+
+@keyframes flowDown{
+  0%{transform:translateY(0);}
+  100%{transform:translateY(2000px);}
+}
+
+.bg-vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 1000px 600px at 50% 45%, transparent 30%, rgba(10,14,26,0.5) 100%);
+}
+
+.bg-corner{
+  position:absolute;width:220px;height:220px;
+  border:1px solid rgba(33,150,243,0.15);
+  pointer-events:none;
+}
+.bg-corner.tl{top:30px;left:30px;border-right:none;border-bottom:none;}
+.bg-corner.br{bottom:30px;right:30px;border-left:none;border-top:none;border-color:rgba(0,188,212,0.15);}
+
+/* ============ CONTENT ============ */
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:44px 60px 34px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* ---- Header ---- */
+.header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:16px;
+}
+.title-block .chapter-tag{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:13px;color:var(--accent);
+  letter-spacing:5px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+.title-block .chapter-tag .tag-bar{width:36px;height:2px;background:var(--accent);}
+.title-block .chapter-tag .tag-num{font-family:'JetBrains Mono',monospace;color:var(--primary);font-weight:700;}
+
+h1{
+  font-size:72px;font-weight:900;
+  letter-spacing:-1.5px;line-height:1;
+  color:var(--text);
+}
+h1 .grad{
+  background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.subtitle{
+  margin-top:10px;
+  font-size:20px;color:var(--text-dim);
+  font-weight:300;letter-spacing:1.2px;
+}
+.subtitle .arrow{color:var(--accent);font-weight:400;margin:0 12px;}
+
+.meta-block{
+  text-align:right;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--text-mute);
+  font-size:12px;line-height:1.8;
+  letter-spacing:0.5px;
+  padding-top:6px;
+}
+.meta-block .meta-line{color:var(--text-dim);}
+.meta-block .meta-val{color:var(--accent);}
+.meta-block .status-dot{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--accent);
+  margin-right:8px;
+  box-shadow:0 0 10px var(--glow-cyan);
+  vertical-align:middle;
+}
+
+/* ---- Timeline ---- */
+.timeline-section{
+  margin-top:14px;
+  position:relative;
+  padding:32px 0 20px;
+}
+
+.timeline-axis{
+  position:relative;height:3px;
+  background:linear-gradient(90deg,
+    rgba(33,150,243,0.1) 0%,
+    rgba(33,150,243,0.75) 15%,
+    rgba(0,188,212,0.75) 50%,
+    rgba(33,150,243,0.75) 85%,
+    rgba(33,150,243,0.1) 100%);
+  margin:64px 60px 0;
+  border-radius:2px;
+  box-shadow:0 0 12px rgba(33,150,243,0.35);
+}
+.timeline-axis::before,
+.timeline-axis::after{
+  content:'';
+  position:absolute;top:-3px;width:9px;height:9px;
+  border-radius:50%;
+}
+.timeline-axis::before{
+  left:-6px;
+  background:radial-gradient(circle, var(--primary), transparent 70%);
+  box-shadow:0 0 8px var(--primary);
+}
+.timeline-axis::after{
+  right:-6px;
+  background:radial-gradient(circle, var(--accent), transparent 70%);
+  box-shadow:0 0 8px var(--accent);
+}
+
+.node{
+  position:absolute;top:0;
+  width:230px;margin-left:-115px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.node.n1{left:16.67%;}
+.node.n2{left:50%;}
+.node.n3{left:83.33%;}
+
+.node-top{
+  position:relative;height:124px;width:100%;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;text-align:center;
+  padding-bottom:20px;
+}
+
+.node-era{
+  font-family:'JetBrains Mono',monospace;
+  font-size:14px;letter-spacing:2px;
+  color:var(--accent);font-weight:700;
+  margin-bottom:4px;
+}
+
+.node-step{
+  font-size:11px;color:var(--text-mute);
+  letter-spacing:3px;font-weight:500;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.node-title{
+  font-size:22px;font-weight:800;
+  margin-top:5px;letter-spacing:1px;
+  background:linear-gradient(135deg, #FFFFFF 0%, #B8D4F0 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.dot{
+  width:16px;height:16px;border-radius:50%;
+  background:radial-gradient(circle, #FFFFFF 0%, var(--accent) 30%, var(--primary) 70%);
+  position:relative;
+  box-shadow:0 0 20px rgba(33,150,243,0.85);
+}
+.dot::before{
+  content:'';
+  position:absolute;inset:-8px;border-radius:50%;
+  border:1.5px solid rgba(0,188,212,0.55);
+  animation:pulse 2.4s ease-out infinite;
+}
+.dot::after{
+  content:'';
+  position:absolute;inset:-18px;border-radius:50%;
+  border:1px solid rgba(33,150,243,0.25);
+  animation:pulse 2.4s ease-out infinite;
+  animation-delay:0.7s;
+}
+@keyframes pulse{
+  0%{transform:scale(0.8);opacity:0.9;}
+  100%{transform:scale(2.8);opacity:0;}
+}
+
+.node-card{
+  width:236px;
+  background:linear-gradient(180deg, rgba(20,28,50,0.94), rgba(13,18,34,0.94));
+  border:1px solid rgba(33,150,243,0.28);
+  border-radius:8px;
+  padding:15px 16px;
+  text-align:left;
+  position:relative;
+  box-shadow:0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.node-card::before{
+  content:'';
+  position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius:8px 0 0 8px;
+}
+
+.card-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--accent);
+  letter-spacing:2px;margin-bottom:6px;font-weight:600;
+}
+.card-text{
+  font-size:14px;line-height:1.7;color:var(--text-dim);
+}
+.card-text strong{color:var(--text);font-weight:600;}
+.card-text .hi{color:var(--accent);font-weight:700;}
+
+.events{
+  list-style:none;margin-top:9px;
+  border-top:1px dashed rgba(33,150,243,0.22);
+  padding-top:8px;
+}
+.events li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:3px 0;font-size:13px;color:var(--text-dim);
+}
+.events li .yr{
+  font-family:'JetBrains Mono',monospace;
+  color:var(--primary);font-weight:700;
+  font-size:13px;
+  min-width:44px;flex-shrink:0;
+  line-height:1.5;
+}
+.events li .ev{flex:1;line-height:1.55;}
+.events li .ev strong{color:var(--text);font-weight:600;}
+
+/* ---- KPI ---- */
+.kpi-section{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.15fr;
+  gap:16px;
+  margin-top:26px;
+}
+.kpi{
+  position:relative;
+  padding:14px 18px 14px 22px;
+  background:linear-gradient(135deg, rgba(20,28,50,0.75) 0%, rgba(13,18,34,0.55) 100%);
+  border:1px solid rgba(33,150,243,0.2);
+  border-radius:8px;
+  overflow:hidden;
+}
+.kpi::before{
+  content:'';
+  position:absolute;top:0;left:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+}
+.kpi-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:4px;
+}
+.kpi-label{
+  font-size:13px;color:var(--text-dim);
+  letter-spacing:2px;
+  font-family:'JetBrains Mono',monospace;
+  font-weight:500;
+}
+.kpi-val{
+  font-family:'JetBrains Mono',monospace;
+  font-size:26px;font-weight:700;
+  color:var(--accent);
+  text-shadow:0 0 14px rgba(0,188,212,0.4);
+  line-height:1;
+}
+.kpi-desc{
+  font-size:14px;color:var(--text-dim);
+  line-height:1.65;
+}
+.kpi-desc strong{color:var(--text);font-weight:600;}
+.kpi-desc .hi{color:var(--primary);font-weight:700;}
+
+/* ---- Footer ---- */
+.footer{
+  display:flex;align-items:center;gap:18px;
+  margin-top:14px;
+  padding:12px 22px;
+  background:linear-gradient(90deg, rgba(33,150,243,0.08), rgba(0,188,212,0.04) 60%, transparent);
+  border-left:3px solid var(--accent);
+  border-radius:0 6px 6px 0;
+  position:relative;
+}
+.footer-quote{
+  flex:1;
+  font-size:16px;line-height:1.6;
+  color:var(--text-dim);
+  font-style:italic;
+}
+.footer-quote .hi{color:var(--accent);font-weight:600;font-style:normal;}
+.footer-source{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--text-mute);
+  letter-spacing:1.5px;
+  white-space:nowrap;
+  padding-left:18px;
+  border-left:1px solid rgba(255,255,255,0.08);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="code-flow cf1">
+{ include "/usr/include/stdio.h"
+    }
+    int main(int argc, char **argv) {
+      printf("Hello, World\n");
+      return 0;
+    }
+    struct file_operations {
+      struct module *owner;
+      const struct file_operations *fops;
+      ssize_t (*read)(struct file *, char __user *, size_t, loff_t *);
+      ssize_t (*write)(struct file *, const char __user *, size_t, loff_t *);
+      loff_t (*llseek)(struct file *, loff_t, int);
+    };
+    LICENSE(GPL);
+    #define MODULE_LICENSE("GPL")
+    Copyright (C) 1991 Linus Torvalds &lt;lots@vax.heathen.oss.ee.ottawa.ca&gt;
+    </div>
+    <div class="code-flow cf2">
+01001000 01101001 01110010 01100101 01101100 01110011 01110100 01101001 01101110 01101111 00101111 01010111 01101111 01110010 01101100 01100100 00101110
+00101110 01000111 01000101 01000101 01000001 01000110 00101110 01000111 01001010 00100001 01010110 00100001 01000111 01001001 01000111 00100001 01000111
+01010000 00100001 01010000 00101110 01000111 01001111 01000101 01000001 01010011 01010000 01010100 00101110 01010100 01000101 00100001 01100010 01110110
+01100001 01110001 01100111 01100001 01101110 01100100 00100001 01101001 01101011 00101110 01010011 01101110 01100101 01100111 01101001 01101110 00101111
+      </div>
+    <div class="code-flow cf3">
+// SPDX-License-Identifier: GPL-2.0-only
+/* free software, free as in freedom, not as in free beer. */
+/* The GNU Project was announced on September 27, 1985 */
+/* The Free Software Foundation was founded in 1985 */
+/* The GNU General Public License, version 2, June 1991 */
+/* The BSD license — derived from Berkeley Unix */
+/* Apache License, Version 2.0, January 2004 */
+/* MIT License — "Do Whatever The Hell You Want To" */
+/* Open Source Initiative (OSI) founded in 1999 */
+/* GitHub founded 2008 · Docker 2013 · Kubernetes 2014 */
+      </div>
+    <div class="bg-vignette"></div>
+    <div class="bg-corner tl"></div>
+    <div class="bg-corner br"></div>
+  </div>
+
+  <div id="ct">
+    <!-- Header -->
+    <div class="header">
+      <div class="title-block">
+        <div class="chapter-tag">
+          <span class="tag-bar"></span>
+          <span class="tag-num">CHAPTER 05</span>
+          <span>·</span>
+          <span>HISTORY OF OPEN SOURCE</span>
+        </div>
+        <h1>开源运动<span class="grad">简史</span></h1>
+        <div class="subtitle">从 UNIX 社群 <span class="arrow">→</span> 开源共和国</div>
+      </div>
+      <div class="meta-block">
+        <div class="meta-line"><span class="status-dot"></span>NARRATIVE ARCHIVE · VOL.01</div>
+        <div class="meta-line">SPAN · <span class="meta-val">1959 → 2024</span> · 65 YEARS</div>
+        <div class="meta-line">STATUS · <span class="meta-val">LIVING HISTORY</span></div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-section">
+      <div class="timeline-axis"></div>
+
+      <div class="node n1">
+        <div class="node-top">
+          <div class="node-era">1960s — 1970s</div>
+          <div class="node-step">STEP · 01</div>
+          <div class="node-title">思想起源</div>
+        </div>
+        <div class="dot"></div>
+        <div class="node-card">
+          <div class="card-tag">// ORIGINS</div>
+          <div class="card-text">
+            <strong>BSD 社群</strong>的自由软件共享传统，为开源运动提供了最初的<span class="hi">道德框架</span>——代码即礼物，共享即进步。
+          </div>
+        </div>
+      </div>
+
+      <div class="node n2">
+        <div class="node-top">
+          <div class="node-era">1985 — 1999</div>
+          <div class="node-step">STEP · 02</div>
+          <div class="node-title">里程碑事件</div>
+        </div>
+        <div class="dot"></div>
+        <div class="node-card">
+          <div class="card-tag">// MILESTONES</div>
+          <ul class="events">
+            <li><span class="yr">1985</span><span class="ev"><strong>GNU 计划</strong>启动 · Stallman</span></li>
+            <li><span class="yr">1991</span><span class="ev"><strong>Linux 内核</strong>发布 · Torvalds</span></li>
+            <li><span class="yr">1999</span><span class="ev"><strong>Apache</strong> Software Foundation</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="node n3">
+        <div class="node-top">
+          <div class="node-era">2000s — TODAY</div>
+          <div class="node-step">STEP · 03</div>
+          <div class="node-title">范式转移</div>
+        </div>
+        <div class="dot"></div>
+        <div class="node-card">
+          <div class="card-tag">// PARADIGM SHIFT</div>
+          <div class="card-text">
+            开源从<span class="hi">反商业</span>走向<span class="hi">拥抱商业</span>，从理想主义乌托邦走向<span class="hi">产业级基础设施</span>。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-section">
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-label">FIRST RELEASE · 1991</span>
+          <span class="kpi-val">0.01</span>
+        </div>
+        <div class="kpi-desc">
+          Linux 内核首个版本 · <strong>Linus Torvalds</strong> 发布 <strong>Linux 0.01</strong>，采用 <strong>GPL</strong> 许可证
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-label">CURRENT VERSION · 2024</span>
+          <span class="kpi-val">v6.8</span>
+        </div>
+        <div class="kpi-desc">
+          持续活跃开发已超 <strong>33 年</strong> · 累计超过 <strong>15,000</strong> 名贡献者
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-head">
+          <span class="kpi-label">DEBATE INDEX</span>
+          <span class="kpi-val">F ↔ B</span>
+        </div>
+        <div class="kpi-desc">
+          <strong>自由 vs 商业</strong> · <strong>理想 vs 现实</strong> · 每一步演进都伴随激烈的理念辩论
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-quote">
+        这些历史不是教科书上的年份，而是正在塑造我们技术未来的<span class="hi">活的权力关系</span>。
+      </div>
+      <div class="footer-source">— 呼应《技术共和国》</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

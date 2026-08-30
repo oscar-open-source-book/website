@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>书籍导览 · 关于《技术共和国》</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --primary-light: #64B5F6;
+  --accent: #00BCD4;
+  --bg: #1A1A2E;
+  --bg-dark: #12121F;
+  --text-main: #E8EEF7;
+  --text-dim: #A8B3C7;
+  --text-faint: #6C7691;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 600px at 15% 30%, rgba(33,150,243,0.18) 0%, rgba(33,150,243,0) 60%),
+    radial-gradient(ellipse 700px 500px at 90% 80%, rgba(0,188,212,0.14) 0%, rgba(0,188,212,0) 60%),
+    #1A1A2E;
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 5% 15%, rgba(0,188,212,0.5) 0, transparent 2px),
+    radial-gradient(circle at 95% 25%, rgba(33,150,243,0.4) 0, transparent 2px),
+    radial-gradient(circle at 10% 85%, rgba(33,150,243,0.35) 0, transparent 2px),
+    radial-gradient(circle at 88% 75%, rgba(0,188,212,0.4) 0, transparent 2px),
+    radial-gradient(circle at 50% 50%, rgba(33,150,243,0.2) 0, transparent 1.5px);
+}
+
+.circuit-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 70px;
+  display: flex;
+  gap: 60px;
+}
+
+/* LEFT */
+.left {
+  width: 620px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.chapter-tag {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.chapter-tag .line {
+  width: 46px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.chapter-tag .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.big-num {
+  font-size: 300px;
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -8px;
+  background: linear-gradient(135deg, #64B5F6 0%, #2196F3 40%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  margin-bottom: 20px;
+  text-shadow: 0 0 60px rgba(33,150,243,0.4);
+  font-family: 'Inter', sans-serif;
+}
+
+.big-num .glow {
+  position: absolute;
+  inset: -20px -10px;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(33,150,243,0.25), transparent 70%);
+  filter: blur(20px);
+}
+
+.title {
+  font-size: 54px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--text-main);
+  margin-bottom: 14px;
+}
+
+.subtitle {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+
+.subtitle .accent {
+  color: var(--accent);
+}
+
+.divider {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  margin-bottom: 22px;
+}
+
+.quote {
+  max-width: 560px;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  font-weight: 300;
+  padding-left: 18px;
+  border-left: 2px solid rgba(33,150,243,0.4);
+  font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+}
+
+.quote .em {
+  color: var(--primary-light);
+  font-weight: 500;
+}
+
+/* RIGHT */
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding-right: 10px;
+}
+
+.card {
+  position: relative;
+  padding: 28px 34px 28px 42px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.08) 0%, rgba(0,188,212,0.04) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(33,150,243,0.22);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20px;
+  bottom: 20px;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 0 3px 3px 0;
+  box-shadow: 0 0 12px rgba(33,150,243,0.6);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle at top right, rgba(0,188,212,0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.card-num {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  font-family: 'Inter', monospace;
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  background: rgba(0,188,212,0.12);
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 4px;
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.card-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-dim);
+  font-weight: 400;
+  font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+}
+
+.card-body .hi {
+  color: var(--primary-light);
+  font-weight: 500;
+}
+
+/* Corner decorations */
+.corner-tl {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 40px;
+  height: 40px;
+  border-top: 2px solid var(--primary);
+  border-left: 2px solid var(--primary);
+  opacity: 0.7;
+}
+
+.corner-br {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 40px;
+  height: 40px;
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  opacity: 0.7;
+}
+
+.page-meta {
+  position: absolute;
+  top: 40px;
+  right: 70px;
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 3px;
+  font-family: 'Inter', monospace;
+  z-index: 2;
+}
+
+.brand {
+  position: absolute;
+  bottom: 30px;
+  left: 70px;
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 3px;
+  font-family: 'Inter', monospace;
+  z-index: 2;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <svg class="circuit-svg" viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <g stroke="#2196F3" stroke-width="1" fill="none" opacity="0.5">
+        <path d="M100 200 L100 300 L200 300 L200 450 L320 450"/>
+        <path d="M1400 150 L1400 250 L1300 250 L1300 400 L1200 400"/>
+        <path d="M1500 600 L1500 700 L1380 700 L1380 780"/>
+        <path d="M50 650 L50 750 L180 750 L180 820 L280 820"/>
+        <path d="M800 50 L800 100 L900 100 L900 180"/>
+        <path d="M1000 850 L1100 850 L1100 780 L1200 780"/>
+      </g>
+      <g fill="#00BCD4">
+        <circle cx="320" cy="450" r="4"/>
+        <circle cx="1200" cy="400" r="4"/>
+        <circle cx="1380" cy="780" r="4"/>
+        <circle cx="280" cy="820" r="4"/>
+        <circle cx="900" cy="180" r="4"/>
+        <circle cx="1200" cy="780" r="4"/>
+        <circle cx="100" cy="200" r="3"/>
+        <circle cx="1400" cy="150" r="3"/>
+      </g>
+      <g fill="#2196F3" opacity="0.7">
+        <rect x="195" y="295" width="10" height="10"/>
+        <rect x="1295" y="245" width="10" height="10"/>
+        <rect x="1375" y="695" width="10" height="10"/>
+        <rect x="175" y="745" width="10" height="10"/>
+        <rect x="795" y="95" width="10" height="10"/>
+        <rect x="1095" y="775" width="10" height="10"/>
+      </g>
+    </svg>
+  </div>
+
+  <div id="ct">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="page-meta">CHAPTER · 02 / TRANSLATION</div>
+    <div class="brand">TECH REPUBLIC · BOOK GUIDE</div>
+
+    <div class="left">
+      <div class="chapter-tag">
+        <span class="dot"></span>
+        <span>CHAPTER</span>
+        <span class="line"></span>
+      </div>
+      <div class="big-num"><span>02</span><span class="glow"></span></div>
+      <div class="title">书籍导览</div>
+      <div class="subtitle">关于<span class="accent">《技术共和国》</span></div>
+      <div class="divider"></div>
+      <div class="quote">
+        《技术共和国》不是一本技术手册，而是一部<span class="em">思想著作</span>。作者将开源社区映射到政治学的经典框架中，提出一个大胆的假设：代码的协作方式正在孕育一种全新的共和国形态——没有地理边界、没有投票年龄限制、以代码提交和 Pull Request 为政治参与的开源共和国。这本书试图揭示，这种共和国正在成形，而我们既是它的公民，也是它的立法者。
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num">01</span>
+          <span class="card-title">核心命题</span>
+        </div>
+        <div class="card-body">
+          技术社区能否像<span class="hi">共和国</span>一样，实现<span class="hi">公民自治</span>、<span class="hi">权力分立</span>与<span class="hi">协商民主</span>？
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num">02</span>
+          <span class="card-title">写作脉络</span>
+        </div>
+        <div class="card-body">
+          从<span class="hi">政治哲学</span>切入，对比<span class="hi">古希腊城邦</span>、<span class="hi">美国建国文献</span>与<span class="hi">当代开源治理实践</span>。
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-num">03</span>
+          <span class="card-title">读者定位</span>
+        </div>
+        <div class="card-body">
+          适合有<span class="hi">开源实践经验</span>、同时对<span class="hi">政治哲学</span>与<span class="hi">技术社会学</span>感兴趣的深度读者。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

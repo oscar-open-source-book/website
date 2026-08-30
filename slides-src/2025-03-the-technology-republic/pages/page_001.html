@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源布道与阅读分享 · 开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#1A1A2E;
+  --bg-2:#0F0F1E;
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --accent-2:#66D8FF;
+  --text:#EAF2FA;
+  --muted:#8FA2BC;
+  --line:rgba(33,150,243,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1600px;height:900px;overflow:hidden}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  font-size:16px;color:var(--text);line-height:1.6;
+  background:var(--bg-2);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+
+/* 背景层 */
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(1200px 780px at 22% 42%, rgba(33,150,243,.28) 0%, transparent 60%),
+    radial-gradient(1000px 620px at 82% 78%, rgba(0,188,212,.20) 0%, transparent 60%),
+    linear-gradient(160deg, #12122A 0%, #1A1A2E 42%, #0B0B1A 100%);
+}
+.grid{position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,.055) 1px, transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse at 50% 50%, black 30%, transparent 85%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%, black 30%, transparent 85%);
+}
+#bg .node{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--primary);
+  box-shadow:0 0 12px var(--primary), 0 0 22px rgba(33,150,243,.5);
+  animation:pulse 3.4s ease-in-out infinite;
+}
+#bg .node.c{background:var(--accent);box-shadow:0 0 12px var(--accent), 0 0 22px rgba(0,188,212,.55);}
+@keyframes pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.35)}}
+.net-svg{position:absolute;inset:0;width:100%;height:100%;opacity:.85}
+
+/* 内容层 */
+#ct{position:absolute;inset:0;z-index:2;padding:44px 68px 36px;display:flex;flex-direction:column;}
+
+/* 顶部 header */
+.top-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo-mark{width:44px;height:44px;border-radius:10px;
+  background:linear-gradient(135deg, var(--primary), var(--accent));
+  display:grid;place-items:center;font-weight:800;font-size:20px;color:#fff;
+  box-shadow:0 0 20px rgba(33,150,243,.55), inset 0 0 0 1px rgba(255,255,255,.18);
+  letter-spacing:-1px;
+}
+.brand-txt{display:flex;flex-direction:column;gap:2px}
+.brand-txt strong{font-size:16px;font-weight:700;letter-spacing:.5px;color:#fff}
+.brand-txt span{font-size:10px;color:var(--muted);letter-spacing:3px}
+.series{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:12px}
+.series .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 10px var(--accent);animation:pulse 2.2s ease-in-out infinite}
+
+/* 中央 hero */
+.hero{position:relative;display:grid;grid-template-columns:1fr 460px;gap:40px;align-items:center;
+  margin-bottom:22px}
+.hero-left{position:relative;padding-left:16px}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:5px;color:var(--accent);
+  margin-bottom:16px;font-weight:600}
+.eyebrow .eb-line{width:46px;height:1px;background:var(--accent);box-shadow:0 0 6px var(--accent)}
+.h-title{font-size:104px;font-weight:800;line-height:1.02;letter-spacing:2px;
+  background:linear-gradient(180deg, #FFFFFF 0%, #A9D8FF 55%, #4EC0FF 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  text-shadow:0 0 44px rgba(33,150,243,.42);
+  filter:drop-shadow(0 0 30px rgba(33,150,243,.28));
+  margin-bottom:22px;
+}
+.h-title .glow-dot{display:inline-block;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 18px var(--accent), 0 0 36px rgba(0,188,212,.55);
+  margin-left:10px;transform:translateY(-14px);-webkit-text-fill-color:initial;
+}
+.subtitle-row{display:flex;align-items:center;gap:18px;margin-bottom:22px}
+.sub-tag{padding:8px 18px;border:1px solid var(--primary);border-radius:999px;font-size:13px;
+  color:var(--accent-2);letter-spacing:2.5px;
+  background:linear-gradient(180deg, rgba(33,150,243,.15), rgba(33,150,243,.03));
+  box-shadow:0 0 18px rgba(33,150,243,.28), inset 0 0 12px rgba(33,150,243,.08);
+}
+.sub-txt{font-size:20px;color:#DCEAF7;font-weight:500;letter-spacing:2px}
+.sub-txt b{color:#fff;font-weight:600}
+.book-quote{display:flex;gap:16px;padding:14px 20px;border-left:3px solid var(--accent);
+  background:linear-gradient(90deg, rgba(0,188,212,.10), rgba(0,188,212,.02));
+  border-radius:0 12px 12px 0;
+  max-width:720px;
+}
+.bq-mark{font-size:42px;color:var(--accent);line-height:1;font-family:Georgia,serif}
+.book-quote p{font-size:14px;color:#B8CCE0;line-height:1.7}
+.book-quote em{color:var(--accent-2);font-style:normal;font-weight:600}
+
+.hero-right{position:relative;display:flex;justify-content:center;align-items:center}
+.tech-ring{position:relative;width:420px;height:420px}
+.tech-ring svg{width:100%;height:100%}
+.ring-label{position:absolute;font-size:10px;letter-spacing:2px;color:var(--accent);
+  padding:5px 11px;background:rgba(10,10,26,.75);border:1px solid rgba(0,188,212,.4);
+  border-radius:999px;backdrop-filter:blur(6px);white-space:nowrap;
+  box-shadow:0 0 14px rgba(0,188,212,.25)}
+.rl-1{top:6px;left:50%;transform:translateX(-50%)}
+.rl-2{top:50%;right:0;transform:translateY(-50%)}
+.rl-3{bottom:6px;left:50%;transform:translateX(-50%)}
+.rl-4{top:50%;left:0;transform:translateY(-50%)}
+.ring-core{position:absolute;inset:0;display:grid;place-items:center}
+.ring-core-inner{text-align:center}
+.core-book{font-size:15px;color:var(--muted);letter-spacing:6px;margin-bottom:8px}
+.core-name{font-size:28px;font-weight:800;color:#fff;letter-spacing:3px;
+  text-shadow:0 0 24px rgba(33,150,243,.6)}
+
+/* 事件信息 section */
+.event{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:22px}
+.info{position:relative;padding:16px 18px 16px 20px;border-radius:10px;
+  background:linear-gradient(180deg, rgba(33,150,243,.10), rgba(33,150,243,.02));
+  border:1px solid rgba(33,150,243,.25);overflow:hidden;
+  backdrop-filter:blur(4px);
+}
+.info::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow:0 0 12px rgba(33,150,243,.6);
+}
+.info .tag{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11px;color:var(--accent);
+  letter-spacing:3px;font-weight:700}
+.info .num{display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;background:linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius:5px;font-size:11px;color:#fff;letter-spacing:0;
+  box-shadow:0 0 10px rgba(33,150,243,.5);font-weight:800}
+.info p{font-size:12.5px;color:#C7D7EA;line-height:1.75}
+.info b{color:#fff;font-weight:600}
+
+/* 底部 */
+.footer{display:flex;justify-content:space-between;align-items:flex-end;padding-top:14px;
+  border-top:1px solid rgba(33,150,243,.22)}
+.footer-l{display:flex;flex-direction:column;gap:5px}
+.footer-l .fs-title{font-size:12px;color:var(--muted);letter-spacing:4px;font-weight:600}
+.footer-l .fs-body{font-size:12px;color:#B0C2D6;letter-spacing:1px;line-height:1.6;max-width:780px}
+.footer-l .fs-body em{color:var(--accent-2);font-style:normal;font-weight:600}
+.footer-r{display:flex;gap:22px;align-items:center}
+.kv{text-align:right}
+.kv .k{font-size:10px;color:var(--muted);letter-spacing:3px}
+.kv .v{font-size:13px;color:#fff;font-weight:600;letter-spacing:1px;margin-top:3px}
+.kv .v .accent{color:var(--accent)}
+
+/* 角标装饰 */
+.corner{position:absolute;width:44px;height:44px;border:1.5px solid var(--primary);
+  box-shadow:0 0 10px rgba(33,150,243,.4)}
+.corner-tl{top:24px;left:24px;border-right:none;border-bottom:none}
+.corner-tr{top:24px;right:24px;border-left:none;border-bottom:none}
+.corner-bl{bottom:24px;left:24px;border-right:none;border-top:none}
+.corner-br{bottom:24px;right:24px;border-left:none;border-top:none}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+  <div class="grid"></div>
+  <span class="node" style="top:12%;left:14%"></span>
+  <span class="node c" style="top:22%;left:78%"></span>
+  <span class="node" style="top:38%;left:6%"></span>
+  <span class="node" style="top:58%;left:22%"></span>
+  <span class="node c" style="top:72%;left:86%"></span>
+  <span class="node" style="top:82%;left:34%"></span>
+  <span class="node c" style="top:18%;left:44%"></span>
+  <span class="node" style="top:48%;left:62%"></span>
+  <span class="node c" style="top:66%;left:52%"></span>
+  <span class="node" style="top:88%;left:72%"></span>
+  <span class="node c" style="top:30%;left:92%"></span>
+  <span class="node" style="top:5%;left:56%"></span>
+
+  <svg class="net-svg" viewBox="0 0 1600 900" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2196F3" stop-opacity="0"/>
+        <stop offset="0.5" stop-color="#2196F3" stop-opacity="0.55"/>
+        <stop offset="1" stop-color="#00BCD4" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g stroke="url(#ln)" stroke-width="1" fill="none">
+      <line x1="180" y1="120" x2="430" y2="200"/>
+      <line x1="430" y1="200" x2="704" y2="162"/>
+      <line x1="704" y1="162" x2="1088" y2="140"/>
+      <line x1="1088" y1="140" x2="1248" y2="270"/>
+      <line x1="96" y1="342" x2="180" y2="120"/>
+      <line x1="96" y1="342" x2="352" y2="522"/>
+      <line x1="352" y1="522" x2="544" y2="594"/>
+      <line x1="544" y1="594" x2="832" y2="432"/>
+      <line x1="832" y1="432" x2="984" y2="594"/>
+      <line x1="984" y1="594" x2="1152" y2="648"/>
+      <line x1="1152" y1="648" x2="1376" y2="648"/>
+      <line x1="1376" y1="648" x2="1472" y2="270"/>
+      <line x1="544" y1="594" x2="704" y2="792"/>
+      <line x1="704" y1="792" x2="832" y2="432"/>
+      <line x1="704" y1="792" x2="1152" y2="648"/>
+      <line x1="1248" y1="270" x2="1472" y2="270"/>
+    </g>
+  </svg>
+</div>
+
+<span class="corner corner-tl"></span>
+<span class="corner corner-tr"></span>
+<span class="corner corner-bl"></span>
+<span class="corner corner-br"></span>
+
+<div id="ct">
+
+  <!-- 顶部 -->
+  <header class="top-header">
+    <div class="brand">
+      <div class="logo-mark">开</div>
+      <div class="brand-txt">
+        <strong>开源之道 · 适兕</strong>
+        <span>SENSENOVA · OPEN SOURCE</span>
+      </div>
+    </div>
+    <div class="series">
+      <span class="dot"></span>
+      <span>OPEN SOURCE READING RECORD · 2025 · MAR</span>
+    </div>
+  </header>
+
+  <!-- 中央 hero -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="eyebrow"><span class="eb-line"></span><span>OPEN SOURCE DOCTRINE · 2025.03</span></div>
+      <h1 class="h-title">开源布道<span class="glow-dot"></span><br>与阅读分享</h1>
+      <div class="subtitle-row">
+        <span class="sub-tag">技术共和国 · 开源之书记录</span>
+        <span class="sub-txt">2025年3月 · <b>技术共和国</b> · <b>开源之书记录</b></span>
+      </div>
+      <div class="book-quote">
+        <div class="bq-mark">"</div>
+        <p>从自由软件运动到现代开源治理，我们试图回答一个根本问题：<em>技术社区如何成为一个共和国？</em></p>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="tech-ring">
+        <svg viewBox="0 0 420 420">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.35"/>
+              <stop offset="60%" stop-color="#2196F3" stop-opacity="0.08"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2196F3"/>
+              <stop offset="100%" stop-color="#00BCD4"/>
+            </linearGradient>
+          </defs>
+          <circle cx="210" cy="210" r="180" fill="url(#coreGlow)"/>
+          <circle cx="210" cy="210" r="170" fill="none" stroke="url(#ringGrad)" stroke-width="1" stroke-opacity="0.6" stroke-dasharray="2 6"/>
+          <circle cx="210" cy="210" r="140" fill="none" stroke="#2196F3" stroke-width="0.8" stroke-opacity="0.35"/>
+          <circle cx="210" cy="210" r="110" fill="none" stroke="#00BCD4" stroke-width="0.6" stroke-opacity="0.3" stroke-dasharray="1 4"/>
+          <circle cx="210" cy="210" r="70" fill="rgba(33,150,243,0.08)" stroke="#2196F3" stroke-width="1" stroke-opacity="0.7"/>
+          <circle cx="210" cy="210" r="8" fill="#2196F3">
+            <animate attributeName="r" values="8;12;8" dur="2.6s" repeatCount="indefinite"/>
+          </circle>
+          <g fill="#00BCD4">
+            <circle cx="210" cy="40" r="4"/>
+            <circle cx="380" cy="210" r="4"/>
+            <circle cx="210" cy="380" r="4"/>
+            <circle cx="40" cy="210" r="4"/>
+          </g>
+          <g fill="#2196F3">
+            <circle cx="330" cy="90" r="3"/>
+            <circle cx="330" cy="330" r="3"/>
+            <circle cx="90" cy="330" r="3"/>
+            <circle cx="90" cy="90" r="3"/>
+          </g>
+          <g stroke="#2196F3" stroke-opacity="0.35" stroke-width="0.8" fill="none">
+            <line x1="210" y1="210" x2="210" y2="40"/>
+            <line x1="210" y1="210" x2="380" y2="210"/>
+            <line x1="210" y1="210" x2="210" y2="380"/>
+            <line x1="210" y1="210" x2="40" y2="210"/>
+            <line x1="210" y1="210" x2="330" y2="90"/>
+            <line x1="210" y1="210" x2="330" y2="330"/>
+            <line x1="210" y1="210" x2="90" y2="330"/>
+            <line x1="210" y1="210" x2="90" y2="90"/>
+          </g>
+        </svg>
+        <span class="ring-label rl-1">FREEDOM</span>
+        <span class="ring-label rl-2">GOVERNANCE</span>
+        <span class="ring-label rl-3">COMMUNITY</span>
+        <span class="ring-label rl-4">DOCTRINE</span>
+        <div class="ring-core">
+          <div class="ring-core-inner">
+            <div class="core-book">核心文本</div>
+            <div class="core-name">技术共和国</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 事件信息卡 -->
+  <section class="event">
+    <div class="info">
+      <div class="tag"><span class="num">01</span>主题导读</div>
+      <p>围绕《<b>技术共和国</b>》一书，探讨开源社区如何构建技术乌托邦与公民治理。</p>
+    </div>
+    <div class="info">
+      <div class="tag"><span class="num">02</span>分享定位</div>
+      <p>面向开源爱好者与技术读者的<b>深度阅读分享</b>，兼具思想性与实践性。</p>
+    </div>
+    <div class="info">
+      <div class="tag"><span class="num">03</span>活动标识</div>
+      <p>开源之书记录系列活动，以<b>书籍为锚点</b>推动开源文化的社区传播。</p>
+    </div>
+  </section>
+
+  <!-- 底部 -->
+  <footer class="footer">
+    <div class="footer-l">
+      <div class="fs-title">READING SHARE · NARRATIVE</div>
+      <div class="fs-body">这是一场以《技术共和国》为核心文本的阅读分享会，旨在通过一本书读懂开源运动的底层逻辑。从自由软件运动到现代开源治理——技术社区如何成为一个共和国？欢迎所有对开源理念、社区治理与技术社会形态感兴趣的伙伴参与。</div>
+    </div>
+    <div class="footer-r">
+      <div class="kv"><div class="k">DATE</div><div class="v">2025 · <span class="accent">MAR</span></div></div>
+      <div class="kv"><div class="k">HOST</div><div class="v">开源之道 · 适兕</div></div>
+      <div class="kv"><div class="k">SERIES</div><div class="v">开源之书记录</div></div>
+    </div>
+  </footer>
+
+</div>
+</div>
+</body>
+</html>
