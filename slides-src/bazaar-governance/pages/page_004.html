@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>集市模式解析</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D2137;
+    --gold: #C8A96A;
+    --gold-deep: #A58A4B;
+    --gold-light: #E4CE9B;
+    --cream: #F7F5F1;
+    --ink: #1B2A3B;
+    --muted: #5F6A78;
+    --line: #D9D1BF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif; color: var(--ink); }
+  .wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; background: var(--cream); }
+  #bg { position: absolute; inset: 0; z-index: 0; }
+  #bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 8% 4%, rgba(13,33,55,0.05), transparent 42%),
+      radial-gradient(circle at 96% 96%, rgba(200,169,106,0.10), transparent 45%);
+  }
+  #bg::after {
+    content: '';
+    position: absolute;
+    left: 1538px; top: 0; width: 1px; height: 900px;
+    background: linear-gradient(180deg, transparent 0%, var(--gold) 30%, var(--gold) 70%, transparent 100%);
+    opacity: 0.28;
+  }
+  #ct { position: absolute; inset: 0; z-index: 1; padding: 48px 72px; }
+
+  /* Header */
+  .header { position: absolute; left: 72px; top: 48px; width: 620px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 13px; letter-spacing: 5px; color: var(--gold-deep);
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .badge-num { font-weight: 700; }
+  .badge-divider { width: 34px; height: 1px; background: var(--gold); }
+  .badge-cn { font-family: 'Noto Sans SC', sans-serif; font-weight: 500; letter-spacing: 3px; font-size: 12px; color: var(--navy); }
+  .title {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 64px; font-weight: 700; color: var(--navy);
+    line-height: 1.02; letter-spacing: -1.5px; margin-bottom: 10px;
+  }
+  .title-cn { font-family: 'Noto Serif SC', serif; font-weight: 700; }
+  .subtitle {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-style: italic; font-size: 20px; color: var(--gold-deep);
+    font-weight: 400; margin-bottom: 24px; letter-spacing: 0.3px;
+  }
+
+  /* Narrative */
+  .narrative { width: 500px; }
+  .narrative-text {
+    font-size: 14.5px; line-height: 1.85; color: var(--ink);
+    border-left: 2px solid var(--gold); padding: 4px 0 4px 18px;
+  }
+  .narrative-text em {
+    color: var(--navy); font-style: normal; font-weight: 600;
+    background: linear-gradient(180deg, transparent 72%, rgba(200,169,106,0.28) 72%);
+  }
+
+  /* Bazaar scene */
+  .bazaar-scene {
+    position: absolute; right: 72px; top: 44px;
+    width: 560px; height: 330px;
+  }
+  .scene-image {
+    position: absolute; left: 0; top: 0;
+    width: 560px; height: 330px;
+    object-fit: cover; object-position: center;
+    z-index: 1;
+  }
+  .scene-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(13,33,55,0.02) 0%, rgba(13,33,55,0.08) 100%);
+    z-index: 2; pointer-events: none;
+  }
+  .scene-lines {
+    position: absolute; left: 0; top: 0; width: 560px; height: 330px;
+    z-index: 3; pointer-events: none;
+  }
+  .scene-core {
+    position: absolute;
+    left: 215px; top: 112px;
+    width: 110px; height: 110px;
+    z-index: 4;
+  }
+  .core-circle {
+    position: relative; width: 110px; height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
+    box-shadow:
+      0 0 0 8px var(--cream),
+      0 0 0 9px var(--gold),
+      0 0 0 16px rgba(200,169,106,0.15);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--cream);
+  }
+  .core-cn {
+    font-family: 'Noto Serif SC', serif; font-weight: 700;
+    font-size: 20px; letter-spacing: 3px; line-height: 1;
+  }
+  .core-en {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 9px; letter-spacing: 2px; opacity: 0.88;
+    margin-top: 6px;
+  }
+
+  /* Principle cards */
+  .card {
+    position: absolute;
+    background: rgba(255,255,255,0.97);
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 24px rgba(13,33,55,0.08), 0 1px 3px rgba(13,33,55,0.04);
+    padding: 14px 18px 16px;
+    z-index: 5;
+  }
+  .card-head {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+  }
+  .card-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--gold-deep); line-height: 1;
+  }
+  .card-title-wrap { display: flex; align-items: baseline; gap: 8px; }
+  .card-title-cn {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px; font-weight: 700; color: var(--navy);
+    letter-spacing: 2px;
+  }
+  .card-title-en {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 11px; color: var(--gold-deep);
+    letter-spacing: 1.2px;
+  }
+  .card-desc {
+    font-size: 12.5px; line-height: 1.6; color: var(--muted);
+  }
+  .card.tl { left: 110px; top: 74px; width: 200px; }
+  .card.tr { right: 110px; top: 74px; width: 200px; }
+  .card.bl { left: 110px; top: 640px; width: 200px; }
+  .card.br { right: 110px; top: 640px; width: 200px; }
+
+  /* Data section */
+  .data-section {
+    position: absolute; left: 388px; top: 490px;
+    width: 824px; height: 130px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  .data-item { position: relative; padding: 20px 24px 20px 26px; }
+  .data-item::before {
+    content: ''; position: absolute;
+    left: 0; top: 20px; width: 3px; height: 78px;
+    background: linear-gradient(180deg, var(--gold), var(--gold-deep));
+  }
+  .data-label {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 3px; color: var(--gold-deep);
+    margin-bottom: 8px;
+  }
+  .data-label-cn { color: var(--navy); font-weight: 600; }
+  .data-label-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; }
+  .data-value {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+    font-size: 32px; font-weight: 700; color: var(--navy);
+    line-height: 1.15; margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .data-value-cn { font-family: 'Noto Serif SC', serif; }
+  .data-note {
+    font-size: 13px; line-height: 1.55; color: var(--muted);
+    font-style: italic;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute; left: 72px; right: 72px; bottom: 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Playfair Display', 'Noto Sans SC', serif;
+    font-size: 11px; letter-spacing: 3.5px; color: var(--muted);
+  }
+  .footer::before {
+    content: ''; position: absolute; left: 0; right: 0; top: -14px;
+    height: 1px; background: var(--line);
+  }
+  .footer-right { color: var(--gold-deep); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="badge">
+        <span class="badge-num">04</span>
+        <span class="badge-divider"></span>
+        <span class="badge-cn">模式解析 · MODEL</span>
+      </div>
+      <h1 class="title">
+        The Bazaar Model
+        <span class="title-cn">集市模式解析</span>
+      </h1>
+      <div class="subtitle">Bazaar of Ideas — where code becomes commons.</div>
+    </div>
+
+    <div class="narrative" style="position:absolute; left:72px; top:290px;">
+      <p class="narrative-text">
+        集市模式的核心自信来自一个朴素信念：只要把代码摆出来，<em>足够多的眼睛</em>就能看到问题，<em>足够多的人</em>愿意改进。这种模式把开发过程从"计划—执行"改造为<em>"涌现—收敛"</em>，让社区智慧成为真正的治理主体。
+      </p>
+    </div>
+
+    <div class="bazaar-scene">
+      <img src="../images/page_004_bazaar_icon.png" alt="俯瞰式集市场景概念插画" class="scene-image">
+      <div class="scene-overlay"></div>
+      <svg class="scene-lines" viewBox="0 0 560 330" xmlns="http://www.w3.org/2000/svg">
+        <line x1="230" y1="132" x2="42" y2="24" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.78"/>
+        <line x1="310" y1="132" x2="498" y2="24" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.78"/>
+        <line x1="230" y1="198" x2="42" y2="306" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.78"/>
+        <line x1="310" y1="198" x2="498" y2="306" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.78"/>
+        <circle cx="270" cy="165" r="5" fill="#C8A96A" opacity="0.9"/>
+      </svg>
+      <div class="scene-core">
+        <div class="core-circle">
+          <div class="core-cn">集市核心</div>
+          <div class="core-en">CORE · 1885</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card tl">
+      <div class="card-head">
+        <span class="card-num">01</span>
+        <div class="card-title-wrap">
+          <span class="card-title-cn">涌现秩序</span>
+          <span class="card-title-en">Emergence</span>
+        </div>
+      </div>
+      <p class="card-desc">没有中央权威，靠公开讨论与共识自然形成开发方向与规范。</p>
+    </div>
+
+    <div class="card tr">
+      <div class="card-head">
+        <span class="card-num">02</span>
+        <div class="card-title-wrap">
+          <span class="card-title-cn">快速迭代</span>
+          <span class="card-title-en">Iteration</span>
+        </div>
+      </div>
+      <p class="card-desc">频繁发布半成品原型，让用户尽早接触并反馈，加速缺陷暴露。</p>
+    </div>
+
+    <div class="card bl">
+      <div class="card-head">
+        <span class="card-num">04</span>
+        <div class="card-title-wrap">
+          <span class="card-title-cn">模块化架构</span>
+          <span class="card-title-en">Modularity</span>
+        </div>
+      </div>
+      <p class="card-desc">系统拆分为独立可替换组件，降低个人单点失败对整个项目的影响。</p>
+    </div>
+
+    <div class="card br">
+      <div class="card-head">
+        <span class="card-num">03</span>
+        <div class="card-title-wrap">
+          <span class="card-title-cn">反馈即礼物</span>
+          <span class="card-title-en">Feedback</span>
+        </div>
+      </div>
+      <p class="card-desc">每条 bug 报告与 patches 都被视作社区送给项目的无偿智力贡献。</p>
+    </div>
+
+    <div class="data-section">
+      <div class="data-item">
+        <div class="data-label">
+          <span class="data-label-cn">典型代表项目</span>
+          <span class="data-label-dot"></span>
+          <span>Signature Projects</span>
+        </div>
+        <div class="data-value">
+          <span class="data-value-cn">Linux</span> / <span class="data-value-cn">Python</span>
+        </div>
+        <div class="data-note">Linux 内核至今保持每周合并节奏。</div>
+      </div>
+      <div class="data-item">
+        <div class="data-label">
+          <span class="data-label-cn">开发周期特征</span>
+          <span class="data-label-dot"></span>
+          <span>Development Rhythm</span>
+        </div>
+        <div class="data-value">
+          <span class="data-value-cn">短周期 · 分布式</span>
+        </div>
+        <div class="data-note">持续集成，代码随时可构建。</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-left">CHAPTER · OPEN SOURCE GOVERNANCE MODELS</span>
+      <span class="footer-right">04 / Bazaar Model</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

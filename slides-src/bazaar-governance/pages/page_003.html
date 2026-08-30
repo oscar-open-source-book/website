@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>大教堂模式解析</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Noto+Serif+SC:wght@500;700;900&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --navy-soft: #1B3552;
+  --gold: #C8A96A;
+  --gold-soft: #D9BE85;
+  --cream: #F7F5F1;
+  --cream-dark: #EDE8DF;
+  --text-main: #1A2733;
+  --text-muted: #5A6B7C;
+  --border: #D9D2C4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--cream);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 500px at 100% 0%, rgba(200,169,106,0.08), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 0% 100%, rgba(13,33,55,0.06), transparent 60%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 64px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Masthead */
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  gap: 48px;
+  align-items: center;
+  padding-bottom: 26px;
+  border-bottom: 2px solid var(--navy);
+  position: relative;
+}
+
+.masthead::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 180px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.eyebrow .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.eyebrow .line {
+  flex: 0 0 60px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.title-block h1 {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 68px;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+.title-block h1 .zh {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  display: inline-block;
+}
+
+.subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+.hero-image-wrap {
+  width: 500px;
+  height: 280px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid var(--border);
+  padding-left: 40px;
+}
+
+.hero-image-wrap img {
+  width: 500px;
+  height: 280px;
+  object-fit: contain;
+  display: block;
+}
+
+.hero-caption {
+  position: absolute;
+  bottom: -6px;
+  right: 8px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* Lede */
+.lede {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 22px;
+  margin-top: 26px;
+  margin-bottom: 28px;
+}
+
+.lede-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 78px;
+  color: var(--gold);
+  line-height: 0.8;
+  font-weight: 700;
+}
+
+.lede-text {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--text-main);
+  padding-top: 8px;
+}
+
+.lede-text strong {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* Feature cards */
+.features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  padding: 22px 20px 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 240px;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--gold);
+}
+
+.card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 14px;
+  color: var(--navy);
+}
+
+.card-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.card-en {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.card-desc {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* Highlights */
+.highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+}
+
+.highlight {
+  background: var(--navy);
+  color: var(--cream);
+  padding: 20px 26px;
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 22px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.highlight::before {
+  content: '';
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(200,169,106,0.25);
+  border-radius: 50%;
+}
+
+.highlight-label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  border-right: 1px solid rgba(200,169,106,0.4);
+  padding-right: 16px;
+}
+
+.highlight-label .zh {
+  display: block;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-style: normal;
+  font-size: 13px;
+  color: var(--cream);
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.highlight-value {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+}
+
+.highlight-value .gold {
+  color: var(--gold);
+}
+
+.highlight-sub {
+  font-size: 12px;
+  color: rgba(247,245,241,0.75);
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+/* Footer */
+.foot {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10.5px;
+  letter-spacing: 2.5px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.foot .brand {
+  color: var(--navy);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="masthead">
+      <div class="title-block">
+        <div class="eyebrow">
+          <span>ESSENTIALS</span>
+          <span class="line"></span>
+          <span>OPEN SOURCE · 03</span>
+        </div>
+        <h1><span class="zh">大教堂模式解析</span></h1>
+        <div class="subtitle">The Cathedral Model — Order, Consistency & Enterprise-Grade Quality</div>
+      </div>
+      <div class="hero-image-wrap">
+        <img src="../images/page_003_cathedral_icon.png" alt="哥特式大教堂正面线稿，象征秩序与传统规划">
+        <div class="hero-caption">FIG. 01 · CATHEDRAL</div>
+      </div>
+    </div>
+
+    <div class="lede">
+      <div class="lede-mark">“</div>
+      <div class="lede-text">
+        <strong>大教堂模式并非劣等</strong>，它强调<strong>质量可控与架构一致性</strong>，在安全敏感或企业级场景中仍有价值。雷蒙德并未否定大教堂，而是指出在特定条件下，集市模式展现出<strong>更强的生命力</strong>。
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="card">
+        <div class="card-num">FEATURE 01</div>
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 12 L24 6 L42 12 L24 18 Z"/>
+          <path d="M6 24 L24 30 L42 24"/>
+          <path d="M6 36 L24 42 L42 36"/>
+          <circle cx="24" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+          <circle cx="24" cy="36" r="1.5" fill="currentColor"/>
+        </svg>
+        <div class="card-title">顶层规划</div>
+        <div class="card-en">Top-Down Planning</div>
+        <div class="card-desc">由核心维护者或委员会统一制定路线图，新功能需经过严格审批。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">FEATURE 02</div>
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="10" width="32" height="30" rx="1"/>
+          <path d="M8 18 L40 18"/>
+          <path d="M14 6 L14 14"/>
+          <path d="M34 6 L34 14"/>
+          <path d="M14 26 L18 30 L24 24" stroke="currentColor"/>
+          <path d="M28 26 L38 26"/>
+          <path d="M28 32 L36 32"/>
+        </svg>
+        <div class="card-title">计划式发布</div>
+        <div class="card-en">Scheduled Release</div>
+        <div class="card-desc">以版本号为锚点，长时间封闭开发后一次性交付完整更新。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">FEATURE 03</div>
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="14" r="5"/>
+          <path d="M14 42 C14 32 18 26 24 26 C30 26 34 32 34 42"/>
+          <path d="M8 38 L14 34"/>
+          <path d="M40 38 L34 34"/>
+          <path d="M4 44 L44 44"/>
+        </svg>
+        <div class="card-title">权力集中</div>
+        <div class="card-en">Centralized Authority</div>
+        <div class="card-desc">决策权集中在少数人手中，外部贡献者参与门槛较高。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">FEATURE 04</div>
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 42 L8 16 L24 6 L40 16 L40 42 Z"/>
+          <path d="M8 42 L40 42"/>
+          <path d="M18 42 L18 30 L30 30 L30 42"/>
+          <circle cx="24" cy="18" r="3"/>
+          <path d="M24 15 L24 12"/>
+        </svg>
+        <div class="card-title">典型代表</div>
+        <div class="card-en">Notable Examples</div>
+        <div class="card-desc">BSD、Netscape Navigator 等在 Linux 崛起前的开源项目。</div>
+      </div>
+    </div>
+
+    <div class="highlights">
+      <div class="highlight">
+        <div class="highlight-label">
+          TYPICAL PROJECTS
+          <span class="zh">典型代表项目</span>
+        </div>
+        <div>
+          <div class="highlight-value"><span class="gold">BSD</span> / <span class="gold">Netscape</span></div>
+          <div class="highlight-sub">九十年代主流开源项目，Linux 崛起之前的大型工程范式。</div>
+        </div>
+      </div>
+
+      <div class="highlight">
+        <div class="highlight-label">
+          CYCLE CHARACTER
+          <span class="zh">开发周期特征</span>
+        </div>
+        <div>
+          <div class="highlight-value">长周期 · <span class="gold">集中式</span></div>
+          <div class="highlight-sub">数月甚至数年才有一次重大版本发布，节奏沉稳、迭代收敛。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="brand">THE CATHEDRAL MODEL</span>
+      <span>开源开发范式研究 · 03</span>
+      <span>Quality · Consistency · Control</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

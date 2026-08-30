@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录：集市治理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --navy-2:#1A2F48;
+  --gold:#C8A96A;
+  --gold-2:#B4903E;
+  --cream:#F7F5F1;
+  --ink:#0D2137;
+  --muted:#6B7684;
+  --line:rgba(13,33,55,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#E5E1D8;
+  font-family:'Source Sans 3','Source Han Sans SC','Noto Sans SC','PingFang SC',sans-serif;
+  color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  background:var(--cream);
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .vignette{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,#FBF9F4 0%,#F7F5F1 40%,#EFEAE0 100%);
+}
+#bg .glow-tl{
+  position:absolute;
+  top:-240px;left:-240px;
+  width:760px;height:760px;
+  background:radial-gradient(circle at center,rgba(200,169,106,.13) 0%,rgba(200,169,106,0) 70%);
+}
+#bg .glow-br{
+  position:absolute;
+  bottom:-220px;right:-220px;
+  width:720px;height:720px;
+  background:radial-gradient(circle at center,rgba(13,33,55,.07) 0%,rgba(13,33,55,0) 70%);
+}
+#ct{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  padding:58px 60px;
+  box-sizing:border-box;
+}
+
+/* Frame corner marks */
+.corner{
+  position:absolute;
+  width:36px;height:36px;
+  border-color:var(--gold);
+  z-index:2;
+  pointer-events:none;
+}
+.corner-tl{top:26px;left:26px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold);}
+.corner-tr{top:26px;right:26px;border-top:1.5px solid var(--gold);border-right:1.5px solid var(--gold);}
+.corner-bl{bottom:26px;left:26px;border-bottom:1.5px solid var(--gold);border-left:1.5px solid var(--gold);}
+.corner-br{bottom:26px;right:26px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold);}
+
+/* Masthead */
+.masthead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 10px;
+  font-size:11px;
+  color:var(--gold-2);
+  letter-spacing:.36em;
+  font-weight:500;
+  margin-bottom:30px;
+  font-family:'Source Sans 3','Source Han Sans SC',sans-serif;
+}
+.masthead .m-left{display:flex;align-items:center;gap:16px;}
+.masthead .m-right{display:flex;align-items:center;gap:16px;}
+.m-dot{color:var(--gold);opacity:.8;}
+
+/* Two-column */
+.split{
+  display:grid;
+  grid-template-columns:600px 900px;
+  gap:60px;
+  height:calc(900px - 58px - 58px - 58px);
+}
+
+/* LEFT column */
+.left-col{
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:12px;
+  letter-spacing:.44em;
+  color:var(--gold-2);
+  font-weight:500;
+  margin-bottom:26px;
+  font-family:'Source Sans 3','Source Han Sans SC',sans-serif;
+}
+.eyebrow .dot{
+  width:6px;height:6px;
+  background:var(--gold);
+  display:inline-block;
+}
+.eyebrow .line{
+  flex:1;height:1px;background:var(--gold);opacity:.4;
+}
+
+.title-block{position:relative;}
+.title{
+  font-family:'Playfair Display','Source Han Serif SC','Noto Serif SC','STSong','SimSun',serif;
+  color:var(--navy);
+  font-weight:600;
+  line-height:1.14;
+  letter-spacing:-.005em;
+}
+.title .line-1{
+  display:block;
+  font-size:40px;
+  font-weight:500;
+  color:var(--navy);
+  margin-bottom:2px;
+}
+.title .line-2{
+  display:block;
+  font-size:58px;
+  font-weight:700;
+  letter-spacing:.03em;
+  color:var(--navy);
+}
+.title-decor{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:22px;
+}
+.title-decor .dl{
+  width:56px;height:3px;
+  background:var(--gold);
+}
+.title-decor .ds{
+  width:6px;height:6px;
+  border:1.2px solid var(--gold);
+  transform:rotate(45deg);
+}
+
+.subtitle{
+  margin-top:24px;
+  font-family:'Playfair Display','Source Han Serif SC','Noto Serif SC',serif;
+  font-size:22px;
+  line-height:1.5;
+  color:var(--navy-2);
+  font-weight:400;
+}
+.subtitle .en{font-style:italic;font-weight:600;letter-spacing:.01em;}
+.subtitle .sep{color:var(--gold);margin:0 .4em;font-weight:400;}
+
+.tags{
+  margin-top:34px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.tag{
+  display:grid;
+  grid-template-columns:52px 1fr;
+  gap:14px;
+  padding:8px 0;
+  border-top:1px solid var(--line);
+}
+.tag:last-child{border-bottom:1px solid var(--line);}
+.tag .idx{
+  font-family:'Source Serif Pro','Source Han Serif SC',serif;
+  color:var(--gold-2);
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:.06em;
+  font-style:italic;
+  padding-top:3px;
+}
+.tag .txt{
+  font-size:14px;
+  line-height:1.65;
+  color:var(--ink);
+  font-weight:400;
+}
+.tag .txt strong{
+  color:var(--navy);
+  font-weight:600;
+  font-family:'Source Sans 3','Source Han Sans SC',sans-serif;
+  margin-right:2px;
+}
+
+/* Data box */
+.data-box{
+  margin-top:24px;
+  padding:14px 18px 14px 22px;
+  background:rgba(200,169,106,.07);
+  border-left:3px solid var(--gold);
+}
+.data-row{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  padding:6px 0;
+}
+.data-row + .data-row{border-top:1px dashed rgba(200,169,106,.5);}
+.data-row .k{
+  font-family:'Source Serif Pro','Source Han Serif SC',serif;
+  color:var(--gold-2);
+  font-size:12px;
+  letter-spacing:.06em;
+  font-weight:600;
+  min-width:82px;
+  padding-top:4px;
+  font-style:italic;
+  flex-shrink:0;
+}
+.data-row .v{
+  font-size:13px;
+  line-height:1.55;
+  color:var(--navy);
+  font-weight:400;
+}
+.data-row .v .em{color:var(--gold-2);font-weight:600;font-family:'Source Serif Pro','Source Han Serif SC',serif;font-style:italic;}
+
+/* Right column */
+.right-col{position:relative;}
+.hero{
+  position:relative;
+  width:900px;height:500px;
+  margin:0 auto;
+  background:#EDE7D6;
+  box-shadow:0 24px 48px -22px rgba(13,33,55,.35),0 4px 12px -4px rgba(13,33,55,.15);
+}
+.hero img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.hero-frame{
+  position:absolute;
+  inset:-12px;
+  border:1px solid var(--gold);
+  pointer-events:none;
+}
+.hero-frame::before{
+  content:'';
+  position:absolute;
+  inset:6px;
+  border:1px solid rgba(200,169,106,.25);
+}
+.hero-cap{
+  position:absolute;
+  bottom:-38px;
+  right:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Source Sans 3','Source Han Sans SC',sans-serif;
+  font-size:10.5px;
+  color:var(--gold-2);
+  letter-spacing:.34em;
+  font-weight:500;
+  text-transform:uppercase;
+}
+.hero-cap .cap-line{width:38px;height:1px;background:var(--gold);}
+
+/* Bottom narrative */
+.footer{
+  position:absolute;
+  bottom:44px;
+  left:60px;
+  right:60px;
+  display:grid;
+  grid-template-columns:600px 1fr;
+  gap:60px;
+  z-index:3;
+}
+.foot-left{
+  position:relative;
+  padding-top:14px;
+  margin-left:22px;
+}
+.foot-left::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,rgba(200,169,106,.7),rgba(200,169,106,0));
+}
+.narrative{
+  font-family:'Source Serif Pro','Source Han Serif SC','Noto Serif SC',serif;
+  font-size:12.5px;
+  line-height:1.85;
+  color:var(--navy-2);
+  font-weight:400;
+  font-style:italic;
+}
+.narrative .lead{
+  color:var(--gold-2);
+  font-style:normal;
+  font-weight:600;
+  margin-right:6px;
+  letter-spacing:.05em;
+}
+.foot-right{
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  padding-top:14px;
+}
+.foot-right .sig{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
+}
+.foot-right .sig-en{
+  font-family:'Playfair Display',serif;
+  font-size:11px;
+  color:var(--gold-2);
+  letter-spacing:.4em;
+  font-weight:500;
+  font-style:italic;
+}
+.foot-right .sig-cn{
+  font-family:'Source Han Serif SC','Noto Serif SC',serif;
+  font-size:11px;
+  color:var(--navy);
+  letter-spacing:.5em;
+  font-weight:400;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="vignette"></div>
+    <div class="glow-tl"></div>
+    <div class="glow-br"></div>
+  </div>
+  <div id="ct">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="masthead">
+      <div class="m-left"><span>OPEN SOURCE · 开 源 布 道</span><span class="m-dot">◆</span><span>N°.001</span></div>
+      <div class="m-right"><span>THE CATHEDRAL &amp; THE BAZAAR</span><span class="m-dot">◆</span><span>1997</span></div>
+    </div>
+
+    <div class="split">
+      <div class="left-col">
+        <div class="eyebrow">
+          <span class="dot"></span>
+          <span>Cover Story · 封 面 特 写</span>
+          <span class="line"></span>
+        </div>
+
+        <div class="title-block">
+          <h1 class="title">
+            <span class="line-1">开源之书记录</span>
+            <span class="line-2">集市治理</span>
+          </h1>
+          <div class="title-decor">
+            <span class="dl"></span>
+            <span class="ds"></span>
+          </div>
+        </div>
+
+        <div class="subtitle">
+          <span class="en">Bazaar Governance</span><span class="sep">·</span><span>从大教堂走向集市的开源范式</span>
+        </div>
+
+        <div class="tags">
+          <div class="tag">
+            <span class="idx">01</span>
+            <span class="txt"><strong>主题聚焦</strong>以《大教堂与集市》为思想原点，拆解集市式开源治理的底层逻辑</span>
+          </div>
+          <div class="tag">
+            <span class="idx">02</span>
+            <span class="txt"><strong>时代回响</strong>Linux、Python、Kubernetes 等项目的成功皆印证了开放协作的威力</span>
+          </div>
+          <div class="tag">
+            <span class="idx">03</span>
+            <span class="txt"><strong>阅读视角</strong>从布道者视角重读经典，提炼适用于今日开源社区治理的普适法则</span>
+          </div>
+        </div>
+
+        <div class="data-box">
+          <div class="data-row">
+            <span class="k">出版年份</span>
+            <span class="v"><span class="em">1997</span>，最初以两篇博客文章形式发布于 comp.os.linux.development.system</span>
+          </div>
+          <div class="data-row">
+            <span class="k">核心对比</span>
+            <span class="v"><span class="em">Linux vs BSD</span>，雷蒙德用两者对照论证集市模式的优越性</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="hero">
+          <img src="../images/page_001_hero.png" alt="集市治理抽象插画：藏蓝色人物剪影从四面八方汇聚向中心广场，配以精致金色几何边框与装饰花纹，奶油色背景">
+          <div class="hero-frame"></div>
+          <div class="hero-cap">
+            <span class="cap-line"></span>
+            <span>THE BAZAAR — A GATHERING OF MINDS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="foot-left">
+        <div class="narrative">
+          <span class="lead">序 · </span>在开源世界由小众走向主流的今天，埃里克·雷蒙德的《大教堂与集市》依然是一本不可绕过的启蒙之书。本次分享以 Bazaar Governance 为线索，梳理集市模式的起源、原则与实践启示，为开源布道提供可复用的叙事框架。
+        </div>
+      </div>
+      <div class="foot-right">
+        <div class="sig">
+          <div class="sig-en">A JOURNAL ENTRY</div>
+          <div class="sig-cn">开 源 之 书 · 记 录</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
