@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>书与作者 · 文化是个变量</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1E293B;
+  --bg-2:#0F172A;
+  --panel:#243244;
+  --panel-2:#2B3A50;
+  --line:rgba(255,255,255,0.08);
+  --line-strong:rgba(255,255,255,0.14);
+  --primary:#2196F3;
+  --primary-soft:rgba(33,150,243,0.18);
+  --accent:#FF7043;
+  --accent-soft:rgba(255,112,67,0.18);
+  --text:#E8EEF6;
+  --text-dim:#9FB0C4;
+  --text-mute:#6B7A8F;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Inter','Noto Sans SC','Segoe UI',sans-serif;color:var(--text);background:#0B1220;}
+body{font-weight:400;letter-spacing:0.01em;}
+.wrapper{position:relative;width:1600px;height:900px;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 56px 40px;display:flex;flex-direction:column;}
+
+/* Background decorations */
+.bg-grad{position:absolute;inset:0;background:linear-gradient(135deg,#1E293B 0%,#0F172A 60%,#16233A 100%);}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 30% 40%,black 30%,transparent 75%);}
+.bg-glow-1{position:absolute;top:-140px;right:-100px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.28) 0%,rgba(33,150,243,0) 65%);filter:blur(20px);}
+.bg-glow-2{position:absolute;bottom:-160px;left:-80px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(255,112,67,0.22) 0%,rgba(255,112,67,0) 65%);filter:blur(20px);}
+.bg-noise{position:absolute;inset:0;opacity:0.04;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,0.4) 0.5px,transparent 1px),radial-gradient(circle at 70% 60%,rgba(255,255,255,0.3) 0.5px,transparent 1px);background-size:37px 37px,41px 41px;}
+
+/* Header */
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:18px;border-bottom:1px solid var(--line);}
+.header-left{display:flex;flex-direction:column;gap:6px;}
+.tag-row{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-dim);letter-spacing:0.24em;text-transform:uppercase;}
+.tag-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent);}
+.title{font-size:34px;font-weight:800;letter-spacing:0.02em;line-height:1.15;background:linear-gradient(90deg,#FFFFFF 0%,#9FCBFF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.subtitle{font-size:14px;color:var(--text-dim);font-weight:400;letter-spacing:0.05em;}
+.subtitle .em{color:var(--primary);font-weight:500;}
+.header-right{display:flex;align-items:center;gap:16px;font-size:11px;color:var(--text-mute);letter-spacing:0.2em;}
+.hdr-chip{padding:6px 12px;border:1px solid var(--line-strong);border-radius:20px;background:rgba(255,255,255,0.03);}
+.hdr-chip.hi{color:var(--primary);border-color:rgba(33,150,243,0.4);}
+
+/* Body */
+.body{flex:1;display:grid;grid-template-columns:480px 1fr;gap:28px;padding-top:22px;min-height:0;}
+
+/* Left column */
+.left{display:flex;flex-direction:column;gap:18px;min-height:0;}
+.avatar-card{position:relative;height:280px;border-radius:16px;border:1px solid var(--line-strong);background:linear-gradient(140deg,rgba(33,150,243,0.10) 0%,rgba(255,112,67,0.06) 100%);overflow:hidden;padding:18px;display:flex;gap:16px;}
+.avatar-frame{position:relative;width:150px;height:230px;flex-shrink:0;background:linear-gradient(160deg,rgba(33,150,243,0.20),rgba(15,23,42,0.6));border-radius:10px;border:1px solid var(--line-strong);overflow:hidden;}
+.avatar-frame svg{width:100%;height:100%;display:block;}
+.corner-tag{position:absolute;top:8px;left:8px;font-size:9px;color:var(--primary);letter-spacing:0.25em;padding:3px 8px;background:rgba(33,150,243,0.14);border:1px solid rgba(33,150,243,0.3);border-radius:10px;}
+.corner-tag-r{position:absolute;bottom:8px;right:8px;font-size:9px;color:var(--accent);letter-spacing:0.2em;padding:3px 8px;background:rgba(255,112,67,0.12);border:1px solid rgba(255,112,67,0.3);border-radius:10px;}
+.avatar-info{flex:1;display:flex;flex-direction:column;justify-content:space-between;padding-top:4px;padding-bottom:4px;}
+.name{font-size:24px;font-weight:700;color:#FFFFFF;letter-spacing:0.01em;line-height:1.2;}
+.name-en{font-size:13px;color:var(--primary);font-weight:500;letter-spacing:0.14em;margin-top:4px;}
+.role-line{font-size:12px;color:var(--text-dim);letter-spacing:0.05em;margin-top:14px;line-height:1.6;}
+.role-line .hi{color:var(--accent);font-weight:600;}
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.badge{font-size:10px;color:var(--text-dim);padding:4px 9px;border:1px solid var(--line-strong);border-radius:12px;background:rgba(255,255,255,0.03);letter-spacing:0.05em;}
+.badge.hi{color:var(--primary);border-color:rgba(33,150,243,0.35);background:rgba(33,150,243,0.08);}
+
+.bio-card{flex:1;border-radius:16px;border:1px solid var(--line);background:linear-gradient(140deg,rgba(36,50,68,0.7),rgba(15,23,42,0.5));padding:20px 22px;position:relative;overflow:hidden;}
+.bio-card::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.bio-title{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--primary);letter-spacing:0.24em;margin-bottom:10px;font-weight:600;}
+.bio-title::after{content:'';flex:1;height:1px;background:var(--line);}
+.bio-text{font-size:13px;line-height:1.75;color:var(--text-dim);font-weight:400;}
+.bio-text strong{color:var(--text);font-weight:600;}
+.bio-text .ac{color:var(--accent);font-weight:600;}
+
+/* Right column */
+.right{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:16px;min-height:0;}
+.card{position:relative;border-radius:14px;border:1px solid var(--line-strong);background:linear-gradient(140deg,rgba(36,50,68,0.75),rgba(15,23,42,0.55));padding:18px 20px;overflow:hidden;display:flex;flex-direction:column;gap:10px;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--primary),transparent);opacity:0.6;}
+.card-2::before{background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.card-3::before{background:linear-gradient(90deg,transparent,var(--primary),var(--accent),transparent);}
+.card-4::before{background:linear-gradient(90deg,transparent,var(--accent),var(--primary),transparent);}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;}
+.card-num{font-size:10px;color:var(--text-mute);letter-spacing:0.3em;font-weight:600;}
+.card-icon{width:28px;height:28px;border-radius:8px;background:rgba(33,150,243,0.14);border:1px solid rgba(33,150,243,0.3);display:flex;align-items:center;justify-content:center;color:var(--primary);font-weight:700;font-size:13px;}
+.card-2 .card-icon{background:rgba(255,112,67,0.14);border-color:rgba(255,112,67,0.35);color:var(--accent);}
+.card-3 .card-icon{background:rgba(33,150,243,0.14);border-color:rgba(33,150,243,0.35);color:var(--primary);}
+.card-4 .card-icon{background:rgba(255,112,67,0.14);border-color:rgba(255,112,67,0.35);color:var(--accent);}
+
+.card-title{font-size:15px;font-weight:700;color:#FFFFFF;letter-spacing:0.02em;}
+.card-sub{font-size:11px;color:var(--text-mute);letter-spacing:0.14em;text-transform:uppercase;margin-top:2px;}
+
+/* Card 1 */
+.book-title-en{font-size:22px;font-weight:800;color:#FFFFFF;letter-spacing:0.01em;line-height:1.2;}
+.book-title-cn{font-size:14px;color:var(--accent);font-weight:600;letter-spacing:0.06em;margin-top:2px;}
+.card-1-body{font-size:12.5px;line-height:1.7;color:var(--text-dim);flex:1;}
+.card-1-body .hi{color:var(--primary);font-weight:600;}
+.card-1-body .ac{color:var(--accent);font-weight:600;}
+
+/* Card 2 */
+.quote-box{flex:1;display:flex;flex-direction:column;justify-content:center;padding:14px 16px;background:linear-gradient(140deg,rgba(255,112,67,0.10),rgba(33,150,243,0.06));border:1px solid rgba(255,112,67,0.25);border-radius:10px;position:relative;}
+.quote-mark{position:absolute;top:6px;left:10px;font-size:32px;color:var(--accent);opacity:0.4;font-family:Georgia,serif;line-height:1;}
+.quote-text{font-size:15px;font-weight:600;color:#FFFFFF;line-height:1.4;font-style:italic;padding-left:26px;}
+.quote-cn{font-size:11.5px;color:var(--text-dim);margin-top:8px;padding-left:26px;line-height:1.55;}
+.quote-cn .hi{color:var(--primary);}
+
+/* Card 3 */
+.pillars{flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center;}
+.pillar{display:flex;align-items:center;gap:10px;padding:7px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:8px;}
+.pillar-num{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,var(--primary),#4FC3F7);color:#FFFFFF;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pillar:nth-child(even) .pillar-num{background:linear-gradient(135deg,var(--accent),#FFA270);}
+.pillar-label{font-size:13px;font-weight:600;color:#FFFFFF;letter-spacing:0.04em;}
+.pillar-en{font-size:10px;color:var(--text-mute);letter-spacing:0.14em;margin-left:auto;text-transform:uppercase;}
+
+/* Card 4 */
+.data-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.data-cell{padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;justify-content:center;position:relative;}
+.data-label{font-size:9px;color:var(--text-mute);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:4px;}
+.data-value{font-size:13px;font-weight:700;color:#FFFFFF;letter-spacing:0.02em;line-height:1.3;}
+.data-value.ac{color:var(--accent);}
+.data-value.pri{color:var(--primary);}
+.data-hint{font-size:10px;color:var(--text-dim);margin-top:3px;letter-spacing:0.02em;}
+
+/* Footer narrative */
+.footer{margin-top:18px;padding:16px 22px;border-radius:12px;background:linear-gradient(90deg,rgba(33,150,243,0.08),rgba(255,112,67,0.06));border:1px solid var(--line-strong);position:relative;overflow:hidden;}
+.footer::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.footer-content{display:flex;gap:16px;align-items:center;}
+.footer-icon{flex-shrink:0;width:38px;height:38px;border-radius:10px;background:rgba(33,150,243,0.15);border:1px solid rgba(33,150,243,0.35);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:18px;font-weight:700;}
+.footer-text{font-size:12.5px;line-height:1.7;color:var(--text-dim);flex:1;}
+.footer-text strong{color:#FFFFFF;font-weight:600;}
+.footer-text .ac{color:var(--accent);font-weight:600;}
+.footer-text .pri{color:var(--primary);font-weight:600;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grad"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-noise"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="tag-row">
+          <span class="tag-dot"></span>
+          <span>Book &amp; Author</span>
+          <span style="color:var(--text-mute);">/ 书 与 作 者</span>
+        </div>
+        <div class="title">书与作者 · 《文化是个变量》</div>
+        <div class="subtitle"><span class="em">Leonard Burman</span> 与一个反宿命论的文化观</div>
+      </div>
+      <div class="header-right">
+        <span class="hdr-chip hi">Culture Matters</span>
+        <span class="hdr-chip">Anti-Determinism</span>
+      </div>
+    </div>
+
+    <div class="body">
+
+      <!-- LEFT -->
+      <div class="left">
+        <div class="avatar-card">
+          <div class="avatar-frame">
+            <span class="corner-tag">AUTHOR</span>
+            <span class="corner-tag-r">SILHOUETTE</span>
+            <svg viewBox="0 0 150 230" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="silhGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#4FC3F7" stop-opacity="0.95"/>
+                  <stop offset="50%" stop-color="#2196F3" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#0D47A1" stop-opacity="0.85"/>
+                </linearGradient>
+                <linearGradient id="bgFade" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0F172A" stop-opacity="0"/>
+                  <stop offset="100%" stop-color="#0F172A" stop-opacity="0.6"/>
+                </linearGradient>
+                <radialGradient id="halo" cx="50%" cy="30%" r="50%">
+                  <stop offset="0%" stop-color="#FF7043" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#FF7043" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <!-- Halo -->
+              <ellipse cx="75" cy="70" rx="70" ry="60" fill="url(#halo)"/>
+              <!-- Shoulders / body silhouette -->
+              <path d="M 10 230 L 10 190 Q 20 155 55 145 L 55 130 Q 55 115 65 110 L 85 110 Q 95 115 95 130 L 95 145 Q 130 155 140 190 L 140 230 Z" fill="url(#silhGrad)"/>
+              <!-- Neck -->
+              <rect x="65" y="90" width="20" height="24" fill="#1565C0"/>
+              <!-- Head -->
+              <ellipse cx="75" cy="65" rx="30" ry="36" fill="url(#silhGrad)"/>
+              <!-- Hair suggestion -->
+              <path d="M 46 55 Q 50 32 75 28 Q 100 32 104 55 Q 100 45 85 42 Q 75 40 65 42 Q 50 45 46 55 Z" fill="#0D47A1" opacity="0.7"/>
+              <!-- Highlight rim -->
+              <ellipse cx="75" cy="65" rx="30" ry="36" fill="none" stroke="#64B5F6" stroke-width="0.8" opacity="0.5"/>
+              <path d="M 10 230 L 10 190 Q 20 155 55 145 L 55 130 Q 55 115 65 110 L 85 110 Q 95 115 95 130 L 95 145 Q 130 155 140 190 L 140 230" fill="none" stroke="#64B5F6" stroke-width="0.8" opacity="0.4"/>
+              <!-- Bottom fade -->
+              <rect x="0" y="180" width="150" height="50" fill="url(#bgFade)"/>
+            </svg>
+          </div>
+          <div class="avatar-info">
+            <div>
+              <div class="name">Leonard Burman</div>
+              <div class="name-en">Leonard A. Burman</div>
+              <div class="role-line">
+                前 <span class="hi">IBM</span> 全球服务负责人 ·<br>
+                前 <span class="hi">McKinsey</span> 资深合伙人
+              </div>
+            </div>
+            <div class="badge-row">
+              <span class="badge hi">IBM · 15+ yr</span>
+              <span class="badge hi">McKinsey · Partner</span>
+              <span class="badge">组织文化</span>
+              <span class="badge">战略管理</span>
+              <span class="badge">数字化转型</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bio-card">
+          <div class="bio-title">作者简介 · BIOGRAPHY</div>
+          <div class="bio-text">
+            Leonard Burman 在 <strong>IBM</strong> 与 <strong>麦肯锡</strong> 累计任职 <span class="ac">二十余年</span>，从业务咨询到全球服务转型，长期深耕<span class="ac">组织文化</span>与<span class="ac">战略落地</span>的交叉地带。他亲历过无数次战略被组织惯性吞没的真实战场，也见证过文化被主动重塑后所释放的爆发力。<strong>《Culture Matters》</strong>是他把这些年的一线观察沉淀为方法论的成果——不教"造文化"，而是教怎么把文化当作一门<span class="ac">可以设计、评估、迭代的学科</span>来经营。
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right">
+
+        <!-- Card 1 -->
+        <div class="card card-1">
+          <div class="card-head">
+            <div>
+              <div class="card-num">01 / BOOK</div>
+              <div class="card-title" style="margin-top:6px;">书名 · 核心立论</div>
+            </div>
+            <div class="card-icon">📖</div>
+          </div>
+          <div>
+            <div class="book-title-en">Culture Matters</div>
+            <div class="book-title-cn">文化是个变量</div>
+          </div>
+          <div class="card-1-body">
+            书的核心立论：文化<span class="hi">不是宿命</span>，而是可以被<span class="ac">主动设定</span>的<span class="hi">管理变量</span>。它不再是一句挂在墙上的口号，而是一个可测量、可干预、可迭代的组织参数。
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card card-2">
+          <div class="card-head">
+            <div>
+              <div class="card-num">02 / THESIS</div>
+              <div class="card-title" style="margin-top:6px;">核心命题</div>
+            </div>
+            <div class="card-icon">!</div>
+          </div>
+          <div class="quote-box">
+            <span class="quote-mark">"</span>
+            <div class="quote-text">Culture eats strategy<br>for breakfast.</div>
+            <div class="quote-cn">文化在策略之前，就已经<span class="hi">决定了它的成败</span>。再精妙的战略，也会被糟糕的文化悄然吞噬。</div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card card-3">
+          <div class="card-head">
+            <div>
+              <div class="card-num">03 / PILLARS</div>
+              <div class="card-title" style="margin-top:6px;">五大支柱 · 文化落地支点</div>
+            </div>
+            <div class="card-icon">◆</div>
+          </div>
+          <div class="pillars">
+            <div class="pillar"><div class="pillar-num">1</div><div class="pillar-label">策略</div><div class="pillar-en">Strategy</div></div>
+            <div class="pillar"><div class="pillar-num">2</div><div class="pillar-label">组织</div><div class="pillar-en">Organization</div></div>
+            <div class="pillar"><div class="pillar-num">3</div><div class="pillar-label">人</div><div class="pillar-en">People</div></div>
+            <div class="pillar"><div class="pillar-num">4</div><div class="pillar-label">时间</div><div class="pillar-en">Time</div></div>
+            <div class="pillar"><div class="pillar-num">5</div><div class="pillar-label">习惯</div><div class="pillar-en">Habits</div></div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card card-4">
+          <div class="card-head">
+            <div>
+              <div class="card-num">04 / OVERVIEW</div>
+              <div class="card-title" style="margin-top:6px;">数据概览</div>
+            </div>
+            <div class="card-icon">◈</div>
+          </div>
+          <div class="data-grid">
+            <div class="data-cell">
+              <div class="data-label">Title</div>
+              <div class="data-value">Culture Matters</div>
+              <div class="data-hint">中译：文化是个变量</div>
+            </div>
+            <div class="data-cell">
+              <div class="data-label">Author</div>
+              <div class="data-value pri">Leonard Burman</div>
+              <div class="data-hint">原 IBM / McKinsey 高管</div>
+            </div>
+            <div class="data-cell">
+              <div class="data-label">Core Thesis</div>
+              <div class="data-value ac">1 <span style="font-size:11px;color:var(--text-mute);font-weight:400;">句话</span></div>
+              <div class="data-hint">Culture eats strategy</div>
+            </div>
+            <div class="data-cell">
+              <div class="data-label">Pillars</div>
+              <div class="data-value pri">5 <span style="font-size:11px;color:var(--text-mute);font-weight:400;">个支柱</span></div>
+              <div class="data-hint">策略 / 组织 / 人 / 时间 / 习惯</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-content">
+        <div class="footer-icon">✦</div>
+        <div class="footer-text">
+          Burman 在 <strong>IBM</strong> 与 <strong>麦肯锡</strong> 的几十年职业生涯，让他对"<span class="pri">文化决定策略</span>"这句话有切身体会。《<span class="ac">Culture Matters</span>》是他把多年观察沉淀成方法论的成果，核心只有一句话——<strong>文化是可管理的变量</strong>。这本书不教你怎么"造"文化，而是教你怎么把文化当作一门可以<span class="pri">设计、评估、迭代</span>的学科。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
