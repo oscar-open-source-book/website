@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>为何聚焦网络与OS基座</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #0D2137;
+  --primary-light: #1A5276;
+  --bg-neutral: #ECEFF1;
+  --bg-page: #F8F9FA;
+  --border: #C5CDD3;
+  --text-main: #0D2137;
+  --text-mid: #44515E;
+  --text-light: #7A8896;
+  --accent-line: #B0BEC5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 16px;
+  color: var(--text-main);
+  background: #E0E5E9;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg-page);
+}
+
+#bg { position: absolute; inset: 0; z-index: 0; }
+
+#bg .grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(13,33,55,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13,33,55,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+#bg .accent-block {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 100%;
+  background: linear-gradient(180deg, #ECEFF1 0%, #DDE4E8 100%);
+}
+
+#bg .corner-deco {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 180px;
+  height: 180px;
+  border-top: 1px solid var(--accent-line);
+  border-right: 1px solid var(--accent-line);
+}
+
+#bg .top-rule {
+  position: absolute;
+  top: 40px;
+  left: 60px;
+  right: 60px;
+  height: 1px;
+  background: var(--primary);
+  opacity: 0.15;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 46px 60px 36px;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--text-light);
+  margin-bottom: 32px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header .left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-header .num {
+  color: var(--primary-light);
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.page-header .line {
+  width: 30px;
+  height: 1px;
+  background: var(--primary-light);
+}
+
+.page-header .right {
+  font-family: Georgia, 'Noto Serif SC', serif;
+  letter-spacing: 4px;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 620px 1fr;
+  gap: 60px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---------- LEFT COLUMN ---------- */
+
+.left-col {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-right: 10px;
+}
+
+.title-block {
+  margin-bottom: 32px;
+}
+
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 13px;
+  color: var(--primary-light);
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+
+.title-badge .b-line {
+  width: 40px;
+  height: 1px;
+  background: var(--primary-light);
+}
+
+.title-badge .b-num {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  font-style: italic;
+}
+
+h1.page-title {
+  font-family: 'Noto Serif SC', Georgia, 'Times New Roman', serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.18;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+}
+
+.subtitle-en {
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 15px;
+  color: var(--primary-light);
+  font-style: italic;
+  letter-spacing: 2px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.intro-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  color: var(--text-mid);
+  line-height: 1.85;
+  margin-top: 24px;
+  letter-spacing: 0.3px;
+}
+
+.intro-text .em {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.intro-text .quote-mark {
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 32px;
+  color: var(--primary-light);
+  line-height: 0;
+  vertical-align: -6px;
+  margin-right: 4px;
+}
+
+.bottom-area {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.coordinate-block {
+  background: #ECEFF1;
+  border-left: 3px solid var(--primary-light);
+  padding: 16px 20px;
+}
+
+.coordinate-block .label {
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 11px;
+  color: var(--primary-light);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.coordinate-block .label-cn {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  color: var(--text-mid);
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.coordinate-block .desc {
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.chip {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  color: var(--primary-light);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  letter-spacing: 1px;
+  background: white;
+}
+
+/* ---------- RIGHT COLUMN ---------- */
+
+.right-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cards-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cards-header .label-en {
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 12px;
+  color: var(--primary-light);
+  letter-spacing: 3px;
+  font-style: italic;
+}
+
+.cards-header .label-cn {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  color: var(--text-main);
+  font-weight: 500;
+  letter-spacing: 1.5px;
+}
+
+.cards-header .dot {
+  width: 4px;
+  height: 4px;
+  background: var(--primary-light);
+  border-radius: 50%;
+  align-self: center;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  padding: 20px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(13, 33, 55, 0.05);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 20px;
+  width: 40px;
+  height: 2px;
+  background: var(--primary-light);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0;
+  background: white;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.card-icon::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-light);
+}
+
+.card-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.card-subtitle {
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 11px;
+  color: var(--primary-light);
+  letter-spacing: 2.5px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-mid);
+  line-height: 1.75;
+  letter-spacing: 0.2px;
+  margin-bottom: 10px;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-content .highlight {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Card 01: layer stack */
+.layer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px 0;
+}
+
+.layer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-main);
+}
+
+.layer-row .l-num {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  color: var(--primary-light);
+  width: 18px;
+  font-style: italic;
+  letter-spacing: 0;
+}
+
+.layer-row .l-box {
+  flex: 1;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  background: #F8FAFC;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.layer-row.top .l-box {
+  background: #0D2137;
+  color: white;
+  border-color: var(--primary);
+}
+
+.layer-row .l-tag {
+  font-size: 10px;
+  color: var(--primary-light);
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+.layer-row.top .l-tag {
+  color: #A6C4D9;
+}
+
+/* Card 02: drivers */
+.driver-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.driver-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 12px;
+  background: #F8FAFC;
+  border-left: 2px solid var(--primary-light);
+}
+
+.driver-item .d-tag {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  color: var(--primary-light);
+  font-style: italic;
+  letter-spacing: 0.5px;
+  min-width: 32px;
+}
+
+.driver-item .d-text {
+  font-size: 13px;
+  color: var(--text-main);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Card 03: perspective list */
+.persp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.persp-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+.persp-item .p-num {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  color: var(--primary-light);
+  font-style: italic;
+  min-width: 22px;
+  letter-spacing: 0;
+}
+
+.persp-item .p-text {
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Card 04: project badges */
+.badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.badge {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  color: var(--primary);
+  background: #ECEFF1;
+  padding: 5px 6px;
+  text-align: center;
+  border-left: 2px solid var(--primary-light);
+  letter-spacing: 0.2px;
+  font-weight: 500;
+}
+
+.card-footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 11px;
+  color: var(--primary-light);
+  letter-spacing: 1px;
+  font-style: italic;
+}
+
+.card-footer .f-tag {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--text-light);
+  font-style: normal;
+}
+
+/* ---------- PAGE FOOTER ---------- */
+
+.page-footer {
+  margin-top: 26px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 2.5px;
+  font-style: italic;
+}
+
+.page-footer .footer-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-footer .dot {
+  width: 4px;
+  height: 4px;
+  background: var(--primary-light);
+  border-radius: 50%;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-lines"></div>
+    <div class="accent-block"></div>
+    <div class="corner-deco"></div>
+    <div class="top-rule"></div>
+  </div>
+  <div id="ct">
+    <div class="page-header">
+      <div class="left">
+        <span class="num">02</span>
+        <span class="line"></span>
+        <span>INTRODUCTION</span>
+        <span>·</span>
+        <span>研究范围</span>
+      </div>
+      <div class="right">Chapter I / Framing the Scope</div>
+    </div>
+
+    <div class="main-grid">
+      <div class="left-col">
+        <div class="title-block">
+          <div class="title-badge">
+            <span class="b-num">§ 1</span>
+            <span class="b-line"></span>
+            <span>SCOPE OF STUDY</span>
+          </div>
+          <h1 class="page-title">为何聚焦<br>网络与OS基座</h1>
+          <div class="subtitle-en">Why Focus on Networking &amp; OS Foundations</div>
+        </div>
+
+        <div class="intro-text">
+          <span class="quote-mark">"</span>
+          <span class="em">网络操作系统与基础设施软件栈正处于产业与学术的双重拐点</span>——白盒交换机、云原生与 AI 训练集群让开源成为默认选择，这些项目本身也构成了理解现代网络演进的最佳素材。本次分享以清晰的<span class="em">阅读坐标</span>，把分散的项目串成一张可实践的地图。
+        </div>
+
+        <div class="bottom-area">
+          <div class="coordinate-block">
+            <div class="label">Reading Coordinates · 阅读坐标</div>
+            <div class="label-cn">四个维度定位每一个项目</div>
+            <div class="desc">项目起源 &nbsp;→&nbsp; 架构分层 &nbsp;→&nbsp; 社区健康度 &nbsp;→&nbsp; 产业落地点</div>
+          </div>
+          <div class="chips">
+            <span class="chip">SONiC</span>
+            <span class="chip">VyOS</span>
+            <span class="chip">OpenDaylight</span>
+            <span class="chip">ONOS</span>
+            <span class="chip">OVN</span>
+            <span class="chip">OPNFV</span>
+            <span class="chip">Envoy</span>
+            <span class="chip">Istio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="cards-header">
+          <span class="label-en">FOUR LENSES</span>
+          <span class="dot"></span>
+          <span class="label-cn">四个阅读维度</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-icon">I</div>
+              <div class="card-title">公共底座的价值</div>
+            </div>
+            <div class="card-subtitle">SHARED FOUNDATION</div>
+            <div class="card-body">
+              <div class="card-desc">网络与OS是<span class="highlight">所有上层应用的共享基础设施</span>；开源化意味着可复制、可演化。</div>
+              <div class="layer-stack">
+                <div class="layer-row top">
+                  <span class="l-num">03</span>
+                  <span class="l-box">应用层 Applications <span class="l-tag">upper</span></span>
+                </div>
+                <div class="layer-row">
+                  <span class="l-num">02</span>
+                  <span class="l-box">OS / 网络软件栈 <span class="l-tag">core</span></span>
+                </div>
+                <div class="layer-row">
+                  <span class="l-num">01</span>
+                  <span class="l-box">硬件基础设施 <span class="l-tag">infra</span></span>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span>reusable · evolvable</span>
+                <span class="f-tag">基座视角</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div class="card-icon">II</div>
+              <div class="card-title">产业拐点</div>
+            </div>
+            <div class="card-subtitle">INDUSTRY INFLECTION</div>
+            <div class="card-body">
+              <div class="card-desc">开源栈已成为网络基础设施的<span class="highlight">事实标准</span>，被三类产业力量共同推动。</div>
+              <div class="driver-list">
+                <div class="driver-item">
+                  <span class="d-tag">A1</span>
+                  <span class="d-text">白盒交换机兴起</span>
+                </div>
+                <div class="driver-item">
+                  <span class="d-tag">A2</span>
+                  <span class="d-text">云网融合</span>
+                </div>
+                <div class="driver-item">
+                  <span class="d-tag">A3</span>
+                  <span class="d-text">AI 训练集群</span>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span>de-facto standard</span>
+                <span class="f-tag">事实标准</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div class="card-icon">III</div>
+              <div class="card-title">阅读视角</div>
+            </div>
+            <div class="card-subtitle">READING PERSPECTIVE</div>
+            <div class="card-body">
+              <div class="card-desc">从<span class="highlight">四个维度</span>切入，定位每一个开源项目的坐标。</div>
+              <div class="persp-list">
+                <div class="persp-item">
+                  <span class="p-num">01.</span>
+                  <span class="p-text">项目起源</span>
+                </div>
+                <div class="persp-item">
+                  <span class="p-num">02.</span>
+                  <span class="p-text">架构分层</span>
+                </div>
+                <div class="persp-item">
+                  <span class="p-num">03.</span>
+                  <span class="p-text">社区健康度</span>
+                </div>
+                <div class="persp-item">
+                  <span class="p-num">04.</span>
+                  <span class="p-text">产业落地点</span>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span>four dimensions</span>
+                <span class="f-tag">四维定位</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div class="card-icon">IV</div>
+              <div class="card-title">阅读清单</div>
+            </div>
+            <div class="card-subtitle">READING LIST · 8 PROJECTS</div>
+            <div class="card-body">
+              <div class="card-desc">精选 <span class="highlight">8 个</span>代表项目，覆盖 OS / 控制器 / 服务网格三大方向。</div>
+              <div class="badges">
+                <span class="badge">SONiC</span>
+                <span class="badge">VyOS</span>
+                <span class="badge">ODL</span>
+                <span class="badge">ONOS</span>
+                <span class="badge">OVN</span>
+                <span class="badge">OPNFV</span>
+                <span class="badge">Envoy</span>
+                <span class="badge">Istio</span>
+              </div>
+              <div class="card-footer">
+                <span>8 curated projects</span>
+                <span class="f-tag">核心清单</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div class="footer-line">
+        <span>NETWORKING &amp; OS FOUNDATIONS</span>
+        <span class="dot"></span>
+        <span>SCOPE &amp; FRAMING</span>
+      </div>
+      <div class="footer-line">
+        <span>P.02</span>
+        <span class="dot"></span>
+        <span>02 / 12</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

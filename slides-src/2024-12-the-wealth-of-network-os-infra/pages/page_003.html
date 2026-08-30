@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一篇 · 网络操作系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Source+Serif+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --deep:#1A5276;
+  --grey-bg:#ECEFF1;
+  --grey-2:#D5DBDF;
+  --grey-3:#9AA6AE;
+  --ink:#1B2836;
+  --paper:#F5F6F8;
+  --line:#C8D0D6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;}
+body{
+  font-family:"Noto Sans SC","Source Serif Pro",sans-serif;
+  font-size:16px;
+  color:var(--ink);
+  background:#E4E7EA;
+  -webkit-font-smoothing:antialiased;
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:linear-gradient(135deg,#EEF1F3 0%,#E2E6E9 55%,#D8DEE3 100%);
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(13,33,55,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(13,33,55,0.04) 1px,transparent 1px);
+  background-size:80px 80px;
+}
+#bg .corner-tl{
+  position:absolute;top:0;left:0;width:260px;height:260px;
+  background:radial-gradient(circle at top left,rgba(13,33,55,0.10),transparent 70%);
+}
+#bg .corner-br{
+  position:absolute;bottom:0;right:0;width:380px;height:380px;
+  background:radial-gradient(circle at bottom right,rgba(26,82,118,0.10),transparent 70%);
+}
+#bg .side-bar{
+  position:absolute;left:0;top:0;bottom:0;width:8px;
+  background:linear-gradient(180deg,var(--navy) 0%,var(--deep) 100%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:60px;box-sizing:border-box;}
+
+/* ===== Top meta row ===== */
+.meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;letter-spacing:0.24em;color:var(--deep);
+  padding-bottom:14px;border-bottom:1px solid var(--line);
+  font-weight:500;
+}
+.meta .left{display:flex;align-items:center;gap:14px;}
+.meta .dot{width:6px;height:6px;background:var(--deep);border-radius:50%;display:inline-block;}
+.meta .right{color:var(--grey-3);letter-spacing:0.18em;}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;
+  margin-top:34px;
+  display:flex;align-items:flex-start;gap:60px;
+  height:420px;
+}
+/* Decorative "01" */
+.chapter-num{
+  position:relative;
+  font-family:"Source Serif Pro","Noto Serif SC",serif;
+  font-weight:300;
+  font-size:380px;
+  line-height:0.82;
+  color:transparent;
+  -webkit-text-stroke:2px rgba(13,33,55,0.55);
+  letter-spacing:-0.03em;
+  flex-shrink:0;
+  width:360px;
+  padding-top:10px;
+  user-select:none;
+}
+.chapter-num .label{
+  position:absolute;
+  top:14px;right:-30px;
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:11px;
+  letter-spacing:0.4em;
+  color:var(--deep);
+  font-weight:500;
+  -webkit-text-stroke:0;
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+}
+.hero-body{
+  flex:1;
+  padding-top:34px;
+  position:relative;
+}
+.kicker{
+  display:flex;align-items:center;gap:16px;
+  font-size:12px;letter-spacing:0.5em;color:var(--deep);
+  font-weight:500;
+  margin-bottom:22px;
+}
+.kicker .rule{width:56px;height:1px;background:var(--deep);}
+.main-title{
+  font-family:"Source Serif Pro","Noto Serif SC",serif;
+  font-weight:600;
+  font-size:78px;
+  line-height:1.08;
+  color:var(--navy);
+  letter-spacing:0.02em;
+  margin-bottom:8px;
+}
+.main-title .sep{
+  color:var(--deep);
+  font-weight:300;
+  font-style:italic;
+  margin:0 6px;
+  font-size:64px;
+  vertical-align:6px;
+}
+.main-title .part{color:var(--deep);font-weight:400;font-size:52px;letter-spacing:0.08em;margin-right:14px;vertical-align:6px;}
+.subtitle-wrap{
+  margin-top:24px;
+  display:flex;align-items:center;gap:22px;
+}
+.subtitle-wrap .hline{
+  width:64px;height:1px;background:var(--grey-3);flex-shrink:0;
+}
+.subtitle{
+  font-family:"Noto Serif SC",serif;
+  font-size:22px;
+  color:var(--navy);
+  font-weight:300;
+  letter-spacing:0.05em;
+}
+.subtitle .em{color:var(--deep);font-weight:400;}
+
+/* ===== Three cards ===== */
+.cards{
+  position:absolute;
+  left:60px;right:60px;
+  bottom:150px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:24px;
+}
+.card{
+  background:rgba(245,246,248,0.72);
+  border:1px solid var(--line);
+  border-top:3px solid var(--navy);
+  padding:22px 24px 24px;
+  position:relative;
+  min-height:172px;
+}
+.card .idx{
+  position:absolute;
+  top:14px;right:16px;
+  font-family:"Source Serif Pro",serif;
+  font-size:13px;
+  letter-spacing:0.15em;
+  color:var(--grey-3);
+  font-weight:400;
+}
+.card .tag{
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:11px;
+  letter-spacing:0.35em;
+  color:var(--deep);
+  font-weight:500;
+  margin-bottom:10px;
+}
+.card .title{
+  font-family:"Source Serif Pro","Noto Serif SC",serif;
+  font-size:22px;
+  color:var(--navy);
+  font-weight:600;
+  margin-bottom:14px;
+  letter-spacing:0.02em;
+  line-height:1.3;
+}
+.card .divider{
+  width:36px;height:2px;background:var(--deep);
+  margin-bottom:12px;
+}
+.card .body{
+  font-size:14px;
+  line-height:1.75;
+  color:#33424F;
+  font-weight:400;
+}
+.card .body b{color:var(--navy);font-weight:600;}
+
+/* ===== Bottom narrative ===== */
+.narrative{
+  position:absolute;
+  left:60px;right:60px;
+  bottom:56px;
+  display:flex;align-items:flex-start;gap:24px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+}
+.narrative .quote-mark{
+  font-family:"Source Serif Pro",serif;
+  font-size:48px;
+  color:var(--deep);
+  line-height:0.7;
+  font-weight:300;
+  flex-shrink:0;
+  margin-top:6px;
+}
+.narrative .text{
+  font-family:"Noto Serif SC",serif;
+  font-size:15px;
+  line-height:1.85;
+  color:var(--ink);
+  font-weight:400;
+  letter-spacing:0.02em;
+  flex:1;
+}
+.narrative .text .accent{color:var(--navy);font-weight:600;}
+.narrative .text .accent2{color:var(--deep);font-weight:500;}
+.narrative .stamp{
+  flex-shrink:0;
+  font-size:11px;
+  letter-spacing:0.3em;
+  color:var(--grey-3);
+  font-weight:500;
+  padding:6px 12px;
+  border:1px solid var(--grey-3);
+  align-self:flex-start;
+  margin-top:4px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid"></div>
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="side-bar"></div>
+  </div>
+  <div id="ct">
+
+    <div class="meta">
+      <div class="left">
+        <span class="dot"></span>
+        <span>PART ONE / OF FIVE</span>
+      </div>
+      <div class="right">SECTION HEADER · 开篇章节</div>
+    </div>
+
+    <div class="hero">
+      <div class="chapter-num">
+        01
+        <span class="label">CHAPTER NO.</span>
+      </div>
+      <div class="hero-body">
+        <div class="kicker">
+          <span class="rule"></span>
+          <span>开篇 · 篇章导语</span>
+        </div>
+        <h1 class="main-title">
+          <span class="part">第一篇</span><span class="sep">·</span>网络操作系统
+        </h1>
+        <div class="subtitle-wrap">
+          <span class="hline"></span>
+          <div class="subtitle">承载<span class="em">转发与控制面</span>的开源操作系统族谱</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="idx">01</span>
+        <div class="tag">READING FOCUS</div>
+        <div class="title">阅读重点</div>
+        <div class="divider"></div>
+        <div class="body">
+          聚焦 <b>SONiC</b>、<b>VyOS</b>、<b>Open Network Linux</b> 三大代表，以及当代<b>电信级转发面</b>的实现路径。
+        </div>
+      </div>
+      <div class="card">
+        <span class="idx">02</span>
+        <div class="tag">EVALUATION DIMENSIONS</div>
+        <div class="title">评估维度</div>
+        <div class="divider"></div>
+        <div class="body">
+          从 <b>转发性能</b>、<b>控制面协议栈</b>、<b>运维体验</b>、<b>社区健康度</b> 四个横切面切入，衡量项目的成熟度与可持续性。
+        </div>
+      </div>
+      <div class="card">
+        <span class="idx">03</span>
+        <div class="tag">GUIDING QUESTIONS</div>
+        <div class="title">阅读问题</div>
+        <div class="divider"></div>
+        <div class="body">
+          贯穿全篇的三条主线：<b>谁在做</b>、<b>谁在用</b>、<b>如何演化</b>——由此串起项目、生态与路线。
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="quote-mark">"</div>
+      <div class="text">
+        进入第一篇章：<span class="accent">网络操作系统</span>。我们将沿着<span class="accent2">白盒交换机生态</span>、<span class="accent2">路由协议栈</span>与<span class="accent2">电信转发面</span>三条主线，梳理当下最有代表性的开源项目，为后续的基础设施栈铺垫直觉。
+      </div>
+      <div class="stamp">PROLOGUE</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
