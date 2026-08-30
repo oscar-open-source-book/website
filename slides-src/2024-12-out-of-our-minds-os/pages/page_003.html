@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>为什么选择开源</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F172A;
+    --bg-2: #111B33;
+    --card: #131C33;
+    --card-2: #0E1628;
+    --primary: #2196F3;
+    --accent: #00E5FF;
+    --text-main: #E7EEF9;
+    --text-mid: #B4C1DA;
+    --text-dim: #7C8AA6;
+    --line: rgba(0, 229, 255, 0.14);
+    --line-soft: rgba(255, 255, 255, 0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 1600px;
+    height: 900px;
+    overflow: hidden;
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-main);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrapper {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    background: var(--bg);
+  }
+
+  #bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% 10%, rgba(33, 150, 243, 0.18), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 90% 95%, rgba(0, 229, 255, 0.10), transparent 60%),
+      linear-gradient(135deg, #0B1122 0%, #0F172A 50%, #0B1426 100%);
+  }
+
+  #bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    background-position: 0 0;
+    mask-image: radial-gradient(ellipse 1200px 700px at 50% 50%, rgba(0,0,0,0.9), transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 1200px 700px at 50% 50%, rgba(0,0,0,0.9), transparent 75%);
+  }
+
+  #ct {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 56px 80px 52px 80px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+
+  .title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  .eyebrow .bar {
+    width: 36px; height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    line-height: 1.1;
+  }
+
+  h1 .accent {
+    color: var(--primary);
+    background: linear-gradient(90deg, #2196F3, #00E5FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    font-weight: 400;
+  }
+
+  .meta .code {
+    font-family: 'Inter', monospace;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    font-weight: 500;
+  }
+
+  /* ===== Narrative ===== */
+  .narrative {
+    max-width: 1300px;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--text-mid);
+    font-weight: 400;
+    padding: 18px 24px;
+    border-left: 2px solid var(--primary);
+    background: linear-gradient(90deg, rgba(33,150,243,0.06), transparent 70%);
+    margin-bottom: 26px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .narrative strong {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .narrative em {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* ===== Grid ===== */
+  .grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 22px;
+    position: relative;
+  }
+
+  /* crosshair divider lines */
+  .grid::before,
+  .grid::after {
+    content: '';
+    position: absolute;
+    background: var(--line);
+    pointer-events: none;
+  }
+  .grid::before {
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-0.5px);
+    background: linear-gradient(180deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+  }
+  .grid::after {
+    left: 0; right: 0;
+    top: 50%;
+    height: 1px;
+    transform: translateY(-0.5px);
+    background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+  }
+
+  .card {
+    position: relative;
+    padding: 28px 30px;
+    background: linear-gradient(135deg, rgba(19, 28, 51, 0.72) 0%, rgba(14, 22, 40, 0.55) 100%);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+    opacity: 0.85;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .icon-wrap {
+    flex-shrink: 0;
+    width: 74px;
+    height: 74px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(33,150,243,0.15), rgba(0,229,255,0.06));
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .icon-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(0,229,255,0.4), transparent 50%);
+    z-index: -1;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1px;
+  }
+
+  .icon-wrap svg {
+    width: 38px;
+    height: 38px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .card-num {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    font-family: 'Inter', monospace;
+  }
+
+  .card-num .n {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .card-num .rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--line), transparent);
+  }
+
+  .card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-mid);
+    font-weight: 400;
+  }
+
+  /* ===== Footer ===== */
+  .footer {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+  }
+
+  .footer .left, .footer .right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .footer .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--line-soft);
+    border-radius: 20px;
+    color: var(--text-mid);
+    font-weight: 500;
+  }
+
+  .footer .pill .glow {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .footer .pages {
+    font-family: 'Inter', monospace;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="title-block">
+        <span class="eyebrow"><span class="dot"></span><span>OPEN SOURCE · 01</span><span class="bar"></span></span>
+        <h1>为什么<span class="accent">选择开源</span></h1>
+      </div>
+      <div class="meta">
+        <span class="code">// WHY-OPEN</span>
+        <span>四个信念 · 一个选择</span>
+      </div>
+    </div>
+
+    <!-- Narrative -->
+    <div class="narrative">
+      选择开源不是因为某一项技术更强，而是因为我们相信——<strong>开放协作的系统长期来看会产出更好的结果</strong>。<em>透明</em>让信任发生，<em>协作</em>让复杂度被消化，<em>公共化</em>让知识不随个人消失。
+    </div>
+
+    <!-- 2x2 Grid -->
+    <div class="grid">
+
+      <!-- Q1: 透明可复现 -->
+      <div class="card">
+        <div class="icon-wrap">
+          <!-- 放大镜 -->
+          <svg viewBox="0 0 40 40">
+            <circle cx="17" cy="17" r="9"/>
+            <line x1="23.5" y1="23.5" x2="32" y2="32"/>
+            <circle cx="17" cy="17" r="4"/>
+            <line x1="14" y1="17" x2="20" y2="17"/>
+            <line x1="17" y1="14" x2="17" y2="20"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-num"><span class="n">01</span><span>TRANSPARENCY</span><span class="rule"></span></div>
+          <div class="card-title">透明可复现</div>
+          <div class="card-desc">每一行决策都可追溯，每一次迭代都可被质疑和验证——代码即真相，记录即契约。</div>
+        </div>
+      </div>
+
+      <!-- Q2: 降低试错成本 -->
+      <div class="card">
+        <div class="icon-wrap">
+          <!-- 台阶/齿轮 -->
+          <svg viewBox="0 0 40 40">
+            <polyline points="4,32 14,32 14,24 22,24 22,16 30,16 30,8 36,8"/>
+            <circle cx="8" cy="32" r="1.5" fill="currentColor" stroke="none" style="fill:#00E5FF"/>
+            <circle cx="18" cy="24" r="1.5" fill="currentColor" stroke="none" style="fill:#00E5FF"/>
+            <circle cx="26" cy="16" r="1.5" fill="currentColor" stroke="none" style="fill:#00E5FF"/>
+            <circle cx="34" cy="8" r="1.5" fill="currentColor" stroke="none" style="fill:#00E5FF"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-num"><span class="n">02</span><span>LOW COST</span><span class="rule"></span></div>
+          <div class="card-title">降低试错成本</div>
+          <div class="card-desc">站在前人的肩膀上，把重复造轮子变成站在轮子上——把力气留给真正难解的问题。</div>
+        </div>
+      </div>
+
+      <!-- Q3: 跨越组织边界 -->
+      <div class="card">
+        <div class="icon-wrap">
+          <!-- 桥梁/箭头 -->
+          <svg viewBox="0 0 40 40">
+            <line x1="4" y1="28" x2="4" y2="18"/>
+            <line x1="36" y1="28" x2="36" y2="18"/>
+            <path d="M4 20 Q20 6 36 20"/>
+            <line x1="4" y1="28" x2="36" y2="28"/>
+            <line x1="12" y1="28" x2="12" y2="22"/>
+            <line x1="20" y1="28" x2="20" y2="18"/>
+            <line x1="28" y1="28" x2="28" y2="22"/>
+            <polyline points="30,12 34,10 32,14" style="fill:none"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-num"><span class="n">03</span><span>BORDERLESS</span><span class="rule"></span></div>
+          <div class="card-title">跨越组织边界</div>
+          <div class="card-desc">个体贡献者的想法有机会影响千万用户——这是闭源世界难以想象的杠杆与回响。</div>
+        </div>
+      </div>
+
+      <!-- Q4: 知识公共化 -->
+      <div class="card">
+        <div class="icon-wrap">
+          <!-- 书本/网络节点 -->
+          <svg viewBox="0 0 40 40">
+            <path d="M6 8 L20 12 L34 8 L34 30 L20 34 L6 30 Z"/>
+            <line x1="20" y1="12" x2="20" y2="34"/>
+            <circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none" style="fill:#00E5FF"/>
+            <circle cx="28" cy="16" r="1.2" fill="currentColor" stroke="none" style="fill:#00E5FF"/>
+            <circle cx="12" cy="22" r="1.2" fill="currentColor" stroke="none" style="fill:#00E5FF"/>
+            <circle cx="28" cy="22" r="1.2" fill="currentColor" stroke="none" style="fill:#00E5FF"/>
+            <line x1="12" y1="16" x2="28" y2="16" style="stroke-dasharray:2 2;opacity:0.6"/>
+            <line x1="12" y1="22" x2="28" y2="22" style="stroke-dasharray:2 2;opacity:0.6"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-num"><span class="n">04</span><span>COMMONS</span><span class="rule"></span></div>
+          <div class="card-title">知识公共化</div>
+          <div class="card-desc">文档、教程、案例在开放协议下持续累积——成为整个行业沉淀下来的公共知识基建。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="left">
+        <span class="pill"><span class="glow"></span>OPEN · COLLABORATE · SUSTAIN</span>
+      </div>
+      <div class="right">
+        <span>WHY OPEN SOURCE</span>
+        <span class="pages">01 / 04</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Part 01 · 开源之道的初心</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #0F172A;
+  --bg-2: #0B1220;
+  --cyan: #00E5FF;
+  --blue: #2196F3;
+  --text-main: #F1F5F9;
+  --text-dim: #94A3B8;
+  --text-mute: #475569;
+  --grid-line: rgba(33, 150, 243, 0.07);
+  --grid-line-strong: rgba(0, 229, 255, 0.11);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'SF Pro Display', -apple-system, 'PingFang SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg-2);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 55%, transparent 0%, rgba(15, 23, 42, 0.65) 75%, rgba(15, 23, 42, 0.9) 100%);
+}
+
+.bg-glow-left {
+  position: absolute;
+  left: -80px;
+  top: 100px;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.13) 0%, rgba(33, 150, 243, 0.05) 40%, transparent 70%);
+  filter: blur(30px);
+}
+
+.bg-circuit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 80px;
+}
+
+/* Top brand */
+.top-bar {
+  position: absolute;
+  top: 42px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 3;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.brand-divider {
+  color: var(--text-mute);
+  padding: 0 6px;
+}
+
+.brand-text { color: var(--text-main); font-weight: 500; }
+
+.pageno {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+}
+
+/* Content */
+.content {
+  position: absolute;
+  top: 130px;
+  left: 80px;
+  right: 80px;
+  bottom: 90px;
+  display: flex;
+  align-items: center;
+  gap: 70px;
+  z-index: 2;
+}
+
+/* Left: huge 01 */
+.left-col {
+  flex: 0 0 720px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.big-number-wrap {
+  position: relative;
+  padding: 20px 0;
+}
+
+.big-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 480px;
+  font-weight: 900;
+  line-height: 0.82;
+  letter-spacing: -0.06em;
+  background: linear-gradient(180deg, #7DF9FF 0%, #00E5FF 40%, #2196F3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 80px rgba(0, 229, 255, 0.3);
+  filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.25));
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+.big-number::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 620px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 229, 255, 0.18) 0%, transparent 65%);
+  z-index: -1;
+  filter: blur(20px);
+}
+
+.big-number-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 640px;
+  height: 480px;
+  pointer-events: none;
+}
+
+.frame-corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
+.frame-corner.tl { top: 0; left: 0; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.frame-corner.tr { top: 0; right: 0; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+.frame-corner.bl { bottom: 0; left: 0; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.frame-corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+.big-number-caption {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.5em;
+  color: var(--text-dim);
+  padding-left: 0.5em;
+}
+
+/* Right column */
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-right: 20px;
+  max-width: 720px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  letter-spacing: 0.36em;
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+.eyebrow-line {
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+.title {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+}
+
+.title .part {
+  color: var(--cyan);
+  font-weight: 600;
+  margin-right: 14px;
+  font-family: 'Inter', sans-serif;
+}
+
+.title .dot {
+  color: var(--text-mute);
+  font-weight: 400;
+  margin: 0 10px;
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  font-style: italic;
+  padding-left: 18px;
+  border-left: 2px solid var(--cyan);
+  margin-top: 4px;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+}
+
+.narrative {
+  font-size: 16px;
+  line-height: 1.9;
+  color: #CBD5E1;
+  margin-top: 6px;
+  max-width: 660px;
+}
+
+.narrative strong {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* Keywords */
+.keywords {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  padding-top: 22px;
+}
+
+.keywords-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+
+.kw-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kw-item {
+  display: grid;
+  grid-template-columns: 40px 130px 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.4);
+  border-left: 2px solid rgba(0, 229, 255, 0.35);
+  transition: all 0.3s;
+}
+
+.kw-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.kw-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.05em;
+}
+
+.kw-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.65;
+}
+
+/* Bottom footer */
+.footer {
+  position: absolute;
+  bottom: 38px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 3;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+}
+
+.footer-tag {
+  padding: 4px 10px;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 3px;
+  color: var(--cyan);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+}
+
+.footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+}
+
+.footer-right .cursor {
+  color: var(--cyan);
+  animation: blink 1.4s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.2; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-left"></div>
+    <svg class="bg-circuit" viewBox="0 0 1600 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fadeR" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="#00E5FF" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="fadeB" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#00E5FF" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="fadeL" x1="1" y1="0" x2="0" y2="0">
+          <stop offset="0%" stop-color="#2196F3" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Right-side circuit traces -->
+      <path d="M 1560 140 L 1380 140 L 1320 200 L 1320 340" stroke="url(#fadeL)" stroke-width="1" fill="none" opacity="0.7"/>
+      <path d="M 1560 260 L 1450 260 L 1390 320 L 1390 420 L 1330 480" stroke="url(#fadeL)" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M 1560 420 L 1470 420 L 1420 470 L 1420 620 L 1350 690" stroke="url(#fadeL)" stroke-width="1" fill="none" opacity="0.55"/>
+      <path d="M 1560 620 L 1490 620 L 1440 670 L 1440 800" stroke="url(#fadeL)" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M 1560 760 L 1450 760 L 1390 820" stroke="url(#fadeL)" stroke-width="1" fill="none" opacity="0.45"/>
+
+      <!-- Bottom circuit traces -->
+      <path d="M 200 900 L 200 830 L 280 750 L 440 750" stroke="url(#fadeB)" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M 620 900 L 620 860 L 700 780 L 850 780 L 900 830" stroke="url(#fadeB)" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M 1050 900 L 1050 850 L 1120 780 L 1250 780" stroke="url(#fadeB)" stroke-width="1" fill="none" opacity="0.55"/>
+
+      <!-- Nodes at circuit endpoints -->
+      <g fill="#00E5FF">
+        <circle cx="1320" cy="340" r="3" opacity="0.8"/>
+        <circle cx="1320" cy="340" r="7" opacity="0.2"/>
+        <circle cx="1330" cy="480" r="2.5" opacity="0.7"/>
+        <circle cx="1350" cy="690" r="3" opacity="0.7"/>
+        <circle cx="1350" cy="690" r="7" opacity="0.2"/>
+        <circle cx="1440" cy="800" r="2.5" opacity="0.6"/>
+        <circle cx="440" cy="750" r="2.5" opacity="0.7"/>
+        <circle cx="900" cy="830" r="3" opacity="0.7"/>
+        <circle cx="900" cy="830" r="7" opacity="0.2"/>
+        <circle cx="1250" cy="780" r="2.5" opacity="0.7"/>
+      </g>
+
+      <!-- Floating dots -->
+      <g fill="#00E5FF">
+        <circle cx="120" cy="180" r="1.5" opacity="0.35"/>
+        <circle cx="240" cy="720" r="1.5" opacity="0.3"/>
+        <circle cx="1500" cy="500" r="1.5" opacity="0.35"/>
+        <circle cx="820" cy="120" r="1.5" opacity="0.3"/>
+        <circle cx="1080" cy="60" r="1.5" opacity="0.25"/>
+        <circle cx="60" cy="500" r="1.5" opacity="0.3"/>
+        <circle cx="1560" cy="380" r="1.5" opacity="0.3"/>
+      </g>
+    </svg>
+    <div class="bg-vignette"></div>
+  </div>
+
+  <div id="ct">
+    <div class="top-bar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-text">OPEN&nbsp;SOURCE&nbsp;PATH</span>
+        <span class="brand-divider">·</span>
+        <span>开&nbsp;源&nbsp;之&nbsp;书</span>
+      </div>
+      <div class="pageno">CHAPTER 01 / 05</div>
+    </div>
+
+    <div class="content">
+      <div class="left-col">
+        <div class="big-number-wrap">
+          <span class="big-number">01</span>
+        </div>
+        <div class="big-number-frame">
+          <span class="frame-corner tl"></span>
+          <span class="frame-corner tr"></span>
+          <span class="frame-corner bl"></span>
+          <span class="frame-corner br"></span>
+        </div>
+        <div class="big-number-caption">CHAPTER · ONE</div>
+      </div>
+
+      <div class="right-col">
+        <div class="eyebrow">
+          <span class="eyebrow-line"></span>
+          <span>PART · 01</span>
+          <span class="eyebrow-line"></span>
+        </div>
+
+        <h1 class="title">
+          <span class="part">Part 01</span><span class="dot">·</span>开源之道的初心
+        </h1>
+
+        <div class="subtitle">Why Open Source Matters</div>
+
+        <p class="narrative">
+          这一部分回答一个问题：<strong>为什么我们选择开源之道</strong>。答案不是技术必然，而是价值必然——相信开放、相信协作、相信知识在流动中增值。
+        </p>
+
+        <div class="keywords">
+          <div class="keywords-label">// CORE PROPOSITIONS</div>
+          <ul class="kw-list">
+            <li class="kw-item">
+              <span class="kw-num">01</span>
+              <span class="kw-title">思想开放</span>
+              <span class="kw-desc">开源不只是代码开放，更是一种拒绝垄断、拥抱共享的思想姿态。</span>
+            </li>
+            <li class="kw-item">
+              <span class="kw-num">02</span>
+              <span class="kw-title">记录传承</span>
+              <span class="kw-desc">开源之书的本质，是把个人经验沉淀为社区可复用的知识资产。</span>
+            </li>
+            <li class="kw-item">
+              <span class="kw-num">03</span>
+              <span class="kw-title">布道使命</span>
+              <span class="kw-desc">布道者既是学习者，也是传播者，把复杂的概念翻译成可抵达的语言。</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <span class="footer-tag">SECTION</span>
+        <span>PROLOGUE &nbsp;·&nbsp; 序&nbsp;章</span>
+      </div>
+      <div class="footer-right">
+        &gt;&nbsp;&gt;&nbsp;scroll to continue <span class="cursor">_</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
