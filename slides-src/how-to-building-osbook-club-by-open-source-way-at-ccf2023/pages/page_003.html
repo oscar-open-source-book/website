@@ -1,177 +1,335 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>什么是 OSBook Club</title>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --primary:#795548;
-  --primary-deep:#5D4037;
-  --accent:#BCAAA4;
-  --accent-light:#D7CCC8;
-  --bg:#F5F0EB;
-  --bg-warm:#EDE4DC;
-  --text-main:#3E2723;
-  --text-sub:#6D4C41;
-  --line:#D7CCC8;
+  --coffee:#795548;
+  --coffee-deep:#5D3F33;
+  --coffee-light:#8D6E63;
+  --warm-gray:#BCAAA4;
+  --warm-gray-deep:#9E918A;
+  --beige:#F5F0EB;
+  --beige-dark:#EDE6DE;
+  --ink:#3E2C25;
+  --line:#D9CFCC;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans SC',sans-serif;color:var(--text-main);}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
-#bg{position:absolute;inset:0;z-index:0;}
-#ct{position:absolute;inset:0;z-index:1;padding:48px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  color:var(--ink);
+  background:var(--beige);
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,#F5F0EB 0%,#EDE6DE 60%,#E8DFD6 100%);
+}
+#bg::before{
+  content:"";position:absolute;top:-160px;right:-160px;width:520px;height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(121,85,72,0.06) 0%,rgba(121,85,72,0) 70%);
+}
+#bg::after{
+  content:"";position:absolute;bottom:-200px;left:-180px;width:560px;height:560px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(188,170,164,0.35) 0%,rgba(188,170,164,0) 70%);
+}
+#ct{
+  position:absolute;inset:0;z-index:1;padding:50px 70px 46px 70px;
+  box-sizing:border-box;display:flex;flex-direction:column;
+}
 
-/* decorative bg elements */
-.bg-corner-tl{position:absolute;top:-120px;left:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(188,170,164,0.25),transparent 70%);}
-.bg-corner-br{position:absolute;bottom:-150px;right:-150px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(121,85,72,0.12),transparent 70%);}
-.bg-line{position:absolute;top:0;bottom:0;width:1px;background:var(--line);opacity:0.4;}
+/* 顶部标题区 */
+.head{display:flex;flex-direction:column;gap:14px;}
+.head .tag-row{display:flex;align-items:center;gap:14px;}
+.head .tag{
+  font-family:"Noto Sans SC",sans-serif;font-size:12px;letter-spacing:6px;
+  color:var(--coffee-light);font-weight:500;
+}
+.head .tag-line{flex:0 0 60px;height:1px;background:var(--coffee-light);opacity:0.5;}
+.head h1{
+  font-family:"Noto Serif SC","Songti SC",serif;
+  font-size:50px;font-weight:700;color:var(--coffee-deep);
+  letter-spacing:2px;line-height:1.2;
+  display:flex;align-items:baseline;gap:22px;
+}
+.head h1 .en{
+  font-family:"Noto Serif SC",serif;font-size:22px;font-weight:400;
+  color:var(--coffee-light);letter-spacing:4px;
+}
+.head .lead{
+  font-size:16px;line-height:1.9;color:var(--coffee-deep);font-weight:400;
+  max-width:1360px;padding-left:18px;border-left:2px solid var(--warm-gray-deep);
+}
+.head .lead em{
+  font-style:normal;color:var(--coffee);font-weight:500;
+}
+.head .lead .q{color:var(--coffee);font-weight:500;}
 
-/* header */
-.header{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;padding-bottom:18px;border-bottom:1px solid var(--line);}
-.title-block{flex:1;}
-.eyebrow{font-size:13px;letter-spacing:6px;color:var(--primary);font-weight:500;margin-bottom:12px;}
-.main-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:54px;color:var(--primary-deep);letter-spacing:2px;line-height:1.15;}
-.title-underline{display:inline-block;width:80px;height:3px;background:var(--primary);margin-top:14px;}
-.header-mark{font-family:'Noto Serif SC',serif;font-size:14px;color:var(--accent);letter-spacing:3px;padding-bottom:8px;text-align:right;line-height:1.6;}
+/* 中部：左图右卡 */
+.main{
+  margin-top:22px;flex:1;display:grid;
+  grid-template-columns:900px 1fr;gap:32px;min-height:0;
+}
 
-/* narrative */
-.narrative{margin-top:18px;padding:0 8px;font-size:16px;line-height:1.85;color:var(--text-sub);max-width:1400px;}
-.narrative .quote-mark{font-family:'Noto Serif SC',serif;font-size:32px;color:var(--primary);font-weight:700;line-height:0;margin-right:6px;vertical-align:-8px;}
-.narrative .em{color:var(--primary-deep);font-weight:500;}
-.narrative .divider-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);margin:0 12px;vertical-align:middle;}
+/* 关系图容器 */
+.diagram{
+  position:relative;height:498px;
+  background:linear-gradient(180deg,#F8F3EE 0%,#F1EAE1 100%);
+  border:1px solid var(--line);border-radius:6px;
+  padding:18px 22px 14px 22px;overflow:hidden;
+}
+.diagram::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--coffee) 0%,var(--warm-gray) 100%);
+}
+.diagram-title{
+  font-family:"Noto Serif SC",serif;font-size:15px;color:var(--coffee-deep);
+  font-weight:500;letter-spacing:2px;margin-bottom:4px;
+}
+.diagram-sub{font-size:11px;color:var(--warm-gray-deep);letter-spacing:1px;margin-bottom:8px;}
 
-/* diagram area */
-.diagram{position:relative;flex:1;margin-top:14px;}
-.diagram-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
-.center-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;flex-direction:column;align-items:center;justify-content:center;color:#F5F0EB;box-shadow:0 8px 30px rgba(121,85,72,0.25),0 0 0 8px rgba(188,170,164,0.2);z-index:3;}
-.center-node .cn-label{font-size:11px;letter-spacing:4px;opacity:0.8;margin-bottom:6px;}
-.center-node .cn-title{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;letter-spacing:1px;line-height:1.3;text-align:center;}
-.center-node .cn-sub{font-size:10px;letter-spacing:2px;opacity:0.7;margin-top:8px;}
-.center-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:220px;height:220px;border-radius:50%;border:1px dashed var(--accent);z-index:2;}
-.center-ring-2{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:280px;height:280px;border-radius:50%;border:1px solid rgba(188,170,164,0.35);z-index:1;}
+.stage{
+  position:relative;width:100%;height:422px;
+}
+/* 中心圆 */
+.center-node{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:170px;height:170px;border-radius:50%;
+  background:linear-gradient(135deg,#795548 0%,#5D3F33 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(93,63,51,0.22),0 0 0 6px rgba(121,85,72,0.08);
+  z-index:3;
+}
+.center-node .cn-1{
+  font-family:"Noto Serif SC",serif;font-size:22px;color:#F5F0EB;font-weight:700;letter-spacing:2px;
+}
+.center-node .cn-2{font-size:11px;color:#D9C7BD;letter-spacing:4px;margin-top:6px;}
+.center-node .cn-3{
+  font-family:"Noto Serif SC",serif;font-size:12px;color:#E8DFD6;
+  letter-spacing:3px;margin-top:10px;padding-top:10px;
+  border-top:1px solid rgba(232,223,214,0.4);width:110px;text-align:center;line-height:1.4;
+}
 
-.pillar{position:absolute;width:320px;padding:20px 22px;background:#FAF6F2;border:1px solid var(--line);border-radius:6px;box-shadow:0 4px 18px rgba(121,85,72,0.08);z-index:3;}
-.pillar-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line);}
-.pillar-num{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;color:var(--primary);width:28px;height:28px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--accent-light);}
-.pillar-title{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;color:var(--primary-deep);}
-.pillar-body{font-size:13.5px;line-height:1.7;color:var(--text-sub);}
-.pillar-tag{display:inline-block;font-size:10px;letter-spacing:2px;color:var(--primary);background:rgba(188,170,164,0.25);padding:3px 8px;border-radius:2px;margin-top:10px;}
+/* 连接线 */
+.lines{position:absolute;inset:0;pointer-events:none;z-index:1;}
 
-.p1{top:0;left:0;}
-.p2{top:0;right:0;}
-.p3{bottom:8px;left:0;}
-.p4{bottom:8px;right:0;}
+/* 四节点 */
+.pnode{
+  position:absolute;width:228px;
+  background:#FFFFFF;border:1px solid var(--line);border-radius:4px;
+  padding:12px 14px 12px 16px;
+  box-shadow:0 2px 8px rgba(121,85,72,0.08);
+  z-index:2;
+}
+.pnode .pn-head{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.pnode .pn-num{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--coffee);color:#F5F0EB;
+  font-family:"Noto Serif SC",serif;font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.pnode .pn-title{
+  font-family:"Noto Serif SC",serif;font-size:14px;font-weight:700;color:var(--coffee-deep);letter-spacing:1px;
+}
+.pnode .pn-text{font-size:11.5px;line-height:1.65;color:#4A3B34;font-weight:400;}
+.pnode .pn-tag{
+  display:inline-block;margin-top:6px;font-size:10px;color:var(--coffee-light);
+  border-top:1px dashed var(--line);padding-top:5px;letter-spacing:1px;
+}
 
-/* data strip */
-.data-strip{margin-top:14px;display:flex;gap:24px;padding-top:18px;border-top:1px solid var(--line);}
-.data-card{flex:1;display:flex;align-items:center;gap:20px;padding:16px 22px;background:var(--bg-warm);border-radius:6px;border-left:3px solid var(--primary);}
-.data-num{font-family:'Noto Serif SC',serif;font-size:42px;font-weight:900;color:var(--primary-deep);line-height:1;letter-spacing:1px;flex-shrink:0;}
-.data-unit{font-size:14px;color:var(--primary);font-weight:500;margin-left:-8px;}
-.data-info{display:flex;flex-direction:column;gap:4px;}
-.data-label{font-size:15px;font-weight:700;color:var(--text-main);font-family:'Noto Serif SC',serif;}
-.data-desc{font-size:12px;color:var(--text-sub);line-height:1.5;}
-.data-connector{display:flex;align-items:center;justify-content:center;width:40px;flex-shrink:0;color:var(--accent);font-size:18px;}
+.pn-1{top:6px;left:20px;}
+.pn-2{top:6px;right:14px;}
+.pn-3{bottom:0;left:20px;}
+.pn-4{bottom:0;right:14px;}
+
+/* 右侧卡片 */
+.right-col{display:flex;flex-direction:column;gap:16px;height:100%;}
+
+.kpi{
+  background:#FFFFFF;border:1px solid var(--line);border-radius:4px;
+  padding:18px 22px;position:relative;overflow:hidden;flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.kpi::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--coffee);
+}
+.kpi .kpi-tag{
+  font-size:10px;letter-spacing:4px;color:var(--coffee-light);font-weight:500;margin-bottom:8px;
+}
+.kpi .kpi-row{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.kpi .kpi-num{
+  font-family:"Noto Serif SC",serif;font-size:44px;font-weight:700;color:var(--coffee-deep);line-height:1;
+}
+.kpi .kpi-unit{font-size:15px;color:var(--coffee);font-weight:500;letter-spacing:2px;}
+.kpi .kpi-title{
+  font-family:"Noto Serif SC",serif;font-size:16px;color:var(--coffee-deep);
+  font-weight:700;letter-spacing:1px;margin-bottom:8px;
+}
+.kpi .kpi-desc{font-size:12px;line-height:1.7;color:var(--warm-gray-deep);font-weight:400;}
+.kpi .kpi-rule{
+  margin-top:10px;display:flex;align-items:center;gap:8px;
+}
+.kpi .kpi-rule .bar{
+  flex:1;height:2px;background:var(--line);position:relative;
+}
+.kpi .kpi-rule .bar i{
+  position:absolute;left:0;top:0;height:100%;background:var(--coffee);
+}
+.kpi .kpi-rule .label{font-size:10px;color:var(--coffee-light);letter-spacing:2px;}
+
+.kpi-2::before{background:var(--warm-gray-deep);}
+.kpi-2 .kpi-num{color:var(--coffee);}
+
+/* 底部收束 */
+.foot{
+  margin-top:18px;padding:18px 30px;
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.foot .quote{
+  font-family:"Noto Serif SC",serif;font-size:17px;color:var(--coffee-deep);
+  font-weight:500;letter-spacing:2px;line-height:1.6;flex:1;
+}
+.foot .quote .accent{color:var(--coffee);font-weight:700;}
+.foot .seal{
+  flex-shrink:0;width:64px;height:64px;border-radius:50%;
+  border:1px solid var(--coffee);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:var(--coffee);
+  font-family:"Noto Serif SC",serif;
+}
+.foot .seal .s1{font-size:11px;letter-spacing:3px;font-weight:700;}
+.foot .seal .s2{font-size:9px;letter-spacing:2px;color:var(--coffee-light);margin-top:4px;}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="bg-corner-tl"></div>
-    <div class="bg-corner-br"></div>
-  </div>
+  <div id="bg"></div>
   <div id="ct">
 
-    <div class="header">
-      <div class="title-block">
-        <div class="eyebrow">CONCEPT · 概念说明</div>
-        <h1 class="main-title">什么是 OSBook Club</h1>
-        <div class="title-underline"></div>
+    <div class="head">
+      <div class="tag-row">
+        <span class="tag-line"></span>
+        <span class="tag">INTRODUCTION · 内容介绍</span>
       </div>
-      <div class="header-mark">
-        Open Source · Book · Community<br>
-        <span style="color:var(--primary);">OPEN SOURCE</span>&nbsp;BOOK CLUB
-      </div>
-    </div>
-
-    <p class="narrative">
-      <span class="quote-mark">"</span>OSBook Club 不是<span class="em">一个产品</span>，而是一个<span class="em">协议</span>——它定义了'怎样一群人，用什么样的节奏，把阅读变成公共品'。<span class="divider-dot"></span>选书不再由少数编辑决定，笔记不再躺在个人硬盘，讨论不再消失在群里。
-    </p>
-
-    <div class="diagram">
-      <svg class="diagram-svg" viewBox="0 0 1480 460" preserveAspectRatio="none">
-        <line x1="240" y1="100" x2="700" y2="210" stroke="#BCAAA4" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
-        <line x1="1240" y1="100" x2="780" y2="210" stroke="#BCAAA4" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
-        <line x1="240" y1="360" x2="700" y2="250" stroke="#BCAAA4" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
-        <line x1="1240" y1="360" x2="780" y2="250" stroke="#BCAAA4" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
-      </svg>
-
-      <div class="center-ring-2"></div>
-      <div class="center-ring"></div>
-      <div class="center-node">
-        <div class="cn-label">PROTOCOL</div>
-        <div class="cn-title">OSBook Club</div>
-        <div class="cn-sub">核 · 心 · 概 · 念</div>
-      </div>
-
-      <div class="pillar p1">
-        <div class="pillar-head">
-          <div class="pillar-num">01</div>
-          <div class="pillar-title">定义</div>
-        </div>
-        <div class="pillar-body">以开源协作方式组织、运行、演进的开发者读书会。</div>
-        <div class="pillar-tag">DEFINITION</div>
-      </div>
-
-      <div class="pillar p2">
-        <div class="pillar-head">
-          <div class="pillar-num">02</div>
-          <div class="pillar-title">三大支柱</div>
-        </div>
-        <div class="pillar-body">选书透明化、阅读社交化、产出资产化。</div>
-        <div class="pillar-tag">THREE PILLARS</div>
-      </div>
-
-      <div class="pillar p3">
-        <div class="pillar-head">
-          <div class="pillar-num">03</div>
-          <div class="pillar-title">与商业读书会区别</div>
-        </div>
-        <div class="pillar-body">无课程销售、无等级付费，完全依靠社区共识运转。</div>
-        <div class="pillar-tag">DIFFERENTIATION</div>
-      </div>
-
-      <div class="pillar p4">
-        <div class="pillar-head">
-          <div class="pillar-num">04</div>
-          <div class="pillar-title">核心产出</div>
-        </div>
-        <div class="pillar-body">读书笔记、开源仓库、线下分享、跨书讨论帖。</div>
-        <div class="pillar-tag">DELIVERABLES</div>
+      <h1><span>什么是 OSBook Club</span><span class="en">— An Open-Source Book Club Protocol</span></h1>
+      <div class="lead">
+        OSBook Club 不是一个产品，而是一个<em>协议</em>——它定义了<span class="q">"怎样一群人，用什么样的节奏，把阅读变成公共品"</span>。
       </div>
     </div>
 
-    <div class="data-strip">
-      <div class="data-card">
-        <div style="display:flex;align-items:baseline;">
-          <span class="data-num">4</span>
-          <span class="data-unit">周</span>
-        </div>
-        <div class="data-info">
-          <span class="data-label">发起周期</span>
-          <span class="data-desc">从征集到首批成员入场的典型时长</span>
+    <div class="main">
+
+      <div class="diagram">
+        <div class="diagram-title">OSBook Club 关系图</div>
+        <div class="diagram-sub">Definition · Pillars · Distinction · Output</div>
+
+        <div class="stage">
+          <svg class="lines" viewBox="0 0 856 422" preserveAspectRatio="none">
+            <line x1="428" y1="211" x2="150" y2="76" stroke="#BCAAA4" stroke-width="1.2" stroke-dasharray="4 4"/>
+            <line x1="428" y1="211" x2="706" y2="76" stroke="#BCAAA4" stroke-width="1.2" stroke-dasharray="4 4"/>
+            <line x1="428" y1="211" x2="150" y2="346" stroke="#BCAAA4" stroke-width="1.2" stroke-dasharray="4 4"/>
+            <line x1="428" y1="211" x2="706" y2="346" stroke="#BCAAA4" stroke-width="1.2" stroke-dasharray="4 4"/>
+            <circle cx="150" cy="76" r="3" fill="#795548"/>
+            <circle cx="706" cy="76" r="3" fill="#795548"/>
+            <circle cx="150" cy="346" r="3" fill="#795548"/>
+            <circle cx="706" cy="346" r="3" fill="#795548"/>
+          </svg>
+
+          <div class="center-node">
+            <span class="cn-1">OSBook Club</span>
+            <span class="cn-2">PROTOCOL</span>
+            <span class="cn-3">让阅读<br>变成公共品</span>
+          </div>
+
+          <div class="pnode pn-1">
+            <div class="pn-head">
+              <span class="pn-num">1</span>
+              <span class="pn-title">定义</span>
+            </div>
+            <div class="pn-text">以开源协作方式组织、运行、演进的<em>开发者读书会</em>。</div>
+            <span class="pn-tag">DEFINITION</span>
+          </div>
+
+          <div class="pnode pn-2">
+            <div class="pn-head">
+              <span class="pn-num">2</span>
+              <span class="pn-title">三大支柱</span>
+            </div>
+            <div class="pn-text">选书透明化 · 阅读社交化 · 产出资产化</div>
+            <span class="pn-tag">THREE PILLARS</span>
+          </div>
+
+          <div class="pnode pn-3">
+            <div class="pn-head">
+              <span class="pn-num">3</span>
+              <span class="pn-title">与商业读书会区别</span>
+            </div>
+            <div class="pn-text">无课程销售、无等级付费，完全依靠<em>社区共识</em>运转。</div>
+            <span class="pn-tag">DISTINCTION</span>
+          </div>
+
+          <div class="pnode pn-4">
+            <div class="pn-head">
+              <span class="pn-num">4</span>
+              <span class="pn-title">核心产出</span>
+            </div>
+            <div class="pn-text">读书笔记 · 开源仓库 · 线下分享 · 跨书讨论帖</div>
+            <span class="pn-tag">OUTPUT</span>
+          </div>
         </div>
       </div>
-      <div class="data-connector">·</div>
-      <div class="data-card">
-        <div style="display:flex;align-items:baseline;">
-          <span class="data-num">8</span>
-          <span class="data-unit">人</span>
+
+      <div class="right-col">
+        <div class="kpi kpi-1">
+          <span class="kpi-tag">KPI · 01</span>
+          <div class="kpi-row">
+            <span class="kpi-num">4</span>
+            <span class="kpi-unit">周</span>
+          </div>
+          <div class="kpi-title">发起周期</div>
+          <div class="kpi-desc">从征集到首批成员入场的<em>典型时长</em>，节奏克制，避免仓促启动。</div>
+          <div class="kpi-rule">
+            <span class="label">TYPICAL</span>
+            <span class="bar"><i style="width:60%"></i></span>
+            <span class="label">4W</span>
+          </div>
         </div>
-        <div class="data-info">
-          <span class="data-label">最小可行规模</span>
-          <span class="data-desc">能形成有效讨论与轮值的下限</span>
+
+        <div class="kpi kpi-2">
+          <span class="kpi-tag">KPI · 02</span>
+          <div class="kpi-row">
+            <span class="kpi-num">8</span>
+            <span class="kpi-unit">人</span>
+          </div>
+          <div class="kpi-title">最小可行规模</div>
+          <div class="kpi-desc">能形成<em>有效讨论</em>与轮值的下限，太少冷清、太多失焦。</div>
+          <div class="kpi-rule">
+            <span class="label">MIN VIABLE</span>
+            <span class="bar"><i style="width:44%"></i></span>
+            <span class="label">8+</span>
+          </div>
         </div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <div class="quote">
+        <span class="accent">选书</span>不再由少数编辑决定，<span class="accent">笔记</span>不再躺在个人硬盘，<span class="accent">讨论</span>不再消失在群里。
+      </div>
+      <div class="seal">
+        <span class="s1">开源</span>
+        <span class="s2">阅读</span>
       </div>
     </div>
 

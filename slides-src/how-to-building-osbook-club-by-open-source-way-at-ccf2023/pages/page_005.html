@@ -1,391 +1,366 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <title>第二章 · 开源方法论</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
-
-:root{
-  --coffee:#795548;
-  --coffee-dark:#5D4037;
-  --coffee-light:#A1887F;
-  --warm-gray:#BCAAA4;
-  --cream:#F5F0EB;
-  --cream-deep:#EFE7DD;
-  --ink:#3E2723;
-  --text-main:#4E342E;
-  --text-sub:#8D6E63;
+:root {
+  --brown-main: #795548;
+  --brown-light: #8D6E63;
+  --brown-deep: #4E342E;
+  --beige-grey: #BCAAA4;
+  --near-white: #F5F0EB;
+  --cream: #EFEBE6;
+  --text-main: #3E2723;
+  --text-muted: #6D4C41;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-body{
-  font-family:'Noto Sans SC',sans-serif;
-  color:var(--text-main);
-  background:var(--cream);
-}
-
-.wrapper{
-  width:1600px;height:900px;
-  position:relative;overflow:hidden;
-  margin:0 auto;
-  font-family:'Noto Sans SC',sans-serif;
+body {
+  width: 1600px;
+  height: 900px;
+  overflow: hidden;
+  font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+  color: var(--text-main);
 }
 
-#bg{
-  position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse at 15% 0%, rgba(188,170,164,0.18) 0%, transparent 50%),
-    radial-gradient(ellipse at 90% 100%, rgba(121,85,72,0.10) 0%, transparent 55%),
-    var(--cream);
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--near-white);
 }
 
-#bg::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--warm-gray) 30%,var(--warm-gray) 70%,transparent);
-  opacity:0.6;
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #F5F0EB 0%, #EDE5DC 50%, #E8DFD5 100%);
 }
 
-#ct{
-  position:absolute;inset:0;z-index:1;
-  padding:56px 72px;
-  display:flex;flex-direction:column;
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(188,170,164,0.25) 0%, rgba(188,170,164,0) 70%);
 }
 
-/* ── Header ── */
-.header{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  padding-bottom:24px;
-  border-bottom:1px solid rgba(188,170,164,0.5);
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -160px;
+  left: -100px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(121,85,72,0.12) 0%, rgba(121,85,72,0) 70%);
 }
 
-.chapter-tag{
-  display:flex;align-items:center;gap:18px;
-  margin-bottom:14px;
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-.chapter-tag .num-badge{
-  width:56px;height:56px;
-  border:1.5px solid var(--coffee);
-  color:var(--coffee);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Noto Serif SC',serif;
-  font-size:22px;font-weight:700;
-  letter-spacing:1px;
-  border-radius:2px;
-  background:rgba(255,255,255,0.4);
+/* Top section */
+.top-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 10px;
 }
 
-.chapter-tag .tag-line{
-  display:flex;flex-direction:column;gap:4px;
+.en-subtitle {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  color: var(--beige-grey);
+  text-transform: lowercase;
+  margin-bottom: 16px;
+  position: relative;
+  padding-left: 56px;
 }
 
-.chapter-tag .tag-label{
-  font-size:11px;font-weight:500;
-  letter-spacing:6px;color:var(--coffee-light);
-  text-transform:uppercase;
+.en-subtitle::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 40px;
+  height: 1px;
+  background: var(--beige-grey);
 }
 
-.chapter-tag .tag-name{
-  font-size:14px;color:var(--text-sub);
-  letter-spacing:3px;
+.chapter-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--brown-main);
+  letter-spacing: 6px;
+  line-height: 1.2;
 }
 
-.main-title{
-  font-family:'Noto Serif SC',serif;
-  font-size:64px;font-weight:700;
-  color:var(--coffee-dark);
-  letter-spacing:8px;
-  line-height:1.1;
+.chapter-title .dot {
+  color: var(--beige-grey);
+  font-weight: 400;
+  margin: 0 8px;
 }
 
-.main-title .dot{
-  color:var(--warm-gray);
-  margin:0 6px;
-  font-weight:400;
+.title-decoration {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px;
+  padding-left: 4px;
 }
 
-.subtitle{
-  margin-top:14px;
-  font-family:'Noto Serif SC',serif;
-  font-style:italic;
-  font-size:20px;
-  color:var(--coffee-light);
-  letter-spacing:2px;
+.title-decoration .line {
+  width: 80px;
+  height: 2px;
+  background: var(--brown-main);
 }
 
-.header-right{
-  text-align:right;
-  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+.title-decoration .square {
+  width: 8px;
+  height: 8px;
+  background: var(--brown-main);
 }
 
-.header-right .pg-label{
-  font-size:11px;letter-spacing:5px;
-  color:var(--coffee-light);
+.title-decoration .thin-line {
+  width: 140px;
+  height: 1px;
+  background: var(--beige-grey);
 }
 
-.header-right .pg-num{
-  font-family:'Noto Serif SC',serif;
-  font-size:18px;color:var(--coffee);
-  letter-spacing:2px;
+/* Flow section */
+.flow-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 20px;
+  position: relative;
 }
 
-.header-right .divider-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--coffee);opacity:0.5;
-  margin-top:4px;
+.flow-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  padding: 0 10px;
 }
 
-/* ── Intro strip ── */
-.intro-strip{
-  margin-top:30px;
-  display:flex;align-items:center;gap:20px;
+.flow-row::before {
+  content: '';
+  position: absolute;
+  top: 52px;
+  left: 70px;
+  right: 70px;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--beige-grey) 0, var(--beige-grey) 6px, transparent 6px, transparent 12px);
+  z-index: 0;
 }
 
-.intro-strip .bar{
-  width:48px;height:1px;background:var(--coffee);opacity:0.6;
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 240px;
+  position: relative;
+  z-index: 1;
 }
 
-.intro-strip .text{
-  font-family:'Noto Serif SC',serif;
-  font-size:15px;color:var(--text-sub);
-  letter-spacing:2px;line-height:1.8;
+.step-circle {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8D6E63 0%, #795548 50%, #5D4037 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(121,85,72,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  margin-top: 12px;
+  position: relative;
 }
 
-.intro-strip .text em{
-  font-style:normal;color:var(--coffee);font-weight:600;
+.step-circle::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--beige-grey);
+  opacity: 0.4;
 }
 
-/* ── Flow section ── */
-.flow-section{
-  flex:1;
-  margin-top:38px;
-  display:flex;flex-direction:column;
-  justify-content:center;
+.step-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(245,240,235,0.7);
+  letter-spacing: 2px;
+  margin-bottom: 2px;
 }
 
-.flow-section-title{
-  display:flex;align-items:center;gap:16px;
-  margin-bottom:36px;
+.step-num-big {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #F5F0EB;
+  line-height: 1;
 }
 
-.flow-section-title .line{
-  flex:0 0 36px;height:1px;background:var(--coffee);opacity:0.5;
+.step-keyword {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--brown-main);
+  margin-top: 22px;
+  letter-spacing: 4px;
 }
 
-.flow-section-title .label{
-  font-family:'Noto Serif SC',serif;
-  font-size:18px;color:var(--coffee);
-  letter-spacing:6px;font-weight:600;
+.step-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.8;
+  text-align: center;
+  margin-top: 12px;
+  max-width: 200px;
+  letter-spacing: 0.5px;
 }
 
-.flow-section-title .sub-label{
-  font-size:12px;color:var(--warm-gray);
-  letter-spacing:3px;margin-left:6px;
+.step-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--beige-grey);
+  letter-spacing: 3px;
+  margin-top: 14px;
+  padding: 3px 10px;
+  border: 1px solid var(--beige-grey);
+  border-radius: 10px;
 }
 
-.flow-container{
-  display:flex;align-items:flex-start;
-  justify-content:space-between;
-  position:relative;
-  padding:0 20px;
+/* Bottom section */
+.bottom-section {
+  margin-top: 10px;
+  padding: 20px 60px 0;
+  border-top: 1px solid rgba(188,170,164,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.flow-container::before{
-  content:'';
-  position:absolute;
-  top:36px;
-  left:60px;right:60px;
-  height:1px;
-  background:linear-gradient(90deg,
-    rgba(121,85,72,0) 0%,
-    rgba(121,85,72,0.4) 8%,
-    rgba(121,85,72,0.4) 92%,
-    rgba(121,85,72,0) 100%);
-  z-index:0;
+.bottom-quote {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 2;
+  text-align: center;
+  letter-spacing: 1.5px;
+  max-width: 1300px;
 }
 
-.step{
-  flex:1;
-  display:flex;flex-direction:column;align-items:center;
-  text-align:center;
-  position:relative;z-index:1;
-  padding:0 8px;
+.bottom-quote .highlight {
+  color: var(--brown-main);
+  font-weight: 600;
 }
 
-.step .circle{
-  width:72px;height:72px;
-  border-radius:50%;
-  border:1.5px solid var(--coffee);
-  background:var(--cream);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  margin-bottom:18px;
-  position:relative;
-  transition:none;
+.bottom-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
 }
 
-.step .circle .num{
-  font-family:'Noto Serif SC',serif;
-  font-size:18px;font-weight:700;
-  color:var(--coffee);
-  line-height:1;
+.bottom-meta .meta-line {
+  width: 40px;
+  height: 1px;
+  background: var(--beige-grey);
 }
 
-.step .circle .num-sub{
-  font-size:8px;color:var(--warm-gray);
-  letter-spacing:2px;margin-top:3px;
+.bottom-meta .meta-text {
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: var(--beige-grey);
 }
 
-.step:nth-child(odd) .circle{
-  background:var(--coffee);
-  border-color:var(--coffee);
-}
-.step:nth-child(odd) .circle .num{
-  color:var(--cream);
-}
-.step:nth-child(odd) .circle .num-sub{
-  color:var(--warm-gray);
-}
-
-.step .keyword{
-  font-family:'Noto Serif SC',serif;
-  font-size:22px;font-weight:600;
-  color:var(--coffee-dark);
-  letter-spacing:6px;
-  margin-bottom:6px;
+/* Side decorations */
+.side-left {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
-.step .keyword-en{
-  font-family:'Noto Serif SC',serif;
-  font-style:italic;
-  font-size:11px;color:var(--coffee-light);
-  letter-spacing:3px;
-  margin-bottom:12px;
+.side-left .v-line {
+  width: 1px;
+  height: 60px;
+  background: var(--beige-grey);
 }
 
-.step .desc{
-  font-size:11.5px;
-  color:var(--text-sub);
-  letter-spacing:1px;
-  line-height:1.7;
-  max-width:200px;
+.side-left .v-text {
+  writing-mode: vertical-rl;
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--beige-grey);
 }
 
-.step .desc .hl{
-  color:var(--coffee);
-  font-weight:500;
+.side-right {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
-.step .bottom-bar{
-  margin-top:12px;
-  width:32px;height:2px;
-  background:var(--coffee);
-  opacity:0.3;
+.side-right .v-line {
+  width: 1px;
+  height: 60px;
+  background: var(--beige-grey);
 }
 
-.step:nth-child(odd) .bottom-bar{
-  opacity:0.7;
+.side-right .v-text {
+  writing-mode: vertical-rl;
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--beige-grey);
 }
 
-.step-connector{
-  flex:0 0 auto;
-  display:flex;align-items:center;justify-content:center;
-  padding-top:32px;
-  color:var(--warm-gray);
-  font-size:14px;
-  width:24px;
-}
-
-/* ── Manifesto ── */
-.manifesto{
-  margin-top:28px;
-  padding:28px 48px;
-  background:linear-gradient(90deg,
-    rgba(121,85,72,0.06) 0%,
-    rgba(121,85,72,0.02) 50%,
-    rgba(121,85,72,0.06) 100%);
-  border-left:3px solid var(--coffee);
-  border-right:1px solid rgba(188,170,164,0.4);
-  display:flex;align-items:center;gap:32px;
-  position:relative;
-}
-
-.manifesto .quote-mark{
-  font-family:'Noto Serif SC',serif;
-  font-size:64px;font-weight:900;
-  color:var(--coffee);
-  opacity:0.2;
-  line-height:0.5;
-  flex-shrink:0;
-}
-
-.manifesto .manifesto-text{
-  font-family:'Noto Serif SC',serif;
-  font-size:15px;
-  color:var(--text-main);
-  line-height:2;
-  letter-spacing:1.5px;
-  flex:1;
-}
-
-.manifesto .manifesto-text strong{
-  color:var(--coffee-dark);
-  font-weight:700;
-}
-
-.manifesto .manifesto-tag{
-  flex-shrink:0;
-  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
-  border-left:1px solid rgba(188,170,164,0.5);
-  padding-left:24px;
-}
-
-.manifesto .manifesto-tag .t-label{
-  font-size:10px;letter-spacing:4px;
-  color:var(--coffee-light);
-}
-
-.manifesto .manifesto-tag .t-name{
-  font-family:'Noto Serif SC',serif;
-  font-size:13px;color:var(--coffee);
-  letter-spacing:3px;
-}
-
-/* ── Footer ── */
-.footer{
-  margin-top:20px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding-top:18px;
-  border-top:1px solid rgba(188,170,164,0.4);
-}
-
-.footer-left{
-  display:flex;align-items:center;gap:14px;
-}
-
-.footer-left .dot-accent{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--coffee);
-}
-
-.footer-left .fl-text{
-  font-size:11px;color:var(--coffee-light);
-  letter-spacing:3px;
-}
-
-.footer-right{
-  display:flex;align-items:center;gap:20px;
-}
-
-.footer-right .fr-item{
-  font-size:11px;color:var(--coffee-light);
-  letter-spacing:3px;
-}
-
-.footer-right .fr-sep{
-  width:1px;height:12px;background:var(--warm-gray);opacity:0.5;
+/* Chapter number large background */
+.big-num {
+  position: absolute;
+  top: 40px;
+  right: 80px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 220px;
+  font-weight: 700;
+  color: rgba(121,85,72,0.05);
+  line-height: 1;
+  letter-spacing: -8px;
+  z-index: 0;
 }
 </style>
 </head>
@@ -394,129 +369,96 @@ body{
   <div id="bg"></div>
   <div id="ct">
 
-    <div class="header">
-      <div>
-        <div class="chapter-tag">
-          <div class="num-badge">
-            <span>02</span>
-          </div>
-          <div class="tag-line">
-            <span class="tag-label">CHAPTER · 章节</span>
-            <span class="tag-name">方法论 / Methodology</span>
-          </div>
-        </div>
-        <h1 class="main-title">第二章<span class="dot">·</span>开源方法论</h1>
-        <div class="subtitle">How to build it the open-source way</div>
-      </div>
-      <div class="header-right">
-        <span class="pg-label">CHAPTER OPENER</span>
-        <span class="pg-num">02 / 08</span>
-        <span class="divider-dot"></span>
-      </div>
+    <div class="big-num"><span>02</span></div>
+
+    <div class="side-left">
+      <div class="v-line"></div>
+      <div class="v-text">CHAPTER TWO</div>
+      <div class="v-line"></div>
     </div>
 
-    <div class="intro-strip">
-      <span class="bar"></span>
-      <span class="text">
-        把开源社区治理的那套方法论 — <em>贡献指南 · 代码审查 · 版本发布</em> —
-        原封不动搬到阅读上来，让读书会像一个开源项目一样被设计、被维护、被 fork。
-      </span>
+    <div class="side-right">
+      <div class="v-line"></div>
+      <div class="v-text">OPEN SOURCE</div>
+      <div class="v-line"></div>
+    </div>
+
+    <div class="top-section">
+      <div class="en-subtitle"><span>How to build it the open-source way</span></div>
+      <h1 class="chapter-title">
+        <span>第二章</span><span class="dot">·</span><span>开源方法论</span>
+      </h1>
+      <div class="title-decoration">
+        <div class="line"></div>
+        <div class="square"></div>
+        <div class="thin-line"></div>
+      </div>
     </div>
 
     <div class="flow-section">
-      <div class="flow-section-title">
-        <span class="line"></span>
-        <span class="label">五步流程</span>
-        <span class="sub-label">FIVE-STEP METHODOLOGY</span>
-      </div>
-
-      <div class="flow-container">
-        <div class="step">
-          <div class="circle">
-            <span class="num">01</span>
-            <span class="num-sub">STEP</span>
-          </div>
-          <span class="keyword">选书</span>
-          <span class="keyword-en">SELECT</span>
-          <span class="desc"><span class="hl">社区投票</span>加主题策展，<br>去中心化决策</span>
-          <span class="bottom-bar"></span>
-        </div>
-
-        <div class="step-connector"><span>›</span></div>
+      <div class="flow-row">
 
         <div class="step">
-          <div class="circle">
-            <span class="num">02</span>
-            <span class="num-sub">STEP</span>
+          <div class="step-circle">
+            <div class="step-num"><span>STEP</span></div>
+            <div class="step-num-big"><span>01</span></div>
           </div>
-          <span class="keyword">组织</span>
-          <span class="keyword-en">ORGANIZE</span>
-          <span class="desc"><span class="hl">轮值主理人</span>制度，<br>人人可参与治理</span>
-          <span class="bottom-bar"></span>
+          <div class="step-keyword"><span>选书</span></div>
+          <div class="step-desc"><span>社区投票加主题策展、去中心化决策</span></div>
+          <div class="step-tag"><span>SELECT</span></div>
         </div>
-
-        <div class="step-connector"><span>›</span></div>
 
         <div class="step">
-          <div class="circle">
-            <span class="num">03</span>
-            <span class="num-sub">STEP</span>
+          <div class="step-circle">
+            <div class="step-num"><span>STEP</span></div>
+            <div class="step-num-big"><span>02</span></div>
           </div>
-          <span class="keyword">协作</span>
-          <span class="keyword-en">COLLABORATE</span>
-          <span class="desc">用 <span class="hl">Git 工作流</span>管理笔记、<br>讨论和版本演进</span>
-          <span class="bottom-bar"></span>
+          <div class="step-keyword"><span>组织</span></div>
+          <div class="step-desc"><span>轮值主理人制度、人人可参与治理</span></div>
+          <div class="step-tag"><span>ORGANIZE</span></div>
         </div>
-
-        <div class="step-connector"><span>›</span></div>
 
         <div class="step">
-          <div class="circle">
-            <span class="num">04</span>
-            <span class="num-sub">STEP</span>
+          <div class="step-circle">
+            <div class="step-num"><span>STEP</span></div>
+            <div class="step-num-big"><span>03</span></div>
           </div>
-          <span class="keyword">产出</span>
-          <span class="keyword-en">PUBLISH</span>
-          <span class="desc">以<span class="hl">开源许可证</span>发布，<br>可复用可延伸</span>
-          <span class="bottom-bar"></span>
+          <div class="step-keyword"><span>协作</span></div>
+          <div class="step-desc"><span>Git 工作流管理笔记、讨论与版本演进</span></div>
+          <div class="step-tag"><span>COLLABORATE</span></div>
         </div>
-
-        <div class="step-connector"><span>›</span></div>
 
         <div class="step">
-          <div class="circle">
-            <span class="num">05</span>
-            <span class="num-sub">STEP</span>
+          <div class="step-circle">
+            <div class="step-num"><span>STEP</span></div>
+            <div class="step-num-big"><span>04</span></div>
           </div>
-          <span class="keyword">演进</span>
-          <span class="keyword-en">EVOLVE</span>
-          <span class="desc">通过 <span class="hl">Issue</span> 与 <span class="hl">Roadmap</span><br>持续迭代规则与主题</span>
-          <span class="bottom-bar"></span>
+          <div class="step-keyword"><span>产出</span></div>
+          <div class="step-desc"><span>所有成果以开源许可证发布、可复用可延伸</span></div>
+          <div class="step-tag"><span>PUBLISH</span></div>
         </div>
+
+        <div class="step">
+          <div class="step-circle">
+            <div class="step-num"><span>STEP</span></div>
+            <div class="step-num-big"><span>05</span></div>
+          </div>
+          <div class="step-keyword"><span>演进</span></div>
+          <div class="step-desc"><span>通过 Issue 与 Roadmap 持续迭代规则与主题</span></div>
+          <div class="step-tag"><span>EVOLVE</span></div>
+        </div>
+
       </div>
     </div>
 
-    <div class="manifesto">
-      <span class="quote-mark">「</span>
-      <span class="manifesto-text">
-        把开源社区治理的那套方法论 — <strong>贡献指南、代码审查、版本发布</strong> —
-        原封不动搬到阅读上来。让读书会像一个开源项目一样<strong>被设计、被维护、被 fork</strong>。
-      </span>
-      <span class="manifesto-tag">
-        <span class="t-label">MANIFESTO</span>
-        <span class="t-name">方法论宣言</span>
-      </span>
-    </div>
-
-    <div class="footer">
-      <div class="footer-left">
-        <span class="dot-accent"></span>
-        <span class="fl-text">阅读即协作 · 知识即开源</span>
-      </div>
-      <div class="footer-right">
-        <span class="fr-item">读 者 · 即 · 贡 献 者</span>
-        <span class="fr-sep"></span>
-        <span class="fr-item">READERS ARE CONTRIBUTORS</span>
+    <div class="bottom-section">
+      <p class="bottom-quote">
+        <span>把开源社区治理的那套方法论——<span class="highlight">贡献指南、代码审查、版本发布</span>——原封不动搬到阅读上来，让读书会像一个开源项目一样被<span class="highlight">设计</span>、被<span class="highlight">维护</span>、被<span class="highlight">fork</span>。</span>
+      </p>
+      <div class="bottom-meta">
+        <div class="meta-line"></div>
+        <div class="meta-text"><span>METHODOLOGY · CH.02</span></div>
+        <div class="meta-line"></div>
       </div>
     </div>
 

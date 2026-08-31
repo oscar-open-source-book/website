@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>四大核心原则 - OSBook Club</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
 
 :root {
   --primary: #795548;
-  --accent: #BCAAA4;
+  --primary-light: #8D6E63;
+  --secondary: #BCAAA4;
+  --secondary-light: #D7CCC8;
   --bg: #F5F0EB;
+  --bg-card: #FBF7F3;
   --text-main: #4E342E;
-  --text-light: #8D6E63;
-  --line: #D7CCC8;
-  --white: #FAF7F4;
+  --text-sub: #6D4C41;
+  --text-muted: #8D7B74;
+  --border: #D7CCC8;
+  --dot: #A1887F;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,8 +26,7 @@ body {
   font-family: 'Noto Sans SC', sans-serif;
   background: var(--bg);
   color: var(--text-main);
-  font-weight: 300;
-  line-height: 1.6;
+  overflow: hidden;
 }
 
 .wrapper {
@@ -32,28 +35,23 @@ body {
   position: relative;
   overflow: hidden;
   margin: 0 auto;
+  background: var(--bg);
 }
 
 #bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: var(--bg);
-}
-
-#bg::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 4px;
-  background: var(--primary);
+  background:
+    radial-gradient(ellipse at 10% 10%, rgba(188,170,164,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, rgba(121,85,72,0.08) 0%, transparent 50%);
 }
 
 #ct {
   position: absolute;
   inset: 0;
   z-index: 1;
-  padding: 50px 70px 40px;
+  padding: 50px 60px 40px 60px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -62,245 +60,279 @@ body {
 /* Header */
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 40px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--line);
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 14px;
 }
 
-.header-left {
-  flex: 0 0 auto;
-}
-
-.eyebrow {
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 4px;
-  color: var(--accent);
-  margin-bottom: 12px;
+.header-top-line {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 10px;
 }
 
-.eyebrow::before {
-  content: '';
-  display: inline-block;
-  width: 24px;
+.header-top-line .line {
+  width: 60px;
   height: 1px;
-  background: var(--accent);
+  background: var(--secondary);
+}
+
+.header-top-line .label {
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--dot);
+  font-weight: 300;
 }
 
 .title {
   font-family: 'Noto Serif SC', serif;
-  font-size: 54px;
   font-weight: 700;
+  font-size: 46px;
   color: var(--primary);
-  letter-spacing: 6px;
-  line-height: 1.2;
+  letter-spacing: 12px;
+  margin-bottom: 12px;
 }
 
 .title-en {
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--accent);
-  letter-spacing: 3px;
-  margin-top: 8px;
-}
-
-.header-right {
-  flex: 1;
-  max-width: 620px;
-  padding-top: 8px;
-}
-
-.quote-mark {
   font-family: 'Noto Serif SC', serif;
-  font-size: 48px;
-  color: var(--accent);
-  line-height: 1;
-  margin-bottom: 4px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--secondary);
+  font-weight: 400;
+  margin-bottom: 10px;
 }
 
 .narrative {
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--text-sub);
+  max-width: 1100px;
   font-weight: 300;
-  color: var(--text-light);
-  line-height: 1.85;
-  letter-spacing: 0.5px;
 }
 
-/* Quadrants */
-.quadrants {
-  flex: 1;
+.narrative-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--secondary);
+  margin: 8px auto 10px;
+}
+
+/* Quadrant Grid */
+.quadrant-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 0;
-  margin-top: 28px;
-  border: 1px solid var(--primary);
-  position: relative;
+  gap: 14px;
+  margin-top: 14px;
+  height: 370px;
 }
 
-.quadrant {
-  padding: 22px 28px;
+.quadrant-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  padding: 18px 26px;
   display: flex;
   align-items: flex-start;
-  gap: 18px;
+  gap: 22px;
   position: relative;
-  background: var(--white);
+  transition: none;
 }
 
-.quadrant:nth-child(1) { border-right: 1px solid var(--primary); border-bottom: 1px solid var(--primary); }
-.quadrant:nth-child(2) { border-bottom: 1px solid var(--primary); background: transparent; }
-.quadrant:nth-child(3) { border-right: 1px solid var(--primary); background: transparent; }
-.quadrant:nth-child(4) { background: var(--white); }
-
-.quadrant-corner {
+.quadrant-card::before {
+  content: '';
   position: absolute;
-  width: 12px;
-  height: 12px;
-  border-color: var(--primary);
+  top: 14px;
+  right: 16px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--secondary);
 }
 
-.q1 .corner-tl { top: 8px; left: 8px; border-top: 1px solid var(--primary); border-left: 1px solid var(--primary); }
-.q2 .corner-tr { top: 8px; right: 8px; border-top: 1px solid var(--primary); border-right: 1px solid var(--primary); }
-.q3 .corner-bl { bottom: 8px; left: 8px; border-bottom: 1px solid var(--primary); border-left: 1px solid var(--primary); }
-.q4 .corner-br { bottom: 8px; right: 8px; border-bottom: 1px solid var(--primary); border-right: 1px solid var(--primary); }
-
-.q-icon {
-  width: 48px;
-  height: 48px;
+.quadrant-card .icon-wrap {
+  width: 58px;
+  height: 58px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--border);
   border-radius: 50%;
-  margin-top: 4px;
+  background: var(--bg);
 }
 
-.q-content {
-  flex: 1;
-}
-
-.q-label-row {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.q-name {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary);
-  letter-spacing: 4px;
-}
-
-.q-num {
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--accent);
-  letter-spacing: 2px;
-  border: 1px solid var(--accent);
-  padding: 1px 7px;
-  border-radius: 10px;
-}
-
-.q-desc {
-  font-size: 12.5px;
-  font-weight: 300;
-  color: var(--text-light);
-  line-height: 1.75;
-  letter-spacing: 0.3px;
-}
-
-/* SVG Icons */
-.q-icon svg {
-  width: 22px;
-  height: 22px;
+.quadrant-card .icon-wrap svg {
+  width: 28px;
+  height: 28px;
   stroke: var(--primary);
   fill: none;
-  stroke-width: 1.5;
+  stroke-width: 1.4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* KPI Cards */
-.kpis {
+.quadrant-card .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quadrant-card .principle-tag {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--dot);
+  font-weight: 400;
+}
+
+.quadrant-card .principle-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 4px;
+}
+
+.quadrant-card .principle-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-sub);
+  font-weight: 300;
+  margin-top: 2px;
+}
+
+/* Data Cards */
+.data-section {
+  margin-top: 14px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 22px;
+  gap: 14px;
+  height: 92px;
 }
 
-.kpi-card {
+.data-card {
+  background: var(--primary);
+  color: #FBF7F3;
+  border-radius: 2px;
+  padding: 16px 28px;
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding: 16px 24px;
-  border: 1px solid var(--accent);
-  background: var(--white);
+  gap: 22px;
   position: relative;
+  overflow: hidden;
 }
 
-.kpi-card::before {
+.data-card::after {
   content: '';
   position: absolute;
-  left: 0;
+  right: 0;
   top: 0;
   bottom: 0;
-  width: 3px;
-  background: var(--primary);
+  width: 4px;
+  background: var(--secondary-light);
+  opacity: 0.4;
 }
 
-.kpi-value {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--primary);
-  white-space: nowrap;
-  letter-spacing: 1px;
-}
-
-.kpi-divider {
-  width: 1px;
-  height: 40px;
-  background: var(--line);
+.data-card .data-icon {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-.kpi-info {
+.data-card .data-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--secondary-light);
+  fill: none;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.data-card .data-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   flex: 1;
 }
 
-.kpi-title {
+.data-card .data-label {
   font-size: 12px;
-  font-weight: 500;
-  color: var(--text-main);
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-}
-
-.kpi-sub {
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--text-light);
-  letter-spacing: 0.3px;
-}
-
-.footer-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-  font-size: 10px;
-  color: var(--accent);
   letter-spacing: 3px;
+  color: var(--secondary-light);
   font-weight: 300;
+}
+
+.data-card .data-value {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #FBF7F3;
+  letter-spacing: 1px;
+}
+
+.data-card .data-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 300;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+.data-card .data-badge {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--secondary-light);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Footer */
+.footer {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.footer .footer-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.footer .footer-line {
+  width: 40px;
+  height: 1px;
+  background: var(--secondary);
+}
+
+.footer-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+  line-height: 1.6;
+}
+
+.footer-text .highlight {
+  color: var(--primary);
+  font-weight: 600;
 }
 </style>
 </head>
@@ -310,100 +342,120 @@ body {
   <div id="ct">
 
     <div class="header">
-      <div class="header-left">
-        <div class="eyebrow"><span>CONSTITUTION · 宪法性内容</span></div>
-        <div class="title">四大核心原则</div>
-        <div class="title-en">FOUR CORE PRINCIPLES OF OSBOOK CLUB</div>
+      <div class="header-top-line">
+        <span class="line"></span>
+        <span class="label">OSBOOK&nbsp;&nbsp;CLUB</span>
+        <span class="line"></span>
       </div>
-      <div class="header-right">
-        <div class="quote-mark">&ldquo;</div>
-        <div class="narrative">这四个原则确保了读书会不会因为某个核心成员离开而崩塌，也不会因为门槛太高而变成小圈子——任何人都可以拿起这份文档，在自己的社区复制一份。</div>
-      </div>
+      <div class="title">四 大 核 心 原 则</div>
+      <div class="title-en">FOUR CORE PRINCIPLES — CONSTITUTION OF OSBook Club</div>
+      <div class="narrative-divider"></div>
+      <p class="narrative">这四个原则是 OSBook Club 的宪法。它们确保了读书会不会因为某个核心成员离开而崩塌，也不会因为门槛太高而变成小圈子。任何人都可以拿起这份文档，在自己的社区复制一份。</p>
     </div>
 
-    <div class="quadrants">
+    <div class="quadrant-grid">
 
-      <div class="quadrant q1">
-        <div class="quadrant-corner corner-tl"></div>
-        <div class="q-icon">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><line x1="20" y1="20" x2="16" y2="16"/></svg>
+      <div class="quadrant-card">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
         </div>
-        <div class="q-content">
-          <div class="q-label-row">
-            <span class="q-name">透明</span>
-            <span class="q-num">PRINCIPLE 01</span>
-          </div>
-          <div class="q-desc">选书、议程、笔记全部公开，任何人可追溯决策过程，无隐藏议程，无黑箱操作。</div>
+        <div class="content">
+          <span class="principle-tag">PRINCIPLE&nbsp;01</span>
+          <div class="principle-name">透&nbsp;明</div>
+          <p class="principle-desc">选书、议程、笔记全部公开，任何人可追溯决策过程。</p>
         </div>
       </div>
 
-      <div class="quadrant q2">
-        <div class="quadrant-corner corner-tr"></div>
-        <div class="q-icon">
-          <svg viewBox="0 0 24 24"><path d="M3 12 L8 7 L13 12 L21 12"/><circle cx="21" cy="12" r="2.5"/></svg>
+      <div class="quadrant-card">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 21V5a2 2 0 0 1 2-2h9l5 5v13"/>
+            <path d="M16 3v4h4"/>
+            <path d="M9 12h6"/>
+            <path d="M12 9v6"/>
+          </svg>
         </div>
-        <div class="q-content">
-          <div class="q-label-row">
-            <span class="q-name">低门槛</span>
-            <span class="q-num">PRINCIPLE 02</span>
-          </div>
-          <div class="q-desc">无需付费、无需身份认证，关注公众号、提交 Issue 即可加入，不设任何准入壁垒。</div>
-        </div>
-      </div>
-
-      <div class="quadrant q3">
-        <div class="quadrant-corner corner-bl"></div>
-        <div class="q-icon">
-          <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5"/><path d="M4 20v-5h5"/></svg>
-        </div>
-        <div class="q-content">
-          <div class="q-label-row">
-            <span class="q-name">可持续</span>
-            <span class="q-num">PRINCIPLE 03</span>
-          </div>
-          <div class="q-desc">轮值制度分散运营压力，自动化脚本降低维护成本，让组织不被任何单点依赖所绑架。</div>
+        <div class="content">
+          <span class="principle-tag">PRINCIPLE&nbsp;02</span>
+          <div class="principle-name">低&nbsp;门&nbsp;槛</div>
+          <p class="principle-desc">无需付费、无需身份认证，关注公众号加提 Issue 即可加入。</p>
         </div>
       </div>
 
-      <div class="quadrant q4">
-        <div class="quadrant-corner corner-br"></div>
-        <div class="q-icon">
-          <svg viewBox="0 0 24 24"><circle cx="7" cy="6" r="2.5"/><circle cx="7" cy="18" r="2.5"/><circle cx="17" cy="12" r="2.5"/><line x1="9" y1="7.5" x2="15" y2="11"/><line x1="9" y1="16.5" x2="15" y2="13"/></svg>
+      <div class="quadrant-card">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 12a9 9 0 1 1-3-6.7"/>
+            <polyline points="21 4 21 9 16 9"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
         </div>
-        <div class="q-content">
-          <div class="q-label-row">
-            <span class="q-name">可复用</span>
-            <span class="q-num">PRINCIPLE 04</span>
-          </div>
-          <div class="q-desc">模板、脚本、流程文档全部开源，其他社区可直接 fork 并在自己的场景下自由改造。</div>
+        <div class="content">
+          <span class="principle-tag">PRINCIPLE&nbsp;03</span>
+          <div class="principle-name">可&nbsp;持&nbsp;续</div>
+          <p class="principle-desc">轮值制度分散压力，自动化脚本降低维护成本。</p>
+        </div>
+      </div>
+
+      <div class="quadrant-card">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <rect x="8" y="8" width="12" height="12" rx="1"/>
+            <path d="M4 16V6a1 1 0 0 1 1-1h10"/>
+          </svg>
+        </div>
+        <div class="content">
+          <span class="principle-tag">PRINCIPLE&nbsp;04</span>
+          <div class="principle-name">可&nbsp;复&nbsp;用</div>
+          <p class="principle-desc">模板、脚本、流程文档全部开源，其他社区可直接 fork。</p>
         </div>
       </div>
 
     </div>
 
-    <div class="kpis">
-      <div class="kpi-card">
-        <div class="kpi-value">10<span style="font-size:20px;font-weight:500;">/10</span></div>
-        <div class="kpi-divider"></div>
-        <div class="kpi-info">
-          <div class="kpi-title">决策透明度评分</div>
-          <div class="kpi-sub">所有会议记录与投票结果公开可查</div>
+    <div class="data-section">
+
+      <div class="data-card">
+        <div class="data-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 12l2 2 4-4"/>
+            <circle cx="12" cy="12" r="9"/>
+          </svg>
         </div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-value">0 元 · 0 门槛</div>
-        <div class="kpi-divider"></div>
-        <div class="kpi-info">
-          <div class="kpi-title">加入成本</div>
-          <div class="kpi-sub">无需任何付费或资质要求</div>
+        <div class="data-content">
+          <span class="data-label">决&nbsp;策&nbsp;透&nbsp;明&nbsp;度&nbsp;评&nbsp;分</span>
+          <div class="data-value">10 / 10</div>
+          <span class="data-desc">所有会议记录与投票结果公开可查</span>
         </div>
+        <span class="data-badge">A+</span>
       </div>
+
+      <div class="data-card">
+        <div class="data-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2v20"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="data-content">
+          <span class="data-label">加&nbsp;入&nbsp;成&nbsp;本</span>
+          <div class="data-value">0 元 · 0 门槛</div>
+          <span class="data-desc">无需任何付费或资质要求</span>
+        </div>
+        <span class="data-badge">¥0</span>
+      </div>
+
     </div>
 
-    <div class="footer-line">
-      <span>OSBOOK CLUB · OPEN SOURCE READING</span>
-      <span>— 让知识流动，让社区生长 —</span>
-      <span>P.04</span>
+    <div class="footer">
+      <span class="footer-line"></span>
+      <span class="footer-dot"></span>
+      <span class="footer-text"><span class="highlight">透明、低门槛、可持续、可复用</span>——让每个社区都能复制一份属于自己的读书会。</span>
+      <span class="footer-dot"></span>
+      <span class="footer-line"></span>
     </div>
 
   </div>
