@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>为什么 GenAI 必须开源</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg-dark: #0F172A;
+  --bg-card: #16213E;
+  --bg-card-2: #1A2744;
+  --primary: #2196F3;
+  --primary-deep: #1565C0;
+  --accent: #00E5FF;
+  --accent-soft: #00E5FF44;
+  --text-main: #E2E8F0;
+  --text-muted: #94A3B8;
+  --border-glow: #2196F366;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 800px 500px at 85% 15%, #0F172A 0%, #0B1220 40%, #0A1018 100%),
+    linear-gradient(135deg, #0F172A 0%, #0B1526 50%, #0A1222 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2196F322 0%, transparent 60%);
+  filter: blur(40px);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 60px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 40px;
+}
+
+/* LEFT COLUMN */
+.left-col {
+  width: 580px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 30px 30px 0;
+}
+
+.left-col::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 20px;
+  bottom: 20px;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--primary) 50%, transparent 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 20px var(--accent-soft);
+}
+
+.badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--accent);
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 20px;
+  background: rgba(0,229,255,0.05);
+}
+
+.badge-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+  opacity: 0.5;
+}
+
+.main-title {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -1px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.main-title .accent {
+  color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-underline {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  border-radius: 2px;
+  margin: 20px 0 24px 0;
+}
+
+.narrative {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-bottom: 30px;
+}
+
+.narrative strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.left-stats {
+  display: flex;
+  gap: 30px;
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid rgba(33,150,243,0.15);
+}
+
+.left-stat {
+  flex: 1;
+}
+
+.left-stat-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.left-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.left-decor {
+  position: absolute;
+  right: -20px;
+  bottom: 60px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid rgba(33,150,243,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-decor::before {
+  content: '';
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,229,255,0.25);
+}
+
+/* RIGHT COLUMN */
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* KPI CARDS */
+.kpi-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+.kpi-card {
+  background: linear-gradient(135deg, #16213E 0%, #1A2744 100%);
+  border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 14px;
+  padding: 18px 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(33,150,243,0.1);
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  opacity: 0.8;
+}
+
+.kpi-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.kpi-value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.kpi-desc {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* VALUE PROPOSITION CARDS */
+.value-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+.value-card {
+  background: linear-gradient(180deg, #16213E 0%, #121D35 100%);
+  border: 1px solid rgba(33,150,243,0.15);
+  border-radius: 12px;
+  padding: 18px 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+
+.value-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--primary) 50%, transparent 100%);
+  opacity: 0.4;
+}
+
+.value-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.15) 0%, rgba(0,229,255,0.08) 100%);
+  border: 1px solid rgba(33,150,243,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.value-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.value-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.value-desc {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* BOTTOM TAGS */
+.bottom-tags {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.tag-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.08) 0%, rgba(0,229,255,0.04) 100%);
+  border: 1px solid rgba(33,150,243,0.2);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.tag-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: rgba(33,150,243,0.12);
+  border: 1px solid rgba(33,150,243,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tag-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.tag-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+
+.tag-desc {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+      <div class="badge-row">
+        <span class="badge">OPEN SOURCE AI</span>
+        <span class="badge-line"></span>
+      </div>
+
+      <h1 class="main-title">
+        为什么<br><span class="accent">GenAI</span> 必须<br>开源
+      </h1>
+
+      <div class="title-underline"></div>
+
+      <p class="narrative">
+        开源 GenAI 的价值不止于<span>免费使用</span>，而是把<span>技术自主权</span>、<span>创新节奏</span>与<span>合规能力</span>同时交付给用户。对社区、产业与国家而言，这已成为 AI 时代<span>基础设施级</span>的战略选择。
+      </p>
+
+      <div class="left-decor">
+        <svg width="80" height="80" viewBox="0 0 80 80" style="position:absolute;opacity:0.3">
+          <circle cx="40" cy="40" r="30" fill="none" stroke="#2196F3" stroke-width="0.5"/>
+          <circle cx="40" cy="40" r="22" fill="none" stroke="#00E5FF" stroke-width="0.5"/>
+          <circle cx="40" cy="40" r="14" fill="none" stroke="#2196F3" stroke-width="0.5"/>
+          <circle cx="40" cy="40" r="6" fill="none" stroke="#00E5FF" stroke-width="0.8"/>
+          <line x1="10" y1="40" x2="70" y2="40" stroke="#2196F333" stroke-width="0.5"/>
+          <line x1="40" y1="10" x2="40" y2="70" stroke="#2196F333" stroke-width="0.5"/>
+        </svg>
+      </div>
+
+      <div class="left-stats">
+        <div class="left-stat">
+          <div class="left-stat-num">5+</div>
+          <div class="left-stat-label">核心驱动力</div>
+        </div>
+        <div class="left-stat">
+          <div class="left-stat-num">∞</div>
+          <div class="left-stat-label">创新可能性</div>
+        </div>
+        <div class="left-stat">
+          <div class="left-stat-num">2024</div>
+          <div class="left-stat-label">战略拐点</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <!-- KPI CARDS -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">本地部署算力门槛</div>
+          <div class="kpi-value">8B ≈ 16GB</div>
+          <div class="kpi-desc">显存即可运行，消费级 GPU 轻松驾驭前沿模型</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">企业私有化采用率</div>
+          <div class="kpi-value">68%</div>
+          <div class="kpi-desc">Fortune 500 中考虑或已采用开源 LLM 的比例</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">社区贡献者增速</div>
+          <div class="kpi-value">+240%</div>
+          <div class="kpi-desc">2023-2024 主流开源模型仓库年同比增长</div>
+        </div>
+      </div>
+
+      <!-- VALUE PROPOSITION CARDS -->
+      <div class="value-row">
+        <div class="value-card">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="9" cy="8" r="3"/>
+              <circle cx="17" cy="9" r="2.5"/>
+              <path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"/>
+              <path d="M14 20c0-2 1.5-3.5 3.5-3.5S21 18 21 20"/>
+            </svg>
+          </div>
+          <div class="value-title">① 民主化 AI 能力</div>
+          <div class="value-desc">让中小企业、研究者与个人也能本地化运行前沿模型，大幅降低算力门槛与使用成本</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="6"/>
+              <path d="M15.5 15.5L20 20"/>
+              <path d="M8 11h6"/>
+              <path d="M11 8v6"/>
+            </svg>
+          </div>
+          <div class="value-title">② 透明可审计</div>
+          <div class="value-desc">开源权重与训练数据说明，使安全性、偏见与幻觉可被第三方独立验证</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 18l3-3 4 2 6-4 3 2"/>
+              <path d="M4 14l3-4 4 2"/>
+              <circle cx="7" cy="14" r="0.8" fill="currentColor" stroke="none"/>
+              <circle cx="11" cy="14" r="0.8" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="value-title">③ 加速创新迭代</div>
+          <div class="value-desc">社区微调、蒸馏、多模态扩展使每个基座模型都成为可再生的创新起点</div>
+        </div>
+      </div>
+
+      <!-- BOTTOM TAGS -->
+      <div class="bottom-tags">
+        <div class="tag-item">
+          <div class="tag-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </div>
+          <div class="tag-text">
+            <div class="tag-title">④ 主权与合规</div>
+            <div class="tag-desc">关键行业可私有化部署，数据不离开本地，规避跨境调用与合规风险</div>
+          </div>
+        </div>
+        <div class="tag-item">
+          <div class="tag-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 5a7 7 0 105.5 11"/>
+              <path d="M12 2v4h4"/>
+              <path d="M12 19a7 7 0 01-5.5-11"/>
+              <path d="M12 22v-4h-4"/>
+            </svg>
+          </div>
+          <div class="tag-text">
+            <div class="tag-title">⑤ 构建飞轮效应</div>
+            <div class="tag-desc">开源吸引开发者 → 开发者反哺数据与场景 → 模型能力持续升级</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
