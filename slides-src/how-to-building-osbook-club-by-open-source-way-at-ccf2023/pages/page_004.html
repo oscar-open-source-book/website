@@ -1,288 +1,170 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>开源阅读生态数据</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
-
-:root {
-  --primary: #795548;
-  --primary-soft: #9e7a70;
-  --accent: #BCAAA4;
-  --bg-cream: #F5F0EB;
-  --card-bg: #FFFFFF;
-  --text-main: #4E3A35;
-  --text-muted: #8C7B75;
-  --line: #E4DBD3;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --brown:#795548;
+  --brown-dark:#5D3F35;
+  --brown-light:#9C7B70;
+  --gray:#BCAAA4;
+  --beige:#F5F0EB;
+  --beige-deep:#EFE7DF;
+  --ink:#3A2E29;
+  --line:#D9CFC7;
 }
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--ink);background:var(--beige);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--beige);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:54px 72px 48px;box-sizing:border-box;display:flex;flex-direction:column;}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* 背景装饰：细斜线 + 几何点 */
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(90deg,var(--beige-deep) 1px,transparent 1px);background-size:80px 100%;opacity:.45;}
+.bg-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--gray);opacity:.35;}
+.bg-dot.d1{top:60px;right:80px;}
+.bg-dot.d2{top:160px;right:30px;}
+.bg-dot.d3{bottom:60px;left:40px;width:6px;height:6px;}
+.bg-diag{position:absolute;top:0;right:-40px;width:200px;height:900px;background:var(--beige-deep);opacity:.55;transform:skewX(-8deg);}
+.bg-corner{position:absolute;top:0;left:0;width:0;height:0;border-style:solid;border-width:120px 120px 0 0;border-color:var(--beige-deep) transparent transparent transparent;opacity:.6;}
 
-body {
-  font-family: 'Noto Sans SC', sans-serif;
-  color: var(--text-main);
-  background: var(--bg-cream);
-}
+/* 顶部标题区 */
+.head-wrap{display:flex;flex-direction:column;gap:14px;margin-bottom:14px;}
+.kicker{display:flex;align-items:center;gap:14px;font-size:13px;letter-spacing:4px;color:var(--brown-light);font-weight:500;}
+.kicker-line{width:48px;height:1px;background:var(--brown-light);}
+.kicker-tag{padding:3px 10px;border:1px solid var(--brown-light);border-radius:2px;}
+h1.title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:52px;color:var(--brown);letter-spacing:6px;line-height:1.15;}
+.title-sub{font-size:13px;color:var(--gray);letter-spacing:3px;margin-top:2px;}
+.narrative{max-width:1380px;font-size:15px;line-height:1.85;color:#5B4740;font-weight:300;letter-spacing:.5px;margin-top:8px;border-left:2px solid var(--brown-light);padding:6px 0 6px 18px;}
+.narrative em{font-style:normal;color:var(--brown);font-weight:500;}
 
-.wrapper {
-  width: 1600px;
-  height: 900px;
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
-  background: var(--bg-cream);
-}
+/* 分割线 */
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0 14px;}
+.divider-line{flex:1;height:1px;background:var(--line);}
+.divider-diamond{width:6px;height:6px;background:var(--brown);transform:rotate(45deg);}
+.divider-text{font-size:12px;letter-spacing:6px;color:var(--brown-light);}
 
-#bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: linear-gradient(180deg, #F5F0EB 0%, #EFE7E0 100%);
-}
+/* KPI 卡片 */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;flex:1;}
+.kpi{position:relative;background:#FBF7F2;border:1px solid var(--line);border-radius:6px;padding:22px 20px 20px;display:flex;flex-direction:column;overflow:hidden;}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--brown);}
+.kpi-num{font-family:'Noto Serif SC',serif;font-weight:700;font-size:44px;color:var(--brown);line-height:1.05;letter-spacing:-1px;margin-top:6px;}
+.kpi-num .unit{font-size:22px;font-weight:500;margin-left:2px;color:var(--brown-light);}
+.kpi-label{margin-top:12px;font-size:15px;font-weight:700;color:var(--brown-dark);letter-spacing:1px;line-height:1.4;}
+.kpi-label-line{width:32px;height:1px;background:var(--gray);margin:10px 0 10px;}
+.kpi-desc{font-size:12px;line-height:1.7;color:#6D5A52;font-weight:300;letter-spacing:.3px;flex:1;}
+.kpi-idx{position:absolute;top:14px;right:16px;font-family:'Noto Serif SC',serif;font-size:12px;color:var(--gray);letter-spacing:2px;}
+.kpi-corner{position:absolute;bottom:14px;right:14px;width:0;height:0;border-style:solid;border-width:0 18px 18px 0;border-color:transparent var(--beige-deep) transparent transparent;opacity:.9;}
 
-#ct {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  padding: 56px 64px 48px 64px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
+/* 底部说明 */
+.footer{margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--gray);letter-spacing:2px;}
+.footer-left{display:flex;align-items:center;gap:10px;}
+.footer-dot{width:5px;height:5px;border-radius:50%;background:var(--brown);}
+.footer-tag{padding:3px 10px;border:1px solid var(--line);border-radius:2px;color:var(--brown-light);}
 
-/* 顶部区域 */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--line);
-}
-
-.header-left { max-width: 620px; }
-
-.eyebrow {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 6px;
-  color: var(--primary-soft);
-  margin-bottom: 14px;
-  padding-left: 12px;
-  position: relative;
-}
-
-.eyebrow::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  background: var(--primary);
-  border-radius: 50%;
-  transform: translateY(-50%);
-}
-
-h1.main-title {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 600;
-  font-size: 40px;
-  color: var(--primary);
-  letter-spacing: 4px;
-  line-height: 1.2;
-}
-
-.header-right {
-  max-width: 560px;
-  text-align: right;
-}
-
-.subtitle {
-  font-size: 13.5px;
-  line-height: 1.85;
-  color: var(--text-muted);
-  font-weight: 300;
-  letter-spacing: 0.5px;
-}
-
-.subtitle .highlight {
-  color: var(--primary);
-  font-weight: 500;
-}
-
-/* 五宫格区域 */
-.kpi-grid {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding-top: 26px;
-  padding-bottom: 20px;
-}
-
-.kpi-row {
-  display: flex;
-  gap: 18px;
-}
-
-.kpi-row.row-1 { justify-content: flex-start; }
-.kpi-row.row-2 { justify-content: center; }
-
-.kpi-card {
-  background: var(--card-bg);
-  border: 1px solid var(--line);
-  border-top: 2px solid var(--primary);
-  padding: 22px 24px 20px 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  position: relative;
-  box-shadow: 0 1px 2px rgba(121, 85, 72, 0.04);
-}
-
-.kpi-row.row-1 .kpi-card { width: 480px; }
-.kpi-row.row-2 .kpi-card { width: 480px; }
-
-.kpi-index {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  font-family: 'Noto Serif SC', serif;
-  font-size: 12px;
-  color: var(--accent);
-  letter-spacing: 2px;
-}
-
-.kpi-number {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 600;
-  font-size: 52px;
-  color: var(--primary);
-  line-height: 1.1;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-}
-
-.kpi-label {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-main);
-  letter-spacing: 1.5px;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed var(--line);
-}
-
-.kpi-desc {
-  font-size: 12.5px;
-  line-height: 1.7;
-  color: var(--text-muted);
-  font-weight: 300;
-}
-
-/* 底部收束 */
-.footer-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  padding: 14px 0 2px 0;
-}
-
-.footer-line {
-  flex: 1;
-  height: 1px;
-  background: var(--accent);
-  max-width: 200px;
-  opacity: 0.6;
-}
-
-.footer-text {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 15px;
-  color: var(--primary);
-  letter-spacing: 6px;
-  font-weight: 500;
-}
-
-.footer-dot {
-  width: 5px;
-  height: 5px;
-  background: var(--primary);
-  border-radius: 50%;
-  opacity: 0.6;
-}
-
+/* 卡片装饰：小圆点阵 */
+.kpi-dots{position:absolute;bottom:14px;left:18px;display:grid;grid-template-columns:repeat(3,5px);gap:5px;}
+.kpi-dots i{display:block;width:5px;height:5px;border-radius:50%;background:var(--gray);opacity:.4;}
+.kpi-dots i.on{background:var(--brown);opacity:.7;}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg"></div>
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-corner"></div>
+    <div class="bg-diag"></div>
+    <div class="bg-dot d1"></div>
+    <div class="bg-dot d2"></div>
+    <div class="bg-dot d3"></div>
+  </div>
   <div id="ct">
 
-    <div class="header">
-      <div class="header-left">
-        <div class="eyebrow"><span>OPEN SOURCE · READING · ECOLOGY</span></div>
-        <h1 class="main-title"><span>开源阅读生态数据</span></h1>
+    <div class="head-wrap">
+      <div class="kicker">
+        <span class="kicker-line"></span>
+        <span>OPEN SOURCE READING ECOSYSTEM</span>
+        <span class="kicker-tag">2023 · 数据观察</span>
       </div>
-      <div class="header-right">
-        <div class="subtitle">
-          <span>需求旺盛、供给稀缺、缺乏结构化机制的读书会注定短命。<br>
-          <span class="highlight">OSBook Club</span> 以开源工程化思维填补这一空白，<br>
-          把阅读变成可持续的公共基础设施。</span>
-        </div>
-      </div>
+      <h1 class="title">开源阅读生态数据</h1>
+      <div class="title-sub">DATA SNAPSHOT · 需求与供给的结构性张力</div>
+      <p class="narrative">需求旺盛、供给稀缺，<em>缺乏结构化机制的读书会注定短命</em>——这正是 OSBook Club 要填补的空白：用开源的工程化思维，把阅读变成可持续的<em>公共基础设施</em>。</p>
     </div>
 
-    <div class="kpi-grid">
+    <div class="divider">
+      <span class="divider-text">FIVE KEY METRICS</span>
+      <span class="divider-diamond"></span>
+      <span class="divider-line"></span>
+      <span class="divider-text">五 · 项 · 核 · 心 · 指 · 标</span>
+    </div>
 
-      <div class="kpi-row row-1">
-        <div class="kpi-card">
-          <div class="kpi-index"><span>01</span></div>
-          <div class="kpi-number"><span>120,000+</span></div>
-          <div class="kpi-label"><span>GitHub 技术书仓库数</span></div>
-          <div class="kpi-desc"><span>截至 2023 年全球公开仓库估算，全球与编程相关书籍的开源笔记库超 12 万个</span></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-index"><span>02</span></div>
-          <div class="kpi-number"><span>&lt; 30</span></div>
-          <div class="kpi-label"><span>中文活跃开源读书会</span></div>
-          <div class="kpi-desc"><span>仍在持续运营且有公开产出的团体不足 30 个，缺口巨大</span></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-index"><span>03</span></div>
-          <div class="kpi-number"><span>72%</span></div>
-          <div class="kpi-label"><span>开发者共读意愿</span></div>
-          <div class="kpi-desc"><span>调研表示愿意参与有质量的技术共读活动</span></div>
-        </div>
+    <div class="kpi-row">
+
+      <div class="kpi">
+        <div class="kpi-idx">N° 01</div>
+        <div class="kpi-num">120,000<span class="unit">+</span></div>
+        <div class="kpi-label">GitHub 技术书仓库数</div>
+        <div class="kpi-label-line"></div>
+        <div class="kpi-desc">截至 2023 年全球公开仓库估算，全球与编程相关书籍的开源笔记库超 12 万个。</div>
+        <div class="kpi-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        <div class="kpi-corner"></div>
       </div>
 
-      <div class="kpi-row row-2">
-        <div class="kpi-card">
-          <div class="kpi-index"><span>04</span></div>
-          <div class="kpi-number"><span>60%+</span></div>
-          <div class="kpi-label"><span>3 个月流失率（无机制）</span></div>
-          <div class="kpi-desc"><span>传统松散读书群的典型流失率</span></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-index"><span>05</span></div>
-          <div class="kpi-number"><span>4x</span></div>
-          <div class="kpi-label"><span>结构化笔记引用提升</span></div>
-          <div class="kpi-desc"><span>结构化开源笔记被他人引用的概率对比个人随意笔记提升 4 倍</span></div>
-        </div>
+      <div class="kpi">
+        <div class="kpi-idx">N° 02</div>
+        <div class="kpi-num"><span class="unit">&lt;</span>&nbsp;30</div>
+        <div class="kpi-label">中文活跃开源读书会</div>
+        <div class="kpi-label-line"></div>
+        <div class="kpi-desc">仍在持续运营、有公开产出的团体不足 30 个，缺口巨大。</div>
+        <div class="kpi-dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="kpi-corner"></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-idx">N° 03</div>
+        <div class="kpi-num">72<span class="unit">%</span></div>
+        <div class="kpi-label">开发者共读意愿</div>
+        <div class="kpi-label-line"></div>
+        <div class="kpi-desc">调研表示愿意参与有质量共读活动的开发者比例。</div>
+        <div class="kpi-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+        <div class="kpi-corner"></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-idx">N° 04</div>
+        <div class="kpi-num">60<span class="unit">%+</span></div>
+        <div class="kpi-label">3 个月流失率（无机制）</div>
+        <div class="kpi-label-line"></div>
+        <div class="kpi-desc">传统松散的读书群在缺乏结构化机制下的统计结果。</div>
+        <div class="kpi-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div class="kpi-corner"></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-idx">N° 05</div>
+        <div class="kpi-num">4<span class="unit">×</span></div>
+        <div class="kpi-label">结构化笔记引用提升</div>
+        <div class="kpi-label-line"></div>
+        <div class="kpi-desc">结构化开源笔记被他人引用的概率比个人随意笔记提升 4 倍。</div>
+        <div class="kpi-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="kpi-corner"></div>
       </div>
 
     </div>
 
-    <div class="footer-bar">
-      <div class="footer-line"></div>
-      <div class="footer-text"><span>需求旺盛 · 供给稀缺 · 结构决定可持续</span></div>
-      <div class="footer-line"></div>
+    <div class="footer">
+      <div class="footer-left">
+        <span class="footer-dot"></span>
+        <span>OSBook Club · 开源阅读生态观察</span>
+      </div>
+      <div>
+        <span class="footer-tag">DATA · 2023</span>
+      </div>
     </div>
 
   </div>

@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>工具链与协作生态</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brown:#795548;
+  --brown-deep:#5D3F34;
+  --camel:#BCAAA4;
+  --camel-light:#D7CCC8;
+  --base:#F5F0EB;
+  --text-main:#4E362E;
+  --text-sub:#8B7355;
+  --line:#C8B7AC;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Noto Sans SC',sans-serif;
+  color:var(--text-main);
+  background:var(--base);
+}
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;
+  margin:0 auto;
+  background:var(--base);
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 30% 18%, #FBF7F2 0%, #F5F0EB 60%, #ECE4DC 100%);
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:40px 60px 30px;
+  box-sizing:border-box;
+}
+.header{
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:8px;
+}
+.title{
+  font-family:'Noto Serif SC',serif;
+  font-size:38px;font-weight:700;color:var(--brown);
+  letter-spacing:6px;
+  display:flex;align-items:center;gap:18px;
+}
+.title .dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--brown);display:inline-block;
+}
+.subtitle{
+  margin-top:12px;
+  max-width:1240px;
+  font-size:14px;line-height:1.85;
+  color:var(--text-sub);
+  text-align:center;
+  font-weight:300;
+}
+.divider{
+  width:120px;height:1px;background:var(--camel);
+  margin:12px auto 14px;
+  position:relative;
+}
+.divider::before,.divider::after{
+  content:'';position:absolute;top:50%;width:5px;height:5px;
+  border-radius:50%;background:var(--camel);transform:translateY(-50%);
+}
+.divider::before{left:-12px}
+.divider::after{right:-12px}
+
+.main{
+  display:flex;
+  gap:24px;
+  align-items:flex-start;
+}
+.diagram-wrap{
+  width:780px;height:560px;
+  position:relative;
+  background:linear-gradient(180deg, #FBF8F4 0%, #F5F0EB 100%);
+  border:1px solid #E4D9CE;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:0 4px 20px rgba(121,85,72,0.05);
+}
+.diagram-wrap svg{
+  width:100%;height:100%;display:block;
+}
+
+.kpi-wrap{
+  flex:1;display:flex;flex-direction:column;gap:14px;
+}
+.kpi{
+  position:relative;
+  background:#FBF7F2;
+  border:1px solid #E4D9CE;
+  border-left:3px solid var(--brown);
+  border-radius:10px;
+  padding:18px 22px;
+  box-shadow:0 2px 12px rgba(121,85,72,0.04);
+}
+.kpi .label{
+  font-size:11px;color:var(--text-sub);
+  letter-spacing:3px;font-weight:400;
+  margin-bottom:6px;
+}
+.kpi .num{
+  font-family:'Noto Serif SC',serif;
+  font-size:46px;font-weight:700;color:var(--brown);
+  line-height:1.05;
+  display:flex;align-items:baseline;gap:6px;
+}
+.kpi .num .unit{
+  font-size:18px;color:var(--camel);font-weight:500;
+  font-family:'Noto Sans SC',sans-serif;
+  letter-spacing:2px;
+}
+.kpi .desc{
+  margin-top:8px;
+  font-size:12.5px;line-height:1.7;color:var(--text-sub);
+  font-weight:300;
+}
+.kpi .tag-row{
+  margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;
+}
+.kpi .tag{
+  font-size:11px;padding:3px 9px;border-radius:11px;
+  background:#EFE6DA;color:var(--brown);
+  letter-spacing:1px;
+}
+.values-card{
+  background:transparent;
+  border:1px dashed #D7CCC8;
+  border-left:1px dashed #D7CCC8;
+  border-radius:10px;
+  padding:14px 22px;
+}
+.values-card .label{
+  font-size:11px;color:#A89082;
+  letter-spacing:3px;font-weight:400;
+  margin-bottom:6px;
+}
+.values-card .desc{
+  font-size:12px;line-height:1.75;color:var(--text-sub);
+  font-weight:300;
+}
+.values-card .desc strong{
+  color:var(--brown);font-weight:500;
+}
+
+.footer{
+  margin-top:12px;
+  display:flex;justify-content:center;align-items:center;
+  gap:14px;
+  font-size:13px;color:var(--text-sub);
+  letter-spacing:6px;font-weight:300;
+}
+.footer .sep{
+  width:4px;height:4px;border-radius:50%;background:var(--camel);
+  display:inline-block;
+}
+svg text{font-family:'Noto Sans SC',sans-serif;}
+svg .module-title{font-size:15px;font-weight:700;fill:var(--brown);}
+svg .module-sub{font-size:10px;font-weight:300;fill:var(--text-sub);}
+svg .core-title{font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;fill:#FBF7F2;}
+svg .core-sub{font-size:10.5px;font-weight:300;fill:#EFDFD0;letter-spacing:3px;}
+svg .corner-label{font-size:9.5px;fill:var(--camel);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title"><span class="dot"></span><span>工具链与协作生态</span><span class="dot"></span></div>
+      <div class="divider"></div>
+      <div class="subtitle">
+        工具链不是堆砌，而是每个环节都对应一个痛点——自动化解决重复劳动，知识图谱解决信息碎片化，多渠道发布解决触达不足。这套栈本身也是开源的，任何人可以按需裁剪。
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 740 528" preserveAspectRatio="xMidYMid meet">
+          <text x="12" y="16" class="corner-label">OSBOOK · TOOLCHAIN</text>
+          <text x="728" y="16" class="corner-label" text-anchor="end">v1.0</text>
+          <text x="12" y="520" class="corner-label">开源 · 可裁剪</text>
+          <text x="728" y="520" class="corner-label" text-anchor="end">协作生态</text>
+
+          <circle cx="370" cy="264" r="252" fill="none" stroke="#E4D9CE" stroke-width="1" stroke-dasharray="2 6"/>
+          <circle cx="370" cy="264" r="178" fill="none" stroke="#EFE6DA" stroke-width="1"/>
+
+          <g stroke="#795548" stroke-width="1.2" stroke-linecap="round" opacity="0.65">
+            <line x1="370" y1="200" x2="370" y2="90"/>
+            <line x1="420" y1="235" x2="546" y2="188"/>
+            <line x1="420" y1="293" x2="546" y2="340"/>
+            <line x1="370" y1="328" x2="370" y2="440"/>
+            <line x1="320" y1="293" x2="194" y2="340"/>
+            <line x1="320" y1="235" x2="194" y2="188"/>
+          </g>
+          <g fill="#795548">
+            <circle cx="370" cy="90" r="3"/>
+            <circle cx="546" cy="188" r="3"/>
+            <circle cx="546" cy="340" r="3"/>
+            <circle cx="370" cy="440" r="3"/>
+            <circle cx="194" cy="340" r="3"/>
+            <circle cx="194" cy="188" r="3"/>
+          </g>
+
+          <g>
+            <rect x="278" y="40" width="184" height="62" rx="8" fill="#FFFFFF" stroke="#BCAAA4" stroke-width="1"/>
+            <text x="370" y="66" text-anchor="middle" class="module-title">GitHub 仓库</text>
+            <text x="370" y="86" text-anchor="middle" class="module-sub">Notes · Issues · Discussions · Projects</text>
+          </g>
+
+          <g>
+            <rect x="454" y="138" width="184" height="62" rx="8" fill="#FFFFFF" stroke="#BCAAA4" stroke-width="1"/>
+            <text x="546" y="164" text-anchor="middle" class="module-title">自动化工具</text>
+            <text x="546" y="184" text-anchor="middle" class="module-sub">Actions 自动合并 · 周报 · RSS</text>
+          </g>
+
+          <g>
+            <rect x="454" y="294" width="184" height="62" rx="8" fill="#FFFFFF" stroke="#BCAAA4" stroke-width="1"/>
+            <text x="546" y="320" text-anchor="middle" class="module-title">知识管理</text>
+            <text x="546" y="340" text-anchor="middle" class="module-sub">Obsidian 同步 · 双向链接 · 图谱</text>
+          </g>
+
+          <g>
+            <rect x="278" y="450" width="184" height="62" rx="8" fill="#FFFFFF" stroke="#BCAAA4" stroke-width="1"/>
+            <text x="370" y="476" text-anchor="middle" class="module-title">发布与推广</text>
+            <text x="370" y="496" text-anchor="middle" class="module-sub">公众号 · CSDN · InfoQ 专栏同步</text>
+          </g>
+
+          <g>
+            <rect x="102" y="294" width="184" height="62" rx="8" fill="#FFFFFF" stroke="#BCAAA4" stroke-width="1"/>
+            <text x="194" y="320" text-anchor="middle" class="module-title">沟通渠道</text>
+            <text x="194" y="340" text-anchor="middle" class="module-sub">微信社群 · 飞书文档 · 会议纪要</text>
+          </g>
+
+          <g>
+            <rect x="102" y="138" width="184" height="62" rx="8" fill="#FFFFFF" stroke="#BCAAA4" stroke-width="1"/>
+            <text x="194" y="164" text-anchor="middle" class="module-title">未来方向</text>
+            <text x="194" y="184" text-anchor="middle" class="module-sub">AI 摘要 · 跨语言翻译 · 播客</text>
+          </g>
+
+          <circle cx="370" cy="264" r="72" fill="none" stroke="#BCAAA4" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.6"/>
+          <circle cx="370" cy="264" r="62" fill="#795548"/>
+          <circle cx="370" cy="264" r="62" fill="none" stroke="#5D3F34" stroke-width="1" opacity="0.5"/>
+          <text x="370" y="258" text-anchor="middle" class="core-title">OSBook</text>
+          <text x="370" y="284" text-anchor="middle" class="core-sub">C L U B</text>
+        </svg>
+      </div>
+
+      <div class="kpi-wrap">
+        <div class="kpi">
+          <div class="label">AUTOMATION SCRIPTS</div>
+          <div class="num">8<span class="unit">+ 自动化脚本</span></div>
+          <div class="desc">覆盖笔记合并、周报生成、RSS 发布、版本标签、跨仓库同步等重复劳动环节，让维护者从机械操作中彻底解放。</div>
+          <div class="tag-row">
+            <span class="tag">笔记合并</span>
+            <span class="tag">周报生成</span>
+            <span class="tag">RSS 发布</span>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="label">KNOWLEDGE GRAPH NODES</div>
+          <div class="num">500<span class="unit">+ 图谱节点</span></div>
+          <div class="desc">跨书跨主题的双向链接网络，把散落在各本书、各期周报中的观点、案例与人物串联成可检索的社区级知识图谱。</div>
+          <div class="tag-row">
+            <span class="tag">跨书链接</span>
+            <span class="tag">跨主题</span>
+            <span class="tag">双向关联</span>
+          </div>
+        </div>
+
+        <div class="values-card">
+          <div class="label">CORE VALUES</div>
+          <div class="desc">
+            <strong>开源</strong>——代码与文档全部公开，贡献无需门槛；<br>
+            <strong>可裁剪</strong>——每个模块独立，可按需拆用或替换；<br>
+            <strong>可持续</strong>——自动化降低维护成本，让协作长跑成为可能。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>开源</span><span class="sep"></span>
+      <span>可裁剪</span><span class="sep"></span>
+      <span>可持续</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

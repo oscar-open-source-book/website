@@ -1,308 +1,384 @@
-
-
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>从 0 到 1 搭建流程</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;700&display=swap');
-:root{
-  --brown:#795548;
-  --brown-soft:#9C7A6E;
-  --warm-gray:#BCAAA4;
-  --cream:#F5F0EB;
-  --cream-deep:#EDE5DC;
-  --text-main:#4A3B34;
-  --text-light:#8B7B73;
-  --line:#D9CEC4;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+
+:root {
+  --brown: #795548;
+  --brown-dark: #5D4037;
+  --brown-light: #A1887F;
+  --morandi: #BCAAA4;
+  --morandi-light: #D7CCC8;
+  --cream: #F5F0EB;
+  --cream-dark: #EDE7E0;
+  --text-main: #3E2723;
+  --text-sub: #6D4C41;
+  --line: #D7CCC8;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:1600px;height:900px;overflow:hidden;}
-body{
-  background:var(--cream);
-  color:var(--text-main);
-  font-family:'Noto Sans SC',sans-serif;
-  font-weight:400;
-  letter-spacing:0.02em;
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--cream);
+  overflow: hidden;
 }
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
-#bg{position:absolute;inset:0;z-index:0;}
-#ct{position:absolute;inset:0;z-index:1;padding:56px 60px 48px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
-.bg-deco-tl{position:absolute;top:-120px;left:-120px;width:340px;height:340px;border:1px solid var(--line);border-radius:50%;opacity:0.7;}
-.bg-deco-tr{position:absolute;top:80px;right:-160px;width:380px;height:380px;border:1px solid var(--line);border-radius:50%;opacity:0.6;}
-.bg-deco-bl{position:absolute;bottom:-180px;left:40%;width:360px;height:360px;border:1px solid var(--line);border-radius:50%;opacity:0.5;}
-.bg-line-v{position:absolute;top:0;bottom:0;left:44px;width:1px;background:linear-gradient(to bottom,transparent,var(--line) 20%,var(--line) 80%,transparent);}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
 
 /* Header */
-.head{margin-bottom:26px;position:relative;}
-.head .eyebrow{font-family:'Noto Sans SC',sans-serif;font-size:12px;font-weight:500;color:var(--brown);letter-spacing:0.32em;margin-bottom:14px;}
-.head h1{
-  font-family:'Noto Serif SC',serif;
-  font-weight:500;
-  font-size:44px;
-  color:var(--text-main);
-  letter-spacing:0.06em;
-  line-height:1.2;
+.header {
+  text-align: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 22px;
 }
-.head h1 .accent{color:var(--brown);font-weight:700;}
-.head .rule{display:flex;align-items:center;gap:14px;margin-top:18px;}
-.head .rule .dot{width:6px;height:6px;background:var(--brown);border-radius:50%;}
-.head .rule .ln{width:80px;height:1px;background:var(--brown);}
-.head .rule .num{font-family:'Noto Serif SC',serif;font-size:13px;color:var(--brown-soft);letter-spacing:0.24em;}
-.head .lead{
-  margin-top:14px;
-  max-width:1280px;
-  font-size:14px;
-  line-height:1.85;
-  color:var(--text-light);
-  font-weight:300;
-}
-.head .lead .hi{color:var(--brown);font-weight:500;}
 
-/* Staircase */
-.stage{
-  position:relative;
-  height:440px;
-  margin-top:6px;
+.header .eyebrow {
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--brown-light);
+  font-weight: 300;
+  margin-bottom: 12px;
 }
-.card{
-  position:absolute;
-  width:218px;
-  height:132px;
-  background:#FBF7F2;
-  border:1px solid var(--line);
-  border-left:3px solid var(--brown);
-  border-radius:6px;
-  padding:16px 16px 14px 16px;
-  box-shadow:0 2px 10px rgba(121,85,72,0.05);
-  display:flex;
-  flex-direction:column;
-}
-.card .step-no{
-  font-family:'Noto Serif SC',serif;
-  font-size:30px;
-  font-weight:700;
-  color:var(--brown);
-  line-height:1;
-  letter-spacing:0.04em;
-}
-.card .step-no small{
-  display:block;
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:10px;
-  font-weight:500;
-  color:var(--text-light);
-  letter-spacing:0.3em;
-  margin-top:6px;
-}
-.card .card-body{margin-top:10px;display:flex;flex-direction:column;gap:4px;}
-.card .ct{
-  font-family:'Noto Serif SC',serif;
-  font-size:15px;
-  font-weight:500;
-  color:var(--text-main);
-  letter-spacing:0.04em;
-}
-.card .cd{
-  font-size:11px;
-  line-height:1.6;
-  color:var(--text-light);
-  font-weight:300;
-}
-.card .cd .k{color:var(--brown);font-weight:500;}
 
-/* Positioning for staircase bottom-left to top-right */
-.s1{left:0px;top:310px;}
-.s2{left:236px;top:262px;}
-.s3{left:472px;top:214px;}
-.s4{left:708px;top:166px;}
-.s5{left:944px;top:118px;}
-.s6{left:1180px;top:70px;}
+.header h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--brown-dark);
+  letter-spacing: 4px;
+  margin-bottom: 14px;
+}
 
-/* Connector lines using pseudo-ish elements */
-.conn{
-  position:absolute;
-  height:1px;
-  background:repeating-linear-gradient(to right,var(--warm-gray) 0 4px,transparent 4px 8px);
-  top:47px;
+.header .sub {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-sub);
+  font-weight: 300;
+  max-width: 1240px;
+  margin: 0 auto;
 }
-.c12{left:218px;width:18px;top:47px;}
-.c23{left:454px;width:18px;}
-.c34{left:690px;width:18px;}
-.c45{left:926px;width:18px;}
-.c56{left:1162px;width:18px;}
 
-/* KPI section */
-.kpi{
-  margin-top:22px;
-  display:flex;
-  gap:18px;
-  padding-top:22px;
-  border-top:1px solid var(--line);
-  position:relative;
+/* Staircase area */
+.staircase {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 16px;
 }
-.kpi .kpi-tag{
-  position:absolute;
-  top:-11px;
-  left:0;
-  background:var(--cream);
-  padding-right:12px;
-  font-size:11px;
-  color:var(--brown);
-  letter-spacing:0.28em;
-  font-weight:500;
-}
-.kpi-card{
-  flex:1;
-  background:#FBF7F2;
-  border:1px solid var(--line);
-  border-radius:6px;
-  padding:18px 22px;
-  display:flex;
-  align-items:center;
-  gap:18px;
-}
-.kpi-card .kp-icon{
-  width:44px;height:44px;
-  border:1px solid var(--brown);
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--brown);
-  font-family:'Noto Serif SC',serif;
-  font-size:15px;
-  flex-shrink:0;
-}
-.kpi-card .kp-main{display:flex;flex-direction:column;gap:4px;}
-.kpi-card .kp-val{
-  font-family:'Noto Serif SC',serif;
-  font-size:24px;
-  font-weight:700;
-  color:var(--brown);
-  letter-spacing:0.02em;
-}
-.kpi-card .kp-val small{font-size:13px;font-weight:500;color:var(--brown-soft);margin-left:4px;}
-.kpi-card .kp-label{
-  font-size:11px;
-  color:var(--text-light);
-  line-height:1.55;
-  font-weight:300;
-}
-.kpi-card .kp-label .em{color:var(--text-main);font-weight:500;}
 
-.foot{
-  margin-top:14px;
-  display:flex;justify-content:space-between;align-items:center;
-  font-size:10px;
-  color:var(--text-light);
-  letter-spacing:0.22em;
+.stair-row {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
 }
-.foot .lf{display:flex;align-items:center;gap:8px;}
-.foot .lf .sq{width:6px;height:6px;background:var(--brown);}
+
+.stair-row.top {
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.stair-row.bottom {
+  padding-left: 0;
+}
+
+.step-card {
+  width: 470px;
+  background: #FBF8F4;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--brown);
+  border-radius: 4px;
+  padding: 16px 20px 16px 22px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(121, 85, 72, 0.06);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  height: 168px;
+}
+
+.step-card .step-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--brown);
+  line-height: 1;
+  min-width: 82px;
+  flex-shrink: 0;
+}
+
+.step-card .step-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--brown-light);
+  font-weight: 400;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.step-card .step-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--brown-dark);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.step-card .step-desc {
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--text-sub);
+  font-weight: 300;
+}
+
+/* Stair offsets for rising effect */
+.stair-row.bottom .step-card:nth-child(1) { margin-top: 28px; }
+.stair-row.bottom .step-card:nth-child(2) { margin-top: 14px; }
+.stair-row.bottom .step-card:nth-child(3) { margin-top: 0; }
+.stair-row.top .step-card:nth-child(1) { margin-top: 0; }
+.stair-row.top .step-card:nth-child(2) { margin-top: -14px; }
+.stair-row.top .step-card:nth-child(3) { margin-top: -28px; }
+
+/* Connector dots between steps */
+.step-connector {
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--morandi);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+/* KPI row */
+.kpi-row {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.kpi-card {
+  flex: 1;
+  background: var(--cream-dark);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--brown);
+  border-radius: 3px;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.kpi-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--brown);
+  line-height: 1;
+  min-width: 90px;
+}
+
+.kpi-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--line);
+}
+
+.kpi-text {
+  flex: 1;
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--brown-light);
+  letter-spacing: 2px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.kpi-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-sub);
+  font-weight: 300;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.footer-line {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  color: var(--brown);
+  letter-spacing: 4px;
+  font-weight: 500;
+}
+
+.footer-line .accent {
+  color: var(--brown-dark);
+  font-weight: 600;
+}
+
+.footer-line .dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--morandi);
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 12px;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="bg-deco-tl"></div>
-    <div class="bg-deco-tr"></div>
-    <div class="bg-deco-bl"></div>
-    <div class="bg-line-v"></div>
-  </div>
+  <div id="bg"></div>
   <div id="ct">
 
-    <div class="head">
-      <div class="eyebrow">ONBOARDING · 流程设计</div>
-      <h1>从 <span class="accent">0</span> 到 <span class="accent">1</span> 搭建流程</h1>
-      <div class="rule">
-        <span class="dot"></span>
-        <span class="ln"></span>
-        <span class="num">SIX STEPS · ONE SHOT</span>
-      </div>
-      <div class="lead">
-        整个搭建流程被设计成一个可以<span class="hi">"一键启动"</span>的脚手架——任何人下载仓库、填写模板，即可在<span class="hi">两周内</span>拥有自己的 OSBook Club，把经验封装成<span class="hi">可复用的资产</span>。
-      </div>
+    <div class="header">
+      <div class="eyebrow">OPEN SOURCE&nbsp;&nbsp;·&nbsp;&nbsp;SKELETON FLOW</div>
+      <h1>从 0 到 1 搭建流程</h1>
+      <p class="sub">整个搭建流程被设计成一个可以一键启动的脚手架——任何人下载仓库、填写模板，即可在两周内拥有自己的 OSBook Club，这就是开源的力量：把经验封装成可复用的资产。</p>
     </div>
 
-    <div class="stage">
-      <div class="conn c12"></div>
-      <div class="conn c23"></div>
-      <div class="conn c34"></div>
-      <div class="conn c45"></div>
-      <div class="conn c56"></div>
+    <div class="staircase">
+      <div class="stair-row top">
+        <div class="step-card">
+          <div class="step-num">
+            <span class="step-label">STEP</span>
+            04
+          </div>
+          <div>
+            <div class="step-title">建立仓库</div>
+            <div class="step-desc">Git 仓库含 README、notes/、discussions/、templates/ 四大目录，构成完整骨架。</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">
+            <span class="step-label">STEP</span>
+            05
+          </div>
+          <div>
+            <div class="step-title">启动共读</div>
+            <div class="step-desc">按周节奏推进，每周一篇笔记，每周一次线上讨论，每月一次线下 meetup。</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">
+            <span class="step-label">STEP</span>
+            06
+          </div>
+          <div>
+            <div class="step-title">迭代与分叉</div>
+            <div class="step-desc">每季度复盘，根据反馈调整章程，允许社区 fork 出专题子俱乐部。</div>
+          </div>
+        </div>
+      </div>
 
-      <div class="card s1">
-        <div class="step-no">Step 1<small>RECRUIT</small></div>
-        <div class="card-body">
-          <div class="ct">招募种子成员</div>
-          <div class="cd">通过 <span class="k">CCF 公众号</span>、GitHub、社群发布招募帖，收集 <span class="k">8–15 位</span>创始成员。</div>
+      <div class="stair-row bottom">
+        <div class="step-card">
+          <div class="step-num">
+            <span class="step-label">STEP</span>
+            01
+          </div>
+          <div>
+            <div class="step-title">招募种子成员</div>
+            <div class="step-desc">通过 CCF 公众号、GitHub、社群发布招募帖，收集 8-15 位创始成员。</div>
+          </div>
         </div>
-      </div>
-      <div class="card s2">
-        <div class="step-no">Step 2<small>CHARTER</small></div>
-        <div class="card-body">
-          <div class="ct">确定章程</div>
-          <div class="cd">编写 <span class="k">CONTRIBUTING.md</span>、行为准则、选书流程，全员审议通过后冻结。</div>
+        <div class="step-card">
+          <div class="step-num">
+            <span class="step-label">STEP</span>
+            02
+          </div>
+          <div>
+            <div class="step-title">确定章程</div>
+            <div class="step-desc">编写 CONTRIBUTING.md、行为准则、选书流程，全员审议通过后冻结。</div>
+          </div>
         </div>
-      </div>
-      <div class="card s3">
-        <div class="step-no">Step 3<small>PICK</small></div>
-        <div class="card-body">
-          <div class="ct">首次选书</div>
-          <div class="cd">候选书单由 <span class="k">3 位策展人</span>提名，全员投票，得票前 3 名进入首发书目。</div>
-        </div>
-      </div>
-      <div class="card s4">
-        <div class="step-no">Step 4<small>REPO</small></div>
-        <div class="card-body">
-          <div class="ct">建立仓库</div>
-          <div class="cd">Git 仓库含 <span class="k">README</span>、<span class="k">notes/</span>、<span class="k">discussions/</span>、<span class="k">templates/</span> 四大目录。</div>
-        </div>
-      </div>
-      <div class="card s5">
-        <div class="step-no">Step 5<small>LAUNCH</small></div>
-        <div class="card-body">
-          <div class="ct">启动共读</div>
-          <div class="cd">按周节奏推进：每周<span class="k">一篇笔记</span>、每周<span class="k">一次讨论</span>、每月<span class="k">一次 meetup</span>。</div>
-        </div>
-      </div>
-      <div class="card s6">
-        <div class="step-no">Step 6<small>EVOLVE</small></div>
-        <div class="card-body">
-          <div class="ct">迭代与分叉</div>
-          <div class="cd">每季度复盘，根据反馈调整章程，允许社区 <span class="k">fork</span> 出专题子俱乐部。</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="kpi">
-      <div class="kpi-tag">关键数据 · KEY METRICS</div>
-      <div class="kpi-card">
-        <div class="kp-icon">时</div>
-        <div class="kp-main">
-          <div class="kp-val">4<small>周</small></div>
-          <div class="kp-label"><span class="em">从招募到启动</span> · 最短可行周期</div>
-        </div>
-      </div>
-      <div class="kpi-card">
-        <div class="kp-icon">人</div>
-        <div class="kp-main">
-          <div class="kp-val">8–15<small>人</small></div>
-          <div class="kp-label"><span class="em">种子成员数</span> · 保证多样性与活力的区间</div>
-        </div>
-      </div>
-      <div class="kpi-card">
-        <div class="kp-icon">库</div>
-        <div class="kp-main">
-          <div class="kp-val">12+<small>个</small></div>
-          <div class="kp-label"><span class="em">仓库初始文件数</span> · 涵盖章程、模板、自动化脚本</div>
+        <div class="step-card">
+          <div class="step-num">
+            <span class="step-label">STEP</span>
+            03
+          </div>
+          <div>
+            <div class="step-title">首次选书</div>
+            <div class="step-desc">候选书单由 3 位策展人提名，全员投票，得票前 3 名进入首发书目。</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="foot">
-      <div class="lf"><span class="sq"></span><span>OSBOOK CLUB · BOOTSTRAP PLAYBOOK</span></div>
-      <div>REUSABLE · REPLICABLE · ONE-SHOT</div>
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-num"><span>4</span><span style="font-size:14px;font-weight:400;margin-left:4px;">周</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-text">
+          <div class="kpi-label">最短可行周期</div>
+          <div class="kpi-desc">从招募到启动的最短路径</div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num"><span>8–15</span><span style="font-size:14px;font-weight:400;margin-left:4px;">人</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-text">
+          <div class="kpi-label">种子成员数</div>
+          <div class="kpi-desc">保证多样性与活力的理想区间</div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num"><span>12+</span><span style="font-size:14px;font-weight:400;margin-left:4px;">个</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-text">
+          <div class="kpi-label">仓库初始文件数</div>
+          <div class="kpi-desc">涵盖章程模板与自动化脚本</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-line">
+        可复用的<span class="accent">开源脚手架</span><span class="dot"></span>把经验封装成资产<span class="dot"></span>让社区可以一键启动
+      </div>
     </div>
 
   </div>
