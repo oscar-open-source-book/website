@@ -5,577 +5,275 @@
 <head>
 <meta charset="UTF-8">
 <title>GPL的燃烧与增长 · 开源之书记录</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Sans+3:wght@300;400;600;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="../assets/echarts.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Sans+3:wght@300;400;600;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Noto+Serif+SC:wght@400;700;900&family=Source+Sans+3:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
 :root{
   --red:#E53935;
   --red-deep:#B71C1C;
-  --red-glow:#FF6A63;
-  --black:#1A1A1A;
-  --black-soft:#262626;
-  --cream:#F7F3EB;
-  --cream-warm:#F0E9DC;
-  --line:#D8CEB9;
-  --text-dark:#1A1A1A;
-  --text-muted:#5C5347;
+  --ink:#1A1A1A;
+  --paper:#F7F3EB;
+  --paper-warm:#F0E9D8;
+  --muted:#6B6B6B;
+  --line:#C8BEA8;
+  --ember-1:#FFD180;
+  --ember-2:#FF7043;
+  --ember-3:#E53935;
 }
-
 *{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1600px;height:900px;overflow:hidden;background:#0A0505;font-family:'Source Sans 3','Noto Sans SC',-apple-system,sans-serif;color:var(--ink);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--paper);}
 
-body{
-  font-family:"Source Sans 3","Noto Sans SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;
-  color:var(--text-dark);
-  background:var(--cream);
-  overflow:hidden;
-}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 92% 35%, rgba(229,57,53,.12), transparent 45%),
+    radial-gradient(ellipse at 8% 92%, rgba(26,26,26,.04), transparent 55%);}
 
-.wrapper{
-  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
-  background:var(--cream);
-}
+#bg::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(247,243,235,0) 0%, rgba(247,243,235,0) 82%, rgba(26,26,26,.02) 100%);}
 
-#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:60px 60px 20px 60px;box-sizing:border-box;}
 
-#bg .bgrain{
-  position:absolute;top:-40px;right:-40px;
-  width:900px;height:900px;
-  background:radial-gradient(circle at 62% 38%, rgba(229,57,53,0.09), rgba(229,57,53,0.03) 40%, transparent 62%);
-}
+/* ---------- Header row ---------- */
+.cover-header{width:1480px;height:40px;display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
+.h-left{display:flex;align-items:center;gap:16px;}
+.h-left .tag-red{width:38px;height:2px;background:var(--red);}
+.h-left .label{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:12px;letter-spacing:6px;font-weight:600;color:var(--ink);}
+.h-left .cn{font-family:'Noto Serif SC','Playfair Display',serif;font-size:12px;letter-spacing:2px;font-weight:600;color:var(--ink);}
+.h-right{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:11px;letter-spacing:4px;font-weight:500;color:var(--muted);}
+.h-right span{color:var(--red);font-weight:700;}
 
-#bg .bgdots{
-  position:absolute;left:64px;bottom:120px;
-  width:230px;height:230px;
-  background-image:radial-gradient(rgba(26,26,26,0.16) 1px, transparent 1.4px);
-  background-size:16px 16px;
-  opacity:0.55;
-}
+/* ---------- Cover zone ---------- */
+.cover-zone{width:1480px;height:600px;display:flex;gap:25px;}
+.cover-left{width:825px;height:600px;position:relative;display:flex;flex-direction:column;}
 
-#bg .bgdiag{
-  position:absolute;left:0;right:0;top:0;bottom:0;
-  background:linear-gradient(180deg, rgba(247,243,235,0) 0%, rgba(247,243,235,0) 68%, rgba(216,206,185,0.18) 100%);
-}
+.title-block{height:232px;position:relative;}
+.title-line1{font-family:'Playfair Display','Noto Serif SC',serif;font-size:88px;font-weight:900;line-height:1.02;letter-spacing:-1px;color:var(--ink);display:flex;align-items:baseline;}
+.title-line1 .t-main{display:inline-block;}
+.title-line1 .t-red{color:var(--red);}
+.title-line2{font-family:'Playfair Display','Noto Serif SC',serif;font-size:128px;font-weight:900;line-height:1.02;letter-spacing:-2px;color:var(--red);margin-top:8px;display:flex;align-items:baseline;justify-content:space-between;}
+.title-line2 .dot{display:inline-block;width:14px;height:14px;background:var(--red);border-radius:50%;margin-left:14px;transform:translateY(-8px);box-shadow:0 0 24px rgba(229,57,53,.7);}
+.title-line2 .rule{position:absolute;left:0;bottom:-12px;width:110px;height:6px;background:var(--ink);}
 
-#ct{
-  position:absolute;inset:0;z-index:1;
-  padding:44px 60px 40px;
-  display:flex;flex-direction:column;
-}
+.subtitle{margin-top:22px;font-family:'Noto Serif SC','Playfair Display',serif;font-size:20px;font-weight:500;color:var(--ink);line-height:1.45;letter-spacing:1.2px;}
+.subtitle .sep{color:var(--red);margin:0 10px;font-weight:700;}
+.subtitle .accent{color:var(--red);font-weight:700;}
 
-/* HERO */
-.hero{
-  position:relative;
-  padding-bottom:22px;
-  border-bottom:1px solid var(--line);
-}
+.summary{margin-top:22px;max-width:760px;font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:14px;font-weight:400;color:#2A2A2A;line-height:1.85;letter-spacing:.3px;}
+.summary .h{color:var(--red);font-weight:700;}
+.summary .em{color:var(--ink);font-weight:600;}
 
-.hero .corner-mark{
-  position:absolute;top:2px;right:0;
-  width:64px;height:64px;
-  border:2px solid var(--red);
-  border-left:none;border-bottom:none;
-  opacity:0.65;
-}
+/* ---------- Fire panel ---------- */
+.cover-right{width:630px;height:600px;position:relative;background:var(--ink);overflow:hidden;}
+.fire-panel{position:absolute;inset:0;overflow:hidden;}
 
-.masthead{
-  display:flex;align-items:center;gap:16px;
-  font-family:"Source Sans 3","Noto Sans SC",sans-serif;
-  font-size:11px;letter-spacing:0.34em;
-  color:var(--black);font-weight:700;
-  text-transform:uppercase;
-  margin-bottom:14px;
-}
+.glow-base{position:absolute;left:50%;bottom:-8%;transform:translateX(-50%);width:120%;height:70%;
+  background:radial-gradient(ellipse 55% 90% at 50% 100%, rgba(255,112,67,.85) 0%, rgba(229,57,53,.7) 18%, rgba(183,28,28,.45) 38%, rgba(26,26,26,0) 72%);}
+.glow-hot{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:60%;height:52%;
+  background:radial-gradient(ellipse 45% 90% at 50% 100%, rgba(255,224,130,.7) 0%, rgba(255,112,67,.55) 22%, transparent 68%);}
+.glow-top{position:absolute;left:50%;top:8%;transform:translateX(-50%);width:90%;height:60%;
+  background:radial-gradient(ellipse 60% 80% at 50% 40%, rgba(229,57,53,.25) 0%, transparent 65%);}
 
-.masthead .dot{
-  width:6px;height:6px;background:var(--red);border-radius:50%;flex-shrink:0;
-}
+#embers{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(28,22px);gap:0;
+  font-family:'Playfair Display',serif;font-weight:700;letter-spacing:0;
+  padding:8px;box-sizing:border-box;}
+.ember{display:flex;align-items:center;justify-content:center;line-height:1;}
 
-.masthead .thin{color:var(--text-muted);font-weight:400;}
+.fire-panel-frame{position:absolute;inset:22px;border:1px solid rgba(255,224,130,.18);pointer-events:none;}
 
-.hero-title{
-  font-family:"Playfair Display","Noto Serif SC","Songti SC",serif;
-  font-weight:900;
-  font-size:112px;
-  line-height:1.02;
-  color:var(--black);
-  letter-spacing:-0.01em;
-  margin-bottom:14px;
-}
+.fire-label{position:absolute;left:32px;top:26px;z-index:5;}
+.fire-label .num{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--ember-1);letter-spacing:5px;}
+.fire-label .txt{font-family:'Noto Serif SC',serif;font-size:13px;color:var(--ember-1);letter-spacing:3px;margin-top:8px;font-weight:600;}
+.fire-label .en{font-family:'Source Sans 3',sans-serif;font-size:9px;color:rgba(255,224,130,.55);letter-spacing:4px;margin-top:5px;}
 
-.hero-title .accent{color:var(--red);}
+.fire-meta{position:absolute;right:32px;top:26px;z-index:5;text-align:right;}
+.fire-meta .en{font-family:'Playfair Display',serif;font-size:11px;font-style:italic;color:rgba(255,224,130,.75);letter-spacing:2px;}
+.fire-meta .num{font-family:'Playfair Display',serif;font-size:12px;color:var(--ember-1);letter-spacing:5px;margin-top:8px;font-weight:700;}
 
-.divider-row{
-  display:flex;align-items:center;gap:14px;
-  margin-bottom:12px;
-}
+.fire-quote{position:absolute;left:32px;right:32px;bottom:28px;z-index:5;color:var(--ember-1);}
+.fire-quote .q{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:500;line-height:1.65;color:#FFE082;letter-spacing:1.2px;font-style:italic;}
+.fire-quote .q-en{font-family:'Playfair Display',serif;font-size:10px;font-style:italic;color:rgba(255,224,130,.65);letter-spacing:3px;margin-top:8px;}
+.fire-quote .sig{font-family:'Source Sans 3',sans-serif;font-size:10px;color:rgba(255,224,130,.7);letter-spacing:3px;margin-top:12px;font-weight:600;}
+.fire-quote .sig .dot-r{color:var(--red);}
 
-.divider-row .bar{
-  width:74px;height:3px;background:var(--red);flex-shrink:0;
-}
+/* ---------- KPI red band ---------- */
+.kpi-band{width:1480px;height:72px;margin-top:12px;background:var(--red);position:relative;display:flex;align-items:center;overflow:hidden;}
+.kpi-band::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg, rgba(0,0,0,.28), transparent 18%, transparent 82%, rgba(0,0,0,.28));}
+.kpi-band::after{content:'';position:absolute;left:0;top:0;width:100%;height:1px;background:rgba(255,255,255,.25);}
+.kpi-inner{width:100%;display:flex;justify-content:space-around;align-items:center;position:relative;z-index:2;}
+.kpi-item{display:flex;align-items:center;gap:24px;color:#FFF8EE;padding:0 20px;}
+.kpi-year{font-family:'Playfair Display',serif;font-size:54px;font-weight:900;line-height:1;letter-spacing:-1px;color:#FFFFFF;}
+.kpi-meta{display:flex;flex-direction:column;gap:3px;}
+.kpi-title{font-family:'Noto Serif SC',serif;font-size:16px;font-weight:700;letter-spacing:1.5px;color:#FFFFFF;}
+.kpi-sub{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:11px;font-weight:400;letter-spacing:1.2px;color:rgba(255,248,238,.78);}
+.kpi-sep{width:1px;height:44px;background:rgba(255,255,255,.5);}
 
-.divider-row .thin{
-  flex:1;height:1px;background:var(--line);
-}
+/* ---------- Quote zone ---------- */
+.quote-zone{width:1480px;height:68px;margin-top:12px;display:flex;justify-content:space-between;align-items:stretch;gap:30px;}
+.q-item{flex:1;display:flex;gap:16px;padding:12px 0 12px 0;position:relative;}
+.q-item+.q-item{border-left:1px solid var(--line);padding-left:26px;}
+.q-mark{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;line-height:.9;color:var(--red);flex-shrink:0;width:32px;}
+.q-body{display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0;}
+.q-tag{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.q-bar{width:18px;height:2px;background:var(--red);}
+.q-label{font-family:'Noto Serif SC',serif;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:2px;}
+.q-text{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:12px;color:#3D3D3D;line-height:1.55;letter-spacing:.3px;}
+.q-text .em{color:var(--red);font-weight:700;}
 
-.divider-row .dot{
-  width:5px;height:5px;background:var(--black);border-radius:50%;flex-shrink:0;
-}
-
-.hero-sub{
-  font-family:"Playfair Display","Noto Serif SC",serif;
-  font-weight:600;font-style:italic;
-  font-size:22px;
-  color:var(--red-deep);
-  line-height:1.45;
-  margin-bottom:18px;
-  letter-spacing:0.005em;
-}
-
-/* TAGS ROW */
-.tags-row{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  gap:20px;
-  padding-top:14px;
-}
-
-.tag-block{
-  border-left:3px solid var(--red);
-  padding:2px 0 2px 14px;
-  display:flex;flex-direction:column;gap:6px;
-}
-
-.tag-block .tb-label{
-  font-family:"Playfair Display","Noto Serif SC",serif;
-  font-size:16px;font-weight:800;color:var(--black);
-  letter-spacing:0.01em;
-}
-
-.tag-block .tb-desc{
-  font-family:"Source Sans 3","Noto Sans SC",sans-serif;
-  font-size:12.5px;line-height:1.55;
-  color:var(--text-muted);
-}
-
-/* BODY */
-.body{
-  flex:1;
-  display:grid;
-  grid-template-columns:1.15fr 1.35fr;
-  gap:50px;
-  padding-top:22px;
-  min-height:0;
-}
-
-/* LEFT */
-.left-col{
-  display:flex;flex-direction:column;
-  min-height:0;
-}
-
-.code-box{
-  background:var(--black);
-  padding:16px 18px;
-  border-left:3px solid var(--red);
-  margin-bottom:22px;
-  position:relative;
-}
-
-.code-box::before{
-  content:'';
-  position:absolute;
-  top:0;right:0;
-  width:38px;height:2px;background:var(--red);
-}
-
-.code-box .cb-tag{
-  display:block;
-  font-family:"Source Sans 3","Noto Sans SC",sans-serif;
-  font-size:9.5px;letter-spacing:0.34em;
-  color:var(--red);font-weight:700;
-  margin-bottom:8px;
-  text-transform:uppercase;
-}
-
-.code-box .cb-text{
-  font-family:"Courier New",monospace;
-  font-size:12px;line-height:1.65;
-  color:#F7F3EB;
-  display:block;
-}
-
-.intro{
-  font-family:"Source Sans 3","Noto Sans SC","PingFang SC",sans-serif;
-  font-size:15.5px;
-  line-height:1.85;
-  color:var(--text-dark);
-  letter-spacing:0.015em;
-}
-
-.intro b{
-  font-weight:700;
-  color:var(--red);
-  font-family:"Playfair Display","Noto Serif SC",serif;
-}
-
-/* RIGHT */
-.right-col{
-  display:flex;flex-direction:column;
-  min-height:0;
-}
-
-.right-panel{
-  flex:1;
-  position:relative;
-  background:var(--black);
-  padding:20px 24px 20px;
-  display:flex;flex-direction:column;
-  overflow:hidden;
-}
-
-.right-panel .rpglow{
-  position:absolute;
-  top:-40px;right:-60px;
-  width:340px;height:340px;
-  background:radial-gradient(circle at 60% 40%, rgba(229,57,53,0.55), rgba(229,57,53,0.15) 45%, transparent 72%);
-  pointer-events:none;
-}
-
-.right-panel .rpglow2{
-  position:absolute;
-  bottom:-80px;left:-40px;
-  width:280px;height:280px;
-  background:radial-gradient(circle at 50% 50%, rgba(255,106,99,0.28), transparent 65%);
-  pointer-events:none;
-}
-
-.right-panel .rpdots{
-  position:absolute;
-  top:10px;right:20px;
-  width:80px;height:80px;
-  background-image:radial-gradient(rgba(247,243,235,0.15) 1px, transparent 1.4px);
-  background-size:10px 10px;
-  pointer-events:none;
-}
-
-.rp-content{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;
-  height:100%;
-  gap:14px;
-}
-
-.rp-tag-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding-bottom:8px;
-  border-bottom:1px solid rgba(247,243,235,0.15);
-}
-
-.rp-tag-l{
-  font-family:"Source Sans 3",sans-serif;
-  font-size:10px;letter-spacing:0.34em;
-  color:var(--red);font-weight:700;
-  text-transform:uppercase;
-}
-
-.rp-tag-r{
-  font-family:"Source Sans 3",sans-serif;
-  font-size:10px;letter-spacing:0.22em;
-  color:rgba(247,243,235,0.55);
-}
-
-.rp-chart-wrap{
-  display:flex;align-items:center;
-  gap:14px;
-  flex:1;min-height:0;
-}
-
-.fire-badge{
-  width:88px;height:88px;
-  border-radius:50%;
-  background:radial-gradient(circle at 35% 35%, #FF6A63 0%, var(--red) 35%, #7A0A08 85%, #2A0000 100%);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;flex-shrink:0;
-  box-shadow:0 0 0 3px var(--black), 0 0 0 4px var(--red), 0 12px 30px rgba(229,57,53,0.4);
-}
-
-.fire-badge::after{
-  content:'';
-  position:absolute;
-  inset:5px;
-  border-radius:50%;
-  border:1px solid rgba(247,243,235,0.3);
-  pointer-events:none;
-}
-
-.fire-badge .flame{
-  font-size:34px;
-  filter:drop-shadow(0 0 6px rgba(255,140,120,0.6));
-  z-index:2;
-}
-
-.chart-frame{
-  flex:1;min-width:0;
-  background:rgba(247,243,235,0.04);
-  border:1px solid rgba(247,243,235,0.12);
-  padding:10px 14px 8px;
-  display:flex;flex-direction:column;
-  height:100%;
-}
-
-.chart-frame .cf-title{
-  font-family:"Playfair Display","Noto Serif SC",serif;
-  font-size:13px;font-weight:800;
-  color:#F7F3EB;
-  letter-spacing:0.02em;
-  margin-bottom:2px;
-}
-
-.chart-frame .cf-sub{
-  font-family:"Source Sans 3",sans-serif;
-  font-size:10px;letter-spacing:0.24em;
-  color:rgba(247,243,235,0.5);
-  text-transform:uppercase;
-  margin-bottom:4px;
-}
-
-#chart_1{
-  flex:1;width:100%;
-  min-height:0;
-}
-
-/* ISSUE STRIP */
-.issue-strip{
-  margin-top:16px;
-  height:80px;
-  background:var(--red);
-  display:grid;
-  grid-template-columns:220px 1fr 1fr 1fr;
-  color:var(--cream);
-}
-
-.is-brand{
-  background:var(--black);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:0 22px;
-  gap:4px;
-}
-
-.is-brand .brand-main{
-  font-family:"Playfair Display","Noto Serif SC",serif;
-  font-size:20px;font-weight:900;
-  color:var(--cream);
-  letter-spacing:0.02em;
-  line-height:1;
-}
-
-.is-brand .brand-sub{
-  font-family:"Source Sans 3",sans-serif;
-  font-size:9.5px;letter-spacing:0.34em;
-  color:rgba(247,243,235,0.7);
-  font-weight:600;
-}
-
-.is-item{
-  padding:12px 20px;
-  display:flex;flex-direction:column;justify-content:center;
-  border-left:1px solid rgba(247,243,235,0.28);
-  position:relative;
-}
-
-.is-item .is-year{
-  font-family:"Playfair Display","Noto Serif SC",serif;
-  font-size:24px;font-weight:900;
-  color:var(--cream);
-  letter-spacing:0.01em;
-  line-height:1.05;
-  margin-bottom:4px;
-}
-
-.is-item .is-desc{
-  font-family:"Source Sans 3","Noto Sans SC",sans-serif;
-  font-size:12px;line-height:1.4;
-  color:rgba(247,243,235,0.92);
-  font-weight:400;
-}
-
-.is-item::before{
-  content:'';
-  position:absolute;top:14px;left:0;
-  width:2px;height:calc(100% - 28px);
-  background:rgba(247,243,235,0.15);
-}
+/* ---------- Footer mark ---------- */
+.foot-mark{position:absolute;right:60px;bottom:8px;font-family:'Playfair Display','Noto Serif SC',serif;font-size:10px;letter-spacing:3px;color:var(--muted);font-style:italic;}
+.foot-mark .dot{color:var(--red);margin:0 4px;font-style:normal;font-weight:900;}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="bgrain"></div>
-    <div class="bgdiag"></div>
-    <div class="bgdots"></div>
+<div id="bg"></div>
+<div id="ct">
+
+  <div class="cover-header">
+    <div class="h-left">
+      <span class="tag-red"></span>
+      <span class="label">OPEN SOURCE ARCHIVE</span>
+      <span class="cn">开源之书记录</span>
+    </div>
+    <div class="h-right">ISSUE Nº<span>&nbsp;014&nbsp;</span>· GPL · COVERAGE</div>
   </div>
 
-  <div id="ct">
+  <div class="cover-zone">
 
-    <!-- HERO -->
-    <div class="hero">
-      <div class="corner-mark"></div>
-
-      <div class="masthead">
-        <span class="dot"></span>
-        <span>OPEN SOURCE CHRONICLE · 开 源 之 书 记 录</span>
-        <span class="thin">· VOL. 01</span>
-        <span class="thin">· GPL SPECIAL ISSUE</span>
-        <span class="thin">· 1989—2007</span>
-      </div>
-
-      <div class="hero-title">
-        GPL的<span class="accent">燃烧</span>与增长
-      </div>
-
-      <div class="divider-row">
-        <div class="bar"></div>
-        <div class="thin"></div>
-        <div class="dot"></div>
-      </div>
-
-      <div class="hero-sub">
-        开源之书记录 · 一场关于自由软件版权博弈与繁荣的时代叙事
-      </div>
-
-      <div class="tags-row">
-        <div class="tag-block">
-          <div class="tb-label">开源之书记录</div>
-          <div class="tb-desc">以阅读分享的形式，回望 GPL 许可证从诞生到席卷全球的波澜壮阔。</div>
+    <div class="cover-left">
+      <div class="title-block">
+        <div class="title-line1">
+          <span class="t-main">GPL的<span class="t-red">燃烧</span></span>
         </div>
-        <div class="tag-block">
-          <div class="tb-label">燃烧与增长</div>
-          <div class="tb-desc">GPL 既是自由软件的烈火，也是开源生态持续扩张的引擎。</div>
+        <div class="title-line2">
+          <span>与增长<span class="dot"></span></span>
+          <span class="rule"></span>
         </div>
-        <div class="tag-block">
-          <div class="tb-label">适兕 · 开源之道</div>
-          <div class="tb-desc">本期分享聚焦 GPL 的精神内核、争议时刻与增长轨迹。</div>
-        </div>
+      </div>
+
+      <div class="subtitle">
+        <span class="accent">开源之书记录</span><span class="sep">·</span>一场关于自由软件版权博弈与繁荣的时代叙事
+      </div>
+
+      <div class="summary">
+        <span class="h">GPL，General Public License，通用公共许可证。</span>它是自由软件运动最锋利的武器，也是开源世界最具争议的协议。本期开源之书记录，我们将沿着时间线，从 <span class="em">Richard Stallman</span> 的初心讲起，穿过专利诉讼与商业博弈的硝烟，最后抵达 GPL 在全球代码库中无处不在的今天。
       </div>
     </div>
 
-    <!-- BODY -->
-    <div class="body">
+    <div class="cover-right">
+      <div class="fire-panel">
+        <div class="glow-base"></div>
+        <div class="glow-hot"></div>
+        <div class="glow-top"></div>
+        <div id="embers"></div>
+        <div class="fire-panel-frame"></div>
 
-      <div class="left-col">
-        <div class="code-box">
-          <span class="cb-tag">GPL v3 · PREAMBLE</span>
-          <span class="cb-text">// The GNU GENERAL PUBLIC LICENSE</span><br>
-          <span class="cb-text">// This program is free software;</span><br>
-          <span class="cb-text">// you can redistribute it, and/or</span><br>
-          <span class="cb-text">// modify it under the terms of</span><br>
-          <span class="cb-text">// the GPL…</span>
+        <div class="fire-label">
+          <div class="num">NO.014</div>
+          <div class="txt">燃烧之卷</div>
+          <div class="en">THE BURNING ISSUE</div>
         </div>
 
-        <div class="intro">
-          <b>GPL，General Public License，通用公共许可证。</b>它是自由软件运动最锋利的武器，也是开源世界最具争议的协议。本期开源之书记录，我们将沿着时间线，从 Richard Stallman 的初心讲起，穿过专利诉讼与商业博弈的硝烟，最后抵达 GPL 在全球代码库中无处不在的今天。
+        <div class="fire-meta">
+          <div class="en">General Public License</div>
+          <div class="num">1989 · 2024</div>
         </div>
-      </div>
 
-      <div class="right-col">
-        <div class="right-panel">
-          <div class="rpglow"></div>
-          <div class="rpglow2"></div>
-          <div class="rpdots"></div>
-
-          <div class="rp-content">
-            <div class="rp-tag-row">
-              <div class="rp-tag-l">Fire × Code · 火 之 章 节</div>
-              <div class="rp-tag-r">GPL EVOLUTION · 1989 → 2007</div>
-            </div>
-
-            <div class="rp-chart-wrap">
-              <div class="fire-badge">
-                <span class="flame">🔥</span>
-              </div>
-              <div class="chart-frame">
-                <div class="cf-title">GPL 三个版本的时间跨度</div>
-                <div class="cf-sub">Timeline of GPL Releases</div>
-                <div id="chart_1"></div>
-              </div>
-            </div>
-          </div>
+        <div class="fire-quote">
+          <div class="q">"There is no freedom without license, there is no growth without license."</div>
+          <div class="q-en">— GPL · THE SPIRIT &amp; THE FIRE</div>
+          <div class="sig">OPEN SOURCE ARCHIVE <span class="dot-r">·</span> 开源之书记录</div>
         </div>
-      </div>
-
-    </div>
-
-    <!-- ISSUE STRIP -->
-    <div class="issue-strip">
-      <div class="is-brand">
-        <div class="brand-main">开 源 之 书</div>
-        <div class="brand-sub">ISSUE · 01</div>
-      </div>
-      <div class="is-item">
-        <div class="is-year">1989 · GPLv1</div>
-        <div class="is-desc">GPL 首次发布，由 Richard Stallman 起草，开启自由软件时代。</div>
-      </div>
-      <div class="is-item">
-        <div class="is-year">1991 · GPLv2</div>
-        <div class="is-desc">Linux 内核采用的版本，"Copyleft" 理念在全球代码库中扎根。</div>
-      </div>
-      <div class="is-item">
-        <div class="is-year">2007 · GPLv3</div>
-        <div class="is-desc">应对软件专利与 DRM 挑战，为 Tivoization 划下红线。</div>
       </div>
     </div>
 
   </div>
+
+  <div class="kpi-band">
+    <div class="kpi-inner">
+      <div class="kpi-item">
+        <div class="kpi-year">1989</div>
+        <div class="kpi-meta">
+          <div class="kpi-title">GPL v1 首发</div>
+          <div class="kpi-sub">Richard Stallman 起草 · 自由软件运动起点</div>
+        </div>
+      </div>
+      <div class="kpi-sep"></div>
+      <div class="kpi-item">
+        <div class="kpi-year">1991</div>
+        <div class="kpi-meta">
+          <div class="kpi-title">GPL v2 · Linux 内核采用</div>
+          <div class="kpi-sub">Linux Kernel 采用 · 开源生态破圈</div>
+        </div>
+      </div>
+      <div class="kpi-sep"></div>
+      <div class="kpi-item">
+        <div class="kpi-year">2007</div>
+        <div class="kpi-meta">
+          <div class="kpi-title">GPL v3</div>
+          <div class="kpi-sub">应对软件专利与 DRM · 走向全球代码库</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-zone">
+    <div class="q-item">
+      <div class="q-mark">"</div>
+      <div class="q-body">
+        <div class="q-tag"><span class="q-bar"></span><span class="q-label">开源之书记录</span></div>
+        <div class="q-text">以阅读分享的形式回望 GPL 的<span class="em">波澜壮阔</span>。</div>
+      </div>
+    </div>
+    <div class="q-item">
+      <div class="q-mark">"</div>
+      <div class="q-body">
+        <div class="q-tag"><span class="q-bar"></span><span class="q-label">燃烧与增长</span></div>
+        <div class="q-text">GPL 既是自由软件的<span class="em">烈火</span>，也是开源生态持续扩张的<span class="em">引擎</span>。</div>
+      </div>
+    </div>
+    <div class="q-item">
+      <div class="q-mark">"</div>
+      <div class="q-body">
+        <div class="q-tag"><span class="q-bar"></span><span class="q-label">适兕 · 开源之道</span></div>
+        <div class="q-text">本期聚焦 GPL 的<span class="em">精神内核</span>、争议时刻与增长轨迹。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-mark">适兕·开源之道 <span class="dot">·</span> 开源之书记录</div>
+
+</div>
 </div>
 
 <script>
 (function(){
-  const el = document.getElementById('chart_1');
-  const chart = echarts.init(el, null, {renderer: 'svg'});
-  chart.setOption({
-    grid:{left:60,right:76,top:6,bottom:6,containLabel:false},
-    tooltip:{show:false},
-    xAxis:{
-      type:'value',
-      max:21,
-      show:false
-    },
-    yAxis:{
-      type:'category',
-      data:['GPLv1', 'GPLv2', 'GPLv3'],
-      axisLine:{show:false},
-      axisTick:{show:false},
-      axisLabel:{
-        color:'#F7F3EB',
-        fontSize:13,
-        fontWeight:700,
-        fontFamily:'"Playfair Display","Noto Serif SC",serif'
-      }
-    },
-    series:[{
-      type:'bar',
-      data:[
-        {value:1, itemStyle:{color:'#4A4A4A'}, label:{formatter:'1989'}},
-        {value:2, itemStyle:{color:'#8A2020'}, label:{formatter:'1991'}},
-        {value:18, itemStyle:{color:'#E53935'}, label:{formatter:'2007'}}
-      ],
-      barWidth:14,
-      itemStyle:{borderRadius:[0,1,1,0]},
-      label:{
-        show:true,
-        position:'right',
-        color:'#F7F3EB',
-        fontSize:12,
-        fontWeight:700,
-        fontFamily:'"Source Sans 3","Noto Sans SC",sans-serif',
-        distance:6
-      }
-    }]
-  });
-  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+  const el = document.getElementById('embers');
+  const chars = ['G','P','L','{','}','*','/','&','0','1','#','<','>','%','+','_','~','=','1','0','G','P','L','{','}','/','*'];
+  const rows = 28, cols = 12;
+  const total = rows*cols;
+  let html = '';
+  for(let i=0;i<total;i++){
+    const r = i/cols;
+    const normalized = r/rows;
+    const dist = Math.abs(normalized-1)*2;
+    let color;
+    if(dist>0.75) color = '#B71C1C';
+    else if(dist>0.55) color = '#E53935';
+    else if(dist>0.35) color = '#FF7043';
+    else if(dist>0.2) color = '#FFA726';
+    else if(dist>0.05) color = '#FFD180';
+    else color = '#FFF3B0';
+    const alpha = (0.45 + Math.random()*0.5).toFixed(2);
+    const size = 14 + Math.floor(Math.random()*14);
+    const italic = Math.random()<0.2 ? 'italic' : 'normal';
+    const w = 700 + (Math.random()<0.3 ? 200 : 0);
+    html += '<span class="ember" style="color:'+color+';opacity:'+alpha+';font-size:'+size+'px;font-style:'+italic+';font-weight:'+w+';">'+chars[i%chars.length]+'</span>';
+  }
+  el.innerHTML = html;
 })();
 </script>
 </body>
