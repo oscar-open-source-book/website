@@ -7,378 +7,390 @@
 <title>Part 01 · 字节跳动开源版图</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #000000;
-    --ink-soft: #4A4744;
-    --ink-faint: #A6A29A;
-    --red: #E53935;
-    --red-soft: #F4C2C1;
-    --bg: #F5F2EB;
-    --rule: #000000;
-    --rule-soft: #D9D4CA;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body {
-    width: 1600px; height: 900px; overflow: hidden;
-    background: #EDE9DF; color: var(--ink);
-    font-family: 'Source Sans 3', 'Noto Sans SC', sans-serif;
-  }
-  .wrapper {
-    position: relative; width: 1600px; height: 900px;
-    overflow: hidden; margin: 0 auto; background: var(--bg);
-  }
-  #bg {
-    position: absolute; inset: 0; z-index: 0;
-    background:
-      radial-gradient(ellipse 900px 700px at 22% 18%, rgba(229,57,53,0.05), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 92% 88%, rgba(0,0,0,0.045), transparent 60%);
-  }
-  #ct {
-    position: absolute; inset: 0; z-index: 1;
-    padding: 52px 84px 48px 84px;
-    display: flex; flex-direction: column;
-  }
+:root {
+  --cream: #F5F2EB;
+  --cream-deep: #EDE7D9;
+  --red: #E53935;
+  --red-dark: #C62828;
+  --black: #000000;
+  --ink: #141414;
+  --ink-2: #4A4A4A;
+  --ink-3: #8A8A8A;
+  --rule: #C9C3B4;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body {
+  background: var(--cream);
+  color: var(--black);
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+#bg { position: absolute; inset: 0; z-index: 0; }
+.bg-circle {
+  position: absolute;
+  left: -200px;
+  bottom: -200px;
+  width: 520px;
+  height: 520px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  opacity: 0.45;
+}
+.bg-circle-inner {
+  position: absolute;
+  left: -100px;
+  bottom: -100px;
+  width: 260px;
+  height: 260px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  opacity: 0.3;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 72px 80px 56px 80px;
+  display: grid;
+  grid-template-columns: 60% 40%;
+}
+.col {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.col-left { padding-right: 72px; }
+.col-right { padding-left: 64px; }
+.divider {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: -1px;
+  width: 1px;
+  background: #D5CFC1;
+  z-index: 1;
+}
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.brand {
+  font-family: "Playfair Display", "Noto Serif SC", serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.36em;
+  color: var(--black);
+}
+.brand::before {
+  content: "";
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  background: var(--red);
+  vertical-align: middle;
+  margin-right: 12px;
+  transform: translateY(-2px);
+}
+.eyebrow {
+  font-family: "Playfair Display", "Noto Serif SC", serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 26px;
+  height: 1px;
+  background: var(--red);
+}
+.giant-spacer { flex: 0 0 32px; }
+.giant-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 34px;
+}
+.giant-num {
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 380px;
+  line-height: 0.82;
+  color: var(--red);
+  letter-spacing: -0.055em;
+  font-style: italic;
+  position: relative;
+}
+.giant-num::after {
+  content: "";
+  position: absolute;
+  right: -22px;
+  top: 60px;
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+  border-radius: 50%;
+}
+.chapter-block { padding-top: 32px; }
+.chapter-label {
+  font-family: "Playfair Display", "Noto Serif SC", serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  color: var(--ink-2);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.chapter-label::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--black);
+}
+.chapter-name {
+  font-family: "Noto Serif SC", "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1.12;
+  color: var(--black);
+  letter-spacing: 0.02em;
+}
+.name-em { color: var(--red); }
+.mid-rule {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 34px;
+  margin-bottom: 26px;
+}
+.mid-rule-line { width: 90px; height: 2px; background: var(--black); }
+.mid-rule-dot { width: 8px; height: 8px; background: var(--red); }
+.mid-rule-num {
+  font-family: "Playfair Display", serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  color: var(--ink-2);
+}
+.narrative {
+  font-family: "Noto Serif SC", "Playfair Display", serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.85;
+  color: var(--ink);
+  max-width: 760px;
+  padding-left: 20px;
+  border-left: 2px solid var(--red);
+}
+.narrative-hl {
+  color: var(--red);
+  font-weight: 600;
+}
+.footer-line {
+  margin-top: auto;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Playfair Display", serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  color: var(--ink-2);
+}
+.footer-line .right { color: var(--red); }
 
-  /* ============ HEADER ============ */
-  .head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding-bottom: 22px;
-    border-bottom: 2px solid var(--ink);
-  }
-  .head-left { display: flex; align-items: center; gap: 16px; }
-  .mark {
-    width: 14px; height: 14px; background: var(--red);
-    display: inline-block;
-  }
-  .head-title {
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 20px; font-weight: 700; letter-spacing: 0.02em;
-  }
-  .head-sub {
-    font-size: 12.5px; color: var(--ink-soft);
-    letter-spacing: 0.28em; font-weight: 500;
-    margin-left: 6px;
-  }
-  .head-right {
-    display: flex; align-items: center; gap: 18px;
-    font-size: 11.5px; letter-spacing: 0.32em; color: var(--ink-soft);
-    font-weight: 600;
-  }
-  .head-dot { width: 4px; height: 4px; background: var(--ink-soft); border-radius: 50%; display: inline-block; }
-
-  /* ============ TOP ROW ============ */
-  .top-row {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr 1px 610px;
-    gap: 56px;
-    padding: 44px 0 34px 0;
-  }
-  .v-rule { background: var(--rule-soft); }
-
-  /* LEFT */
-  .left {
-    display: flex; flex-direction: column;
-    padding-left: 4px;
-  }
-  .chapter-label {
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 13px; letter-spacing: 0.42em;
-    color: var(--ink-soft); font-weight: 600;
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 20px;
-  }
-  .chapter-label .dash {
-    width: 42px; height: 1.5px; background: var(--ink); display: inline-block;
-  }
-  .chapter-num {
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 230px; line-height: 0.88; color: var(--red);
-    font-weight: 900;
-    margin: 6px 0 4px -6px;
-    position: relative;
-    letter-spacing: -0.02em;
-  }
-  .chapter-num::after {
-    content: '';
-    position: absolute; right: -8px; bottom: 32px;
-    width: 46px; height: 2px; background: var(--ink);
-  }
-  .left-h1 {
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 54px; line-height: 1.14; font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.005em;
-    margin-top: 30px;
-  }
-  .left-h1 .em-dash { color: var(--red); font-style: italic; }
-  .left-sub {
-    font-family: 'Noto Serif SC', 'Playfair Display', serif;
-    font-size: 19.5px; line-height: 1.55; color: var(--ink-soft);
-    margin-top: 24px; max-width: 640px;
-    font-weight: 400;
-    border-left: 2px solid var(--red);
-    padding-left: 18px;
-  }
-  .left-kicker {
-    display: flex; align-items: center; gap: 16px;
-    margin-top: auto;
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-style: italic;
-    font-size: 15.5px; color: var(--ink-soft);
-    letter-spacing: 0.02em;
-  }
-  .left-kicker .dash-long {
-    width: 52px; height: 1px; background: var(--ink-soft); display: inline-block;
-  }
-
-  /* RIGHT */
-  .right {
-    display: flex; flex-direction: column;
-    padding-right: 4px;
-  }
-  .right-header {
-    display: flex; align-items: baseline; justify-content: space-between;
-    padding-bottom: 14px;
-    margin-bottom: 22px;
-    border-bottom: 1px solid var(--ink);
-  }
-  .right-eyebrow {
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 13px; letter-spacing: 0.36em;
-    color: var(--ink); font-weight: 700;
-  }
-  .right-eyebrow-cn {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 12px; letter-spacing: 0.24em;
-    color: var(--ink-soft); font-weight: 500;
-  }
-  .item {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 18px;
-    padding: 16px 0 14px 0;
-    border-bottom: 1px solid var(--rule-soft);
-  }
-  .item:last-child { border-bottom: none; }
-  .item-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 34px; font-weight: 700; color: var(--red);
-    line-height: 1; padding-top: 2px;
-    font-style: italic;
-  }
-  .item-body { display: flex; flex-direction: column; gap: 6px; }
-  .item-title {
-    font-family: 'Noto Serif SC', 'Playfair Display', serif;
-    font-size: 21px; font-weight: 700; color: var(--ink);
-    letter-spacing: 0.06em;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .item-title .en {
-    font-family: 'Playfair Display', serif;
-    font-size: 12px; letter-spacing: 0.28em;
-    color: var(--ink-faint); font-weight: 400; font-style: italic;
-  }
-  .item-desc {
-    font-size: 14px; line-height: 1.62; color: var(--ink-soft);
-    font-weight: 400;
-    max-width: 490px;
-  }
-
-  /* ============ BOTTOM ============ */
-  .bottom {
-    border-top: 2px solid var(--ink);
-    padding-top: 26px;
-    display: grid;
-    grid-template-columns: 1fr 620px;
-    gap: 56px;
-    align-items: start;
-  }
-  .narrative {
-    display: flex; gap: 18px;
-    align-items: flex-start;
-  }
-  .narr-tag {
-    flex-shrink: 0;
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 13px; font-weight: 700; letter-spacing: 0.36em;
-    color: var(--red);
-    padding-top: 3px;
-  }
-  .narr-text {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 15px; line-height: 1.82; color: var(--ink);
-    font-weight: 400;
-    max-width: 560px;
-  }
-  .narr-text .accent { color: var(--red); font-weight: 600; }
-  .narr-text .em { font-weight: 700; }
-
-  .kpis {
-    display: grid;
-    grid-template-columns: 1fr 1px 1fr;
-    gap: 22px;
-    align-items: stretch;
-  }
-  .kpi-rule { background: var(--rule-soft); }
-  .kpi {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .kpi-tag {
-    font-size: 11.5px; letter-spacing: 0.28em; color: var(--ink-soft);
-    font-weight: 600;
-  }
-  .kpi-num {
-    font-family: 'Playfair Display', 'Noto Serif SC', serif;
-    font-size: 36px; font-weight: 700; color: var(--ink);
-    line-height: 1;
-    letter-spacing: -0.01em;
-    display: flex; align-items: baseline; gap: 10px;
-  }
-  .kpi-num .accent { color: var(--red); }
-  .kpi-num .kpi-unit {
-    font-size: 14px; color: var(--ink-soft); font-weight: 400;
-    font-family: 'Noto Serif SC', serif;
-    letter-spacing: 0.04em;
-  }
-  .kpi-desc {
-    font-size: 12.5px; color: var(--ink-soft);
-    line-height: 1.55;
-    font-family: 'Noto Sans SC', sans-serif;
-  }
-  .kpi-desc .sep {
-    color: var(--red); margin: 0 4px;
-    font-weight: 700;
-  }
-
-  /* ============ FOOTER ============ */
-  .foot {
-    position: absolute;
-    left: 84px; right: 84px; bottom: 22px;
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: 11px; letter-spacing: 0.32em;
-    color: var(--ink-faint); font-weight: 500;
-    z-index: 3;
-  }
-  .foot-left { display: flex; align-items: center; gap: 10px; }
-  .foot-mid { display: flex; align-items: center; gap: 12px; }
-  .foot-mid .short { width: 28px; height: 1px; background: var(--ink-faint); }
-  .foot-right { display: flex; align-items: center; gap: 10px; }
-  .red-dot {
-    width: 8px; height: 8px; background: var(--red);
-    border-radius: 50%; display: inline-block;
-  }
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Playfair Display", "Noto Serif SC", serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.36em;
+  color: var(--black);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 30px;
+}
+.section-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+}
+.cards { display: flex; flex-direction: column; gap: 20px; }
+.card {
+  position: relative;
+  background: #FFFFFF;
+  padding: 20px 24px 20px 28px;
+  border-left: 3px solid var(--red);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+.card-num {
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 28px;
+  color: #E4DDD0;
+  line-height: 1;
+}
+.card-head {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--black);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.card-head .tick {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+}
+.card-detail {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 340px;
+}
+.kpi-block {
+  margin-top: auto;
+  display: flex;
+  gap: 14px;
+}
+.kpi {
+  flex: 1;
+  background: var(--cream-deep);
+  border-top: 2px solid var(--red);
+  padding: 14px 16px 14px 16px;
+  position: relative;
+}
+.kpi-tag {
+  font-family: "Playfair Display", serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.36em;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+.kpi-value {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--black);
+  line-height: 1.2;
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+}
+.kpi-value .em { color: var(--red); font-family: "Playfair Display", "Noto Serif SC", serif; }
+.kpi-context {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg"></div>
+  <div id="bg">
+    <div class="bg-circle"></div>
+    <div class="bg-circle-inner"></div>
+  </div>
   <div id="ct">
-
-    <!-- Header bar -->
-    <div class="head">
-      <div class="head-left">
-        <span class="mark"></span>
-        <span class="head-title">OPEN SOURCE ATTEMPT</span>
-        <span class="head-sub">字节跳动开源年报 / 编者按</span>
+    <div class="col col-left">
+      <div class="top-header">
+        <span class="brand">SENSE / OPEN SOURCE REPORT</span>
+        <span class="eyebrow">SECTION HEADER · 01</span>
       </div>
-      <div class="head-right">
-        <span>SECTION</span>
-        <span class="head-dot"></span>
-        <span>01 / 06</span>
-      </div>
-    </div>
-
-    <!-- Main two-column section -->
-    <div class="top-row">
-      <div class="left">
-        <div class="chapter-label"><span class="dash"></span><span>PART ONE · 章节一</span></div>
-        <div class="chapter-num">Ⅰ</div>
-        <h1 class="left-h1">字节跳动<span class="em-dash">  </span>开源版图</h1>
-        <div class="left-sub">从工具链到基础设施，开源是业务的延伸，也是一门关于信任的长期生意。</div>
-        <div class="left-kicker">
-          <span class="dash-long"></span>
-          <span>A chapter on strategy, matrix &amp; community</span>
+      <div class="giant-spacer"></div>
+      <div class="giant-row">
+        <div class="giant-num">01</div>
+        <div class="chapter-block">
+          <div class="chapter-label">PART ONE · 第一章</div>
+          <div class="chapter-name">字节跳动<br><span class="name-em">开源版图</span></div>
         </div>
       </div>
-
-      <div class="v-rule"></div>
-
-      <div class="right">
-        <div class="right-header">
-          <span class="right-eyebrow">CONTENTS · 三条主线</span>
-          <span class="right-eyebrow-cn">本章导读</span>
-        </div>
-
-        <div class="item">
-          <div class="item-num">01</div>
-          <div class="item-body">
-            <div class="item-title">战略定位 <span class="en">/ STRATEGY</span></div>
-            <div class="item-desc">开源被当作开发者生态、技术品牌与社区影响力的战略抓手，而非单点技术输出。</div>
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="item-num">02</div>
-          <div class="item-body">
-            <div class="item-title">矩阵式布局 <span class="en">/ MATRIX</span></div>
-            <div class="item-desc">覆盖基础设施、音视频、AI、前端、云原生等垂直领域，构建系统化项目矩阵。</div>
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="item-num">03</div>
-          <div class="item-body">
-            <div class="item-title">社区心智 <span class="en">/ COMMUNITY</span></div>
-            <div class="item-desc">以稳定贡献与高质量项目沉淀长期社区信任，让内部工具沉淀为社区资产。</div>
-          </div>
-        </div>
+      <div class="mid-rule">
+        <span class="mid-rule-line"></span>
+        <span class="mid-rule-dot"></span>
+        <span class="mid-rule-num">CHAPTER · NARRATIVE</span>
+      </div>
+      <p class="narrative">这一章回答的是字节跳动的开源到底是一盘什么样的棋——我们会看到它<span class="narrative-hl">不是零散的技术捐赠</span>，而是围绕<span class="narrative-hl">业务纵深与开发者生态</span>，形成了一套系统化的项目矩阵与社区策略。</p>
+      <div class="footer-line">
+        <span>BYTEDANCE · OPEN-SOURCE MAP</span>
+        <span class="right">2024 · INSIGHTS</span>
       </div>
     </div>
-
-    <!-- Bottom narrative + KPI -->
-    <div class="bottom">
-      <div class="narrative">
-        <div class="narr-tag">EDITOR'S NOTE</div>
-        <div class="narr-text">
-          这一章回答的是：<span class="accent">字节跳动的开源到底是一盘什么样的棋</span>。我们会看到它<span class="em">不是零散的技术捐赠</span>，而是围绕<span class="em">业务纵深</span>与<span class="em">开发者生态</span>，形成了一套<span class="em">系统化的项目矩阵</span>与<span class="em">社区策略</span>。
+    <div class="col col-right">
+      <div class="divider"></div>
+      <div class="top-header">
+        <span class="section-label">CHAPTER SUMMARY · 三条主线</span>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-num">01</div>
+          <div class="card-head"><span class="tick"></span><span>战略定位</span></div>
+          <div class="card-detail">开源被作为开发者生态、技术品牌、社区影响力的战略抓手。</div>
+        </div>
+        <div class="card">
+          <div class="card-num">02</div>
+          <div class="card-head"><span class="tick"></span><span>矩阵式布局</span></div>
+          <div class="card-detail">覆盖基础设施、音视频、AI、前端、云原生等垂直领域。</div>
+        </div>
+        <div class="card">
+          <div class="card-num">03</div>
+          <div class="card-head"><span class="tick"></span><span>社区心智</span></div>
+          <div class="card-detail">通过稳定贡献与高质量项目沉淀长期社区信任。</div>
         </div>
       </div>
-
-      <div class="kpis">
+      <div class="kpi-block">
         <div class="kpi">
-          <div class="kpi-tag">覆盖领域 · SCOPE</div>
-          <div class="kpi-num"><span class="accent">5+</span><span class="kpi-unit">主赛道</span></div>
-          <div class="kpi-desc">音视频<span class="sep">/</span>AI<span class="sep">/</span>前端<span class="sep">/</span>云原生<span class="sep">/</span>数据</div>
+          <div class="kpi-tag">KPI · 覆盖领域</div>
+          <div class="kpi-value"><span class="em">5+</span> 主赛道</div>
+          <div class="kpi-context">音视频 / AI / 前端 / 云原生 / 数据</div>
         </div>
-        <div class="kpi-rule"></div>
         <div class="kpi">
-          <div class="kpi-tag">开源态度 · STANCE</div>
-          <div class="kpi-num">长期主义</div>
-          <div class="kpi-desc">从内部工具走向社区资产，从流量红利走向技术复利。</div>
+          <div class="kpi-tag">KPI · 开源态度</div>
+          <div class="kpi-value">长期主义</div>
+          <div class="kpi-context">从内部工具走向社区资产</div>
         </div>
       </div>
     </div>
-
-    <!-- Footer -->
-    <div class="foot">
-      <span class="foot-left">
-        <span class="red-dot"></span>
-        <span>SECTION TRANSITION</span>
-      </span>
-      <span class="foot-mid">
-        <span class="short"></span>
-        <span>字节跳动 · 开源版图 · 2025</span>
-        <span class="short"></span>
-      </span>
-      <span class="foot-right">
-        <span>P. 02</span>
-        <span class="red-dot"></span>
-      </span>
-    </div>
-
   </div>
 </div>
 </body>
