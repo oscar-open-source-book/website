@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<meta charset="UTF-8">
+<title>为什么要谈字节跳动的开源</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Serif+SC:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#000000;
+  --beige:#F5F2EB;
+  --red:#E53935;
+  --gray:#6b6b6b;
+  --light-gray:#a8a8a8;
+  --line:#1a1a1a;
+  --serif:'Playfair Display','Noto Serif SC',Georgia,serif;
+  --sans:'Source Sans 3','Noto Sans SC','Helvetica Neue',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{background:var(--beige);color:var(--black);font-family:var(--sans);}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--beige);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:52px 60px 44px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 背景装饰 */
+#bg::before{content:"";position:absolute;top:-120px;right:-100px;width:380px;height:380px;border:1px solid rgba(0,0,0,0.06);border-radius:50%;}
+#bg::after{content:"";position:absolute;bottom:-80px;left:-60px;width:220px;height:220px;border:1px solid rgba(0,0,0,0.05);border-radius:50%;}
+
+/* 顶部 header */
+.masthead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:22px;}
+.masthead .brand{font-family:var(--serif);font-weight:900;font-size:15px;letter-spacing:6px;color:var(--black);}
+.masthead .meta{font-family:var(--sans);font-size:11px;letter-spacing:3px;color:var(--gray);}
+
+/* 标题区 */
+.title-zone{display:flex;align-items:flex-start;gap:28px;margin-bottom:16px;position:relative;}
+.title-block{flex:1;}
+h1.main-title{font-family:var(--serif);font-weight:900;font-size:62px;line-height:1.02;letter-spacing:-1px;color:var(--black);}
+h1.main-title .em{color:var(--red);}
+.subtitle{font-family:var(--sans);font-weight:300;font-size:17px;color:var(--gray);margin-top:14px;letter-spacing:1px;line-height:1.5;}
+.subtitle .em{color:var(--black);font-weight:600;}
+
+.title-gear{width:96px;height:96px;flex-shrink:0;margin-top:6px;position:relative;}
+.gear{width:64px;height:64px;border-radius:50%;background:transparent;border:2px solid var(--black);position:absolute;top:0;right:14px;}
+.gear::before{content:"";position:absolute;inset:14px;border-radius:50%;border:2px solid var(--black);}
+.gear::after{content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:10px;height:8px;background:var(--black);}
+.gear .teeth{position:absolute;inset:-8px;}
+.gear .teeth span{position:absolute;width:6px;height:10px;background:var(--black);top:0;left:50%;transform:translateX(-50%);}
+.gear .teeth span:nth-child(1){transform:translateX(-50%) rotate(0deg);}
+.gear .teeth span:nth-child(2){transform:translateX(-50%) rotate(45deg);top:-4px;}
+.gear .teeth span:nth-child(3){transform:translateX(-50%) rotate(90deg);}
+.gear .teeth span:nth-child(4){transform:translateX(-50%) rotate(135deg);top:-4px;}
+.gear .teeth span:nth-child(5){transform:translateX(-50%) rotate(180deg);}
+.gear .teeth span:nth-child(6){transform:translateX(-50%) rotate(225deg);top:-4px;}
+.gear .teeth span:nth-child(7){transform:translateX(-50%) rotate(270deg);}
+.gear .teeth span:nth-child(8){transform:translateX(-50%) rotate(315deg);top:-4px;}
+
+.person{position:absolute;bottom:0;right:0;width:36px;height:44px;}
+.person-head{width:12px;height:12px;border-radius:50%;background:var(--black);position:absolute;top:0;left:12px;}
+.person-body{width:20px;height:24px;border-radius:10px 10px 4px 4px;background:var(--black);position:absolute;top:12px;left:8px;}
+
+.divider{height:1px;background:var(--black);margin:6px 0 20px 0;}
+
+/* 主体三栏 */
+.body-grid{flex:1;display:grid;grid-template-columns:1fr 1.45fr 0.85fr;gap:38px;min-height:0;}
+
+/* 左栏 引言 */
+.col-left{display:flex;flex-direction:column;padding-right:6px;border-right:1px solid #d5d0c5;}
+.quote-mark{font-family:var(--serif);font-weight:900;font-size:76px;color:var(--red);line-height:0.8;margin-bottom:-6px;}
+.quote-text{font-family:var(--serif);font-weight:700;font-size:18px;line-height:1.55;color:var(--black);letter-spacing:0.3px;}
+.quote-text .hi{color:var(--red);}
+.quote-text .strong{background:var(--black);color:var(--beige);padding:1px 6px;}
+.quote-foot{margin-top:auto;padding-top:22px;font-family:var(--sans);font-size:11px;letter-spacing:2px;color:var(--gray);border-top:1px solid #d5d0c5;line-height:1.6;}
+.quote-foot .tag{display:inline-block;background:var(--black);color:var(--beige);padding:3px 8px;font-weight:600;letter-spacing:2px;font-size:10px;margin-bottom:8px;}
+
+/* 中栏 5 条理由 */
+.col-mid{padding:0 4px;}
+.col-mid-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:14px;}
+.col-mid-head .h{font-family:var(--serif);font-weight:700;font-size:16px;letter-spacing:2px;}
+.col-mid-head .idx{font-family:var(--sans);font-size:11px;color:var(--gray);letter-spacing:2px;}
+
+.reasons{display:flex;flex-direction:column;gap:0;}
+.reason{display:flex;gap:16px;padding:12px 0;border-bottom:1px dashed #d5d0c5;align-items:flex-start;}
+.reason:last-child{border-bottom:none;}
+.reason-num{font-family:var(--serif);font-weight:900;font-size:26px;color:var(--red);line-height:1;flex-shrink:0;width:32px;text-align:center;padding-top:2px;}
+.reason-body{flex:1;}
+.reason-title{font-family:var(--sans);font-weight:700;font-size:15px;color:var(--black);margin-bottom:5px;letter-spacing:0.5px;}
+.reason-title .red{color:var(--red);}
+.reason-desc{font-family:var(--sans);font-weight:300;font-size:13px;color:var(--gray);line-height:1.55;letter-spacing:0.2px;}
+
+/* 右栏 数据卡 */
+.col-right{display:flex;flex-direction:column;gap:16px;}
+.data-card{background:var(--black);color:var(--beige);padding:22px 22px 20px 22px;position:relative;overflow:hidden;}
+.data-card.alt{background:transparent;color:var(--black);border:1.5px solid var(--black);}
+.data-card .label{font-family:var(--sans);font-size:11px;letter-spacing:3px;color:var(--light-gray);font-weight:300;margin-bottom:10px;}
+.data-card.alt .label{color:var(--gray);}
+.data-card .big{font-family:var(--serif);font-weight:900;font-size:74px;line-height:1;color:var(--red);display:flex;align-items:baseline;gap:8px;}
+.data-card .big .unit{font-size:16px;color:var(--beige);font-weight:400;letter-spacing:2px;font-family:var(--sans);}
+.data-card .caption{font-family:var(--sans);font-weight:600;font-size:14px;margin-top:12px;letter-spacing:1px;line-height:1.5;}
+.data-card .caption .dim{font-weight:300;color:var(--light-gray);display:block;margin-top:4px;font-size:12px;}
+.data-card.alt .caption .dim{color:var(--gray);}
+
+.data-card-2 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.data-card-2 .tag{font-family:var(--sans);font-weight:600;font-size:11px;padding:5px 10px;border:1px solid var(--beige);color:var(--beige);letter-spacing:1px;}
+.data-card-2.alt .tag{border-color:var(--black);color:var(--black);}
+.data-card-2 .big{font-size:32px;color:var(--red);margin-bottom:4px;}
+.data-card-2 .big .unit{font-size:12px;}
+
+/* 底部 */
+.footbar{display:flex;justify-content:space-between;align-items:center;border-top:2px solid var(--black);padding-top:14px;margin-top:14px;}
+.footbar .summary{font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:8px;color:var(--black);}
+.footbar .summary .sep{color:var(--red);margin:0 6px;}
+.footbar .pager{font-family:var(--sans);font-size:11px;letter-spacing:3px;color:var(--gray);}
+
+/* 装饰红点 */
+.dot{display:inline-block;width:8px;height:8px;background:var(--red);border-radius:50%;vertical-align:middle;margin-right:6px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+  <!-- 顶部品牌条 -->
+  <div class="masthead">
+    <div class="brand"><span>OPEN · SOURCE · INSIGHT</span></div>
+    <div class="meta"><span>字节跳动 · 开源专题 / No.01</span></div>
+  </div>
+
+  <!-- 标题区 -->
+  <div class="title-zone">
+    <div class="title-block">
+      <h1 class="main-title">为什么要谈<span class="em">字节跳动</span>的开源</h1>
+      <div class="subtitle">
+        <span class="em">业务驱动</span> · <span class="em">社区驱动</span> · <span class="em">人才驱动</span> —— 三条主线共同塑造开源战略的底层逻辑
+      </div>
+    </div>
+    <div class="title-gear">
+      <div class="gear"><div class="teeth"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+      <div class="person"><div class="person-head"></div><div class="person-body"></div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 主体三栏 -->
+  <div class="body-grid">
+
+    <!-- 左栏 引言 -->
+    <div class="col-left">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">
+        开源对字节跳动而言<span class="hi">不是情怀</span>，而是<span class="strong">一门生意</span>加<span class="hi">一门信仰</span>。它同时服务于业务、社区与人才三条主线——理解这三条主线的<span class="hi">相互交织</span>，才能读懂后文 OSPO 组织设计背后的取舍。
+      </div>
+      <div class="quote-foot">
+        <div class="tag"><span>EDITOR'S NOTE</span></div>
+        本篇将以三栏视角，拆解开源在<br>
+        业务、社区与人才三条主线上的<br>
+        具体落点与取舍逻辑。
+      </div>
+    </div>
+
+    <!-- 中栏 5 条理由 -->
+    <div class="col-mid">
+      <div class="col-mid-head">
+        <div class="h"><span>FIVE REASONS · 五条理由</span></div>
+        <div class="idx"><span>01 / 05</span></div>
+      </div>
+      <div class="reasons">
+
+        <div class="reason">
+          <div class="reason-num">01</div>
+          <div class="reason-body">
+            <div class="reason-title">技术外溢：<span class="red">内部沉淀 → 社区复用</span></div>
+            <div class="reason-desc">内部沉淀的工具与基础设施，向社区开放可放大其技术影响力与复用价值</div>
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-num">02</div>
+          <div class="reason-body">
+            <div class="reason-title">开发者心智：<span class="red">持续吸引 · 试用 · 加入</span></div>
+            <div class="reason-desc">高可见度的开源项目持续吸引工程师关注、试用与加入</div>
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-num">03</div>
+          <div class="reason-body">
+            <div class="reason-title">生态位卡位：<span class="red">关键赛道占据首选</span></div>
+            <div class="reason-desc">在音视频、AI 推理、前端框架等关键赛道占据开发者首选</div>
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-num">04</div>
+          <div class="reason-body">
+            <div class="reason-title">雇主品牌：<span class="red">招聘与文化的隐形名片</span></div>
+            <div class="reason-desc">开源项目是招聘与文化的隐形名片，比单纯 PR 更有说服力</div>
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-num">05</div>
+          <div class="reason-body">
+            <div class="reason-title">标准话语权：<span class="red">RFC · 提案 · 规范</span></div>
+            <div class="reason-desc">通过 RFC、提案与规范参与，把内部实践沉淀为行业共同语言</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 右栏 数据卡 -->
+    <div class="col-right">
+
+      <div class="data-card data-card-1">
+        <div class="label"><span class="dot"></span>核心框架</div>
+        <div class="big"><span>3</span><span class="unit">条主线</span></div>
+        <div class="caption">业务 / 社区 / 人才<span class="dim">BUSINESS · COMMUNITY · TALENT</span></div>
+      </div>
+
+      <div class="data-card alt data-card-2">
+        <div class="label"><span class="dot"></span>技术纵深</div>
+        <div class="big"><span>4</span><span class="unit">个关键赛道</span></div>
+        <div class="caption">音视频 · AI · 前端 · 云原生</div>
+        <div class="tag-row">
+          <span class="tag">音视频</span>
+          <span class="tag">AI</span>
+          <span class="tag">前端</span>
+          <span class="tag">云原生</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 底部 -->
+  <div class="footbar">
+    <div class="summary"><span>业务<span class="sep">·</span>社区<span class="sep">·</span>人才</span>，三线并行</div>
+    <div class="pager"><span>P.01 / OPEN SOURCE / BYTEDANCE</span></div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
