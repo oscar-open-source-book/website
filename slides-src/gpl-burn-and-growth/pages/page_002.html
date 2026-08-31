@@ -1,0 +1,211 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第一章：GPL的火焰</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E53935;
+  --red-dark:#8E1A17;
+  --red-glow:#FF5C58;
+  --black:#1A1A1A;
+  --cream:#F7F3EB;
+  --ink-soft:rgba(26,26,26,.72);
+  --line:rgba(26,26,26,.16);
+  --line-strong:rgba(26,26,26,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--cream);color:var(--black);font-family:'Source Sans 3','Noto Sans SC',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"palt" on;}
+body{font-variant-numeric:tabular-nums}
+.serif{font-family:'Playfair Display','Noto Serif SC',Georgia,serif}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream)}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+#ct{position:absolute;inset:0;z-index:1;padding:60px 80px 60px 80px;box-sizing:border-box;display:flex;flex-direction:column}
+
+/* ============ BG flame layer ============ */
+.flame-layer{position:absolute;inset:0;width:100%;height:100%}
+.flame-glow-a{position:absolute;right:-260px;top:-160px;width:900px;height:900px;background:radial-gradient(circle at center,rgba(229,57,53,.42) 0%,rgba(229,57,53,.18) 35%,rgba(229,57,53,0) 68%);border-radius:50%;filter:blur(6px)}
+.flame-glow-b{position:absolute;right:-120px;bottom:-200px;width:780px;height:780px;background:radial-gradient(circle at center,rgba(142,26,23,.36) 0%,rgba(142,26,23,.14) 40%,rgba(142,26,23,0) 70%);border-radius:50%}
+.flame-glow-c{position:absolute;left:52%;top:22%;width:520px;height:520px;background:radial-gradient(circle at center,rgba(255,92,88,.28) 0%,rgba(255,92,88,0) 65%);border-radius:50%}
+.flame-stripes{position:absolute;right:0;top:0;width:960px;height:100%;opacity:.14;mix-blend-mode:multiply}
+.flame-noise{position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;pointer-events:none}
+
+/* ============ HEADER ============ */
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:18px;border-bottom:1px solid var(--line-strong);flex-shrink:0}
+.brand{display:flex;align-items:center;gap:16px}
+.brand-mark{width:12px;height:12px;background:var(--red);flex-shrink:0}
+.brand-text{display:flex;flex-direction:column;line-height:1.15}
+.brand-text .t1{font-size:15px;font-weight:700;letter-spacing:.22em;color:var(--black);font-family:'Playfair Display','Noto Serif SC',serif}
+.brand-text .t2{font-size:11px;color:rgba(26,26,26,.55);letter-spacing:.16em;margin-top:3px}
+.header-right{display:flex;align-items:center;gap:20px;font-size:11px;letter-spacing:.28em;color:rgba(26,26,26,.6)}
+.header-right .dot{width:4px;height:4px;background:var(--red);border-radius:50%}
+.header-right .sep{width:24px;height:1px;background:var(--line-strong)}
+
+/* ============ MAIN ============ */
+.main{flex:1;display:grid;grid-template-columns:230px 1fr;gap:56px;padding-top:28px;position:relative}
+
+.chapter-col{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0;gap:22px}
+.chapter-top-line{width:44px;height:2px;background:var(--black)}
+.chapter-meta{font-size:11px;letter-spacing:.32em;color:rgba(26,26,26,.7);writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.4em;font-weight:600}
+.chapter-num-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.chapter-num{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:900;font-size:230px;line-height:.85;color:var(--red);letter-spacing:-.05em;position:relative;z-index:2;text-shadow:10px 10px 0 rgba(26,26,26,.06)}
+.chapter-num-echo{position:absolute;font-family:'Playfair Display','Noto Serif SC',serif;font-weight:900;font-size:230px;line-height:.85;color:transparent;-webkit-text-stroke:1px rgba(229,57,53,.28);letter-spacing:-.05em;z-index:1;transform:translate(18px,18px)}
+.chapter-divider{width:2px;height:56px;background:var(--black)}
+.chapter-label{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:700;font-size:14px;letter-spacing:.4em;color:var(--black);writing-mode:vertical-rl}
+
+/* ============ RIGHT COL ============ */
+.right-col{display:flex;flex-direction:column;gap:28px;position:relative}
+.title-block{position:relative;padding-left:4px}
+.title-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.title-eyebrow .bar{width:42px;height:3px;background:var(--red)}
+.title-eyebrow .txt{font-size:11px;letter-spacing:.36em;color:rgba(26,26,26,.65);font-weight:600}
+.title-main{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:900;font-size:76px;line-height:1.02;letter-spacing:-.01em;color:var(--black);position:relative}
+.title-main .highlight{color:var(--red);font-style:italic}
+.title-main::after{content:"";position:absolute;right:-14px;top:14px;width:16px;height:16px;background:var(--red);z-index:3}
+.title-sub{font-family:'Playfair Display','Noto Serif SC',serif;font-style:italic;font-weight:400;font-size:20px;color:rgba(26,26,26,.78);margin-top:18px;padding-left:4px;letter-spacing:.02em;line-height:1.5;max-width:900px}
+.title-sub .accent{color:var(--red);font-style:italic;font-weight:700;padding:0 2px}
+
+/* ============ POINTS ============ */
+.points{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.point{background:var(--cream);border-top:3px solid var(--red);padding:20px 18px 18px 18px;position:relative;min-height:170px;display:flex;flex-direction:column;gap:12px}
+.point .num{position:absolute;top:12px;right:14px;font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:rgba(229,57,53,.55);letter-spacing:.15em}
+.point .badge{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:var(--cream);padding:5px 12px;font-size:11px;letter-spacing:.2em;font-weight:700;align-self:flex-start}
+.point .title-cn{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:700;font-size:21px;color:var(--black);line-height:1.25;letter-spacing:.01em}
+.point .body{font-size:13px;line-height:1.7;color:rgba(26,26,26,.78)}
+
+/* ============ BOTTOM ============ */
+.bottom{flex-shrink:0;padding-top:22px;border-top:1px solid var(--line-strong)}
+.timeline-anchor{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.timeline-bar{flex:1;height:2px;background:linear-gradient(to right,var(--red) 0%,var(--red) 8%,rgba(26,26,26,.25) 8%,rgba(26,26,26,.25) 100%);position:relative}
+.anchor-card{display:flex;flex-direction:column;gap:5px;background:var(--cream);border-left:3px solid var(--red);padding:8px 14px;min-width:340px}
+.anchor-card .yr{font-family:'Playfair Display',serif;font-weight:900;font-size:26px;color:var(--red);letter-spacing:.02em;line-height:1}
+.anchor-card .lbl{font-size:12.5px;color:var(--black);line-height:1.5}
+.anchor-card .lbl .em{font-weight:700;color:var(--red-dark)}
+.narrative{font-family:'Playfair Display','Noto Serif SC',serif;font-size:14.5px;line-height:1.75;color:rgba(26,26,26,.82);font-weight:400;letter-spacing:.01em;max-width:1440px}
+.narrative .em{color:var(--red);font-weight:700}
+.narrative .strong{color:var(--black);font-weight:700;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+  <div class="flame-layer">
+    <div class="flame-glow-a"></div>
+    <div class="flame-glow-b"></div>
+    <div class="flame-glow-c"></div>
+    <svg class="flame-stripes" viewBox="0 0 960 900" preserveAspectRatio="none">
+      <g fill="#E53935" opacity="0.5">
+        <path d="M620,900 C560,700 620,540 580,380 C540,220 620,100 680,0 L760,0 C700,120 640,240 680,400 C720,560 680,720 720,900 Z"/>
+        <path d="M720,900 C680,720 740,560 700,400 C660,240 740,120 800,0 L880,0 C820,140 760,260 800,420 C840,580 800,740 840,900 Z" opacity="0.7"/>
+        <path d="M820,900 C780,760 840,600 800,440 C760,280 840,140 900,20 L960,20 L960,900 Z" opacity="0.5"/>
+        <path d="M540,900 C500,780 560,620 520,480 C480,340 560,200 620,80 L680,80 C620,200 560,340 600,480 C640,620 620,780 660,900 Z" opacity="0.35"/>
+      </g>
+    </svg>
+    <svg class="flame-noise" viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <filter id="n">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+        <feColorMatrix values="0 0 0 0 0.9 0 0 0 0 0.22 0 0 0 0 0.2 0 0 0 0.4 0"/>
+      </filter>
+      <rect width="1600" height="900" filter="url(#n)"/>
+    </svg>
+  </div>
+</div>
+
+<div id="ct">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text">
+        <span class="t1">COLOPHON</span>
+        <span class="t2">GPL · The Flame of Copyleft · 章节导览</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span>EDITORIAL · 章节扉页</span>
+      <span class="dot"></span>
+      <span>PART&nbsp;ONE</span>
+      <span class="sep"></span>
+      <span>001&nbsp;/&nbsp;007</span>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- LEFT: Big 01 -->
+    <div class="chapter-col">
+      <div class="chapter-top-line"></div>
+      <div class="chapter-meta">PART · ONE</div>
+      <div class="chapter-num-wrap">
+        <div class="chapter-num-echo">01</div>
+        <div class="chapter-num">01</div>
+      </div>
+      <div class="chapter-divider"></div>
+      <div class="chapter-label">CHAPTER</div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-col">
+
+      <div class="title-block">
+        <div class="title-eyebrow">
+          <span class="bar"></span>
+          <span class="txt">CHAPTER · 一</span>
+        </div>
+        <h1 class="title-main">第一章：<span class="highlight">GPL的火焰</span></h1>
+        <div class="title-sub">从<span class="accent">理想主义者的宣言</span>到<span class="accent">席卷全球的法律盾牌</span>　—　The Flame of Copyleft</div>
+      </div>
+
+      <div class="points">
+        <div class="point">
+          <span class="num">01</span>
+          <div class="badge">思想土壤</div>
+          <div class="title-cn">自由软件运动</div>
+          <div class="body">GNU 项目与自由软件基金会的诞生，奠定了 GPL 诞生的思想土壤。</div>
+        </div>
+        <div class="point">
+          <span class="num">02</span>
+          <div class="badge">哲学核心</div>
+          <div class="title-cn">Copyleft 哲学</div>
+          <div class="body">以版权法反用版权法，用法律工具保障用户的自由。</div>
+        </div>
+        <div class="point">
+          <span class="num">03</span>
+          <div class="badge">最低承诺</div>
+          <div class="title-cn">四自由原则</div>
+          <div class="body">使用、研究、分发、改进，GPL 以四自由为最低承诺。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bottom">
+    <div class="timeline-anchor">
+      <div class="anchor-card">
+        <span class="yr">1983</span>
+        <span class="lbl"><span class="em">GNU 项目启动</span> · 'GNU's Not Unix' 宣言发布</span>
+      </div>
+      <div class="timeline-bar"></div>
+      <div class="anchor-card">
+        <span class="yr">1985</span>
+        <span class="lbl"><span class="em">自由软件基金会成立</span> · Richard Stallman 创立 FSF</span>
+      </div>
+    </div>
+    <p class="narrative">
+      <span class="strong">1980 年代</span>，当软件大规模闭源、用户失去对机器的控制权，Richard&nbsp;Stallman 发起了 GNU 项目；GPL 是一场<span class="em">以法律语言书写的社会实验</span>——用版权法最锋利的条款反过来保护用户不被代码所束缚。
+    </p>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

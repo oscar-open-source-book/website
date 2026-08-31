@@ -1,0 +1,582 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>GPL的燃烧与增长 · 开源之书记录</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Sans+3:wght@300;400;600;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Sans+3:wght@300;400;600;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --red:#E53935;
+  --red-deep:#B71C1C;
+  --red-glow:#FF6A63;
+  --black:#1A1A1A;
+  --black-soft:#262626;
+  --cream:#F7F3EB;
+  --cream-warm:#F0E9DC;
+  --line:#D8CEB9;
+  --text-dark:#1A1A1A;
+  --text-muted:#5C5347;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:"Source Sans 3","Noto Sans SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  color:var(--text-dark);
+  background:var(--cream);
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:var(--cream);
+}
+
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+
+#bg .bgrain{
+  position:absolute;top:-40px;right:-40px;
+  width:900px;height:900px;
+  background:radial-gradient(circle at 62% 38%, rgba(229,57,53,0.09), rgba(229,57,53,0.03) 40%, transparent 62%);
+}
+
+#bg .bgdots{
+  position:absolute;left:64px;bottom:120px;
+  width:230px;height:230px;
+  background-image:radial-gradient(rgba(26,26,26,0.16) 1px, transparent 1.4px);
+  background-size:16px 16px;
+  opacity:0.55;
+}
+
+#bg .bgdiag{
+  position:absolute;left:0;right:0;top:0;bottom:0;
+  background:linear-gradient(180deg, rgba(247,243,235,0) 0%, rgba(247,243,235,0) 68%, rgba(216,206,185,0.18) 100%);
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:44px 60px 40px;
+  display:flex;flex-direction:column;
+}
+
+/* HERO */
+.hero{
+  position:relative;
+  padding-bottom:22px;
+  border-bottom:1px solid var(--line);
+}
+
+.hero .corner-mark{
+  position:absolute;top:2px;right:0;
+  width:64px;height:64px;
+  border:2px solid var(--red);
+  border-left:none;border-bottom:none;
+  opacity:0.65;
+}
+
+.masthead{
+  display:flex;align-items:center;gap:16px;
+  font-family:"Source Sans 3","Noto Sans SC",sans-serif;
+  font-size:11px;letter-spacing:0.34em;
+  color:var(--black);font-weight:700;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+
+.masthead .dot{
+  width:6px;height:6px;background:var(--red);border-radius:50%;flex-shrink:0;
+}
+
+.masthead .thin{color:var(--text-muted);font-weight:400;}
+
+.hero-title{
+  font-family:"Playfair Display","Noto Serif SC","Songti SC",serif;
+  font-weight:900;
+  font-size:112px;
+  line-height:1.02;
+  color:var(--black);
+  letter-spacing:-0.01em;
+  margin-bottom:14px;
+}
+
+.hero-title .accent{color:var(--red);}
+
+.divider-row{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:12px;
+}
+
+.divider-row .bar{
+  width:74px;height:3px;background:var(--red);flex-shrink:0;
+}
+
+.divider-row .thin{
+  flex:1;height:1px;background:var(--line);
+}
+
+.divider-row .dot{
+  width:5px;height:5px;background:var(--black);border-radius:50%;flex-shrink:0;
+}
+
+.hero-sub{
+  font-family:"Playfair Display","Noto Serif SC",serif;
+  font-weight:600;font-style:italic;
+  font-size:22px;
+  color:var(--red-deep);
+  line-height:1.45;
+  margin-bottom:18px;
+  letter-spacing:0.005em;
+}
+
+/* TAGS ROW */
+.tags-row{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:20px;
+  padding-top:14px;
+}
+
+.tag-block{
+  border-left:3px solid var(--red);
+  padding:2px 0 2px 14px;
+  display:flex;flex-direction:column;gap:6px;
+}
+
+.tag-block .tb-label{
+  font-family:"Playfair Display","Noto Serif SC",serif;
+  font-size:16px;font-weight:800;color:var(--black);
+  letter-spacing:0.01em;
+}
+
+.tag-block .tb-desc{
+  font-family:"Source Sans 3","Noto Sans SC",sans-serif;
+  font-size:12.5px;line-height:1.55;
+  color:var(--text-muted);
+}
+
+/* BODY */
+.body{
+  flex:1;
+  display:grid;
+  grid-template-columns:1.15fr 1.35fr;
+  gap:50px;
+  padding-top:22px;
+  min-height:0;
+}
+
+/* LEFT */
+.left-col{
+  display:flex;flex-direction:column;
+  min-height:0;
+}
+
+.code-box{
+  background:var(--black);
+  padding:16px 18px;
+  border-left:3px solid var(--red);
+  margin-bottom:22px;
+  position:relative;
+}
+
+.code-box::before{
+  content:'';
+  position:absolute;
+  top:0;right:0;
+  width:38px;height:2px;background:var(--red);
+}
+
+.code-box .cb-tag{
+  display:block;
+  font-family:"Source Sans 3","Noto Sans SC",sans-serif;
+  font-size:9.5px;letter-spacing:0.34em;
+  color:var(--red);font-weight:700;
+  margin-bottom:8px;
+  text-transform:uppercase;
+}
+
+.code-box .cb-text{
+  font-family:"Courier New",monospace;
+  font-size:12px;line-height:1.65;
+  color:#F7F3EB;
+  display:block;
+}
+
+.intro{
+  font-family:"Source Sans 3","Noto Sans SC","PingFang SC",sans-serif;
+  font-size:15.5px;
+  line-height:1.85;
+  color:var(--text-dark);
+  letter-spacing:0.015em;
+}
+
+.intro b{
+  font-weight:700;
+  color:var(--red);
+  font-family:"Playfair Display","Noto Serif SC",serif;
+}
+
+/* RIGHT */
+.right-col{
+  display:flex;flex-direction:column;
+  min-height:0;
+}
+
+.right-panel{
+  flex:1;
+  position:relative;
+  background:var(--black);
+  padding:20px 24px 20px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+
+.right-panel .rpglow{
+  position:absolute;
+  top:-40px;right:-60px;
+  width:340px;height:340px;
+  background:radial-gradient(circle at 60% 40%, rgba(229,57,53,0.55), rgba(229,57,53,0.15) 45%, transparent 72%);
+  pointer-events:none;
+}
+
+.right-panel .rpglow2{
+  position:absolute;
+  bottom:-80px;left:-40px;
+  width:280px;height:280px;
+  background:radial-gradient(circle at 50% 50%, rgba(255,106,99,0.28), transparent 65%);
+  pointer-events:none;
+}
+
+.right-panel .rpdots{
+  position:absolute;
+  top:10px;right:20px;
+  width:80px;height:80px;
+  background-image:radial-gradient(rgba(247,243,235,0.15) 1px, transparent 1.4px);
+  background-size:10px 10px;
+  pointer-events:none;
+}
+
+.rp-content{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;
+  height:100%;
+  gap:14px;
+}
+
+.rp-tag-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(247,243,235,0.15);
+}
+
+.rp-tag-l{
+  font-family:"Source Sans 3",sans-serif;
+  font-size:10px;letter-spacing:0.34em;
+  color:var(--red);font-weight:700;
+  text-transform:uppercase;
+}
+
+.rp-tag-r{
+  font-family:"Source Sans 3",sans-serif;
+  font-size:10px;letter-spacing:0.22em;
+  color:rgba(247,243,235,0.55);
+}
+
+.rp-chart-wrap{
+  display:flex;align-items:center;
+  gap:14px;
+  flex:1;min-height:0;
+}
+
+.fire-badge{
+  width:88px;height:88px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #FF6A63 0%, var(--red) 35%, #7A0A08 85%, #2A0000 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;flex-shrink:0;
+  box-shadow:0 0 0 3px var(--black), 0 0 0 4px var(--red), 0 12px 30px rgba(229,57,53,0.4);
+}
+
+.fire-badge::after{
+  content:'';
+  position:absolute;
+  inset:5px;
+  border-radius:50%;
+  border:1px solid rgba(247,243,235,0.3);
+  pointer-events:none;
+}
+
+.fire-badge .flame{
+  font-size:34px;
+  filter:drop-shadow(0 0 6px rgba(255,140,120,0.6));
+  z-index:2;
+}
+
+.chart-frame{
+  flex:1;min-width:0;
+  background:rgba(247,243,235,0.04);
+  border:1px solid rgba(247,243,235,0.12);
+  padding:10px 14px 8px;
+  display:flex;flex-direction:column;
+  height:100%;
+}
+
+.chart-frame .cf-title{
+  font-family:"Playfair Display","Noto Serif SC",serif;
+  font-size:13px;font-weight:800;
+  color:#F7F3EB;
+  letter-spacing:0.02em;
+  margin-bottom:2px;
+}
+
+.chart-frame .cf-sub{
+  font-family:"Source Sans 3",sans-serif;
+  font-size:10px;letter-spacing:0.24em;
+  color:rgba(247,243,235,0.5);
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+
+#chart_1{
+  flex:1;width:100%;
+  min-height:0;
+}
+
+/* ISSUE STRIP */
+.issue-strip{
+  margin-top:16px;
+  height:80px;
+  background:var(--red);
+  display:grid;
+  grid-template-columns:220px 1fr 1fr 1fr;
+  color:var(--cream);
+}
+
+.is-brand{
+  background:var(--black);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 22px;
+  gap:4px;
+}
+
+.is-brand .brand-main{
+  font-family:"Playfair Display","Noto Serif SC",serif;
+  font-size:20px;font-weight:900;
+  color:var(--cream);
+  letter-spacing:0.02em;
+  line-height:1;
+}
+
+.is-brand .brand-sub{
+  font-family:"Source Sans 3",sans-serif;
+  font-size:9.5px;letter-spacing:0.34em;
+  color:rgba(247,243,235,0.7);
+  font-weight:600;
+}
+
+.is-item{
+  padding:12px 20px;
+  display:flex;flex-direction:column;justify-content:center;
+  border-left:1px solid rgba(247,243,235,0.28);
+  position:relative;
+}
+
+.is-item .is-year{
+  font-family:"Playfair Display","Noto Serif SC",serif;
+  font-size:24px;font-weight:900;
+  color:var(--cream);
+  letter-spacing:0.01em;
+  line-height:1.05;
+  margin-bottom:4px;
+}
+
+.is-item .is-desc{
+  font-family:"Source Sans 3","Noto Sans SC",sans-serif;
+  font-size:12px;line-height:1.4;
+  color:rgba(247,243,235,0.92);
+  font-weight:400;
+}
+
+.is-item::before{
+  content:'';
+  position:absolute;top:14px;left:0;
+  width:2px;height:calc(100% - 28px);
+  background:rgba(247,243,235,0.15);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bgrain"></div>
+    <div class="bgdiag"></div>
+    <div class="bgdots"></div>
+  </div>
+
+  <div id="ct">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="corner-mark"></div>
+
+      <div class="masthead">
+        <span class="dot"></span>
+        <span>OPEN SOURCE CHRONICLE · 开 源 之 书 记 录</span>
+        <span class="thin">· VOL. 01</span>
+        <span class="thin">· GPL SPECIAL ISSUE</span>
+        <span class="thin">· 1989—2007</span>
+      </div>
+
+      <div class="hero-title">
+        GPL的<span class="accent">燃烧</span>与增长
+      </div>
+
+      <div class="divider-row">
+        <div class="bar"></div>
+        <div class="thin"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="hero-sub">
+        开源之书记录 · 一场关于自由软件版权博弈与繁荣的时代叙事
+      </div>
+
+      <div class="tags-row">
+        <div class="tag-block">
+          <div class="tb-label">开源之书记录</div>
+          <div class="tb-desc">以阅读分享的形式，回望 GPL 许可证从诞生到席卷全球的波澜壮阔。</div>
+        </div>
+        <div class="tag-block">
+          <div class="tb-label">燃烧与增长</div>
+          <div class="tb-desc">GPL 既是自由软件的烈火，也是开源生态持续扩张的引擎。</div>
+        </div>
+        <div class="tag-block">
+          <div class="tb-label">适兕 · 开源之道</div>
+          <div class="tb-desc">本期分享聚焦 GPL 的精神内核、争议时刻与增长轨迹。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="body">
+
+      <div class="left-col">
+        <div class="code-box">
+          <span class="cb-tag">GPL v3 · PREAMBLE</span>
+          <span class="cb-text">// The GNU GENERAL PUBLIC LICENSE</span><br>
+          <span class="cb-text">// This program is free software;</span><br>
+          <span class="cb-text">// you can redistribute it, and/or</span><br>
+          <span class="cb-text">// modify it under the terms of</span><br>
+          <span class="cb-text">// the GPL…</span>
+        </div>
+
+        <div class="intro">
+          <b>GPL，General Public License，通用公共许可证。</b>它是自由软件运动最锋利的武器，也是开源世界最具争议的协议。本期开源之书记录，我们将沿着时间线，从 Richard Stallman 的初心讲起，穿过专利诉讼与商业博弈的硝烟，最后抵达 GPL 在全球代码库中无处不在的今天。
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="right-panel">
+          <div class="rpglow"></div>
+          <div class="rpglow2"></div>
+          <div class="rpdots"></div>
+
+          <div class="rp-content">
+            <div class="rp-tag-row">
+              <div class="rp-tag-l">Fire × Code · 火 之 章 节</div>
+              <div class="rp-tag-r">GPL EVOLUTION · 1989 → 2007</div>
+            </div>
+
+            <div class="rp-chart-wrap">
+              <div class="fire-badge">
+                <span class="flame">🔥</span>
+              </div>
+              <div class="chart-frame">
+                <div class="cf-title">GPL 三个版本的时间跨度</div>
+                <div class="cf-sub">Timeline of GPL Releases</div>
+                <div id="chart_1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ISSUE STRIP -->
+    <div class="issue-strip">
+      <div class="is-brand">
+        <div class="brand-main">开 源 之 书</div>
+        <div class="brand-sub">ISSUE · 01</div>
+      </div>
+      <div class="is-item">
+        <div class="is-year">1989 · GPLv1</div>
+        <div class="is-desc">GPL 首次发布，由 Richard Stallman 起草，开启自由软件时代。</div>
+      </div>
+      <div class="is-item">
+        <div class="is-year">1991 · GPLv2</div>
+        <div class="is-desc">Linux 内核采用的版本，"Copyleft" 理念在全球代码库中扎根。</div>
+      </div>
+      <div class="is-item">
+        <div class="is-year">2007 · GPLv3</div>
+        <div class="is-desc">应对软件专利与 DRM 挑战，为 Tivoization 划下红线。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  const el = document.getElementById('chart_1');
+  const chart = echarts.init(el, null, {renderer: 'svg'});
+  chart.setOption({
+    grid:{left:60,right:76,top:6,bottom:6,containLabel:false},
+    tooltip:{show:false},
+    xAxis:{
+      type:'value',
+      max:21,
+      show:false
+    },
+    yAxis:{
+      type:'category',
+      data:['GPLv1', 'GPLv2', 'GPLv3'],
+      axisLine:{show:false},
+      axisTick:{show:false},
+      axisLabel:{
+        color:'#F7F3EB',
+        fontSize:13,
+        fontWeight:700,
+        fontFamily:'"Playfair Display","Noto Serif SC",serif'
+      }
+    },
+    series:[{
+      type:'bar',
+      data:[
+        {value:1, itemStyle:{color:'#4A4A4A'}, label:{formatter:'1989'}},
+        {value:2, itemStyle:{color:'#8A2020'}, label:{formatter:'1991'}},
+        {value:18, itemStyle:{color:'#E53935'}, label:{formatter:'2007'}}
+      ],
+      barWidth:14,
+      itemStyle:{borderRadius:[0,1,1,0]},
+      label:{
+        show:true,
+        position:'right',
+        color:'#F7F3EB',
+        fontSize:12,
+        fontWeight:700,
+        fontFamily:'"Source Sans 3","Noto Sans SC",sans-serif',
+        distance:6
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>
