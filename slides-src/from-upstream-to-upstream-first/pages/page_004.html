@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>从下游到上游的演进</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+  :root {
+    --bg: #F5F0E8;
+    --ink: #2D1F14;
+    --ink-2: #4A3A2E;
+    --primary: #795548;
+    --primary-deep: #5D3F34;
+    --primary-light: #A1755F;
+    --accent: #C49A6C;
+    --accent-soft: #E0C6A3;
+    --muted: #B8A894;
+    --line: #D9C9B4;
+    --serif: 'Noto Serif SC', serif;
+    --sans: 'Noto Sans SC', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); }
+  .wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; background: var(--bg); }
+  #bg { position: absolute; inset: 0; z-index: 0; }
+  #ct { position: absolute; inset: 0; z-index: 1; padding: 60px; box-sizing: border-box; }
+
+  /* Header */
+  .header { position: relative; margin-bottom: 40px; }
+  .title-row { display: flex; align-items: flex-end; gap: 24px; margin-bottom: 22px; }
+  .header h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 60px;
+    color: var(--primary-deep);
+    letter-spacing: 4px;
+    line-height: 1.15;
+  }
+  .title-line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .title-line::before, .title-line::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .title-line::before { left: 0; }
+  .title-line::after { right: 0; }
+  .header .narrative {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.9;
+    max-width: 1120px;
+    letter-spacing: 0.5px;
+  }
+  .header .narrative em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--primary);
+    font-weight: 500;
+    padding: 0 4px;
+  }
+
+  /* Columns */
+  .cols { position: relative; padding-top: 200px; }
+  .cols-row { display: flex; gap: 40px; height: 500px; position: relative; }
+  .col { flex: 1; display: flex; flex-direction: column; position: relative; }
+  .col-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--primary);
+    letter-spacing: 8px;
+    margin-bottom: 20px;
+  }
+  .col-label .zh { font-weight: 600; color: var(--primary-deep); }
+  .col-label .en { font-family: var(--sans); font-size: 11px; color: var(--muted); letter-spacing: 2px; }
+  .col-label::before { content: ''; width: 28px; height: 1px; background: var(--primary); }
+
+  .col-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--primary-deep);
+    margin-bottom: 4px;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+  .col-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 26px;
+    letter-spacing: 3px;
+  }
+
+  .item-list { display: flex; flex-direction: column; gap: 18px; }
+  .item-card {
+    padding: 18px 22px 20px 22px;
+    background: rgba(255, 253, 248, 0.55);
+    border-left: 3px solid var(--primary);
+    position: relative;
+  }
+  .item-card .num {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--accent);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+  .item-card .label {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--primary-deep);
+    margin-bottom: 6px;
+    font-weight: 600;
+    letter-spacing: 3px;
+  }
+  .item-card .desc {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--ink-2);
+    letter-spacing: 0.4px;
+  }
+  .item-card .desc strong {
+    color: var(--primary);
+    font-weight: 500;
+    font-family: var(--serif);
+    font-style: italic;
+    padding: 0 2px;
+  }
+
+  .col-foot {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11.5px;
+    color: var(--primary-light);
+    font-family: var(--serif);
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+  .col-foot::before {
+    content: '→';
+    color: var(--accent);
+    font-family: var(--sans);
+    font-style: normal;
+  }
+
+  /* Separator */
+  .sep {
+    width: 1px;
+    align-self: stretch;
+    background: var(--line);
+    position: relative;
+  }
+  .sep .dot {
+    position: absolute;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateX(-50%);
+  }
+  .sep .dot.top { top: 0; }
+  .sep .dot.mid { top: 50%; transform: translate(-50%, -50%); background: var(--primary); }
+  .sep .dot.bot { bottom: 0; }
+
+  /* Down indicator */
+  .down-indicator {
+    position: absolute;
+    left: 480px;
+    top: 30px;
+    width: 22px;
+    height: 260px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .down-indicator .vline {
+    position: absolute;
+    top: 0;
+    left: 9px;
+    width: 3px;
+    height: 210px;
+    background: linear-gradient(to bottom, var(--primary-light), var(--primary));
+    opacity: 0.85;
+  }
+  .down-indicator .vline .node {
+    position: absolute;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateX(-50%);
+  }
+  .down-indicator .arrow {
+    position: absolute;
+    top: 210px;
+    left: 0;
+    width: 22px;
+    height: 50px;
+    background: var(--primary);
+    clip-path: polygon(0 0, 100% 0, 100% 30%, 50% 100%, 0 30%);
+  }
+  .down-indicator .lbl {
+    position: absolute;
+    top: 96px;
+    left: -46px;
+    writing-mode: vertical-rl;
+    font-family: var(--serif);
+    font-size: 10.5px;
+    letter-spacing: 5px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* Up indicator */
+  .up-indicator {
+    position: absolute;
+    right: 78px;
+    top: 332px;
+    width: 22px;
+    height: 260px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .up-indicator .vline {
+    position: absolute;
+    bottom: 0;
+    left: 9px;
+    width: 3px;
+    height: 210px;
+    background: linear-gradient(to top, var(--primary-light), var(--primary));
+    opacity: 0.9;
+  }
+  .up-indicator .vline .node {
+    position: absolute;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateX(-50%);
+  }
+  .up-indicator .vline .node.t1 { top: 40px; }
+  .up-indicator .vline .node.t2 { top: 100px; }
+  .up-indicator .vline .node.t3 { top: 160px; }
+  .up-indicator .arrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 22px;
+    height: 50px;
+    background: var(--primary);
+    clip-path: polygon(0 70%, 100% 70%, 100% 100%, 50% 0, 0 100%);
+  }
+  .up-indicator .lbl {
+    position: absolute;
+    top: 96px;
+    left: 30px;
+    writing-mode: vertical-rl;
+    font-family: var(--serif);
+    font-size: 10.5px;
+    letter-spacing: 5px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* KPI cards */
+  .kpis { display: flex; gap: 18px; margin-bottom: 26px; }
+  .kpi {
+    flex: 1;
+    padding: 20px 22px 22px 22px;
+    background: rgba(255, 253, 248, 0.55);
+    border-top: 3px solid var(--primary);
+    position: relative;
+    min-height: 140px;
+  }
+  .kpi .kpi-label {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--primary-deep);
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .kpi .kpi-value {
+    font-family: var(--serif);
+    font-size: 58px;
+    font-weight: 600;
+    color: var(--primary-deep);
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+  .kpi .kpi-value .unit {
+    font-size: 20px;
+    margin-left: 4px;
+    color: var(--primary);
+    font-weight: 400;
+  }
+  .kpi .kpi-value .yr {
+    font-family: var(--sans);
+    font-size: 52px;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+  .kpi .kpi-note {
+    font-size: 11.5px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    letter-spacing: 0.4px;
+    max-width: 200px;
+  }
+  .kpi .kpi-tag {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    font-family: var(--serif);
+  }
+
+  /* Right column bottom text */
+  .right-narrative {
+    margin-top: 24px;
+    padding-left: 14px;
+    border-left: 2px solid var(--primary);
+  }
+  .right-narrative .rn-title {
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--primary-deep);
+    margin-bottom: 12px;
+    font-weight: 500;
+    letter-spacing: 4px;
+  }
+  .right-narrative .rn-body {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.95;
+    letter-spacing: 0.4px;
+    max-width: 560px;
+  }
+  .right-narrative .rn-body em {
+    font-family: var(--serif);
+    color: var(--primary);
+    font-weight: 500;
+    font-style: italic;
+    padding: 0 3px;
+  }
+  .right-narrative .rn-foot {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    font-family: var(--serif);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <h1>从下游到上游的演进</h1>
+        <div class="title-line"></div>
+      </div>
+      <div class="narrative">
+        曾几何时，开源社区以"下游维护"为主 —— 各发行版各自打补丁、各自维护。Linus Torvalds 的 <em>"From downstream to upstream"</em> 成为社区觉醒的警钟：真正的进步，在于把改动送回源头。
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="down-indicator">
+        <div class="vline"><span class="node" style="top:60px"></span><span class="node" style="top:120px"></span><span class="node" style="top:180px"></span></div>
+        <div class="arrow"></div>
+        <span class="lbl">DOWNSTREAM BURDEN</span>
+      </div>
+
+      <div class="cols-row">
+        <div class="col col-left">
+          <div class="col-label"><span class="zh">下游困境</span><span class="en">DOWNSTREAM</span></div>
+          <div class="col-title">补丁堆积的时代</div>
+          <div class="col-sub">Patch accumulation · Fragmentation · Delay</div>
+          <div class="item-list">
+            <div class="item-card">
+              <span class="num">01</span>
+              <div class="label">下游维护</div>
+              <div class="desc">发行版各自打补丁、各自维护，长期堆积本地变更，形成显著的维护负担。</div>
+            </div>
+            <div class="item-card">
+              <span class="num">02</span>
+              <div class="label">Torvalds 警示</div>
+              <div class="desc"><strong>"From downstream to upstream"</strong> 成为社区觉醒的标志性呼吁，呼吁将改动送回源头。</div>
+            </div>
+            <div class="item-card">
+              <span class="num">03</span>
+              <div class="label">碎片化代价</div>
+              <div class="desc">多分支维护导致安全补丁延迟、功能回回困难、人才分散，累积成隐性成本。</div>
+            </div>
+          </div>
+          <div class="col-foot">补丁越堆越厚，负担越积越重</div>
+        </div>
+
+        <div class="sep">
+          <span class="dot top"></span>
+          <span class="dot mid"></span>
+          <span class="dot bot"></span>
+        </div>
+
+        <div class="col col-right">
+          <div class="col-label"><span class="zh">上游回归</span><span class="en">UPSTREAM</span></div>
+          <div class="col-title">回归源头的转身</div>
+          <div class="col-sub">Contribution returns · Burden reduces</div>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="kpi-tag">KPI</div>
+              <div class="kpi-label">碎片化风险</div>
+              <div class="kpi-value">高</div>
+              <div class="kpi-note">补丁无法回传时，维护成本陡增。</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-tag">NODE</div>
+              <div class="kpi-label">觉醒节点</div>
+              <div class="kpi-value"><span class="yr">2000s</span></div>
+              <div class="kpi-note">社区广泛讨论上游回归议题。</div>
+            </div>
+          </div>
+          <div class="up-indicator">
+            <div class="arrow"></div>
+            <div class="vline"><span class="node t1"></span><span class="node t2"></span><span class="node t3"></span></div>
+            <span class="lbl">UPSTREAM RETURN</span>
+          </div>
+          <div class="right-narrative">
+            <div class="rn-title">回传上游</div>
+            <div class="rn-body">贡献者开始主动将改动<em>回传上游</em>，减少重复劳动与知识孤岛 —— 从"下游打补丁"走向"上游做贡献"。</div>
+            <div class="rn-foot">— Back to the source.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
