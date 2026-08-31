@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源生态的数据图景</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --primary: #795548;
+  --primary-deep: #5D3F35;
+  --primary-light: #9C7568;
+  --moss: #A3B18A;
+  --moss-deep: #8A9C72;
+  --moss-light: #C4CEA8;
+  --cream: #F4F1E8;
+  --cream-dark: #E8E2D2;
+  --gray: #9B9488;
+  --gray-deep: #6B6559;
+  --text-main: #3A2E27;
+  --text-sub: #7A6F63;
+  --line: #D9D2C4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--cream);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(163,177,138,0.08) 0%, transparent 70%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(121,85,72,0.06) 0%, transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-tag {
+  font-size: 12px;
+  color: var(--gray);
+  letter-spacing: 4px;
+  font-weight: 400;
+}
+
+.main-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--primary-deep);
+  letter-spacing: 3px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--text-sub);
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.header-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.page-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--primary-light);
+  line-height: 1;
+}
+
+.page-num-label {
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 3px;
+}
+
+/* Cards Row */
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: #FAF8F0;
+  border: 1px solid var(--line);
+  padding: 22px 18px 20px 18px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 220px;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+}
+
+.card.moss-accent::before {
+  background: var(--moss);
+}
+
+.card-index {
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.card-number {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  letter-spacing: 1px;
+}
+
+.card-number .unit {
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.card-number .plus {
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--primary-light);
+}
+
+.card-label {
+  font-size: 13px;
+  color: var(--text-main);
+  font-weight: 500;
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+.card-divider {
+  width: 30px;
+  height: 1px;
+  background: var(--line);
+  margin: 10px 0 8px 0;
+}
+
+.card-source {
+  font-size: 10.5px;
+  color: var(--gray);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+
+.card-dot {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--moss);
+  opacity: 0.5;
+}
+
+/* Qualitative Section */
+.qual-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.qual-header .line-deco {
+  flex: 0 0 40px;
+  height: 1px;
+  background: var(--primary);
+}
+
+.qual-header .qual-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--primary-deep);
+  letter-spacing: 2px;
+}
+
+.qual-header .qual-sub {
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+.qual-header .line-deco-flex {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.qual-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.qual-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 4px;
+  position: relative;
+}
+
+.qual-item::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--moss);
+}
+
+.qual-item .dim-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.qual-item .dim-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  color: var(--moss-deep);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.qual-item .dim-text {
+  font-size: 11.5px;
+  color: var(--text-sub);
+  font-weight: 300;
+  line-height: 1.75;
+  letter-spacing: 0.3px;
+}
+
+/* Bottom decorative trend line */
+.trend-area {
+  margin-top: 20px;
+  position: relative;
+  padding-top: 24px;
+}
+
+.trend-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.trend-label-left {
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 3px;
+  font-weight: 400;
+}
+
+.trend-label-right {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  color: var(--primary-light);
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+
+.trend-line {
+  position: relative;
+  height: 40px;
+}
+
+.trend-line svg {
+  width: 100%;
+  height: 100%;
+}
+
+.trend-nodes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.trend-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.trend-node .node-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--cream);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.trend-node.moss .node-dot {
+  background: var(--moss);
+  box-shadow: 0 0 0 1px var(--moss);
+}
+
+.trend-node .node-label {
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+
+/* Footer */
+.footer {
+  position: absolute;
+  bottom: 20px;
+  left: 70px;
+  right: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+.footer .footer-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--moss);
+  display: inline-block;
+  margin: 0 8px;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <span class="page-tag">DATA · LANDSCAPE</span>
+        <span class="main-title">开源生态的数据图景</span>
+        <span class="subtitle">从贡献者规模到企业依赖度，再到商业化与安全挑战——"无律之序"在真实世界中被验证与考验</span>
+      </div>
+      <div class="header-right">
+        <span class="page-num">06</span>
+        <span class="page-num-label">PAGE</span>
+      </div>
+    </div>
+
+    <div class="cards-row">
+      <div class="card">
+        <span class="card-index">01</span>
+        <span class="card-number">1000<span class="unit">万</span><span class="plus">+</span></span>
+        <span class="card-label">全球活跃贡献者</span>
+        <span class="card-divider"></span>
+        <span class="card-source">多平台综合估算</span>
+        <span class="card-dot"></span>
+      </div>
+      <div class="card moss-accent">
+        <span class="card-index">02</span>
+        <span class="card-number">90<span class="unit">%</span><span class="plus">+</span></span>
+        <span class="card-label">企业开源使用率</span>
+        <span class="card-divider"></span>
+        <span class="card-source">2023 Linux基金会报告</span>
+        <span class="card-dot"></span>
+      </div>
+      <div class="card">
+        <span class="card-index">03</span>
+        <span class="card-number">28<span class="unit">%</span></span>
+        <span class="card-label">中国开发者占比</span>
+        <span class="card-divider"></span>
+        <span class="card-source">Apache基金会数据</span>
+        <span class="card-dot"></span>
+      </div>
+      <div class="card moss-accent">
+        <span class="card-index">04</span>
+        <span class="card-number">10<span class="unit">倍</span></span>
+        <span class="card-label">开源安全事件增长</span>
+        <span class="card-divider"></span>
+        <span class="card-source">近五年同比增长</span>
+        <span class="card-dot"></span>
+      </div>
+      <div class="card">
+        <span class="card-index">05</span>
+        <span class="card-number">15<span class="unit">家</span></span>
+        <span class="card-label">商业开源独角兽</span>
+        <span class="card-divider"></span>
+        <span class="card-source">估值超10亿美元</span>
+        <span class="card-dot"></span>
+      </div>
+    </div>
+
+    <div class="qual-header">
+      <span class="line-deco"></span>
+      <span class="qual-title">五维定性透视</span>
+      <span class="qual-sub">FIVE DIMENSIONS</span>
+      <span class="line-deco-flex"></span>
+    </div>
+
+    <div class="qual-grid">
+      <div class="qual-item">
+        <span class="dim-label"><span class="dim-num">壹</span>贡献者规模</span>
+        <span class="dim-text">全球活跃开源贡献者已突破千万级，中国占比持续上升，社区活力呈现指数级扩张态势。</span>
+      </div>
+      <div class="qual-item">
+        <span class="dim-label"><span class="dim-num">贰</span>企业采用</span>
+        <span class="dim-text">超过90%的企业IT架构包含开源组件，开源已从"可选"变为"默认"，系统级依赖度空前。</span>
+      </div>
+      <div class="qual-item">
+        <span class="dim-label"><span class="dim-num">叁</span>商业化路径</span>
+        <span class="dim-text">开源公司估值数十亿美元级成为常态，商业与社区双轨并行，新商业模式不断涌现。</span>
+      </div>
+      <div class="qual-item">
+        <span class="dim-label"><span class="dim-num">肆</span>安全隐忧</span>
+        <span class="dim-text">Log4j等事件暴露了过度依赖与信任链条脆弱的风险，供应链安全治理成为紧迫议题。</span>
+      </div>
+      <div class="qual-item">
+        <span class="dim-label"><span class="dim-num">伍</span>人才流向</span>
+        <span class="dim-text">年轻开发者将开源贡献作为简历标配，开源社区已成为全球技术人才最大的蓄水池。</span>
+      </div>
+    </div>
+
+    <div class="trend-area">
+      <div class="trend-label">
+        <span class="trend-label-left">生态演进趋势 · ECOSYSTEM TRAJECTORY</span>
+        <span class="trend-label-right">无律之序 · 自组织 · 再平衡</span>
+      </div>
+      <div class="trend-line">
+        <svg viewBox="0 0 1460 40" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#A3B18A;stop-opacity:0.4"/>
+              <stop offset="50%" style="stop-color:#795548;stop-opacity:0.8"/>
+              <stop offset="100%" style="stop-color:#A3B18A;stop-opacity:0.4"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="30" x2="1460" y2="30" stroke="#D9D2C4" stroke-width="1" stroke-dasharray="4 6"/>
+          <path d="M 0,28 C 200,35 350,10 550,18 C 750,26 900,5 1100,15 C 1250,22 1380,8 1460,12"
+                fill="none" stroke="url(#lineGrad)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="trend-nodes">
+        <div class="trend-node moss">
+          <span class="node-dot"></span>
+          <span class="node-label">贡献者</span>
+        </div>
+        <div class="trend-node">
+          <span class="node-dot"></span>
+          <span class="node-label">企业</span>
+        </div>
+        <div class="trend-node moss">
+          <span class="node-dot"></span>
+          <span class="node-label">中国</span>
+        </div>
+        <div class="trend-node">
+          <span class="node-dot"></span>
+          <span class="node-label">安全</span>
+        </div>
+        <div class="trend-node moss">
+          <span class="node-dot"></span>
+          <span class="node-label">商业</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>DATA · LANDSCAPE<span class="footer-dot"></span>五宫格核心指标</span>
+      <span>2024 · OPEN SOURCE ECOSYSTEM<span class="footer-dot"></span>无律之序</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

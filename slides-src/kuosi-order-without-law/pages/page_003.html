@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>自组织原理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brown:#795548;
+  --brown-deep:#5d3f37;
+  --brown-light:#a07c6d;
+  --sand:#A3B18A;
+  --sand-light:#c5d0b0;
+  --cream:#F4F1E8;
+  --cream-deep:#e8e3d6;
+  --ink:#3b2a24;
+  --ink-soft:#6b5847;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Noto Sans SC",sans-serif;color:var(--ink);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 64px 48px 64px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 背景装饰层 */
+.bg-deco{position:absolute;inset:0;overflow:hidden;}
+.bg-deco::before{content:"";position:absolute;top:-160px;right:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(163,177,138,0.22), rgba(163,177,138,0) 70%);}
+.bg-deco::after{content:"";position:absolute;bottom:-180px;left:-100px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle at 60% 40%, rgba(121,85,72,0.14), rgba(121,85,72,0) 70%);}
+
+/* 顶部标题区 */
+.header{padding-bottom:18px;border-bottom:1px solid rgba(121,85,72,0.22);}
+.title-row{display:flex;align-items:flex-end;justify-content:space-between;}
+.title-main{display:flex;align-items:baseline;gap:20px;}
+.title-cn{font-family:"Noto Serif SC",serif;font-weight:700;font-size:52px;color:var(--brown);letter-spacing:6px;line-height:1;}
+.title-en{font-family:"Noto Serif SC",serif;font-weight:400;font-style:italic;font-size:18px;color:var(--brown-light);letter-spacing:2px;}
+.title-mark{font-family:"Noto Serif SC",serif;font-size:16px;color:var(--sand);letter-spacing:3px;padding-bottom:8px;}
+.subtitle{margin-top:16px;font-size:14px;line-height:1.9;color:var(--ink-soft);letter-spacing:0.5px;max-width:1360px;}
+.subtitle em{font-style:normal;color:var(--brown);font-weight:500;}
+
+/* 主内容区 */
+.main{flex:1;display:flex;gap:36px;margin-top:24px;min-height:0;}
+
+/* 左侧卡片 */
+.left{flex:0 0 58%;display:flex;flex-direction:column;gap:14px;}
+.card{position:relative;background:var(--cream);border:1px solid rgba(121,85,72,0.16);border-left:3px solid var(--brown);padding:13px 22px 13px 24px;display:flex;align-items:center;gap:22px;transition:none;}
+.card .idx{font-family:"Noto Serif SC",serif;font-size:13px;color:var(--brown-light);letter-spacing:2px;min-width:28px;padding-right:14px;border-right:1px solid rgba(121,85,72,0.18);text-align:center;}
+.card .card-title{font-family:"Noto Serif SC",serif;font-weight:700;font-size:20px;color:var(--brown-deep);letter-spacing:2px;min-width:132px;}
+.card .card-desc{font-size:13.5px;line-height:1.75;color:var(--ink-soft);letter-spacing:0.3px;flex:1;}
+.card .card-desc .hl{color:var(--brown);font-weight:500;}
+.card .card-tag{position:absolute;top:8px;right:16px;font-size:10px;color:var(--sand);letter-spacing:3px;}
+
+/* 右侧抽象示意区 */
+.right{flex:1;display:flex;flex-direction:column;gap:14px;}
+.abst{position:relative;flex:0 0 300px;background:linear-gradient(135deg, var(--cream-deep) 0%, var(--cream) 60%, #ede3d0 100%);border:1px solid rgba(121,85,72,0.14);overflow:hidden;padding:22px 24px;}
+.abst-title{font-family:"Noto Serif SC",serif;font-size:14px;color:var(--brown);letter-spacing:4px;font-weight:600;margin-bottom:6px;}
+.abst-sub{font-size:11px;color:var(--brown-light);letter-spacing:2px;margin-bottom:10px;}
+.abst-canvas{position:absolute;inset:0;}
+.dot{position:absolute;border-radius:50%;}
+.d1{width:78px;height:78px;background:rgba(121,85,72,0.22);top:70px;left:60px;}
+.d2{width:110px;height:110px;border:1.5px solid rgba(163,177,138,0.6);top:50px;right:40px;}
+.d3{width:46px;height:46px;background:rgba(163,177,138,0.35);bottom:70px;right:70px;}
+.d4{width:22px;height:22px;background:var(--brown-light);top:120px;left:180px;}
+.d5{width:14px;height:14px;background:var(--sand);bottom:110px;left:120px;}
+.line-a{position:absolute;height:1px;background:rgba(121,85,72,0.35);}
+.l1{top:90px;left:60px;width:220px;}
+.l2{top:60px;right:130px;width:180px;}
+.l3{bottom:90px;left:80px;width:280px;}
+.tri{position:absolute;width:0;height:0;}
+.tri-1{border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:30px solid rgba(121,85,72,0.25);top:90px;right:180px;}
+.cross{position:absolute;width:8px;height:8px;}
+.cross::before,.cross::after{content:"";position:absolute;background:rgba(121,85,72,0.5);}
+.cross::before{width:8px;height:1px;top:3.5px;left:0;}
+.cross::after{width:1px;height:8px;top:0;left:3.5px;}
+.c1{top:40px;left:140px;}
+.c2{bottom:50px;right:180px;}
+.c3{top:180px;left:290px;}
+
+.kpi-area{flex:1;display:flex;flex-direction:column;gap:10px;}
+.kpi{background:var(--cream);border:1px solid rgba(121,85,72,0.16);border-top:2px solid var(--sand);padding:12px 20px;display:flex;align-items:center;gap:18px;}
+.kpi-num{font-family:"Noto Serif SC",serif;font-weight:700;font-size:36px;color:var(--brown);line-height:1;letter-spacing:1px;min-width:104px;}
+.kpi-num .plus{font-size:22px;color:var(--brown-light);font-weight:400;margin-left:2px;}
+.kpi-meta{display:flex;flex-direction:column;gap:2px;}
+.kpi-label{font-family:"Noto Serif SC",serif;font-size:13px;color:var(--brown-deep);font-weight:600;letter-spacing:1.5px;}
+.kpi-desc{font-size:11px;color:var(--ink-soft);letter-spacing:0.5px;line-height:1.5;}
+
+/* 底部 */
+.footer{margin-top:18px;padding-top:14px;border-top:1px solid rgba(121,85,72,0.2);display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.footer-text{font-size:12.5px;color:var(--ink-soft);letter-spacing:2px;line-height:1.7;}
+.footer-text .em{color:var(--brown);font-weight:500;}
+.footer-mark{display:flex;align-items:center;gap:10px;font-family:"Noto Serif SC",serif;font-size:11px;color:var(--sand);letter-spacing:4px;}
+.footer-mark .bar{width:36px;height:1px;background:var(--sand);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"><div class="bg-deco"></div></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-row">
+        <div class="title-main">
+          <span class="title-cn">自组织原理</span>
+          <span class="title-en">Principle of Self-Organization</span>
+        </div>
+        <span class="title-mark">— 04 —</span>
+      </div>
+      <p class="subtitle">
+        适兕借用复杂系统科学的<em>「涌现」</em>概念，指出开源社区的秩序本质上是<em>微观个体行为自下而上涌现</em>的产物——与自然界蚁群、市场经济、生态系统遵循同一底层规律。
+      </p>
+    </div>
+
+    <div class="main">
+
+      <div class="left">
+
+        <div class="card">
+          <span class="card-tag">EMERGENCE</span>
+          <span class="idx">壹</span>
+          <span class="card-title">涌现现象</span>
+          <span class="card-desc">复杂系统中<span class="hl">大量简单个体</span>的互动，可自发形成宏观秩序——<span class="hl">无需顶层设计</span>，秩序自下而上而生。</span>
+        </div>
+
+        <div class="card">
+          <span class="card-tag">MARKET</span>
+          <span class="idx">贰</span>
+          <span class="card-title">市场类比</span>
+          <span class="card-desc">亚当·斯密<em style="font-style:normal;color:var(--brown);font-weight:500">「看不见的手」</em>——个人追逐<span class="hl">私利</span>，反而促成社会<span class="hl">整体福祉</span>的涌现。</span>
+        </div>
+
+        <div class="card">
+          <span class="card-tag">ANT COLONY</span>
+          <span class="idx">叁</span>
+          <span class="card-title">蚁群隐喻</span>
+          <span class="card-desc">单只蚂蚁<span class="hl">能力有限</span>，蚁群却能建巢、运粮、抵御外敌——简单规则叠加出复杂智慧。</span>
+        </div>
+
+        <div class="card">
+          <span class="card-tag">OPEN SOURCE</span>
+          <span class="idx">肆</span>
+          <span class="card-title">开源映射</span>
+          <span class="card-desc">每位贡献者追求<span class="hl">自我实现</span>，结果汇聚成支撑全球互联网的<span class="hl">世界级基础设施</span>。</span>
+        </div>
+
+      </div>
+
+      <div class="right">
+
+        <div class="abst">
+          <div class="abst-title">三域交织 · 秩序涌现</div>
+          <div class="abst-sub">ANT × MARKET × CODE</div>
+          <div class="abst-canvas">
+            <span class="dot d1"></span>
+            <span class="dot d2"></span>
+            <span class="dot d3"></span>
+            <span class="dot d4"></span>
+            <span class="dot d5"></span>
+            <span class="line-a l1"></span>
+            <span class="line-a l2"></span>
+            <span class="line-a l3"></span>
+            <span class="tri tri-1"></span>
+            <span class="cross c1"></span>
+            <span class="cross c2"></span>
+            <span class="cross c3"></span>
+          </div>
+        </div>
+
+        <div class="kpi-area">
+          <div class="kpi">
+            <span class="kpi-num">1万<span class="plus">+</span></span>
+            <span class="kpi-meta">
+              <span class="kpi-label">Linux 内核贡献者</span>
+              <span class="kpi-desc">跨越数十年的协作，自下而上涌现</span>
+            </span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-num">40万<span class="plus">+</span></span>
+            <span class="kpi-meta">
+              <span class="kpi-label">Kubernetes 提交数</span>
+              <span class="kpi-desc">GitHub 仓库累计，无中心的集体智慧</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <p class="footer-text">
+        <span class="em">自下而上</span>，秩序涌现——简单个体的自发互动，足以编织出超越任何个体之总和的<span class="em">复杂秩序</span>。
+      </p>
+      <span class="footer-mark"><span class="bar"></span>自组织 · 涌现 · 秩序</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --brown:#795548;
+  --brown-soft:#9C7A6A;
+  --green:#A3B18A;
+  --green-dark:#8FA072;
+  --cream:#F4F1E8;
+  --cream-dark:#EBE5D6;
+  --ink:#4A3A33;
+  --ink-soft:#6E5B52;
+  --line:#C9BFB1;
+  --seal:#B5453A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Noto Sans SC',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:0;box-sizing:border-box;}
+
+/* 背景装饰 */
+.bg-grid{
+  position:absolute;top:80px;left:80px;right:80px;bottom:80px;
+  border:1px solid var(--line);
+  opacity:0.55;
+}
+.bg-grid::after{
+  content:'';position:absolute;inset:8px;
+  border:1px solid var(--line);opacity:0.6;
+}
+.bg-corner-tl,.bg-corner-br{
+  position:absolute;width:60px;height:60px;opacity:0.7;
+}
+.bg-corner-tl{top:60px;left:60px;border-top:2px solid var(--brown);border-left:2px solid var(--brown);}
+.bg-corner-br{bottom:60px;right:60px;border-bottom:2px solid var(--brown);border-right:2px solid var(--brown);}
+.bg-corner-tr{position:absolute;top:60px;right:60px;width:40px;height:40px;border-top:1px solid var(--brown-soft);border-right:1px solid var(--brown-soft);opacity:0.55;}
+.bg-corner-bl{position:absolute;bottom:60px;left:60px;width:40px;height:40px;border-bottom:1px solid var(--brown-soft);border-left:1px solid var(--brown-soft);opacity:0.55;}
+
+/* 顶部装饰 */
+.top-deco{
+  position:absolute;top:110px;left:0;right:0;text-align:center;
+  display:flex;justify-content:center;align-items:center;gap:14px;
+  color:var(--brown-soft);font-size:13px;letter-spacing:10px;font-weight:300;
+}
+.top-deco .dot{width:5px;height:5px;border-radius:50%;background:var(--green-dark);display:inline-block;}
+.top-deco .line{width:60px;height:1px;background:var(--brown-soft);opacity:0.7;}
+
+/* 主标题区 */
+.hero{
+  position:absolute;top:170px;left:0;right:0;text-align:center;
+  display:flex;flex-direction:column;align-items:center;
+}
+.title-row{display:flex;align-items:center;justify-content:center;gap:28px;}
+.title-vline{
+  width:2px;height:104px;background:linear-gradient(to bottom,transparent,var(--brown) 25%,var(--brown) 75%,transparent);
+  opacity:0.85;
+}
+.main-title{
+  font-family:'Noto Serif SC',serif;
+  font-weight:700;
+  font-size:96px;
+  color:var(--brown);
+  letter-spacing:14px;
+  line-height:1.1;
+}
+.subtitle{
+  margin-top:22px;
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:300;
+  font-size:19px;
+  color:var(--brown-soft);
+  letter-spacing:6px;
+}
+.subtitle .sep{color:var(--green-dark);margin:0 12px;}
+.subtitle-deco{
+  margin-top:20px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  color:var(--green-dark);font-size:12px;letter-spacing:8px;font-weight:300;
+}
+.subtitle-deco .ln{width:80px;height:1px;background:var(--green);opacity:0.8;}
+.subtitle-deco .sm{width:4px;height:4px;border-radius:50%;background:var(--green-dark);}
+
+/* 元信息区 */
+.meta{
+  position:absolute;top:430px;left:160px;width:720px;
+}
+.meta-row{
+  display:flex;align-items:flex-start;gap:24px;
+  padding:18px 0;
+  border-bottom:1px solid var(--line);
+}
+.meta-row:last-child{border-bottom:none;}
+.meta-num{
+  font-family:'Noto Serif SC',serif;
+  font-size:14px;color:var(--green-dark);
+  font-weight:500;letter-spacing:3px;
+  min-width:38px;padding-top:4px;
+}
+.meta-dot{width:5px;height:5px;border-radius:50%;background:var(--green-dark);margin-top:11px;flex-shrink:0;}
+.meta-body{flex:1;}
+.meta-label{
+  font-family:'Noto Serif SC',serif;
+  font-size:15px;color:var(--brown);
+  font-weight:500;letter-spacing:4px;margin-bottom:8px;
+}
+.meta-label .em{color:var(--brown-soft);font-weight:300;margin:0 10px;}
+.meta-text{
+  font-size:14px;color:var(--ink-soft);
+  font-weight:300;line-height:1.85;letter-spacing:1px;
+}
+
+/* 右侧导语区 */
+.intro{
+  position:absolute;top:430px;right:160px;width:600px;
+  padding-left:32px;
+  border-left:1px solid var(--line);
+}
+.intro-tag{
+  font-size:12px;color:var(--green-dark);
+  letter-spacing:8px;font-weight:400;margin-bottom:14px;
+}
+.intro-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:22px;color:var(--brown);font-weight:500;
+  letter-spacing:3px;margin-bottom:18px;line-height:1.5;
+}
+.intro-title .em{color:var(--brown-soft);}
+.intro-divider{
+  display:flex;align-items:center;gap:8px;margin-bottom:18px;
+}
+.intro-divider .ln{flex:1;height:1px;background:var(--brown-soft);opacity:0.5;}
+.intro-divider .d{width:4px;height:4px;border-radius:50%;background:var(--green-dark);}
+.intro-text{
+  font-size:14px;color:var(--ink-soft);
+  font-weight:300;line-height:2.05;letter-spacing:1.5px;
+  text-align:justify;
+}
+.intro-sign{
+  margin-top:22px;text-align:right;
+  font-family:'Noto Serif SC',serif;
+  font-size:13px;color:var(--green-dark);letter-spacing:6px;font-weight:400;
+}
+
+/* 底部区域 */
+.bottom{
+  position:absolute;bottom:80px;left:160px;right:160px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.left-info{
+  display:flex;align-items:center;gap:18px;
+  color:var(--brown-soft);font-size:12px;letter-spacing:6px;font-weight:300;
+}
+.left-info .vline{width:1px;height:36px;background:var(--brown-soft);opacity:0.6;}
+.left-info .grp{display:flex;flex-direction:column;gap:8px;}
+.left-info .ln{display:flex;align-items:center;gap:10px;}
+.left-info .d{width:3px;height:3px;border-radius:50%;background:var(--green-dark);}
+.left-info .k{color:var(--brown);font-weight:500;letter-spacing:4px;}
+
+/* 印章 */
+.seal-wrap{
+  display:flex;align-items:center;gap:22px;
+}
+.seal-info{
+  display:flex;flex-direction:column;gap:10px;
+  font-size:12px;color:var(--ink-soft);letter-spacing:3px;font-weight:300;line-height:1.6;
+  padding:14px 20px;background:var(--cream-dark);
+  border:1px solid var(--line);position:relative;
+}
+.seal-info::before{
+  content:'';position:absolute;top:-3px;left:-3px;
+  width:8px;height:8px;border-top:1px solid var(--brown);border-left:1px solid var(--brown);
+}
+.seal-info::after{
+  content:'';position:absolute;bottom:-3px;right:-3px;
+  width:8px;height:8px;border-bottom:1px solid var(--brown);border-right:1px solid var(--brown);
+}
+.seal-info .k{color:var(--brown);font-weight:500;letter-spacing:3px;margin-right:6px;}
+.seal{
+  width:86px;height:86px;
+  background:var(--seal);
+  color:#FAF0E0;
+  font-family:'Noto Serif SC',serif;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  place-items:center;
+  font-weight:700;font-size:22px;
+  letter-spacing:0;
+  border:3px double #FAF0E0;
+  box-shadow:0 0 0 1px var(--seal), 0 2px 6px rgba(181,69,58,0.25);
+  transform:rotate(-4deg);
+  position:relative;
+}
+.seal span{opacity:0.95;}
+.seal::after{
+  content:'';position:absolute;inset:5px;border:1px solid rgba(250,240,224,0.4);
+}
+
+/* 底部装饰线 */
+.bottom-deco{
+  position:absolute;bottom:40px;left:160px;right:160px;
+  display:flex;align-items:center;gap:14px;
+  color:var(--brown-soft);font-size:11px;letter-spacing:8px;font-weight:300;
+  opacity:0.8;
+}
+.bottom-deco .ln{flex:1;height:1px;background:var(--brown-soft);opacity:0.5;}
+.bottom-deco .d{width:4px;height:4px;border-radius:50%;background:var(--green);}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-corner-tl"></div>
+    <div class="bg-corner-tr"></div>
+    <div class="bg-corner-bl"></div>
+    <div class="bg-corner-br"></div>
+  </div>
+
+  <div id="ct">
+
+    <div class="top-deco">
+      <span class="line"></span>
+      <span class="dot"></span>
+      <span>OPEN&nbsp;SOURCE&nbsp;·&nbsp;CHAPTERS</span>
+      <span class="dot"></span>
+      <span class="line"></span>
+    </div>
+
+    <div class="hero">
+      <div class="title-row">
+        <div class="title-vline"></div>
+        <h1 class="main-title">开源之书记录</h1>
+        <div class="title-vline"></div>
+      </div>
+      <div class="subtitle">
+        <span>kuosi-order-without-law</span>
+        <span class="sep">·</span>
+        <span>无律之序</span>
+      </div>
+      <div class="subtitle-deco">
+        <span class="ln"></span>
+        <span class="sm"></span>
+        <span>A&nbsp;Reading&nbsp;Note</span>
+        <span class="sm"></span>
+        <span class="ln"></span>
+      </div>
+    </div>
+
+    <div class="meta">
+      <div class="meta-row">
+        <div class="meta-num">壹</div>
+        <div class="meta-dot"></div>
+        <div class="meta-body">
+          <div class="meta-label">主题<span class="em">—</span><span class="em">—</span></div>
+          <div class="meta-text">开源社区如何在没有中央权威的情况下，形成自发的秩序</div>
+        </div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-num">贰</div>
+        <div class="meta-dot"></div>
+        <div class="meta-body">
+          <div class="meta-label">作者<span class="em">—</span><span class="em">—</span></div>
+          <div class="meta-text">适兕 · 开源之道主编 · 开源布道者</div>
+        </div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-num">叁</div>
+        <div class="meta-dot"></div>
+        <div class="meta-body">
+          <div class="meta-label">体裁<span class="em">—</span><span class="em">—</span></div>
+          <div class="meta-text">阅读笔记&nbsp;/&nbsp;哲学思考&nbsp;/&nbsp;社区观察随笔</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro">
+      <div class="intro-tag">导&nbsp;&nbsp;读</div>
+      <div class="intro-title">秩序如何<span class="em">——</span>自无数个体协作中<span class="em"></span>自发涌现</div>
+      <div class="intro-divider"><span class="ln"></span><span class="d"></span><span class="ln"></span></div>
+      <div class="intro-text">
+        本次分享源自开源之道系列文章中的一篇哲思之作——适兕以"无律之序"为题，探讨开源社区中秩序如何从无数个体的自愿协作中自发涌现，而非依靠任何自上而下的法典。
+      </div>
+      <div class="intro-sign">——&nbsp;适&nbsp;兕&nbsp;·&nbsp;序</div>
+    </div>
+
+    <div class="bottom">
+      <div class="left-info">
+        <div class="grp">
+          <div class="ln"><span class="d"></span><span class="k">卷</span><span>NO.&nbsp;001</span></div>
+          <div class="ln"><span class="d"></span><span class="k">期</span><span>开源之道 · 期刊辑录</span></div>
+        </div>
+        <div class="vline"></div>
+        <div class="grp">
+          <div class="ln"><span class="d"></span><span class="k">辑</span><span>哲思随笔 · 秩序之章</span></div>
+          <div class="ln"><span class="d"></span><span class="k">阅</span><span>Reading&nbsp;Notes</span></div>
+        </div>
+      </div>
+
+      <div class="seal-wrap">
+        <div class="seal-info">
+          <div><span class="k">系列</span>开源之道 —— 中国首个中文开源文化期刊</div>
+          <div><span class="k">主编</span>适兕（Kuosi）· 开源布道者</div>
+        </div>
+        <div class="seal">
+          <span>开</span><span>源</span>
+          <span>之</span><span>道</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-deco">
+      <span class="ln"></span>
+      <span class="d"></span>
+      <span>SPONTANEOUS&nbsp;ORDER</span>
+      <span class="d"></span>
+      <span class="ln"></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
