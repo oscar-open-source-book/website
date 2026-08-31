@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>推荐书单精选</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --red: #E53935;
+  --cream: #F5F0E6;
+  --cream-dark: #EAE2D2;
+  --text-main: #1A1A1A;
+  --text-muted: #5A5A5A;
+  --line: #C9BFA8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+  background: var(--cream);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 56px 36px 56px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Top Header Bar ===== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--navy);
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--navy);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.top-bar-left .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+}
+
+.top-bar-right {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--navy);
+  font-weight: 400;
+}
+
+/* ===== Title Section ===== */
+.title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 18px;
+  margin-bottom: 14px;
+}
+
+.title-main {
+  flex: 1;
+}
+
+.title-eyebrow {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--red);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.title-h1 {
+  font-family: 'Playfair Display', 'Source Han Serif SC', 'Songti SC', serif;
+  font-size: 76px;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.title-underline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.title-underline .line {
+  flex: 1;
+  height: 1px;
+  background: var(--navy);
+  max-width: 400px;
+}
+
+.title-underline .sq {
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+}
+
+.title-quote {
+  font-family: 'Playfair Display', 'Source Han Serif SC', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 420px;
+  text-align: right;
+  padding-top: 6px;
+}
+
+.title-quote::before {
+  content: '\201C';
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  color: var(--red);
+  line-height: 0;
+  position: relative;
+  top: 12px;
+  margin-right: 4px;
+}
+
+/* ===== Body Layout ===== */
+.body-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+  flex: 1;
+  margin-top: 10px;
+}
+
+/* ===== Cards Grid ===== */
+.cards-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--navy);
+  border-left: 1px solid var(--navy);
+  position: relative;
+}
+
+.card {
+  padding: 18px 22px;
+  border-right: 1px solid var(--navy);
+  border-bottom: 1px solid var(--navy);
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 0;
+}
+
+.card-number {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--cream-dark);
+  line-height: 1;
+}
+
+.card-label {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  padding: 4px 10px;
+  margin-bottom: 12px;
+  align-self: flex-start;
+}
+
+.card-book {
+  font-family: 'Playfair Display', 'Source Han Serif SC', 'Songti SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.card-author {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.card-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--red);
+  margin-bottom: 10px;
+}
+
+.card-review {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--text-main);
+  font-family: 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+}
+
+.card-tag {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* ===== Side Panel ===== */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 4px;
+}
+
+.stat-card {
+  background: var(--navy);
+  color: var(--cream);
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card .stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--cream);
+}
+
+.stat-card .stat-num .plus {
+  color: var(--red);
+  font-size: 44px;
+  vertical-align: super;
+}
+
+.stat-card .stat-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-top: 6px;
+  color: var(--cream);
+  opacity: 0.7;
+  font-weight: 600;
+}
+
+.stat-card .stat-desc {
+  font-size: 12px;
+  line-height: 1.55;
+  margin-top: 10px;
+  color: var(--cream);
+  opacity: 0.85;
+}
+
+.stat-card .stat-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--red);
+}
+
+.stat-card2 {
+  background: var(--cream-dark);
+  color: var(--navy);
+  padding: 20px 22px;
+  border: 1px solid var(--navy);
+  position: relative;
+}
+
+.stat-card2 .stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--navy);
+}
+
+.stat-card2 .stat-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-top: 6px;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.stat-card2 .stat-dims {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.stat-card2 .dim-chip {
+  font-size: 10px;
+  padding: 3px 8px;
+  border: 1px solid var(--navy);
+  color: var(--navy);
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.stat-card2 .dim-chip.red {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+
+.bottom-info {
+  background: var(--cream);
+  border-top: 1px solid var(--red);
+  padding: 12px 0 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+}
+
+.bottom-info .left-tag {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Decorative elements */
+.deco-triangle {
+  position: absolute;
+  top: 48px;
+  right: 56px;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 14px solid var(--red);
+  opacity: 0;
+}
+
+/* Page footer bar */
+.footer-bar {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 2px solid var(--navy);
+}
+
+.footer-bar .left-meta {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.footer-bar .center-deco {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-bar .center-deco .dash {
+  width: 30px;
+  height: 1px;
+  background: var(--navy);
+}
+
+.footer-bar .center-deco .circle {
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+}
+
+.footer-bar .right-page {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  color: var(--navy);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <span class="dot"></span>
+        <span>READING · SELECTION · 2024</span>
+      </div>
+      <div class="top-bar-right">CHAPTER №04 &nbsp;|&nbsp; EDITOR'S PICK</div>
+    </div>
+
+    <div class="title-section">
+      <div class="title-main">
+        <div class="title-eyebrow">特 殊 推 荐 · FEATURED READING</div>
+        <h1 class="title-h1">推荐书单精选</h1>
+        <div class="title-underline">
+          <span class="sq"></span>
+          <span class="line"></span>
+        </div>
+      </div>
+      <div class="title-quote">
+        从八十多本书中精选四本作为重点推荐，它们分别代表工程素养、历史视野、商业智慧与认知科学四个维度，也是个人阅读旅程中影响最深的作品，每本都被反复阅读、持续补充笔记，多年后仍能获得新的启发。
+      </div>
+    </div>
+
+    <div class="body-grid">
+
+      <div class="cards-area">
+
+        <div class="card">
+          <span class="card-number">01</span>
+          <span class="card-label">工程素养</span>
+          <div class="card-book">代码整洁之道</div>
+          <div class="card-author">Clean Code — Robert C. Martin</div>
+          <div class="card-divider"></div>
+          <div class="card-review">工程素养的基础训练，读完后开始主动重构自己的代码和文档</div>
+          <div class="card-tag">— READING NOTE 001</div>
+        </div>
+
+        <div class="card">
+          <span class="card-number">02</span>
+          <span class="card-label">历史视野</span>
+          <div class="card-book">人类的群星闪耀时</div>
+          <div class="card-author">Decisive Moments — Stefan Zweig</div>
+          <div class="card-divider"></div>
+          <div class="card-review">用历史的关键瞬间教会我们：决定命运的往往是短暂的瞬间</div>
+          <div class="card-tag">— READING NOTE 002</div>
+        </div>
+
+        <div class="card">
+          <span class="card-number">03</span>
+          <span class="card-label">商业智慧</span>
+          <div class="card-book">穷查理宝典</div>
+          <div class="card-author">Poor Charlie's Almanack — Charlie Munger</div>
+          <div class="card-divider"></div>
+          <div class="card-review">跨学科思维与投资智慧的完美结合，启发构建多元思维模型</div>
+          <div class="card-tag">— READING NOTE 003</div>
+        </div>
+
+        <div class="card">
+          <span class="card-number">04</span>
+          <span class="card-label">认知科学</span>
+          <div class="card-book">思考，快与慢</div>
+          <div class="card-author">Thinking, Fast and Slow — Daniel Kahneman</div>
+          <div class="card-divider"></div>
+          <div class="card-review">理解认知偏差的必读之作，改变了对自己决策方式的所有认识</div>
+          <div class="card-tag">— READING NOTE 004</div>
+        </div>
+
+      </div>
+
+      <div class="side-panel">
+
+        <div class="stat-card">
+          <span class="stat-corner"></span>
+          <div class="stat-num">4<span class="plus">+</span></div>
+          <div class="stat-label">推荐书目 · SELECTED</div>
+          <div class="stat-desc">4 本精选（从 80+ 中筛选），每本均经过反复阅读与持续笔记补充</div>
+        </div>
+
+        <div class="stat-card2">
+          <div class="stat-num">4</div>
+          <div class="stat-label">覆盖维度 · DIMENSIONS</div>
+          <div class="stat-dims">
+            <span class="dim-chip red">工 程</span>
+            <span class="dim-chip">历 史</span>
+            <span class="dim-chip">商 业</span>
+            <span class="dim-chip">认 知</span>
+          </div>
+        </div>
+
+        <div class="bottom-info">
+          <span class="left-tag">— Editor's Note</span>
+          <span>阅读是一场持续的修行</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="left-meta">EDITORIAL · SELECTION GUIDE</div>
+      <div class="center-deco">
+        <span class="dash"></span>
+        <span class="circle"></span>
+        <span class="dash"></span>
+      </div>
+      <div class="right-page">P. 04</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

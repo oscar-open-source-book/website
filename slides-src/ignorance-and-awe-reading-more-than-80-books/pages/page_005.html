@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>读书笔记方法论</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F0E6;
+  --navy:#0D2137;
+  --navy-2:#1B3454;
+  --red:#E53935;
+  --ink:#1E1E1E;
+  --muted:#6B6559;
+  --line:#C9C0AE;
+  --paper:#FBF7EF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Source Sans Pro","Source Han Sans SC","Microsoft YaHei",sans-serif;
+  font-weight:400;
+  letter-spacing:.01em;
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:54px 60px 48px 60px;box-sizing:border-box;}
+
+/* Background decorations */
+#bg .rule-top{position:absolute;left:60px;right:60px;top:36px;height:1px;background:var(--navy);opacity:.85;}
+#bg .rule-bot{position:absolute;left:60px;right:60px;bottom:30px;height:1px;background:var(--navy);opacity:.85;}
+#bg .frame-tl{position:absolute;left:60px;top:36px;width:10px;height:10px;background:var(--red);}
+#bg .frame-tr{position:absolute;right:60px;top:36px;width:10px;height:10px;background:var(--red);}
+#bg .frame-bl{position:absolute;left:60px;bottom:30px;width:10px;height:10px;background:var(--red);}
+#bg .frame-br{position:absolute;right:60px;bottom:30px;width:10px;height:10px;background:var(--red);}
+#bg .masthead-l{position:absolute;left:60px;top:48px;font-family:"Playfair Display",serif;font-style:italic;font-size:13px;color:var(--navy);letter-spacing:.18em;}
+#bg .masthead-r{position:absolute;right:60px;top:48px;font-family:"Playfair Display",serif;font-size:13px;color:var(--navy);letter-spacing:.24em;}
+#bg .folio-l{position:absolute;left:60px;bottom:42px;font-size:11px;color:var(--muted);letter-spacing:.22em;}
+#bg .folio-r{position:absolute;right:60px;bottom:42px;font-family:"Playfair Display",serif;font-style:italic;font-size:12px;color:var(--muted);letter-spacing:.16em;}
+
+/* Layout grid */
+#ct{display:grid;grid-template-columns:460px 1fr;gap:48px;}
+
+/* LEFT: giant 02 */
+.left{position:relative;display:flex;flex-direction:column;justify-content:flex-start;}
+.left .eye{
+  font-family:"Playfair Display",serif;font-style:italic;font-size:14px;
+  color:var(--red);letter-spacing:.32em;text-transform:uppercase;
+  margin-top:6px;margin-bottom:10px;
+}
+.left .num{
+  font-family:"Playfair Display",serif;font-weight:900;
+  font-size:340px;line-height:.85;color:var(--navy);
+  letter-spacing:-.04em;margin-top:-8px;
+}
+.left .num-underline{
+  width:240px;height:6px;background:var(--red);margin-top:14px;
+}
+.left .cn-title{
+  font-family:"Playfair Display","Source Han Serif SC","Songti SC",serif;
+  font-weight:700;font-size:44px;color:var(--navy);
+  letter-spacing:.02em;margin-top:22px;line-height:1.15;
+}
+.left .cn-sub{
+  font-family:"Playfair Display","Source Han Serif SC",serif;
+  font-style:italic;font-size:16px;color:var(--navy-2);
+  margin-top:8px;letter-spacing:.08em;
+}
+.left .divider{width:80px;height:1px;background:var(--navy);opacity:.6;margin-top:20px;}
+.left .blurb{
+  font-size:12.5px;color:var(--muted);line-height:1.75;
+  margin-top:14px;max-width:380px;
+}
+.left .meta{
+  display:flex;gap:24px;margin-top:18px;
+  font-size:10.5px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;
+}
+.left .meta span::before{content:"— ";color:var(--red);}
+
+/* RIGHT column */
+.right{position:relative;display:flex;flex-direction:column;}
+.right .head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}
+.right .head-title{
+  font-family:"Playfair Display","Source Han Serif SC",serif;font-weight:700;
+  font-size:26px;color:var(--navy);letter-spacing:.02em;
+}
+.right .head-title .it{font-style:italic;font-weight:400;color:var(--red);}
+.right .head-meta{
+  font-size:10.5px;color:var(--muted);letter-spacing:.22em;text-transform:uppercase;
+}
+
+/* 4-column cards */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-top:3px solid var(--navy);
+  padding:16px 14px 16px 14px;
+  position:relative;
+  height:224px;
+  display:flex;flex-direction:column;
+}
+.card .dot{
+  width:9px;height:9px;background:var(--red);border-radius:50%;
+  margin-bottom:10px;
+}
+.card .idx{
+  font-family:"Playfair Display",serif;font-style:italic;font-size:13px;
+  color:var(--red);letter-spacing:.16em;margin-bottom:4px;
+}
+.card .ct{
+  font-family:"Playfair Display","Source Han Serif SC",serif;font-weight:700;
+  font-size:18px;color:var(--navy);line-height:1.25;margin-bottom:9px;
+}
+.card .rule{width:28px;height:1px;background:var(--navy);opacity:.7;margin-bottom:9px;}
+.card .desc{
+  font-size:12px;line-height:1.65;color:var(--ink);flex:1;
+}
+.card .tag{
+  margin-top:8px;font-size:9.5px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;
+  border-top:1px dashed var(--line);padding-top:7px;
+}
+
+/* TIMELINE */
+.timeline-wrap{
+  margin-top:16px;background:var(--paper);
+  border:1px solid var(--line);padding:12px 18px 14px 18px;
+  position:relative;
+}
+.timeline-wrap .tl-eye{
+  font-size:9.5px;color:var(--muted);letter-spacing:.24em;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.timeline-wrap .tl-eye .r{color:var(--red);}
+.timeline{position:relative;height:54px;margin:2px 4px 0 4px;}
+.timeline .axis{position:absolute;left:0;right:0;top:26px;height:1px;background:var(--navy);opacity:.7;}
+.timeline .axis-head{
+  position:absolute;right:-2px;top:22px;width:0;height:0;
+  border-left:8px solid var(--navy);border-top:4px solid transparent;border-bottom:4px solid transparent;opacity:.7;
+}
+.timeline .node{position:absolute;top:20px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--navy);transform:translateX(-50%);}
+.timeline .node.hot{background:var(--red);border-color:var(--red);}
+.timeline .lbl{
+  position:absolute;top:0;transform:translateX(-50%);
+  font-family:"Playfair Display",serif;font-size:11px;color:var(--navy);letter-spacing:.12em;
+  white-space:nowrap;
+}
+.timeline .lbl.b{top:38px;font-size:10px;color:var(--muted);letter-spacing:.04em;font-family:"Source Sans Pro",sans-serif;font-style:italic;}
+.timeline .lbl.hot{color:var(--red);font-weight:600;}
+
+/* KPI row */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:12px;}
+.kpi{
+  border-left:3px solid var(--red);
+  padding:8px 12px 8px 14px;background:transparent;
+  display:flex;flex-direction:column;
+}
+.kpi .kn{
+  font-family:"Playfair Display",serif;font-weight:900;font-size:30px;
+  color:var(--navy);line-height:1;letter-spacing:-.01em;
+}
+.kpi .kn .unit{font-size:14px;font-weight:400;color:var(--red);margin-left:3px;font-style:italic;}
+.kpi .kl{
+  font-size:11px;color:var(--muted);letter-spacing:.04em;
+  margin-top:5px;line-height:1.5;
+}
+.kpi .kl b{color:var(--navy);font-weight:600;}
+
+/* Narrative */
+.narrative{
+  margin-top:12px;padding:12px 20px 12px 22px;
+  background:var(--navy);color:var(--bg);
+  position:relative;
+}
+.narrative::before{
+  content:"“";position:absolute;left:4px;top:-14px;
+  font-family:"Playfair Display",serif;font-weight:900;
+  font-size:60px;color:var(--red);line-height:1;
+}
+.narrative .nt{
+  font-family:"Playfair Display","Source Han Serif SC",serif;
+  font-size:13.5px;line-height:1.75;letter-spacing:.02em;color:var(--bg);
+}
+.narrative .nt em{color:var(--red);font-style:italic;font-weight:600;}
+.narrative .nsig{
+  position:absolute;right:18px;top:8px;
+  font-family:"Playfair Display",serif;font-style:italic;
+  font-size:10.5px;color:var(--bg);opacity:.6;letter-spacing:.14em;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="rule-top"></div>
+    <div class="rule-bot"></div>
+    <div class="frame-tl"></div>
+    <div class="frame-tr"></div>
+    <div class="frame-bl"></div>
+    <div class="frame-br"></div>
+    <div class="masthead-l">CHAPTER · 阅读方法论</div>
+    <div class="masthead-r">READING METHOD</div>
+    <div class="folio-l">№ 02 / 04  ·  NOTES</div>
+    <div class="folio-r">— Folio · 读书笔记方法论 —</div>
+  </div>
+
+  <div id="ct">
+    <!-- LEFT -->
+    <div class="left">
+      <div class="eye"><span>Chapter · 章节</span></div>
+      <div class="num">02</div>
+      <div class="num-underline"></div>
+      <div class="cn-title"><span>读书笔记方法论</span></div>
+      <div class="cn-sub"><span>A Framework for Reading Notes</span></div>
+      <div class="divider"></div>
+      <div class="blurb">
+        <span>不是摘抄金句，而是建立自己的理解框架——让每一本读过的书，在个人知识体系里找到位置、产生回响、持续生长。</span>
+      </div>
+      <div class="meta">
+        <span><span>四栏框架</span></span>
+        <span><span>季度复盘</span></span>
+        <span><span>知识图谱</span></span>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+      <div class="head">
+        <div class="head-title"><span>方法论框架 <span class="it">/ Four Pillars</span></span></div>
+        <div class="head-meta"><span>§ 02 — Framework</span></div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="dot"></div>
+          <div class="idx"><span>I.</span></div>
+          <div class="ct"><span>三段式结构</span></div>
+          <div class="rule"></div>
+          <div class="desc"><span>每本书按<span style="color:var(--red);font-weight:600;">概述—亮点—反思</span>三段记录：先客观摘要内容，再提炼触动点，最后输出个人观点与疑问。</span></div>
+          <div class="tag"><span>OBJECTIVE → SUBJECTIVE</span></div>
+        </div>
+        <div class="card">
+          <div class="dot"></div>
+          <div class="idx"><span>II.</span></div>
+          <div class="ct"><span>关键词标注</span></div>
+          <div class="rule"></div>
+          <div class="desc"><span>为每本书提炼<span style="color:var(--red);font-weight:600;">3–5 个核心关键词</span>，既是提炼，也是索引——便于日后按主题检索与跨书串联。</span></div>
+          <div class="tag"><span>SEARCHABLE INDEX</span></div>
+        </div>
+        <div class="card">
+          <div class="dot"></div>
+          <div class="idx"><span>III.</span></div>
+          <div class="ct"><span>关联阅读</span></div>
+          <div class="rule"></div>
+          <div class="desc"><span>记录与之前读过哪些书<em style="color:var(--red);font-style:normal;font-weight:600;">呼应</em>或<em style="color:var(--red);font-style:normal;font-weight:600;">冲突</em>，在笔记之间搭桥，构建个人知识图谱。</span></div>
+          <div class="tag"><span>KNOWLEDGE GRAPH</span></div>
+        </div>
+        <div class="card">
+          <div class="dot"></div>
+          <div class="idx"><span>IV.</span></div>
+          <div class="ct"><span>定期复盘</span></div>
+          <div class="rule"></div>
+          <div class="desc"><span>每季度回看笔记，<span style="color:var(--red);font-weight:600;">补充新的理解、删除过时的判断</span>——让笔记随认知一同生长，持续增值。</span></div>
+          <div class="tag"><span>QUARTERLY REVIEW</span></div>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div class="timeline-wrap">
+        <div class="tl-eye"><span>复盘周期示意 / <span class="r">REVIEW CYCLE</span></span></div>
+        <div class="timeline">
+          <div class="axis"></div>
+          <div class="axis-head"></div>
+
+          <div class="lbl" style="left:8%;"><span>Q1 初读</span></div>
+          <div class="node" style="left:8%;"></div>
+          <div class="lbl b" style="left:8%;"><span>建笔记</span></div>
+
+          <div class="lbl" style="left:30%;"><span>Q2 回看</span></div>
+          <div class="node" style="left:30%;"></div>
+          <div class="lbl b" style="left:30%;"><span>补观点</span></div>
+
+          <div class="lbl" style="left:52%;"><span>Q3 串联</span></div>
+          <div class="node" style="left:52%;"></div>
+          <div class="lbl b" style="left:52%;"><span>建图谱</span></div>
+
+          <div class="lbl hot" style="left:74%;"><span>Q4 复盘</span></div>
+          <div class="node hot" style="left:74%;"></div>
+          <div class="lbl b hot" style="left:74%;"><span>删过时</span></div>
+
+          <div class="lbl" style="left:95%;"><span>下一循环</span></div>
+          <div class="node" style="left:95%;background:var(--bg);border:2px dashed var(--navy);"></div>
+          <div class="lbl b" style="left:95%;"><span>持续生长</span></div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kn"><span>3</span><span class="unit">段式</span></div>
+          <div class="kl"><b>笔记结构</b> · 概述 · 亮点 · 反思</div>
+        </div>
+        <div class="kpi">
+          <div class="kn"><span>3–5</span><span class="unit">个 / 本</span></div>
+          <div class="kl"><b>关键词数</b> · 便于主题检索</div>
+        </div>
+        <div class="kpi">
+          <div class="kn"><span>每季度</span></div>
+          <div class="kl"><b>复盘周期</b> · 持续更新笔记</div>
+        </div>
+      </div>
+
+      <!-- NARRATIVE -->
+      <div class="narrative">
+        <span class="nsig">— 编者按 · Editor's Note —</span>
+        <div class="nt">
+          <span>好的阅读笔记<em>不是摘抄金句</em>，而是建立自己的理解框架；本项目的方法强调<em>结构化的三段式</em>、<em>可检索的关键词</em>、<em>可追溯的关联阅读</em>，以及<em>周期性的复盘更新</em>——四者结合，让静态的笔记变成<em>动态生长的知识系统</em>。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

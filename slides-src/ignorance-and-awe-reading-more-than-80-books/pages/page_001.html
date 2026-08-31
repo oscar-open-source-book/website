@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>无知与敬畏 — 开源之书记录</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+Pro:wght@300;400;600;700&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --navy-deep: #081828;
+  --navy-light: #16324F;
+  --cream: #F5F0E6;
+  --cream-dim: #C9C2B4;
+  --red: #E53935;
+  --red-dark: #B7282E;
+  --gold: #C8A96A;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+  color: var(--cream);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--navy);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 30%, #16324F 0%, #0D2137 45%, #081828 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: 
+    repeating-linear-gradient(0deg, transparent 0px, transparent 49px, rgba(245,240,230,0.012) 49px, rgba(245,240,230,0.012) 50px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 49px, rgba(245,240,230,0.01) 49px, rgba(245,240,230,0.01) 50px);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+}
+
+/* Magazine masthead top bar */
+.masthead {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  padding: 28px 60px 18px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(245,240,230,0.15);
+}
+
+.masthead-left {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 14px;
+  letter-spacing: 6px;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.masthead-right {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+}
+
+.masthead-right .vol {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.masthead-right .dot-sep {
+  width: 4px; height: 4px;
+  background: var(--cream-dim);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Main content grid */
+.main-grid {
+  position: absolute;
+  top: 100px;
+  left: 60px;
+  right: 60px;
+  bottom: 100px;
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 50px;
+}
+
+/* Left column */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Issue tag */
+.issue-tag {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.issue-tag .red-bar {
+  width: 60px;
+  height: 3px;
+  background: var(--red);
+}
+
+.issue-tag .tag-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--red);
+  letter-spacing: 2px;
+}
+
+/* Huge title */
+.hero-title {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 168px;
+  line-height: 0.95;
+  color: var(--cream);
+  letter-spacing: 8px;
+  margin-top: 12px;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+}
+
+.hero-title .amp {
+  color: var(--red);
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 140px;
+  margin: 0 12px;
+  display: inline-block;
+  vertical-align: 8px;
+}
+
+.subtitle-block {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.subtitle-block .v-line {
+  width: 1px;
+  height: 56px;
+  background: rgba(245,240,230,0.3);
+}
+
+.subtitle-text {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--cream);
+  letter-spacing: 4px;
+  line-height: 1.4;
+}
+
+.subtitle-text .em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.subtitle-en {
+  margin-top: 10px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--cream-dim);
+  letter-spacing: 3px;
+  padding-left: 71px;
+}
+
+/* Three core cards */
+.core-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.core-card {
+  border: 1px solid rgba(245,240,230,0.15);
+  padding: 22px 20px;
+  position: relative;
+  background: rgba(13,33,55,0.5);
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+}
+
+.core-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--red);
+}
+
+.core-card .card-num {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--red);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.core-card .card-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.core-card .card-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--cream-dim);
+  font-weight: 300;
+}
+
+/* Data strip */
+.data-strip {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  padding: 18px 0;
+  border-top: 1px solid rgba(245,240,230,0.12);
+  border-bottom: 1px solid rgba(245,240,230,0.12);
+  margin-top: 24px;
+}
+
+.data-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.data-item .data-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.data-item .data-num .plus {
+  color: var(--red);
+  font-style: italic;
+}
+
+.data-item .data-label {
+  font-size: 12px;
+  color: var(--cream-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  max-width: 120px;
+  line-height: 1.4;
+}
+
+.data-divider {
+  width: 1px;
+  height: 48px;
+  background: rgba(245,240,230,0.2);
+}
+
+/* Right column - Books decoration */
+.right-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.books-stage {
+  position: relative;
+  height: 380px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+/* Stack of books using CSS */
+.book-stack {
+  position: relative;
+  width: 280px;
+  height: 320px;
+}
+
+.book {
+  position: absolute;
+  border-radius: 2px;
+  box-shadow: 4px 4px 16px rgba(0,0,0,0.4), -1px 0 0 rgba(255,255,255,0.05) inset;
+}
+
+.book-1 {
+  bottom: 0; left: 10px;
+  width: 260px; height: 26px;
+  background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+  transform: rotate(-2deg);
+}
+
+.book-2 {
+  bottom: 28px; left: 20px;
+  width: 240px; height: 22px;
+  background: linear-gradient(135deg, var(--cream) 0%, #D4CDBE 100%);
+  transform: rotate(1.5deg);
+}
+
+.book-3 {
+  bottom: 52px; left: 5px;
+  width: 270px; height: 24px;
+  background: linear-gradient(135deg, #1a3a5c 0%, #0d2137 100%);
+  transform: rotate(-1deg);
+}
+
+.book-4 {
+  bottom: 78px; left: 25px;
+  width: 230px; height: 20px;
+  background: linear-gradient(135deg, var(--gold) 0%, #A08548 100%);
+  transform: rotate(2deg);
+}
+
+.book-5 {
+  bottom: 100px; left: 15px;
+  width: 250px; height: 22px;
+  background: linear-gradient(135deg, #2a5580 0%, #1a3a5c 100%);
+  transform: rotate(-1.5deg);
+}
+
+.book-6 {
+  bottom: 124px; left: 0;
+  width: 260px; height: 24px;
+  background: linear-gradient(135deg, #1c3d5e 0%, #0a1a2a 100%);
+  transform: rotate(1deg);
+}
+
+.book-7 {
+  bottom: 150px; left: 30px;
+  width: 220px; height: 20px;
+  background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+  transform: rotate(-2deg);
+}
+
+.book-8 {
+  bottom: 172px; left: 18px;
+  width: 245px; height: 22px;
+  background: linear-gradient(135deg, #3a6b9a 0%, #2a5580 100%);
+  transform: rotate(1.5deg);
+}
+
+.book-9 {
+  bottom: 196px; left: 8px;
+  width: 255px; height: 20px;
+  background: linear-gradient(135deg, var(--cream-dim) 0%, #A09888 100%);
+  transform: rotate(-1deg);
+}
+
+.book-10 {
+  bottom: 218px; left: 22px;
+  width: 235px; height: 22px;
+  background: linear-gradient(135deg, #0d2137 0%, #061018 100%);
+  transform: rotate(2deg);
+}
+
+.book-11 {
+  bottom: 242px; left: 12px;
+  width: 250px; height: 20px;
+  background: linear-gradient(135deg, #4a7aa8 0%, #2a5580 100%);
+  transform: rotate(-1.5deg);
+}
+
+.book-12 {
+  bottom: 264px; left: 0;
+  width: 260px; height: 22px;
+  background: linear-gradient(135deg, var(--gold) 0%, #A08548 100%);
+  transform: rotate(1deg);
+}
+
+/* Side books */
+.book-side-left {
+  position: absolute;
+  left: -30px;
+  bottom: 40px;
+  width: 26px;
+  height: 280px;
+  background: linear-gradient(180deg, #2a5580 0%, #1a3a5c 100%);
+  transform: rotate(-4deg);
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+}
+
+.book-side-left::after {
+  content: '';
+  position: absolute;
+  top: 0; right: -4px;
+  width: 4px; height: 100%;
+  background: rgba(0,0,0,0.2);
+}
+
+.book-side-right {
+  position: absolute;
+  right: -25px;
+  bottom: 30px;
+  width: 22px;
+  height: 260px;
+  background: linear-gradient(180deg, var(--red) 0%, var(--red-dark) 100%);
+  transform: rotate(5deg);
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+}
+
+.book-side-right2 {
+  position: absolute;
+  right: -10px;
+  bottom: 30px;
+  width: 18px;
+  height: 250px;
+  background: linear-gradient(180deg, var(--cream) 0%, #C9C2B4 100%);
+  transform: rotate(3deg);
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Warm light glow on books */
+.warm-glow {
+  position: absolute;
+  top: -40px;
+  left: -80px;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(ellipse at 30% 30%, rgba(255,200,120,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Right side editorial text */
+.editorial-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(245,240,230,0.1);
+}
+
+.meta-row .label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--cream-dim);
+  letter-spacing: 2px;
+}
+
+.meta-row .value {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  color: var(--cream);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.meta-row .value .accent {
+  color: var(--red);
+}
+
+/* Bottom bar */
+.bottom-bar {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%;
+  padding: 0 60px 22px 60px;
+}
+
+.bottom-red-line {
+  width: 100%;
+  height: 3px;
+  background: var(--red);
+  margin-bottom: 14px;
+}
+
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+}
+
+.bottom-row .barcode {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+}
+
+.bottom-row .barcode span {
+  display: inline-block;
+  width: 2px;
+  background: var(--cream-dim);
+}
+
+/* Decorative number watermark */
+.watermark-num {
+  position: absolute;
+  top: 220px;
+  left: 50px;
+  font-family: 'Playfair Display', serif;
+  font-size: 200px;
+  font-weight: 900;
+  color: rgba(229,57,53,0.06);
+  line-height: 1;
+  font-style: italic;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Geometric accents */
+.geo-line-1 {
+  position: absolute;
+  top: 130px;
+  left: 60px;
+  width: 80px;
+  height: 1px;
+  background: rgba(245,240,230,0.3);
+}
+
+.geo-line-2 {
+  position: absolute;
+  top: 130px;
+  left: 150px;
+  width: 3px;
+  height: 3px;
+  background: var(--red);
+  border-radius: 50%;
+}
+
+/* Page number */
+.page-indicator {
+  position: absolute;
+  top: 120px;
+  right: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.page-indicator .pg-label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--cream-dim);
+  letter-spacing: 2px;
+}
+
+.page-indicator .pg-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1;
+}
+
+/* Decorative rotated tag */
+.rotate-tag {
+  position: absolute;
+  top: 360px;
+  left: 55px;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--cream-dim);
+  letter-spacing: 4px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Watermark -->
+    <div class="watermark-num">N°80</div>
+
+    <!-- Masthead -->
+    <div class="masthead">
+      <div class="masthead-left"><span>THE OPEN BOOK · 阅读观察志</span></div>
+      <div class="masthead-right">
+        <span class="vol">VOL.01</span>
+        <span class="dot-sep"></span>
+        <span>2025 SPRING</span>
+        <span class="dot-sep"></span>
+        <span>OPEN SOURCE JOURNAL</span>
+      </div>
+    </div>
+
+    <div class="geo-line-1"></div>
+    <div class="geo-line-2"></div>
+
+    <!-- Page indicator -->
+    <div class="page-indicator">
+      <span class="pg-label">PAGE</span>
+      <span class="pg-num">01</span>
+    </div>
+
+    <!-- Rotated tag -->
+    <div class="rotate-tag"><span>SPECIAL ISSUE · 特别企划</span></div>
+
+    <div class="main-grid">
+      <!-- LEFT COLUMN -->
+      <div class="left-col">
+
+        <div>
+          <div class="issue-tag">
+            <span class="red-bar"></span>
+            <span class="tag-text">Cover Story — 封面故事</span>
+          </div>
+
+          <h1 class="hero-title">
+            无知<span class="amp">&</span>敬畏
+          </h1>
+
+          <div class="subtitle-block">
+            <span class="v-line"></span>
+            <div>
+              <div class="subtitle-text">
+                开源之书记录<span class="em">——</span>阅读80本书的旅程
+              </div>
+              <div class="subtitle-en">The Journey of Reading 80 Books · An Open Source Log</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Three core cards -->
+        <div class="core-cards">
+          <div class="core-card">
+            <span class="card-num">01 / Reading</span>
+            <span class="card-title">80+ 本书</span>
+            <span class="card-desc">持续记录的开放式阅读日志，涵盖技术、人文与商业三大领域的深度书摘与思考。</span>
+          </div>
+          <div class="core-card">
+            <span class="card-num">02 / Open Source</span>
+            <span class="card-title">开源共享</span>
+            <span class="card-desc">所有读书笔记、书评与感悟以开源方式公开维护，欢迎每一位读者协作、指正与共创。</span>
+          </div>
+          <div class="core-card">
+            <span class="card-num">03 / Mindset</span>
+            <span class="card-title">无知与敬畏</span>
+            <span class="card-desc">读得越多，越感到自己的无知——这是贯穿整段阅读旅程的核心心法与底层态度。</span>
+          </div>
+        </div>
+
+        <!-- Data strip -->
+        <div class="data-strip">
+          <div class="data-item">
+            <span class="data-num">80<span class="plus">+</span></span>
+            <span class="data-label">累计阅读<br>书籍总数</span>
+          </div>
+          <span class="data-divider"></span>
+          <div class="data-item">
+            <span class="data-num" style="font-size:32px;">3</span>
+            <span class="data-label">领域覆盖<br>技术 · 人文 · 商业</span>
+          </div>
+          <span class="data-divider"></span>
+          <div class="data-item">
+            <span class="data-num" style="font-size:28px;">OSS</span>
+            <span class="data-label">开源笔记<br>GitHub &amp; 博客</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="right-col">
+
+        <div class="books-stage">
+          <div class="warm-glow"></div>
+          <div class="book-stack">
+            <div class="book book-12"></div>
+            <div class="book book-11"></div>
+            <div class="book book-10"></div>
+            <div class="book book-9"></div>
+            <div class="book book-8"></div>
+            <div class="book book-7"></div>
+            <div class="book book-6"></div>
+            <div class="book book-5"></div>
+            <div class="book book-4"></div>
+            <div class="book book-3"></div>
+            <div class="book book-2"></div>
+            <div class="book book-1"></div>
+            <div class="book-side-left"></div>
+            <div class="book-side-right2"></div>
+            <div class="book-side-right"></div>
+          </div>
+        </div>
+
+        <div class="editorial-meta">
+          <div class="meta-row">
+            <span class="label">Issue No.</span>
+            <span class="value">第 <span class="accent">01</span> 期</span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Category</span>
+            <span class="value">阅读 · 技术 · 人文</span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Format</span>
+            <span class="value">开源笔记</span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Platform</span>
+            <span class="value">GitHub · 个人博客</span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Motto</span>
+            <span class="value">越读越知 <span class="accent">无知</span></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="bottom-bar">
+      <div class="bottom-red-line"></div>
+      <div class="bottom-row">
+        <span>© 2025 OPEN BOOK JOURNAL · 阅读观察志 · 无知与敬畏</span>
+        <span class="barcode">
+          <span style="height:16px"></span>
+          <span style="height:18px"></span>
+          <span style="height:12px"></span>
+          <span style="height:18px"></span>
+          <span style="height:14px"></span>
+          <span style="height:18px"></span>
+          <span style="height:10px"></span>
+          <span style="height:16px"></span>
+          <span style="height:18px"></span>
+          <span style="height:12px"></span>
+          <span style="height:16px"></span>
+          <span style="height:18px"></span>
+          <span style="height:14px"></span>
+          <span style="height:18px"></span>
+          <span style="height:12px"></span>
+          <span style="height:16px"></span>
+          <span style="height:18px"></span>
+          <span style="height:10px"></span>
+        </span>
+        <span>OPEN SOURCE · READ &amp; REVERE</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

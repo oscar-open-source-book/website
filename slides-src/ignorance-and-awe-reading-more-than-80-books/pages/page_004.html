@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>阅读数据一览</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --navy-mid:#1B3A5C;
+  --navy-light:#2C5282;
+  --navy-lighter:#4A7BA8;
+  --red:#E53935;
+  --cream:#F5F0E6;
+  --ink:#1a1a1a;
+  --serif:"Playfair Display","Noto Serif SC",Georgia,serif;
+  --sans:"Source Sans Pro","Noto Sans SC","PingFang SC",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(ellipse at 92% 8%, rgba(229,57,53,0.06) 0%, transparent 40%),
+  radial-gradient(ellipse at 6% 95%, rgba(13,33,55,0.05) 0%, transparent 45%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:52px 68px 46px 68px;display:flex;flex-direction:column;}
+
+/* masthead */
+.masthead{display:flex;flex-direction:column;gap:14px;margin-bottom:8px;}
+.masthead .meta-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:3px;color:var(--navy-mid);font-weight:600;}
+.masthead .meta-row .line{flex:1;height:1px;background:var(--navy);margin:0 18px;opacity:0.3;}
+.masthead .meta-row .side{display:flex;gap:20px;align-items:center;}
+.masthead .meta-row .tag{color:var(--red);}
+.title-block{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;}
+.title-block h1{font-family:var(--serif);font-weight:900;font-size:76px;color:var(--navy);line-height:1;letter-spacing:-1px;}
+.title-block h1 .accent{color:var(--red);}
+.title-block .vol{font-family:var(--serif);font-size:16px;color:var(--navy-mid);text-align:right;line-height:1.6;padding-bottom:10px;letter-spacing:1px;}
+.title-block .vol .num{font-size:34px;font-weight:700;color:var(--navy);display:block;}
+.intro{font-family:var(--serif);font-size:19px;line-height:1.7;color:var(--navy);max-width:1380px;margin-top:6px;font-style:italic;}
+.intro .hl{color:var(--red);font-weight:700;font-style:normal;}
+
+.divider{height:1px;background:var(--navy);opacity:0.15;margin:18px 0 20px 0;}
+
+/* main two-column */
+.main{display:grid;grid-template-columns:1fr 1fr;gap:44px;flex:1;align-items:stretch;}
+
+.col-left{display:flex;flex-direction:column;}
+.col-right{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;position:relative;padding-left:30px;}
+
+.col-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.col-header .dot{width:10px;height:10px;background:var(--red);border-radius:50%;}
+.col-header .label{font-size:12px;letter-spacing:4px;color:var(--navy-mid);font-weight:700;}
+.col-header .rule{flex:1;height:1px;background:var(--navy);opacity:0.2;}
+.col-header .idx{font-family:var(--serif);font-size:14px;color:var(--red);font-weight:700;letter-spacing:2px;}
+
+.chart-wrap{position:relative;}
+#chart_1{width:640px;height:140px;}
+
+.domain-labels{display:flex;flex-direction:column;gap:12px;margin-top:22px;}
+.dl-row{display:grid;grid-template-columns:14px 1fr;gap:14px;align-items:flex-start;padding:12px 14px;background:rgba(255,255,255,0.55);border-left:3px solid var(--navy);}
+.dl-row:nth-child(2){border-left-color:var(--navy-mid);}
+.dl-row:nth-child(3){border-left-color:var(--navy-light);}
+.dl-row:nth-child(4){border-left-color:var(--navy-lighter);}
+.dl-swatch{width:14px;height:14px;border-radius:2px;margin-top:3px;}
+.dl-swatch.s1{background:#0D2137;}
+.dl-swatch.s2{background:#1B3A5C;}
+.dl-swatch.s3{background:#2C5282;}
+.dl-swatch.s4{background:#4A7BA8;}
+.dl-text{display:flex;flex-direction:column;gap:3px;}
+.dl-name{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--navy);}
+.dl-keywords{font-size:13px;color:#4a4a4a;line-height:1.5;}
+
+/* right column */
+.right-frame{width:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;position:relative;}
+.big-number{font-family:var(--serif);font-weight:900;font-size:220px;line-height:0.85;color:var(--navy);letter-spacing:-6px;position:relative;}
+.big-number .plus{color:var(--red);font-size:130px;vertical-align:top;line-height:1;margin-left:-6px;}
+.big-number-sub{font-family:var(--serif);font-size:18px;color:var(--navy-mid);margin-top:6px;letter-spacing:1px;font-style:italic;}
+.big-number-sub .dot-sep{color:var(--red);margin:0 8px;font-weight:700;}
+
+.stat-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;width:100%;margin-top:28px;border-top:1px solid rgba(13,33,55,0.15);border-bottom:1px solid rgba(13,33,55,0.15);}
+.stat-cell{padding:14px 12px;border-right:1px solid rgba(13,33,55,0.12);text-align:left;}
+.stat-cell:last-child{border-right:none;}
+.stat-cell .sv{font-family:var(--serif);font-size:32px;font-weight:700;color:var(--navy);line-height:1;}
+.stat-cell .sv .u{font-size:14px;color:var(--navy-mid);font-weight:400;margin-left:3px;}
+.stat-cell .sl{font-size:11px;color:#5a5a5a;letter-spacing:2px;margin-top:5px;font-weight:600;}
+
+/* bottom descriptions */
+.bottom{margin-top:20px;border-top:2px solid var(--navy);}
+.bottom-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:0;}
+.bd-col{padding:16px 18px;border-right:1px solid rgba(13,33,55,0.12);position:relative;}
+.bd-col:last-child{border-right:none;}
+.bd-col .bd-num{font-family:var(--serif);font-size:13px;color:var(--red);font-weight:700;letter-spacing:2px;margin-bottom:5px;}
+.bd-col .bd-title{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.bd-col .bd-pct{font-family:var(--serif);font-size:14px;color:var(--red);font-weight:700;margin-bottom:7px;letter-spacing:1px;}
+.bd-col .bd-desc{font-size:12.5px;line-height:1.65;color:#3a3a3a;}
+
+.footer-bar{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:11px;color:var(--navy-mid);letter-spacing:2px;font-weight:600;}
+.footer-bar .fb-line{flex:1;height:1px;background:var(--navy);opacity:0.2;margin:0 16px;}
+
+/* small decorative */
+.corner-deco{position:absolute;top:0;right:0;font-family:var(--serif);font-size:12px;color:var(--navy-mid);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="masthead">
+  <div class="meta-row">
+    <span class="tag">● READING REPORT</span>
+    <span class="line"></span>
+    <span class="side">
+      <span>ISSUE 01</span>
+      <span class="tag">2024</span>
+    </span>
+  </div>
+  <div class="title-block">
+    <h1>阅读数据<span class="accent">一览</span></h1>
+    <div class="vol">
+      <span class="num">Vol. 01</span>
+      私人阅读档案 · 长期主义专栏
+    </div>
+  </div>
+  <p class="intro">
+    <span class="hl">80多本书</span>的阅读量是长期积累的结果，覆盖技术硬核、人文社科、商业管理与科普杂识四大领域——比例分配是<span class="hl">兴趣自然演进</span>的结果，而非刻意规划。
+  </p>
+</div>
+
+<div class="divider"></div>
+
+<div class="main">
+  <div class="col-left">
+    <div class="col-header">
+      <span class="dot"></span>
+      <span class="label">四领域比例分布</span>
+      <span class="rule"></span>
+      <span class="idx">FIG. 01</span>
+    </div>
+    <div class="chart-wrap">
+      <div id="chart_1" style="width:640px;height:140px;"></div>
+    </div>
+    <div class="domain-labels">
+      <div class="dl-row">
+        <div class="dl-swatch s1"></div>
+        <div class="dl-text">
+          <div class="dl-name">技术类 · Technology</div>
+          <div class="dl-keywords">计算机工程 · 软件架构 · 系统设计</div>
+        </div>
+      </div>
+      <div class="dl-row">
+        <div class="dl-swatch s2"></div>
+        <div class="dl-text">
+          <div class="dl-name">人文社科 · Humanities</div>
+          <div class="dl-keywords">历史 · 哲学 · 心理学</div>
+        </div>
+      </div>
+      <div class="dl-row">
+        <div class="dl-swatch s3"></div>
+        <div class="dl-text">
+          <div class="dl-name">商业管理 · Business</div>
+          <div class="dl-keywords">产品 · 创业 · 管理</div>
+        </div>
+      </div>
+      <div class="dl-row">
+        <div class="dl-swatch s4"></div>
+        <div class="dl-text">
+          <div class="dl-name">科普与杂识 · General</div>
+          <div class="dl-keywords">通识 · 传记 · 散文</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-right">
+    <div class="right-frame">
+      <div class="col-header">
+        <span class="dot"></span>
+        <span class="label">累计数据锚点</span>
+        <span class="rule"></span>
+        <span class="idx">FIG. 02</span>
+      </div>
+      <div class="big-number">80<span class="plus">+</span></div>
+      <div class="big-number-sub">累计已记录书籍数 <span class="dot-sep">·</span> 持续更新中</div>
+      <div class="stat-strip">
+        <div class="stat-cell">
+          <div class="sv">4<span class="u">大领域</span></div>
+          <div class="sl">DOMAINS</div>
+        </div>
+        <div class="stat-cell">
+          <div class="sv">80<span class="u">+ 本</span></div>
+          <div class="sl">TOTAL BOOKS</div>
+        </div>
+        <div class="stat-cell">
+          <div class="sv">35<span class="u">% 主占</span></div>
+          <div class="sl">TOP CATEGORY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="bottom-inner">
+    <div class="bd-col">
+      <div class="bd-num">01 / DOMAIN</div>
+      <div class="bd-title">技术类</div>
+      <div class="bd-pct">约 35%</div>
+      <div class="bd-desc">计算机科学、软件工程、系统架构等核心领域，构成阅读主基座，也是日常工作的延伸与深化。</div>
+    </div>
+    <div class="bd-col">
+      <div class="bd-num">02 / DOMAIN</div>
+      <div class="bd-title">人文社科</div>
+      <div class="bd-pct">约 25%</div>
+      <div class="bd-desc">历史、哲学、心理学、社会学等，拓宽认知边界，为理性思维提供深层人文底色。</div>
+    </div>
+    <div class="bd-col">
+      <div class="bd-num">03 / DOMAIN</div>
+      <div class="bd-title">商业管理</div>
+      <div class="bd-pct">约 20%</div>
+      <div class="bd-desc">产品、创业、管理与组织行为学，实践导向鲜明，关注商业逻辑与团队协作方法论。</div>
+    </div>
+    <div class="bd-col">
+      <div class="bd-num">04 / DOMAIN</div>
+      <div class="bd-title">科普与杂识</div>
+      <div class="bd-pct">约 20%</div>
+      <div class="bd-desc">物理、数学、生物等通识科普，以及传记与散文，作为兴趣补给与精神调节的日常读物。</div>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span>READING · REPORT</span>
+    <span class="fb-line"></span>
+    <span>四大领域 · 比例分配 · 兴趣自然演进</span>
+    <span class="fb-line"></span>
+    <span>P. 01</span>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:0,right:0,top:20,bottom:20,containLabel:false},
+    xAxis:{type:'value',max:100,show:false},
+    yAxis:{type:'category',data:[''],show:false},
+    series:[
+      {name:'技术类',type:'bar',stack:'total',data:[35],itemStyle:{color:'#0D2137'},
+        label:{show:true,position:'inside',formatter:'技术类  35%',color:'#E53935',fontFamily:'Playfair Display, Noto Serif SC',fontWeight:'bold',fontSize:16}},
+      {name:'人文社科',type:'bar',stack:'total',data:[25],itemStyle:{color:'#1B3A5C'},
+        label:{show:true,position:'inside',formatter:'人文社科  25%',color:'#F5F0E6',fontFamily:'Playfair Display, Noto Serif SC',fontWeight:'bold',fontSize:14}},
+      {name:'商业管理',type:'bar',stack:'total',data:[20],itemStyle:{color:'#2C5282'},
+        label:{show:true,position:'inside',formatter:'商业 20%',color:'#F5F0E6',fontFamily:'Playfair Display, Noto Serif SC',fontWeight:'bold',fontSize:13}},
+      {name:'科普与杂识',type:'bar',stack:'total',data:[20],itemStyle:{color:'#4A7BA8'},
+        label:{show:true,position:'inside',formatter:'科普 20%',color:'#F5F0E6',fontFamily:'Playfair Display, Noto Serif SC',fontWeight:'bold',fontSize:13}}
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

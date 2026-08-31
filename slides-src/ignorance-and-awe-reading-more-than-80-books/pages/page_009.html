@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源阅读的实践</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+SC:wght@700;900&family=Source+Sans+Pro:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --navy-deep: #081829;
+  --navy-light: #1a3350;
+  --red: #E53935;
+  --red-soft: #f4a8a5;
+  --cream: #F5F0E6;
+  --cream-dark: #e8e1d1;
+  --gray-dark: #2d2d2d;
+  --gray-mid: #5a5a5a;
+  --gray-light: #9e9e9e;
+  --green: #4caf50;
+  --yellow: #ffbb33;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+
+body {
+  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+  background: var(--cream);
+  color: var(--gray-dark);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(13,33,55,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(229,57,53,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px 36px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--navy);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.title-wrap {
+  flex: 1;
+}
+
+.eyebrow {
+  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+
+.main-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 62px;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.issue-meta {
+  text-align: right;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12px;
+  color: var(--gray-mid);
+  line-height: 1.8;
+  padding-bottom: 6px;
+}
+.issue-meta strong {
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* Main content grid */
+.main-grid {
+  display: grid;
+  grid-template-columns: 720px 1fr;
+  gap: 36px;
+  height: 590px;
+}
+
+/* Left: Code editor */
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.editor-window {
+  background: var(--navy-deep);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(13,33,55,0.25);
+  flex: 0 0 auto;
+}
+
+.editor-toolbar {
+  background: var(--navy-deep);
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  gap: 10px;
+  border-bottom: 1px solid var(--navy-light);
+}
+
+.traffic-lights {
+  display: flex;
+  gap: 7px;
+}
+.traffic-lights span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.traffic-lights .tl-red { background: var(--red); }
+.traffic-lights .tl-yellow { background: var(--yellow); }
+.traffic-lights .tl-green { background: var(--green); }
+
+.tab-bar {
+  display: flex;
+  gap: 0;
+  margin-left: 12px;
+  flex: 1;
+}
+.tab {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--gray-light);
+  padding: 4px 14px;
+  background: transparent;
+  border-radius: 4px 4px 0 0;
+  cursor: default;
+}
+.tab.active {
+  background: var(--cream);
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.editor-status {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--gray-light);
+  margin-left: auto;
+}
+
+.editor-body {
+  display: flex;
+  background: var(--cream);
+  min-height: 320px;
+  font-family: 'Fira Code', 'Noto Sans SC', monospace;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.line-numbers {
+  width: 42px;
+  background: #ebe4d3;
+  color: var(--gray-light);
+  text-align: right;
+  padding: 14px 8px 14px 0;
+  font-size: 12px;
+  line-height: 1.75;
+  flex-shrink: 0;
+  border-right: 1px solid var(--cream-dark);
+}
+
+.code-content {
+  flex: 1;
+  padding: 14px 18px;
+  overflow: hidden;
+  position: relative;
+}
+
+.code-content .ln {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.code-content .h1-tag { color: var(--navy); font-weight: 700; font-size: 15px; }
+.code-content .h2-tag { color: var(--navy); font-weight: 700; font-size: 14px; }
+.code-content .comment { color: var(--gray-mid); font-style: italic; }
+.code-content .keyword { color: var(--red); font-weight: 600; }
+.code-content .string { color: #2e7d32; }
+.code-content .link { color: #1565c0; text-decoration: underline; }
+.code-content .cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background: var(--navy);
+  vertical-align: -2px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.editor-footer-bar {
+  background: var(--navy-deep);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 14px;
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--gray-light);
+  border-top: 1px solid var(--navy-light);
+}
+.editor-footer-bar .branch {
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* Terminal chips */
+.terminal-chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.chip-card {
+  background: var(--navy);
+  border-radius: 6px;
+  padding: 10px 12px;
+  position: relative;
+  border-left: 3px solid var(--red);
+  box-shadow: 0 3px 10px rgba(13,33,55,0.2);
+}
+
+.chip-card::before {
+  content: '$';
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.chip-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--gray-light);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.chip-text {
+  font-family: 'Fira Code', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  color: var(--cream);
+  line-height: 1.5;
+  padding-right: 18px;
+}
+
+/* Right: Four modules */
+.modules-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  height: 590px;
+}
+
+.module-card {
+  background: var(--cream);
+  border: 1.5px solid var(--navy);
+  border-radius: 6px;
+  padding: 20px 22px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: none;
+}
+
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--red);
+}
+
+.module-index {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--red);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.module-title {
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.module-divider {
+  width: 32px;
+  height: 2px;
+  background: var(--navy);
+  margin-bottom: 10px;
+}
+
+.module-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #3d3d3d;
+}
+
+.module-desc .hl {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.module-tag {
+  margin-top: auto;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--gray-mid);
+  letter-spacing: 1px;
+  border-top: 1px dashed var(--cream-dark);
+}
+
+.module-tag .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Bottom summary */
+.summary-bar {
+  margin-top: 22px;
+  background: var(--navy);
+  border-radius: 6px;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 4px 16px rgba(13,33,55,0.2);
+  position: relative;
+}
+
+.summary-bar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--red);
+  border-radius: 6px 0 0 6px;
+}
+
+.summary-quote {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 22px;
+  color: var(--red);
+  font-weight: 900;
+  line-height: 1;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.summary-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  color: var(--cream);
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+.summary-text .em {
+  color: var(--red);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-wrap">
+        <div class="eyebrow"><span>OPEN SOURCE · READING PRACTICE</span></div>
+        <div class="main-title"><span>开源阅读的实践</span></div>
+      </div>
+      <div class="issue-meta">
+        <span>ISSUE</span> No.001 / 2024<br>
+        <strong>VOL.01</strong> &nbsp; EDITORIAL<br>
+        <span>SECTION — 个人知识管理</span>
+      </div>
+    </div>
+
+    <div class="main-grid">
+
+      <div class="editor-panel">
+        <div class="editor-window">
+          <div class="editor-toolbar">
+            <div class="traffic-lights">
+              <span></span><span class="tl-yellow"></span><span class="tl-green"></span>
+            </div>
+            <div class="tab-bar">
+              <div class="tab active"><span>reading-notes.md</span></div>
+              <div class="tab"><span>CHANGELOG</span></div>
+            </div>
+            <div class="editor-status"><span>UTF-8 · LF · Markdown</span></div>
+          </div>
+          <div class="editor-body">
+            <div class="line-numbers">
+<span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span>
+            </div>
+            <div class="code-content">
+<span class="ln"><span class="h1-tag">#</span> <span class="h1-tag">今日阅读笔记</span>
+</span><span class="ln"><span class="comment">--- 2024-01-22 · 天气晴 · 读完第3章 ---</span>
+</span><span class="ln"></span>
+<span class="ln"><span class="h2-tag">##</span> 今日收获
+</span><span class="ln">- 阅读了 <span class="string">《Effective TypeScript》</span> 第 <span class="keyword">3</span> 章
+</span><span class="ln">- 理解了 <span class="keyword">never</span> 类型与 <span class="keyword">类型守卫</span> 的关系
+</span><span class="ln">- 尝试将 <span class="keyword">联合类型</span> 应用到实际项目中
+</span><span class="ln"></span>
+<span class="ln"><span class="h2-tag">##</span> 关键摘录
+</span><span class="ln">&gt; "类型系统设计的目标是 <span class="keyword">防止</span> 程序员犯错。"
+</span><span class="ln"></span>
+<span class="ln"><span class="h2-tag">##</span> 关联笔记
+</span><span class="ln">- <span class="link">[2024-01-15]</span> 泛型约束
+</span><span class="ln">- <span class="link">[2024-01-20]</span> 条件类型
+</span><span class="ln">- <span class="link">[2024-01-21]</span> 类型推导的边界
+</span><span class="ln"></span>
+<span class="ln"><span class="comment"># 待补充：下一章节的交叉引用...</span><span class="cursor"></span></span>
+            </div>
+          </div>
+          <div class="editor-footer-bar">
+            <span><span class="branch">● main</span> &nbsp;|&nbsp; 23行 · 486字符</span>
+            <span>Markdown · UTF-8 · LF</span>
+            <span>Ln 22, Col 42</span>
+          </div>
+        </div>
+
+        <div class="terminal-chips">
+          <div class="chip-card">
+            <span class="chip-label">CONFIG · 01</span>
+            <div class="chip-text"><span>托管方式：Git 仓库（版本可控）</span></div>
+          </div>
+          <div class="chip-card">
+            <span class="chip-label">CONFIG · 02</span>
+            <div class="chip-text"><span>文档格式：Markdown（统一结构）</span></div>
+          </div>
+          <div class="chip-card">
+            <span class="chip-label">CONFIG · 03</span>
+            <div class="chip-text"><span>协作方式：Issue + PR（社区驱动）</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modules-panel">
+
+        <div class="module-card">
+          <div class="module-index"><span>01</span></div>
+          <div class="module-title"><span>公开仓库</span></div>
+          <div class="module-divider"></div>
+          <div class="module-desc">
+            所有笔记托管在<span class="hl">公开</span>的代码仓库中，采用统一的 <span class="hl">Markdown</span> 格式便于查阅。任何人都可以 fork、引用或重新组织。
+          </div>
+          <div class="module-tag"><span class="dot"></span><span>REPOSITORY · PUBLIC</span></div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-index"><span>02</span></div>
+          <div class="module-title"><span>版本可追溯</span></div>
+          <div class="module-divider"></div>
+          <div class="module-desc">
+            <span class="hl">Git</span> 版本控制让每一次笔记修改都<span class="hl">有迹可循</span>，可以回溯想法的演进，对比不同阶段的思考路径。
+          </div>
+          <div class="module-tag"><span class="dot"></span><span>VERSION · TRACEABLE</span></div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-index"><span>03</span></div>
+          <div class="module-title"><span>社区反馈</span></div>
+          <div class="module-divider"></div>
+          <div class="module-desc">
+            读者提交的 <span class="hl">Issue</span> 和 <span class="hl">Pull Request</span> 让笔记内容在讨论中不断完善，错误被修正，视角被拓展。
+          </div>
+          <div class="module-tag"><span class="dot"></span><span>COMMUNITY · OPEN</span></div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-index"><span>04</span></div>
+          <div class="module-title"><span>知识沉淀</span></div>
+          <div class="module-divider"></div>
+          <div class="module-desc">
+            开源形式让个人阅读经验转化为<span class="hl">可复用</span>的<span class="hl">公共知识资产</span>，形成超越个体的知识网络。
+          </div>
+          <div class="module-tag"><span class="dot"></span><span>ASSET · SHARED</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="summary-bar">
+      <span class="summary-quote">"</span>
+      <div class="summary-text">
+        <span>统一格式保证<span class="em">可维护性</span>，版本控制保证<span class="em">可追溯性</span>，社区互动保证<span class="em">可迭代性</span>——让个人的阅读记录成长为一个有生命力的开源项目。</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
