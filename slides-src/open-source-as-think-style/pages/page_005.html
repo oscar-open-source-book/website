@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源思维启示</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #607D8B;
+  --accent: #263238;
+  --bg: #ECEFF1;
+  --text-main: #37474F;
+  --text-light: #90A4AE;
+  --text-muted: #B0BEC5;
+  --line: #CFD8DC;
+  --card-bg: #FFFFFF;
+  --shadow: 0 4px 20px rgba(38, 50, 56, 0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Source Han Sans", "Noto Sans SC", "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  font-size: 17px;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #ECEFF1;
+}
+
+#bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle at top right, rgba(96,125,139,0.08) 0%, transparent 70%);
+}
+
+#bg::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle at bottom left, rgba(38,50,56,0.05) 0%, transparent 70%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px 48px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header area */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.header-left {
+  max-width: 900px;
+}
+
+.eyebrow {
+  font-family: "Inter", "Noto Sans SC", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: var(--primary);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-family: "Inter", "Noto Sans SC", sans-serif;
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+.title-accent {
+  color: var(--primary);
+}
+
+.header-right {
+  text-align: right;
+  padding-bottom: 8px;
+}
+
+.page-num {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-light);
+  letter-spacing: 0.15em;
+}
+
+.page-num strong {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 2px;
+  letter-spacing: 0;
+}
+
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 18px 0 24px 0;
+  position: relative;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 80px;
+  height: 3px;
+  background: var(--primary);
+}
+
+/* Quote area */
+.quote-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.quote-mark {
+  font-family: "Inter", serif;
+  font-size: 56px;
+  font-weight: 300;
+  color: var(--primary);
+  line-height: 0.8;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.quote-text {
+  font-size: 15.5px;
+  color: var(--text-main);
+  line-height: 1.85;
+  font-weight: 300;
+  max-width: 1200px;
+}
+
+.quote-text strong {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Main content: two columns */
+.main {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 36px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Left column */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 24px;
+  border-right: 1px solid var(--line);
+}
+
+.left-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+.left-heading {
+  font-family: "Inter", "Noto Sans SC", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.left-body {
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+.left-stats {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.stat-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.stat-num {
+  font-family: "Inter", sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-light);
+  letter-spacing: 0.05em;
+}
+
+/* Right column: 5 items */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 24px;
+  padding: 13px 18px 13px 0;
+  align-items: start;
+  border-bottom: 1px solid var(--line);
+  transition: all 0.3s ease;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item-num {
+  font-family: "Inter", sans-serif;
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+.item-body {
+  padding-top: 4px;
+}
+
+.item-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 5px;
+}
+
+.item-title {
+  font-family: "Inter", "Noto Sans SC", sans-serif;
+  font-size: 17.5px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+}
+
+.item-tag {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--primary);
+  background: rgba(96,125,139,0.12);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.1em;
+}
+
+.item-desc {
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.7;
+  font-weight: 300;
+  padding-right: 20px;
+}
+
+/* Bottom keywords */
+.bottom-bar {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.keywords {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: "Inter", "Noto Sans SC", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.kw {
+  padding: 0 4px;
+}
+
+.kw-dot {
+  color: var(--text-muted);
+  font-weight: 300;
+  margin: 0 2px;
+}
+
+.bottom-right {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span>OPEN SOURCE MINDSET</span></div>
+        <h1 class="title">开源<span class="title-accent">思维</span>启示</h1>
+      </div>
+      <div class="header-right">
+        <div class="page-num"><strong>05</strong>核心 · CORE</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="quote-row">
+      <div class="quote-mark"><span>"</span></div>
+      <p class="quote-text">
+        开源教会我们的不仅是<strong>编码技巧</strong>，更是一套<strong>思维框架</strong>：如何面对复杂性、如何处理分歧、如何在不确定中持续前进。这些原则对<strong>非技术场景</strong>同样适用。
+      </p>
+    </div>
+
+    <div class="main">
+
+      <div class="left-col">
+        <div class="left-label"><span>核心原则</span></div>
+        <div class="left-heading"><span>从代码仓库<br>到认知范式</span></div>
+        <p class="left-body">
+          开源社区历经三十余年演化，沉淀出一套经过大规模实践验证的协作智慧。本页凝练出五条最具迁移价值的思维原则，它们同样适用于知识管理、产品治理与组织协同。
+        </p>
+
+        <div class="left-stats">
+          <div class="stat-item">
+            <span class="stat-num"><span>05</span></span>
+            <span class="stat-label"><span>核心原则</span></span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num"><span>30+</span></span>
+            <span class="stat-label"><span>年实践沉淀</span></span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num"><span>∞</span></span>
+            <span class="stat-label"><span>可迁移场景</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+
+        <div class="item">
+          <div class="item-num"><span>01</span></div>
+          <div class="item-body">
+            <div class="item-head">
+              <span class="item-title"><span>以协作为默认</span></span>
+              <span class="item-tag"><span>COLLABORATION</span></span>
+            </div>
+            <p class="item-desc">将"开放讨论、共同演进"视为知识生产的基本范式，而非特殊例外。</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-num"><span>02</span></div>
+          <div class="item-body">
+            <div class="item-head">
+              <span class="item-title"><span>透明优先</span></span>
+              <span class="item-tag"><span>TRANSPARENCY</span></span>
+            </div>
+            <p class="item-desc">决策过程、技术选型、失败教训均可见，信任来源于可追溯。</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-num"><span>03</span></div>
+          <div class="item-body">
+            <div class="item-head">
+              <span class="item-title"><span>模块化思考</span></span>
+              <span class="item-tag"><span>MODULARITY</span></span>
+            </div>
+            <p class="item-desc">复杂系统拆为可独立演进的小模块，每个人都能找到切入点。</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-num"><span>04</span></div>
+          <div class="item-body">
+            <div class="item-head">
+              <span class="item-title"><span>用脚投票</span></span>
+              <span class="item-tag"><span>EXIT OPTION</span></span>
+            </div>
+            <p class="item-desc">fork 权赋予参与者终极选择权，治理靠共识而非强制。</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-num"><span>05</span></div>
+          <div class="item-body">
+            <div class="item-head">
+              <span class="item-title"><span>迭代胜过完美</span></span>
+              <span class="item-tag"><span>ITERATION</span></span>
+            </div>
+            <p class="item-desc">先发后改、持续合并，拥抱不完美是开源进化的核心动力。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="keywords">
+        <span class="kw">协作</span>
+        <span class="kw-dot">·</span>
+        <span class="kw">透明</span>
+        <span class="kw-dot">·</span>
+        <span class="kw">模块</span>
+        <span class="kw-dot">·</span>
+        <span class="kw">选择</span>
+        <span class="kw-dot">·</span>
+        <span class="kw">迭代</span>
+      </div>
+      <div class="bottom-right"><span>OPEN · FREE · EVOLVING</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

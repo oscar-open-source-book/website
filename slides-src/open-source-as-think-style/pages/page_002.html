@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>何为开源</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Source+Han+Sans+CN:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #607D8B;
+  --primary-light: #90A4AE;
+  --primary-lighter: #B0BEC5;
+  --dark: #263238;
+  --bg: #ECEFF1;
+  --bg-warm: #F5F7F8;
+  --line: #CFD8DC;
+  --text-main: #37474F;
+  --text-sub: #546E7A;
+  --text-muted: #78909C;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Han Sans CN', 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 17px;
+  color: var(--text-main);
+  background: var(--bg);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #ECEFF1 0%, #E8ECF0 50%, #F5F7F8 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg .door-frame {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 520px;
+  height: 900px;
+  opacity: 0.08;
+}
+
+#bg .door-frame .top {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 3px;
+  background: var(--primary);
+}
+
+#bg .door-frame .left {
+  position: absolute;
+  top: 0;
+  right: 377px;
+  width: 3px;
+  height: 900px;
+  background: var(--primary);
+}
+
+#bg .door-frame .bottom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 380px;
+  height: 3px;
+  background: var(--primary);
+}
+
+#bg .door-frame .inner-top {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  width: 290px;
+  height: 2px;
+  background: var(--primary);
+}
+
+#bg .door-frame .inner-left {
+  position: absolute;
+  top: 60px;
+  right: 337px;
+  width: 2px;
+  height: 380px;
+  background: var(--primary);
+}
+
+#bg .door-frame .inner-right {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  width: 2px;
+  height: 380px;
+  background: var(--primary);
+}
+
+#bg .diagonal-line {
+  position: absolute;
+  bottom: 120px;
+  left: -100px;
+  width: 900px;
+  height: 1px;
+  background: var(--primary);
+  opacity: 0.12;
+  transform: rotate(-8deg);
+  transform-origin: left center;
+}
+
+#bg .diagonal-line-2 {
+  position: absolute;
+  bottom: 80px;
+  left: -100px;
+  width: 700px;
+  height: 1px;
+  background: var(--primary);
+  opacity: 0.08;
+  transform: rotate(-8deg);
+  transform-origin: left center;
+}
+
+#bg .circle-deco {
+  position: absolute;
+  top: 40px;
+  left: -160px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+  opacity: 0.06;
+}
+
+#bg .circle-deco-2 {
+  position: absolute;
+  bottom: -180px;
+  left: 200px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+  opacity: 0.05;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px 90px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top section: chapter number + title */
+.top-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 50px;
+  padding-top: 10px;
+}
+
+.chapter-number {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 200;
+  font-size: 180px;
+  line-height: 0.9;
+  color: var(--primary);
+  letter-spacing: -6px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.chapter-number::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 80px;
+  height: 2px;
+  background: var(--dark);
+}
+
+.title-block {
+  padding-top: 30px;
+  flex: 1;
+}
+
+.section-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.main-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 600;
+  font-size: 56px;
+  color: var(--dark);
+  letter-spacing: 6px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.sub-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 19px;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+}
+
+.divider-thin {
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+  margin: 44px 0 38px;
+  position: relative;
+}
+
+.divider-thin::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
+}
+
+/* Three columns */
+.three-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.col-card {
+  padding: 28px 30px 26px;
+  border-top: 1px solid var(--line);
+  position: relative;
+  background: rgba(255,255,255,0.4);
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.col-card .col-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--primary);
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.col-card .col-num .dot {
+  width: 5px;
+  height: 5px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.col-card .col-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--dark);
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+
+.col-card .col-desc {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-sub);
+  font-weight: 300;
+}
+
+/* Bottom quote */
+.quote-section {
+  margin-top: auto;
+  padding: 24px 40px;
+  border-left: 2px solid var(--primary);
+  background: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.quote-mark {
+  font-family: 'Inter', serif;
+  font-size: 56px;
+  color: var(--primary-light);
+  line-height: 1;
+  font-weight: 300;
+  flex-shrink: 0;
+  margin-top: -10px;
+}
+
+.quote-text {
+  font-family: 'Source Han Sans CN', 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--text-sub);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+/* Footer */
+.footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-left .bar {
+  width: 24px;
+  height: 1px;
+  background: var(--primary-light);
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-right .page-num {
+  font-weight: 500;
+  color: var(--dark);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="door-frame">
+      <div class="top"></div>
+      <div class="left"></div>
+      <div class="bottom"></div>
+      <div class="inner-top"></div>
+      <div class="inner-left"></div>
+      <div class="inner-right"></div>
+    </div>
+    <div class="diagonal-line"></div>
+    <div class="diagonal-line-2"></div>
+    <div class="circle-deco"></div>
+    <div class="circle-deco-2"></div>
+  </div>
+
+  <div id="ct">
+    <div class="top-section">
+      <div class="chapter-number"><span>01</span></div>
+      <div class="title-block">
+        <div class="section-tag"><span>SECTION · CHAPTER ONE</span></div>
+        <div class="main-title"><span>何为开源</span></div>
+        <div class="sub-title"><span>从许可证到社区文化的认知框架</span></div>
+      </div>
+    </div>
+
+    <div class="divider-thin"></div>
+
+    <div class="three-cols">
+      <div class="col-card">
+        <div class="col-num"><span class="dot"></span><span>01 / DEFINITION</span></div>
+        <div class="col-title"><span>开源定义</span></div>
+        <div class="col-desc"><span>开放源码、开放流程、开放社区三重要素的统一</span></div>
+      </div>
+      <div class="col-card">
+        <div class="col-num"><span class="dot"></span><span>02 / HISTORY</span></div>
+        <div class="col-title"><span>历史脉络</span></div>
+        <div class="col-desc"><span>从GNU运动到Apache与Linux的兴起，再到今天的AI开源浪潮</span></div>
+      </div>
+      <div class="col-card">
+        <div class="col-num"><span class="dot"></span><span>03 / PHILOSOPHY</span></div>
+        <div class="col-title"><span>哲学根基</span></div>
+        <div class="col-desc"><span>信任、透明、协作、共享——开源是一种社会实验</span></div>
+      </div>
+    </div>
+
+    <div class="quote-section">
+      <div class="quote-mark"><span>"</span></div>
+      <div class="quote-text"><span>在深入阅读与布道之前，我们需要先厘清"开源"的基本轮廓：它不仅是代码可见，更是一种关于知识共享与权力去中心化的哲学选择。</span></div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-left"><span class="bar"></span><span>OPEN SOURCE · A COGNITIVE FRAMEWORK</span></div>
+      <div class="footer-right"><span class="page-num">02</span><span>/</span><span>12</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>阅读笔记方法</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#607D8B;
+  --dark:#263238;
+  --light:#ECEFF1;
+  --mid:#B0BEC5;
+  --white:#FFFFFF;
+  --paper:#F5F7F8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;}
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  font-size:17px;
+  color:var(--dark);
+  background:var(--white);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;margin:0 auto;
+  background:var(--white);
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{
+  content:'';
+  position:absolute;top:-160px;right:-120px;
+  width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,var(--light) 0%,rgba(236,239,241,0) 70%);
+}
+#bg::after{
+  content:'';
+  position:absolute;bottom:-200px;left:-100px;
+  width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(96,125,139,0.08) 0%,rgba(96,125,139,0) 70%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:60px 80px 50px 80px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Header */
+.header{padding-top:10px;padding-bottom:28px;}
+.eyebrow{
+  font-size:12px;letter-spacing:6px;color:var(--primary);
+  font-weight:500;margin-bottom:18px;
+}
+.main-title{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:64px;font-weight:700;color:var(--dark);
+  letter-spacing:8px;
+}
+.title-rule{
+  width:64px;height:3px;background:var(--primary);
+  margin-top:22px;
+}
+
+/* Content */
+.content{
+  flex:1;display:flex;gap:60px;min-height:0;
+}
+
+/* Left flow */
+.left-col{
+  width:780px;display:flex;flex-direction:column;
+}
+.flow{
+  display:flex;flex-direction:column;
+  gap:0;
+  flex:1;
+}
+.step{
+  display:flex;align-items:center;gap:22px;
+  padding:18px 26px;
+  background:var(--paper);
+  border-left:3px solid var(--primary);
+  position:relative;
+}
+.step-num{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--white);
+  border:1.5px solid var(--primary);
+  color:var(--primary);
+  font-family:'Inter',sans-serif;
+  font-weight:600;font-size:20px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.step-body{flex:1;min-width:0;}
+.step-title{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:20px;font-weight:600;color:var(--dark);
+  margin-bottom:5px;letter-spacing:1px;
+}
+.step-desc{
+  font-size:14px;color:#455A64;line-height:1.55;
+}
+.step-tag{
+  font-size:11px;letter-spacing:2px;color:var(--primary);
+  font-weight:500;margin-top:6px;
+}
+/* connecting arrows between steps */
+.step:not(:last-child)::after{
+  content:'↓';
+  position:absolute;left:51px;bottom:-20px;
+  font-size:14px;color:var(--mid);
+  font-family:'Inter',sans-serif;
+  z-index:2;
+}
+.flow-arrow{
+  display:flex;justify-content:center;
+  height:16px;
+}
+
+/* Right quote */
+.right-col{
+  flex:1;display:flex;flex-direction:column;
+  position:relative;
+}
+.quote-wrap{
+  flex:1;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  background:var(--light);
+  border-radius:2px;
+  padding:24px 30px;
+  position:relative;
+  overflow:hidden;
+}
+.quote-wrap::before{
+  content:'"';
+  position:absolute;top:-30px;left:12px;
+  font-size:120px;color:var(--mid);
+  font-family:'Inter',serif;
+  font-weight:300;line-height:1;
+  opacity:0.5;
+}
+.quote-wrap::after{
+  content:'"';
+  position:absolute;bottom:-70px;right:20px;
+  font-size:120px;color:var(--mid);
+  font-family:'Inter',serif;
+  font-weight:300;line-height:1;
+  opacity:0.5;
+}
+.quote-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  width:100%;
+  max-width:380px;
+  position:relative;z-index:2;
+}
+.qcell{
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 0;
+  border-top:1px solid rgba(38,50,56,0.12);
+  border-bottom:1px solid rgba(38,50,56,0.12);
+}
+.qchar{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:72px;font-weight:300;color:var(--dark);
+  line-height:1.1;letter-spacing:4px;
+}
+.qchar.dark{color:var(--dark);}
+.qchar.mid{color:var(--primary);}
+.qsub{
+  font-size:11px;letter-spacing:3px;color:var(--primary);
+  font-weight:500;margin-top:6px;
+}
+.qdash{
+  font-size:14px;color:var(--mid);
+  text-align:center;letter-spacing:4px;
+  margin:2px 0;
+  font-family:'Inter',sans-serif;
+}
+.quote-caption{
+  margin-top:20px;font-size:12px;letter-spacing:4px;
+  color:#455A64;text-align:center;font-weight:400;
+  position:relative;z-index:2;
+}
+.quote-caption-line{
+  display:flex;align-items:center;gap:12px;
+  margin-top:14px;
+  position:relative;z-index:2;
+}
+.quote-caption-line .line{flex:1;height:1px;background:rgba(38,50,56,0.15);}
+.quote-caption-line .text{
+  font-size:11px;letter-spacing:3px;color:var(--primary);
+  font-weight:500;
+}
+
+/* Footer narrative */
+.footer{
+  margin-top:20px;padding-top:18px;
+  border-top:1px solid var(--light);
+  display:flex;align-items:flex-start;gap:18px;
+}
+.footer-mark{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--primary);margin-top:8px;flex-shrink:0;
+}
+.footer-text{
+  font-size:13px;line-height:1.7;color:#455A64;
+  letter-spacing:0.5px;max-width:1440px;
+}
+.footer-text .hl{color:var(--primary);font-weight:500;}
+
+/* Decorative micro elements */
+.side-tick{
+  position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom, transparent, var(--light) 20%, var(--light) 80%, transparent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="eyebrow">METHOD · 04 STEPS</div>
+      <h1 class="main-title">阅读笔记方法</h1>
+      <div class="title-rule"></div>
+    </div>
+
+    <div class="content">
+
+      <div class="left-col">
+        <div class="flow">
+
+          <div class="step">
+            <div class="step-num">01</div>
+            <div class="step-body">
+              <div class="step-title">结构化摘录</div>
+              <div class="step-desc">每章提炼核心论点、关键论据与值得质疑之处，形成"论点—论据—疑点"三层笔记结构。</div>
+              <div class="step-tag">EXTRACT · 提炼</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">02</div>
+            <div class="step-body">
+              <div class="step-title">思想映射</div>
+              <div class="step-desc">将书中概念与已有知识体系建立连接，绘制个人化思维导图，让新信息找到归属位置。</div>
+              <div class="step-tag">CONNECT · 联结</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">03</div>
+            <div class="step-body">
+              <div class="step-title">实践复盘</div>
+              <div class="step-desc">读完后将理论映射到实际项目经验，找到"可落地"的切入点，用行动验证知识的真实价值。</div>
+              <div class="step-tag">APPLY · 实践</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">04</div>
+            <div class="step-body">
+              <div class="step-title">公开输出</div>
+              <div class="step-desc">将笔记发布到博客与社区，接受反馈与讨论，形成"输入—思考—输出"的知识正循环。</div>
+              <div class="step-tag">SHARE · 输出</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="quote-wrap">
+          <div class="quote-grid">
+            <div class="qcell">
+              <div class="qchar dark">读</div>
+              <div class="qsub">READ</div>
+            </div>
+            <div class="qcell">
+              <div class="qchar mid">思</div>
+              <div class="qsub">THINK</div>
+            </div>
+          </div>
+          <div class="qdash">— — — —</div>
+          <div class="quote-grid">
+            <div class="qcell">
+              <div class="qchar mid">行</div>
+              <div class="qsub">ACT</div>
+            </div>
+            <div class="qcell">
+              <div class="qchar dark">传</div>
+              <div class="qsub">SHARE</div>
+            </div>
+          </div>
+          <div class="quote-caption-line">
+            <div class="line"></div>
+            <div class="text">读 与 思  ·  行 与 传</div>
+            <div class="line"></div>
+          </div>
+          <div class="quote-caption">闭环 节奏</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-mark"></div>
+      <div class="footer-text">
+        阅读不是终点，而是<span class="hl">对话的开始</span>。结构化笔记帮助你沉淀思想，公开输出则让知识在分享中增值。建议每读完一本书，输出一篇<span class="hl">不少于千字</span>的思考记录——以输出倒逼输入，让每一次阅读都成为下一次思考的起点。
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

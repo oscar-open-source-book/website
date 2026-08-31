@@ -1,0 +1,141 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源阅读地图</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+:root{
+--primary:#607D8B;
+--accent:#263238;
+--bg:#ECEFF1;
+--text-main:#263238;
+--text-sub:#546E7A;
+--text-light:#90A4AE;
+--card:#FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','Noto Sans SC','Source Han Sans SC',sans-serif;background:var(--bg);color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 70px;box-sizing:border-box;}
+.bg-deco{position:absolute;inset:0;overflow:hidden;}
+.deco-circle{position:absolute;border-radius:50%;opacity:0.05;}
+.deco-circle-1{top:-120px;right:-120px;width:420px;height:420px;background:#607D8B;}
+.deco-circle-2{top:80px;right:220px;width:160px;height:160px;background:#455A64;opacity:0.04;}
+.deco-circle-3{bottom:-80px;right:-60px;width:280px;height:280px;background:#78909C;opacity:0.04;}
+.deco-line{position:absolute;background:#607D8B;opacity:0.07;}
+.deco-line-1{top:180px;right:0;width:3px;height:220px;}
+.deco-line-2{bottom:100px;right:0;width:3px;height:120px;opacity:0.05;}
+.book-stack{position:absolute;bottom:-30px;left:-80px;width:520px;height:420px;opacity:0.10;}
+.book{position:absolute;border-radius:3px;}
+.book-1{bottom:0;left:40px;width:340px;height:32px;transform:rotate(-3deg);background:linear-gradient(135deg,#607D8B 0%,#455A64 100%);}
+.book-2{bottom:38px;left:60px;width:290px;height:26px;transform:rotate(2deg);background:linear-gradient(135deg,#546E7A 0%,#37474F 100%);}
+.book-3{bottom:70px;left:20px;width:360px;height:30px;transform:rotate(-1deg);background:linear-gradient(135deg,#78909C 0%,#546E7A 100%);}
+.book-4{bottom:106px;left:70px;width:260px;height:24px;transform:rotate(4deg);background:linear-gradient(135deg,#455A64 0%,#263238 100%);}
+.book-5{bottom:136px;left:0;width:390px;height:28px;transform:rotate(-2deg);background:linear-gradient(135deg,#90A4AE 0%,#607D8B 100%);}
+.book-6{bottom:170px;left:50px;width:300px;height:24px;transform:rotate(1deg);background:linear-gradient(135deg,#607D8B 0%,#455A64 100%);}
+.book-7{bottom:200px;left:10px;width:350px;height:26px;transform:rotate(-3deg);background:linear-gradient(135deg,#78909C 0%,#546E7A 100%);opacity:0.7;}
+.book-8{bottom:232px;left:60px;width:240px;height:22px;transform:rotate(2deg);background:linear-gradient(135deg,#546E7A 0%,#37474F 100%);opacity:0.5;}
+.main{display:flex;height:100%;align-items:stretch;}
+.left-section{width:520px;display:flex;flex-direction:column;justify-content:center;position:relative;}
+.chapter-label{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;letter-spacing:8px;color:var(--primary);margin-bottom:24px;}
+.chapter-number{font-family:'Inter',sans-serif;font-size:340px;font-weight:900;color:var(--accent);line-height:0.85;letter-spacing:-12px;position:relative;}
+.chapter-number-shadow{position:absolute;left:6px;top:6px;font-size:340px;font-weight:900;color:#607D8B;opacity:0.08;line-height:0.85;letter-spacing:-12px;z-index:-1;}
+.chapter-number-underline{width:90px;height:4px;background:var(--primary);margin-top:24px;}
+.chapter-meta{margin-top:28px;font-family:'Noto Sans SC',sans-serif;font-size:13px;color:var(--text-light);letter-spacing:4px;font-weight:400;}
+.right-section{flex:1;display:flex;flex-direction:column;padding-left:40px;border-left:1px solid rgba(96,125,139,0.15);padding-right:10px;}
+.title-area{padding:30px 0 30px 30px;}
+.title-zh{font-family:'Noto Sans SC','Source Han Sans SC',sans-serif;font-size:60px;font-weight:900;color:var(--accent);letter-spacing:6px;line-height:1.1;}
+.title-divider{width:64px;height:3px;background:var(--primary);margin:24px 0;}
+.subtitle{font-family:'Noto Sans SC',sans-serif;font-size:22px;font-weight:400;color:var(--text-sub);letter-spacing:3px;}
+.modules{display:flex;gap:20px;padding:0 30px;margin-bottom:28px;}
+.module{flex:1;background:var(--card);border-radius:6px;padding:24px 22px;position:relative;border-top:3px solid var(--primary);box-shadow:0 2px 14px rgba(38,50,56,0.06);display:flex;flex-direction:column;}
+.module-number{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--primary);letter-spacing:3px;margin-bottom:10px;}
+.module-title{font-family:'Noto Sans SC',sans-serif;font-size:20px;font-weight:700;color:var(--accent);margin-bottom:12px;letter-spacing:2px;}
+.module-divider{width:32px;height:2px;background:var(--primary);margin-bottom:14px;opacity:0.6;}
+.module-desc{font-family:'Noto Sans SC',sans-serif;font-size:13.5px;font-weight:400;color:var(--text-sub);line-height:1.75;letter-spacing:0.5px;}
+.module-tag{margin-top:auto;padding-top:14px;font-family:'Inter',sans-serif;font-size:11px;color:var(--text-light);letter-spacing:2px;font-weight:500;}
+.chapter-intro{padding:20px 30px;border-top:1px solid rgba(96,125,139,0.15);margin-top:auto;display:flex;align-items:center;gap:18px;}
+.intro-icon{width:4px;height:44px;background:var(--primary);flex-shrink:0;}
+.intro-text{font-family:'Noto Sans SC',sans-serif;font-size:14px;color:var(--text-sub);line-height:1.85;letter-spacing:1px;font-weight:400;}
+.page-indicator{position:absolute;top:50px;right:70px;font-family:'Inter',sans-serif;font-size:12px;color:var(--text-light);letter-spacing:3px;z-index:2;display:flex;align-items:center;gap:10px;}
+.page-indicator-num{font-weight:700;color:var(--primary);font-size:15px;}
+.page-indicator-line{width:30px;height:1px;background:var(--text-light);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+<div class="bg-deco">
+<div class="deco-circle deco-circle-1"></div>
+<div class="deco-circle deco-circle-2"></div>
+<div class="deco-circle deco-circle-3"></div>
+<div class="deco-line deco-line-1"></div>
+<div class="deco-line deco-line-2"></div>
+<div class="book-stack">
+<div class="book book-8"></div>
+<div class="book book-7"></div>
+<div class="book book-6"></div>
+<div class="book book-5"></div>
+<div class="book book-4"></div>
+<div class="book book-3"></div>
+<div class="book book-2"></div>
+<div class="book book-1"></div>
+</div>
+</div>
+</div>
+<div id="ct">
+<div class="page-indicator">
+<span class="page-indicator-line"></span>
+<span class="page-indicator-num">06</span>
+<span>章节过渡</span>
+</div>
+<div class="main">
+<div class="left-section">
+<div class="chapter-label">第 二 章</div>
+<div class="chapter-number"><span>02</span></div>
+<div class="chapter-number-underline"></div>
+<div class="chapter-meta">第二篇章 · 阅读地图</div>
+</div>
+<div class="right-section">
+<div class="title-area">
+<h1 class="title-zh"><span>开源阅读地图</span></h1>
+<div class="title-divider"></div>
+<p class="subtitle"><span>推荐书单与阅读笔记方法论</span></p>
+</div>
+<div class="modules">
+<div class="module">
+<div class="module-number"><span>维度 01</span></div>
+<div class="module-title"><span>经典著作</span></div>
+<div class="module-divider"></div>
+<p class="module-desc"><span>《大教堂与集市》《Linux操作系统》等奠基之作的思想精华</span></p>
+<div class="module-tag"><span>经典 · 奠基</span></div>
+</div>
+<div class="module">
+<div class="module-number"><span>维度 02</span></div>
+<div class="module-title"><span>当代实践</span></div>
+<div class="module-divider"></div>
+<p class="module-desc"><span>CNCF白皮书、基金会年度报告与治理手册，贴近一线生态</span></p>
+<div class="module-tag"><span>当代 · 实践</span></div>
+</div>
+<div class="module">
+<div class="module-number"><span>维度 03</span></div>
+<div class="module-title"><span>中国视角</span></div>
+<div class="module-divider"></div>
+<p class="module-desc"><span>国内开源报告与中文社区著作，补全本土语境与叙事</span></p>
+<div class="module-tag"><span>中国 · 视角</span></div>
+</div>
+</div>
+<div class="chapter-intro">
+<div class="intro-icon"></div>
+<p class="intro-text"><span>阅读是理解开源最直接的入口。本章按"经典—当代—本土"三轴梳理推荐书目，并分享有效的阅读笔记方法，帮助读者构建自己的开源知识图谱。</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

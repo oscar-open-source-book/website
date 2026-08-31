@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary: #607D8B;
+  --dark: #263238;
+  --light: #ECEFF1;
+  --lighter: #F5F7F8;
+  --accent-line: #CFD8DC;
+  --text-sub: #546E7A;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Han Sans', 'Noto Sans SC', 'Inter', sans-serif;
+  color: var(--dark);
+  background: var(--light);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--light);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dot grid decoration */
+.dot-grid {
+  position: absolute;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+.dot-grid-tl {
+  top: 40px;
+  left: 40px;
+  width: 140px;
+  height: 140px;
+  background-image: radial-gradient(circle, var(--accent-line) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.dot-grid-br {
+  bottom: 60px;
+  right: 40px;
+  width: 120px;
+  height: 120px;
+  background-image: radial-gradient(circle, var(--accent-line) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* Geometric line decorations */
+.geo-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.geo-line-h-top {
+  position: absolute;
+  top: 48px;
+  left: 80px;
+  right: 80px;
+  height: 1px;
+  background: var(--accent-line);
+}
+
+.geo-line-h-bottom {
+  position: absolute;
+  bottom: 48px;
+  left: 80px;
+  right: 80px;
+  height: 1px;
+  background: var(--accent-line);
+}
+
+.geo-line-v-left {
+  position: absolute;
+  top: 80px;
+  bottom: 80px;
+  left: 48px;
+  width: 1px;
+  background: var(--accent-line);
+}
+
+.geo-line-v-right {
+  position: absolute;
+  top: 80px;
+  bottom: 80px;
+  right: 48px;
+  width: 1px;
+  background: var(--accent-line);
+}
+
+/* Network node decoration */
+.network-svg {
+  position: absolute;
+  top: 60px;
+  right: 120px;
+  width: 200px;
+  height: 160px;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.network-svg-bl {
+  top: auto;
+  right: auto;
+  bottom: 120px;
+  left: 120px;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  padding: 16px 12px 12px 12px;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-bar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: inline-block;
+}
+
+.top-bar-mid {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--accent-line);
+}
+
+/* Title section */
+.title-section {
+  margin-top: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 0 12px;
+}
+
+.title-vertical-accent {
+  writing-mode: vertical-rl;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--primary);
+  font-weight: 500;
+  padding-top: 20px;
+  border-top: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 20px;
+}
+
+.title-main-block {
+  flex: 1;
+}
+
+.title-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 8px;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+.title-eyebrow-line {
+  display: inline-block;
+  width: 50px;
+  height: 1px;
+  background: var(--primary);
+  vertical-align: middle;
+  margin-right: 14px;
+}
+
+.main-title {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 88px;
+  font-weight: 900;
+  color: var(--dark);
+  letter-spacing: 6px;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.main-title-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 5px;
+  color: var(--text-sub);
+  margin-bottom: 28px;
+}
+
+.subtitle-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.subtitle-accent-bar {
+  width: 4px;
+  height: 28px;
+  background: var(--primary);
+}
+
+.subtitle-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+}
+
+.subtitle-text strong {
+  color: var(--dark);
+  font-weight: 500;
+}
+
+/* Cards section */
+.cards-section {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  padding: 0 12px;
+}
+
+.card {
+  background: var(--lighter);
+  border: 1px solid var(--accent-line);
+  border-left: 3px solid var(--primary);
+  padding: 24px 24px 22px 24px;
+  position: relative;
+  min-height: 178px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.card-divider {
+  width: 36px;
+  height: 1px;
+  background: var(--accent-line);
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.card-desc {
+  font-family: 'Source Han Sans', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+.card-corner {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent-line);
+}
+
+/* Quote section */
+.quote-section {
+  margin-top: 28px;
+  margin-bottom: 20px;
+  padding: 16px 12px 12px 12px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-top: 1px solid var(--accent-line);
+  padding-top: 16px;
+}
+
+.quote-mark {
+  font-family: 'Inter', sans-serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--primary);
+  line-height: 0.8;
+  flex-shrink: 0;
+}
+
+.quote-text {
+  font-family: 'Source Han Sans', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.75;
+  letter-spacing: 0.8px;
+}
+
+.quote-text .highlight {
+  color: var(--dark);
+  font-weight: 500;
+}
+
+/* Bottom bar */
+.bottom-bar {
+  position: absolute;
+  bottom: 24px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text-sub);
+}
+
+.bottom-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bottom-bar-line {
+  width: 30px;
+  height: 1px;
+  background: var(--accent-line);
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="dot-grid dot-grid-tl"></div>
+    <div class="dot-grid dot-grid-br"></div>
+    <div class="geo-lines">
+      <div class="geo-line-h-top"></div>
+      <div class="geo-line-h-bottom"></div>
+      <div class="geo-line-v-left"></div>
+      <div class="geo-line-v-right"></div>
+    </div>
+    <svg class="network-svg" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="40" r="3" fill="#607D8B"/>
+      <circle cx="80" cy="20" r="3" fill="#607D8B"/>
+      <circle cx="140" cy="50" r="3" fill="#607D8B"/>
+      <circle cx="170" cy="100" r="3" fill="#607D8B"/>
+      <circle cx="100" cy="90" r="3" fill="#607D8B"/>
+      <circle cx="40" cy="110" r="3" fill="#607D8B"/>
+      <circle cx="150" cy="140" r="3" fill="#607D8B"/>
+      <line x1="30" y1="40" x2="80" y2="20" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="80" y1="20" x2="140" y2="50" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="140" y1="50" x2="170" y2="100" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="100" y1="90" x2="140" y2="50" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="100" y1="90" x2="40" y2="110" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="100" y1="90" x2="170" y2="100" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="40" y1="110" x2="30" y2="40" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="100" y1="90" x2="150" y2="140" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="170" y1="100" x2="150" y2="140" stroke="#CFD8DC" stroke-width="0.8"/>
+    </svg>
+    <svg class="network-svg network-svg-bl" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="30" r="3" fill="#607D8B"/>
+      <circle cx="110" cy="50" r="3" fill="#607D8B"/>
+      <circle cx="170" cy="30" r="3" fill="#607D8B"/>
+      <circle cx="70" cy="100" r="3" fill="#607D8B"/>
+      <circle cx="140" cy="120" r="3" fill="#607D8B"/>
+      <circle cx="20" cy="130" r="3" fill="#607D8B"/>
+      <circle cx="110" cy="145" r="3" fill="#607D8B"/>
+      <line x1="40" y1="30" x2="110" y2="50" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="110" y1="50" x2="170" y2="30" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="40" y1="30" x2="70" y2="100" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="110" y1="50" x2="70" y2="100" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="110" y1="50" x2="140" y2="120" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="70" y1="100" x2="20" y2="130" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="70" y1="100" x2="140" y2="120" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="140" y1="120" x2="110" y2="145" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="20" y1="130" x2="110" y2="145" stroke="#CFD8DC" stroke-width="0.8"/>
+      <line x1="170" y1="30" x2="140" y2="120" stroke="#CFD8DC" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+  <div id="ct">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <span class="top-bar-dot"></span>
+        <span>OPEN SOURCE &nbsp;·&nbsp; READING LOG</span>
+      </div>
+      <div class="top-bar-mid">─────────────</div>
+      <div>COVER &nbsp;/&nbsp; 01</div>
+    </div>
+
+    <div class="title-section">
+      <div class="title-vertical-accent"><span>OPEN &nbsp; SOURCE &nbsp; SPIRIT</span></div>
+      <div class="title-main-block">
+        <div class="title-eyebrow"><span class="title-eyebrow-line"></span><span>阅 读 &nbsp;·&nbsp; 布 道 &nbsp;·&nbsp; 分 享</span></div>
+        <h1 class="main-title">开源之书记录</h1>
+        <div class="main-title-en">A&nbsp; READING&nbsp; JOURNAL &nbsp;OF &nbsp;THE &nbsp;OPEN&nbsp;SOURCE&nbsp; SPIRIT</div>
+        <div class="subtitle-row">
+          <div class="subtitle-accent-bar"></div>
+          <div class="subtitle-text"><span><strong>开源作为一种思维方式</strong>——阅读、布道与分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards-section">
+      <div class="card">
+        <div class="card-corner"><span>01</span></div>
+        <div class="card-number"><span>RECORD &amp; LEGACY</span></div>
+        <div class="card-divider"></div>
+        <div class="card-title"><span>记录与传承</span></div>
+        <div class="card-desc"><span>以阅读笔记与布道实践，系统梳理开源精神内核，让思想在文字中沉淀与延续。</span></div>
+      </div>
+      <div class="card">
+        <div class="card-corner"><span>02</span></div>
+        <div class="card-number"><span>THINKING</span></div>
+        <div class="card-divider"></div>
+        <div class="card-title"><span>思想视角</span></div>
+        <div class="card-desc"><span>超越工具与代码，将开源视为一种认知世界的方式，在协作与共享中重塑思考的边界。</span></div>
+      </div>
+      <div class="card">
+        <div class="card-corner"><span>03</span></div>
+        <div class="card-number"><span>ADAPTABILITY</span></div>
+        <div class="card-divider"></div>
+        <div class="card-title"><span>适兕之道</span></div>
+        <div class="card-desc"><span>以开放协作回应技术变革，保持灵活与韧性，在流动的时代中锚定不变的精神内核。</span></div>
+      </div>
+    </div>
+
+    <div class="quote-section">
+      <div class="quote-mark"><span>&ldquo;</span></div>
+      <div class="quote-text">
+        <span>这是一份关于开源的书单记录与思想笔记。我们以<span class="highlight">阅读</span>为入口，以<span class="highlight">布道</span>为出口，试图回答一个根本问题：开源究竟是<span class="highlight">工具</span>、<span class="highlight">方法</span>，还是一种<span class="highlight">思考世界的方式</span>？</span>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-left">
+        <span class="bottom-bar-line"></span>
+        <span>OPEN&nbsp;SOURCE&nbsp;SPIRIT &nbsp;·&nbsp; A&nbsp;READING&nbsp;JOURNAL</span>
+      </div>
+      <div class="bottom-bar-left">
+        <span>2025</span>
+        <span class="bottom-bar-line"></span>
+        <span>P.001 &nbsp;/&nbsp; COVER</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

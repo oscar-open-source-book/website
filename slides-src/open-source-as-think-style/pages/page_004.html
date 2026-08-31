@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源生态全景</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary: #607D8B;
+  --primary-light: #78909C;
+  --primary-dark: #455A64;
+  --accent: #263238;
+  --bg-neutral: #ECEFF1;
+  --bg-white: #FFFFFF;
+  --line: #CFD8DC;
+  --line-soft: #E0E6EA;
+  --text-main: #263238;
+  --text-sec: #607D8B;
+  --text-muted: #90A4AE;
+  --font-en: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-cn: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-cn), var(--font-en);
+  font-size: 17px;
+  color: var(--text-main);
+  background: var(--bg-neutral);
+  letter-spacing: 0.01em;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(to right, rgba(96,125,139,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96,125,139,0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(96,125,139,0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96,125,139,0.025) 1px, transparent 1px),
+    #ECEFF1;
+  background-size: 160px 160px, 160px 160px, 40px 40px, 40px 40px;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.eyebrow {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--primary);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--accent);
+}
+
+h1 {
+  font-family: var(--font-cn);
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-en);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.header-right .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--primary);
+  display: inline-block;
+}
+
+/* Overview */
+.overview {
+  margin-top: 18px;
+  padding: 18px 22px;
+  background: rgba(255,255,255,0.7);
+  border-left: 3px solid var(--accent);
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--primary-dark);
+  max-width: 1300px;
+}
+
+/* 4 dimensions */
+.dimensions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.dim-card {
+  position: relative;
+  padding: 14px 16px 14px 18px;
+  background: var(--bg-white);
+  border: 1px solid var(--line-soft);
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dim-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--primary);
+}
+
+.dim-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.dim-num {
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--primary-light);
+}
+
+.dim-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.dim-desc {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-sec);
+}
+
+/* KPI grid */
+.kpi-section {
+  margin-top: 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.kpi-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kpi-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 14px;
+  background: var(--accent);
+}
+
+.kpi-legend {
+  font-family: var(--font-en);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  flex: 1;
+}
+
+.kpi-card {
+  position: relative;
+  background: var(--bg-white);
+  border: 1px solid var(--line-soft);
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.kpi-card::after {
+  content: "";
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 60px;
+  background: linear-gradient(to left, rgba(96,125,139,0.06), transparent);
+  pointer-events: none;
+}
+
+.kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+.kpi-idx {
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+  padding: 3px 8px;
+}
+
+.kpi-mid {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.kpi-num {
+  font-family: var(--font-en);
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.kpi-unit {
+  font-family: var(--font-cn);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.kpi-bar {
+  height: 3px;
+  background: var(--line-soft);
+  position: relative;
+  margin-top: 4px;
+}
+
+.kpi-bar-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--primary);
+}
+
+.kpi-context {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-sec);
+  margin-top: 8px;
+}
+
+.footer-bar {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--font-en);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.footer-bar-left {
+  display: flex; align-items: center; gap: 14px;
+}
+
+.footer-bar-left span { display: inline-block; }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span>OPEN SOURCE · 2024 LANDSCAPE</span></div>
+        <h1>开源生态全景</h1>
+      </div>
+      <div class="header-right">
+        <span class="dot"></span>
+        <span>6 KPI · 4 DIMENSION</span>
+      </div>
+    </div>
+
+    <div class="overview">
+      <span>开源早已从边缘爱好演变为全球软件工业的底座。以下数据勾勒出当前生态的规模与活力，也揭示中国在开源格局中日益重要的角色。</span>
+    </div>
+
+    <div class="dimensions">
+      <div class="dim-card">
+        <div class="dim-head">
+          <span class="dim-num">01</span>
+          <span class="dim-title">贡献者规模</span>
+        </div>
+        <div class="dim-desc"><span>全球开源贡献者数量持续增长，开发者社区已成为基础设施。</span></div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-head">
+          <span class="dim-num">02</span>
+          <span class="dim-title">项目繁荣度</span>
+        </div>
+        <div class="dim-desc"><span>GitHub等平台托管仓库数以亿计，企业依赖开源组件已成常态。</span></div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-head">
+          <span class="dim-num">03</span>
+          <span class="dim-title">商业生态</span>
+        </div>
+        <div class="dim-desc"><span>红帽被IBM收购、GitLab上市、CNCF基金会管理K8s，商业化路径多元。</span></div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-head">
+          <span class="dim-num">04</span>
+          <span class="dim-title">中国力量</span>
+        </div>
+        <div class="dim-desc"><span>华为OpenHarmony、阿里云OpenMind、蚂蚁SOFAStack引领国产化开源。</span></div>
+      </div>
+    </div>
+
+    <div class="kpi-section">
+      <div class="kpi-header">
+        <div class="kpi-title"><span>核心数据 · KEY METRICS</span></div>
+        <div class="kpi-legend">2024 · GLOBAL OPEN SOURCE INDEX</div>
+      </div>
+
+      <div class="kpi-grid">
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">全球开发者</span>
+            <span class="kpi-idx">KPI 01</span>
+          </div>
+          <div>
+            <div class="kpi-mid">
+              <span class="kpi-num">1.4</span>
+              <span class="kpi-unit">亿+</span>
+            </div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:88%;"></div></div>
+            <div class="kpi-context"><span>2024 年统计估算，全球参与开源协作的活跃开发者总规模。</span></div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">GitHub 公开仓库</span>
+            <span class="kpi-idx">KPI 02</span>
+          </div>
+          <div>
+            <div class="kpi-mid">
+              <span class="kpi-num">4.7</span>
+              <span class="kpi-unit">亿+</span>
+            </div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:92%;"></div></div>
+            <div class="kpi-context"><span>涵盖语言、框架、工具全栈，开源代码资产规模持续扩张。</span></div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Linux 服务器占比</span>
+            <span class="kpi-idx">KPI 03</span>
+          </div>
+          <div>
+            <div class="kpi-mid">
+              <span class="kpi-num">96</span>
+              <span class="kpi-unit">%</span>
+            </div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:96%;"></div></div>
+            <div class="kpi-context"><span>云与数据中心几乎全栈开源，Linux 已是事实上的服务器标准。</span></div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">企业开源依赖度</span>
+            <span class="kpi-idx">KPI 04</span>
+          </div>
+          <div>
+            <div class="kpi-mid">
+              <span class="kpi-num">73</span>
+              <span class="kpi-unit">%</span>
+            </div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:73%;"></div></div>
+            <div class="kpi-context"><span>大型企业中位数开源组件占比，软件供应链深度绑定开源生态。</span></div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">CNCF 项目数</span>
+            <span class="kpi-idx">KPI 05</span>
+          </div>
+          <div>
+            <div class="kpi-mid">
+              <span class="kpi-num">63</span>
+              <span class="kpi-unit">个</span>
+            </div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:65%;"></div></div>
+            <div class="kpi-context"><span>毕业、孵化、沙箱各阶段合计，云原生生态治理的核心基础设施。</span></div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">中国贡献者年增速</span>
+            <span class="kpi-idx">KPI 06</span>
+          </div>
+          <div>
+            <div class="kpi-mid">
+              <span class="kpi-num">28</span>
+              <span class="kpi-unit">%</span>
+            </div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:78%;"></div></div>
+            <div class="kpi-context"><span>2020–2024 复合增长率，中国正成为全球开源增长最快的力量之一。</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-bar-left">
+        <span>SOURCE / GITHUB OCTOVERSE 2024 · CNCF · GSMAI</span>
+      </div>
+      <div>SIMPLIFIED DASHBOARD · GREYSCALE EDITION</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
