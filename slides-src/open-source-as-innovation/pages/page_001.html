@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+<style>
+:root{
+  --navy:#0D2137;
+  --cream:#F5F1E6;
+  --red:#C0392B;
+  --red-deep:#962D22;
+  --ink:#1a1a1a;
+  --gold:#C9A86A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Noto Sans SC','Noto Serif SC',sans-serif;background:var(--cream);color:var(--ink);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 72px;}
+
+/* Background decorative blocks */
+.bg-navy-left{position:absolute;left:0;top:0;width:620px;height:100%;background:var(--navy);}
+.bg-navy-block{position:absolute;right:60px;top:60px;width:180px;height:120px;background:var(--navy);}
+.bg-navy-bar{position:absolute;right:260px;top:60px;width:6px;height:200px;background:var(--navy);}
+.bg-red-dot{position:absolute;right:90px;top:210px;width:20px;height:20px;background:var(--red);border-radius:50%;}
+.bg-cream-cut{position:absolute;left:620px;top:0;width:120px;height:100%;background:var(--cream);}
+.bg-frame-tl{position:absolute;left:24px;top:24px;width:36px;height:36px;border-left:3px solid var(--navy);border-top:3px solid var(--navy);}
+.bg-frame-br{position:absolute;right:24px;bottom:24px;width:36px;height:36px;border-right:3px solid var(--red);border-bottom:3px solid var(--red);}
+
+/* Top meta row */
+.meta-top{position:absolute;top:56px;left:84px;right:84px;display:flex;justify-content:space-between;align-items:center;z-index:3;font-size:12px;letter-spacing:3px;color:var(--navy);font-weight:500;}
+.meta-top .meta-left{display:flex;align-items:center;gap:14px;}
+.meta-top .meta-red{width:28px;height:2px;background:var(--red);}
+.meta-top .meta-right{color:var(--navy);font-weight:700;letter-spacing:4px;}
+
+/* Left navy panel content */
+.navy-panel{position:absolute;left:0;top:0;width:620px;height:900px;padding:56px 44px;display:flex;flex-direction:column;justify-content:space-between;color:var(--cream);z-index:2;}
+.navy-issue{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:6px;font-weight:700;color:var(--cream);opacity:0.85;}
+.navy-tagline{font-family:'Playfair Display',serif;font-size:11px;letter-spacing:8px;font-weight:400;color:var(--red);margin-top:4px;}
+
+.navy-title-block{display:flex;flex-direction:column;gap:18px;margin-top:30px;}
+.navy-title-1{font-family:'Noto Serif SC','Playfair Display',serif;font-size:110px;font-weight:900;line-height:0.95;color:var(--cream);letter-spacing:6px;}
+.navy-title-2{font-family:'Noto Serif SC',serif;font-size:36px;font-weight:700;color:var(--gold);letter-spacing:14px;line-height:1;}
+.navy-red-bar{width:80px;height:5px;background:var(--red);margin-top:6px;}
+
+.navy-sub{font-size:14px;line-height:1.9;color:var(--cream);opacity:0.9;font-weight:300;margin-top:14px;border-left:3px solid var(--red);padding-left:14px;max-width:460px;}
+
+.navy-footer{display:flex;flex-direction:column;gap:10px;}
+.navy-footer-line{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:3px;font-weight:400;opacity:0.8;}
+.navy-footer-line .dot{width:6px;height:6px;background:var(--red);border-radius:50%;}
+
+/* Right main area */
+.right-area{position:absolute;left:620px;top:0;width:980px;height:900px;z-index:2;}
+
+/* Top right decoration */
+.right-top{position:absolute;right:72px;top:100px;width:380px;height:280px;}
+.right-top-block-a{position:absolute;right:0;top:0;width:140px;height:80px;background:var(--navy);}
+.right-top-block-b{position:absolute;right:80px;top:80px;width:60px;height:60px;background:var(--red);}
+.right-top-lines{position:absolute;right:0;top:170px;width:220px;display:flex;flex-direction:column;gap:8px;}
+.right-top-lines span{display:block;height:2px;background:var(--navy);}
+.right-top-lines span:nth-child(1){width:220px;}
+.right-top-lines span:nth-child(2){width:160px;background:var(--red);}
+.right-top-lines span:nth-child(3){width:200px;}
+.right-top-rect{position:absolute;right:0;top:230px;width:280px;height:50px;border:2px solid var(--navy);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:13px;letter-spacing:6px;color:var(--navy);font-weight:700;}
+
+/* Subtitle large */
+.subtitle-wrap{position:absolute;left:72px;top:120px;width:500px;}
+.subtitle-cn{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;color:var(--navy);line-height:1.4;letter-spacing:2px;}
+.subtitle-en{font-family:'Playfair Display',serif;font-size:16px;color:var(--red);letter-spacing:3px;margin-top:10px;font-weight:700;}
+.subtitle-rule{width:60px;height:3px;background:var(--red);margin-top:16px;}
+
+/* Three cards */
+.cards{position:absolute;left:72px;top:340px;width:840px;display:flex;flex-direction:column;gap:16px;}
+.card{display:flex;align-items:stretch;background:#fff;border:1px solid rgba(13,33,55,0.12);box-shadow:0 4px 16px rgba(13,33,55,0.06);position:relative;overflow:hidden;}
+.card-num{width:70px;background:var(--navy);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:32px;letter-spacing:2px;}
+.card-num .sub{font-size:9px;letter-spacing:3px;font-weight:400;opacity:0.7;margin-top:4px;}
+.card-tag{width:8px;background:var(--red);display:flex;align-items:center;}
+.card-body{flex:1;padding:18px 24px;display:flex;flex-direction:column;justify-content:center;gap:6px;}
+.card-label{font-size:11px;letter-spacing:4px;color:var(--red);font-weight:700;}
+.card-title{font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:1px;line-height:1.3;}
+.card-desc{font-size:12.5px;color:#444;line-height:1.7;font-weight:300;}
+
+/* Right side vertical text */
+.v-text{position:absolute;right:40px;top:420px;writing-mode:vertical-rl;font-family:'Playfair Display',serif;font-size:13px;letter-spacing:8px;color:var(--navy);font-weight:700;opacity:0.5;}
+
+/* Right side decorative circle */
+.right-circle{position:absolute;right:80px;top:440px;width:120px;height:120px;border:3px solid var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.right-circle-inner{width:60px;height:60px;background:var(--red);border-radius:50%;}
+
+/* Bottom narrative strip */
+.bottom-strip{position:absolute;left:0;bottom:0;width:1600px;height:110px;background:var(--navy);z-index:3;display:flex;align-items:center;padding:0 72px;gap:24px;}
+.bottom-strip-bar{width:60px;height:4px;background:var(--red);flex-shrink:0;}
+.bottom-strip-text{color:var(--cream);font-size:12.5px;line-height:1.8;font-weight:300;letter-spacing:1px;max-width:1100px;flex:1;}
+.bottom-strip-text .hl{color:var(--red);font-weight:700;}
+.bottom-strip-code{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);letter-spacing:4px;font-weight:700;text-align:right;flex-shrink:0;}
+.bottom-strip-code .sub{font-size:9px;letter-spacing:3px;opacity:0.7;margin-top:4px;display:block;font-family:'Noto Sans SC',sans-serif;}
+
+/* Decorative small elements */
+.deco-cross{position:absolute;left:680px;top:88px;width:18px;height:18px;}
+.deco-cross::before,.deco-cross::after{content:'';position:absolute;background:var(--red);}
+.deco-cross::before{left:8px;top:0;width:2px;height:18px;}
+.deco-cross::after{left:0;top:8px;width:18px;height:2px;}
+
+.deco-squares{position:absolute;right:60px;top:380px;display:flex;flex-direction:column;gap:4px;}
+.deco-squares span{display:block;width:14px;height:14px;background:var(--navy);}
+.deco-squares span:nth-child(2){background:var(--red);}
+.deco-squares span:nth-child(3){width:7px;}
+
+/* Issue number decoration on left */
+.issue-deco{display:flex;align-items:flex-end;gap:12px;margin-top:20px;}
+.issue-num{font-family:'Playfair Display',serif;font-size:72px;font-weight:900;color:var(--cream);line-height:0.9;}
+.issue-label{font-size:10px;letter-spacing:4px;color:var(--gold);font-weight:400;padding-bottom:10px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-navy-left"></div>
+    <div class="bg-navy-block"></div>
+    <div class="bg-navy-bar"></div>
+    <div class="bg-red-dot"></div>
+    <div class="bg-frame-tl"></div>
+    <div class="bg-frame-br"></div>
+  </div>
+
+  <div id="ct">
+    <div class="deco-cross"></div>
+    <div class="deco-squares"><span></span><span></span><span></span></div>
+
+    <!-- Top meta -->
+    <div class="meta-top">
+      <div class="meta-left">
+        <span class="meta-red"></span>
+        <span>OPEN SOURCE · READING NOTES · ISSUE 01</span>
+      </div>
+      <div class="meta-right">编辑设计 · EDITORIAL</div>
+    </div>
+
+    <!-- Left navy panel -->
+    <div class="navy-panel">
+      <div>
+        <div class="navy-issue">ISSUE · 2024 / 01</div>
+        <div class="navy-tagline">A MAGAZINE OF OPEN SOURCE</div>
+      </div>
+
+      <div>
+        <div class="navy-title-block">
+          <div class="navy-title-1">开源</div>
+          <div class="navy-title-1">之书</div>
+          <div class="navy-title-1">记录</div>
+        </div>
+        <div class="navy-red-bar"></div>
+        <div class="navy-sub">Open-Source-as-Innovation<br>阅读与布道分享</div>
+      </div>
+
+      <div class="navy-footer">
+        <div class="issue-deco">
+          <div class="issue-num">01</div>
+          <div class="issue-label">SPECIAL<br>REPORT</div>
+        </div>
+        <div class="navy-footer-line"><span class="dot"></span><span>OPEN · SOURCE · INNOVATION</span></div>
+        <div class="navy-footer-line"><span class="dot"></span><span>开源之道 · 适兕</span></div>
+      </div>
+    </div>
+
+    <!-- Right area -->
+    <div class="right-area">
+      <div class="right-top">
+        <div class="right-top-block-a"></div>
+        <div class="right-top-block-b"></div>
+        <div class="right-top-lines">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="right-top-rect">OPEN · INNOVATION</div>
+      </div>
+
+      <div class="subtitle-wrap">
+        <div class="subtitle-cn">以阅读重构开源叙事<br>以布道激活创新共振</div>
+        <div class="subtitle-en">READING · NOTE · DISSEMINATION</div>
+        <div class="subtitle-rule"></div>
+      </div>
+
+      <div class="v-text">INNOVATION INFRASTRUCTURE</div>
+
+      <div class="right-circle">
+        <div class="right-circle-inner"></div>
+      </div>
+
+      <!-- Three cards -->
+      <div class="cards">
+        <div class="card">
+          <div class="card-num"><span>01</span><span class="sub">ROLE</span></div>
+          <div class="card-tag"></div>
+          <div class="card-body">
+            <div class="card-label">角色定位 · ROLE</div>
+            <div class="card-title">开源之道·适兕——开源文化传承与创新实践的记录者</div>
+            <div class="card-desc">以独立记录者身份深耕开源领域，追踪开源文化脉络，沉淀创新实践经验。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span>02</span><span class="sub">THESIS</span></div>
+          <div class="card-tag"></div>
+          <div class="card-body">
+            <div class="card-label">核心命题 · THESIS</div>
+            <div class="card-title">开源不仅是协作模式，更是创新的底层基础设施</div>
+            <div class="card-desc">超越技术协作的表层理解，揭示开源作为创新引擎的深层结构性价值。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span>03</span><span class="sub">FORM</span></div>
+          <div class="card-tag"></div>
+          <div class="card-body">
+            <div class="card-label">内容形式 · FORM</div>
+            <div class="card-title">读书会 · 笔记整理 · 案例剖析——推动开源理念传播</div>
+            <div class="card-desc">以多元内容形式构建开源知识传播体系，将阅读洞察转化为可复用的传播素材。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom narrative strip -->
+    <div class="bottom-strip">
+      <div class="bottom-strip-bar"></div>
+      <div class="bottom-strip-text">
+        本册记录围绕 <span class="hl">Open-Source-as-Innovation</span> 主题展开，系统梳理开源作为创新引擎的底层逻辑、经典案例与阅读方法论，为开源布道者提供可复用的知识图谱与传播素材。
+      </div>
+      <div class="bottom-strip-code">
+        END · 01
+        <span class="sub">CONTINUED NEXT ISSUE</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

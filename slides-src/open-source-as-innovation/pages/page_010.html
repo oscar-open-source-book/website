@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源读书方法论</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --bg:#F5F1E6;
+  --navy:#0D2137;
+  --red:#C0392B;
+  --gold:#B8860B;
+  --ink:#1A1A1A;
+  --mute:#5A6673;
+  --line:#D9CFB8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Noto Sans SC","Source Han Sans SC",sans-serif;color:var(--ink);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 60px 38px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 背景装饰 */
+.bg-deco{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.bg-deco::before{content:"";position:absolute;left:-80px;top:-80px;width:280px;height:280px;border:2px solid var(--line);border-radius:50%;opacity:.7;}
+.bg-deco::after{content:"";position:absolute;right:-120px;bottom:-100px;width:340px;height:340px;border:2px solid var(--line);border-radius:50%;opacity:.6;}
+.bg-stripe{position:absolute;left:0;top:0;width:100%;height:6px;background:repeating-linear-gradient(90deg,var(--navy) 0 40px,var(--bg) 40px 50px,var(--red) 50px 60px,var(--bg) 60px 70px);opacity:.85;z-index:0;}
+.bg-foot-stripe{position:absolute;left:0;bottom:0;width:100%;height:6px;background:repeating-linear-gradient(90deg,var(--navy) 0 40px,var(--bg) 40px 50px,var(--red) 50px 60px,var(--bg) 60px 70px);opacity:.85;z-index:0;}
+
+/* 顶部标题区 */
+.head{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:20px;}
+.head-left{display:flex;align-items:baseline;gap:22px;}
+.issue{font-family:"Noto Serif SC",serif;font-size:13px;letter-spacing:6px;color:var(--red);font-weight:700;}
+.title-main{font-family:"Noto Serif SC",serif;font-size:52px;font-weight:900;color:var(--navy);letter-spacing:2px;line-height:1;}
+.title-sub-en{font-family:"Noto Serif SC",serif;font-size:14px;color:var(--mute);letter-spacing:8px;text-transform:uppercase;font-weight:600;}
+.head-right{text-align:right;font-family:"Noto Serif SC",serif;color:var(--mute);font-size:12px;letter-spacing:3px;}
+.head-right .dot{display:inline-block;width:8px;height:8px;background:var(--red);border-radius:50%;margin-right:8px;vertical-align:middle;}
+
+/* 导语 */
+.lead{position:relative;z-index:2;background:linear-gradient(90deg,var(--navy) 0%,#142d48 100%);color:var(--bg);padding:16px 26px;margin-bottom:22px;display:flex;align-items:center;gap:22px;}
+.lead::before{content:"「";font-family:"Noto Serif SC",serif;font-size:42px;color:var(--red);line-height:0.8;margin-right:4px;font-weight:900;}
+.lead-text{flex:1;font-size:15px;line-height:1.7;font-weight:400;}
+.lead-text strong{color:#F0C970;font-weight:700;}
+.lead-mark{font-family:"Noto Serif SC",serif;font-size:13px;letter-spacing:3px;color:#F0C970;white-space:nowrap;border-left:2px solid var(--red);padding-left:18px;}
+
+/* 主体两栏 */
+.body{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+
+/* 左栏 */
+.col-left{display:flex;flex-direction:column;gap:14px;}
+.col-label{font-family:"Noto Serif SC",serif;font-size:13px;letter-spacing:6px;color:var(--navy);font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:2px;}
+.col-label::before{content:"";display:inline-block;width:24px;height:2px;background:var(--red);}
+.col-label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+.card{display:flex;gap:16px;padding:14px 16px 14px 14px;background:rgba(255,255,255,.55);border:1px solid var(--line);border-left:4px solid var(--navy);position:relative;}
+.card-num{font-family:"Noto Serif SC",serif;font-size:32px;font-weight:900;color:var(--red);line-height:1;min-width:44px;display:flex;flex-direction:column;align-items:center;}
+.card-num small{font-size:9px;letter-spacing:2px;color:var(--mute);font-weight:500;margin-top:2px;}
+.card-body{flex:1;}
+.card-title{font-family:"Noto Serif SC",serif;font-size:19px;font-weight:900;color:var(--navy);letter-spacing:2px;margin-bottom:5px;display:flex;align-items:center;gap:8px;}
+.card-title .tag{font-size:9px;background:var(--red);color:#fff;padding:2px 7px;letter-spacing:2px;font-weight:700;font-family:"Noto Sans SC",sans-serif;}
+.card-desc{font-size:12.5px;line-height:1.65;color:#3a3a3a;}
+.card-desc em{color:var(--navy);font-style:normal;font-weight:700;}
+
+/* 右栏 */
+.col-right{display:flex;flex-direction:column;gap:14px;}
+
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.kpi{background:var(--navy);color:var(--bg);padding:16px 18px;position:relative;overflow:hidden;}
+.kpi::after{content:"";position:absolute;right:-14px;bottom:-14px;width:60px;height:60px;border:2px solid var(--red);border-radius:50%;opacity:.4;}
+.kpi-label{font-size:11px;letter-spacing:4px;color:#F0C970;font-weight:500;margin-bottom:8px;font-family:"Noto Serif SC",serif;}
+.kpi-num{font-family:"Noto Serif SC",serif;font-size:40px;font-weight:900;color:#fff;line-height:1;display:flex;align-items:baseline;gap:6px;}
+.kpi-num .unit{font-size:14px;color:var(--red);font-weight:700;letter-spacing:2px;}
+.kpi-desc{font-size:11.5px;line-height:1.6;margin-top:8px;color:#c8d4e0;border-top:1px solid rgba(240,201,112,.3);padding-top:8px;}
+
+/* 书籍堆叠插画 */
+.books{flex:1;background:linear-gradient(180deg,rgba(13,33,55,.04) 0%,rgba(13,33,55,.10) 100%);border:1px solid var(--line);padding:18px 22px;display:flex;flex-direction:column;position:relative;}
+.books-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.books-title{font-family:"Noto Serif SC",serif;font-size:16px;font-weight:900;color:var(--navy);letter-spacing:3px;display:flex;align-items:center;gap:10px;}
+.books-title::before{content:"";display:inline-block;width:8px;height:8px;background:var(--red);}
+.books-meta{font-size:10px;letter-spacing:3px;color:var(--mute);font-family:"Noto Serif SC",serif;}
+
+.shelf{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:10px;padding:6px 14px 10px 14px;position:relative;}
+.shelf::after{content:"";position:absolute;left:6px;right:6px;bottom:8px;height:6px;background:var(--navy);border-radius:1px;}
+.shelf::before{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--red);opacity:.6;}
+
+.book{display:flex;flex-direction:column;align-items:center;position:relative;}
+.book .spine{width:34px;background:var(--navy);border-radius:1px 2px 2px 1px;position:relative;display:flex;align-items:center;justify-content:center;}
+.book .spine-inner{writing-mode:vertical-rl;font-family:"Noto Serif SC",serif;font-size:10px;color:var(--bg);letter-spacing:4px;font-weight:700;text-align:center;line-height:1.1;padding:8px 0;}
+.book .tag-red{position:absolute;background:var(--red);color:#fff;font-size:8px;padding:2px 5px;letter-spacing:1px;font-weight:700;}
+.book .pages{width:38px;background:linear-gradient(90deg,#f0e8d0,#e8dcc0);height:4px;margin-top:-1px;}
+.book1 .spine{height:120px;} .book1 .tag-red{top:-10px;right:-22px;transform:rotate(6deg);}
+.book2 .spine{height:140px;} .book2 .tag-red{bottom:20px;left:-28px;transform:rotate(-8deg);}
+.book3 .spine{height:110px;background:#142d48;} .book3 .tag-red{top:14px;right:-26px;transform:rotate(10deg);}
+.book4 .spine{height:135px;} .book4 .tag-red{bottom:30px;right:-24px;transform:rotate(-6deg);}
+.book5 .spine{height:100px;background:#1a3050;} .book5 .tag-red{top:8px;left:-22px;transform:rotate(7deg);}
+.book6 .spine{height:125px;} .book6 .tag-red{bottom:15px;left:-26px;transform:rotate(-9deg);}
+
+.shelf-caption{display:flex;justify-content:space-between;font-size:10.5px;color:var(--mute);margin-top:6px;font-family:"Noto Serif SC",serif;letter-spacing:2px;}
+.shelf-caption span:first-child{color:var(--navy);font-weight:700;}
+
+/* 底部收束 */
+.footer{position:relative;z-index:2;margin-top:18px;padding:14px 26px;background:rgba(13,33,55,.06);border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.footer-quote{font-family:"Noto Serif SC",serif;font-size:17px;font-weight:700;color:var(--navy);letter-spacing:3px;}
+.footer-quote .accent{color:var(--red);}
+.footer-quote::before{content:"✦";color:var(--red);margin-right:12px;font-size:14px;}
+.footer-nav{display:flex;align-items:center;gap:14px;font-size:10.5px;letter-spacing:3px;color:var(--mute);font-family:"Noto Serif SC",serif;}
+.footer-nav .line{flex:0 0 60px;height:1px;background:var(--line);}
+.footer-nav .num{color:var(--navy);font-weight:700;font-size:12px;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+<div class="bg-deco"></div>
+<div class="bg-stripe"></div>
+<div class="bg-foot-stripe"></div>
+</div>
+<div id="ct">
+
+  <div class="head">
+    <div class="head-left">
+      <span class="issue">ISSUE 01 · 读书方法论</span>
+      <span class="title-main">开源读书方法论</span>
+    </div>
+    <div class="head-right">
+      <div><span class="dot"></span>OPEN SOURCE · READING</div>
+      <div style="margin-top:4px;font-size:10px;">VOL.01 / 2024</div>
+    </div>
+    <div class="title-sub-en" style="position:absolute;left:0;right:0;bottom:-26px;">从输入到创造 · 让学习形成正循环</div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-text">
+      开源阅读不是<strong>被动接受</strong>，而是<strong>主动构建</strong>——通过三层阅读、笔记框架、经典书目与输出倒逼，形成从输入到创造的<span style="color:var(--red);font-weight:700;">正循环</span>。
+    </div>
+    <div class="lead-mark">MANIFESTO<br/>编辑手记</div>
+  </div>
+
+  <div class="body">
+    <div class="col-left">
+      <div class="col-label"><span>核心理念 · CORE METHOD</span></div>
+
+      <div class="card">
+        <div class="card-num">01<small>阅读</small></div>
+        <div class="card-body">
+          <div class="card-title">三层阅读 <span class="tag">FOUNDATION</span></div>
+          <div class="card-desc">以<em>精读经典</em>打牢根基，以<em>泛读前沿</em>拓展视野，以<em>跟读实践</em>落地验证，三结合构建立体知识体系，让知识在深度与广度之间形成共振。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">02<small>笔记</small></div>
+        <div class="card-body">
+          <div class="card-title">笔记框架 <span class="tag">FRAMEWORK</span></div>
+          <div class="card-desc"><em>主题卡片</em>锁定核心议题、<em>概念图谱</em>串联通识脉络、<em>案例索引</em>沉淀实战经验——三重笔记法让知识可检索、可复用、可生长。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">03<small>书目</small></div>
+        <div class="card-body">
+          <div class="card-title">经典书目 <span class="tag">CANON</span></div>
+          <div class="card-desc">《<em>大教堂与集市</em>》《<em>黑客与画家</em>》《<em>开源操作系统</em>》——以思想经典为锚点，系统构建开源哲学、社区治理与工程实践的完整认知图景。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-num">04<small>输出</small></div>
+        <div class="card-body">
+          <div class="card-title">输出倒逼 <span class="tag">OUTPUT</span></div>
+          <div class="card-desc"><em>以写促读</em>、<em>以讲促学</em>——通过写作布道与公开分享，倒逼深度理解与知识结构化，让输入的知识在创造中完成最终转化。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="col-label"><span>数据洞察 · INSIGHTS</span></div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-label">RECOMMEND · 推荐精读</div>
+          <div class="kpi-num">15<span class="unit">本</span></div>
+          <div class="kpi-desc">开源哲学 · 社区治理 · 工程实践 三方向经典著作，层层递进构建完整知识地图</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">TEMPLATE · 笔记模板</div>
+          <div class="kpi-num">3<span class="unit">种</span></div>
+          <div class="kpi-desc">主题卡片 · 概念图谱 · 案例索引，三位一体支撑知识的复用与再生</div>
+        </div>
+      </div>
+
+      <div class="books">
+        <div class="books-head">
+          <div class="books-title">精选书柜 · BOOKSHELF</div>
+          <div class="books-meta">SELECTED · 06</div>
+        </div>
+        <div class="shelf">
+          <div class="book book1">
+            <div class="spine"><div class="spine-inner">大教堂与集市</div></div>
+            <div class="tag-red">经典</div>
+            <div class="pages"></div>
+          </div>
+          <div class="book book2">
+            <div class="spine"><div class="spine-inner">黑客与画家</div></div>
+            <div class="tag-red">必读</div>
+            <div class="pages"></div>
+          </div>
+          <div class="book book3">
+            <div class="spine"><div class="spine-inner">开源操作系统</div></div>
+            <div class="tag-red">实践</div>
+            <div class="pages"></div>
+          </div>
+          <div class="book book4">
+            <div class="spine"><div class="spine-inner">开源之道</div></div>
+            <div class="tag-red">思辨</div>
+            <div class="pages"></div>
+          </div>
+          <div class="book book5">
+            <div class="spine"><div class="spine-inner">Linux内核</div></div>
+            <div class="tag-red">工程</div>
+            <div class="pages"></div>
+          </div>
+          <div class="book book6">
+            <div class="spine"><div class="spine-inner">协作的艺术</div></div>
+            <div class="tag-red">社区</div>
+            <div class="pages"></div>
+          </div>
+        </div>
+        <div class="shelf-caption">
+          <span>— 开源阅读 · 精选六籍 —</span>
+          <span>藏蓝书脊 · 红色标签 · 思想陈列</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-quote">从输入到创造，让学习<span class="accent">形成正循环</span>。</div>
+    <div class="footer-nav">
+      <span class="num">01</span>
+      <span class="line"></span>
+      <span>OPEN SOURCE READING METHOD</span>
+      <span class="line"></span>
+      <span class="num">ISSUE 01</span>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

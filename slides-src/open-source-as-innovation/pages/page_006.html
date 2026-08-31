@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源市场全景</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F5F1E6;
+  --navy:#0D2137;
+  --red:#C0392B;
+  --ink:#1a1a1a;
+  --muted:#6b6b66;
+  --line:#d9d2c0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  background:var(--cream);
+  color:var(--navy);
+  font-family:'Noto Sans SC','PingFang SC',sans-serif;
+  font-weight:400;
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:46px 60px 40px 60px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+#bg{
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(13,33,55,0.06), transparent 45%),
+    linear-gradient(180deg,#F5F1E6 0%,#EFE9D5 100%);
+}
+/* 顶部装饰条 */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:14px;border-bottom:1px solid var(--line);
+  font-size:12px;letter-spacing:0.18em;color:var(--muted);
+  text-transform:uppercase;
+}
+.topbar .brand{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);letter-spacing:0.2em;font-size:13px;}
+.topbar .meta{display:flex;gap:28px;}
+
+/* 主标题 */
+.hero{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-top:18px;margin-bottom:18px;
+}
+.hero-left h1{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:900;font-size:52px;line-height:1;
+  letter-spacing:0.01em;color:var(--navy);
+}
+.hero-left .sub{
+  margin-top:10px;font-size:13px;color:var(--muted);
+  letter-spacing:0.12em;
+}
+.hero-right{
+  text-align:right;max-width:520px;
+  font-size:13px;line-height:1.7;color:var(--navy);
+  border-left:2px solid var(--red);padding-left:16px;
+  font-family:'Noto Serif SC',serif;font-weight:400;
+}
+.hero-right .tag{
+  font-family:'Playfair Display',serif;font-weight:700;
+  color:var(--red);font-size:12px;letter-spacing:0.2em;
+  display:block;margin-bottom:6px;
+}
+
+/* KPI 网格 */
+.kpi-row{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:18px;
+  margin-bottom:20px;
+}
+.kpi{
+  border:1px solid var(--line);
+  background:#FBF8EE;
+  padding:16px 16px 14px 16px;
+  position:relative;
+  min-height:158px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.kpi .idx{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:11px;color:var(--red);letter-spacing:0.2em;
+}
+.kpi .num{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:900;font-size:40px;line-height:1.05;color:var(--navy);
+  margin-top:6px;letter-spacing:-0.01em;
+}
+.kpi .num .unit{font-size:16px;font-weight:700;color:var(--red);margin-left:4px;letter-spacing:0;}
+.kpi .lbl{
+  font-size:13px;font-weight:700;color:var(--navy);
+  margin-top:8px;letter-spacing:0.05em;
+}
+.kpi .desc{
+  font-size:11px;color:var(--muted);line-height:1.55;margin-top:4px;
+}
+.kpi::after{
+  content:'';position:absolute;top:0;left:0;width:36px;height:3px;
+  background:var(--red);
+}
+
+/* 下半区 */
+.lower{
+  display:grid;grid-template-columns:1fr 620px;gap:24px;
+  flex:1;min-height:0;
+}
+
+/* 左栏：六个要点卡片 */
+.points{
+  display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:14px;
+}
+.pc{
+  border:1px solid var(--line);
+  background:#FBF8EE;
+  padding:14px 14px 12px 14px;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.pc .head{
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:8px;margin-bottom:8px;
+}
+.pc .head .dot{
+  width:8px;height:8px;background:var(--red);border-radius:50%;flex:0 0 auto;
+}
+.pc .head .title{
+  font-family:'Noto Serif SC',serif;font-weight:700;font-size:14px;
+  color:var(--navy);letter-spacing:0.05em;
+}
+.pc .body{
+  font-size:12px;line-height:1.7;color:var(--navy);
+}
+.pc .foot{
+  margin-top:auto;padding-top:8px;font-size:10px;
+  letter-spacing:0.2em;color:var(--red);font-weight:700;
+  font-family:'Playfair Display',serif;
+}
+
+/* 右栏：图表卡 */
+.chart-card{
+  border:1px solid var(--line);
+  background:#FBF8EE;
+  padding:18px 20px 14px 20px;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.chart-card::before{
+  content:'';position:absolute;top:0;left:0;width:60px;height:3px;background:var(--red);
+}
+.chart-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding-bottom:10px;border-bottom:1px solid var(--line);
+}
+.chart-head .ttl{
+  font-family:'Playfair Display','Noto Serif SC',serif;font-weight:800;
+  font-size:18px;color:var(--navy);line-height:1.2;
+}
+.chart-head .ttl .sub{
+  display:block;font-family:'Noto Sans SC',sans-serif;font-weight:400;
+  font-size:11px;color:var(--muted);letter-spacing:0.1em;margin-top:4px;
+}
+.chart-head .kpi{
+  text-align:right;font-size:11px;color:var(--muted);letter-spacing:0.1em;
+}
+.chart-head .kpi b{
+  display:block;font-family:'Playfair Display',serif;font-weight:900;
+  font-size:22px;color:var(--red);margin-top:2px;letter-spacing:0;
+}
+#chart_1{
+  width:580px;height:320px;margin-top:8px;
+}
+.chart-note{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:6px;padding-top:8px;border-top:1px solid var(--line);
+  font-size:10.5px;color:var(--muted);letter-spacing:0.08em;
+}
+.chart-note .legend{display:flex;gap:16px;}
+.chart-note .legend i{
+  display:inline-block;width:10px;height:10px;margin-right:6px;
+  vertical-align:middle;background:var(--navy);
+}
+
+/* 底部 */
+.footer{
+  margin-top:14px;display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--line);padding-top:10px;
+  font-size:11px;color:var(--muted);letter-spacing:0.15em;
+}
+.footer .l{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);letter-spacing:0.2em;}
+.footer .r{font-style:italic;font-family:'Noto Serif SC',serif;color:var(--navy);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="topbar">
+      <div class="brand">OPEN&nbsp;SOURCE&nbsp;·&nbsp;MARKET&nbsp;OUTLOOK</div>
+      <div class="meta">
+        <span>VOL.01 / 2024</span>
+        <span>DATA SPECIAL</span>
+        <span>ISSUE № 01</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-left">
+        <h1>开源市场全景</h1>
+        <div class="sub">A PANORAMIC VIEW OF THE OPEN SOURCE MARKET · 2024</div>
+      </div>
+      <div class="hero-right">
+        <span class="tag">EDITORIAL&nbsp;NOTE</span>
+        开源已从边缘技术走向主流产业，超过九成企业依赖开源软件，中国正以惊人速度攀升至全球第二大开源贡献国，本土平台与社区生态日趋成熟。
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="idx">KPI 01</div>
+        <div>
+          <div class="num">800<span class="unit">亿美元</span></div>
+          <div class="lbl">全球开源市场规模</div>
+          <div class="desc">2024 年预估，年复合增长率 15%</div>
+        </div>
+        <div class="foot">MARKET</div>
+      </div>
+      <div class="kpi">
+        <div class="idx">KPI 02</div>
+        <div>
+          <div class="num">95<span class="unit">%+</span></div>
+          <div class="lbl">企业采纳率</div>
+          <div class="desc">生产环境使用开源软件的组织占比</div>
+        </div>
+        <div class="foot">ADOPTION</div>
+      </div>
+      <div class="kpi">
+        <div class="idx">KPI 03</div>
+        <div>
+          <div class="num">100<span class="unit">亿$+</span></div>
+          <div class="lbl">开源 VC 投资</div>
+          <div class="desc">2022 年度投资总额</div>
+        </div>
+        <div class="foot">CAPEX</div>
+      </div>
+      <div class="kpi">
+        <div class="idx">KPI 04</div>
+        <div>
+          <div class="num">600<span class="unit">万+</span></div>
+          <div class="lbl">中国贡献者数</div>
+          <div class="desc">全球第二，仅次于美国</div>
+        </div>
+        <div class="foot">CHINA</div>
+      </div>
+      <div class="kpi">
+        <div class="idx">KPI 05</div>
+        <div>
+          <div class="num">20<span class="unit">%+</span></div>
+          <div class="lbl">薪资溢价</div>
+          <div class="desc">具备开源经验的工程师薪资优势</div>
+        </div>
+        <div class="foot">PREMIUM</div>
+      </div>
+    </div>
+
+    <div class="lower">
+      <div class="points">
+        <div class="pc">
+          <div class="head"><span class="dot"></span><span class="title">市场规模</span></div>
+          <div class="body">全球开源软件市场持续增长，成为数字经济核心组成部分，推动云原生、AI 等基础设施的繁荣。</div>
+          <div class="foot">01&nbsp;·&nbsp;MARKET</div>
+        </div>
+        <div class="pc">
+          <div class="head"><span class="dot"></span><span class="title">企业采纳</span></div>
+          <div class="body">95% 以上的组织在生产环境中使用开源软件，开源已成为企业数字化转型的默认技术底座。</div>
+          <div class="foot">02&nbsp;·&nbsp;ADOPTION</div>
+        </div>
+        <div class="pc">
+          <div class="head"><span class="dot"></span><span class="title">投资热度</span></div>
+          <div class="body">2022 年开源相关 VC 投资超百亿美元，增速亮眼，资本市场持续加注开源赛道。</div>
+          <div class="foot">03&nbsp;·&nbsp;CAPITAL</div>
+        </div>
+        <div class="pc">
+          <div class="head"><span class="dot"></span><span class="title">人才需求</span></div>
+          <div class="body">开源技能工程师薪资溢价超 20%，招聘需求持续旺盛，具备开源背景人才成为争抢焦点。</div>
+          <div class="foot">04&nbsp;·&nbsp;TALENT</div>
+        </div>
+        <div class="pc">
+          <div class="head"><span class="dot"></span><span class="title">中国份额</span></div>
+          <div class="body">中国已成为全球第二大的开源贡献国，增速超过美国，600 万+ 开发者群体持续壮大。</div>
+          <div class="foot">05&nbsp;·&nbsp;CHINA</div>
+        </div>
+        <div class="pc">
+          <div class="head"><span class="dot"></span><span class="title">生态繁荣</span></div>
+          <div class="body">Gitee、开源之夏等本土平台助推国产开源生态崛起，构建起可持续的社区与技术体系。</div>
+          <div class="foot">06&nbsp;·&nbsp;ECOLOGY</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-head">
+          <div class="ttl">
+            全球开源软件市场规模逐年增长
+            <span class="sub">GLOBAL OPEN SOURCE SOFTWARE MARKET SIZE · USD BILLION</span>
+          </div>
+          <div class="kpi">2024 关键节点<b>800 亿$</b></div>
+        </div>
+        <div id="chart_1"></div>
+        <div class="chart-note">
+          <div class="legend"><span><i></i>市场规模（亿美元）</span></div>
+          <div>数据源：行业研究机构综合估算 · 单位：亿美元</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="l">OPEN SOURCE · MARKET OUTLOOK · 2024</div>
+      <div class="r">「开源，已从边缘走向产业中心。」</div>
+      <div class="l">P.01 / DATA PAGE</div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>
+(function(){
+  var el = document.getElementById('chart_1');
+  var chart = echarts.init(el, null, {renderer:'svg'});
+  var data = [200,260,340,430,540,660,800];
+  var years = ['2018','2019','2020','2021','2022','2023','2024'];
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:48,right:18,top:32,bottom:34},
+    tooltip:{show:false},
+    xAxis:{
+      type:'category',
+      data:years,
+      axisLine:{lineStyle:{color:'#d9d2c0'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#0D2137',fontSize:11,fontWeight:500,fontFamily:'Noto Sans SC'},
+      name:'年份',nameLocation:'end',nameTextStyle:{color:'#6b6b66',fontSize:10,padding:[14,0,0,0]}
+    },
+    yAxis:{
+      type:'value',
+      name:'亿美元',
+      nameTextStyle:{color:'#6b6b66',fontSize:10,padding:[0,0,6,0]},
+      axisLine:{show:false},
+      axisTick:{show:false},
+      splitLine:{lineStyle:{color:'#e6dfc8',type:'dashed'}},
+      axisLabel:{color:'#0D2137',fontSize:10}
+    },
+    series:[{
+      name:'市场规模',
+      type:'line',
+      data:data,
+      smooth:true,
+      symbol:'circle',
+      symbolSize:7,
+      itemStyle:{color:'#0D2137',borderColor:'#F5F1E6',borderWidth:2},
+      lineStyle:{color:'#0D2137',width:2.5},
+      areaStyle:{
+        color:{
+          type:'linear',x:0,y:0,x2:0,y2:1,
+          colorStops:[
+            {offset:0,color:'rgba(13,33,55,0.35)'},
+            {offset:1,color:'rgba(13,33,55,0.04)'}
+          ]
+        }
+      },
+      label:{
+        show:true,position:'top',
+        color:'#0D2137',fontSize:11,fontWeight:700,
+        fontFamily:'Playfair Display, Noto Serif SC',
+        formatter:'{c}'
+      },
+      markPoint:{
+        symbol:'pin',symbolSize:54,
+        itemStyle:{color:'#C0392B'},
+        label:{color:'#fff',fontSize:11,fontWeight:700,formatter:'800'},
+        data:[{name:'峰值',coord:['2024',800]}]
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>布道实践框架</title>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+<style>
+:root{
+  --navy:#0D2137;
+  --red:#C0392B;
+  --paper:#F5F1E6;
+  --paper-dark:#EAE3D0;
+  --text-main:#1a1a1a;
+  --text-sub:#4a4a4a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--text-main);background:var(--paper);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--paper);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 900px 500px at 12% 8%, rgba(13,33,55,0.05), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 92% 92%, rgba(192,57,43,0.04), transparent 60%);
+}
+#bg::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--navy);}
+#bg::after{content:"";position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--red);}
+#ct{position:absolute;inset:0;z-index:1;padding:44px 70px 36px 70px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;padding-bottom:18px;border-bottom:2px solid var(--navy);}
+.title-block{flex:1;}
+.eyebrow{font-size:13px;letter-spacing:6px;color:var(--red);font-weight:700;margin-bottom:10px;}
+.main-title{font-family:'Playfair Display',serif;font-weight:900;font-size:56px;color:var(--navy);line-height:1.05;letter-spacing:2px;}
+.sub-title{font-size:15px;color:var(--text-sub);margin-top:12px;line-height:1.6;max-width:780px;font-weight:400;}
+.meta{font-size:12px;color:var(--text-sub);text-align:right;letter-spacing:2px;line-height:1.8;}
+.meta strong{color:var(--navy);font-weight:700;font-size:13px;}
+
+/* Flow Section */
+.flow-section{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 0 18px 0;position:relative;}
+.section-label{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.section-label .num{font-family:'Playfair Display',serif;font-size:20px;color:var(--red);font-weight:900;}
+.section-label .txt{font-size:13px;letter-spacing:4px;color:var(--navy);font-weight:700;}
+.section-label .line{flex:1;height:1px;background:var(--navy);opacity:0.3;}
+
+.flow-row{display:flex;align-items:stretch;justify-content:space-between;gap:0;position:relative;}
+.node{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;}
+.node-num{font-family:'Playfair Display',serif;font-size:13px;color:var(--red);font-weight:900;letter-spacing:2px;margin-bottom:6px;}
+.node-shape{width:120px;height:120px;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--paper);font-family:'Playfair Display',serif;font-weight:900;font-size:32px;border:3px solid var(--paper);box-shadow:0 4px 0 var(--red);position:relative;}
+.node-shape::after{content:"";position:absolute;inset:-10px;border:1px solid var(--navy);opacity:0.15;}
+.node-name{font-size:17px;color:var(--navy);font-weight:900;margin-top:12px;letter-spacing:2px;}
+.node-desc{font-size:11.5px;color:var(--text-sub);text-align:center;line-height:1.65;margin-top:8px;padding:0 8px;font-weight:400;}
+
+/* Arrows between nodes */
+.arrow{display:flex;align-items:center;justify-content:center;width:56px;flex-shrink:0;position:relative;z-index:3;}
+.arrow-inner{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.arrow-line{width:44px;height:3px;background:var(--red);}
+.arrow-head{width:0;height:0;border-left:10px solid var(--red);border-top:6px solid transparent;border-bottom:6px solid transparent;}
+.arrow-label{font-size:10px;color:var(--red);font-weight:700;letter-spacing:1px;margin-top:2px;}
+
+/* KPI Section */
+.kpi-section{display:flex;gap:24px;padding-top:14px;border-top:2px solid var(--navy);}
+.kpi-card{flex:1;background:var(--paper-dark);border:2px solid var(--navy);padding:16px 22px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.kpi-card::before{content:"";position:absolute;top:0;left:0;width:6px;height:100%;background:var(--red);}
+.kpi-left{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-right:20px;border-right:2px solid var(--navy);}
+.kpi-value{font-family:'Playfair Display',serif;font-weight:900;font-size:42px;color:var(--navy);line-height:1;}
+.kpi-badge{font-size:10px;letter-spacing:2px;color:var(--red);font-weight:700;margin-top:4px;}
+.kpi-right{flex:1;}
+.kpi-label{font-size:12px;letter-spacing:3px;color:var(--red);font-weight:700;margin-bottom:4px;}
+.kpi-title{font-size:15px;color:var(--navy);font-weight:900;margin-bottom:4px;}
+.kpi-note{font-size:11.5px;color:var(--text-sub);line-height:1.5;}
+
+/* Decorative corner marks */
+.corner-tl,.corner-br{position:absolute;width:24px;height:24px;border:2px solid var(--navy);z-index:5;}
+.corner-tl{top:16px;left:16px;border-right:none;border-bottom:none;}
+.corner-br{bottom:16px;right:16px;border-left:none;border-top:none;}
+.corner-tl-r,.corner-bl-l{position:absolute;width:24px;height:24px;border:2px solid var(--red);z-index:5;}
+.corner-tl-r{top:16px;right:16px;border-left:none;border-bottom:none;}
+.corner-bl-l{bottom:16px;left:16px;border-right:none;border-top:none;}
+
+/* Watermark text */
+.watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-8deg);font-family:'Playfair Display',serif;font-size:180px;font-weight:900;color:var(--navy);opacity:0.025;letter-spacing:20px;pointer-events:none;z-index:0;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="corner-tl"></div>
+  <div class="corner-tl-r"></div>
+  <div class="corner-bl-l"></div>
+  <div class="corner-br"></div>
+  <div class="watermark">EVANGELISM</div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="eyebrow">OPEN SOURCE · EVANGELISM FRAMEWORK</div>
+        <div class="main-title">布道实践框架</div>
+        <div class="sub-title">开源布道作为知识传播的最后一公里——线上扩触达、线下深连接、社群维粘性、案例促落地、反馈保进化，五要素协同构建可持续的布道生态。</div>
+      </div>
+      <div class="meta">
+        <strong>2024 / ISSUE 07</strong><br>
+        知识传播 · 生态构建<br>
+        <span style="color:var(--red);">✦</span> FIVE-PILOT MODEL
+      </div>
+    </div>
+
+    <div class="flow-section">
+      <div class="section-label">
+        <span class="num">— 01 —</span>
+        <span class="txt">五要素协同 · 流程递进</span>
+        <span class="line"></span>
+      </div>
+
+      <div class="flow-row">
+
+        <div class="node">
+          <div class="node-num">01 / ONLINE</div>
+          <div class="node-shape">线上<br><span style="font-size:16px;font-weight:400;letter-spacing:2px;">分享</span></div>
+          <div class="node-name">线上分享</div>
+          <div class="node-desc">技术博客、B站/YouTube 视频、线上沙龙<br>构建个人品牌矩阵</div>
+        </div>
+
+        <div class="arrow">
+          <div class="arrow-inner">
+            <div class="arrow-line"></div>
+            <div class="arrow-head"></div>
+            <div class="arrow-label">拓展</div>
+          </div>
+        </div>
+
+        <div class="node">
+          <div class="node-num">02 / OFFLINE</div>
+          <div class="node-shape">线下<br><span style="font-size:16px;font-weight:400;letter-spacing:2px;">活动</span></div>
+          <div class="node-name">线下活动</div>
+          <div class="node-desc">开源之夏、Meetup、大学讲座<br>贴近一线开发者社群</div>
+        </div>
+
+        <div class="arrow">
+          <div class="arrow-inner">
+            <div class="arrow-line"></div>
+            <div class="arrow-head"></div>
+            <div class="arrow-label">沉淀</div>
+          </div>
+        </div>
+
+        <div class="node">
+          <div class="node-num">03 / COMMUNITY</div>
+          <div class="node-shape">社群<br><span style="font-size:16px;font-weight:400;letter-spacing:2px;">运营</span></div>
+          <div class="node-name">社群运营</div>
+          <div class="node-desc">微信群、知识星球、Discord<br>构建长期连接的布道网络</div>
+        </div>
+
+        <div class="arrow">
+          <div class="arrow-inner">
+            <div class="arrow-line"></div>
+            <div class="arrow-head"></div>
+            <div class="arrow-label">转化</div>
+          </div>
+        </div>
+
+        <div class="node">
+          <div class="node-num">04 / CASES</div>
+          <div class="node-shape">案例<br><span style="font-size:16px;font-weight:400;letter-spacing:2px;">包装</span></div>
+          <div class="node-name">案例包装</div>
+          <div class="node-desc">抽象理论转化为可复述故事<br>降低门槛、提升感染力</div>
+        </div>
+
+        <div class="arrow">
+          <div class="arrow-inner">
+            <div class="arrow-line"></div>
+            <div class="arrow-head"></div>
+            <div class="arrow-label">进化</div>
+          </div>
+        </div>
+
+        <div class="node">
+          <div class="node-num">05 / FEEDBACK</div>
+          <div class="node-shape">反馈<br><span style="font-size:16px;font-weight:400;letter-spacing:2px;">迭代</span></div>
+          <div class="node-name">反馈迭代</div>
+          <div class="node-desc">受众反馈反哺内容方向<br>形成布道与学习的正循环</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="kpi-section">
+      <div class="kpi-card">
+        <div class="kpi-left">
+          <div class="kpi-value">周更</div>
+          <div class="kpi-badge">WEEKLY</div>
+        </div>
+        <div class="kpi-right">
+          <div class="kpi-label">— KPI · 01</div>
+          <div class="kpi-title">建议分享频率</div>
+          <div class="kpi-note">保持稳定的内容输出节奏，让受众形成阅读预期，持续积累关注度。</div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-left">
+          <div class="kpi-value">500<span style="font-size:28px;">+</span></div>
+          <div class="kpi-badge">PEOPLE</div>
+        </div>
+        <div class="kpi-right">
+          <div class="kpi-label">— KPI · 02</div>
+          <div class="kpi-title">社群规模目标</div>
+          <div class="kpi-note">活跃社区的核心社群体量建议值，是衡量布道网络成熟度的关键基线。</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
