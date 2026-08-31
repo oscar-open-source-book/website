@@ -1,43 +1,33 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
-<title>源流：何为上游 — Section 01</title>
+<title>源流：何为上游</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
-
 :root {
   --primary: #795548;
   --accent: #C49A6C;
   --bg: #F5F0E8;
-  --text-main: #3B2A1E;
-  --text-muted: #8B7A6E;
-  --text-light: #B8A99A;
-  --line: rgba(121, 85, 72, 0.22);
-  --line-soft: rgba(121, 85, 72, 0.10);
+  --text-main: #3E2E25;
+  --text-sub: #8A7466;
+  --line: rgba(121, 85, 72, 0.28);
+  --line-soft: rgba(196, 154, 108, 0.45);
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html, body {
-  width: 1600px;
-  height: 900px;
-  overflow: hidden;
-}
-
-body {
-  font-family: 'Noto Sans SC', -apple-system, sans-serif;
-  font-size: 16px;
-  color: var(--text-main);
+  width: 100%;
+  height: 100%;
   background: var(--bg);
-  font-weight: 400;
-  line-height: 1.6;
+  font-family: "Noto Sans SC", -apple-system, sans-serif;
+  color: var(--text-main);
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
-
 .wrapper {
   width: 1600px;
   height: 900px;
@@ -46,271 +36,343 @@ body {
   margin: 0 auto;
   background: var(--bg);
 }
-
 #bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(135deg, #F5F0E8 0%, #EEE5D4 100%);
+  background: radial-gradient(ellipse at 20% 15%, rgba(196, 154, 108, 0.10), transparent 55%), radial-gradient(ellipse at 85% 90%, rgba(121, 85, 72, 0.06), transparent 55%);
 }
-
 #ct {
   position: absolute;
   inset: 0;
   z-index: 1;
-  padding: 62px 90px;
+  padding: 72px 88px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
 
-/* Eyebrow header */
-.eyebrow {
+/* Diagonal decorative line */
+.diag-line {
+  position: absolute;
+  top: -60px;
+  right: 120px;
+  width: 2px;
+  height: 1180px;
+  background: linear-gradient(180deg, transparent 0%, var(--accent) 15%, var(--primary) 55%, transparent 100%);
+  transform: rotate(16deg);
+  transform-origin: top right;
+  opacity: 0.55;
+  z-index: 0;
+}
+.diag-line-thin {
+  position: absolute;
+  top: -80px;
+  right: 40px;
+  width: 1px;
+  height: 1240px;
+  background: linear-gradient(180deg, transparent 0%, var(--line-soft) 30%, transparent 90%);
+  transform: rotate(16deg);
+  transform-origin: top right;
+  z-index: 0;
+}
+.dot-acc {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  z-index: 0;
+}
+.dot-1 { top: 210px; right: 178px; }
+.dot-2 { top: 480px; right: 268px; background: var(--primary); opacity: 0.6; }
+.dot-3 { top: 720px; right: 372px; }
+
+/* Header / top row */
+.header {
   display: flex;
   align-items: center;
-  gap: 20px;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  font-size: 12px;
-  letter-spacing: 0.32em;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: "Noto Serif SC", serif;
+  font-size: 15px;
   color: var(--primary);
-  font-weight: 500;
+  letter-spacing: 0.14em;
 }
-.eyebrow-line {
-  width: 92px;
-  height: 1px;
-  background: var(--primary);
-  opacity: 0.55;
+.brand-mark {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  letter-spacing: 0;
 }
-.eyebrow-dot {
-  width: 5px;
-  height: 5px;
-  background: var(--accent);
-  border-radius: 50%;
+.meta {
+  font-size: 12px;
+  color: var(--text-sub);
+  letter-spacing: 0.3em;
 }
 
-/* Title block */
-.title-block {
-  display: flex;
-  align-items: center;
-  gap: 60px;
-  margin-top: 82px;
+/* Main content grid */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 1.25fr;
+  gap: 64px;
+  padding-top: 48px;
+  padding-bottom: 24px;
 }
-.big-number {
-  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
-  font-size: 248px;
-  font-weight: 300;
-  color: var(--primary);
-  line-height: 0.85;
-  letter-spacing: -0.02em;
+
+/* Left: chapter number & title */
+.left {
   position: relative;
-}
-.big-number::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -14px;
-  transform: translateX(-50%);
-  width: 42px;
-  height: 2px;
-  background: var(--accent);
-}
-.title-content {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  justify-content: center;
+}
+.section-tag {
+  font-size: 13px;
+  letter-spacing: 0.42em;
+  color: var(--accent);
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+.section-tag .dash {
+  display: inline-block;
+  width: 34px;
+  height: 1px;
+  background: var(--accent);
+  vertical-align: middle;
+  margin-right: 14px;
+}
+.chapter-num {
+  font-family: "Noto Serif SC", serif;
+  font-size: 220px;
+  font-weight: 700;
+  line-height: 0.92;
+  color: var(--primary);
+  letter-spacing: -0.03em;
+  position: relative;
+}
+.chapter-num::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 3px;
+  background: var(--accent);
+  margin-top: 18px;
 }
 .title-main {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 72px;
-  font-weight: 500;
+  font-family: "Noto Serif SC", serif;
+  font-size: 54px;
+  font-weight: 600;
   color: var(--text-main);
-  letter-spacing: 0.08em;
-  line-height: 1.2;
+  margin-top: 30px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
 }
-.title-main-accent {
-  color: var(--primary);
-}
-.title-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
-  font-weight: 400;
+.title-main .colon {
   color: var(--accent);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  font-style: italic;
-  padding-left: 6px;
+  margin: 0 6px;
+}
+.subtitle {
+  font-size: 16px;
+  letter-spacing: 0.32em;
+  color: var(--text-sub);
+  margin-top: 20px;
+  font-weight: 400;
+}
+.subtitle .en {
+  color: var(--primary);
+  font-weight: 500;
 }
 
-/* Items row */
-.items-row {
-  display: flex;
-  gap: 72px;
-  margin-top: 82px;
-  flex: 1;
-}
-.item {
-  flex: 1;
+/* Right column */
+.right {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  position: relative;
-  padding-right: 8px;
+  justify-content: center;
+  gap: 42px;
 }
-.item-index {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
+
+.narrative {
+  font-size: 17px;
+  line-height: 2;
+  color: var(--text-main);
+  font-weight: 300;
+  padding-left: 24px;
+  border-left: 2px solid var(--accent);
+  max-width: 640px;
+}
+.narrative em {
+  font-style: normal;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.point {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: start;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.point:first-child { padding-top: 4px; }
+.point:last-child { border-bottom: none; }
+.point-idx {
+  font-family: "Noto Serif SC", serif;
+  font-size: 26px;
+  font-weight: 500;
   color: var(--accent);
-  font-style: italic;
-  letter-spacing: 0.12em;
+  line-height: 1;
+  padding-top: 2px;
 }
-.item-divider {
-  width: 42px;
-  height: 1px;
-  background: var(--primary);
-  opacity: 0.55;
+.point-idx .slash {
+  color: var(--line);
+  font-size: 18px;
+  margin: 0 2px;
 }
-.item-title {
-  font-family: 'Noto Serif SC', serif;
+.point-body h3 {
+  font-family: "Noto Serif SC", serif;
   font-size: 22px;
   font-weight: 600;
   color: var(--primary);
-  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
 }
-.item-desc {
+.point-body p {
   font-size: 14.5px;
-  color: var(--text-muted);
-  line-height: 1.85;
+  line-height: 1.75;
+  color: var(--text-main);
   font-weight: 300;
-  letter-spacing: 0.02em;
+}
+.point-body .en-label {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--text-sub);
+  margin-left: 10px;
+  font-weight: 400;
 }
 
 /* Footer */
 .footer {
-  margin-top: 42px;
-  padding-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
   border-top: 1px solid var(--line);
+  font-size: 11.5px;
+  color: var(--text-sub);
+  letter-spacing: 0.24em;
+}
+.footer .prog {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer .prog .bar {
+  display: inline-block;
+  width: 42px;
+  height: 2px;
+  background: var(--line);
   position: relative;
 }
-.footer::before {
-  content: '';
+.footer .prog .bar::before {
+  content: "";
   position: absolute;
-  top: -4px;
   left: 0;
-  width: 7px;
-  height: 7px;
+  top: 0;
+  height: 2px;
+  width: 12.5%;
   background: var(--accent);
-  border-radius: 50%;
 }
-.footer-text {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.85;
-  letter-spacing: 0.05em;
-  max-width: 1200px;
-  padding-left: 22px;
-  font-weight: 400;
-}
-
-/* Decorative diagonal river line */
-.decor-line-1 {
-  position: absolute;
-  top: -120px;
-  right: 40px;
-  width: 1500px;
-  height: 1px;
-  background: var(--accent);
-  transform: rotate(30deg);
-  transform-origin: top right;
-  opacity: 0.55;
-  z-index: 0;
-}
-.decor-line-2 {
-  position: absolute;
-  top: -120px;
-  right: 40px;
-  width: 900px;
-  height: 1px;
-  background: var(--primary);
-  transform: rotate(30deg);
-  transform-origin: top right;
-  opacity: 0.28;
-  z-index: 0;
-}
-.decor-circle {
-  position: absolute;
-  top: 265px;
-  right: 340px;
-  width: 10px;
-  height: 10px;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  opacity: 0.7;
-  z-index: 0;
-}
-
-/* Corner mark */
-.corner-mark {
-  position: absolute;
-  bottom: 62px;
-  right: 90px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 11px;
-  letter-spacing: 0.42em;
-  color: var(--text-light);
-  text-transform: uppercase;
-  z-index: 2;
-}
+.footer .prog .bar + .bar::before { display: none; }
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="decor-line-1"></div>
-    <div class="decor-line-2"></div>
-    <div class="decor-circle"></div>
-  </div>
+  <div id="bg"></div>
+  <div class="diag-line"></div>
+  <div class="diag-line-thin"></div>
+  <span class="dot-acc dot-1"></span>
+  <span class="dot-acc dot-2"></span>
+  <span class="dot-acc dot-3"></span>
+
   <div id="ct">
-    <div class="eyebrow">
-      <span>Section 01 — Upstream Origin</span>
-      <span class="eyebrow-line"></span>
-      <span class="eyebrow-dot"></span>
+    <div class="header">
+      <div class="brand">
+        <span class="brand-mark">源</span>
+        <span>开源协作哲学 · 第一章</span>
+      </div>
+      <div class="meta">CHAPTER TRANSITION · 01 / 08</div>
     </div>
 
-    <div class="title-block">
-      <div class="big-number">01</div>
-      <div class="title-content">
-        <div class="title-main"><span>源流：何为上游</span></div>
-        <div class="title-sub">Upstream · Origin</div>
+    <div class="main">
+      <div class="left">
+        <div class="section-tag"><span class="dash"></span>SECTION ONE</div>
+        <div class="chapter-num">01</div>
+        <div class="title-main">源流<span class="colon">：</span>何为上游</div>
+        <div class="subtitle"><span class="en">Section 01 — Upstream Origin</span></div>
       </div>
-    </div>
 
-    <div class="items-row">
-      <div class="item">
-        <div class="item-index">Ⅰ</div>
-        <div class="item-divider"></div>
-        <div class="item-title">上游定义</div>
-        <div class="item-desc">指代码、设计或决策的最终权威源头与原始仓库。</div>
-      </div>
-      <div class="item">
-        <div class="item-index">Ⅱ</div>
-        <div class="item-divider"></div>
-        <div class="item-title">下游含义</div>
-        <div class="item-desc">依赖上游发布的发行版、派生项目与使用者。</div>
-      </div>
-      <div class="item">
-        <div class="item-index">Ⅲ</div>
-        <div class="item-divider"></div>
-        <div class="item-title">关系隐喻</div>
-        <div class="item-desc">如江河源流，上游汇聚则下游丰沛。</div>
+      <div class="right">
+        <div class="narrative">
+          进入第一个章节，我们先厘清<em>"上游"</em>与<em>"下游"</em>这两个贯穿全书的核心隐喻。理解二者的关系，是理解整个开源协作哲学的第一步。
+        </div>
+
+        <div class="points">
+          <div class="point">
+            <div class="point-idx">Ⅰ<span class="slash">/</span></div>
+            <div class="point-body">
+              <h3>上游定义<span class="en-label">UPSTREAM</span></h3>
+              <p>指代码、设计或决策的最终权威源头与原始仓库 —— 项目真正的发源地。</p>
+            </div>
+          </div>
+          <div class="point">
+            <div class="point-idx">Ⅱ<span class="slash">/</span></div>
+            <div class="point-body">
+              <h3>下游含义<span class="en-label">DOWNSTREAM</span></h3>
+              <p>依赖上游发布的发行版、派生项目与终端使用者 —— 沿河而下的接受者。</p>
+            </div>
+          </div>
+          <div class="point">
+            <div class="point-idx">Ⅲ<span class="slash">/</span></div>
+            <div class="point-body">
+              <h3>关系隐喻<span class="en-label">METAPHOR</span></h3>
+              <p>如江河源流，上游汇聚则下游丰沛 —— 协作的本质是彼此滋养的流动。</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="footer">
-      <div class="footer-text">进入第一个章节，我们先厘清「上游」与「下游」这两个贯穿全书的核心隐喻。理解二者的关系，是理解整个开源协作哲学的第一步。</div>
+      <div>源流 · SOURCE &amp; STREAM</div>
+      <div class="prog">
+        <span>PROGRESS</span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span>01 / 08</span>
+      </div>
     </div>
   </div>
-  <div class="corner-mark">Chapter · One</div>
 </div>
 </body>
 </html>

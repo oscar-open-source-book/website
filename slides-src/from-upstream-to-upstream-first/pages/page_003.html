@@ -7,550 +7,425 @@
 <title>上游的历史与起源</title>
 <script src="../assets/echarts.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
 
-  :root {
-    --brown: #795548;
-    --gold: #C49A6C;
-    --cream: #F5F0E8;
-    --text-main: #4A3728;
-    --text-soft: #8B7355;
-    --text-mute: #A99482;
-    --brown-faint: #E8DFD1;
-    --brown-line: #D4C4B0;
-    --border: rgba(121, 85, 72, 0.22);
-  }
+:root{
+  --brown:#795548;
+  --brown-dark:#4E342E;
+  --gold:#C49A6C;
+  --gold-light:#D9BE9A;
+  --cream:#F5F0E8;
+  --cream-2:#EFE7D8;
+  --text-main:#3E2C24;
+  --text-sub:#7A6A5C;
+  --line:#D9CDBB;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+*{box-sizing:border-box;margin:0;padding:0;}
 
-  html, body {
-    font-family: "Noto Sans SC", sans-serif;
-    color: var(--text-main);
-    background: var(--cream);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+html,body{width:100%;height:100%;background:#E8E0D0;font-family:'Noto Sans SC',sans-serif;color:var(--text-main);}
 
-  .wrapper {
-    width: 1600px;
-    height: 900px;
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto;
-    background: var(--cream);
-  }
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:var(--cream);
+}
 
-  #bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:var(--cream);
+}
 
-  #ct {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    padding: 60px;
-  }
+#bg::before{
+  content:"";position:absolute;top:-200px;right:-200px;
+  width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(196,154,108,0.10) 0%,rgba(196,154,108,0) 70%);
+}
 
-  /* Page header */
-  .page-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--brown-line);
-  }
+#bg::after{
+  content:"";position:absolute;bottom:-260px;left:-200px;
+  width:900px;height:900px;border-radius:50%;
+  background:radial-gradient(circle,rgba(121,85,72,0.08) 0%,rgba(121,85,72,0) 70%);
+}
 
-  .header-left {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:56px 72px 48px 72px;
+  display:flex;flex-direction:column;
+}
 
-  .page-eyebrow {
-    font-family: "Noto Serif SC", serif;
-    font-size: 13px;
-    letter-spacing: 0.55em;
-    color: var(--gold);
-    font-weight: 500;
-  }
+/* 顶部标题 */
+.header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--line);
+}
+.header-left{max-width:1100px;}
+.eyebrow{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:12px;letter-spacing:6px;
+  color:var(--gold);font-weight:500;
+  margin-bottom:10px;
+}
+h1.title{
+  font-family:'Noto Serif SC',serif;
+  font-size:44px;font-weight:600;
+  color:var(--brown-dark);
+  letter-spacing:2px;line-height:1.2;
+}
+.title-sub{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:13px;color:var(--text-sub);
+  margin-top:10px;letter-spacing:1px;
+}
+.header-right{
+  text-align:right;font-family:'Noto Sans SC',sans-serif;
+  font-size:12px;color:var(--text-sub);letter-spacing:2px;
+  padding-bottom:6px;
+}
+.header-right .num{
+  font-family:'Noto Serif SC',serif;
+  font-size:28px;color:var(--brown);
+  letter-spacing:2px;display:block;line-height:1;
+  margin-bottom:4px;
+}
 
-  .page-title {
-    font-family: "Noto Serif SC", serif;
-    font-size: 42px;
-    font-weight: 600;
-    color: var(--brown);
-    letter-spacing: 0.12em;
-    line-height: 1.15;
-  }
+/* 引言 */
+.intro{
+  margin-top:22px;
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:16px;line-height:1.85;
+  color:var(--text-main);
+  max-width:1180px;
+  letter-spacing:0.4px;
+}
+.intro::before{
+  content:"「";
+  font-family:'Noto Serif SC',serif;
+  color:var(--gold);font-size:22px;
+  margin-right:4px;vertical-align:-2px;
+}
+.intro::after{
+  content:"」";
+  font-family:'Noto Serif SC',serif;
+  color:var(--gold);font-size:22px;
+  margin-left:2px;vertical-align:-2px;
+}
 
-  .page-subtitle {
-    font-size: 13px;
-    color: var(--text-mute);
-    letter-spacing: 0.32em;
-    font-weight: 300;
-  }
+/* 主内容区 */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 480px;
+  gap:56px;
+  margin-top:28px;
+  min-height:0;
+}
 
-  .header-right {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding-bottom: 4px;
-  }
+/* 左：时间轴 */
+.timeline{
+  position:relative;
+  padding-left:8px;
+}
+.timeline-item{
+  position:relative;
+  padding-left:64px;
+  padding-bottom:26px;
+}
+.timeline-item:last-child{padding-bottom:0;}
 
-  .page-jp {
-    font-family: "Noto Serif SC", serif;
-    font-size: 14px;
-    letter-spacing: 0.6em;
-    color: var(--gold);
-    font-weight: 400;
-  }
+/* 竖线 */
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:22px;top:10px;bottom:10px;
+  width:1px;
+  background:linear-gradient(to bottom,var(--gold) 0%,var(--brown) 50%,var(--gold) 100%);
+  opacity:0.55;
+}
 
-  .page-meta {
-    font-size: 11px;
-    color: var(--text-mute);
-    letter-spacing: 0.4em;
-    font-family: "Noto Serif SC", serif;
-    font-weight: 300;
-  }
+.timeline-node{
+  position:absolute;
+  left:12px;top:6px;
+  width:22px;height:22px;
+  border-radius:50%;
+  background:var(--cream);
+  border:2px solid var(--brown);
+  display:flex;align-items:center;justify-content:center;
+}
+.timeline-node::after{
+  content:"";width:8px;height:8px;border-radius:50%;
+  background:var(--brown);
+}
+.timeline-item:nth-child(2) .timeline-node{border-color:var(--gold);}
+.timeline-item:nth-child(2) .timeline-node::after{background:var(--gold);}
+.timeline-item:nth-child(4) .timeline-node{border-color:var(--gold);}
+.timeline-item:nth-child(4) .timeline-node::after{background:var(--gold);}
 
-  /* Main grid */
-  .main {
-    display: grid;
-    grid-template-columns: 55fr 45fr;
-    gap: 56px;
-    margin-top: 36px;
-    height: 660px;
-  }
+.year{
+  font-family:'Noto Serif SC',serif;
+  font-size:13px;letter-spacing:3px;
+  color:var(--gold);font-weight:500;
+  margin-bottom:4px;
+}
+.point-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:20px;font-weight:600;
+  color:var(--brown-dark);
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+.point-desc{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:14px;line-height:1.75;
+  color:var(--text-sub);
+  max-width:520px;
+  letter-spacing:0.3px;
+}
 
-  /* Timeline column */
-  .timeline-column {
-    position: relative;
-    padding-left: 96px;
-  }
+/* 右：CSS 代码流装饰 */
+.flow-art{
+  position:relative;
+  background:linear-gradient(180deg,var(--cream-2) 0%,var(--cream) 100%);
+  border:1px solid var(--line);
+  border-radius:2px;
+  overflow:hidden;
+}
+.flow-art::before{
+  content:"";position:absolute;
+  top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--brown) 0%,var(--gold) 60%,var(--gold-light) 100%);
+}
+.flow-header{
+  padding:22px 24px 14px 24px;
+  border-bottom:1px dashed var(--line);
+}
+.flow-header .label{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:11px;letter-spacing:4px;
+  color:var(--gold);
+}
+.flow-header .sub{
+  font-family:'Noto Serif SC',serif;
+  font-size:16px;color:var(--brown-dark);
+  margin-top:6px;letter-spacing:1.5px;
+}
+.flow-canvas{
+  position:relative;
+  height:calc(100% - 74px);
+  overflow:hidden;
+}
 
-  .col-label {
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    color: var(--gold);
-    font-weight: 500;
-    position: absolute;
-    top: -2px;
-    left: 0;
-  }
+/* 抽象代码流线条 */
+.flow-line{
+  position:absolute;
+  height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--brown) 30%,var(--gold) 60%,transparent 100%);
+  opacity:0.5;
+}
+.flow-line.l1{top:8%;left:-10%;width:70%;background:linear-gradient(90deg,transparent,var(--gold) 40%,var(--brown) 80%,transparent);}
+.flow-line.l2{top:16%;left:10%;width:85%;opacity:0.4;}
+.flow-line.l3{top:24%;left:-5%;width:60%;background:linear-gradient(90deg,transparent,var(--brown) 50%,var(--gold-light) 90%,transparent);opacity:0.6;}
+.flow-line.l4{top:32%;left:15%;width:80%;opacity:0.35;}
+.flow-line.l5{top:40%;left:-8%;width:95%;background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--brown) 70%,transparent);opacity:0.7;}
+.flow-line.l6{top:48%;left:20%;width:70%;opacity:0.45;}
+.flow-line.l7{top:56%;left:-5%;width:80%;background:linear-gradient(90deg,transparent,var(--brown-dark) 40%,var(--gold) 90%,transparent);opacity:0.55;}
+.flow-line.l8{top:64%;left:12%;width:88%;opacity:0.4;}
+.flow-line.l9{top:72%;left:0%;width:75%;background:linear-gradient(90deg,transparent,var(--gold) 50%,var(--brown) 90%,transparent);opacity:0.6;}
+.flow-line.l10{top:80%;left:8%;width:82%;opacity:0.5;}
+.flow-line.l11{top:88%;left:-3%;width:65%;background:linear-gradient(90deg,transparent,var(--brown) 40%,var(--gold-light) 80%,transparent);opacity:0.55;}
+.flow-line.l12{top:94%;left:18%;width:70%;opacity:0.35;}
 
-  .timeline-line {
-    position: absolute;
-    left: 44px;
-    top: 36px;
-    width: 1px;
-    height: 610px;
-    background: linear-gradient(to bottom,
-      rgba(196, 154, 108, 0.15) 0%,
-      rgba(196, 154, 108, 0.55) 35%,
-      rgba(121, 85, 72, 0.85) 85%,
-      rgba(74, 55, 40, 1) 100%);
-  }
+/* 节点小圆 */
+.flow-dot{
+  position:absolute;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--brown);
+  box-shadow:0 0 0 3px rgba(121,85,72,0.15);
+}
+.flow-dot.d1{top:8%;left:44%;background:var(--gold);box-shadow:0 0 0 3px rgba(196,154,108,0.2);}
+.flow-dot.d2{top:24%;left:36%;}
+.flow-dot.d3{top:40%;left:52%;background:var(--gold);box-shadow:0 0 0 3px rgba(196,154,108,0.2);}
+.flow-dot.d4{top:56%;left:44%;}
+.flow-dot.d5{top:72%;left:38%;background:var(--gold);box-shadow:0 0 0 3px rgba(196,154,108,0.2);}
+.flow-dot.d6{top:88%;left:48%;}
 
-  .timeline-card {
-    position: relative;
-    margin-bottom: 26px;
-    padding-left: 32px;
-    padding-top: 4px;
-  }
+/* 节点标签 */
+.flow-label{
+  position:absolute;
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:10px;letter-spacing:2px;
+  color:var(--brown);
+  padding:2px 6px;
+  background:rgba(245,240,232,0.85);
+  border:1px solid var(--line);
+}
+.flow-label.tl1{top:5%;left:46%;}
+.flow-label.tl2{top:21%;left:38%;}
+.flow-label.tl3{top:37%;left:54%;}
+.flow-label.tl4{top:53%;left:46%;}
+.flow-label.tl5{top:69%;left:40%;}
+.flow-label.tl6{top:85%;left:50%;}
 
-  .timeline-card:last-child { margin-bottom: 0; }
+/* 底部徽章 */
+.badges{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+.badge{
+  position:relative;
+  background:var(--cream-2);
+  border-left:3px solid var(--brown);
+  padding:16px 22px;
+  display:flex;align-items:center;
+  gap:20px;
+}
+.badge.right{border-left-color:var(--gold);}
+.badge-num{
+  font-family:'Noto Serif SC',serif;
+  font-size:38px;font-weight:600;
+  color:var(--brown);
+  line-height:1;letter-spacing:1px;
+  flex-shrink:0;
+  min-width:130px;
+}
+.badge.right .badge-num{color:var(--gold);}
+.badge-text{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:13px;color:var(--text-sub);
+  line-height:1.6;letter-spacing:0.5px;
+}
+.badge-text .strong{
+  display:block;color:var(--text-main);
+  font-weight:500;margin-bottom:2px;font-size:14px;
+}
 
-  .timeline-dot {
-    position: absolute;
-    left: -58px;
-    top: 12px;
-    background: var(--gold);
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px var(--cream);
-  }
-
-  .timeline-dot-1 { width: 8px; height: 8px; opacity: 0.55; }
-  .timeline-dot-2 { width: 10px; height: 10px; opacity: 0.72; top: 11px; }
-  .timeline-dot-3 { width: 12px; height: 12px; opacity: 0.88; top: 10px; }
-  .timeline-dot-4 { width: 14px; height: 14px; opacity: 1; top: 9px; background: var(--brown); }
-
-  .timeline-tick {
-    position: absolute;
-    left: -44px;
-    top: 19px;
-    height: 1px;
-  }
-
-  .timeline-tick-1 { width: 22px; background: rgba(196, 154, 108, 0.55); }
-  .timeline-tick-2 { width: 26px; background: rgba(167, 129, 88, 0.65); }
-  .timeline-tick-3 { width: 30px; background: rgba(121, 85, 72, 0.75); }
-  .timeline-tick-4 { width: 34px; background: rgba(74, 55, 40, 0.9); }
-
-  .timeline-step {
-    font-family: "Noto Serif SC", serif;
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    color: var(--gold);
-    font-weight: 500;
-    margin-bottom: 4px;
-    opacity: 0.85;
-  }
-
-  .timeline-title {
-    font-family: "Noto Serif SC", serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--brown);
-    letter-spacing: 0.1em;
-    margin-bottom: 6px;
-    line-height: 1.3;
-  }
-
-  .timeline-desc {
-    font-size: 13px;
-    line-height: 1.8;
-    color: var(--text-main);
-    letter-spacing: 0.05em;
-    max-width: 520px;
-    font-weight: 300;
-  }
-
-  .timeline-year {
-    font-family: "Noto Serif SC", serif;
-    font-size: 12px;
-    color: var(--text-soft);
-    letter-spacing: 0.3em;
-    font-weight: 500;
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .timeline-year::before {
-    content: "";
-    width: 18px;
-    height: 1px;
-    background: var(--gold);
-    opacity: 0.7;
-  }
-
-  /* Right decorative column */
-  .right-column {
-    position: relative;
-    height: 660px;
-  }
-
-  .right-label {
-    position: absolute;
-    top: -2px;
-    left: 0;
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    color: var(--gold);
-    font-weight: 500;
-  }
-
-  .streams {
-    position: absolute;
-    top: 26px;
-    left: 0;
-    right: 0;
-    height: 560px;
-  }
-
-  .anchor {
-    position: absolute;
-    z-index: 5;
-  }
-
-  .anchor-num {
-    font-family: "Noto Serif SC", serif;
-    font-size: 82px;
-    font-weight: 600;
-    color: var(--brown);
-    line-height: 1;
-    letter-spacing: 0.02em;
-    margin-bottom: 12px;
-  }
-
-  .anchor-tag {
-    font-size: 12px;
-    letter-spacing: 0.28em;
-    color: var(--text-main);
-    font-weight: 400;
-    margin-bottom: 4px;
-    line-height: 1.5;
-  }
-
-  .anchor-en {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    color: var(--text-mute);
-    font-weight: 300;
-    font-family: "Noto Serif SC", serif;
-    font-style: italic;
-  }
-
-  .anchor-1 {
-    top: 44px;
-    right: 0;
-    left: 100px;
-  }
-
-  .anchor-2 {
-    bottom: 82px;
-    right: 0;
-    left: 60px;
-  }
-
-  .anchor-2 .anchor-num {
-    font-size: 78px;
-    color: var(--brown);
-  }
-
-  .anchor-connector {
-    position: absolute;
-    left: 46px;
-    top: 24px;
-    width: 6px;
-    height: 6px;
-    background: var(--gold);
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px var(--cream);
-  }
-
-  .anchor-connector-bottom {
-    position: absolute;
-    right: 12px;
-    bottom: 8px;
-    width: 6px;
-    height: 6px;
-    background: var(--brown);
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px var(--cream);
-  }
-
-  /* Footer narrative */
-  .footer-narrative {
-    position: absolute;
-    left: 60px;
-    right: 60px;
-    bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding-top: 22px;
-    border-top: 1px solid var(--brown-line);
-  }
-
-  .footer-marker {
-    width: 32px;
-    height: 1px;
-    background: var(--brown);
-    opacity: 0.7;
-    flex-shrink: 0;
-  }
-
-  .footer-text {
-    font-size: 12px;
-    color: var(--text-soft);
-    letter-spacing: 0.09em;
-    line-height: 1.9;
-    font-weight: 300;
-    flex: 1;
-  }
-
-  .footer-end {
-    font-family: "Noto Serif SC", serif;
-    font-size: 11px;
-    letter-spacing: 0.45em;
-    color: var(--gold);
-    font-weight: 400;
-    flex-shrink: 0;
-  }
+/* 页脚 */
+.footer{
+  position:absolute;
+  bottom:16px;left:72px;right:72px;
+  display:flex;justify-content:space-between;
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:10px;color:var(--text-sub);
+  letter-spacing:3px;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-
-  <div id="bg">
-    <!-- Very subtle background decorative texture -->
-    <svg width="1600" height="900" style="position:absolute;top:0;left:0;opacity:0.35;" viewBox="0 0 1600 900">
-      <defs>
-        <radialGradient id="warmGlow" cx="85%" cy="35%" r="60%">
-          <stop offset="0%" stop-color="#C49A6C" stop-opacity="0.10"/>
-          <stop offset="100%" stop-color="#C49A6C" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <rect width="1600" height="900" fill="url(#warmGlow)"/>
-      <!-- Subtle vertical grid -->
-      <line x1="800" y1="0" x2="800" y2="900" stroke="#795548" stroke-opacity="0.05" stroke-width="1" stroke-dasharray="2,10"/>
-    </svg>
-  </div>
-
+  <div id="bg"></div>
   <div id="ct">
 
-    <div class="page-header">
+    <!-- 顶部标题 -->
+    <div class="header">
       <div class="header-left">
-        <div class="page-eyebrow">UPSTREAM · ORIGIN</div>
-        <div class="page-title">上游的历史与起源</div>
-        <div class="page-subtitle">从邮件列表到 Pull Request 的演化</div>
+        <div class="eyebrow">HISTORY · ORIGIN</div>
+        <h1 class="title">上游的历史与起源</h1>
+        <div class="title-sub">From Linux Kernel Mailing Lists to the Modern Pull Request Era</div>
       </div>
       <div class="header-right">
-        <div class="page-jp">源 流 之 始</div>
-        <div class="page-meta">CHAPTER 01 · 上游协作文脉</div>
+        <span class="num">Chapter 01</span>
+        <span>上游协作的演化脉络</span>
       </div>
     </div>
 
+    <!-- 引言 -->
+    <p class="intro">上游协作并非一蹴而就，而是从 Linux 内核邮件列表时代逐步演化而来。补丁驱动模型确立了改动应回到源头的核心契约，而 Git 与 Pull Request 则让这一理念在当代获得新的生命力。</p>
+
+    <!-- 主区 -->
     <div class="main">
 
-      <!-- LEFT: Timeline -->
-      <div class="timeline-column">
-        <div class="col-label">TIMELINE · 时间脉络</div>
-
-        <div class="timeline-line"></div>
-
-        <div class="timeline-card">
-          <div class="timeline-dot timeline-dot-1"></div>
-          <div class="timeline-tick timeline-tick-1"></div>
-          <div class="timeline-step">STEP · 01</div>
-          <div class="timeline-title">Linux 内核起点</div>
-          <div class="timeline-desc">Linus Torvalds 于 1991 年发布 Linux，奠定了上游协作的雏形与契约。</div>
-          <div class="timeline-year">1991</div>
+      <!-- 左：时间轴 -->
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-node"></div>
+          <div class="year">1991</div>
+          <div class="point-title">Linux 内核起点</div>
+          <div class="point-desc">Linus Torvalds 发布 Linux 内核，通过公开邮件列表接收社区补丁，奠定上游协作的雏形与最初的契约精神。</div>
         </div>
-
-        <div class="timeline-card">
-          <div class="timeline-dot timeline-dot-2"></div>
-          <div class="timeline-tick timeline-tick-2"></div>
-          <div class="timeline-step">STEP · 02</div>
-          <div class="timeline-title">补丁驱动模型</div>
-          <div class="timeline-desc">早期贡献以邮件列表补丁为核心，天然形成向源头汇聚的路径。</div>
-          <div class="timeline-year">1992—2000</div>
+        <div class="timeline-item">
+          <div class="timeline-node"></div>
+          <div class="year">PATCH-DRIVEN</div>
+          <div class="point-title">补丁驱动模型</div>
+          <div class="point-desc">以邮件列表补丁为核心工作流，提交者将差异贴入公开渠道，天然形成向源头汇聚的单一反馈路径。</div>
         </div>
-
-        <div class="timeline-card">
-          <div class="timeline-dot timeline-dot-3"></div>
-          <div class="timeline-tick timeline-tick-3"></div>
-          <div class="timeline-step">STEP · 03</div>
-          <div class="timeline-title">上游权威共识</div>
-          <div class="timeline-desc">社区逐渐形成"改动应回到源头"的默契，避免分支碎片化。</div>
-          <div class="timeline-year">2000—2007</div>
+        <div class="timeline-item">
+          <div class="timeline-node"></div>
+          <div class="year">CONSENSUS</div>
+          <div class="point-title">上游权威共识</div>
+          <div class="point-desc">社区逐渐形成"改动应回到源头"的默契，避免下游分支碎片化，上游成为质量与合并的最终裁定者。</div>
         </div>
-
-        <div class="timeline-card">
-          <div class="timeline-dot timeline-dot-4"></div>
-          <div class="timeline-tick timeline-tick-4"></div>
-          <div class="timeline-step">STEP · 04</div>
-          <div class="timeline-title">从补丁到 PR</div>
-          <div class="timeline-desc">Git 与 GitHub 将补丁协作演进为 Pull Request，协作门槛持续降低。</div>
-          <div class="timeline-year">2008 — 至今</div>
+        <div class="timeline-item">
+          <div class="timeline-node"></div>
+          <div class="year">2008 →</div>
+          <div class="point-title">从补丁到 PR</div>
+          <div class="point-desc">Git 与 GitHub 将补丁协作演进为 Pull Request 模式，可视化讨论、CI 检查与代码审查让协作门槛持续降低。</div>
         </div>
       </div>
 
-      <!-- RIGHT: Decorative streams + anchors -->
-      <div class="right-column">
-        <div class="right-label">CODE FLOW · 代码之流</div>
-
-        <div class="streams">
-          <svg viewBox="0 0 612 560" width="612" height="560" style="width:100%;height:100%;position:absolute;top:0;left:0;">
-            <defs>
-              <linearGradient id="flowGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#C49A6C" stop-opacity="0.12"/>
-                <stop offset="30%" stop-color="#C49A6C" stop-opacity="0.55"/>
-                <stop offset="70%" stop-color="#795548" stop-opacity="0.7"/>
-                <stop offset="100%" stop-color="#4A3728" stop-opacity="0.85"/>
-              </linearGradient>
-              <linearGradient id="flowGradLight" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#C49A6C" stop-opacity="0.05"/>
-                <stop offset="50%" stop-color="#C49A6C" stop-opacity="0.35"/>
-                <stop offset="100%" stop-color="#795548" stop-opacity="0.5"/>
-              </linearGradient>
-            </defs>
-
-            <!-- Stream 1 -->
-            <path d="M 40 -10 C 40 80, 110 130, 110 220 S 40 340, 110 420 S 170 520, 130 580"
-                  fill="none" stroke="url(#flowGrad)" stroke-width="1.4"/>
-
-            <!-- Stream 2 -->
-            <path d="M 180 -10 C 180 60, 100 150, 200 240 S 280 360, 180 440 S 240 560, 200 600"
-                  fill="none" stroke="url(#flowGrad)" stroke-width="1.2"/>
-
-            <!-- Stream 3 -->
-            <path d="M 320 -10 C 320 100, 240 160, 320 260 S 400 380, 300 460 S 340 560, 320 600"
-                  fill="none" stroke="url(#flowGradLight)" stroke-width="1"/>
-
-            <!-- Stream 4 -->
-            <path d="M 460 -10 C 460 70, 380 180, 460 270 S 540 380, 460 460 S 500 560, 480 600"
-                  fill="none" stroke="url(#flowGrad)" stroke-width="1.3"/>
-
-            <!-- Stream 5 -->
-            <path d="M 560 -10 C 560 120, 490 200, 560 300 S 610 400, 550 480 S 580 570, 570 600"
-                  fill="none" stroke="url(#flowGradLight)" stroke-width="0.9"/>
-
-            <!-- Tiny horizontal ticks along streams (evoking diff lines / patches) -->
-            <g stroke="#795548" stroke-width="0.8" opacity="0.55">
-              <line x1="82" y1="90" x2="98" y2="90"/>
-              <line x1="82" y1="110" x2="92" y2="110"/>
-              <line x1="170" y1="140" x2="188" y2="140"/>
-              <line x1="290" y1="200" x2="310" y2="200"/>
-              <line x1="440" y1="150" x2="462" y2="150"/>
-              <line x1="440" y1="170" x2="458" y2="170"/>
-              <line x1="540" y1="250" x2="558" y2="250"/>
-              <line x1="82" y1="290" x2="100" y2="290"/>
-              <line x1="180" y1="330" x2="200" y2="330"/>
-              <line x1="300" y1="380" x2="322" y2="380"/>
-              <line x1="440" y1="410" x2="462" y2="410"/>
-              <line x1="540" y1="470" x2="556" y2="470"/>
-              <line x1="100" y1="470" x2="120" y2="470"/>
-              <line x1="200" y1="510" x2="222" y2="510"/>
-              <line x1="320" y1="530" x2="340" y2="530"/>
-              <line x1="460" y1="540" x2="480" y2="540"/>
-              <line x1="560" y1="540" x2="576" y2="540"/>
-            </g>
-
-            <!-- Data dots on streams -->
-            <circle cx="110" cy="220" r="3.5" fill="#795548"/>
-            <circle cx="200" cy="240" r="3" fill="#C49A6C"/>
-            <circle cx="320" cy="260" r="3" fill="#C49A6C"/>
-            <circle cx="460" cy="270" r="4" fill="#795548"/>
-            <circle cx="300" cy="460" r="4" fill="#795548"/>
-            <circle cx="560" cy="300" r="3" fill="#C49A6C"/>
-
-            <!-- Small vertical dashed reference lines -->
-            <line x1="110" y1="220" x2="110" y2="240" stroke="#795548" stroke-width="0.6" stroke-dasharray="1,3" opacity="0.5"/>
-            <line x1="460" y1="270" x2="460" y2="292" stroke="#795548" stroke-width="0.6" stroke-dasharray="1,3" opacity="0.5"/>
-          </svg>
+      <!-- 右：代码流装饰 -->
+      <div class="flow-art">
+        <div class="flow-header">
+          <div class="label">FLOW OF UPSTREAM</div>
+          <div class="sub">补丁 · 共识 · 汇聚</div>
         </div>
+        <div class="flow-canvas">
+          <div class="flow-line l1"></div>
+          <div class="flow-line l2"></div>
+          <div class="flow-line l3"></div>
+          <div class="flow-line l4"></div>
+          <div class="flow-line l5"></div>
+          <div class="flow-line l6"></div>
+          <div class="flow-line l7"></div>
+          <div class="flow-line l8"></div>
+          <div class="flow-line l9"></div>
+          <div class="flow-line l10"></div>
+          <div class="flow-line l11"></div>
+          <div class="flow-line l12"></div>
 
-        <!-- Anchor 1991 -->
-        <div class="anchor anchor-1">
-          <div class="anchor-num">1991</div>
-          <div class="anchor-connector"></div>
-          <div class="anchor-tag">Linux 发布 · 上游协作起点</div>
-          <div class="anchor-en">Linus Torvalds · first release</div>
-        </div>
+          <div class="flow-dot d1"></div>
+          <div class="flow-dot d2"></div>
+          <div class="flow-dot d3"></div>
+          <div class="flow-dot d4"></div>
+          <div class="flow-dot d5"></div>
+          <div class="flow-dot d6"></div>
 
-        <!-- Anchor 2008 -->
-        <div class="anchor anchor-2">
-          <div class="anchor-num">2008<span style="font-size:44px;color:var(--gold);font-weight:400;">+</span></div>
-          <div class="anchor-tag">GitHub 上线 · PR 协作普及</div>
-          <div class="anchor-en">Pull Request era begins</div>
+          <div class="flow-label tl1">PATCH</div>
+          <div class="flow-label tl2">REVIEW</div>
+          <div class="flow-label tl3">DISCUSS</div>
+          <div class="flow-label tl4">MERGE</div>
+          <div class="flow-label tl5">SHIP</div>
+          <div class="flow-label tl6">UPSTREAM</div>
         </div>
       </div>
 
     </div>
 
-    <!-- Footer narrative -->
-    <div class="footer-narrative">
-      <div class="footer-marker"></div>
-      <div class="footer-text">
-        上游协作并非一蹴而就，而是从 Linux 内核邮件列表时代逐步演化而来。补丁驱动模型确立了改动应回到源头的核心契约，而 Git 与 Pull Request 则让这一理念在当代获得新的生命力。
+    <!-- 底部徽章 -->
+    <div class="badges">
+      <div class="badge">
+        <div class="badge-num">1991</div>
+        <div class="badge-text">
+          <span class="strong">Linux 发布</span>
+          开源上游协作的起点 · 邮件列表驱动
+        </div>
       </div>
-      <div class="footer-end">— END OF ORIGIN —</div>
+      <div class="badge right">
+        <div class="badge-num">2008+</div>
+        <div class="badge-text">
+          <span class="strong">PR 协作普及</span>
+          GitHub 上线后广泛采用 · 门槛持续降低
+        </div>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer">
+      <span>UPSTREAM · ORIGIN STORY</span>
+      <span>商汤科技 · 协作模式研究</span>
     </div>
 
   </div>
