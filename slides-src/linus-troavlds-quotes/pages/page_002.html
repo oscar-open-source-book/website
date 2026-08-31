@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>认识 Linus Torvalds</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --gold:#C9A227;
+  --cream:#F5F1E8;
+  --gold-soft:rgba(201,162,39,0.35);
+  --navy-soft:rgba(13,33,55,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);font-family:'Noto Sans SC',sans-serif;color:var(--navy);overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:56px 72px 48px 72px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Background decorations */
+.bg-frame-tl{position:absolute;top:0;left:0;width:180px;height:180px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);opacity:0.5;}
+.bg-frame-br{position:absolute;bottom:0;right:0;width:180px;height:180px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);opacity:0.5;}
+.bg-dot-cluster{position:absolute;bottom:36px;left:36px;width:60px;height:60px;background-image:radial-gradient(circle,var(--gold) 1.5px,transparent 2px);background-size:12px 12px;opacity:0.6;z-index:0;}
+.bg-serif-echo{position:absolute;top:30px;right:30px;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--gold);letter-spacing:3px;z-index:0;}
+
+/* Header */
+.chapter-label{display:flex;align-items:center;gap:20px;font-family:'Noto Sans SC',sans-serif;font-size:13px;letter-spacing:8px;color:var(--gold);font-weight:500;text-transform:uppercase;}
+.chapter-label .line{flex:0 0 60px;height:1px;background:var(--gold);}
+.chapter-label .en{font-family:'Playfair Display',serif;font-style:italic;font-weight:400;letter-spacing:4px;}
+
+.main-title{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:900;font-size:72px;line-height:1.1;color:var(--navy);margin-top:14px;letter-spacing:2px;}
+.main-title .zh{font-family:'Noto Serif SC','Playfair Display',serif;font-weight:900;}
+.sub-title{margin-top:14px;font-family:'Noto Serif SC',serif;font-size:20px;font-weight:400;color:var(--navy);opacity:0.78;letter-spacing:2px;}
+.title-rule{margin-top:22px;display:flex;align-items:center;gap:0;}
+.title-rule .l{width:120px;height:2px;background:var(--gold);}
+.title-rule .l2{flex:1;height:1px;background:var(--navy);opacity:0.2;}
+
+/* Body two-column */
+.body-area{flex:1;display:grid;grid-template-columns:440px 1fr;gap:64px;margin-top:32px;align-items:start;}
+
+/* Left big number */
+.bignum-wrap{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding-top:0;}
+.bignum{font-family:'Playfair Display',serif;font-weight:900;font-size:340px;line-height:0.85;color:var(--navy);letter-spacing:-8px;}
+.bignum .zero{color:var(--gold);}
+.bignum-underline{margin-top:8px;width:280px;height:3px;background:var(--gold);}
+.bignum-label{margin-top:16px;font-family:'Noto Sans SC',sans-serif;font-size:12px;letter-spacing:6px;color:var(--gold);font-weight:500;}
+.bignum-quote{margin-top:20px;font-family:'Noto Serif SC',serif;font-style:italic;font-size:14px;line-height:1.8;color:var(--navy);opacity:0.7;max-width:300px;}
+.bignum-quote::before{content:'"';font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);line-height:0;margin-right:4px;vertical-align:-8px;}
+
+/* Right timeline */
+.timeline{position:relative;padding-left:60px;}
+.timeline::before{content:'';position:absolute;left:22px;top:12px;bottom:12px;width:1px;background:var(--gold);opacity:0.5;}
+.tl-node{position:relative;margin-bottom:32px;}
+.tl-node:last-child{margin-bottom:0;}
+.tl-dot{position:absolute;left:-49px;top:6px;width:18px;height:18px;border-radius:50%;background:var(--gold);border:3px solid var(--cream);box-shadow:0 0 0 1px var(--gold);}
+.tl-year{font-family:'Playfair Display',serif;font-weight:700;font-size:36px;color:var(--navy);line-height:1;}
+.tl-year .dot{color:var(--gold);margin:0 8px;font-size:24px;vertical-align:3px;}
+.tl-headline{font-family:'Noto Serif SC',serif;font-weight:600;font-size:20px;color:var(--navy);margin-top:6px;letter-spacing:1px;}
+.tl-text{margin-top:10px;font-family:'Noto Sans SC',sans-serif;font-size:13px;line-height:1.85;color:var(--navy);opacity:0.75;max-width:640px;font-weight:300;}
+.tl-text .hl{color:var(--gold);font-weight:500;}
+
+/* Bottom closing */
+.closing-wrap{margin-top:24px;display:flex;align-items:flex-start;gap:24px;padding:20px 28px;background:rgba(13,33,55,0.04);border-left:3px solid var(--gold);position:relative;}
+.closing-quote-mark{font-family:'Playfair Display',serif;font-weight:700;font-size:48px;color:var(--gold);line-height:0.6;flex-shrink:0;margin-top:6px;}
+.closing-text{font-family:'Noto Serif SC',serif;font-size:13px;line-height:1.9;color:var(--navy);opacity:0.82;font-weight:400;letter-spacing:0.5px;}
+.closing-meta{position:absolute;top:16px;right:24px;font-family:'Playfair Display',serif;font-style:italic;font-size:11px;color:var(--gold);letter-spacing:3px;}
+
+/* Footer line */
+.footer-line{position:absolute;bottom:20px;left:72px;right:72px;display:flex;justify-content:space-between;align-items:center;font-family:'Noto Sans SC',sans-serif;font-size:10px;letter-spacing:3px;color:var(--navy);opacity:0.4;}
+.footer-line .fl-deco{font-family:'Playfair Display',serif;font-style:italic;letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+<div class="bg-frame-tl"></div>
+<div class="bg-frame-br"></div>
+<div class="bg-dot-cluster"></div>
+<div class="bg-serif-echo">— Chapter One —</div>
+</div>
+<div id="ct">
+
+<!-- Header -->
+<div class="chapter-label">
+<span class="line"></span>
+<span>CHAPTER · 第 一 章</span>
+<span class="en">— A Biographical Prelude</span>
+</div>
+
+<div class="main-title">
+<span class="zh">认识 </span>Linus Torvalds
+</div>
+<div class="sub-title">Linux 内核之父与开源时代的奠基人</div>
+<div class="title-rule">
+<div class="l"></div>
+<div class="l2"></div>
+</div>
+
+<!-- Body -->
+<div class="body-area">
+
+<!-- Left: Big number -->
+<div class="bignum-wrap">
+<div class="bignum">0<span class="zero">1</span></div>
+<div class="bignum-underline"></div>
+<div class="bignum-label">CHAPTER ONE</div>
+<div class="bignum-quote">一个人的好奇心，如何改写整个世界的计算方式？</div>
+</div>
+
+<!-- Right: Timeline -->
+<div class="timeline">
+
+<div class="tl-node">
+<div class="tl-dot"></div>
+<div class="tl-year">1969<span class="dot">·</span><span style="font-size:20px;font-family:'Noto Sans SC',sans-serif;font-weight:400;letter-spacing:1px;color:var(--navy);opacity:0.6;">芬兰 · 赫尔辛基</span></div>
+<div class="tl-headline">生于芬兰，理工科少年的起点</div>
+<div class="tl-text">在赫尔辛基理工大学（University of Helsinki）的求学岁月里，Linus 与计算机结下不解之缘。他对操作系统的痴迷，最初只是<span class="hl">一次大学课程中的好奇心</span>，却埋下了未来三十年影响全世界的种子。</div>
+</div>
+
+<div class="tl-node">
+<div class="tl-dot"></div>
+<div class="tl-year">1991<span class="dot">·</span><span style="font-size:20px;font-family:'Noto Sans SC',sans-serif;font-weight:400;letter-spacing:1px;color:var(--navy);opacity:0.6;">Linux 内核诞生</span></div>
+<div class="tl-headline">一句新闻组留言，宣告一个时代的开始</div>
+<div class="tl-text">在 comp.os.minix 新闻组上，一位 21 岁的芬兰大学生贴出了那段著名的留言——<span class="hl">"I'm doing a (free) operating system"</span>。Linux 内核就此诞生，并在开源协作的浪潮中迅速成长为驱动全球互联网基础设施的核心引擎。</div>
+</div>
+
+<div class="tl-node">
+<div class="tl-dot"></div>
+<div class="tl-year">2005<span class="dot">·</span><span style="font-size:20px;font-family:'Noto Sans SC',sans-serif;font-weight:400;letter-spacing:1px;color:var(--navy);opacity:0.6;">Git 之父</span></div>
+<div class="tl-headline">因 BitKeeper 风波，亲手打造分布式版本控制</div>
+<div class="tl-text">当 Linux 内核开发的版本管理工具 BitKeeper 终止免费授权时，Linus 仅用<span class="hl">两周时间</span>从零写出了一个全新的分布式版本控制系统——Git。它不仅成为了开源协作的事实标准，更彻底改变了全球软件开发的协作范式。</div>
+</div>
+
+</div>
+</div>
+
+<!-- Closing -->
+<div class="closing-wrap">
+<div class="closing-quote-mark">§</div>
+<div class="closing-text">在进入语录本身之前，先回顾 Torvalds 的人生轨迹：从一名好奇的大学生，到写出运行于全世界服务器的操作系统内核，再到重新发明版本控制——他的经历本身就是开源故事的一部分。</div>
+<div class="closing-meta">— Epilogue —</div>
+</div>
+
+<div class="footer-line">
+<span>01 / 2025</span>
+<span class="fl-deco">Linus Torvalds · A Life in Code</span>
+<span>P. 002</span>
+</div>
+
+</div>
+</div>
+</body>
+</html>

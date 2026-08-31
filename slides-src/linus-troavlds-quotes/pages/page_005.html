@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>语录关键词图谱</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --gold:#C9A227;
+  --cream:#F5F1E8;
+  --gold-soft:#E8D48B;
+  --navy-soft:#1A3454;
+  --line:#0D213733;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--cream);color:var(--navy);}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 15% 20%, #F5F1E8 0%, #EFE9D8 50%, #E8E0C8 100%);}
+#bg::after{content:"";position:absolute;top:-40px;right:-40px;width:300px;height:300px;border:2px solid var(--gold);border-radius:50%;opacity:.15;}
+#ct{position:absolute;inset:0;z-index:1;padding:45px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;padding-bottom:22px;border-bottom:2px solid var(--navy);}
+.title-block .eyebrow{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:4px;margin-bottom:10px;}
+.title-block h1{font-family:'Playfair Display',serif;font-size:62px;font-weight:900;line-height:1;color:var(--navy);letter-spacing:-1px;}
+.title-block h1 .accent{color:var(--gold);font-style:italic;}
+.title-block .underline{width:80px;height:4px;background:var(--gold);margin-top:14px;}
+.intro{font-size:14.5px;line-height:1.85;color:var(--navy);text-align:justify;}
+.intro .pos{color:var(--gold);font-weight:700;}
+.intro .neg{color:var(--navy-soft);font-weight:700;font-style:italic;}
+
+/* Middle */
+.middle{display:grid;grid-template-columns:620px 1fr;gap:30px;padding:22px 0 18px 0;flex:1;}
+
+.left-col{display:flex;flex-direction:column;}
+.col-label{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.col-label .dot{width:8px;height:8px;background:var(--gold);border-radius:50%;}
+.col-label .tag{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--navy);letter-spacing:2px;}
+.col-label .en{font-size:11px;color:var(--gold);letter-spacing:3px;font-weight:700;}
+.col-label .divider{flex:1;height:1px;background:var(--navy);opacity:.3;}
+
+.tag-cloud{position:relative;width:620px;height:430px;}
+.tcloud-item{position:absolute;border-radius:4px;padding:14px 18px;box-shadow:2px 2px 0 var(--navy);display:flex;flex-direction:column;justify-content:center;transition:none;}
+.tcloud-item.gold{background:var(--gold);color:var(--navy);}
+.tcloud-item.navy{background:var(--navy);color:var(--gold);}
+.tcloud-item .kw{font-family:'Playfair Display',serif;font-weight:900;line-height:1.05;}
+.tcloud-item .kw .sub{font-family:'Noto Sans SC',sans-serif;font-weight:500;}
+.tcloud-item .anno{font-size:11.5px;line-height:1.4;margin-top:6px;font-weight:400;opacity:.88;}
+.tcloud-item .anno strong{font-weight:700;}
+
+.tc1{left:0;top:0;width:290px;height:120px;transform:rotate(-1.2deg);}
+.tc1 .kw{font-size:32px;}
+.tc1 .kw .sub{font-size:16px;margin-left:6px;}
+
+.tc2{left:300px;top:6px;width:310px;height:110px;transform:rotate(.8deg);}
+.tc2 .kw{font-size:28px;}
+
+.tc3{left:6px;top:140px;width:295px;height:130px;transform:rotate(.6deg);}
+.tc3 .kw{font-size:26px;}
+
+.tc4{left:308px;top:135px;width:302px;height:125px;transform:rotate(-.8deg);}
+.tc4 .kw{font-size:26px;}
+.tc4 .kw .sub{font-size:15px;margin-left:5px;}
+
+.tc5{left:0;top:285px;width:295px;height:135px;transform:rotate(-.5deg);}
+.tc5 .kw{font-size:26px;}
+.tc5 .kw .sub{font-size:15px;margin-left:5px;}
+
+.tc6{left:305px;top:280px;width:305px;height:140px;transform:rotate(1deg);background:var(--navy);border:2px solid var(--gold);}
+.tc6 .kw{font-size:24px;}
+.tc6 .kw .sub{font-size:14px;margin-left:5px;}
+.tc6 .anno{font-style:italic;}
+
+/* Right chart */
+.right-col{display:flex;flex-direction:column;}
+.chart-wrap{background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);padding:14px 18px 8px 18px;display:flex;flex-direction:column;}
+.chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
+.chart-head .ch-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:800;color:var(--navy);}
+.chart-head .ch-sub{font-size:11px;color:var(--navy);opacity:.6;letter-spacing:1px;}
+#chart_1{width:780px;height:370px;}
+.chart-foot{display:flex;justify-content:space-between;font-size:10.5px;color:var(--navy);opacity:.55;margin-top:2px;padding:0 4px;}
+
+/* Bottom */
+.bottom{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding-top:16px;border-top:2px solid var(--navy);}
+.bcard{background:#fff;border:1px solid var(--line);border-top:3px solid var(--gold);padding:14px 14px;display:flex;flex-direction:column;min-height:120px;position:relative;}
+.bcard .bnum{font-family:'Playfair Display',serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;}
+.bcard .bval{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--navy);margin-top:4px;line-height:1.1;}
+.bcard .bval .unit{font-family:'Noto Sans SC',sans-serif;font-size:14px;font-weight:500;margin-left:3px;}
+.bcard .btitle{font-size:11px;font-weight:700;color:var(--navy);margin-top:6px;letter-spacing:.5px;}
+.bcard .bdesc{font-size:10.5px;color:var(--navy);opacity:.7;line-height:1.5;margin-top:4px;}
+.bcard.accent{border-top-color:var(--navy);background:var(--navy);color:var(--gold);}
+.bcard.accent .bnum{color:var(--gold-soft);}
+.bcard.accent .bval{color:var(--gold);}
+.bcard.accent .btitle{color:var(--gold);}
+.bcard.accent .bdesc{color:var(--gold-soft);opacity:.9;}
+
+/* Decorative corner marks */
+.corner-tl{position:absolute;top:12px;left:12px;width:24px;height:24px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);}
+.corner-br{position:absolute;bottom:8px;right:12px;width:24px;height:24px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div class="corner-tl"></div>
+<div class="corner-br"></div>
+<div id="ct">
+
+<div class="header">
+<div class="title-block">
+<div class="eyebrow"><span>LINUS · TORVALDS · QUOTE · ANALYSIS</span></div>
+<h1>语录<span class="accent">关键词</span>图谱</h1>
+<div class="underline"></div>
+</div>
+<div class="intro">
+<span>这六项主题构成了 Torvalds 开发哲学的完整坐标——<span class="pos">代码、数据结构、发布、简单、反馈</span>是他反复推崇的正面价值观，共同指向"让程序本身说话"的极致工程直觉；而<span class="neg">"会议"</span>是他公开抨击的反面符号，几乎每次提及都伴随毫不留情的否定。这六者正反交织，恰好勾勒出他心目中正确开发方式的全部轮廓。</span>
+</div>
+</div>
+
+<div class="middle">
+
+<div class="left-col">
+<div class="col-label">
+<span class="dot"></span>
+<span class="tag"><span>核心关键词云</span></span>
+<span class="en">KEYWORD CLOUD</span>
+<span class="divider"></span>
+</div>
+<div class="tag-cloud">
+
+<div class="tcloud-item gold tc1">
+<div class="kw">代码<span class="sub"> Code</span></div>
+<div class="anno"><strong>"唯一裁判"</strong>——高频出现，一切争议的终局</div>
+</div>
+
+<div class="tcloud-item navy tc2">
+<div class="kw">数据结构</div>
+<div class="anno">决定<strong>程序的本质质量</strong>——选错即万劫不复</div>
+</div>
+
+<div class="tcloud-item navy tc3">
+<div class="kw">反馈 <span style="font-size:16px;font-weight:500;">Feedback</span></div>
+<div class="anno">公开讨论是 <strong>Linux 成功的核心关键</strong></div>
+</div>
+
+<div class="tcloud-item gold tc4">
+<div class="kw">发布<span class="sub"> Release</span></div>
+<div class="anno"><strong>"早发布、常发布"</strong>，倾听用户的迭代哲学</div>
+</div>
+
+<div class="tcloud-item navy tc5">
+<div class="kw">简单<span class="sub"> Simple</span></div>
+<div class="anno"><strong>"简单到显然无缺陷"</strong>优于"复杂到看不出缺陷"</div>
+</div>
+
+<div class="tcloud-item navy tc6">
+<div class="kw">"会议"<span class="sub"> Meetings</span></div>
+<div class="anno"><strong>"提到开会我就知道项目要失败了"</strong>——极度反感</div>
+</div>
+
+</div>
+</div>
+
+<div class="right-col">
+<div class="col-label">
+<span class="dot"></span>
+<span class="tag"><span>关键词频次占比</span></span>
+<span class="en">FREQUENCY DISTRIBUTION · N=18</span>
+<span class="divider"></span>
+</div>
+<div class="chart-wrap">
+<div class="chart-head">
+<div class="ch-title"><span>六大主题出现占比（%）</span></div>
+<div class="ch-sub"><span>DATA SOURCE · INTERVIEWS & EMAIL ARCHIVE</span></div>
+</div>
+<div id="chart_1" style="width:780px;height:370px;"></div>
+<div class="chart-foot">
+<span><span>■ 正面价值词（藏蓝→金）</span></span>
+<span><span>■ 负面情绪词（会议）</span></span>
+<span><span>单位：出现频次占比 %</span></span>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="bottom">
+
+<div class="bcard">
+<div class="bnum"><span>01 · CORPUS</span></div>
+<div class="bval"><span>18</span><span class="unit">条</span></div>
+<div class="btitle"><span>语录总量</span></div>
+<div class="bdesc"><span>精选自历年访谈与邮件</span></div>
+</div>
+
+<div class="bcard accent">
+<div class="bnum"><span>02 · TOP 01</span></div>
+<div class="bval"><span>&gt;30%</span></div>
+<div class="btitle"><span>高频词 · 代码</span></div>
+<div class="bdesc"><span>出现占比最高，贯穿所有语境</span></div>
+</div>
+
+<div class="bcard">
+<div class="bnum"><span>03 · TOP 02</span></div>
+<div class="bval"><span>~15%</span></div>
+<div class="btitle"><span>高频词 · 数据结构</span></div>
+<div class="bdesc"><span>质量之锚，反复被援引</span></div>
+</div>
+
+<div class="bcard">
+<div class="bnum"><span>04 · TOP 03</span></div>
+<div class="bval"><span>~12%</span></div>
+<div class="btitle"><span>高频词 · 反馈</span></div>
+<div class="bdesc"><span>公开讨论驱动迭代</span></div>
+</div>
+
+<div class="bcard accent">
+<div class="bnum"><span>05 · NEGATIVE</span></div>
+<div class="bval"><span>≈ 6%</span></div>
+<div class="btitle"><span>负面情绪词 · 会议</span></div>
+<div class="bdesc"><span>几乎出现即否定</span></div>
+</div>
+
+<div class="bcard">
+<div class="bnum"><span>06 · POSITIVE</span></div>
+<div class="bval"><span>≈ 11%</span></div>
+<div class="btitle"><span>正面态度词 · 发布</span></div>
+<div class="bdesc"><span>与迭代速度强相关</span></div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+chart.setOption({
+  backgroundColor:'transparent',
+  grid:{left:95,right:60,top:14,bottom:30,containLabel:false},
+  xAxis:{
+    type:'value',
+    max:35,
+    axisLine:{lineStyle:{color:'#0D2137'}},
+    axisTick:{show:true,lineStyle:{color:'#0D2137'}},
+    axisLabel:{color:'#0D2137',fontSize:11,fontFamily:'Noto Sans SC',formatter:'{value}%'},
+    splitLine:{lineStyle:{color:'#0D2137',opacity:.08,type:'dashed'}},
+    name:'占比 %',
+    nameLocation:'end',
+    nameTextStyle:{color:'#0D2137',fontSize:10,padding:[0,0,0,-10]}
+  },
+  yAxis:{
+    type:'category',
+    data:['会议 Meetings','简单 Simple','发布 Release','反馈 Feedback','数据结构','代码 Code'],
+    axisLine:{lineStyle:{color:'#0D2137'}},
+    axisTick:{show:false},
+    axisLabel:{
+      color:'#0D2137',fontSize:12,fontWeight:700,fontFamily:'Noto Sans SC',
+      formatter:function(v){return v;}
+    }
+  },
+  series:[{
+    type:'bar',
+    barWidth:22,
+    data:[
+      {value:6, itemStyle:{color:'#1A3454'}},
+      {value:9, itemStyle:{color:'#C9A227'}},
+      {value:11, itemStyle:{color:'#C9A227'}},
+      {value:12, itemStyle:{color:'#C9A227'}},
+      {value:15, itemStyle:{color:'#C9A227'}},
+      {value:30, itemStyle:{color:'#0D2137',borderColor:'#C9A227',borderWidth:1}}
+    ],
+    label:{
+      show:true,
+      position:'right',
+      color:'#0D2137',
+      fontSize:12,
+      fontWeight:700,
+      fontFamily:'Playfair Display',
+      formatter:'{c}%',
+      distance:6
+    }
+  }]
+});
+window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

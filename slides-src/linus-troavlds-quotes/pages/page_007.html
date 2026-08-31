@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>代码与架构智慧</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --gold:#C9A227;
+  --gold-light:#E0BE58;
+  --cream:#F5F1E8;
+  --cream-dark:#EDE6D3;
+  --ink:#1A1A1A;
+  --muted:#5A5A52;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+
+body{
+  font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;
+  color:var(--ink);
+  background:var(--cream);
+}
+
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;
+  margin:0 auto;
+}
+
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:52px 60px 40px;box-sizing:border-box;}
+
+/* Background subtle texture */
+#bg{
+  background:linear-gradient(180deg,#F7F3E9 0%,#F1EBDE 100%);
+}
+#bg::after{
+  content:"";
+  position:absolute;left:0;right:0;bottom:0;height:120px;
+  background:linear-gradient(180deg,transparent,var(--navy));
+  opacity:0.06;
+}
+
+/* Top masthead bar */
+.masthead{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:14px;margin-bottom:18px;
+  border-bottom:1px solid rgba(13,33,55,0.25);
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:11px;letter-spacing:3px;color:var(--navy);
+  text-transform:uppercase;font-weight:500;
+}
+.masthead .left{display:flex;align-items:center;gap:14px;}
+.masthead .dot{width:6px;height:6px;background:var(--gold);border-radius:50%;display:inline-block;}
+.masthead .page-tag{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:12px;color:var(--gold);letter-spacing:1px;
+}
+
+/* Two column layout */
+.columns{
+  display:grid;
+  grid-template-columns: 860px 60px 600px;
+  height:720px;
+}
+
+/* ========== LEFT COLUMN ========== */
+.left-col{display:flex;flex-direction:column;}
+
+.serif-title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-weight:900;
+  font-size:54px;
+  line-height:1.05;
+  color:var(--navy);
+  letter-spacing:2px;
+}
+.serif-title .accent{color:var(--gold);}
+.title-rule{
+  display:flex;align-items:center;gap:14px;margin-top:12px;
+}
+.title-rule .line{flex:1;height:1px;background:var(--gold);opacity:0.7;}
+.title-rule .chip{
+  font-family:'Playfair Display',serif;
+  font-size:11px;letter-spacing:4px;color:var(--gold);
+  font-weight:700;
+}
+
+.lead{
+  margin-top:20px;
+  font-size:14px;
+  line-height:1.85;
+  color:var(--ink);
+  font-weight:300;
+  letter-spacing:0.5px;
+  position:relative;
+  padding-left:18px;
+  border-left:2px solid var(--gold);
+}
+.lead .hl{color:var(--navy);font-weight:500;}
+
+.points-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:20px;
+}
+.point-card{
+  background:#FFFEF8;
+  border:1px solid rgba(13,33,55,0.1);
+  border-top:3px solid var(--gold);
+  padding:14px 16px 14px 14px;
+  display:flex;gap:12px;
+  position:relative;
+  min-height:110px;
+}
+.point-num{
+  font-family:'Playfair Display',serif;
+  font-size:34px;font-weight:900;
+  color:var(--gold);
+  line-height:1;
+  flex-shrink:0;
+  width:38px;
+}
+.point-body{flex:1;display:flex;flex-direction:column;justify-content:center;}
+.point-head{
+  font-family:'Noto Serif SC',serif;
+  font-weight:700;font-size:14px;color:var(--navy);
+  letter-spacing:1px;margin-bottom:6px;
+}
+.point-text{
+  font-size:11.5px;line-height:1.65;color:var(--muted);
+  font-weight:300;
+}
+
+/* ========== RIGHT COLUMN ========== */
+.right-col{
+  background:var(--navy);
+  color:#fff;
+  padding:30px 26px;
+  display:flex;flex-direction:column;
+  position:relative;
+  overflow:hidden;
+}
+.right-col::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);
+}
+
+.rc-label{
+  font-family:'Playfair Display',serif;
+  font-size:10px;letter-spacing:4px;color:var(--gold);
+  font-weight:700;margin-bottom:6px;
+}
+.rc-title{
+  font-family:'Noto Serif SC',serif;
+  font-weight:700;font-size:17px;color:#fff;
+  letter-spacing:1px;margin-bottom:14px;
+}
+
+/* Code tree visualization */
+.code-tree{
+  position:relative;
+  height:240px;
+  margin:0 4px 18px;
+  padding:16px 14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(201,162,39,0.25);
+  font-family:'Courier New','Noto Sans Mono',monospace;
+  font-size:10px;
+  line-height:1.7;
+  overflow:hidden;
+}
+.ct-header{
+  display:flex;align-items:center;gap:6px;margin-bottom:8px;
+  font-size:9px;letter-spacing:2px;color:var(--gold);font-family:'Playfair Display',serif;font-weight:700;
+}
+.ct-dots{display:flex;gap:4px;margin-left:auto;}
+.ct-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15);display:inline-block;}
+
+.tree-line{
+  display:flex;align-items:center;color:#D9D2C1;font-size:10.5px;
+}
+.tree-line .indent{display:inline-block;height:1px;background:rgba(201,162,39,0.35);}
+.tree-line .keyword{color:var(--gold);}
+.tree-line .struct{color:#fff;font-weight:700;}
+.tree-line .comment{color:rgba(217,210,193,0.4);font-style:italic;}
+.tree-line .arrow{color:var(--gold-light);}
+
+/* Vertical depth gauge */
+.depth-gauge{
+  display:flex;gap:3px;margin-top:8px;padding:0 4px;
+}
+.depth-bar{
+  width:14px;height:24px;border-radius:2px;background:rgba(255,255,255,0.08);
+  position:relative;
+}
+.depth-bar.filled{background:var(--gold);}
+.depth-bar.over{background:rgba(255,80,80,0.7);}
+.depth-bar-labels{
+  display:flex;gap:3px;margin-top:4px;padding:0 4px;
+  font-size:8px;color:rgba(255,255,255,0.4);
+  font-family:'Playfair Display',serif;letter-spacing:1px;
+}
+.depth-bar-labels span{width:14px;text-align:center;}
+
+.depth-legend{
+  display:flex;justify-content:space-between;margin-top:8px;
+  font-size:9px;color:rgba(255,255,255,0.55);letter-spacing:0.5px;
+}
+.depth-legend .ok{color:var(--gold);}
+.depth-legend .bad{color:#E57373;}
+
+/* KPI cards */
+.kpi-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:auto;
+}
+.kpi-card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(201,162,39,0.4);
+  padding:14px 12px;
+  text-align:center;
+  position:relative;
+}
+.kpi-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);
+}
+.kpi-num{
+  font-family:'Playfair Display',serif;
+  font-weight:900;
+  font-size:42px;
+  color:var(--gold);
+  line-height:1;
+  letter-spacing:1px;
+}
+.kpi-unit{
+  font-size:11px;color:var(--gold-light);
+  letter-spacing:2px;font-family:'Playfair Display',serif;font-weight:700;
+  margin-top:4px;
+}
+.kpi-desc{
+  font-size:10px;color:rgba(255,255,255,0.7);
+  line-height:1.5;margin-top:8px;
+  font-weight:300;letter-spacing:0.3px;
+}
+
+/* Footer */
+.footer{
+  margin-top:14px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:12px;
+  border-top:1px solid rgba(13,33,55,0.15);
+  font-size:10px;letter-spacing:3px;color:var(--muted);
+  font-family:'Playfair Display','Noto Serif SC',serif;
+}
+.footer .center{
+  font-family:'Noto Serif SC',serif;
+  color:var(--navy);font-weight:700;letter-spacing:6px;font-size:11px;
+}
+.footer .center .gold{color:var(--gold);}
+.footer .right-tag{font-family:'Playfair Display',serif;color:var(--gold);font-weight:700;}
+
+/* Decorative side rule */
+.side-rule{
+  width:1px;
+  background:linear-gradient(180deg,transparent,rgba(13,33,55,0.2) 20%,rgba(13,33,55,0.2) 80%,transparent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="masthead">
+      <div class="left">
+        <span class="dot"></span>
+        <span>Chapter 07 · Wisdom in Code &amp; Architecture</span>
+      </div>
+      <div class="page-tag">— 07 / 12 —</div>
+    </div>
+
+    <div class="columns">
+
+      <!-- ============ LEFT ============ -->
+      <div class="left-col">
+        <h1 class="serif-title">代码与<span class="accent">架构</span>智慧</h1>
+        <div class="title-rule">
+          <span class="chip">CODE · ARCHITECTURE</span>
+          <span class="line"></span>
+        </div>
+
+        <p class="lead">
+          在架构层面，<span class="hl">Torvalds 的告诫</span>一针见血：<span class="hl">控制复杂度比追求高级更重要</span>。他用三层缩进和千行代码这样的具象指标，给开发者设置了清晰的红线。这些看似保守的准则，恰恰是 <span class="hl">Linux 内核能稳定运行数十年</span>的秘诀。
+        </p>
+
+        <div class="points-grid">
+
+          <div class="point-card">
+            <div class="point-num">01</div>
+            <div class="point-body">
+              <div class="point-head">层级不超三</div>
+              <div class="point-text">超过三层缩进就说明设计出了问题，需要重构</div>
+            </div>
+          </div>
+
+          <div class="point-card">
+            <div class="point-num">02</div>
+            <div class="point-body">
+              <div class="point-head">千行警告</div>
+              <div class="point-text">单模块超过一千行，说明你没真正理解编程的艺术</div>
+            </div>
+          </div>
+
+          <div class="point-card">
+            <div class="point-num">03</div>
+            <div class="point-body">
+              <div class="point-head">两种设计</div>
+              <div class="point-text">要么简单到无缺陷，要么复杂到看不出缺陷——前者才可靠</div>
+            </div>
+          </div>
+
+          <div class="point-card">
+            <div class="point-num">04</div>
+            <div class="point-body">
+              <div class="point-head">数据为王</div>
+              <div class="point-text">好的程序员操心数据结构与关系，而非代码表层</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="side-rule"></div>
+
+      <!-- ============ RIGHT ============ -->
+      <div class="right-col">
+
+        <div class="rc-label">VISUAL · ILLUSTRATION</div>
+        <div class="rc-title">缩进层级可视化</div>
+
+        <div class="code-tree">
+          <div class="ct-header">
+            <span>STRUCTURE.TREE</span>
+            <span class="ct-dots"><span></span><span></span><span></span></span>
+          </div>
+          <div class="tree-line">
+            <span class="comment">// 核心模块</span>
+          </div>
+          <div class="tree-line">
+            <span class="keyword">├──</span><span class="struct">&nbsp;scheduler.c</span>
+          </div>
+          <div class="tree-line">
+            <span class="indent" style="width:22px;"></span>
+            <span class="keyword">├──</span><span class="struct">&nbsp;process_mgmt</span>
+          </div>
+          <div class="tree-line">
+            <span class="indent" style="width:44px;"></span>
+            <span class="keyword">├──</span><span class="struct">&nbsp;cpu_alloc</span>
+          </div>
+          <div class="tree-line">
+            <span class="indent" style="width:22px;"></span>
+            <span class="keyword">└──</span><span class="struct">&nbsp;context_switch</span>
+          </div>
+          <div class="tree-line" style="margin-top:6px;">
+            <span class="keyword">├──</span><span class="struct">&nbsp;memory.c</span>
+          </div>
+          <div class="tree-line">
+            <span class="indent" style="width:22px;"></span>
+            <span class="keyword">├──</span><span class="struct">&nbsp;page_table</span>
+          </div>
+          <div class="tree-line">
+            <span class="indent" style="width:44px;"></span>
+            <span class="keyword">├──</span><span class="struct">&nbsp;kmalloc</span>
+          </div>
+          <div class="tree-line">
+            <span class="indent" style="width:22px;"></span>
+            <span class="keyword">└──</span><span class="struct">&nbsp;swap</span>
+          </div>
+
+          <div class="depth-gauge">
+            <div class="depth-bar filled"></div>
+            <div class="depth-bar filled"></div>
+            <div class="depth-bar filled"></div>
+            <div class="depth-bar over"></div>
+            <div class="depth-bar over"></div>
+          </div>
+          <div class="depth-bar-labels">
+            <span>L1</span><span>L2</span><span>L3</span><span>L4</span><span>L5</span>
+          </div>
+          <div class="depth-legend">
+            <span class="ok">● 合规 ≤ 3 层</span>
+            <span class="bad">● 超限 ≥ 4 层</span>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-num">3</div>
+            <div class="kpi-unit">LAYERS MAX</div>
+            <div class="kpi-desc">推荐缩进上限 3 层<br>超过即需重构</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-num">&lt;1000</div>
+            <div class="kpi-unit">LINES</div>
+            <div class="kpi-desc">推荐模块行数 &lt;1000 行<br>超过需拆分</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span>— CHAPTER SEVEN —</span>
+      <span class="center">保守即<span class="gold">稳定</span>　　CONSERVATISM IS STABILITY</span>
+      <span class="right-tag">Torvalds Principle</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

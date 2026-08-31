@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>他是怎样的人 — Torvalds 的性格画像</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --cream:#F5F1E8;
+  --gold:#C9A227;
+  --ink:#1a1a1a;
+  --muted:#5a5a5a;
+  --rule:#0D2137;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;background:var(--cream);color:var(--ink);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 60px 36px 60px;box-sizing:border-box;}
+
+/* background subtle texture */
+#bg{background:var(--cream);}
+#bg::after{content:"";position:absolute;left:0;top:0;width:100%;height:100%;background:radial-gradient(ellipse at 18% 30%, rgba(201,162,39,0.05) 0%, rgba(201,162,39,0) 55%);pointer-events:none;}
+
+/* Header */
+.header{display:flex;align-items:flex-start;justify-content:space-between;padding-top:6px;padding-bottom:12px;border-bottom:1px solid var(--navy);}
+.brand{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--navy);font-weight:700;}
+.brand-sub{font-size:11px;color:var(--muted);letter-spacing:2px;margin-top:4px;}
+.head-right{display:flex;align-items:flex-start;gap:14px;text-align:right;}
+.head-num{font-family:'Playfair Display',serif;font-size:54px;line-height:0.85;color:var(--gold);font-weight:700;}
+.head-meta{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;line-height:1.5;}
+
+/* Big quote decoration */
+.quote-deco{font-family:'Playfair Display',serif;font-size:120px;line-height:0.6;color:var(--gold);font-weight:900;letter-spacing:-4px;margin-top:10px;margin-bottom:2px;}
+
+/* Title block */
+.title-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px;}
+.title-main{font-family:'Playfair Display','Noto Serif SC',serif;font-size:60px;line-height:1;color:var(--navy);font-weight:900;letter-spacing:-1px;}
+.title-cn{font-family:'Noto Serif SC',serif;font-size:38px;font-weight:900;color:var(--navy);letter-spacing:2px;margin-top:6px;}
+.title-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:var(--muted);text-align:right;line-height:1.4;max-width:340px;padding-bottom:4px;}
+
+/* Main area */
+.main{display:flex;gap:36px;margin-top:14px;align-items:flex-start;}
+
+/* Left column */
+.left{width:440px;display:flex;flex-direction:column;align-items:flex-start;flex-shrink:0;}
+.portrait-frame{width:440px;height:600px;position:relative;background:var(--cream);border:1px solid var(--navy);}
+.portrait-frame img{width:440px;height:600px;object-fit:cover;object-position:center top;display:block;filter:contrast(1.05);}
+.portrait-corner{position:absolute;right:-8px;bottom:-8px;width:60px;height:60px;border:2px solid var(--gold);}
+.portrait-caption{margin-top:12px;display:flex;align-items:center;gap:12px;}
+.caption-rule{width:36px;height:1px;background:var(--gold);}
+.caption-text{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;color:var(--navy);letter-spacing:2px;}
+.caption-en{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+
+/* Right column */
+.right{flex:1;display:flex;flex-direction:column;gap:14px;}
+.trait{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid rgba(13,33,55,0.15);}
+.trait:last-child{border-bottom:none;padding-bottom:0;}
+.trait-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);line-height:1;padding-top:4px;}
+.trait-body{display:flex;flex-direction:column;}
+.trait-title{font-family:'Noto Serif SC',serif;font-size:24px;font-weight:900;color:var(--navy);letter-spacing:1px;margin-bottom:4px;}
+.trait-title-en{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;}
+.trait-desc{font-size:13px;line-height:1.65;color:var(--ink);}
+.trait-quote{font-family:'Playfair Display','Noto Serif SC',serif;font-style:italic;font-size:14px;color:var(--navy);line-height:1.5;border-left:2px solid var(--gold);padding-left:10px;margin-top:6px;}
+.trait-quote-cn{font-family:'Noto Serif SC',serif;font-style:italic;font-size:14px;color:var(--navy);border-left:2px solid var(--gold);padding-left:10px;margin-top:6px;line-height:1.5;}
+
+/* Footer narrative */
+.footer{margin-top:16px;border-top:1px solid var(--navy);padding-top:12px;display:flex;align-items:center;gap:20px;}
+.narrative{flex:1;font-family:'Noto Serif SC',serif;font-size:13px;line-height:1.65;color:var(--navy);font-weight:500;}
+.narrative strong{font-weight:900;color:var(--gold);}
+
+.data-cards{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.data-card{border:1px solid var(--gold);padding:6px 12px;background:transparent;display:flex;align-items:center;gap:10px;min-width:240px;}
+.data-label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:700;flex-shrink:0;}
+.data-value{font-family:'Noto Serif SC',serif;font-size:13px;color:var(--navy);font-weight:900;}
+.data-value .gold{color:var(--gold);}
+
+/* decorative side rail */
+.side-rail{position:absolute;left:22px;top:140px;bottom:80px;width:1px;background:var(--gold);opacity:0.4;}
+.side-rail-cn{position:absolute;left:12px;top:140px;font-family:'Noto Serif SC',serif;font-size:10px;color:var(--gold);letter-spacing:6px;writing-mode:vertical-rl;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div>
+        <div class="brand">THE PERSONALITY PROFILE</div>
+        <div class="brand-sub">人物专栏 · 编辑特稿</div>
+      </div>
+      <div class="head-right">
+        <div>
+          <div class="head-meta">第 Ⅲ 章<br>CHAPTER · III</div>
+        </div>
+        <div class="head-num">03</div>
+      </div>
+    </div>
+
+    <div class="quote-deco">&ldquo;</div>
+
+    <div class="title-row">
+      <div>
+        <div class="title-main">Who Is He</div>
+        <div class="title-cn">他是怎样的人</div>
+      </div>
+      <div class="title-sub">— 一份关于 Linus Torvalds 的性格速写 · 务实、锋利、不妥协</div>
+    </div>
+
+    <div class="main">
+      <div class="left">
+        <div class="portrait-frame">
+          <img src="../images/page_003_portrait.png" alt="Linus Torvalds 黑白杂志插画肖像">
+          <div class="portrait-corner"></div>
+        </div>
+        <div>
+          <div class="portrait-caption">
+            <div class="caption-rule"></div>
+            <div class="caption-text">务实、锋利、不妥协</div>
+          </div>
+          <div class="caption-en">Pragmatic · Sharp · Uncompromising</div>
+        </div>
+      </div>
+
+      <div class="right">
+
+        <div class="trait">
+          <div class="trait-num">01</div>
+          <div class="trait-body">
+            <div class="trait-title">极致的务实</div>
+            <div class="trait-title-en">— A Radical Pragmatism</div>
+            <div class="trait-desc">他说 Linux 只是自己的一个爱好，从未将其包装为商业产品。代码能否工作，远比口号是否动听更重要。</div>
+          </div>
+        </div>
+
+        <div class="trait">
+          <div class="trait-num">02</div>
+          <div class="trait-body">
+            <div class="trait-title">坦率而傲慢</div>
+            <div class="trait-title-en">— Frank &nbsp;&amp;&nbsp; Arrogant</div>
+            <div class="trait-quote-cn">&ldquo;我是自私的，我写出了比任何人都好的 Linux。&rdquo;</div>
+          </div>
+        </div>
+
+        <div class="trait">
+          <div class="trait-num">03</div>
+          <div class="trait-body">
+            <div class="trait-title">讨厌空谈</div>
+            <div class="trait-title-en">— No Room for Empty Talk</div>
+            <div class="trait-desc">他对会议、PPT 与流程化的开发方式深恶痛绝。在他看来，文档再漂亮也替代不了一行跑通的代码。</div>
+          </div>
+        </div>
+
+        <div class="trait">
+          <div class="trait-num">04</div>
+          <div class="trait-body">
+            <div class="trait-title">拥抱反馈</div>
+            <div class="trait-title-en">— Open to Every Critique</div>
+            <div class="trait-desc">早期他就把 Linux 源码放到 Usenet 上，公开邀请任何人来使用、来批评、来改。反馈是代码最好的试金石。</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="narrative">
+        Torvalds 的性格决定了他的开发风格——<strong>务实、锋利、不妥协</strong>，他讨厌形式主义，把写代码当作唯一的真理检验，这种态度让 Linux 从一个学生项目成长为支撑现代互联网基础设施的基石。
+      </div>
+      <div class="data-cards">
+        <div class="data-card">
+          <div class="data-label">内核 · KERNEL</div>
+          <div class="data-value">Linux 内核贡献者：<span class="gold">数万名</span>（全球协作）</div>
+        </div>
+        <div class="data-card">
+          <div class="data-label">版本 · GIT</div>
+          <div class="data-value">Git 用户规模：<span class="gold">90%+</span>（开发者使用比例）</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="side-rail"></div>
+  <div class="side-rail-cn">性 · 格 · 画 · 像</div>
+</div>
+</body>
+</html>
