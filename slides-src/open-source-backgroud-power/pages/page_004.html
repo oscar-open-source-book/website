@@ -3,152 +3,449 @@
 <head>
 <meta charset="UTF-8">
 <title>关键里程碑事件</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
-:root{
-  --navy:#0D2137;
-  --cyan:#00BCD4;
-  --cyan-soft:#B2EBF2;
-  --bg:#F5F7FA;
-  --white:#FFFFFF;
-  --line:#E1E7EF;
-  --text-sub:#5A6B7E;
+:root {
+  --primary: #0D2137;
+  --accent: #00BCD4;
+  --accent-light: #E0F7FA;
+  --bg: #F5F7FA;
+  --card-bg: #FFFFFF;
+  --text-main: #0D2137;
+  --text-secondary: #5A6B7D;
+  --text-light: #8899AA;
+  --border: #E4E9F0;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Inter','Noto Sans SC',sans-serif;color:var(--navy);background:var(--bg);}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
-#bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,#FFFFFF 0%,#F5F7FA 100%);}
-#ct{position:absolute;inset:0;z-index:1;padding:50px 70px 45px 70px;box-sizing:border-box;display:flex;flex-direction:column;}
 
-.header{margin-bottom:6px;}
-.header .tag{display:inline-block;font-size:13px;font-weight:600;color:var(--cyan);letter-spacing:2px;margin-bottom:12px;}
-.header h1{font-size:44px;font-weight:800;color:var(--navy);line-height:1.1;letter-spacing:1px;}
-.header .sub{margin-top:10px;font-size:16px;font-weight:400;color:var(--text-sub);max-width:1100px;line-height:1.55;}
-.header .sub .hl{color:var(--cyan);font-weight:600;}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Timeline area */
-.timeline-wrap{position:relative;flex:0 0 auto;margin-top:24px;height:340px;width:100%;}
-.timeline-axis{position:absolute;left:40px;right:40px;top:170px;height:4px;background:linear-gradient(90deg,var(--cyan-soft) 0%,var(--cyan) 50%,var(--cyan-soft) 100%);border-radius:2px;box-shadow:0 0 12px rgba(0,188,212,0.35);}
-.timeline-axis::before,.timeline-axis::after{content:'';position:absolute;top:50%;width:14px;height:14px;border-radius:50%;transform:translateY(-50%);}
-.timeline-axis::before{left:-20px;background:var(--cyan-soft);}
-.timeline-axis::after{right:-20px;background:var(--cyan-soft);}
+body {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+  width: 1600px;
+  height: 900px;
+  overflow: hidden;
+}
 
-.node{position:absolute;top:170px;width:20px;height:20px;border-radius:50%;background:var(--cyan);transform:translate(-50%,-50%);box-shadow:0 0 0 4px rgba(0,188,212,0.2),0 0 0 8px rgba(0,188,212,0.1),0 0 18px rgba(0,188,212,0.7);}
-.node-label{position:absolute;left:50%;transform:translateX(-50%);text-align:center;font-size:14px;font-weight:700;color:var(--cyan);}
-.node-label.up{top:-40px;}
-.node-label.down{top:40px;}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
 
-.card{position:absolute;width:230px;background:var(--white);border-radius:12px;padding:16px 16px 14px 16px;box-shadow:0 4px 18px rgba(13,33,55,0.08);border-left:3px solid var(--cyan);}
-.card .yr{font-size:22px;font-weight:800;color:var(--cyan);line-height:1.1;}
-.card .name{font-size:15px;font-weight:700;color:var(--navy);margin-top:4px;}
-.card .desc{font-size:12px;font-weight:400;color:var(--text-sub);line-height:1.5;margin-top:8px;}
-.card.up{bottom:190px;}
-.card.down{top:200px;}
-.card.up::after{content:'';position:absolute;left:50%;bottom:-14px;width:2px;height:14px;background:var(--cyan-soft);}
-.card.down::after{content:'';position:absolute;left:50%;top:-14px;width:2px;height:14px;background:var(--cyan-soft);}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
 
-/* KPI row */
-.kpi-row{display:flex;gap:18px;margin-top:24px;flex:1;align-items:stretch;}
-.kpi{flex:1;background:var(--white);border-radius:12px;padding:20px 20px;box-shadow:0 3px 14px rgba(13,33,55,0.06);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;}
-.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--cyan) 0%,var(--cyan-soft) 100%);}
-.kpi .kpi-label{font-size:13px;font-weight:600;color:var(--text-sub);letter-spacing:0.5px;}
-.kpi .kpi-value{font-size:36px;font-weight:800;color:var(--navy);line-height:1.15;margin-top:8px;}
-.kpi .kpi-value .unit{font-size:20px;font-weight:700;color:var(--cyan);margin-left:4px;}
-.kpi .kpi-note{font-size:11px;font-weight:400;color:var(--text-sub);margin-top:10px;line-height:1.5;}
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,188,212,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -200px;
+  left: -200px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(13,33,55,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.header .top-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.header .accent-bar {
+  width: 6px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+.header h1 {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 800;
+  font-size: 36px;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.header .subtitle-tag {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 4px 12px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+}
+
+.header .lead {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 1200px;
+  margin-top: 4px;
+  font-weight: 300;
+}
+
+/* Timeline Section */
+.timeline-section {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.timeline-area {
+  position: relative;
+  width: 100%;
+  height: 340px;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent) 0%, rgba(0,188,212,0.3) 50%, var(--accent) 100%);
+  transform: translateY(-50%);
+  border-radius: 2px;
+}
+
+.timeline-line-glow {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 6px;
+  background: linear-gradient(to right, rgba(0,188,212,0.2) 0%, rgba(0,188,212,0.05) 50%, rgba(0,188,212,0.2) 100%);
+  transform: translateY(-50%);
+  border-radius: 3px;
+  filter: blur(2px);
+}
+
+.node {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  background: var(--card-bg);
+  border: 3px solid var(--accent);
+  border-radius: 50%;
+  z-index: 3;
+  box-shadow: 0 0 0 4px rgba(0,188,212,0.15), 0 0 16px rgba(0,188,212,0.4);
+}
+
+.node::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.node-1 { left: 8%; }
+.node-2 { left: 28%; }
+.node-3 { left: 50%; }
+.node-4 { left: 72%; }
+.node-5 { left: 92%; }
+
+.card {
+  position: absolute;
+  width: 220px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 20px rgba(13,33,55,0.08), 0 1px 4px rgba(13,33,55,0.04);
+  border: 1px solid var(--border);
+  z-index: 2;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--accent), rgba(0,188,212,0.1));
+  transform: translateX(-50%);
+}
+
+.card.above {
+  top: 12px;
+}
+
+.card.above::before {
+  bottom: -20px;
+}
+
+.card.below {
+  bottom: 12px;
+}
+
+.card.below::before {
+  top: -20px;
+}
+
+.card-1 { left: calc(8% - 110px); }
+.card-2 { left: calc(28% - 110px); }
+.card-3 { left: calc(50% - 110px); }
+.card-4 { left: calc(72% - 110px); }
+.card-5 { left: calc(92% - 110px); }
+
+.card-year {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-year .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.card-desc {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+/* KPI Section */
+.kpi-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+.kpi-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(13,33,55,0.05);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent);
+}
+
+.kpi-card:nth-child(2)::before { background: var(--primary); }
+
+.kpi-card:nth-child(3)::before { background: var(--accent); }
+
+.kpi-card:nth-child(4)::before { background: var(--primary); }
+
+.kpi-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--primary);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.kpi-value.accent {
+  color: var(--accent);
+}
+
+.kpi-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Footer */
+.footer-line {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+  padding: 8px 0 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+.footer-line .accent-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 10px 3px;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-<div id="bg"></div>
-<div id="ct">
-
-<div class="header">
-  <div class="tag"><span>KEY MILESTONES</span></div>
-  <h1><span>关键里程碑事件</span></h1>
-  <div class="sub">从<span class="hl">个人实验</span>到<span class="hl">全球基础设施</span>——五个关键节点串起一条开源协作的弧线，每一次跃迁都是社区力量压倒商业壁垒的例证。</div>
-</div>
-
-<div class="timeline-wrap">
-  <div class="timeline-axis"></div>
-
-  <!-- Node 1: 1991 -->
-  <div class="node" style="left:8%;"></div>
-  <div class="node-label up" style="left:8%;"><span>1991</span></div>
-  <div class="card up" style="left:calc(8% - 115px);">
-    <div class="yr"><span>1991</span></div>
-    <div class="name"><span>Linux 内核</span></div>
-    <div class="desc"><span>Linus 在 comp.os.minix 发帖宣布 Linux 内核，两个月内全球数千贡献者加入。</span></div>
-  </div>
-
-  <!-- Node 2: 1993 -->
-  <div class="node" style="left:27.5%;"></div>
-  <div class="node-label down" style="left:27.5%;"><span>1993</span></div>
-  <div class="card down" style="left:calc(27.5% - 115px);">
-    <div class="yr"><span>1993</span></div>
-    <div class="name"><span>Apache</span></div>
-    <div class="desc"><span>Apache HTTP Server 发布，迅速成为互联网主力 Web 服务器软件。</span></div>
-  </div>
-
-  <!-- Node 3: 2003 -->
-  <div class="node" style="left:48%;"></div>
-  <div class="node-label up" style="left:48%;"><span>2003</span></div>
-  <div class="card up" style="left:calc(48% - 115px);">
-    <div class="yr"><span>2003</span></div>
-    <div class="name"><span>Git 发布</span></div>
-    <div class="desc"><span>Linus 为 Linux 内核开发分布式版本控制工具 Git，重塑全球协作开发模式。</span></div>
-  </div>
-
-  <!-- Node 4: 2008 -->
-  <div class="node" style="left:68.5%;"></div>
-  <div class="node-label down" style="left:68.5%;"><span>2008</span></div>
-  <div class="card down" style="left:calc(68.5% - 115px);">
-    <div class="yr"><span>2008</span></div>
-    <div class="name"><span>GitHub 上线</span></div>
-    <div class="desc"><span>把开源协作推到云端，让 fork 与 pull request 成为开发者的日常语言。</span></div>
-  </div>
-
-  <!-- Node 5: 2018 -->
-  <div class="node" style="left:90%;"></div>
-  <div class="node-label up" style="left:90%;"><span>2018</span></div>
-  <div class="card up" style="left:calc(90% - 115px);">
-    <div class="yr"><span>2018</span></div>
-    <div class="name"><span>企业拥抱开源</span></div>
-    <div class="desc"><span>微软 CEO 纳德拉宣布拥抱开源，GitHub 收购完成后成为行业基础设施。</span></div>
-  </div>
-</div>
-
-<div class="kpi-row">
-  <div class="kpi">
-    <div>
-      <div class="kpi-label"><span>Linux 内核代码行数</span></div>
-      <div class="kpi-value"><span>2700万</span><span class="unit">+</span></div>
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <div class="top-row">
+        <span class="accent-bar"></span>
+        <h1>关键里程碑事件</h1>
+        <span class="subtitle-tag">1991 — 2018</span>
+      </div>
+      <p class="lead">从1991年Linux内核的一个帖子，到2008年GitHub上线开启的协作新时代，开源的关键里程碑串起了一条从个人实验到全球基础设施的弧线</p>
     </div>
-    <div class="kpi-note"><span>截至 2023 年累计代码规模</span></div>
-  </div>
-  <div class="kpi">
-    <div>
-      <div class="kpi-label"><span>GitHub 仓库数</span></div>
-      <div class="kpi-value"><span>4亿</span><span class="unit">+</span></div>
-    </div>
-    <div class="kpi-note"><span>2023 年全球累计仓库总数</span></div>
-  </div>
-  <div class="kpi">
-    <div>
-      <div class="kpi-label"><span>GitHub 用户</span></div>
-      <div class="kpi-value"><span>1亿</span><span class="unit">+</span></div>
-    </div>
-    <div class="kpi-note"><span>全球注册开发者账户</span></div>
-  </div>
-  <div class="kpi">
-    <div>
-      <div class="kpi-label"><span>Apache Web 服务器份额</span></div>
-      <div class="kpi-value"><span>曾达 80</span><span class="unit">%</span></div>
-    </div>
-    <div class="kpi-note"><span>2000 年代峰值市场占有率</span></div>
-  </div>
-</div>
 
-</div>
+    <div class="timeline-section">
+      <div class="timeline-area">
+        <div class="timeline-line-glow"></div>
+        <div class="timeline-line"></div>
+
+        <div class="node node-1"></div>
+        <div class="node node-2"></div>
+        <div class="node node-3"></div>
+        <div class="node node-4"></div>
+        <div class="node node-5"></div>
+
+        <div class="card card-1 above">
+          <div class="card-year"><span class="dot"></span>1991</div>
+          <div class="card-title">Linux 内核</div>
+          <div class="card-desc">Linus 在 comp.os.minix 发帖宣布 Linux 内核，两个月内全球数千贡献者加入</div>
+        </div>
+
+        <div class="card card-2 below">
+          <div class="card-year"><span class="dot"></span>1993</div>
+          <div class="card-title">Apache HTTP Server</div>
+          <div class="card-desc">Apache HTTP Server 发布，迅速成为互联网主力 Web 服务器软件</div>
+        </div>
+
+        <div class="card card-3 above">
+          <div class="card-year"><span class="dot"></span>2003</div>
+          <div class="card-title">Git 发布</div>
+          <div class="card-desc">Linus 为 Linux 内核开发分布式版本控制工具 Git，重塑全球协作开发模式</div>
+        </div>
+
+        <div class="card card-4 below">
+          <div class="card-year"><span class="dot"></span>2008</div>
+          <div class="card-title">GitHub 上线</div>
+          <div class="card-desc">把开源协作推到云端，让 fork 与 pull request 成为开发者的日常语言</div>
+        </div>
+
+        <div class="card card-5 above">
+          <div class="card-year"><span class="dot"></span>2018</div>
+          <div class="card-title">企业拥抱开源</div>
+          <div class="card-desc">微软 CEO 纳德拉宣布微软拥抱开源，GitHub 收购完成后成为行业基础设施</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-section">
+      <div class="kpi-card">
+        <div class="kpi-label"><span>Linux 内核 · 代码规模</span></div>
+        <div class="kpi-value">2700万<span style="font-size:18px;">+</span></div>
+        <div class="kpi-desc">截至2023年累计代码行数规模</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span>GitHub · 仓库总数</span></div>
+        <div class="kpi-value accent">4亿<span style="font-size:18px;">+</span></div>
+        <div class="kpi-desc">2023年全球累计仓库总数</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span>GitHub · 用户规模</span></div>
+        <div class="kpi-value">1亿<span style="font-size:18px;">+</span></div>
+        <div class="kpi-desc">全球注册开发者账户数</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span>Apache · 市场峰值</span></div>
+        <div class="kpi-value accent">80<span style="font-size:18px;">%</span></div>
+        <div class="kpi-desc">2000年代 Web 服务器市场占有率</div>
+      </div>
+    </div>
+
+    <div class="footer-line">
+      <span>每一个节点都是社区力量压倒商业壁垒的例证</span>
+      <span class="accent-dot"></span>
+      <span style="color:var(--accent);">Open Source · Since 1991</span>
+    </div>
+  </div>
 </div>
 </body>
 </html>

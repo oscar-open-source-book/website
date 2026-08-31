@@ -1,350 +1,422 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>第二章：开源的核心价值</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy: #0D2137;
-  --cyan: #00BCD4;
-  --warm: #F5A623;
+  --primary: #0D2137;
+  --accent: #00BCD4;
   --bg: #F5F7FA;
   --text-main: #0D2137;
-  --text-sub: #4A5B70;
-  --text-light: #8B9DAF;
+  --text-sub: #5A6B80;
+  --divider: #D8DEE6;
+  --glow-tech: #00BCD4;
+  --glow-business: #7C4DFF;
+  --glow-society: #FF6B6B;
 }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Noto Sans SC', 'Inter', sans-serif; overflow: hidden; }
 
-.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; background: var(--bg); }
-#bg { position: absolute; inset: 0; z-index: 0; }
-#ct { position: absolute; inset: 0; z-index: 1; padding: 48px 68px; box-sizing: border-box; display: flex; flex-direction: column; }
-
-.bg-base {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 900px 600px at 12% 25%, rgba(13,33,55,0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 700px 500px at 88% 80%, rgba(0,188,212,0.05) 0%, transparent 60%);
+body {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
 }
 
-.halo-warm-1 {
-  position: absolute;
-  width: 650px; height: 650px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(245,166,35,0.09) 0%, rgba(245,166,35,0.02) 45%, transparent 72%);
-  top: -220px; right: -200px;
-  filter: blur(25px);
-}
-.halo-cyan-1 {
-  position: absolute;
-  width: 580px; height: 580px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,188,212,0.08) 0%, rgba(0,188,212,0.02) 45%, transparent 72%);
-  bottom: -220px; left: -150px;
-  filter: blur(25px);
-}
-
-.top-area {
+.wrapper {
+  width: 1600px;
+  height: 900px;
   position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 80px;
+  box-sizing: border-box;
   display: flex;
-  align-items: center;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  flex-direction: column;
 }
 
-.chapter-tag {
-  position: absolute;
-  top: 0; left: 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 6px;
-  color: var(--cyan);
-}
-.chapter-tag::before {
-  content: '';
-  display: inline-block;
-  width: 40px; height: 2px;
-  background: var(--cyan);
-  vertical-align: middle;
-  margin-right: 14px;
-  margin-bottom: 3px;
-}
-
-.halo-n {
-  position: absolute;
-  width: 380px; height: 380px;
-  border-radius: 50%;
-  top: -80px;
-  filter: blur(20px);
-  pointer-events: none;
-}
-.halo-n.a { left: 380px; background: radial-gradient(circle, rgba(13,33,55,0.10) 0%, rgba(13,33,55,0.02) 45%, transparent 72%); }
-.halo-n.b { left: 560px; background: radial-gradient(circle, rgba(0,188,212,0.12) 0%, rgba(0,188,212,0.02) 45%, transparent 72%); }
-.halo-n.c { left: 740px; background: radial-gradient(circle, rgba(245,166,35,0.10) 0%, rgba(245,166,35,0.02) 45%, transparent 72%); }
-
-.big-number {
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
-  font-size: 250px;
-  line-height: 0.85;
-  color: var(--navy);
-  letter-spacing: -8px;
-  flex-shrink: 0;
-}
-.big-number .zero { color: transparent; -webkit-text-stroke: 3px var(--navy); }
-
-.title-area { flex: 1; padding-left: 30px; }
-.title-text {
-  font-family: 'Inter', 'Noto Sans SC', sans-serif;
-  font-weight: 800;
-  font-size: 54px;
-  color: var(--navy);
-  line-height: 1.15;
-  letter-spacing: -1px;
-}
-.title-divider {
-  width: 80px; height: 4px;
-  background: var(--cyan);
-  margin: 22px 0;
-  border-radius: 2px;
-}
-.subtitle-text {
-  font-size: 20px;
-  color: var(--text-sub);
-  font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: 1px;
-}
-
-.mid-halo-area {
-  position: relative;
-  height: 150px;
-  margin: 6px 0;
+/* Top section */
+.top-section {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.tri-halo {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: 14px;
-}
-.tri-halo .h1 {
-  position: absolute;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(13,33,55,0.28) 0%, rgba(13,33,55,0.08) 40%, transparent 72%);
-  top: -110px; left: 30%;
-  filter: blur(4px);
-}
-.tri-halo .h2 {
-  position: absolute;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,188,212,0.32) 0%, rgba(0,188,212,0.08) 40%, transparent 72%);
-  top: -110px; left: 45%;
-  filter: blur(4px);
-}
-.tri-halo .h3 {
-  position: absolute;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(245,166,35,0.28) 0%, rgba(245,166,35,0.08) 40%, transparent 72%);
-  top: -110px; left: 60%;
-  filter: blur(4px);
-}
-.dim-labels {
-  position: relative;
-  display: flex;
-  gap: 100px;
-  z-index: 2;
-}
-.dim-label {
-  display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.dim-dot {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-.dim-label:nth-child(1) .dim-dot { background: var(--navy); box-shadow: 0 0 14px rgba(13,33,55,0.55); }
-.dim-label:nth-child(2) .dim-dot { background: var(--cyan); box-shadow: 0 0 14px rgba(0,188,212,0.65); }
-.dim-label:nth-child(3) .dim-dot { background: var(--warm); box-shadow: 0 0 14px rgba(245,166,35,0.65); }
-.dim-name {
-  font-family: 'Inter', 'Noto Sans SC', sans-serif;
-  font-weight: 700;
-  font-size: 19px;
-  color: var(--navy);
-}
-.dim-en {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: var(--text-light);
-  letter-spacing: 3px;
-  margin-top: 4px;
+  position: relative;
+  padding-top: 10px;
 }
 
-.points-area {
-  display: flex;
-  gap: 22px;
-  margin-top: 6px;
-}
-.point-card {
-  flex: 1;
-  background: white;
-  border-radius: 10px;
-  padding: 22px 26px;
-  border-left: 4px solid var(--cyan);
-  box-shadow: 0 4px 22px rgba(13,33,55,0.07);
-  position: relative;
-}
-.point-card:nth-child(1) { border-left-color: var(--navy); }
-.point-card:nth-child(2) { border-left-color: var(--cyan); }
-.point-card:nth-child(3) { border-left-color: var(--warm); }
-.point-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-.point-num {
+.chapter-number {
   font-family: 'Inter', sans-serif;
   font-weight: 800;
-  font-size: 22px;
-  color: var(--cyan);
+  font-size: 130px;
+  color: var(--primary);
+  letter-spacing: 4px;
+  position: relative;
+  z-index: 2;
+  line-height: 1;
+}
+
+.glow-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  z-index: 1;
+}
+
+.glow-dot {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0.55;
+}
+
+.glow-tech {
+  background: var(--glow-tech);
+  top: -30px;
+  left: -20px;
+}
+
+.glow-business {
+  background: var(--glow-business);
+  top: -10px;
+  right: -20px;
+}
+
+.glow-society {
+  background: var(--glow-society);
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.chapter-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+
+.main-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 900;
+  font-size: 44px;
+  color: var(--primary);
+  margin-top: 10px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--text-sub);
+  margin-top: 10px;
   letter-spacing: 1px;
 }
-.point-card:nth-child(1) .point-num { color: var(--navy); }
-.point-card:nth-child(3) .point-num { color: var(--warm); }
-.point-title {
-  font-weight: 700;
-  font-size: 17px;
-  color: var(--navy);
-}
-.point-content {
-  font-size: 13.5px;
-  color: var(--text-sub);
-  line-height: 1.7;
+
+.title-underline {
+  width: 60px;
+  height: 3px;
+  background: var(--accent);
+  margin-top: 16px;
+  border-radius: 2px;
 }
 
-.footer-area {
+/* Middle narrative */
+.narrative-section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.narrative-text {
+  max-width: 1100px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-sub);
+  font-weight: 300;
+  text-align: justify;
+  padding: 0 30px;
+  position: relative;
+}
+
+.narrative-text::before,
+.narrative-text::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: var(--divider);
+}
+
+.narrative-text::before { top: -10px; }
+.narrative-text::after { bottom: -10px; }
+
+/* Three columns */
+.columns-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-top: 18px;
+  flex: 1;
+}
+
+.col-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 24px 24px 22px;
+  box-shadow: 0 2px 16px rgba(13, 33, 55, 0.05);
+  border-top: 3px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.col-card:nth-child(1) { border-top-color: var(--glow-tech); }
+.col-card:nth-child(2) { border-top-color: var(--glow-business); }
+.col-card:nth-child(3) { border-top-color: var(--glow-society); }
+
+.col-icon {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.col-card:nth-child(1) .col-icon { color: var(--glow-tech); }
+.col-card:nth-child(2) .col-icon { color: var(--glow-business); }
+.col-card:nth-child(3) .col-icon { color: var(--glow-society); }
+
+.col-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.col-desc {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-sub);
+  font-weight: 300;
+  flex: 1;
+}
+
+.col-tags {
   margin-top: 14px;
-  padding: 20px 32px;
-  background: linear-gradient(90deg, rgba(13,33,55,0.05) 0%, rgba(0,188,212,0.05) 50%, rgba(245,166,35,0.05) 100%);
-  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.col-tag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 400;
+}
+
+.col-card:nth-child(1) .col-tag { background: rgba(0,188,212,0.1); color: #008392; }
+.col-card:nth-child(2) .col-tag { background: rgba(124,77,255,0.1); color: #633ACB; }
+.col-card:nth-child(3) .col-tag { background: rgba(255,107,107,0.1); color: #D94545; }
+
+.col-books {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.book-item {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #F8FAFC;
+  border-radius: 8px;
+  border-left: 3px solid var(--glow-society);
 }
-.footer-bar {
-  width: 4px;
-  height: 56px;
-  background: linear-gradient(180deg, var(--navy) 0%, var(--cyan) 50%, var(--warm) 100%);
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-.footer-text {
-  font-size: 13.5px;
-  color: var(--text-sub);
-  line-height: 1.8;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-}
-.footer-text strong { color: var(--navy); font-weight: 600; }
 
-.bottom-line {
+.book-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--glow-society);
+}
+
+.book-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.book-meta {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-top: 2px;
+}
+
+/* Corner decorations */
+.corner-deco {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 3px;
+  opacity: 0.6;
+}
+
+.corner-top-left {
+  top: 30px;
+  left: 80px;
+}
+
+.corner-top-right {
+  top: 30px;
+  right: 80px;
+}
+
+.corner-bottom-left {
+  bottom: 25px;
+  left: 80px;
+  font-size: 11px;
+}
+
+.corner-bottom-right {
+  bottom: 25px;
+  right: 80px;
+  font-size: 11px;
+}
+
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--navy) 0%, var(--cyan) 50%, var(--warm) 100%);
-  opacity: 0.35;
+  width: 33.3%;
+  background: linear-gradient(90deg, var(--glow-tech), var(--glow-business), var(--glow-society));
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="bg-base"></div>
-    <div class="halo-warm-1"></div>
-    <div class="halo-cyan-1"></div>
-  </div>
+  <div id="bg"></div>
   <div id="ct">
-    <div class="top-area">
-      <div class="chapter-tag"><span>CHAPTER</span></div>
-      <div class="halo-n a"></div>
-      <div class="halo-n b"></div>
-      <div class="halo-n c"></div>
-      <div class="big-number"><span>0<span class="zero">2</span></span></div>
-      <div class="title-area">
-        <div class="title-text"><span>开源的核心价值</span></div>
-        <div class="title-divider"></div>
-        <div class="subtitle-text"><span>透明、协作、创新 —— 开源为什么改变世界</span></div>
+
+    <span class="corner-deco corner-top-left">CHAPTER TRANSITION</span>
+    <span class="corner-deco corner-top-right">OPEN SOURCE · CORE VALUES</span>
+
+    <div class="top-section">
+      <div class="glow-container">
+        <div class="glow-dot glow-tech"></div>
+        <div class="glow-dot glow-business"></div>
+        <div class="glow-dot glow-society"></div>
       </div>
+      <span class="chapter-number">02</span>
+      <span class="chapter-label">CHAPTER · TWO</span>
+      <h1 class="main-title">第二章：开源的核心价值</h1>
+      <p class="subtitle">透明、协作、创新 —— 开源为什么改变世界</p>
+      <div class="title-underline"></div>
     </div>
 
-    <div class="mid-halo-area">
-      <div class="tri-halo">
-        <div class="h1"></div>
-        <div class="h2"></div>
-        <div class="h3"></div>
-      </div>
-      <div class="dim-labels">
-        <div class="dim-label">
-          <div class="dim-dot"></div>
-          <div class="dim-name"><span>技术维度</span></div>
-          <div class="dim-en"><span>TECHNICAL</span></div>
-        </div>
-        <div class="dim-label">
-          <div class="dim-dot"></div>
-          <div class="dim-name"><span>商业维度</span></div>
-          <div class="dim-en"><span>BUSINESS</span></div>
-        </div>
-        <div class="dim-label">
-          <div class="dim-dot"></div>
-          <div class="dim-name"><span>社会维度</span></div>
-          <div class="dim-en"><span>SOCIAL</span></div>
-        </div>
-      </div>
+    <div class="narrative-section">
+      <p class="narrative-text">
+        开源的价值远不止"免费"二字。它带来的<b style="color:var(--primary);font-weight:500;">透明性</b>让安全审计成为可能，让每一次代码变更都可追溯、可审查；它带来的<b style="color:var(--primary);font-weight:500;">协作性</b>让全球人才汇聚于同一项目，跨越国界与组织的边界协同创造；它带来的<b style="color:var(--primary);font-weight:500;">开放性</b>让创新不再受制于单一公司战略，知识得以自由流动与再创造。本章将从多维度拆解这些价值的内在逻辑，揭示开源如何重塑整个软件产业的格局。
+      </p>
     </div>
 
-    <div class="points-area">
-      <div class="point-card">
-        <div class="point-header">
-          <div class="point-num"><span>01</span></div>
-          <div class="point-title"><span>本章聚焦</span></div>
+    <div class="columns-section">
+
+      <div class="col-card">
+        <span class="col-icon">01 · FOCUS</span>
+        <h3 class="col-title">本章聚焦</h3>
+        <p class="col-desc">
+          剖析开源的四项核心价值主张 —— 透明性、协作性、开放性与可持续性，以及它们如何共同作用，从根本上重塑软件产业的竞争格局与价值分配方式。
+        </p>
+        <div class="col-tags">
+          <span class="col-tag">透明性</span>
+          <span class="col-tag">协作性</span>
+          <span class="col-tag">开放性</span>
+          <span class="col-tag">可持续性</span>
         </div>
-        <div class="point-content"><span>剖析开源的四项核心价值主张，以及它们如何重塑软件产业格局，催生新一代技术经济模式。</span></div>
       </div>
-      <div class="point-card">
-        <div class="point-header">
-          <div class="point-num"><span>02</span></div>
-          <div class="point-title"><span>思考框架</span></div>
+
+      <div class="col-card">
+        <span class="col-icon">02 · FRAMEWORK</span>
+        <h3 class="col-title">思考框架</h3>
+        <p class="col-desc">
+          从三个维度系统审视开源的多重价值：在技术维度上理解其对工程实践的推动，在商业维度上解析开源驱动的盈利模式，在社会维度上探讨开源文化对知识共享的贡献。
+        </p>
+        <div class="col-tags">
+          <span class="col-tag">技术维度</span>
+          <span class="col-tag">商业维度</span>
+          <span class="col-tag">社会维度</span>
         </div>
-        <div class="point-content"><span>从技术维度、商业维度、社会维度三个角度审视开源的多重价值，构建立体的分析视角。</span></div>
       </div>
-      <div class="point-card">
-        <div class="point-header">
-          <div class="point-num"><span>03</span></div>
-          <div class="point-title"><span>延伸阅读</span></div>
+
+      <div class="col-card">
+        <span class="col-icon">03 · READING</span>
+        <h3 class="col-title">延伸阅读</h3>
+        <p class="col-desc">
+          推荐以下两本经典著作，帮助读者在更广阔的视角下理解开源运动的商业逻辑与历史脉络，深化对本章核心论点的认知。
+        </p>
+        <div class="col-books">
+          <div class="book-item">
+            <span class="book-num">01</span>
+            <div class="book-info">
+              <span class="book-title">《开源商业模式》</span>
+              <span class="book-meta">LARS WINGE · ALEXANDER HEINRICH</span>
+            </div>
+          </div>
+          <div class="book-item">
+            <span class="book-num">02</span>
+            <div class="book-info">
+              <span class="book-title">《开源革命》</span>
+              <span class="book-meta">CHRISTOPHER M. SHELLEY</span>
+            </div>
+          </div>
         </div>
-        <div class="point-content"><span>推荐书目：《开源商业模式》与《开源革命》，从理论与实践双重视角深入理解开源经济。</span></div>
       </div>
+
     </div>
 
-    <div class="footer-area">
-      <div class="footer-bar"></div>
-      <div class="footer-text">
-        <span>开源的价值远不止"<strong>免费</strong>"二字——它带来的<strong>透明性</strong>让安全审计成为可能，<strong>协作性</strong>让全球人才汇聚于同一项目，<strong>开放性</strong>让创新不再受制于单一公司战略。</span>
-      </div>
-    </div>
+    <span class="corner-deco corner-bottom-left">技术 × 商业 × 社会</span>
+    <span class="corner-deco corner-bottom-right">P.02 / 06</span>
 
-    <div class="bottom-line"></div>
+    <div class="progress-bar"></div>
+
   </div>
 </div>
 </body>

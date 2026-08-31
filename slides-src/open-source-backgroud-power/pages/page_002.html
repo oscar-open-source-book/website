@@ -4,519 +4,375 @@
 <html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
-<title>第一章 · 开源的起源</title>
+<title>第一章：开源的起源</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
-
-:root{
-  --bg-dark: #0D2137;
-  --accent: #00BCD4;
-  --text-white: #F5F7FA;
-  --text-muted: #B8C4D6;
-  --line-subtle: rgba(0,188,212,0.28);
-  --line-faint: rgba(245,247,250,0.08);
+:root {
+  --navy: #0D2137;
+  --navy-light: #14294a;
+  --teal: #00BCD4;
+  --off-white: #F5F7FA;
+  --muted: #8FA3BF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 16px;
+  color: var(--off-white);
+  -webkit-font-smoothing: antialiased;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--navy);
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-  font-family:'Inter','Noto Sans SC',sans-serif;
-  color:var(--text-white);
-  background:var(--bg-dark);
-  overflow:hidden;
+/* Decorative bg layer */
+.bg-deco {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-deco .glow-tl {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.07) 0%, transparent 70%);
+  top: -180px;
+  left: -140px;
+}
+.bg-deco .glow-br {
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.05) 0%, transparent 70%);
+  bottom: -200px;
+  right: -160px;
+}
+.bg-deco .frame-tl,
+.bg-deco .frame-tr,
+.bg-deco .frame-bl,
+.bg-deco .frame-br {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(0, 188, 212, 0.35);
+}
+.bg-deco .frame-tl { top: 28px; left: 28px; border-right: none; border-bottom: none; }
+.bg-deco .frame-tr { top: 28px; right: 28px; border-left: none; border-bottom: none; }
+.bg-deco .frame-bl { bottom: 28px; left: 28px; border-right: none; border-top: none; }
+.bg-deco .frame-br { bottom: 28px; right: 28px; border-left: none; border-top: none; }
+.bg-deco .vline {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background: rgba(0, 188, 212, 0.06);
 }
 
-.wrapper{
-  width:1600px;
-  height:900px;
-  position:relative;
-  overflow:hidden;
-  margin:0 auto;
-  background:var(--bg-dark);
+/* Top strip */
+.top-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(245, 247, 250, 0.1);
+}
+.chapter-mark {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--teal);
+  font-weight: 500;
+}
+.page-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  font-weight: 300;
 }
 
-#bg{
-  position:absolute;
-  inset:0;
-  z-index:0;
-  overflow:hidden;
+/* Main area */
+.main-area {
+  display: flex;
+  flex: 1;
+  gap: 44px;
+  padding-top: 24px;
+  align-items: flex-start;
 }
 
-#bg .glow-1{
-  position:absolute;
-  width:700px;height:700px;
-  left:-260px;top:-260px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(0,188,212,0.10) 0%, rgba(0,188,212,0) 65%);
+/* Numeral */
+.numeral-wrap {
+  width: 640px;
+  flex-shrink: 0;
+  position: relative;
 }
-#bg .glow-2{
-  position:absolute;
-  width:900px;height:900px;
-  right:-360px;bottom:-360px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(0,188,212,0.07) 0%, rgba(0,188,212,0) 65%);
+.numeral-block {
+  position: relative;
+  display: inline-block;
 }
-#bg .grid-lines{
-  position:absolute;
-  inset:0;
-  background-image:
-    linear-gradient(rgba(245,247,250,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245,247,250,0.025) 1px, transparent 1px);
-  background-size:80px 80px;
+.accent-bar-top {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  width: 52px;
+  height: 3px;
+  background: var(--teal);
 }
-#bg .accent-bar-left{
-  position:absolute;
-  left:0;top:0;bottom:0;width:4px;
-  background:linear-gradient(180deg, rgba(0,188,212,0.6) 0%, rgba(0,188,212,0.05) 100%);
+.accent-bar-bottom {
+  position: absolute;
+  bottom: 26px;
+  right: 20px;
+  width: 80px;
+  height: 3px;
+  background: var(--teal);
+  opacity: 0.6;
 }
-#bg .corner-tl{
-  position:absolute;
-  left:60px;top:60px;
-  width:50px;height:50px;
-  border-top:1px solid var(--line-subtle);
-  border-left:1px solid var(--line-subtle);
+.numeral {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 420px;
+  font-weight: 700;
+  line-height: 0.88;
+  color: var(--off-white);
+  letter-spacing: -8px;
 }
-#bg .corner-tr{
-  position:absolute;
-  right:60px;top:60px;
-  width:50px;height:50px;
-  border-top:1px solid var(--line-subtle);
-  border-right:1px solid var(--line-subtle);
+.numeral-tag {
+  margin-top: 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  letter-spacing: 5px;
+  color: var(--teal);
+  font-weight: 400;
 }
-#bg .corner-bl{
-  position:absolute;
-  left:60px;bottom:60px;
-  width:50px;height:50px;
-  border-bottom:1px solid var(--line-subtle);
-  border-left:1px solid var(--line-subtle);
+.numeral-sub {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  font-weight: 300;
 }
-#bg .corner-br{
-  position:absolute;
-  right:60px;bottom:60px;
-  width:50px;height:50px;
-  border-bottom:1px solid var(--line-subtle);
-  border-right:1px solid var(--line-subtle);
-}
-
-#ct{
-  position:absolute;
-  inset:0;
-  z-index:1;
-  padding:60px 80px;
-  box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
+.numeral-quote {
+  margin-top: 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: rgba(245, 247, 250, 0.55);
+  letter-spacing: 0.5px;
+  max-width: 480px;
+  line-height: 1.5;
+  padding-left: 16px;
+  border-left: 1px solid rgba(0, 188, 212, 0.3);
 }
 
-.top-row{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  padding-top:8px;
+/* Content */
+.content-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-top: 12px;
 }
-.brand{
-  font-family:'Inter',sans-serif;
-  font-size:13px;
-  font-weight:500;
-  letter-spacing:3px;
-  color:var(--accent);
-  text-transform:uppercase;
+.title-main {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--off-white);
+  letter-spacing: 3px;
+  line-height: 1.2;
 }
-.brand .dot{
-  display:inline-block;
-  width:6px;height:6px;
-  border-radius:50%;
-  background:var(--accent);
-  margin-right:10px;
-  vertical-align:middle;
-  box-shadow:0 0 8px rgba(0,188,212,0.6);
+.title-sub {
+  font-size: 15px;
+  color: var(--muted);
+  letter-spacing: 3px;
+  font-weight: 300;
+  padding-left: 14px;
+  border-left: 2px solid var(--teal);
+  line-height: 1.5;
 }
-.meta{
-  font-family:'Inter',sans-serif;
-  font-size:12px;
-  font-weight:400;
-  letter-spacing:2px;
-  color:var(--text-muted);
-  text-align:right;
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, var(--teal) 0%, rgba(0, 188, 212, 0.15) 40%, transparent 100%);
+  margin: 2px 0;
 }
-.meta .sep{
-  display:inline-block;
-  width:20px;height:1px;
-  background:var(--line-subtle);
-  vertical-align:middle;
-  margin:0 10px;
+.intro-text {
+  font-size: 14.5px;
+  line-height: 1.95;
+  color: rgba(245, 247, 250, 0.82);
+  font-weight: 300;
+  letter-spacing: 0.4px;
+  text-align: justify;
 }
-
-.mid-section{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:60px;
-  align-items:center;
-  margin-top:18px;
-  flex:0 0 auto;
+.intro-text .hl {
+  color: var(--teal);
+  font-weight: 500;
 }
 
-.num-block{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:10px 0;
+/* Cards */
+.cards {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
 }
-.num-block .num-01{
-  font-family:'Times New Roman','Noto Serif SC',serif;
-  font-size:340px;
-  font-weight:400;
-  line-height:0.85;
-  color:var(--text-white);
-  letter-spacing:-8px;
-  position:relative;
-  z-index:2;
+.card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(245, 247, 250, 0.07);
+  border-top: 2px solid var(--teal);
+  padding: 14px 14px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
 }
-.num-block .num-01::first-letter{
-  color:var(--text-white);
+.card-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5px;
+  color: var(--teal);
+  letter-spacing: 3px;
+  font-weight: 500;
 }
-.num-block .deco-ring{
-  position:absolute;
-  width:280px;height:280px;
-  border:1px solid var(--line-subtle);
-  border-radius:50%;
-  left:50%;top:50%;
-  transform:translate(-50%,-50%);
-  z-index:1;
+.card-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--off-white);
+  letter-spacing: 1px;
 }
-.num-block .deco-ring-2{
-  position:absolute;
-  width:360px;height:360px;
-  border:1px dashed rgba(0,188,212,0.18);
-  border-radius:50%;
-  left:50%;top:50%;
-  transform:translate(-50%,-50%);
-  z-index:1;
+.card-text {
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: rgba(245, 247, 250, 0.62);
+  font-weight: 300;
 }
-.num-block .deco-square{
-  position:absolute;
-  width:14px;height:14px;
-  background:var(--accent);
-  left:calc(50% - 230px);
-  top:calc(50% - 130px);
-  z-index:3;
-}
-.num-block .deco-square-br{
-  position:absolute;
-  width:14px;height:14px;
-  border:1px solid var(--accent);
-  right:calc(50% - 230px);
-  bottom:calc(50% - 130px);
-  z-index:3;
-}
-.num-block .deco-line-top{
-  position:absolute;
-  left:0;right:0;
-  top:calc(50% - 200px);
-  height:1px;
-  background:linear-gradient(90deg, transparent 0%, var(--line-subtle) 30%, var(--line-subtle) 70%, transparent 100%);
-  z-index:1;
-}
-.num-block .deco-line-bot{
-  position:absolute;
-  left:0;right:0;
-  bottom:calc(50% - 200px);
-  height:1px;
-  background:linear-gradient(90deg, transparent 0%, var(--line-subtle) 30%, var(--line-subtle) 70%, transparent 100%);
-  z-index:1;
-}
-.num-block .num-label{
-  position:absolute;
-  top:calc(50% - 20px);
-  right:-10px;
-  font-family:'Inter',sans-serif;
-  font-size:11px;
-  letter-spacing:4px;
-  color:var(--accent);
-  writing-mode:vertical-rl;
-  z-index:3;
-}
-.num-block .num-foot{
-  position:absolute;
-  left:50%;bottom:-18px;
-  transform:translateX(-50%);
-  font-family:'Inter',sans-serif;
-  font-size:10px;
-  letter-spacing:6px;
-  color:var(--text-muted);
+.card-text .book {
+  color: rgba(245, 247, 250, 0.9);
+  font-weight: 500;
 }
 
-.title-block{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding-right:20px;
-  position:relative;
+/* Bottom strip */
+.bottom-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(245, 247, 250, 0.1);
 }
-.title-block .tag{
-  font-family:'Inter',sans-serif;
-  font-size:12px;
-  font-weight:500;
-  letter-spacing:5px;
-  color:var(--accent);
-  margin-bottom:18px;
-  display:flex;
-  align-items:center;
+.bottom-left {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  font-weight: 300;
 }
-.title-block .tag::before{
-  content:'';
-  display:inline-block;
-  width:30px;height:1px;
-  background:var(--accent);
-  margin-right:14px;
+.bottom-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
-.title-block h1{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:62px;
-  font-weight:900;
-  line-height:1.15;
-  color:var(--text-white);
-  letter-spacing:2px;
+.dot {
+  width: 5px;
+  height: 5px;
+  background: var(--teal);
+  border-radius: 50%;
+  display: inline-block;
 }
-.title-block .title-rule{
-  width:80px;height:3px;
-  background:var(--accent);
-  margin:22px 0 22px 0;
-}
-.title-block .subtitle{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:20px;
-  font-weight:300;
-  line-height:1.6;
-  color:var(--text-muted);
-  letter-spacing:1px;
-}
-.title-block .chapter-en{
-  margin-top:20px;
-  font-family:'Inter',sans-serif;
-  font-size:11px;
-  font-weight:400;
-  letter-spacing:3px;
-  color:rgba(245,247,250,0.35);
-  text-transform:uppercase;
-}
-
-.divider{
-  display:flex;
-  align-items:center;
-  margin:32px 0 22px 0;
-  flex:0 0 auto;
-}
-.divider .line{
-  flex:1;height:1px;
-  background:linear-gradient(90deg, transparent 0%, var(--line-subtle) 50%, transparent 100%);
-}
-.divider .label{
-  font-family:'Inter',sans-serif;
-  font-size:11px;
-  letter-spacing:5px;
-  color:var(--text-muted);
-  padding:0 20px;
-  white-space:nowrap;
-}
-
-.points{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:36px;
-  flex:0 0 auto;
-}
-.point{
-  position:relative;
-  padding:22px 22px 22px 24px;
-  background:rgba(245,247,250,0.02);
-  border-left:2px solid var(--accent);
-}
-.point .idx{
-  font-family:'Inter',sans-serif;
-  font-size:11px;
-  font-weight:500;
-  letter-spacing:3px;
-  color:var(--accent);
-  margin-bottom:10px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.point .idx .bar{
-  display:inline-block;
-  width:18px;height:1px;
-  background:var(--accent);
-}
-.point h3{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:20px;
-  font-weight:700;
-  color:var(--accent);
-  margin-bottom:12px;
-  letter-spacing:1px;
-}
-.point p{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:14px;
-  font-weight:300;
-  line-height:1.75;
-  color:var(--text-white);
-  letter-spacing:0.5px;
-}
-.point .corner-mark{
-  position:absolute;
-  top:12px;right:12px;
-  font-family:'Inter',sans-serif;
-  font-size:10px;
-  color:rgba(0,188,212,0.4);
-  letter-spacing:2px;
-}
-
-.bottom{
-  margin-top:auto;
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:30px;
-}
-.narrative{
-  flex:1;
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:13.5px;
-  font-weight:300;
-  line-height:1.8;
-  color:var(--text-muted);
-  letter-spacing:0.8px;
-  padding-right:20px;
-  border-left:1px solid var(--line-subtle);
-  padding-left:22px;
-}
-.narrative .highlight{
-  color:var(--accent);
-  font-weight:500;
-}
-.narrative .strong{
-  color:var(--text-white);
-  font-weight:500;
-}
-.footmark{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:6px;
-  flex:0 0 auto;
-}
-.footmark .fm-1{
-  font-family:'Inter',sans-serif;
-  font-size:10px;
-  letter-spacing:4px;
-  color:var(--accent);
-}
-.footmark .fm-2{
-  font-family:'Inter',sans-serif;
-  font-size:9px;
-  letter-spacing:2px;
-  color:var(--text-muted);
-}
-.footmark .fm-3{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  font-family:'Inter',sans-serif;
-  font-size:10px;
-  letter-spacing:2px;
-  color:var(--text-muted);
-}
-.footmark .fm-3 .pulse{
-  width:6px;height:6px;
-  border-radius:50%;
-  background:var(--accent);
-  box-shadow:0 0 6px var(--accent);
+.meta-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  font-weight: 300;
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div id="bg">
-    <div class="glow-1"></div>
-    <div class="glow-2"></div>
-    <div class="grid-lines"></div>
-    <div class="accent-bar-left"></div>
-    <div class="corner-tl"></div>
-    <div class="corner-tr"></div>
-    <div class="corner-bl"></div>
-    <div class="corner-br"></div>
+    <div class="bg-deco">
+      <div class="glow-tl"></div>
+      <div class="glow-br"></div>
+      <div class="frame-tl"></div>
+      <div class="frame-tr"></div>
+      <div class="frame-bl"></div>
+      <div class="frame-br"></div>
+      <div class="vline" style="left: 50%;"></div>
+    </div>
   </div>
-
   <div id="ct">
-
-    <div class="top-row">
-      <div class="brand"><span class="dot"></span>OPEN SOURCE · CHRONICLES</div>
-      <div class="meta"><span>CHAPTER</span><span class="sep"></span><span>ONE / 01</span></div>
+    <div class="top-strip">
+      <div class="chapter-mark"><span>第 01 部分</span></div>
+      <div class="page-meta"><span>章节过渡页 · CHAPTER DIVIDER</span></div>
     </div>
 
-    <div class="mid-section">
-      <div class="num-block">
-        <div class="deco-ring-2"></div>
-        <div class="deco-ring"></div>
-        <div class="deco-line-top"></div>
-        <div class="deco-line-bot"></div>
-        <div class="deco-square"></div>
-        <div class="deco-square-br"></div>
-        <div class="num-label"><span>CHAPTER</span></div>
-        <div class="num-01">01</div>
-        <div class="num-foot"><span>F · R · E · E &nbsp;&nbsp;·&nbsp;&nbsp; O · P · E · N</span></div>
+    <div class="main-area">
+      <div class="numeral-wrap">
+        <div class="numeral-block">
+          <div class="accent-bar-top"></div>
+          <div class="numeral">01</div>
+          <div class="accent-bar-bottom"></div>
+        </div>
+        <div class="numeral-tag"><span>第 一 章 · CHAPTER 01</span></div>
+        <div class="numeral-sub">开源的起源 · The Origins of Open Source</div>
+        <div class="numeral-quote"><span>"自由不是免费，而是权利。"</span></div>
       </div>
 
-      <div class="title-block">
-        <div class="tag"><span>第 一 章</span></div>
-        <h1>开源的起源</h1>
-        <div class="title-rule"></div>
-        <div class="subtitle">从学术自由到软件革命的<br>思想脉络</div>
-        <div class="chapter-en"><span>THE ORIGIN OF OPEN SOURCE</span></div>
-      </div>
-    </div>
+      <div class="content-wrap">
+        <h1 class="title-main">第一章：开源的起源</h1>
+        <div class="title-sub"><span>从学术自由到软件革命的思想脉络</span></div>
+        <div class="divider"></div>
+        <p class="intro-text">
+          开源并非一夜兴起。它根植于二十世纪五十年代学术界<span class="hl">共享代码</span>的传统，经过 Richard Stallman 的<span class="hl">自由软件运动</span>洗礼，再到 Linus Torvalds 以 <span class="hl">Linux</span> 打破封闭操作系统的格局，开源从思想运动演进为工程实践。
+        </p>
 
-    <div class="divider">
-      <div class="line"></div>
-      <div class="label"><span>CHAPTER · OVERVIEW</span></div>
-      <div class="line"></div>
-    </div>
-
-    <div class="points">
-      <div class="point">
-        <div class="corner-mark"><span>01</span></div>
-        <div class="idx"><span class="bar"></span><span>OVERVIEW</span></div>
-        <h3>本章节导览</h3>
-        <p>回顾从 Unix 开放传统、Richard Stallman 到 Linux 诞生的关键思想转折，梳理一段跨越四十年的技术自由之路。</p>
-      </div>
-      <div class="point">
-        <div class="corner-mark"><span>02</span></div>
-        <div class="idx"><span class="bar"></span><span>PROPOSITION</span></div>
-        <h3>核心命题</h3>
-        <p>软件作为公共品——为什么源代码的可见与可修改至关重要。理解开源的本质，先要理解"自由"在工程语境下的重量。</p>
-      </div>
-      <div class="point">
-        <div class="corner-mark"><span>03</span></div>
-        <div class="idx"><span class="bar"></span><span>FURTHER READING</span></div>
-        <h3>延伸阅读</h3>
-        <p>推荐书目《Free as in Freedom》《大教堂与集市》。两本著作互为镜像，从哲学与工程两个维度诠释开源的精神内核。</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-num"><span>01 / 03</span></div>
+            <div class="card-title">本章节导览</div>
+            <div class="card-text">回顾从 Unix 开放传统、Richard Stallman 到 Linux 诞生的关键思想转折</div>
+          </div>
+          <div class="card">
+            <div class="card-num"><span>02 / 03</span></div>
+            <div class="card-title">核心命题</div>
+            <div class="card-text">软件作为公共品，为什么源代码的可见与可修改至关重要</div>
+          </div>
+          <div class="card">
+            <div class="card-num"><span>03 / 03</span></div>
+            <div class="card-title">延伸阅读</div>
+            <div class="card-text">推荐书目<span class="book">《Free as in Freedom》</span>与<span class="book">《大教堂与集市》</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="bottom">
-      <div class="narrative">
-        <span class="strong">开源并非一夜兴起</span>——它根植于二十世纪五十年代学术界共享代码的传统，经过 <span class="highlight">Richard Stallman</span> 的自由软件运动洗礼，再到 <span class="highlight">Linus Torvalds</span> 以 <span class="highlight">Linux</span> 打破封闭操作系统的格局，开源从<span class="strong">思想运动</span>演进为<span class="strong">工程实践</span>。
-      </div>
-      <div class="footmark">
-        <div class="fm-1"><span>EST. 1975</span></div>
-        <div class="fm-2"><span>SOCIAL &amp; TECHNICAL HISTORY</span></div>
-        <div class="fm-3"><span class="pulse"></span><span>CONTINUE READING</span></div>
+    <div class="bottom-strip">
+      <div class="bottom-left"><span>开 源 运 动 · OPEN SOURCE MOVEMENT</span></div>
+      <div class="bottom-right">
+        <span class="dot"></span>
+        <span class="meta-text">2025</span>
+        <span class="dot"></span>
+        <span class="meta-text">P.002 / 024</span>
       </div>
     </div>
-
   </div>
 </div>
 </body>
