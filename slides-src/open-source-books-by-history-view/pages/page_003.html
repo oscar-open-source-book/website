@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>启蒙书单 · 系统与脚本</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --primary-light: #E3F2FD;
+  --accent: #FF7043;
+  --accent-light: #FBE9E7;
+  --text-main: #37474F;
+  --text-light: #607D8B;
+  --bg: #F5F8FC;
+  --card-bg: #FFFFFF;
+  --line: #B0BEC5;
+  --border: #E0E6ED;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #F5F8FC 0%, #EAF2FB 50%, #F5F8FC 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 80px 48px 80px;
+  box-sizing: border-box;
+}
+
+/* Title area */
+.title-block {
+  text-align: center;
+  padding-top: 8px;
+  padding-bottom: 28px;
+  position: relative;
+}
+
+.title-block h1 {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 6px;
+}
+
+.title-block h1 .dot {
+  color: var(--accent);
+  margin: 0 12px;
+}
+
+.title-underline {
+  width: 80px;
+  height: 3px;
+  background: var(--primary);
+  margin: 18px auto 0;
+  border-radius: 2px;
+}
+
+.title-deco {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.title-deco .line-seg {
+  width: 60px;
+  height: 1px;
+  background: var(--line);
+}
+
+.title-deco .dash-seg {
+  width: 14px;
+  height: 1px;
+  background: var(--primary);
+}
+
+.title-deco .label {
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Grid area */
+.grid-area {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 28px;
+  height: 488px;
+  margin-top: 6px;
+}
+
+/* Connection lines overlay */
+.connect-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Card */
+.card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 24px 28px 22px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 12px rgba(33, 150, 243, 0.06);
+  transition: none;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+  border-radius: 4px 0 0 4px;
+}
+
+.card.accent::before {
+  background: var(--accent);
+}
+
+/* Number badge */
+.num-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 42px;
+  padding-top: 2px;
+}
+
+.num-badge .num {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.card.accent .num-badge .num {
+  color: var(--accent);
+}
+
+.num-badge .num-line {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  margin-top: 6px;
+}
+
+/* Book spine visual */
+.book-visual {
+  flex-shrink: 0;
+  width: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-spine {
+  width: 40px;
+  height: 152px;
+  background: linear-gradient(180deg, var(--primary) 0%, #1976D2 100%);
+  border-radius: 3px 6px 6px 3px;
+  position: relative;
+  box-shadow: 2px 3px 8px rgba(33, 150, 243, 0.25), inset 2px 0 0 rgba(255,255,255,0.15);
+}
+
+.book-spine::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 1px;
+  background: rgba(255,255,255,0.5);
+  box-shadow: 0 8px 0 rgba(255,255,255,0.3), 0 -8px 0 rgba(255,255,255,0.3);
+}
+
+.book-spine::after {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 1px;
+  background: rgba(255,255,255,0.4);
+}
+
+.card.accent .book-spine {
+  background: linear-gradient(180deg, var(--accent) 0%, #E64A19 100%);
+  box-shadow: 2px 3px 8px rgba(255, 112, 67, 0.25), inset 2px 0 0 rgba(255,255,255,0.15);
+}
+
+.book-page-edges {
+  position: absolute;
+  right: -3px;
+  top: 4px;
+  width: 3px;
+  height: calc(100% - 8px);
+  background: repeating-linear-gradient(180deg, #fff 0 1px, #E8EAF6 1px 2px);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Card content */
+.card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.book-name {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.book-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card.accent .book-en {
+  color: var(--accent);
+}
+
+.book-en::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.book-summary {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+/* Tag row */
+.book-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.book-tag {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid rgba(33, 150, 243, 0.15);
+}
+
+.card.accent .book-tag {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: rgba(255, 112, 67, 0.15);
+}
+
+/* Arrow between cards */
+.progress-arrow {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 2px;
+  background: var(--bg);
+  padding: 0 8px;
+}
+
+.progress-arrow-h {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.progress-arrow-v {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.progress-arrow-v.up { top: -11px; }
+.progress-arrow-v.down { bottom: -11px; }
+
+/* Bottom narrative */
+.narrative {
+  margin-top: 24px;
+  padding: 18px 28px;
+  background: linear-gradient(90deg, rgba(33, 150, 243, 0.04) 0%, rgba(255, 112, 67, 0.04) 100%);
+  border-left: 3px solid var(--primary);
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.narrative-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.narrative-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-main);
+  line-height: 1.75;
+  letter-spacing: 0.3px;
+}
+
+.narrative-text .hl {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.narrative-text .hl-accent {
+  color: var(--accent);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="title-block">
+      <h1>启蒙书单<span class="dot">·</span>系统与脚本</h1>
+      <div class="title-underline"></div>
+      <div class="title-deco">
+        <span class="line-seg"></span>
+        <span class="dash-seg"></span>
+        <span class="label">Founding Reading List</span>
+        <span class="dash-seg"></span>
+        <span class="line-seg"></span>
+      </div>
+    </div>
+
+    <div class="grid-area">
+
+      <svg class="connect-layer" width="100%" height="100%" viewBox="0 0 1440 488" preserveAspectRatio="none" style="position:absolute;inset:0;z-index:0;">
+        <!-- Horizontal connection top row -->
+        <line x1="702" y1="244" x2="738" y2="244" stroke="#2196F3" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.6"/>
+        <circle cx="720" cy="244" r="9" fill="#FFFFFF" stroke="#2196F3" stroke-width="1.2" opacity="0.9"/>
+        <text x="720" y="248" text-anchor="middle" font-size="10" fill="#2196F3" font-family="Inter,sans-serif">→</text>
+        <!-- Horizontal connection bottom row -->
+        <line x1="702" y1="484" x2="738" y2="484" stroke="#FF7043" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.6"/>
+        <circle cx="720" cy="484" r="9" fill="#FFFFFF" stroke="#FF7043" stroke-width="1.2" opacity="0.9"/>
+        <text x="720" y="488" text-anchor="middle" font-size="10" fill="#FF7043" font-family="Inter,sans-serif">→</text>
+        <!-- Vertical connections -->
+        <line x1="340" y1="254" x2="340" y2="234" stroke="#2196F3" stroke-width="1" stroke-dasharray="3 3" opacity="0.35"/>
+        <line x1="1100" y1="234" x2="1100" y2="254" stroke="#FF7043" stroke-width="1" stroke-dasharray="3 3" opacity="0.35"/>
+      </svg>
+
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="num-badge">
+          <span class="num">01</span>
+          <span class="num-line"></span>
+        </div>
+        <div class="book-visual">
+          <div class="book-spine">
+            <span class="book-page-edges"></span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="book-name">《鸟哥的Linux私房菜》</div>
+          <div class="book-en">Vbird's Linux Private Kitchen</div>
+          <div class="book-summary">中文Linux入门的扛鼎之作，以亲切口吻讲透服务器架设与系统管理</div>
+          <div class="book-tags">
+            <span class="book-tag">入门</span>
+            <span class="book-tag">中文</span>
+            <span class="book-tag">系统</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="num-badge">
+          <span class="num">02</span>
+          <span class="num-line"></span>
+        </div>
+        <div class="book-visual">
+          <div class="book-spine">
+            <span class="book-page-edges"></span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="book-name">《鸟哥的Linux私房菜·服务器架设篇》</div>
+          <div class="book-en">Vbird's Linux — Server Administration</div>
+          <div class="book-summary">进阶篇聚焦网络服务、邮件、Web服务器配置，是运维人的第一本实战手册</div>
+          <div class="book-tags">
+            <span class="book-tag">进阶</span>
+            <span class="book-tag">运维</span>
+            <span class="book-tag">实战</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card accent">
+        <div class="num-badge">
+          <span class="num">03</span>
+          <span class="num-line"></span>
+        </div>
+        <div class="book-visual">
+          <div class="book-spine">
+            <span class="book-page-edges"></span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="book-name">《Programming Perl》</div>
+          <div class="book-en">By Larry Wall et al. — 3rd Ed.</div>
+          <div class="book-summary">被誉为Perl程序员圣经，由Larry Wall亲自参与，深刻影响了CGI时代的Web开发</div>
+          <div class="book-tags">
+            <span class="book-tag">脚本</span>
+            <span class="book-tag">经典</span>
+            <span class="book-tag">CGI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card accent">
+        <div class="num-badge">
+          <span class="num">04</span>
+          <span class="num-line"></span>
+        </div>
+        <div class="book-visual">
+          <div class="book-spine">
+            <span class="book-page-edges"></span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="book-name">《The Linux Command Line》</div>
+          <div class="book-en">By William Shotts</div>
+          <div class="book-summary">以命令行为核心的系统学习，覆盖Shell、脚本、常用工具，至今仍是必读</div>
+          <div class="book-tags">
+            <span class="book-tag">命令行</span>
+            <span class="book-tag">Shell</span>
+            <span class="book-tag">必读</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="progress-arrow progress-arrow-v up" style="top:-11px;">↓</span>
+      <span class="progress-arrow progress-arrow-v down" style="bottom:-11px;">↑</span>
+    </div>
+
+    <div class="narrative">
+      <div class="narrative-icon">"</div>
+      <div class="narrative-text">
+        这一时期的书籍大多围绕 <span class="hl">Linux系统</span> 和 <span class="hl">脚本语言</span> 展开，风格朴实、注重实操。中文读者尤其受益于 <span class="hl-accent">本土作者</span> 写出的贴近国内使用场景的入门书，它们直接推动了 <span class="hl">中文互联网第一批后端工程师</span> 的成长。
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,631 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #FF7043;
+  --neutral: #37474F;
+  --light-blue: #E3F2FD;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  color: var(--neutral);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #F5F9FE 0%, #FFFFFF 42%, #E8F4FD 100%);
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image:
+    linear-gradient(var(--primary) 1px, transparent 1px),
+    linear-gradient(90deg, var(--primary) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.bg-circle-1 {
+  position: absolute;
+  top: -140px;
+  right: -140px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,150,243,0.13) 0%, transparent 70%);
+}
+
+.bg-circle-2 {
+  position: absolute;
+  bottom: -160px;
+  left: -120px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,112,67,0.09) 0%, transparent 70%);
+}
+
+.bg-dots {
+  position: absolute;
+  top: 110px;
+  right: 100px;
+  width: 180px;
+  height: 180px;
+  background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+  opacity: 0.14;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(33,150,243,0.15);
+}
+
+.brand-tag {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.brand-text {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--primary);
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--neutral);
+  letter-spacing: 1.5px;
+}
+
+.top-line {
+  width: 60px;
+  height: 2px;
+  background: var(--primary);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  padding: 24px 0 20px;
+}
+
+.book-stack {
+  position: relative;
+  width: 160px;
+  height: 170px;
+  flex-shrink: 0;
+}
+
+.book {
+  position: absolute;
+  border-radius: 4px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.09);
+}
+
+.book::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(0,0,0,0.1);
+}
+
+.book-1 {
+  bottom: 0;
+  left: 25px;
+  width: 88px;
+  height: 135px;
+  background: var(--primary);
+  transform: rotate(-7deg);
+}
+
+.book-1::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  width: 48px;
+  height: 3px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 1px;
+}
+
+.book-2 {
+  bottom: 8px;
+  left: 58px;
+  width: 80px;
+  height: 122px;
+  background: var(--accent);
+  transform: rotate(4deg);
+}
+
+.book-2::after {
+  content: '';
+  position: absolute;
+  top: 22px;
+  left: 20px;
+  width: 42px;
+  height: 3px;
+  background: rgba(255,255,255,0.45);
+  border-radius: 1px;
+}
+
+.book-3 {
+  bottom: 14px;
+  left: 92px;
+  width: 74px;
+  height: 108px;
+  background: var(--neutral);
+  transform: rotate(11deg);
+}
+
+.book-3::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  width: 38px;
+  height: 2px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 1px;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-eyebrow-bar {
+  width: 42px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-size: 92px;
+  font-weight: 900;
+  color: var(--neutral);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 18px;
+}
+
+.hero-title .accent-char {
+  color: var(--primary);
+}
+
+.hero-subtitle {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--neutral);
+  opacity: 0.72;
+  letter-spacing: 1.5px;
+  line-height: 1.6;
+  max-width: 720px;
+}
+
+.timeline-deco {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 6px 0 16px;
+}
+
+.tl-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tl-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.tl-dot.accent { background: var(--accent); }
+.tl-dot.neutral { background: var(--neutral); opacity: 0.35; }
+
+.tl-line {
+  width: 68px;
+  height: 2px;
+  background: rgba(33,150,243,0.25);
+}
+
+.tl-line.accent { background: rgba(255,112,67,0.4); }
+
+.tl-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  opacity: 0.7;
+}
+
+.tl-label.accent { color: var(--accent); opacity: 0.85; }
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 22px;
+  flex: 1;
+}
+
+.col-card {
+  position: relative;
+  background: var(--white);
+  border: 1px solid rgba(33,150,243,0.12);
+  border-radius: 14px;
+  padding: 26px 26px;
+  box-shadow: 0 4px 20px rgba(33,150,243,0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary);
+}
+
+.col-card.accent::before { background: var(--accent); }
+.col-card.neutral::before { background: var(--neutral); }
+
+.col-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: var(--light-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.col-card.accent .col-icon { background: rgba(255,112,67,0.1); }
+.col-card.neutral .col-icon { background: rgba(55,71,79,0.08); }
+
+.icon-book {
+  width: 28px;
+  height: 22px;
+  border: 2px solid var(--primary);
+  border-radius: 2px;
+  position: relative;
+}
+
+.icon-book::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--primary);
+  transform: translateX(-1px);
+}
+
+.icon-community {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  position: relative;
+}
+
+.icon-community::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 10px;
+  border-radius: 10px 10px 0 0;
+  border: 2px solid var(--accent);
+  border-bottom: none;
+}
+
+.icon-info {
+  width: 28px;
+  height: 22px;
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.icon-info span {
+  width: 5px;
+  border-radius: 1px;
+  background: var(--neutral);
+}
+
+.icon-info span:nth-child(1) { height: 9px; }
+.icon-info span:nth-child(2) { height: 15px; }
+.icon-info span:nth-child(3) { height: 22px; }
+
+.col-num {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  opacity: 0.28;
+  letter-spacing: 2px;
+}
+
+.col-card.accent .col-num { color: var(--accent); }
+.col-card.neutral .col-num { color: var(--neutral); }
+
+.col-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--neutral);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  line-height: 1.35;
+}
+
+.col-desc {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--neutral);
+  opacity: 0.72;
+  line-height: 1.75;
+  letter-spacing: 0.3px;
+}
+
+.col-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.col-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  padding: 4px 10px;
+  background: var(--light-blue);
+  border-radius: 4px;
+}
+
+.col-card.accent .col-tag { color: var(--accent); background: rgba(255,112,67,0.1); }
+.col-card.neutral .col-tag { color: var(--neutral); background: rgba(55,71,79,0.06); }
+
+.col-tag-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(33,150,243,0.15);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(33,150,243,0.12);
+}
+
+.footer-line {
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.footer-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--neutral);
+  letter-spacing: 1.5px;
+}
+
+.footer-text .highlight {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.footer-dots {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.footer-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.2;
+}
+
+.footer-dots span:nth-child(2) { opacity: 0.35; }
+.footer-dots span:nth-child(3) { opacity: 0.5; }
+.footer-dots span:nth-child(4) { opacity: 0.7; }
+.footer-dots span:nth-child(5) { background: var(--accent); opacity: 1; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-circle-1"></div>
+    <div class="bg-circle-2"></div>
+    <div class="bg-dots"></div>
+  </div>
+  <div id="ct">
+
+    <div class="top-bar">
+      <div class="brand-tag">
+        <span class="brand-dot"></span>
+        <span class="brand-text"><span>开源阅读 · 成长地图</span></span>
+      </div>
+      <div class="top-right">
+        <span class="top-line"></span>
+        <span>第一季 / 2025</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="book-stack">
+        <div class="book book-1"></div>
+        <div class="book book-2"></div>
+        <div class="book book-3"></div>
+      </div>
+      <div class="hero-text">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-bar"></span>
+          <span><span>开源阅读 · 历史脉络</span></span>
+        </div>
+        <h1 class="hero-title">开源<span class="accent-char">之书</span>记录</h1>
+        <p class="hero-subtitle">一部按历史脉络梳理的开源阅读指南</p>
+      </div>
+    </div>
+
+    <div class="timeline-deco">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <span class="tl-label"><span>1991</span></span>
+      </div>
+      <span class="tl-line"></span>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <span class="tl-label"><span>2000</span></span>
+      </div>
+      <span class="tl-line"></span>
+      <div class="tl-item">
+        <span class="tl-dot accent"></span>
+        <span class="tl-label accent"><span>2008</span></span>
+      </div>
+      <span class="tl-line accent"></span>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <span class="tl-label"><span>2015</span></span>
+      </div>
+      <span class="tl-line"></span>
+      <div class="tl-item">
+        <span class="tl-dot neutral"></span>
+        <span class="tl-label"><span>2024</span></span>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="col-card">
+        <span class="col-num"><span>01</span></span>
+        <div class="col-icon"><span class="icon-book"></span></div>
+        <h3 class="col-title"><span>开源布道 · 阅读分享</span></h3>
+        <p class="col-desc"><span>以阅读为入口，串联开源文化从萌芽到爆发的完整时间线。从一份手册到一套方法论，书籍是开源运动最沉默也最持久的布道者。</span></p>
+        <div class="col-footer">
+          <span class="col-tag"><span>阅读 · 时间线</span></span>
+          <span class="col-tag-line"></span>
+        </div>
+      </div>
+      <div class="col-card accent">
+        <span class="col-num"><span>02</span></span>
+        <div class="col-icon"><span class="icon-community"></span></div>
+        <h3 class="col-title"><span>适兕 · 开源之道</span></h3>
+        <p class="col-desc"><span>从社区视角出发，挑选真正影响过一代开发者的经典书籍。每一本都曾改变某个团队的决策路径，也塑造了一代工程师的技术信仰。</span></p>
+        <div class="col-footer">
+          <span class="col-tag"><span>社区 · 经典</span></span>
+          <span class="col-tag-line"></span>
+        </div>
+      </div>
+      <div class="col-card neutral">
+        <span class="col-num"><span>03</span></span>
+        <div class="col-icon"><span class="icon-info"><span></span><span></span><span></span></span></div>
+        <h3 class="col-title"><span>信息图式呈现</span></h3>
+        <p class="col-desc"><span>用时间轴、分层卡片、数据面板组合让书单变得可视化。把静态的书目目录，转化为一张可浏览、可回溯、可对话的视觉地图。</span></p>
+        <div class="col-footer">
+          <span class="col-tag"><span>可视化 · 导航</span></span>
+          <span class="col-tag-line"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-line"></span>
+      <p class="footer-text"><span>这是一份<span class="highlight">可阅读</span>、<span class="highlight">可追溯</span>的开源成长地图</span></p>
+      <div class="footer-dots">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

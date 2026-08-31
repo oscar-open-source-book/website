@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第三章 · 现代与未来</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --primary-dark:#1565C0;
+  --primary-light:#90CAF9;
+  --accent:#FF7043;
+  --accent-light:#FFAB91;
+  --neutral:#37474F;
+  --neutral-light:#546E7A;
+  --bg:#F5F8FB;
+  --bg-card:#FFFFFF;
+  --divider:#E0E6ED;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  background:var(--bg);
+  color:var(--neutral);
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;margin:0 auto;
+  background:var(--bg);
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,#F0F6FC 0%,#E8F2FB 40%,#FFF8F4 100%);
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:50px 70px;
+  display:flex;flex-direction:column;
+}
+
+/* ===== Top row ===== */
+.top-row{
+  display:flex;align-items:flex-start;gap:36px;
+  margin-bottom:10px;
+}
+
+.chapter-tag{
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:900;
+  font-size:40px;
+  color:var(--primary);
+  letter-spacing:2px;
+  line-height:1.1;
+  display:flex;flex-direction:column;gap:6px;
+  flex-shrink:0;
+}
+
+.chapter-tag .tag-en{
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  color:var(--primary-light);
+  letter-spacing:4px;
+  text-transform:uppercase;
+}
+
+.big-num{
+  font-family:'Inter',sans-serif;
+  font-weight:900;
+  font-size:220px;
+  line-height:0.85;
+  color:var(--primary);
+  background:linear-gradient(135deg,#2196F3 0%,#64B5F6 60%,#FF7043 130%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-left:10px;
+  flex-shrink:0;
+  position:relative;
+}
+
+.big-num::after{
+  content:'';
+  position:absolute;
+  right:-18px;top:14px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px rgba(255,112,67,0.6);
+}
+
+.title-area{
+  flex:1;
+  display:flex;flex-direction:column;gap:12px;
+  padding-top:8px;
+}
+
+.main-title{
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:900;
+  font-size:48px;
+  color:var(--neutral);
+  letter-spacing:1px;
+}
+
+.main-title .dot{
+  color:var(--accent);
+  margin:0 4px;
+}
+
+.subtitle{
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:400;
+  font-size:18px;
+  color:var(--neutral-light);
+  line-height:1.5;
+  letter-spacing:0.5px;
+}
+
+/* ===== Timeline decoration ===== */
+.timeline-wrap{
+  margin:20px 0 22px 0;
+  position:relative;
+  height:60px;
+}
+
+.timeline-bar{
+  position:absolute;
+  left:0;top:28px;
+  width:100%;height:4px;
+  background:linear-gradient(90deg,#90CAF9 0%,#2196F3 30%,#2196F3 70%,#FF7043 100%);
+  border-radius:2px;
+}
+
+.timeline-bar::before{
+  content:'';
+  position:absolute;right:-2px;top:-5px;
+  width:0;height:0;
+  border-left:12px solid var(--accent);
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+}
+
+.tl-node{
+  position:absolute;top:20px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--bg);
+  border:3px solid var(--primary);
+  transform:translateX(-50%);
+}
+
+.tl-node.accent{border-color:var(--accent);}
+
+.tl-node .tl-label{
+  position:absolute;top:22px;left:50%;
+  transform:translateX(-50%);
+  font-family:'Inter',sans-serif;
+  font-size:11px;font-weight:600;
+  color:var(--primary);
+  white-space:nowrap;
+  letter-spacing:0.5px;
+}
+
+.tl-node.accent .tl-label{color:var(--accent);}
+
+.tl-node .tl-icon{
+  position:absolute;bottom:24px;left:50%;
+  transform:translateX(-50%);
+  font-size:18px;
+  line-height:1;
+}
+
+.tl-past{left:8%;}
+.tl-mid{left:32%;}
+.tl-now{left:58%;}
+.tl-future{left:82%;}
+
+/* ===== Three content blocks ===== */
+.blocks{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:22px;
+  flex:1;
+  margin-top:6px;
+}
+
+.block{
+  background:var(--bg-card);
+  border-radius:14px;
+  padding:24px 26px 22px 26px;
+  position:relative;
+  box-shadow:0 4px 20px rgba(33,150,243,0.06);
+  border-top:4px solid var(--primary);
+  display:flex;flex-direction:column;gap:10px;
+  overflow:hidden;
+}
+
+.block:nth-child(2){border-top-color:var(--accent);}
+.block:nth-child(3){border-top-color:var(--primary-dark);}
+
+.block-num{
+  position:absolute;
+  right:16px;top:10px;
+  font-family:'Inter',sans-serif;
+  font-weight:900;
+  font-size:56px;
+  color:#E8F2FB;
+  line-height:1;
+  letter-spacing:-2px;
+}
+
+.block-icon{
+  font-size:24px;
+  line-height:1;
+}
+
+.block-title{
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:700;
+  font-size:20px;
+  color:var(--neutral);
+  letter-spacing:0.5px;
+  padding-left:14px;
+  border-left:3px solid var(--primary);
+  line-height:1.3;
+}
+
+.block:nth-child(2) .block-title{border-left-color:var(--accent);}
+.block:nth-child(3) .block-title{border-left-color:var(--primary-dark);}
+
+.block-tags{
+  display:flex;flex-wrap:wrap;gap:6px;
+}
+
+.tag{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  font-size:11px;font-weight:500;
+  padding:3px 10px;border-radius:10px;
+  background:#E3F2FD;color:var(--primary-dark);
+  letter-spacing:0.3px;
+}
+
+.tag.warm{background:#FBE9E3;color:#BF360C;}
+.tag.deep{background:#E0EAF2;color:var(--primary-dark);}
+
+.block-desc{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:14px;
+  color:var(--neutral-light);
+  line-height:1.75;
+  letter-spacing:0.2px;
+  margin-top:2px;
+}
+
+.block-desc strong{
+  color:var(--neutral);
+  font-weight:700;
+}
+
+.block-hi{
+  margin-top:auto;
+  padding-top:12px;
+  border-top:1px dashed var(--divider);
+  display:flex;align-items:center;gap:8px;
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:12px;font-weight:500;
+  color:var(--primary);
+}
+
+.block:nth-child(2) .block-hi{color:var(--accent);}
+.block:nth-child(3) .block-hi{color:var(--primary-dark);}
+
+.block-hi .hi-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:currentColor;
+  flex-shrink:0;
+}
+
+/* ===== Footer ===== */
+.footer{
+  margin-top:16px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Inter',sans-serif;
+  font-size:11px;color:#90A4AE;
+  letter-spacing:2px;text-transform:uppercase;
+}
+
+.footer-left{display:flex;align-items:center;gap:10px;}
+.footer-left .seg{
+  width:40px;height:2px;background:var(--primary-light);border-radius:1px;
+}
+.footer-left .seg.s2{background:var(--accent-light);width:24px;}
+
+.footer-right{font-family:'Noto Sans SC',sans-serif;font-size:12px;color:var(--neutral-light);letter-spacing:1px;text-transform:none;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Top: chapter tag + big number + title -->
+    <div class="top-row">
+      <div class="chapter-tag">
+        <span class="tag-en">CHAPTER</span>
+        <span>第三章</span>
+      </div>
+      <div class="big-num">03</div>
+      <div class="title-area">
+        <div class="main-title">第三章 <span class="dot">·</span> 现代与未来</div>
+        <div class="subtitle">2015 至今：AI、Rust 与开源治理的新篇章</div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-wrap">
+      <div class="timeline-bar"></div>
+      <div class="tl-node tl-past">
+        <span class="tl-icon">⚙</span>
+        <span class="tl-label">2010s 起源</span>
+      </div>
+      <div class="tl-node tl-mid">
+        <span class="tl-icon">🤖</span>
+        <span class="tl-label">2015 · 转折</span>
+      </div>
+      <div class="tl-node tl-now">
+        <span class="tl-icon">⚙</span>
+        <span class="tl-label">Rust 崛起</span>
+      </div>
+      <div class="tl-node accent tl-future">
+        <span class="tl-icon">🚀</span>
+        <span class="tl-label">2025 · 当下</span>
+      </div>
+    </div>
+
+    <!-- Three blocks -->
+    <div class="blocks">
+
+      <div class="block">
+        <span class="block-num">01</span>
+        <span class="block-icon">🌐</span>
+        <div class="block-title">时代背景</div>
+        <div class="block-tags">
+          <span class="tag">大模型</span>
+          <span class="tag warm">Rust 崛起</span>
+          <span class="tag">许可证之争</span>
+        </div>
+        <div class="block-desc">
+          大模型浪潮席卷行业，<strong>Rust 语言</strong>在系统编程领域加速崛起；<strong>SSPL</strong>等新型许可证的争议让"开源治理"议题再度登上热搜，开源与商业化的边界持续被重新讨论。
+        </div>
+        <div class="block-hi">
+          <span class="hi-dot"></span>
+          开源进入高速迭代、充满争议的时代
+        </div>
+      </div>
+
+      <div class="block">
+        <span class="block-num">02</span>
+        <span class="block-icon">📚</span>
+        <div class="block-title">代表性出版</div>
+        <div class="block-tags">
+          <span class="tag warm">AI 工程</span>
+          <span class="tag warm">新编程语言</span>
+          <span class="tag">安全与合规</span>
+        </div>
+        <div class="block-desc">
+          <strong>AI 工程实践</strong>、<strong>新语言探索</strong>与<strong>安全合规</strong>方向成为新书密集产出领域，技术出版版图大幅扩容，读者可在更短时间内获取前沿工具与方法论。
+        </div>
+        <div class="block-hi">
+          <span class="hi-dot"></span>
+          AI 与新型语言催生大量新读物
+        </div>
+      </div>
+
+      <div class="block">
+        <span class="block-num">03</span>
+        <span class="block-icon">🔗</span>
+        <div class="block-title">阅读特征</div>
+        <div class="block-tags">
+          <span class="tag deep">多元化获取</span>
+          <span class="tag deep">书与社区</span>
+          <span class="tag deep">在线文档</span>
+        </div>
+        <div class="block-desc">
+          知识获取方式趋于<strong>多元化</strong>：书籍与<strong>在线文档</strong>、<strong>社区讨论</strong>深度融合，读者在 GitHub、论坛与官方文档之间快速切换，形成"读—讨论—实践"的闭环。
+        </div>
+        <div class="block-hi">
+          <span class="hi-dot"></span>
+          "什么是开源"重新成为讨论焦点
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-left">
+        <span class="seg"></span>
+        <span>SECTION 03</span>
+        <span class="seg s2"></span>
+        <span>MODERN &amp; FUTURE</span>
+      </div>
+      <div class="footer-right">从过去 · 延伸至当下 · 通向未来</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

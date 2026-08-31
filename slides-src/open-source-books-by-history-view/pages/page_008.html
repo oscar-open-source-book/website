@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>现代书单 · AI与安全</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --primary-dark:#1976D2;
+  --primary-light:#BBDEFB;
+  --primary-bg:#E3F2FD;
+  --accent:#FF7043;
+  --accent-light:#FFCCBC;
+  --text-main:#37474F;
+  --text-light:#607D8B;
+  --bg:#F5F8FC;
+  --card:#FFFFFF;
+  --line:#E0E8EF;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Noto Sans SC','Inter',sans-serif;
+  font-size:16px;
+  color:var(--text-main);
+  line-height:1.55;
+  background:var(--bg);
+}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;box-sizing:border-box;}
+
+/* 背景装饰 */
+#bg{
+  background:linear-gradient(160deg,#F5F8FC 0%,#EAF2FB 55%,#E0ECF8 100%);
+}
+#bg::before{
+  content:'';
+  position:absolute;
+  top:-160px;right:-160px;
+  width:520px;height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(33,150,243,0.10) 0%,rgba(33,150,243,0) 70%);
+}
+#bg::after{
+  content:'';
+  position:absolute;
+  bottom:-180px;left:-140px;
+  width:460px;height:460px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,112,67,0.10) 0%,rgba(255,112,67,0) 70%);
+}
+
+/* 顶部标题区 */
+.header{
+  position:relative;
+  padding:18px 30px 20px 30px;
+  margin-bottom:18px;
+  background:linear-gradient(135deg,#1E88E5 0%,#1565C0 100%);
+  border-radius:14px;
+  color:#fff;
+  box-shadow:0 8px 24px rgba(33,150,243,0.25);
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
+.header-icon{
+  flex-shrink:0;
+  width:78px;height:78px;
+  background:rgba(255,255,255,0.18);
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;
+}
+.header-text{flex:1;}
+.header-text h1{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  font-weight:800;
+  font-size:30px;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+.header-text h1 .dot{color:var(--accent-light);}
+.header-text .lead{
+  font-size:14px;
+  line-height:1.7;
+  color:rgba(255,255,255,0.92);
+  max-width:1080px;
+}
+.header-meta{
+  flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;
+  padding-left:22px;
+  border-left:2px solid rgba(255,255,255,0.28);
+}
+.header-meta .pg-num{
+  font-family:'Inter',sans-serif;
+  font-weight:800;
+  font-size:38px;
+  line-height:1;
+}
+.header-meta .pg-label{
+  font-size:11px;
+  letter-spacing:2px;
+  margin-top:4px;
+  opacity:0.85;
+}
+
+/* 象限网格 */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:16px;
+  height:520px;
+  margin-bottom:16px;
+}
+
+.quad{
+  position:relative;
+  background:var(--card);
+  border-radius:14px;
+  padding:20px 22px;
+  box-shadow:0 4px 14px rgba(55,71,79,0.07);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border:1px solid var(--line);
+}
+.quad::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:5px;
+  background:var(--primary);
+}
+.quad.q-tr::before{background:var(--primary);}
+.quad.q-br::before{background:var(--primary-dark);}
+.quad.q-bl::before{background:var(--primary-dark);}
+
+.q-corner{
+  position:absolute;
+  top:14px;right:16px;
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  color:var(--primary);
+  letter-spacing:2px;
+  opacity:0.6;
+}
+.q-icon{
+  width:44px;height:44px;
+  border-radius:12px;
+  background:var(--primary-bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  margin-bottom:10px;
+}
+.quad.q-tr .q-icon{background:#E3F2FD;}
+.quad.q-bl .q-icon{background:#E8EAF6;}
+.quad.q-br .q-icon{background:#FCE4EC;}
+
+.q-title{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  font-weight:700;
+  font-size:19px;
+  color:var(--text-main);
+  margin-bottom:6px;
+}
+.q-sub{
+  font-size:13px;
+  color:var(--text-light);
+  line-height:1.6;
+  margin-bottom:12px;
+  flex:1;
+}
+
+.q-meta-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.q-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  background:var(--primary-bg);
+  color:var(--primary-dark);
+  border:1px solid var(--primary-light);
+}
+.q-tag .tag-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+}
+
+/* 进度条 */
+.q-diff{
+  display:flex;flex-direction:column;
+  gap:4px;
+  min-width:170px;
+}
+.q-diff-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--text-light);
+  letter-spacing:0.5px;
+}
+.q-diff-label .lvl{color:var(--primary-dark);font-weight:700;}
+.q-bar{
+  width:100%;
+  height:8px;
+  background:#ECEFF1;
+  border-radius:4px;
+  overflow:hidden;
+  position:relative;
+}
+.q-bar .fill{
+  height:100%;
+  border-radius:4px;
+  background:linear-gradient(90deg,var(--primary) 0%,var(--primary-dark) 100%);
+}
+.q-bar.accent .fill{
+  background:linear-gradient(90deg,var(--accent) 0%,#F4511E 100%);
+}
+
+/* 中央装饰十字 */
+.cross-mark{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:34px;height:34px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow:0 2px 8px rgba(33,150,243,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:var(--primary);
+  z-index:2;
+  pointer-events:none;
+}
+
+/* 底部收束 */
+.footer{
+  background:linear-gradient(90deg,#1E88E5 0%,#1565C0 60%,#0D47A1 100%);
+  border-radius:12px;
+  padding:14px 28px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  font-size:15px;
+  font-weight:500;
+  letter-spacing:0.5px;
+  box-shadow:0 4px 14px rgba(21,101,192,0.25);
+}
+.footer .accent-bar{
+  width:4px;height:20px;
+  background:var(--accent);
+  border-radius:2px;
+}
+.footer .star{color:var(--accent-light);font-size:16px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-icon">📚</div>
+      <div class="header-text">
+        <h1>现代书单<span class="dot"> · </span>AI 与安全</h1>
+        <div class="lead">现代开源书籍呈现两个明显趋势——一是与 AI、大数据等前沿技术紧密结合，二是回归底层、重视系统理解；无论是 AI 工程还是语言入门，实战与原理并重已成为新范式。</div>
+      </div>
+      <div class="header-meta">
+        <div class="pg-num">08</div>
+        <div class="pg-label">PAGE / 12</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="cross-mark">⚙</div>
+
+      <!-- 左上 -->
+      <div class="quad q-tr">
+        <div class="q-corner">Q1 · MONITORING</div>
+        <div class="q-icon">📊</div>
+        <div class="q-title">Prometheus 监控实践</div>
+        <div class="q-sub">云原生监控的事实标准，PromQL 与告警规则成为运维必备技能。</div>
+        <div class="q-meta-row">
+          <span class="q-tag"><span class="tag-dot"></span>关键词：PromQL</span>
+          <div class="q-diff">
+            <div class="q-diff-label"><span>难度</span><span class="lvl">★★★★☆ 中高</span></div>
+            <div class="q-bar"><div class="fill" style="width:68%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右上 -->
+      <div class="quad q-tr">
+        <div class="q-corner">Q2 · LANGUAGE</div>
+        <div class="q-icon">🦀</div>
+        <div class="q-title">Rust 程序设计语言</div>
+        <div class="q-sub">Rust 官方出品的免费电子书，系统讲解所有权、生命周期等核心概念。</div>
+        <div class="q-meta-row">
+          <span class="q-tag"><span class="tag-dot"></span>关键词：所有权</span>
+          <div class="q-diff">
+            <div class="q-diff-label"><span>难度</span><span class="lvl">★★★★★ 高</span></div>
+            <div class="q-bar accent"><div class="fill" style="width:82%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 左下 -->
+      <div class="quad q-bl">
+        <div class="q-corner">Q3 · AI ENGINEERING</div>
+        <div class="q-icon">🧠</div>
+        <div class="q-title">深度学习框架实战</div>
+        <div class="q-sub">围绕 TensorFlow、PyTorch 的工程实践，把 AI 从论文带入生产环境。</div>
+        <div class="q-meta-row">
+          <span class="q-tag"><span class="tag-dot"></span>关键词：PyTorch</span>
+          <div class="q-diff">
+            <div class="q-diff-label"><span>难度</span><span class="lvl">★★★★☆ 中高</span></div>
+            <div class="q-bar"><div class="fill" style="width:72%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右下 -->
+      <div class="quad q-br">
+        <div class="q-corner">Q4 · SYSTEM</div>
+        <div class="q-icon">🖥️</div>
+        <div class="q-title">Linux 系统编程</div>
+        <div class="q-sub">从系统调用底层切入，适合希望理解操作系统内核的进阶读者。</div>
+        <div class="q-meta-row">
+          <span class="q-tag"><span class="tag-dot"></span>关键词：系统调用</span>
+          <div class="q-diff">
+            <div class="q-diff-label"><span>难度</span><span class="lvl">★★★★★ 高</span></div>
+            <div class="q-bar accent"><div class="fill" style="width:88%;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="accent-bar"></span>
+      <span class="star">✦</span>
+      <span>AI 工程 × 系统底层 · 实战与原理并重的现代阅读地图</span>
+      <span class="star">✦</span>
+      <span class="accent-bar"></span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

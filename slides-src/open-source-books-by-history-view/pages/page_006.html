@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>发展书单 · 工程与架构</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+:root{
+  --primary:#2196F3;
+  --primary-light:#E3F2FD;
+  --primary-dark:#1565C0;
+  --accent:#FF7043;
+  --accent-light:#FFF3E0;
+  --text-main:#37474F;
+  --text-light:#607D8B;
+  --bg-page:#F5F9FE;
+  --card-bg:#FFFFFF;
+  --shadow:0 8px 28px rgba(33,150,243,0.10), 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-hover:0 14px 40px rgba(33,150,243,0.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Noto Sans SC','Inter',sans-serif;
+  font-size:16px;
+  color:var(--text-main);
+  background:var(--bg-page);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 60px 36px 60px;box-sizing:border-box;}
+
+/* Background decoration */
+#bg{
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(33,150,243,0.10), transparent 60%),
+    radial-gradient(900px 400px at -5% 110%, rgba(255,112,67,0.08), transparent 60%),
+    linear-gradient(180deg,#F5F9FE 0%, #EEF4FB 100%);
+}
+#bg::before{
+  content:"";
+  position:absolute;top:-80px;right:-80px;
+  width:280px;height:280px;border-radius:50%;
+  background:rgba(33,150,243,0.06);
+  border:1px dashed rgba(33,150,243,0.15);
+}
+#bg::after{
+  content:"";
+  position:absolute;bottom:-100px;left:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:rgba(255,112,67,0.05);
+  border:1px dashed rgba(255,112,67,0.12);
+}
+
+/* Header */
+.header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:18px;
+}
+.header-left{max-width:1180px;}
+.title-bar{
+  display:flex;align-items:center;gap:14px;margin-bottom:8px;
+}
+.title-bar .dot{
+  width:10px;height:10px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 4px rgba(255,112,67,0.15);
+}
+.title-bar .tag{
+  font-size:12px;font-weight:600;color:var(--primary);
+  background:var(--primary-light);padding:4px 12px;border-radius:20px;
+  letter-spacing:0.5px;
+}
+h1{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  font-size:34px;font-weight:800;
+  color:var(--text-main);letter-spacing:1px;line-height:1.2;
+}
+h1 .accent{color:var(--primary);}
+.subtitle{
+  font-size:14.5px;line-height:1.75;color:var(--text-light);
+  font-weight:400;max-width:1120px;margin-top:6px;
+}
+.subtitle .hl{color:var(--primary-dark);font-weight:600;}
+.subtitle .hl2{color:var(--accent);font-weight:600;}
+
+.header-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  padding-top:4px;
+}
+.stage-badge{
+  display:flex;align-items:center;gap:8px;
+  background:var(--card-bg);border-radius:24px;
+  padding:8px 16px;box-shadow:var(--shadow);
+  font-size:12px;color:var(--text-light);font-weight:500;
+}
+.stage-badge .num{
+  font-family:'Inter',sans-serif;font-weight:800;color:var(--primary);
+  font-size:16px;
+}
+.progress-mini{
+  display:flex;gap:5px;
+}
+.progress-mini span{
+  width:20px;height:5px;border-radius:3px;background:#E0E8F0;
+}
+.progress-mini span.active{background:var(--primary);}
+.progress-mini span.accent{background:var(--accent);}
+
+/* Cards area */
+.cards-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:22px;
+  margin-top:18px;
+}
+.book-card{
+  background:var(--card-bg);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:22px 20px 20px 20px;
+  display:flex;flex-direction:column;
+  position:relative;
+  overflow:hidden;
+  min-height:470px;
+  transition:transform 0.2s;
+}
+.book-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+}
+.card-index{
+  position:absolute;top:16px;right:18px;
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:36px;color:rgba(33,150,243,0.10);
+  line-height:1;
+}
+.card-icon{
+  width:54px;height:54px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;
+  margin-bottom:14px;
+  background:var(--primary-light);
+  border:1px solid rgba(33,150,243,0.15);
+}
+.card-num-label{
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
+  color:var(--accent);letter-spacing:1.5px;margin-bottom:6px;
+}
+.book-title{
+  font-size:18px;font-weight:700;color:var(--text-main);
+  line-height:1.35;margin-bottom:12px;
+  font-family:'Noto Sans SC',sans-serif;
+}
+.book-title .cn{display:block;}
+.book-title .en{
+  display:block;font-family:'Inter',sans-serif;
+  font-size:12px;font-weight:500;color:var(--text-light);
+  margin-top:4px;letter-spacing:0.3px;
+}
+.tag-cloud{
+  display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;
+}
+.tag{
+  font-size:11px;font-weight:500;
+  padding:4px 9px;border-radius:12px;
+  background:var(--primary-light);color:var(--primary-dark);
+  white-space:nowrap;
+}
+.tag.accent{
+  background:var(--accent-light);color:#D84315;
+}
+.tag.gray{
+  background:#ECEFF1;color:#455A64;
+}
+.book-desc{
+  font-size:13px;line-height:1.75;color:var(--text-light);
+  font-weight:400;
+  border-left:3px solid var(--primary);
+  padding:4px 0 4px 12px;
+  margin-bottom:14px;
+}
+.book-meta{
+  margin-top:auto;display:flex;flex-direction:column;gap:8px;
+  padding-top:12px;border-top:1px dashed #E0E8F0;
+}
+.meta-row{
+  display:flex;align-items:center;gap:8px;
+  font-size:11.5px;color:var(--text-light);
+}
+.meta-row .meta-label{
+  font-weight:600;color:var(--primary);
+  font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:0.5px;
+  min-width:42px;
+}
+.meta-row .meta-value{font-weight:500;color:var(--text-main);}
+
+/* Card-specific top bar colors */
+.book-card:nth-child(1)::before{background:linear-gradient(90deg,#2196F3,#42A5F5);}
+.book-card:nth-child(2)::before{background:linear-gradient(90deg,#2196F3,#FF7043);}
+.book-card:nth-child(3)::before{background:linear-gradient(90deg,#1565C0,#2196F3);}
+.book-card:nth-child(4)::before{background:linear-gradient(90deg,#FF7043,#FF8A65);}
+
+/* Evolution chain */
+.chain{
+  margin-top:20px;
+  background:var(--card-bg);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:16px 28px 18px 28px;
+  position:relative;
+}
+.chain-title{
+  display:flex;align-items:center;gap:10px;
+  font-size:12px;font-weight:600;color:var(--text-light);
+  letter-spacing:1px;margin-bottom:12px;
+  font-family:'Inter',sans-serif;
+}
+.chain-title .ico{font-size:16px;}
+.chain-title .line{flex:1;height:1px;background:#E0E8F0;}
+.chain-flow{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:6px;
+}
+.chain-node{
+  display:flex;flex-direction:column;align-items:center;
+  flex:1;gap:6px;
+}
+.node-icon{
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  box-shadow:0 4px 12px rgba(33,150,243,0.18);
+  border:2px solid #fff;
+  background:linear-gradient(135deg,#2196F3,#1565C0);
+  position:relative;
+}
+.node-icon.accent{background:linear-gradient(135deg,#FF7043,#E64A19);}
+.node-icon.dark{background:linear-gradient(135deg,#1565C0,#0D47A1);}
+.node-icon.mix{background:linear-gradient(135deg,#2196F3,#FF7043);}
+.node-icon::after{
+  content:"";position:absolute;inset:-6px;border-radius:50%;
+  border:2px dashed rgba(33,150,243,0.25);
+}
+.node-icon.accent::after{border-color:rgba(255,112,67,0.25);}
+.node-label{
+  font-size:13px;font-weight:700;color:var(--text-main);
+}
+.node-sub{
+  font-size:11px;color:var(--text-light);font-weight:500;
+  font-family:'Inter',sans-serif;letter-spacing:0.3px;
+}
+.chain-arrow{
+  font-size:22px;color:var(--primary);font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+  opacity:0.7;
+}
+
+/* Footer */
+.footer-bar{
+  position:absolute;bottom:14px;left:60px;right:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:#B0BEC5;font-weight:400;
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  letter-spacing:0.5px;
+}
+.footer-bar .left{display:flex;align-items:center;gap:10px;}
+.footer-bar .dot-sm{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+}
+.footer-bar .right{display:flex;align-items:center;gap:10px;}
+
+/* Decorative dots scattered */
+.deco-dot{
+  position:absolute;border-radius:50%;pointer-events:none;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <span class="deco-dot" style="top:80px;left:720px;width:6px;height:6px;background:rgba(33,150,243,0.3);"></span>
+    <span class="deco-dot" style="top:350px;right:30px;width:8px;height:8px;background:rgba(255,112,67,0.2);"></span>
+    <span class="deco-dot" style="bottom:140px;left:20px;width:5px;height:5px;background:rgba(33,150,243,0.25);"></span>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="title-bar">
+          <span class="dot"></span>
+          <span class="tag">STAGE 03 / READING ROADMAP</span>
+        </div>
+        <h1>发展书单 · <span class="accent">工程与架构</span></h1>
+        <p class="subtitle">这一阶段的书籍体现了开源从<span class="hl">单体系统</span>走向<span class="hl">分布式</span>与<span class="hl2">云原生</span>的演进，容器、编排、数据库内核等主题成为阅读热点，开发者也更需要从工具使用者转变为<span class="hl2">架构思考者</span>。</p>
+      </div>
+      <div class="header-right">
+        <div class="stage-badge">
+          <span class="num">03</span>
+          <span>第三阶段</span>
+        </div>
+        <div class="progress-mini">
+          <span class="active"></span>
+          <span class="active"></span>
+          <span class="accent"></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards-row">
+
+      <!-- Card 1 -->
+      <div class="book-card">
+        <span class="card-index">01</span>
+        <div class="card-icon">🐳</div>
+        <span class="card-num-label">BOOK · 01</span>
+        <div class="book-title">
+          <span class="cn">《Docker入门经典》</span>
+          <span class="en">Docker: Up &amp; Running</span>
+        </div>
+        <div class="tag-cloud">
+          <span class="tag accent">容器化</span>
+          <span class="tag">Docker</span>
+          <span class="tag">入门</span>
+          <span class="tag gray">镜像</span>
+          <span class="tag">DevOps</span>
+        </div>
+        <p class="book-desc">容器化技术引爆行业，Docker从概念到落地，这本书为入门者铺平了道路。</p>
+        <div class="book-meta">
+          <div class="meta-row"><span class="meta-label">领域</span><span class="meta-value">容器化 · 虚拟化</span></div>
+          <div class="meta-row"><span class="meta-label">难度</span><span class="meta-value">★★☆☆☆ 入门</span></div>
+          <div class="meta-row"><span class="meta-label">关键词</span><span class="meta-value">轻量隔离 / 镜像编排</span></div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="book-card">
+        <span class="card-index">02</span>
+        <div class="card-icon" style="background:var(--accent-light);border-color:rgba(255,112,67,0.2);">☸️</div>
+        <span class="card-num-label">BOOK · 02</span>
+        <div class="book-title">
+          <span class="cn">《Kubernetes权威指南》</span>
+          <span class="en">Kubernetes: The Definitive Guide</span>
+        </div>
+        <div class="tag-cloud">
+          <span class="tag accent">云原生</span>
+          <span class="tag">编排</span>
+          <span class="tag">集群管理</span>
+          <span class="tag">微服务</span>
+        </div>
+        <p class="book-desc">云原生时代的编排标准，书中系统讲解了集群管理与微服务部署。</p>
+        <div class="book-meta">
+          <div class="meta-row"><span class="meta-label">领域</span><span class="meta-value">云原生 · 编排</span></div>
+          <div class="meta-row"><span class="meta-label">难度</span><span class="meta-value">★★★★☆ 进阶</span></div>
+          <div class="meta-row"><span class="meta-label">关键词</span><span class="meta-value">Pod / Service / 滚动更新</span></div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="book-card">
+        <span class="card-index">03</span>
+        <div class="card-icon" style="background:#E8EAF6;border-color:rgba(21,101,192,0.2);">🗄️</div>
+        <span class="card-num-label">BOOK · 03</span>
+        <div class="book-title">
+          <span class="cn">《MySQL技术内幕》</span>
+          <span class="en">MySQL Technology Insider · InnoDB</span>
+        </div>
+        <div class="tag-cloud">
+          <span class="tag">InnoDB</span>
+          <span class="tag accent">SQL优化</span>
+          <span class="tag">存储引擎</span>
+          <span class="tag gray">数据库内核</span>
+        </div>
+        <p class="book-desc">深入讲解InnoDB存储引擎与SQL优化，是国内MySQL社区的经典译著。</p>
+        <div class="book-meta">
+          <div class="meta-row"><span class="meta-label">领域</span><span class="meta-value">数据库内核 · 优化</span></div>
+          <div class="meta-row"><span class="meta-label">难度</span><span class="meta-value">★★★★☆ 进阶</span></div>
+          <div class="meta-row"><span class="meta-label">关键词</span><span class="meta-value">B+树 / 事务 / 锁机制</span></div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="book-card">
+        <span class="card-index">04</span>
+        <div class="card-icon" style="background:#FFF3E0;border-color:rgba(255,112,67,0.2);">💻</div>
+        <span class="card-num-label">BOOK · 04</span>
+        <div class="book-title">
+          <span class="cn">《The Art of Command Line》</span>
+          <span class="en">命令行艺术 · GitHub 万星社区经典</span>
+        </div>
+        <div class="tag-cloud">
+          <span class="tag">Linux命令行</span>
+          <span class="tag accent">最佳实践</span>
+          <span class="tag gray">社区智慧</span>
+          <span class="tag">高级技巧</span>
+        </div>
+        <p class="book-desc">汇聚社区智慧的一本书，总结Linux命令行的高级技巧与最佳实践。</p>
+        <div class="book-meta">
+          <div class="meta-row"><span class="meta-label">领域</span><span class="meta-value">工程素养 · 工具</span></div>
+          <div class="meta-row"><span class="meta-label">难度</span><span class="meta-value">★★★☆☆ 中阶</span></div>
+          <div class="meta-row"><span class="meta-label">关键词</span><span class="meta-value">Shell / Pipe / 自动化</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="chain">
+      <div class="chain-title">
+        <span class="ico">⛓️</span>
+        <span>技术演进路径 · TECHNOLOGY EVOLUTION PATH</span>
+        <span class="line"></span>
+        <span>容器化 → 编排 → 内核理解 → 工程素养</span>
+      </div>
+      <div class="chain-flow">
+        <div class="chain-node">
+          <div class="node-icon">🐳</div>
+          <span class="node-label">容器化</span>
+          <span class="node-sub">Containerization</span>
+        </div>
+        <span class="chain-arrow">➤</span>
+        <div class="chain-node">
+          <div class="node-icon mix">☸️</div>
+          <span class="node-label">编排</span>
+          <span class="node-sub">Orchestration</span>
+        </div>
+        <span class="chain-arrow">➤</span>
+        <div class="chain-node">
+          <div class="node-icon dark">🗄️</div>
+          <span class="node-label">内核理解</span>
+          <span class="node-sub">Kernel Insight</span>
+        </div>
+        <span class="chain-arrow">➤</span>
+        <div class="chain-node">
+          <div class="node-icon accent">💻</div>
+          <span class="node-label">工程素养</span>
+          <span class="node-sub">Engineering Craft</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span class="left">
+        <span class="dot-sm"></span>
+        <span>OPEN SOURCE READING ROADMAP</span>
+      </span>
+      <span class="right">
+        <span>03 / 05 · 工程与架构</span>
+      </span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
