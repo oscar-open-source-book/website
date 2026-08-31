@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>延伸讨论 - 章节过渡页</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --klein: #002FA7;
+  --bright: #4FC3F7;
+  --dark: #1A1A2E;
+  --dark-deeper: #0D0D1A;
+  --text-main: #E8E8F0;
+  --text-dim: #8892B0;
+  --accent: #7C4DFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto Mono', 'Noto Sans SC', 'PingFang SC', monospace;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--dark);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 900px 600px at 50% 40%, rgba(0,47,167,0.55) 0%, rgba(0,47,167,0.2) 40%, rgba(13,13,26,0.9) 75%, var(--dark-deeper) 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部编号区 */
+.top-zone {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+}
+
+.section-num {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 900;
+  font-size: 200px;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--bright);
+  letter-spacing: -8px;
+  position: relative;
+}
+
+.section-num-glow {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 200px;
+  line-height: 0.9;
+  color: rgba(79,195,247,0.08);
+  -webkit-text-stroke: 0px transparent;
+  letter-spacing: -8px;
+  pointer-events: none;
+}
+
+.top-meta {
+  text-align: right;
+  margin-top: 30px;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+}
+
+.top-meta .line {
+  color: var(--bright);
+  font-size: 13px;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+/* 标题区 */
+.title-zone {
+  text-align: center;
+  margin-top: -30px;
+  position: relative;
+}
+
+.title-zone::before {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--bright), transparent);
+}
+
+.main-title {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 800;
+  font-size: 72px;
+  color: var(--text-main);
+  letter-spacing: 8px;
+  text-shadow: 0 0 30px rgba(79,195,247,0.3);
+}
+
+.main-title .dot {
+  color: var(--bright);
+}
+
+.sub-title {
+  margin-top: 14px;
+  font-size: 16px;
+  color: var(--text-dim);
+  letter-spacing: 6px;
+  font-weight: 400;
+}
+
+.sub-title .hl {
+  color: var(--bright);
+  font-weight: 500;
+}
+
+/* 装饰横线 */
+.deco-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.deco-line .seg {
+  height: 1px;
+  background: var(--bright);
+  opacity: 0.4;
+}
+
+.deco-line .seg.s1 { width: 200px; }
+.deco-line .seg.s2 { width: 80px; }
+.deco-line .seg.s3 { width: 60px; }
+.deco-line .seg.s4 { width: 120px; }
+.deco-line .seg.s5 { width: 250px; }
+
+.deco-line .diamond {
+  width: 6px;
+  height: 6px;
+  background: var(--bright);
+  transform: rotate(45deg);
+}
+
+/* 要点卡片区 */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 22px;
+}
+
+.card {
+  position: relative;
+  border: 1px solid rgba(79,195,247,0.2);
+  background: linear-gradient(135deg, rgba(0,47,167,0.15) 0%, rgba(26,26,46,0.6) 100%);
+  padding: 22px 26px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--bright), var(--klein));
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(79,195,247,0.3), transparent);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.card-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--bright);
+  letter-spacing: -1px;
+}
+
+.card-title {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--text-main);
+  letter-spacing: 2px;
+}
+
+.card-tag {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text-dim);
+  border: 1px solid rgba(79,195,247,0.3);
+  padding: 3px 10px;
+  letter-spacing: 2px;
+  border-radius: 1px;
+}
+
+.card-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.card-text .hl {
+  color: var(--bright);
+  font-weight: 500;
+}
+
+.card-text .kw {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* 数据标签区 */
+.labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 18px;
+}
+
+.label-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border: 1px solid rgba(79,195,247,0.15);
+  background: rgba(0,47,167,0.08);
+  position: relative;
+}
+
+.label-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background: var(--bright);
+}
+
+.label-icon {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--bright);
+  flex-shrink: 0;
+}
+
+.label-content {
+  flex: 1;
+}
+
+.label-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+}
+
+.label-val {
+  font-size: 14px;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.label-val .sep {
+  color: var(--bright);
+  margin: 0 6px;
+}
+
+/* 底部收束语 */
+.footer-zone {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-quote {
+  font-family: 'Inter', 'PingFang SC', sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-align: center;
+  max-width: 1100px;
+  line-height: 1.7;
+  position: relative;
+  padding: 0 40px;
+}
+
+.footer-quote::before,
+.footer-quote::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 1px;
+  background: var(--bright);
+  opacity: 0.5;
+}
+
+.footer-quote::before { left: 0; }
+.footer-quote::after { right: 0; }
+
+.footer-quote .q-mark {
+  color: var(--bright);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* 底部几何装饰 */
+.bottom-deco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.bottom-deco .bx {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--bright);
+  transform: rotate(45deg);
+  opacity: 0.4;
+}
+
+.bottom-deco .bx.f {
+  background: var(--bright);
+  opacity: 1;
+}
+
+.bottom-deco .bs {
+  width: 60px;
+  height: 1px;
+  background: var(--bright);
+  opacity: 0.3;
+}
+
+.bottom-deco .bs.long { width: 120px; opacity: 0.5; }
+
+/* 角部装饰 */
+.corner-tl, .corner-tr, .corner-bl, .corner-br {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  z-index: 2;
+}
+
+.corner-tl { top: 20px; left: 20px; border-top: 1px solid var(--bright); border-left: 1px solid var(--bright); }
+.corner-tr { top: 20px; right: 20px; border-top: 1px solid var(--bright); border-right: 1px solid var(--bright); }
+.corner-bl { bottom: 20px; left: 20px; border-bottom: 1px solid var(--bright); border-left: 1px solid var(--bright); }
+.corner-br { bottom: 20px; right: 20px; border-bottom: 1px solid var(--bright); border-right: 1px solid var(--bright); }
+
+/* 浮动粒子装饰 */
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.particles .p {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--bright);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+/* 左侧竖排文字 */
+.side-text {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--text-dim);
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.side-text .hl { color: var(--bright); }
+
+/* 右侧竖排文字 */
+.side-text-r {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--text-dim);
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.side-text-r .hl { color: var(--bright); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <span class="corner-tl"></span>
+    <span class="corner-tr"></span>
+    <span class="corner-bl"></span>
+    <span class="corner-br"></span>
+
+    <span class="side-text">SECTION <span class="hl">/</span> 03 <span class="hl">·</span> EXTENDED DISCUSSION</span>
+    <span class="side-text-r">FROM CLASSIC TEXTS <span class="hl">→</span> OPEN SOURCE</span>
+
+    <div class="particles">
+      <span class="p" style="top:12%;left:25%;opacity:0.5;"></span>
+      <span class="p" style="top:18%;left:72%;opacity:0.3;"></span>
+      <span class="p" style="top:8%;left:55%;opacity:0.4;"></span>
+      <span class="p" style="top:30%;left:88%;opacity:0.3;"></span>
+      <span class="p" style="top:35%;left:12%;opacity:0.4;"></span>
+      <span class="p" style="bottom:8%;left:35%;opacity:0.3;"></span>
+      <span class="p" style="bottom:12%;left:65%;opacity:0.5;"></span>
+      <span class="p" style="bottom:5%;left:80%;opacity:0.3;"></span>
+    </div>
+
+    <!-- 顶部编号 -->
+    <div class="top-zone">
+      <div class="section-num"><span class="section-num-glow">03</span><span>03</span></div>
+      <div class="top-meta">
+        <div class="line">CHAPTER TRANSITION</div>
+        <div>EXTENDED DISCUSSION / 2024</div>
+      </div>
+    </div>
+
+    <!-- 标题 -->
+    <div class="title-zone">
+      <div class="main-title">延<span class="dot">·</span>伸<span class="dot">·</span>讨<span class="dot">·</span>论</div>
+      <div class="sub-title"><span class="hl">从经典文本</span>&nbsp;&nbsp;走&nbsp;向&nbsp;&nbsp;<span class="hl">当代开源实践</span></div>
+      <div class="deco-line">
+        <span class="seg s1"></span>
+        <span class="diamond"></span>
+        <span class="seg s2"></span>
+        <span class="diamond"></span>
+        <span class="seg s3"></span>
+        <span class="diamond"></span>
+        <span class="seg s4"></span>
+        <span class="diamond"></span>
+        <span class="seg s5"></span>
+      </div>
+    </div>
+
+    <!-- 要点卡片 -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">01</span>
+          <span class="card-title">讨论方向</span>
+          <span class="card-tag">DIRECTION</span>
+        </div>
+        <div class="card-text">
+          将<span class="kw">理论辩论</span>映射到开源许可、<span class="hl">Copyleft 机制</span>与 <span class="hl">AI 训练数据权属</span>等现实议题，让经典论证在当代语境中焕发新的生命力。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">02</span>
+          <span class="card-title">参与方式</span>
+          <span class="card-tag">ENGAGE</span>
+        </div>
+        <div class="card-text">
+          欢迎在<span class="kw">开源之道社区</span>发起话题讨论，<span class="hl">分享你的阅读体验与思考</span>——每一次发声都是对思想的致敬与延展。
+        </div>
+      </div>
+    </div>
+
+    <!-- 数据标签 -->
+    <div class="labels">
+      <div class="label-item">
+        <span class="label-icon">i</span>
+        <div class="label-content">
+          <div class="label-key">REALITY TOPICS / 现实议题</div>
+          <div class="label-val">Copyleft / AI<span class="sep">·</span>开源许可与 AI 数据权属</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <span class="label-icon">#</span>
+        <div class="label-content">
+          <div class="label-key">COMMUNITY / 社区参与</div>
+          <div class="label-val">开源之道<span class="sep">·</span>开放讨论平台</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部收束语 -->
+    <div class="footer-zone">
+      <div class="footer-quote">
+        <span class="q-mark">"</span>理论的价值在于与现实对话——在我们的日常实践中，到底选择相信哪一种论证？<span class="q-mark">"</span>
+      </div>
+      <div class="bottom-deco">
+        <span class="bs long"></span>
+        <span class="bx"></span>
+        <span class="bx"></span>
+        <span class="bx f"></span>
+        <span class="bx"></span>
+        <span class="bx"></span>
+        <span class="bs long"></span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

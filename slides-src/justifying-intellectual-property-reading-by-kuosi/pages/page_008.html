@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>适兕的阅读笔记</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+
+:root{
+  --primary:#002FA7;
+  --primary-dark:#001B6E;
+  --accent:#4FC3F7;
+  --accent2:#7FD8FF;
+  --bg:#1A1A2E;
+  --bg2:#121223;
+  --panel:rgba(0,47,167,0.10);
+  --panel2:rgba(79,195,247,0.08);
+  --line:rgba(79,195,247,0.22);
+  --text:#E8EEF9;
+  --text-soft:#9FB4D6;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+  color:var(--text);
+  background:var(--bg);
+}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#1A1A2E 0%,#0F1738 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#ct{position:absolute;inset:0;z-index:1;padding:42px 60px 46px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 背景装饰 */
+#bg::before{
+  content:"";
+  position:absolute;top:-160px;right:-160px;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,47,167,0.45) 0%,rgba(0,47,167,0) 70%);
+}
+#bg::after{
+  content:"";
+  position:absolute;bottom:-200px;left:-180px;width:680px;height:680px;border-radius:50%;
+  background:radial-gradient(circle,rgba(79,195,247,0.22) 0%,rgba(79,195,247,0) 70%);
+}
+.grid-net{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(79,195,247,0.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,195,247,0.05) 1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+.scan{
+  position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(79,195,247,0.55),transparent);
+  animation:scan 8s linear infinite;
+}
+@keyframes scan{0%{top:8%}100%{top:96%}}
+
+/* 顶部标题栏 */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.brand{display:flex;align-items:center;gap:14px;}
+.brand-mark{
+  width:42px;height:42px;border-radius:10px;
+  background:linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',sans-serif;font-weight:800;font-size:20px;color:#fff;
+  box-shadow:0 0 24px rgba(0,47,167,0.6);
+}
+.brand-text{display:flex;flex-direction:column;}
+.brand-title{font-family:'Inter','PingFang SC',sans-serif;font-weight:800;font-size:22px;letter-spacing:2px;color:var(--text);}
+.brand-sub{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:3px;margin-top:2px;}
+.meta{display:flex;align-items:center;gap:18px;font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-soft);letter-spacing:2px;}
+.meta .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);display:inline-block;margin-right:6px;}
+.tag{padding:5px 12px;border:1px solid var(--line);border-radius:20px;color:var(--accent);background:var(--panel2);}
+
+/* 顶部四卡片 */
+.cards-top{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px;}
+.ncard{
+  position:relative;
+  padding:18px 18px 18px 22px;
+  background:linear-gradient(160deg,rgba(0,47,167,0.22) 0%,rgba(79,195,247,0.05) 100%);
+  border:1px solid var(--line);
+  border-left:3px solid var(--accent);
+  border-radius:10px;
+  min-height:148px;
+  overflow:hidden;
+}
+.ncard::after{
+  content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(79,195,247,0.18) 0%,transparent 70%);
+}
+.ncard .idx{font-family:'Inter',sans-serif;font-size:11px;color:var(--accent);letter-spacing:3px;font-weight:700;margin-bottom:6px;}
+.ncard .h{font-family:'Inter','PingFang SC',sans-serif;font-weight:700;font-size:17px;color:#fff;margin-bottom:9px;display:flex;align-items:center;gap:8px;}
+.ncard .h .bar{width:4px;height:16px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:2px;}
+.ncard .d{font-size:12px;line-height:1.7;color:var(--text-soft);}
+.ncard.featured{border-color:var(--primary);background:linear-gradient(160deg,rgba(0,47,167,0.45) 0%,rgba(0,27,110,0.25) 100%);}
+.ncard.featured .d{color:#D5E6FF;}
+.ncard.featured .quote-mini{font-family:'Noto Sans SC',sans-serif;font-style:italic;font-size:12.5px;line-height:1.75;color:#EAF4FF;border-left:2px solid var(--accent);padding-left:9px;margin-top:4px;}
+
+/* 中间引文 */
+.quote-area{
+  position:relative;
+  margin:0 10px 20px 10px;
+  padding:30px 46px 30px 46px;
+  border-radius:14px;
+  background:linear-gradient(120deg,#002FA7 0%,#001B6E 55%,#0036c4 100%);
+  border:1px solid rgba(79,195,247,0.45);
+  box-shadow:0 12px 50px rgba(0,47,167,0.55),inset 0 0 60px rgba(79,195,247,0.08);
+  display:flex;flex-direction:column;align-items:center;
+  min-height:218px;
+  overflow:hidden;
+}
+.quote-area::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(79,195,247,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,195,247,0.06) 1px,transparent 1px);
+  background-size:36px 36px;
+  pointer-events:none;
+}
+.quote-area::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+.quote-label{
+  position:relative;font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:5px;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:12px;
+}
+.quote-label .ln{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));display:inline-block;}
+.quote-label .ln.r{background:linear-gradient(90deg,var(--accent),transparent);}
+.quote-mark{font-family:'Inter',sans-serif;font-size:64px;font-weight:800;color:rgba(79,195,247,0.55);line-height:0.6;height:24px;margin-bottom:6px;}
+.quote-text{
+  position:relative;
+  font-family:'Inter','PingFang SC',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  line-height:1.55;
+  color:#FFFFFF;
+  text-align:center;
+  max-width:1280px;
+  text-shadow:0 2px 20px rgba(0,47,167,0.6);
+  letter-spacing:1px;
+}
+.quote-text .hl{
+  background:linear-gradient(180deg,transparent 60%,rgba(79,195,247,0.55) 60%);
+  padding:0 4px;
+}
+.quote-author{
+  position:relative;margin-top:14px;font-family:'Roboto Mono',monospace;font-size:12px;color:var(--accent2);letter-spacing:3px;
+}
+
+/* 底部两行：延伸推荐条 + 数据标签 */
+.extend{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 20px;
+  border:1px dashed var(--line);
+  border-radius:10px;
+  background:var(--panel2);
+  margin-bottom:16px;
+}
+.extend .tag2{
+  flex-shrink:0;padding:6px 12px;border:1px solid var(--accent);color:var(--accent);
+  font-family:'Inter',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;border-radius:20px;background:rgba(0,47,167,0.3);
+}
+.extend .txt{font-size:12.5px;line-height:1.7;color:var(--text-soft);}
+.extend .txt b{color:var(--accent2);font-weight:700;}
+
+.data-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.dchip{
+  position:relative;padding:16px 20px;border-radius:10px;
+  background:linear-gradient(160deg,rgba(0,47,167,0.3) 0%,rgba(79,195,247,0.06) 100%);
+  border:1px solid var(--line);
+  display:flex;align-items:center;gap:16px;
+  overflow:hidden;
+}
+.dchip::after{
+  content:"";position:absolute;right:-24px;bottom:-24px;width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,47,167,0.35) 0%,transparent 70%);
+}
+.dchip .icon{
+  flex-shrink:0;width:50px;height:50px;border-radius:10px;
+  background:linear-gradient(135deg,var(--primary) 0%,#0036c4 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 18px rgba(0,47,167,0.6);
+  position:relative;
+}
+.dchip .icon .stars{font-size:18px;color:var(--accent2);letter-spacing:2px;}
+.dchip .icon .chap{font-family:'Inter',sans-serif;font-weight:800;font-size:16px;color:#fff;}
+.dchip .icon .book{font-family:'Inter',sans-serif;font-weight:800;font-size:18px;color:#fff;}
+.dchip .info{display:flex;flex-direction:column;gap:5px;position:relative;}
+.dchip .lbl{font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:3px;color:var(--accent);}
+.dchip .val{font-family:'Inter','PingFang SC',sans-serif;font-weight:700;font-size:16px;color:#fff;line-height:1.4;}
+.dchip .sub{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--text-soft);letter-spacing:1px;}
+
+/* 叙事脚注 */
+.narration{
+  margin-top:14px;
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:12px;
+  line-height:1.7;
+  color:var(--text-soft);
+  border-left:2px solid var(--accent);
+  padding-left:12px;
+  letter-spacing:0.5px;
+}
+.narration b{color:var(--accent2);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-net"></div>
+    <div class="scan"></div>
+  </div>
+
+  <div id="ct">
+
+    <div class="header">
+      <div class="brand">
+        <div class="brand-mark">兕</div>
+        <div class="brand-text">
+          <span class="brand-title">适兕的阅读笔记</span>
+          <span class="brand-sub">READING LOG · INTANGIBLE PROPERTY</span>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="tag"><span class="dot"></span>STATUS // IN PROGRESS</span>
+        <span>NO.007 / TENENBAUM</span>
+      </div>
+    </div>
+
+    <div class="cards-top">
+      <div class="ncard">
+        <div class="idx">01 / MAP</div>
+        <div class="h"><span class="bar"></span><span>思想地图</span></div>
+        <div class="d">适兕用一张时间轴梳理了从洛克到当代功利主义的论证演变脉络，勾勒知识产权正当性理论的谱系。</div>
+      </div>
+      <div class="ncard featured">
+        <div class="idx">02 / INSIGHT</div>
+        <div class="h"><span class="bar"></span><span>关键洞见</span></div>
+        <div class="quote-mini">"知识产权不是单一的哲学结论，而是多种论证在不同制度场景下的折衷产物。"</div>
+      </div>
+      <div class="ncard">
+        <div class="idx">03 / REVIEW</div>
+        <div class="h"><span class="bar"></span><span>个人评价</span></div>
+        <div class="d">本书最大贡献不在给出结论，而在清晰呈现了论证的复杂性与内在矛盾——这才是真正的学术价值。</div>
+      </div>
+      <div class="ncard">
+        <div class="idx">04 / MUST READ</div>
+        <div class="h"><span class="bar"></span><span>值得深读</span></div>
+        <div class="d">第三章关于洛克的拆解、第五章对人格论的评估被列为必读精华段落，建议反复研读。</div>
+      </div>
+    </div>
+
+    <div class="quote-area">
+      <div class="quote-label"><span class="ln"></span><span>KEY QUOTE · 核 心 引 文</span><span class="ln r"></span></div>
+      <div class="quote-mark">"</div>
+      <div class="quote-text">
+        知识产权<span class="hl">不是单一的哲学结论</span>，<br>
+        而是<span class="hl">多种论证在不同制度场景下的折衷产物</span>
+      </div>
+      <div class="quote-author">— 适兕 · 摘录自 TENENBAUM 著作阅读笔记</div>
+    </div>
+
+    <div class="extend">
+      <span class="tag2">05 / EXTEND</span>
+      <div class="txt"><b>延伸推荐</b>　建议配合 <b>Breyer</b> 的 IP 经济学论文与 <b>Lessig</b> 的《自由文化》对读，效果更佳。</div>
+    </div>
+
+    <div class="data-row">
+      <div class="dchip">
+        <div class="icon"><span class="stars">★★★★</span></div>
+        <div class="info">
+          <span class="lbl">推荐指数</span>
+          <span class="val">四颗星 · ★★★★</span>
+          <span class="sub">RATING / 4.0</span>
+        </div>
+      </div>
+      <div class="dchip">
+        <div class="icon"><span class="chap">Ch</span></div>
+        <div class="info">
+          <span class="lbl">必读章节</span>
+          <span class="val">Ch.3 / Ch.5</span>
+          <span class="sub">劳动论 · 人格论拆解</span>
+        </div>
+      </div>
+      <div class="dchip">
+        <div class="icon"><span class="book">FC</span></div>
+        <div class="info">
+          <span class="lbl">配套读物</span>
+          <span class="val">Free Culture</span>
+          <span class="sub">L. Lessig</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="narration">
+      阅读至此，适兕逐渐体会到 <b>Tenenbaum</b> 的真正意图或许并非替知识产权辩护，而是通过对各种论证的精细拆解，让读者理解为何 <b>"正当性"</b> 这一问题本身如此难以回答。
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

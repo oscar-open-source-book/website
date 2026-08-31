@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>洛克劳动论的困境</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@400;600;700;900&display=swap');
+
+:root{
+  --klein:#002FA7;
+  --klein-dim:#001F7A;
+  --klein-light:#1A3FE0;
+  --cyan:#4FC3F7;
+  --cyan-dim:#2A8FC7;
+  --bg:#1A1A2E;
+  --bg-2:#0F0F1E;
+  --bg-3:#161630;
+  --text-main:#E8ECFF;
+  --text-dim:#8892C8;
+  --text-mute:#5A6296;
+  --line:rgba(79,195,247,0.18);
+  --card-bg:rgba(0,47,167,0.08);
+  --card-border:rgba(79,195,247,0.22);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:var(--bg);
+  color:var(--text-main);
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 900px 600px at 80% -10%, rgba(0,47,167,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 500px at -5% 110%, rgba(79,195,247,0.12) 0%, transparent 55%),
+    var(--bg-2);
+}
+
+.bg-grid{
+  position:absolute;inset:0;z-index:0;opacity:0.06;
+  background-image:
+    linear-gradient(rgba(79,195,247,0.6) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,195,247,0.6) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+
+.bg-noise{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(circle at 50% 50%, rgba(0,47,167,0.08) 0%, transparent 70%);
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:38px 56px 34px 56px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+
+/* ---------- HEADER ---------- */
+.header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:18px;
+}
+
+.title-block{display:flex;align-items:flex-end;gap:20px;}
+
+.title-main{
+  font-family:'Inter','PingFang SC','Noto Sans SC',sans-serif;
+  font-weight:900;
+  font-size:46px;
+  letter-spacing:-1px;
+  color:var(--text-main);
+  line-height:1.05;
+}
+
+.title-main .accent{color:var(--cyan);}
+
+.title-sub{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;
+  color:var(--text-mute);
+  letter-spacing:2px;
+  padding-bottom:10px;
+}
+
+.header-meta{
+  display:flex;gap:20px;align-items:center;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;color:var(--text-dim);letter-spacing:1.5px;
+}
+
+.header-meta .dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 8px var(--cyan);
+  margin-right:6px;
+}
+
+.header-meta .tag{
+  padding:4px 10px;border:1px solid var(--line);
+  border-radius:2px;color:var(--cyan);
+}
+
+/* ---------- KPI CARDS ---------- */
+.kpi-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  margin-bottom:20px;
+}
+
+.kpi-card{
+  position:relative;
+  padding:14px 18px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-left:3px solid var(--cyan);
+  overflow:hidden;
+}
+
+.kpi-card::after{
+  content:'';position:absolute;top:0;right:0;
+  width:40px;height:40px;
+  background:radial-gradient(circle at top right, rgba(79,195,247,0.2), transparent 70%);
+}
+
+.kpi-label{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--cyan);letter-spacing:2px;
+  margin-bottom:4px;
+}
+
+.kpi-title{
+  font-family:'Inter','PingFang SC','Noto Sans SC',sans-serif;
+  font-weight:700;font-size:15px;color:var(--text-main);
+  line-height:1.35;margin-bottom:3px;
+}
+
+.kpi-desc{
+  font-size:11px;color:var(--text-dim);line-height:1.5;
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+}
+
+.kpi-num{
+  position:absolute;bottom:6px;right:10px;
+  font-family:'Inter',sans-serif;font-weight:900;
+  font-size:22px;color:rgba(79,195,247,0.15);
+}
+
+/* ---------- MAIN CONTENT ---------- */
+.main{
+  display:grid;
+  grid-template-columns:1fr 4px 1fr;
+  gap:20px;
+  flex:1;
+  min-height:0;
+}
+
+.col{display:flex;flex-direction:column;min-height:0;}
+
+.col-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+
+.col-header .num{
+  font-family:'Inter',sans-serif;font-weight:900;
+  font-size:14px;color:var(--cyan);
+  width:24px;height:24px;
+  border:1px solid var(--cyan);
+  display:flex;align-items:center;justify-content:center;
+}
+
+.col-header .lbl{
+  font-family:'Inter','PingFang SC',sans-serif;
+  font-weight:700;font-size:16px;color:var(--text-main);
+}
+
+.col-header .tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--text-dim);
+  letter-spacing:1px;margin-left:auto;
+}
+
+/* Divider */
+.divider{
+  position:relative;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    var(--klein) 15%,
+    var(--cyan) 50%,
+    var(--klein) 85%,
+    transparent 100%);
+  width:4px;
+}
+
+.divider::before,.divider::after{
+  content:'';position:absolute;left:50%;transform:translateX(-50%);
+  width:10px;height:10px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 12px var(--cyan);
+}
+.divider::before{top:-3px;}
+.divider::after{bottom:-3px;}
+
+/* ----- LEFT COLUMN ----- */
+.left-body{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  flex:1;min-height:0;
+}
+
+.argument-box{
+  grid-column:1/3;
+  background:rgba(0,47,167,0.06);
+  border:1px solid var(--card-border);
+  padding:12px 16px;
+  position:relative;
+}
+
+.argument-box .step-title{
+  font-family:'Inter','PingFang SC',sans-serif;
+  font-weight:700;font-size:12px;color:var(--cyan);
+  letter-spacing:1px;margin-bottom:8px;
+}
+
+.argument-flow{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+  font-size:11px;color:var(--text-main);
+  flex-wrap:wrap;
+}
+
+.argument-flow .node{
+  padding:5px 9px;
+  background:rgba(0,47,167,0.2);
+  border:1px solid rgba(0,47,167,0.5);
+  border-radius:2px;
+}
+
+.argument-flow .arrow{
+  color:var(--cyan);font-size:13px;font-weight:600;
+}
+
+.argument-flow .emph{
+  color:var(--cyan);font-weight:600;
+}
+
+/* Concept diagram */
+.concept-left,.concept-right{
+  background:rgba(15,15,30,0.6);
+  border:1px solid var(--card-border);
+  padding:10px 12px;
+  position:relative;
+  display:flex;flex-direction:column;
+}
+
+.concept-label{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;color:var(--text-dim);
+  letter-spacing:1.5px;margin-bottom:8px;
+}
+
+.concept-title{
+  font-family:'Inter','PingFang SC',sans-serif;
+  font-weight:700;font-size:13px;color:var(--text-main);
+  margin-bottom:8px;line-height:1.3;
+}
+
+/* Mixing diagram */
+.mixing-visual{
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  min-height:100px;
+}
+
+.mixing-visual .container{
+  position:relative;width:120px;height:120px;
+}
+
+.mixing-visual .circle{
+  position:absolute;top:50%;left:50%;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  border:1px solid;
+}
+
+.mixing-visual .c1{
+  width:60px;height:60px;
+  border-color:rgba(79,195,247,0.6);
+  background:rgba(79,195,247,0.08);
+  left:35%;top:35%;
+  transform:translate(-50%,-50%);
+}
+
+.mixing-visual .c2{
+  width:60px;height:60px;
+  border-color:rgba(0,47,167,0.8);
+  background:rgba(0,47,167,0.15);
+  left:65%;top:65%;
+  transform:translate(-50%,-50%);
+}
+
+.mixing-visual .c3{
+  width:80px;height:80px;
+  border-color:rgba(79,195,247,0.3);
+  background:transparent;
+  animation:none;
+}
+
+.mixing-visual .center-dot{
+  position:absolute;top:50%;left:50%;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+  transform:translate(-50%,-50%);
+}
+
+.mixing-visual .plus{
+  position:absolute;top:50%;left:50%;
+  font-family:'Inter',sans-serif;
+  font-size:18px;font-weight:700;
+  color:var(--cyan);
+  transform:translate(-50%,-50%);
+}
+
+.mixing-caption{
+  font-family:'Roboto Mono',monospace;
+  font-size:9px;color:var(--text-mute);
+  text-align:center;margin-top:6px;
+  letter-spacing:1px;
+}
+
+/* Right concept panel */
+.right-concept{
+  display:flex;flex-direction:column;
+}
+
+.right-concept .keypoints{
+  list-style:none;padding:0;margin:0;
+  display:flex;flex-direction:column;gap:5px;
+}
+
+.right-concept .keypoints li{
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+  font-size:10.5px;color:var(--text-dim);
+  padding-left:14px;position:relative;line-height:1.5;
+}
+
+.right-concept .keypoints li::before{
+  content:'';position:absolute;left:0;top:7px;
+  width:6px;height:1px;background:var(--cyan);
+}
+
+.right-concept .keypoints li b{
+  color:var(--text-main);font-weight:500;
+}
+
+/* ----- RIGHT COLUMN ----- */
+.crit-list{
+  display:flex;flex-direction:column;gap:10px;
+  flex:1;min-height:0;
+}
+
+.crit-item{
+  background:rgba(0,47,167,0.06);
+  border:1px solid var(--card-border);
+  border-left:3px solid var(--cyan);
+  padding:11px 14px;
+  position:relative;
+  flex:1;
+  display:flex;flex-direction:column;
+}
+
+.crit-item .crit-head{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:6px;
+}
+
+.crit-item .crit-num{
+  font-family:'Inter',sans-serif;font-weight:900;
+  font-size:20px;color:var(--cyan);
+  line-height:1;
+}
+
+.crit-item .crit-title{
+  font-family:'Inter','PingFang SC','Noto Sans SC',sans-serif;
+  font-weight:700;font-size:14px;color:var(--text-main);
+  line-height:1.2;
+}
+
+.crit-item .crit-tag{
+  font-family:'Roboto Mono',monospace;
+  font-size:9px;color:var(--text-mute);
+  letter-spacing:1.5px;margin-left:auto;
+  padding:2px 6px;border:1px solid var(--line);
+  align-self:flex-start;margin-top:3px;
+}
+
+.crit-item .crit-body{
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+  font-size:11px;color:var(--text-dim);
+  line-height:1.55;
+}
+
+.crit-item .crit-body .hl{color:var(--cyan);font-weight:500;}
+
+.crit-item .crit-body .warn{color:#FFB74D;font-weight:500;}
+
+/* Citation box */
+.citation-box{
+  margin-top:8px;
+  padding:8px 12px;
+  background:rgba(79,195,247,0.05);
+  border:1px dashed rgba(79,195,247,0.3);
+  display:flex;align-items:center;gap:10px;
+}
+
+.citation-box .quote-mark{
+  font-family:'Inter',sans-serif;
+  font-size:28px;color:var(--cyan);font-weight:900;
+  line-height:1;
+}
+
+.citation-box .quote-text{
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+  font-size:10px;color:var(--text-dim);
+  line-height:1.5;flex:1;
+}
+
+.citation-box .quote-text b{color:var(--text-main);font-weight:500;}
+
+/* ---------- FOOTER ---------- */
+.footer{
+  margin-top:14px;
+  padding:12px 18px;
+  background:linear-gradient(90deg,
+    rgba(0,47,167,0.15) 0%,
+    rgba(79,195,247,0.08) 50%,
+    rgba(0,47,167,0.15) 100%);
+  border:1px solid var(--card-border);
+  border-left:3px solid var(--klein-light);
+  display:flex;align-items:center;gap:16px;
+}
+
+.footer-icon{
+  width:32px;height:32px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--cyan);
+  font-family:'Inter',sans-serif;
+  font-weight:900;font-size:14px;color:var(--cyan);
+}
+
+.footer-text{
+  font-family:'Roboto Mono','Noto Sans SC',monospace;
+  font-size:11.5px;color:var(--text-main);
+  line-height:1.55;flex:1;
+}
+
+.footer-text .hl{color:var(--cyan);}
+.footer-text .em{color:#FFB74D;font-weight:500;}
+
+/* Decorative corners */
+.corner{
+  position:absolute;width:18px;height:18px;
+  border-color:var(--cyan);
+  z-index:2;
+}
+.corner-tl{top:12px;left:12px;border-top:1px solid;border-left:1px solid;}
+.corner-tr{top:12px;right:12px;border-top:1px solid;border-right:1px solid;}
+.corner-bl{bottom:12px;left:12px;border-bottom:1px solid;border-left:1px solid;}
+.corner-br{bottom:12px;right:12px;border-bottom:1px solid;border-right:1px solid;}
+
+/* Data lines decoration */
+.deco-lines{
+  position:absolute;top:0;right:0;
+  width:200px;height:100%;
+  z-index:0;pointer-events:none;
+  opacity:0.08;
+}
+
+.deco-lines .dline{
+  position:absolute;height:1px;background:var(--cyan);
+}
+
+/* Pulse animation on center dot */
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 8px var(--cyan);}
+  50%{box-shadow:0 0 16px var(--cyan),0 0 24px rgba(79,195,247,0.4);}
+}
+.mixing-visual .center-dot{animation:pulse 2s ease-in-out infinite;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
+
+  <span class="corner corner-tl"></span>
+  <span class="corner corner-tr"></span>
+  <span class="corner corner-bl"></span>
+  <span class="corner corner-br"></span>
+
+  <div id="ct">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="title-block">
+        <div>
+          <div class="title-sub">// CHAPTER ANALYSIS · 03</div>
+          <div class="title-main">洛克劳动论的<span class="accent">困境</span></div>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span><span class="dot"></span>LABOR THEORY</span>
+        <span class="tag">CRITIQUE</span>
+      </div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">// 01 · CORE PROPOSITION</div>
+        <div class="kpi-title">核心命题：Mixing Labor</div>
+        <div class="kpi-desc">劳动即权利——个人通过劳动将自身"混合"进自然物，由此获得财产权</div>
+        <span class="kpi-num">01</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">// 02 · FUNDAMENTAL CONFLICT</div>
+        <div class="kpi-title">根本矛盾：Non-rivalry</div>
+        <div class="kpi-desc">知识非竞争性——任何人的使用都不会减损原权利人的占有与收益</div>
+        <span class="kpi-num">02</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">// 03 · LOCKE'S LOOPHOLE</div>
+        <div class="kpi-title">洛克的留白：Sufficiency</div>
+        <div class="kpi-desc">"足够多且同样好"——在知识领域这一剩余条件几乎无法满足</div>
+        <span class="kpi-num">03</span>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <!-- LEFT COLUMN -->
+      <div class="col">
+        <div class="col-header">
+          <div class="num">A</div>
+          <div class="lbl">洛克的原始论证</div>
+          <div class="tag">ORIGINAL LOGIC</div>
+        </div>
+        <div class="left-body">
+          <div class="argument-box">
+            <div class="step-title">▸ 论证链：从劳动到财产权</div>
+            <div class="argument-flow">
+              <span class="node"><span>个人对自身</span></span>
+              <span class="arrow">›</span>
+              <span class="node"><span>身体劳动</span></span>
+              <span class="arrow">›</span>
+              <span class="node"><span>与自然物</span></span>
+              <span class="arrow">›</span>
+              <span class="node emph"><span class="emph">混合 / MIXING</span></span>
+              <span class="arrow">›</span>
+              <span class="node emph"><span class="emph">财产权确立</span></span>
+            </div>
+          </div>
+
+          <div class="concept-left">
+            <div class="concept-label">// CONCEPT DIAGRAM</div>
+            <div class="concept-title">"混合劳动"<br>概念可视化</div>
+            <div class="mixing-visual">
+              <div class="container">
+                <div class="circle c3"></div>
+                <div class="circle c1"></div>
+                <div class="circle c2"></div>
+                <div class="center-dot"></div>
+                <div class="plus">+</div>
+              </div>
+            </div>
+            <div class="mixing-caption">LABOR ⊕ OBJECT = PROPERTY</div>
+          </div>
+
+          <div class="concept-right">
+            <div class="concept-label">// PREMISES</div>
+            <div class="concept-title">论证前提</div>
+            <ul class="keypoints">
+              <li><b>自有权：</b>每个人对自身人身享有所有权</li>
+              <li><b>劳动属己：</b>劳动是劳动者身体与意志的延伸</li>
+              <li><b>自然公有：</b>上帝将大地赐予人类共同享用</li>
+              <li><b>剩余条件：</b>"足够多且同样好"留予他人</li>
+              <li><b>结论：</b>混合劳动 ⇒ 私有财产正当性</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="divider"></div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col">
+        <div class="col-header">
+          <div class="num">B</div>
+          <div class="lbl">Tenenbaum 的批判要点</div>
+          <div class="tag">CRITICAL ANALYSIS</div>
+        </div>
+        <div class="crit-list">
+          <div class="crit-item">
+            <div class="crit-head">
+              <span class="crit-num">01</span>
+              <span class="crit-title">智力之物的特殊性</span>
+              <span class="crit-tag">NON-RIVALRY</span>
+            </div>
+            <div class="crit-body">
+              知识一旦公开便具有<span class="hl">非竞争性</span>——任何人的使用都不会减损原权利人的占有。这与苹果、土地等<span class="warn">物质财产</span>有本质差异：我拿走你的苹果，你便失去了它；我使用你的思想，你依然完整拥有它。
+            </div>
+          </div>
+          <div class="crit-item">
+            <div class="crit-head">
+              <span class="crit-num">02</span>
+              <span class="crit-title">剩余条件难题</span>
+              <span class="crit-tag">SUFFICIENCY</span>
+            </div>
+            <div class="crit-body">
+              "足够多且同样好"的条件在知识领域<span class="warn">几乎无法满足</span>。知识的可复制性意味着他人使用并不造成<span class="hl">真正剥夺</span>，洛克以物质稀缺性为前提设定的伦理底线，在知识语境中失去约束力。
+            </div>
+          </div>
+          <div class="crit-item">
+            <div class="crit-head">
+              <span class="crit-num">03</span>
+              <span class="crit-title">作者的核心质疑</span>
+              <span class="crit-tag">TENENBAUM</span>
+            </div>
+            <div class="crit-body">
+              <b style="color:var(--text-main)">Tenenbaum</b> 认为洛克论无法解释为何<span class="hl">知识劳动者</span>应获得与<span class="hl">物质劳动者</span>同等的<span class="warn">排他权利</span>——"混合"概念预设了排他的物理占有，而知识本质上不具备这一属性。
+            </div>
+            <div class="citation-box">
+              <span class="quote-mark">"</span>
+              <span class="quote-text"><b>核心命题：</b>若劳动能证成财产权，那么任何对知识的使用本身即是劳动，原"权利人"的反垄断主张便自相矛盾。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-icon">Σ</div>
+      <div class="footer-text">
+        <span class="hl">▸ 结论收束 —</span> 洛克劳动论在物质财产领域极具说服力，但迁移到知识产权语境时，<span class="em">非竞争性</span>与<span class="em">可复制性</span>这两个根本特征让"<span class="hl">混合劳动</span>"叙事失去根基——这是全书<span class="hl">最具启发性的论证</span>之一。
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

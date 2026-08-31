@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>三大正当性范式</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --bg-dark: #1A1A2E;
+  --primary: #002FA7;
+  --accent: #4FC3F7;
+  --accent2: #7CE0FF;
+  --text-main: #E8ECF4;
+  --text-dim: #8892A8;
+  --card-bg: rgba(0, 47, 167, 0.10);
+  --card-border: rgba(79, 195, 247, 0.22);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Roboto Mono','Source Han Sans SC','Noto Sans SC',sans-serif;
+  color:var(--text-main);
+  overflow:hidden;
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  font-size:15px;
+  line-height:1.65;
+}
+
+#bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:var(--bg-dark);
+}
+
+#bg::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(79,195,247,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,195,247,0.045) 1px, transparent 1px);
+  background-size:48px 48px;
+  z-index:1;
+}
+
+#bg::after{
+  content:'';
+  position:absolute;
+  top:-160px;
+  right:-160px;
+  width:520px;
+  height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(0,47,167,0.55) 0%, rgba(0,47,167,0) 70%);
+  z-index:2;
+}
+
+#ct{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  padding:48px 60px 40px 60px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ---------- Top Header ---------- */
+.head-row{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:32px;
+  padding-bottom:22px;
+  border-bottom:1px solid rgba(79,195,247,0.18);
+  margin-bottom:22px;
+}
+
+.title-block{flex:1;}
+
+.title-eyebrow{
+  font-family:'Roboto Mono',monospace;
+  font-size:12px;
+  letter-spacing:6px;
+  color:var(--accent);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.title-eyebrow .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent);
+  display:inline-block;
+}
+
+h1.title{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  font-weight:800;
+  font-size:52px;
+  line-height:1.1;
+  letter-spacing:2px;
+  color:var(--text-main);
+  margin-bottom:6px;
+}
+
+h1.title .hl{
+  color:var(--accent);
+}
+
+.title-underline{
+  width:96px;
+  height:3px;
+  background:linear-gradient(90deg, var(--accent), var(--primary));
+  margin-top:12px;
+}
+
+.header-meta{
+  text-align:right;
+  font-family:'Roboto Mono',monospace;
+  font-size:11px;
+  color:var(--text-dim);
+  letter-spacing:1.5px;
+  line-height:1.9;
+  flex-shrink:0;
+}
+.header-meta .k{color:var(--accent);}
+
+/* ---------- Narrative ---------- */
+.narrative{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:14px 20px;
+  background:rgba(0,47,167,0.14);
+  border-left:3px solid var(--accent);
+  border-radius:2px;
+  margin-bottom:22px;
+  font-size:13.5px;
+  color:var(--text-main);
+  line-height:1.7;
+}
+.narrative .tag{
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--accent);
+  flex-shrink:0;
+}
+
+/* ---------- Three Columns ---------- */
+.columns{
+  display:flex;
+  gap:0;
+  flex:1;
+  min-height:0;
+}
+
+.col{
+  flex:1;
+  padding:22px 24px 18px 24px;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.col + .col{
+  border-left:1px solid rgba(0,47,167,0.55);
+}
+
+.col-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:2px;
+}
+
+.col-num{
+  font-family:'Inter',sans-serif;
+  font-weight:800;
+  font-size:44px;
+  color:var(--accent);
+  letter-spacing:1px;
+  line-height:1;
+  text-shadow:0 0 24px rgba(79,195,247,0.35);
+}
+
+.col-icon{
+  width:38px;height:38px;
+  border:1.5px solid var(--accent);
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.col-icon-1{ /* gear / utility */
+}
+.col-icon-1::before,
+.col-icon-1::after{
+  content:'';
+  position:absolute;
+  width:14px;height:14px;
+  border:1.5px solid var(--accent);
+  border-radius:50%;
+}
+.col-icon-1::before{top:2px;left:2px;}
+.col-icon-1::after{bottom:2px;right:2px;width:8px;height:8px;background:var(--accent);}
+
+.col-icon-2{
+}
+.col-icon-2::before{
+  content:'';
+  position:absolute;
+  width:18px;height:2.5px;
+  background:var(--accent);
+}
+.col-icon-2::after{
+  content:'';
+  position:absolute;
+  width:2.5px;height:18px;
+  background:var(--accent);
+}
+
+.col-icon-3::before{
+  content:'';
+  position:absolute;
+  width:16px;height:16px;
+  border:1.5px solid var(--accent);
+  border-radius:50%;
+}
+.col-icon-3::after{
+  content:'';
+  position:absolute;
+  width:6px;height:6px;
+  background:var(--accent);
+  border-radius:50%;
+  bottom:6px;right:6px;
+}
+
+.col-name{
+  font-family:'Inter','PingFang SC',sans-serif;
+  font-weight:700;
+  font-size:22px;
+  color:var(--text-main);
+  letter-spacing:0.5px;
+  line-height:1.35;
+}
+
+.col-divider{
+  width:48px;height:2px;
+  background:var(--accent);
+  margin:2px 0 4px 0;
+}
+
+.col-desc{
+  font-size:13px;
+  line-height:1.85;
+  color:var(--text-main);
+  opacity:0.92;
+  flex:1;
+}
+
+.col-foot{
+  margin-top:auto;
+  padding-top:14px;
+  border-top:1px dashed rgba(79,195,247,0.28);
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.col-foot-label{
+  font-family:'Roboto Mono',monospace;
+  font-size:10px;
+  letter-spacing:2px;
+  color:var(--text-dim);
+}
+.col-figures{
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--accent2);
+  letter-spacing:0.5px;
+}
+.col-trad{
+  font-size:11.5px;
+  color:var(--text-dim);
+  font-family:'Roboto Mono',monospace;
+  letter-spacing:0.5px;
+}
+
+/* ---------- Summary Bar ---------- */
+.summary{
+  margin-top:18px;
+  padding:16px 24px;
+  background:linear-gradient(90deg, rgba(0,47,167,0.32) 0%, rgba(0,47,167,0.12) 100%);
+  border:1px solid rgba(79,195,247,0.30);
+  border-left:4px solid var(--accent);
+  border-radius:2px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.summary-icon{
+  width:34px;height:34px;
+  border-radius:50%;
+  border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  position:relative;
+}
+.summary-icon::before{
+  content:'✓';
+  color:var(--accent);
+  font-weight:700;
+  font-size:16px;
+}
+.summary-text{
+  font-size:13.5px;
+  line-height:1.7;
+  color:var(--text-main);
+}
+.summary-text .lead{
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:1px;
+  margin-right:8px;
+}
+.summary-text .em{
+  color:var(--accent2);
+  font-weight:600;
+}
+
+/* corner decorations */
+.corner{
+  position:absolute;
+  width:28px;height:28px;
+  border-color:var(--accent);
+  z-index:4;
+  opacity:0.7;
+}
+.corner-tl{top:24px;left:24px;border-top:2px solid;border-left:2px solid;}
+.corner-tr{top:24px;right:24px;border-top:2px solid;border-right:2px solid;}
+.corner-bl{bottom:24px;left:24px;border-bottom:2px solid;border-left:2px solid;}
+.corner-br{bottom:24px;right:24px;border-bottom:2px solid;border-right:2px solid;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <span class="corner corner-tl"></span>
+  <span class="corner corner-tr"></span>
+  <span class="corner corner-bl"></span>
+  <span class="corner corner-br"></span>
+
+  <div id="ct">
+
+    <div class="head-row">
+      <div class="title-block">
+        <div class="title-eyebrow"><span class="dot"></span><span>CHAPTER · CONCEPTUAL FRAMEWORK</span></div>
+        <h1 class="title">三大<span class="hl">正当性</span>范式</h1>
+        <div class="title-underline"></div>
+      </div>
+      <div class="header-meta">
+        <div><span class="k">TOPIC</span> &nbsp; 知识产权哲学</div>
+        <div><span class="k">SCOPE</span> &nbsp; 三大经典理论</div>
+        <div><span class="k">METHOD</span> &nbsp; 批判性分析</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <span class="tag">NARRATIVE</span>
+      <span>全书围绕三大经典理论范式展开批判性分析，理解三者的差异是进入知识产权哲学讨论的入口——不同范式对"为什么保护知识产权"给出了截然不同的答案。</span>
+    </div>
+
+    <div class="columns">
+
+      <div class="col">
+        <div class="col-head">
+          <div class="col-num">01</div>
+          <div class="col-icon col-icon-1"></div>
+        </div>
+        <div class="col-name">功利主义论证</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">知识产权作为激励创新的工具，通过垄断收益促进知识生产与社会福利最大化。以"最大多数人的最大幸福"为准则，论证有限的产权垄断是换取创新产出的必要代价。</div>
+        <div class="col-foot">
+          <div class="col-foot-label">代表人物 · 学术传统</div>
+          <div class="col-figures">Bentham / Posner</div>
+          <div class="col-trad">传统：Utilitarianism</div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="col-head">
+          <div class="col-num">02</div>
+          <div class="col-icon col-icon-2"></div>
+        </div>
+        <div class="col-name">自然权利论证</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">洛克式劳动财产论——知识创造者对其智力劳动成果享有天经地义的所有权。劳动将个人意志注入资源，即获得排他性权利，财产权是先于国家而存在的自然权利。</div>
+        <div class="col-foot">
+          <div class="col-foot-label">代表人物 · 学术传统</div>
+          <div class="col-figures">Locke / Nozick</div>
+          <div class="col-trad">传统：Lockean Labor</div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="col-head">
+          <div class="col-num">03</div>
+          <div class="col-icon col-icon-3"></div>
+        </div>
+        <div class="col-name">人格权论证</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">黑格尔传统下，作品是创造者人格的外化与延伸。知识产权保护的是人格自由与自我实现的表达权，作品与作者之间存在不可分割的精神联系，应予尊重与保护。</div>
+        <div class="col-foot">
+          <div class="col-foot-label">代表人物 · 学术传统</div>
+          <div class="col-figures">Hegel / Fichte</div>
+          <div class="col-trad">传统：Personality Theory</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="summary">
+      <div class="summary-icon"></div>
+      <div class="summary-text">
+        <span class="lead">作者态度</span>
+        Tenenbaum 对三派理论逐一评估，认为<span class="em">功利主义最具说服力</span>，但也面临<span class="em">严重挑战</span>——它无法为现有知识产权制度的广度与强度提供充分辩护，且忽视了对创作者人格与劳动本身的内在尊重。
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
