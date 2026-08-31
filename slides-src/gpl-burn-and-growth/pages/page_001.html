@@ -5,276 +5,348 @@
 <head>
 <meta charset="UTF-8">
 <title>GPL的燃烧与增长 · 开源之书记录</title>
-<script src="../assets/echarts.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700;1,900&family=Source+Sans+3:wght@300;400;600;700&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Noto+Serif+SC:wght@400;700;900&family=Source+Sans+3:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
-
 :root{
   --red:#E53935;
   --red-deep:#B71C1C;
-  --ink:#1A1A1A;
-  --paper:#F7F3EB;
-  --paper-warm:#F0E9D8;
-  --muted:#6B6B6B;
-  --line:#C8BEA8;
-  --ember-1:#FFD180;
-  --ember-2:#FF7043;
-  --ember-3:#E53935;
+  --red-hot:#FF5722;
+  --orange:#FF9800;
+  --black:#1A1A1A;
+  --ink:#0A0A0A;
+  --cream:#F7F3EB;
+  --cream-2:#EDE5D3;
+  --paper:#F2EBDB;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{width:1600px;height:900px;overflow:hidden;background:#0A0505;font-family:'Source Sans 3','Noto Sans SC',-apple-system,sans-serif;color:var(--ink);}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--paper);}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:#000;}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;color:var(--black);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
 
-#bg{position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse at 92% 35%, rgba(229,57,53,.12), transparent 45%),
-    radial-gradient(ellipse at 8% 92%, rgba(26,26,26,.04), transparent 55%);}
+/* ==== background layer ==== */
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.bg-base{position:absolute;inset:0;background:linear-gradient(115deg,var(--cream) 0%,var(--cream) 52%,#EFE7D6 100%);}
+/* vertical print grain lines */
+.bg-lines{position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(26,26,26,0.045) 0 1px,transparent 1px 4px);opacity:.55;}
+/* big diagonal wash on right */
+.bg-right-flare{position:absolute;top:-200px;right:-200px;width:1200px;height:1200px;background:radial-gradient(circle at 30% 40%,rgba(229,57,53,0.35) 0%,rgba(255,87,34,0.22) 30%,rgba(255,152,0,0.10) 55%,rgba(0,0,0,0) 70%);pointer-events:none;}
+.bg-black-corner{position:absolute;top:0;right:0;width:900px;height:900px;background:linear-gradient(200deg,#0A0A0A 0%,#1A1A1A 40%,rgba(26,26,26,0.55) 65%,rgba(26,26,26,0) 100%);pointer-events:none;}
 
-#bg::after{content:'';position:absolute;inset:0;pointer-events:none;
-  background:
-    linear-gradient(180deg, rgba(247,243,235,0) 0%, rgba(247,243,235,0) 82%, rgba(26,26,26,.02) 100%);}
+/* ==== content layer ==== */
+#ct{position:absolute;inset:0;z-index:1;}
 
-#ct{position:absolute;inset:0;z-index:1;padding:60px 60px 20px 60px;box-sizing:border-box;}
+/* ===== top bar: masthead ===== */
+.masthead{position:absolute;top:34px;left:60px;right:60px;display:flex;justify-content:space-between;align-items:center;z-index:5;}
+.masthead-left{display:flex;align-items:center;gap:14px;}
+.masthead-badge{width:34px;height:34px;background:var(--red);color:var(--cream);font-family:'Playfair Display',serif;font-weight:900;font-style:italic;font-size:22px;display:flex;align-items:center;justify-content:center;}
+.masthead-title{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:900;font-size:15px;letter-spacing:5px;color:var(--black);text-transform:uppercase;}
+.masthead-sub{font-family:'Noto Sans SC',sans-serif;font-size:11px;letter-spacing:3px;color:var(--black);opacity:.65;}
+.masthead-right{display:flex;align-items:center;gap:18px;color:var(--cream);font-family:'Source Sans 3',sans-serif;font-size:11px;letter-spacing:3px;}
+.masthead-right .dot{width:6px;height:6px;background:var(--red);border-radius:50%;}
 
-/* ---------- Header row ---------- */
-.cover-header{width:1480px;height:40px;display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
-.h-left{display:flex;align-items:center;gap:16px;}
-.h-left .tag-red{width:38px;height:2px;background:var(--red);}
-.h-left .label{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:12px;letter-spacing:6px;font-weight:600;color:var(--ink);}
-.h-left .cn{font-family:'Noto Serif SC','Playfair Display',serif;font-size:12px;letter-spacing:2px;font-weight:600;color:var(--ink);}
-.h-right{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:11px;letter-spacing:4px;font-weight:500;color:var(--muted);}
-.h-right span{color:var(--red);font-weight:700;}
+/* ===== issue line ===== */
+.issue-line{position:absolute;top:82px;left:60px;display:flex;align-items:center;gap:16px;z-index:5;font-family:'Source Sans 3',sans-serif;font-size:11px;letter-spacing:4px;color:var(--black);}
+.issue-line .kicker{font-family:'Playfair Display','Noto Serif SC',serif;font-style:italic;font-weight:700;font-size:14px;letter-spacing:2px;color:var(--red);}
+.issue-line .line{width:60px;height:2px;background:var(--black);}
 
-/* ---------- Cover zone ---------- */
-.cover-zone{width:1480px;height:600px;display:flex;gap:25px;}
-.cover-left{width:825px;height:600px;position:relative;display:flex;flex-direction:column;}
+/* ===== flame badge (circular, top-right) ===== */
+.flame-badge{position:absolute;top:110px;right:70px;width:230px;height:230px;z-index:6;}
+.flame-badge svg{width:100%;height:100%;filter:drop-shadow(0 6px 24px rgba(229,57,53,0.35));}
 
-.title-block{height:232px;position:relative;}
-.title-line1{font-family:'Playfair Display','Noto Serif SC',serif;font-size:88px;font-weight:900;line-height:1.02;letter-spacing:-1px;color:var(--ink);display:flex;align-items:baseline;}
-.title-line1 .t-main{display:inline-block;}
-.title-line1 .t-red{color:var(--red);}
-.title-line2{font-family:'Playfair Display','Noto Serif SC',serif;font-size:128px;font-weight:900;line-height:1.02;letter-spacing:-2px;color:var(--red);margin-top:8px;display:flex;align-items:baseline;justify-content:space-between;}
-.title-line2 .dot{display:inline-block;width:14px;height:14px;background:var(--red);border-radius:50%;margin-left:14px;transform:translateY(-8px);box-shadow:0 0 24px rgba(229,57,53,.7);}
-.title-line2 .rule{position:absolute;left:0;bottom:-12px;width:110px;height:6px;background:var(--ink);}
+/* ===== main title area ===== */
+.title-block{position:absolute;top:130px;left:60px;width:900px;z-index:4;}
+.eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.eyebrow .bar{width:54px;height:4px;background:var(--red);}
+.eyebrow .label{font-family:'Playfair Display','Noto Serif SC',serif;font-style:italic;font-weight:700;font-size:22px;color:var(--black);letter-spacing:1px;}
+.eyebrow .label-cn{font-family:'Noto Serif SC',serif;font-weight:700;font-size:18px;color:var(--black);letter-spacing:6px;}
 
-.subtitle{margin-top:22px;font-family:'Noto Serif SC','Playfair Display',serif;font-size:20px;font-weight:500;color:var(--ink);line-height:1.45;letter-spacing:1.2px;}
-.subtitle .sep{color:var(--red);margin:0 10px;font-weight:700;}
-.subtitle .accent{color:var(--red);font-weight:700;}
+.main-title{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:900;line-height:0.88;color:var(--red);letter-spacing:-2px;}
+.main-title .row1{display:flex;align-items:baseline;gap:6px;}
+.main-title .gpl{font-size:170px;font-style:italic;}
+.main-title .amp{font-size:96px;font-style:italic;color:var(--red);font-weight:700;margin:0 4px;}
+.main-title .of{font-family:'Playfair Display',serif;font-style:italic;font-size:64px;color:var(--red);font-weight:700;align-self:center;margin:0 6px;}
+.main-title .row2{display:flex;align-items:baseline;gap:8px;margin-top:6px;}
+.main-title .fire{font-size:130px;font-style:italic;}
+.main-title .cn1{font-family:'Noto Serif SC',serif;font-size:96px;font-weight:900;color:var(--red);letter-spacing:2px;}
+.main-title .cn2{font-family:'Noto Serif SC',serif;font-size:96px;font-weight:900;color:var(--black);letter-spacing:2px;}
+.main-title .growth{font-size:110px;font-style:italic;color:var(--red);font-weight:900;}
 
-.summary{margin-top:22px;max-width:760px;font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:14px;font-weight:400;color:#2A2A2A;line-height:1.85;letter-spacing:.3px;}
-.summary .h{color:var(--red);font-weight:700;}
-.summary .em{color:var(--ink);font-weight:600;}
+.subtitle{margin-top:26px;font-family:'Noto Serif SC',serif;font-weight:400;font-size:19px;color:var(--black);letter-spacing:6px;line-height:1.5;max-width:820px;}
+.subtitle .dash{color:var(--red);margin:0 6px;}
+.subtitle-en{margin-top:6px;font-family:'Source Sans 3',sans-serif;font-size:12px;letter-spacing:4px;color:var(--black);opacity:.55;}
 
-/* ---------- Fire panel ---------- */
-.cover-right{width:630px;height:600px;position:relative;background:var(--ink);overflow:hidden;}
-.fire-panel{position:absolute;inset:0;overflow:hidden;}
+/* ===== three content points ===== */
+.points{position:absolute;left:60px;top:560px;width:820px;display:flex;flex-direction:column;gap:14px;z-index:4;}
+.point{display:flex;align-items:flex-start;gap:16px;padding:8px 0 8px 0;border-top:1px solid rgba(26,26,26,0.18);}
+.point:first-child{border-top:2px solid var(--red);}
+.point-num{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:30px;color:var(--red);line-height:1;min-width:44px;padding-top:2px;}
+.point-body{flex:1;}
+.point-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:17px;color:var(--black);letter-spacing:3px;margin-bottom:2px;}
+.point-desc{font-family:'Noto Sans SC',sans-serif;font-size:12.5px;color:var(--black);opacity:.78;line-height:1.5;letter-spacing:0.5px;}
 
-.glow-base{position:absolute;left:50%;bottom:-8%;transform:translateX(-50%);width:120%;height:70%;
-  background:radial-gradient(ellipse 55% 90% at 50% 100%, rgba(255,112,67,.85) 0%, rgba(229,57,53,.7) 18%, rgba(183,28,28,.45) 38%, rgba(26,26,26,0) 72%);}
-.glow-hot{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:60%;height:52%;
-  background:radial-gradient(ellipse 45% 90% at 50% 100%, rgba(255,224,130,.7) 0%, rgba(255,112,67,.55) 22%, transparent 68%);}
-.glow-top{position:absolute;left:50%;top:8%;transform:translateX(-50%);width:90%;height:60%;
-  background:radial-gradient(ellipse 60% 80% at 50% 40%, rgba(229,57,53,.25) 0%, transparent 65%);}
+/* ===== narrative / intro paragraph (bottom-right, above band) ===== */
+.narrative{position:absolute;right:70px;bottom:170px;width:520px;z-index:6;padding:22px 24px 22px 26px;background:linear-gradient(135deg,rgba(10,10,10,0.94),rgba(26,26,26,0.90));color:var(--cream);border-left:4px solid var(--red);}
+.narrative-label{font-family:'Playfair Display','Noto Serif SC',serif;font-style:italic;font-weight:700;font-size:14px;letter-spacing:3px;color:var(--red);margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.narrative-label::after{content:"";flex:1;height:1px;background:rgba(247,243,235,0.25);}
+.narrative p{font-family:'Noto Sans SC',sans-serif;font-size:12.5px;line-height:1.8;color:var(--cream);letter-spacing:0.4px;}
+.narrative .term{color:#FFCDD2;font-weight:600;font-family:'Playfair Display','Noto Serif SC',serif;font-style:italic;}
+.narrative .highlight{color:#FF8A65;font-weight:700;}
 
-#embers{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(28,22px);gap:0;
-  font-family:'Playfair Display',serif;font-weight:700;letter-spacing:0;
-  padding:8px;box-sizing:border-box;}
-.ember{display:flex;align-items:center;justify-content:center;line-height:1;}
+/* ===== floating code symbols (right side, dark area) ===== */
+.code-symbols{position:absolute;top:340px;right:0;width:620px;height:440px;z-index:3;pointer-events:none;overflow:hidden;}
+.code-symbols span{position:absolute;font-family:'JetBrains Mono',monospace;color:rgba(255,152,0,0.35);font-weight:700;user-select:none;letter-spacing:2px;}
+.code-symbols span.red{color:rgba(229,57,53,0.42);}
+.code-symbols span.cream{color:rgba(247,243,235,0.10);}
+.code-symbols span.dim{color:rgba(255,152,0,0.15);}
 
-.fire-panel-frame{position:absolute;inset:22px;border:1px solid rgba(255,224,130,.18);pointer-events:none;}
+/* ===== footer band: red with key nodes ===== */
+.footer-band{position:absolute;left:0;right:0;bottom:0;height:112px;background:var(--red);z-index:7;display:flex;align-items:stretch;padding:0;color:var(--cream);}
+.band-inner{width:100%;display:flex;align-items:stretch;}
+.band-title{display:flex;flex-direction:column;justify-content:center;padding:0 28px;border-right:1px solid rgba(247,243,235,0.28);min-width:220px;}
+.band-title .cn{font-family:'Noto Serif SC',serif;font-weight:900;font-size:20px;letter-spacing:4px;color:var(--cream);}
+.band-title .en{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:11px;letter-spacing:4px;color:rgba(247,243,235,0.75);margin-top:3px;}
+.nodes{flex:1;display:flex;align-items:stretch;}
+.node{flex:1;padding:14px 22px;border-right:1px solid rgba(247,243,235,0.28);display:flex;flex-direction:column;justify-content:center;position:relative;}
+.node:last-child{border-right:none;}
+.node-year{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:36px;color:var(--cream);letter-spacing:1px;line-height:1;}
+.node-label{font-family:'Playfair Display','Noto Serif SC',serif;font-style:italic;font-weight:700;font-size:13px;color:var(--cream);margin-top:6px;letter-spacing:2px;}
+.node-cn{font-family:'Noto Sans SC',sans-serif;font-size:11.5px;color:rgba(247,243,235,0.90);margin-top:4px;letter-spacing:1.5px;line-height:1.5;}
+.node-tag{position:absolute;top:10px;right:14px;font-family:'Playfair Display',serif;font-style:italic;font-size:11px;color:rgba(247,243,235,0.55);letter-spacing:2px;}
 
-.fire-label{position:absolute;left:32px;top:26px;z-index:5;}
-.fire-label .num{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--ember-1);letter-spacing:5px;}
-.fire-label .txt{font-family:'Noto Serif SC',serif;font-size:13px;color:var(--ember-1);letter-spacing:3px;margin-top:8px;font-weight:600;}
-.fire-label .en{font-family:'Source Sans 3',sans-serif;font-size:9px;color:rgba(255,224,130,.55);letter-spacing:4px;margin-top:5px;}
+/* ===== extra ornaments ===== */
+.corner-mark{position:absolute;top:34px;left:50%;transform:translateX(-50%);font-family:'Playfair Display',serif;font-style:italic;font-size:11px;letter-spacing:6px;color:var(--black);opacity:.55;z-index:5;}
+.ornament-line{position:absolute;left:60px;right:60px;bottom:126px;height:1px;background:var(--black);opacity:.25;z-index:3;}
+.spine{position:absolute;left:0;top:0;bottom:0;width:14px;background:var(--black);z-index:8;display:flex;align-items:center;justify-content:center;}
+.spine span{writing-mode:vertical-rl;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:var(--red);letter-spacing:8px;font-size:11px;}
 
-.fire-meta{position:absolute;right:32px;top:26px;z-index:5;text-align:right;}
-.fire-meta .en{font-family:'Playfair Display',serif;font-size:11px;font-style:italic;color:rgba(255,224,130,.75);letter-spacing:2px;}
-.fire-meta .num{font-family:'Playfair Display',serif;font-size:12px;color:var(--ember-1);letter-spacing:5px;margin-top:8px;font-weight:700;}
+/* flame badge label */
+.badge-label{position:absolute;top:350px;right:90px;z-index:6;text-align:right;}
+.badge-label .l1{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:14px;color:var(--cream);letter-spacing:4px;}
+.badge-label .l2{font-family:'Noto Sans SC',sans-serif;font-size:10px;color:rgba(247,243,235,0.6);letter-spacing:3px;margin-top:2px;}
 
-.fire-quote{position:absolute;left:32px;right:32px;bottom:28px;z-index:5;color:var(--ember-1);}
-.fire-quote .q{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:500;line-height:1.65;color:#FFE082;letter-spacing:1.2px;font-style:italic;}
-.fire-quote .q-en{font-family:'Playfair Display',serif;font-size:10px;font-style:italic;color:rgba(255,224,130,.65);letter-spacing:3px;margin-top:8px;}
-.fire-quote .sig{font-family:'Source Sans 3',sans-serif;font-size:10px;color:rgba(255,224,130,.7);letter-spacing:3px;margin-top:12px;font-weight:600;}
-.fire-quote .sig .dot-r{color:var(--red);}
-
-/* ---------- KPI red band ---------- */
-.kpi-band{width:1480px;height:72px;margin-top:12px;background:var(--red);position:relative;display:flex;align-items:center;overflow:hidden;}
-.kpi-band::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg, rgba(0,0,0,.28), transparent 18%, transparent 82%, rgba(0,0,0,.28));}
-.kpi-band::after{content:'';position:absolute;left:0;top:0;width:100%;height:1px;background:rgba(255,255,255,.25);}
-.kpi-inner{width:100%;display:flex;justify-content:space-around;align-items:center;position:relative;z-index:2;}
-.kpi-item{display:flex;align-items:center;gap:24px;color:#FFF8EE;padding:0 20px;}
-.kpi-year{font-family:'Playfair Display',serif;font-size:54px;font-weight:900;line-height:1;letter-spacing:-1px;color:#FFFFFF;}
-.kpi-meta{display:flex;flex-direction:column;gap:3px;}
-.kpi-title{font-family:'Noto Serif SC',serif;font-size:16px;font-weight:700;letter-spacing:1.5px;color:#FFFFFF;}
-.kpi-sub{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:11px;font-weight:400;letter-spacing:1.2px;color:rgba(255,248,238,.78);}
-.kpi-sep{width:1px;height:44px;background:rgba(255,255,255,.5);}
-
-/* ---------- Quote zone ---------- */
-.quote-zone{width:1480px;height:68px;margin-top:12px;display:flex;justify-content:space-between;align-items:stretch;gap:30px;}
-.q-item{flex:1;display:flex;gap:16px;padding:12px 0 12px 0;position:relative;}
-.q-item+.q-item{border-left:1px solid var(--line);padding-left:26px;}
-.q-mark{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;line-height:.9;color:var(--red);flex-shrink:0;width:32px;}
-.q-body{display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0;}
-.q-tag{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
-.q-bar{width:18px;height:2px;background:var(--red);}
-.q-label{font-family:'Noto Serif SC',serif;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:2px;}
-.q-text{font-family:'Source Sans 3','Noto Sans SC',sans-serif;font-size:12px;color:#3D3D3D;line-height:1.55;letter-spacing:.3px;}
-.q-text .em{color:var(--red);font-weight:700;}
-
-/* ---------- Footer mark ---------- */
-.foot-mark{position:absolute;right:60px;bottom:8px;font-family:'Playfair Display','Noto Serif SC',serif;font-size:10px;letter-spacing:3px;color:var(--muted);font-style:italic;}
-.foot-mark .dot{color:var(--red);margin:0 4px;font-style:normal;font-weight:900;}
+/* issue # vertical text right side */
+.right-vert{position:absolute;right:22px;top:360px;writing-mode:vertical-rl;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:13px;color:rgba(255,152,0,0.55);letter-spacing:6px;z-index:5;}
 </style>
 </head>
 <body>
 <div class="wrapper">
-<div id="bg"></div>
-<div id="ct">
-
-  <div class="cover-header">
-    <div class="h-left">
-      <span class="tag-red"></span>
-      <span class="label">OPEN SOURCE ARCHIVE</span>
-      <span class="cn">开源之书记录</span>
-    </div>
-    <div class="h-right">ISSUE Nº<span>&nbsp;014&nbsp;</span>· GPL · COVERAGE</div>
+  <!-- background -->
+  <div id="bg">
+    <div class="bg-base"></div>
+    <div class="bg-right-flare"></div>
+    <div class="bg-black-corner"></div>
+    <div class="bg-lines"></div>
   </div>
 
-  <div class="cover-zone">
+  <!-- content -->
+  <div id="ct">
 
-    <div class="cover-left">
-      <div class="title-block">
-        <div class="title-line1">
-          <span class="t-main">GPL的<span class="t-red">燃烧</span></span>
-        </div>
-        <div class="title-line2">
-          <span>与增长<span class="dot"></span></span>
-          <span class="rule"></span>
+    <!-- masthead -->
+    <div class="masthead">
+      <div class="masthead-left">
+        <div class="masthead-badge">G</div>
+        <div>
+          <div class="masthead-title">GPL · OPEN SOURCE ARCHIVE</div>
+          <div class="masthead-sub">开源之书记录 · 2024 特刊 · 燃烧与增长</div>
         </div>
       </div>
+      <div class="masthead-right">
+        <span>VOL. 07</span>
+        <span class="dot"></span>
+        <span>ISSUE · GPL</span>
+        <span class="dot"></span>
+        <span>ISSN 2024-GPL-07</span>
+      </div>
+    </div>
+
+    <div class="issue-line">
+      <span class="line"></span>
+      <span class="kicker">The Burning &amp; The Growth</span>
+      <span class="line"></span>
+      <span>—— 一场关于自由软件版权博弈与繁荣的时代叙事</span>
+    </div>
+
+    <div class="corner-mark">FEB · 2024 · SPECIAL EDITION</div>
+
+    <!-- flame badge -->
+    <div class="flame-badge">
+      <svg viewBox="0 0 230 230" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="flameCore" cx="50%" cy="55%" r="55%">
+            <stop offset="0%" stop-color="#FFF3E0"/>
+            <stop offset="30%" stop-color="#FF9800"/>
+            <stop offset="65%" stop-color="#E53935"/>
+            <stop offset="100%" stop-color="#B71C1C"/>
+          </radialGradient>
+          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#E53935"/>
+            <stop offset="100%" stop-color="#1A1A1A"/>
+          </linearGradient>
+        </defs>
+        <!-- outer dark ring -->
+        <circle cx="115" cy="115" r="112" fill="#1A1A1A" stroke="#E53935" stroke-width="2"/>
+        <!-- inner red ring -->
+        <circle cx="115" cy="115" r="100" fill="none" stroke="url(#ringGrad)" stroke-width="1.5" stroke-dasharray="3 4"/>
+        <!-- flame body -->
+        <path d="M115 55
+                 C 95 80, 78 92, 82 122
+                 C 84 150, 98 172, 115 178
+                 C 132 172, 148 150, 148 122
+                 C 148 108, 138 96, 132 88
+                 C 130 102, 122 108, 116 104
+                 C 122 96, 124 82, 118 70
+                 C 116 66, 116 60, 115 55 Z"
+              fill="url(#flameCore)"/>
+        <!-- flame inner highlight -->
+        <path d="M115 95
+                 C 105 110, 100 122, 104 140
+                 C 108 155, 116 162, 122 158
+                 C 128 152, 128 138, 122 128
+                 C 120 122, 118 112, 115 95 Z"
+              fill="#FFF3E0" opacity="0.75"/>
+        <!-- GPL text -->
+        <text x="115" y="140" text-anchor="middle"
+              font-family="Playfair Display, serif" font-weight="900" font-style="italic"
+              font-size="20" fill="#FFF3E0">GPL</text>
+        <!-- top arc text -->
+        <defs>
+          <path id="topArc" d="M 25 115 A 90 90 0 0 1 205 115"/>
+          <path id="botArc" d="M 30 125 A 85 85 0 0 0 200 125"/>
+        </defs>
+        <text font-family="Source Sans 3, sans-serif" font-weight="700" font-size="11" fill="#FFCDD2" letter-spacing="4">
+          <textPath href="#topArc" startOffset="50%" text-anchor="middle">GENERAL · PUBLIC · LICENSE</textPath>
+        </text>
+        <text font-family="Playfair Display, serif" font-style="italic" font-weight="700" font-size="11" fill="#E53935" letter-spacing="3">
+          <textPath href="#botArc" startOffset="50%" text-anchor="middle">— 自由软件之火 —</textPath>
+        </text>
+      </svg>
+    </div>
+
+    <div class="badge-label">
+      <div class="l1">FIRE OF FREEDOM</div>
+      <div class="l2">自由之火 · 自 1989 起</div>
+    </div>
+
+    <!-- title block -->
+    <div class="title-block">
+      <div class="eyebrow">
+        <span class="bar"></span>
+        <span class="label-cn">开 源 之 书 记 录</span>
+        <span class="label">· The GPL Special</span>
+      </div>
+
+      <h1 class="main-title">
+        <div class="row1">
+          <span class="gpl">GPL</span>
+          <span class="of">的</span>
+          <span class="cn1">燃烧</span>
+        </div>
+        <div class="row2">
+          <span class="cn2">与增长</span>
+          <span class="amp">·</span>
+          <span class="growth">Ignited.</span>
+        </div>
+      </h1>
 
       <div class="subtitle">
-        <span class="accent">开源之书记录</span><span class="sep">·</span>一场关于自由软件版权博弈与繁荣的时代叙事
+        开 源 之 书 记 录<span class="dash">—</span>一 场 关 于 自 由 软 件 版 权 博 弈 与 繁 荣 的 时 代 叙 事
       </div>
+      <div class="subtitle-en">A NARRATIVE OF COPYRIGHT, CODE &amp; COMMONS · 2024 SPECIAL ISSUE</div>
+    </div>
 
-      <div class="summary">
-        <span class="h">GPL，General Public License，通用公共许可证。</span>它是自由软件运动最锋利的武器，也是开源世界最具争议的协议。本期开源之书记录，我们将沿着时间线，从 <span class="em">Richard Stallman</span> 的初心讲起，穿过专利诉讼与商业博弈的硝烟，最后抵达 GPL 在全球代码库中无处不在的今天。
+    <!-- three points -->
+    <div class="points">
+      <div class="point">
+        <div class="point-num">01</div>
+        <div class="point-body">
+          <div class="point-title">开源之书记录</div>
+          <div class="point-desc">以阅读分享的形式，回望 GPL 许可证从诞生到席卷全球的波澜壮阔 —— 一部由代码写就的公共契约简史。</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="point-num">02</div>
+        <div class="point-body">
+          <div class="point-title">燃烧与增长</div>
+          <div class="point-desc">GPL 既是自由软件的烈火，也是开源生态持续扩张的引擎 —— 火焰在争议中燃烧，也在一代代开发者手中传递。</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="point-num">03</div>
+        <div class="point-body">
+          <div class="point-title">适兕 · 开源之道</div>
+          <div class="point-desc">本期分享聚焦 GPL 的精神内核、争议时刻与增长轨迹 —— 在版权、商业与自由之间，回答开源之道如何行远。</div>
+        </div>
       </div>
     </div>
 
-    <div class="cover-right">
-      <div class="fire-panel">
-        <div class="glow-base"></div>
-        <div class="glow-hot"></div>
-        <div class="glow-top"></div>
-        <div id="embers"></div>
-        <div class="fire-panel-frame"></div>
+    <!-- floating code symbols (right side) -->
+    <div class="code-symbols">
+      <span class="red"   style="top:0;   left:80px;  font-size:78px;">{</span>
+      <span class="dim"   style="top:20px; left:280px; font-size:44px;">//</span>
+      <span class="cream" style="top:70px; left:440px; font-size:90px;">&lt;</span>
+      <span class="red"   style="top:100px;left:180px; font-size:56px;">;</span>
+      <span class="cream" style="top:130px;left:360px; font-size:64px;">&gt;</span>
+      <span class="dim"   style="top:170px;left:60px;  font-size:40px;">#include</span>
+      <span class="red"   style="top:190px;left:240px; font-size:80px;">}</span>
+      <span class="cream" style="top:220px;left:400px; font-size:48px;">/*</span>
+      <span class="dim"   style="top:250px;left:120px; font-size:34px;">function()</span>
+      <span class="red"   style="top:280px;left:300px; font-size:66px;">//</span>
+      <span class="cream" style="top:310px;left:50px;  font-size:52px;">&lt;/&gt;</span>
+      <span class="dim"   style="top:340px;left:220px; font-size:30px;">license(GPL);</span>
+      <span class="red"   style="top:360px;left:380px; font-size:60px;">{</span>
+      <span class="cream" style="top:390px;left:140px; font-size:44px;"></span>
+    </div>
 
-        <div class="fire-label">
-          <div class="num">NO.014</div>
-          <div class="txt">燃烧之卷</div>
-          <div class="en">THE BURNING ISSUE</div>
+    <!-- narrative card -->
+    <div class="narrative">
+      <div class="narrative-label">EDITORIAL · 卷首语</div>
+      <p>
+        <span class="term">GPL</span>，<span class="term">General Public License</span>，通用公共许可证。它是<span class="highlight">自由软件运动最锋利的武器</span>，也是开源世界最具争议的协议。本期开源之书记录，我们将沿着时间线，从 Richard Stallman 的初心讲起，穿过专利诉讼与商业博弈的硝烟，最后抵达 GPL 在全球代码库中无处不在的今天。
+      </p>
+    </div>
+
+    <!-- ornament line above band -->
+    <div class="ornament-line"></div>
+
+    <!-- footer band -->
+    <div class="footer-band">
+      <div class="band-inner">
+        <div class="band-title">
+          <div class="cn">关键节点</div>
+          <div class="en">MILESTONES · TIMELINE</div>
         </div>
-
-        <div class="fire-meta">
-          <div class="en">General Public License</div>
-          <div class="num">1989 · 2024</div>
-        </div>
-
-        <div class="fire-quote">
-          <div class="q">"There is no freedom without license, there is no growth without license."</div>
-          <div class="q-en">— GPL · THE SPIRIT &amp; THE FIRE</div>
-          <div class="sig">OPEN SOURCE ARCHIVE <span class="dot-r">·</span> 开源之书记录</div>
+        <div class="nodes">
+          <div class="node">
+            <div class="node-tag">NO. 01</div>
+            <div class="node-year">1989</div>
+            <div class="node-label">GPL v1 · Ignition</div>
+            <div class="node-cn">GPL 首次发布 · Richard Stallman 起草，自由软件之火正式点燃</div>
+          </div>
+          <div class="node">
+            <div class="node-tag">NO. 02</div>
+            <div class="node-year">1991</div>
+            <div class="node-label">GPL v2 · Kernel</div>
+            <div class="node-cn">GPLv2 发布 · Linux 内核采用的版本，开源生态全面扩张</div>
+          </div>
+          <div class="node">
+            <div class="node-tag">NO. 03</div>
+            <div class="node-year">2007</div>
+            <div class="node-label">GPL v3 · Defense</div>
+            <div class="node-cn">GPLv3 发布 · 应对软件专利与 DRM，为自由软件构筑新防线</div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- right vertical issue mark -->
+    <div class="right-vert">GPL · THE BURNING &amp; THE GROWTH · 2024</div>
+
+    <!-- left spine -->
+    <div class="spine"><span>OPEN SOURCE ARCHIVE · 开源之书记录</span></div>
 
   </div>
-
-  <div class="kpi-band">
-    <div class="kpi-inner">
-      <div class="kpi-item">
-        <div class="kpi-year">1989</div>
-        <div class="kpi-meta">
-          <div class="kpi-title">GPL v1 首发</div>
-          <div class="kpi-sub">Richard Stallman 起草 · 自由软件运动起点</div>
-        </div>
-      </div>
-      <div class="kpi-sep"></div>
-      <div class="kpi-item">
-        <div class="kpi-year">1991</div>
-        <div class="kpi-meta">
-          <div class="kpi-title">GPL v2 · Linux 内核采用</div>
-          <div class="kpi-sub">Linux Kernel 采用 · 开源生态破圈</div>
-        </div>
-      </div>
-      <div class="kpi-sep"></div>
-      <div class="kpi-item">
-        <div class="kpi-year">2007</div>
-        <div class="kpi-meta">
-          <div class="kpi-title">GPL v3</div>
-          <div class="kpi-sub">应对软件专利与 DRM · 走向全球代码库</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="quote-zone">
-    <div class="q-item">
-      <div class="q-mark">"</div>
-      <div class="q-body">
-        <div class="q-tag"><span class="q-bar"></span><span class="q-label">开源之书记录</span></div>
-        <div class="q-text">以阅读分享的形式回望 GPL 的<span class="em">波澜壮阔</span>。</div>
-      </div>
-    </div>
-    <div class="q-item">
-      <div class="q-mark">"</div>
-      <div class="q-body">
-        <div class="q-tag"><span class="q-bar"></span><span class="q-label">燃烧与增长</span></div>
-        <div class="q-text">GPL 既是自由软件的<span class="em">烈火</span>，也是开源生态持续扩张的<span class="em">引擎</span>。</div>
-      </div>
-    </div>
-    <div class="q-item">
-      <div class="q-mark">"</div>
-      <div class="q-body">
-        <div class="q-tag"><span class="q-bar"></span><span class="q-label">适兕 · 开源之道</span></div>
-        <div class="q-text">本期聚焦 GPL 的<span class="em">精神内核</span>、争议时刻与增长轨迹。</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="foot-mark">适兕·开源之道 <span class="dot">·</span> 开源之书记录</div>
-
 </div>
-</div>
-
-<script>
-(function(){
-  const el = document.getElementById('embers');
-  const chars = ['G','P','L','{','}','*','/','&','0','1','#','<','>','%','+','_','~','=','1','0','G','P','L','{','}','/','*'];
-  const rows = 28, cols = 12;
-  const total = rows*cols;
-  let html = '';
-  for(let i=0;i<total;i++){
-    const r = i/cols;
-    const normalized = r/rows;
-    const dist = Math.abs(normalized-1)*2;
-    let color;
-    if(dist>0.75) color = '#B71C1C';
-    else if(dist>0.55) color = '#E53935';
-    else if(dist>0.35) color = '#FF7043';
-    else if(dist>0.2) color = '#FFA726';
-    else if(dist>0.05) color = '#FFD180';
-    else color = '#FFF3B0';
-    const alpha = (0.45 + Math.random()*0.5).toFixed(2);
-    const size = 14 + Math.floor(Math.random()*14);
-    const italic = Math.random()<0.2 ? 'italic' : 'normal';
-    const w = 700 + (Math.random()<0.3 ? 200 : 0);
-    html += '<span class="ember" style="color:'+color+';opacity:'+alpha+';font-size:'+size+'px;font-style:'+italic+';font-weight:'+w+';">'+chars[i%chars.length]+'</span>';
-  }
-  el.innerHTML = html;
-})();
-</script>
 </body>
 </html>
