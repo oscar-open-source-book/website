@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第一篇 · 开源的经济</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D2137;
+    --navy-soft:#25405c;
+    --navy-muted:#5b6a7d;
+    --gold:#C9A227;
+    --gold-soft:#e0c46a;
+    --beige:#F5F3EE;
+    --beige-line:rgba(13,33,55,0.06);
+    --rule:#d9d2c2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:100%;height:100%;background:#e9e5dc;font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;color:var(--navy);}
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  .wrapper{
+    width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+    background:var(--beige);
+    background-image:repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 26px,
+      var(--beige-line) 26px,
+      var(--beige-line) 27px
+    );
+  }
+  #bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+  #bg::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:6px;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--navy) 38%,var(--gold) 38%,var(--gold) 60%,var(--beige) 60%,var(--beige) 100%);
+  }
+  #bg::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--rule);
+  }
+  #ct{position:absolute;inset:0;z-index:1;padding:80px 90px 70px 90px;}
+
+  /* Top meta bar */
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;letter-spacing:0.28em;color:var(--navy-muted);
+    text-transform:uppercase;
+    padding-bottom:14px;border-bottom:1px solid var(--rule);
+  }
+  .topbar .brand{display:flex;align-items:center;gap:14px;font-family:'Noto Serif SC',serif;font-weight:600;color:var(--navy);letter-spacing:0.2em;}
+  .topbar .brand .mark{width:8px;height:8px;background:var(--gold);display:inline-block;}
+  .topbar .pageno{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;letter-spacing:0.1em;color:var(--navy-soft);}
+
+  /* Main grid */
+  .hero{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap:70px;
+    margin-top:44px;
+    align-items:start;
+  }
+
+  .chapter-col{position:relative;padding-top:8px;}
+  .chapter-tag{
+    font-family:'Noto Sans SC',sans-serif;
+    font-size:12px;letter-spacing:0.42em;color:var(--gold);
+    font-weight:600;
+    display:flex;align-items:center;gap:14px;
+    margin-bottom:18px;
+  }
+  .chapter-tag .dash{width:44px;height:1px;background:var(--gold);}
+  .chapter-num{
+    font-family:'Cormorant Garamond','Noto Serif SC',serif;
+    font-weight:600;
+    font-size:300px;
+    line-height:0.82;
+    color:transparent;
+    -webkit-text-stroke:1.5px var(--gold);
+    letter-spacing:-0.02em;
+    position:relative;
+    margin-bottom:6px;
+  }
+  .chapter-num .dot{
+    position:absolute;
+    top:34px;right:110px;
+    width:20px;height:20px;background:var(--gold);border-radius:50%;
+    box-shadow:0 0 0 8px rgba(201,162,39,0.15);
+  }
+  .chapter-title{
+    font-family:'Noto Serif SC','Source Han Serif SC',serif;
+    font-weight:700;
+    font-size:56px;
+    line-height:1.15;
+    color:var(--navy);
+    letter-spacing:0.02em;
+    margin-top:14px;
+  }
+  .chapter-title .sep{color:var(--gold);margin:0 8px;font-weight:400;}
+  .chapter-sub{
+    margin-top:16px;
+    font-family:'Noto Sans SC',sans-serif;
+    font-size:16px;
+    line-height:1.7;
+    color:var(--navy-muted);
+    max-width:560px;
+  }
+  .chapter-sub .en{
+    display:block;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:20px;
+    color:var(--navy-soft);
+    letter-spacing:0.02em;
+    margin-bottom:4px;
+  }
+  .chapter-sub .zh{
+    display:block;
+    font-family:'Noto Serif SC',serif;
+    font-size:17px;
+    color:var(--navy);
+    letter-spacing:0.14em;
+  }
+
+  /* Right column — quote */
+  .quote-col{
+    position:relative;
+    padding:8px 0 0 0;
+    display:flex;flex-direction:column;justify-content:flex-start;
+    height:100%;
+  }
+  .quote-mark{
+    font-family:'Cormorant Garamond',serif;
+    font-size:120px;
+    line-height:0.6;
+    color:var(--gold);
+    opacity:0.85;
+    margin-bottom:6px;
+  }
+  .quote-body{
+    font-family:'Noto Serif SC','Source Han Serif SC',serif;
+    font-weight:600;
+    font-size:32px;
+    line-height:1.5;
+    color:var(--navy);
+    text-align:right;
+    letter-spacing:0.03em;
+    padding-right:8px;
+    position:relative;
+  }
+  .quote-body .hl{color:var(--gold);}
+  .quote-body::after{
+    content:"";
+    display:block;
+    width:88px;height:2px;
+    background:var(--gold);
+    margin:22px 0 0 auto;
+  }
+  .quote-attr{
+    margin-top:18px;
+    text-align:right;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--navy-muted);
+    letter-spacing:0.08em;
+  }
+
+  /* Divider */
+  .divider{
+    margin-top:44px;
+    display:flex;align-items:center;gap:18px;
+  }
+  .divider .rule{flex:1;height:1px;background:var(--rule);}
+  .divider .label{
+    font-family:'Noto Sans SC',sans-serif;
+    font-size:11px;letter-spacing:0.5em;color:var(--navy-muted);
+    padding:0 4px;
+  }
+  .divider .num{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;color:var(--gold);font-size:16px;
+  }
+
+  /* Bottom three columns */
+  .three-col{
+    margin-top:26px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    column-gap:44px;
+  }
+  .item{position:relative;padding-top:20px;border-top:1px solid var(--rule);}
+  .item .idx{
+    position:absolute;top:-11px;left:0;
+    background:var(--beige);
+    padding:0 10px 0 0;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:20px;color:var(--gold);
+    letter-spacing:0.05em;
+  }
+  .item .head{
+    display:inline-block;
+    font-family:'Noto Sans SC',sans-serif;
+    font-size:11px;
+    letter-spacing:0.36em;
+    font-weight:700;
+    color:#fff;
+    background:var(--navy);
+    padding:6px 12px 6px 14px;
+    margin-bottom:14px;
+  }
+  .item .head.alt{background:transparent;color:var(--gold);border:1px solid var(--gold);padding:5px 11px 5px 13px;}
+  .item .title{
+    font-family:'Noto Serif SC',serif;
+    font-weight:700;
+    font-size:22px;
+    color:var(--navy);
+    line-height:1.3;
+    margin-bottom:10px;
+    letter-spacing:0.02em;
+  }
+  .item .detail{
+    font-family:'Noto Sans SC',sans-serif;
+    font-size:13.5px;
+    line-height:1.75;
+    color:var(--navy-muted);
+  }
+  .item .accent{
+    width:24px;height:2px;background:var(--gold);
+    margin-bottom:14px;
+  }
+
+  /* Footer */
+  .footer{
+    position:absolute;
+    left:90px;right:90px;bottom:34px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:11px;letter-spacing:0.32em;color:var(--navy-muted);
+  }
+  .footer .l{display:flex;align-items:center;gap:14px;}
+  .footer .l .tick{width:6px;height:6px;background:var(--gold);display:inline-block;}
+  .footer .r{font-family:'Cormorant Garamond',serif;font-style:italic;letter-spacing:0.08em;color:var(--navy-soft);font-size:13px;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="topbar">
+      <div class="brand"><span class="mark"></span><span>OPEN&nbsp;SOURCE&nbsp;ECONOMICS&nbsp;·&nbsp;学术专题</span></div>
+      <div class="pageno">Section &nbsp;I &nbsp;/ &nbsp;V &nbsp;&nbsp;·&nbsp;&nbsp; p. 01</div>
+    </div>
+
+    <div class="hero">
+      <div class="chapter-col">
+        <div class="chapter-tag"><span class="dash"></span><span>PART&nbsp;&nbsp;ONE&nbsp;&nbsp;·&nbsp;&nbsp;第一篇章</span></div>
+        <div class="chapter-num">01<span class="dot"></span></div>
+        <div class="chapter-title">第一篇<span class="sep">·</span>开源的经济</div>
+        <div class="chapter-sub">
+          <span class="en">Value Creation in Open Source</span>
+          <span class="zh">价值 从 哪 里 来</span>
+        </div>
+      </div>
+
+      <div class="quote-col">
+        <div class="quote-mark">&ldquo;</div>
+        <div class="quote-body">
+          没有<span class="hl">产权</span>的协作，<br>
+          如何形成<span class="hl">可计量</span>的经济价值？
+        </div>
+        <div class="quote-attr">— The guiding question of this chapter</div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <span class="num">§&nbsp;I</span>
+      <span class="label">CHAPTER&nbsp;ROADMAP</span>
+      <span class="rule"></span>
+    </div>
+
+    <div class="three-col">
+      <div class="item">
+        <span class="idx">i.</span>
+        <span class="head">章节导览</span>
+        <div class="accent"></div>
+        <div class="title">三条主线：创造 · 分配 · 交换</div>
+        <div class="detail">聚焦开源项目中价值创造、分配与交换的三条主线，拆解贡献者、维护者与使用者之间的经济回路。</div>
+      </div>
+      <div class="item">
+        <span class="idx">ii.</span>
+        <span class="head alt">关键问题</span>
+        <div class="accent"></div>
+        <div class="title">免费代码，何以催生百亿产业？</div>
+        <div class="detail">为何免费代码能催生数百亿美元产业，公共知识又如何被资本重新定价——这是本篇要回答的核心命题。</div>
+      </div>
+      <div class="item">
+        <span class="idx">iii.</span>
+        <span class="head">阅读姿态</span>
+        <div class="accent"></div>
+        <div class="title">用经济学读技术社区</div>
+        <div class="detail">带着经济学问题读技术社区，而不是用技术叙事回避经济问题；先问价值来源，再谈代码质量。</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="l"><span class="tick"></span><span>SECTION&nbsp;HEADER&nbsp;&nbsp;·&nbsp;&nbsp;第一篇 开源的经济</span></div>
+      <div class="r">Value Creation in Open Source — 价值从哪里来</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

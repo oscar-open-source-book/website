@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>作者与文本定位 · 《开源之道》</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --navy-2:#1B3A5C;
+  --gold:#C9A227;
+  --gold-soft:#E4CE84;
+  --cream:#F5F3EE;
+  --paper:#FBFAF6;
+  --ink:#2A2A2A;
+  --ink-2:#4B4B4B;
+  --line:#D9D2C2;
+  --serif:"Noto Serif SC","Source Han Serif SC",serif;
+  --sans:"Noto Sans SC",sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;background:#eae7df;font-family:var(--sans);color:var(--ink);}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+
+#bg{position:absolute;inset:0;z-index:0;background:var(--cream);}
+#bg::before{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg, rgba(13,33,55,0.04) 0%, rgba(13,33,55,0) 30%, rgba(201,162,39,0.05) 100%);
+}
+#bg::after{
+  content:"";position:absolute;top:-140px;right:-140px;width:520px;height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle at center, rgba(201,162,39,0.10) 0%, rgba(201,162,39,0) 65%);
+}
+
+#ct{position:absolute;inset:0;z-index:1;padding:56px 64px 48px 64px;}
+
+/* Page header strip */
+.top-strip{
+  position:absolute;top:36px;left:64px;right:64px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--sans);font-size:13px;letter-spacing:0.24em;
+  color:var(--navy);text-transform:uppercase;
+}
+.top-strip .brand{display:flex;align-items:center;gap:14px;font-weight:600;}
+.top-strip .brand .dot{width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block;}
+.top-strip .meta{color:var(--ink-2);letter-spacing:0.18em;}
+
+/* Main grid */
+.grid{
+  position:absolute;top:110px;left:64px;right:64px;bottom:172px;
+  display:grid;grid-template-columns:38% 62%;gap:44px;
+}
+
+/* Left column - portrait */
+.portrait-col{position:relative;display:flex;flex-direction:column;gap:22px;}
+.portrait-card{
+  position:relative;flex:1;
+  background:var(--paper);
+  border:1px solid var(--line);
+  box-shadow:0 2px 0 rgba(13,33,55,0.05);
+  padding:28px;
+  display:flex;flex-direction:column;
+}
+.portrait-frame{
+  position:relative;flex:1;
+  background:linear-gradient(160deg,#122a44 0%,#0D2137 55%,#091826 100%);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.portrait-frame::before{
+  content:"";position:absolute;inset:14px;
+  border:1px solid rgba(201,162,39,0.35);
+  pointer-events:none;
+}
+.portrait-frame::after{
+  content:"";position:absolute;left:0;top:0;right:0;height:6px;background:var(--gold);
+}
+.portrait-glyph{
+  font-family:var(--serif);
+  font-size:220px;
+  font-weight:700;
+  color:var(--gold);
+  line-height:1;
+  letter-spacing:0;
+  text-shadow:0 4px 24px rgba(201,162,39,0.25);
+}
+.portrait-silhouette{
+  position:absolute;left:50%;bottom:20px;transform:translateX(-50%);
+  width:150px;height:150px;
+  opacity:0.10;
+}
+.portrait-caption{
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  display:flex;flex-direction:column;gap:8px;
+}
+.portrait-caption .name{
+  font-family:var(--serif);
+  font-size:30px;font-weight:700;color:var(--navy);
+  letter-spacing:0.06em;
+}
+.portrait-caption .en{
+  font-family:var(--sans);font-size:12px;letter-spacing:0.32em;
+  color:var(--gold);font-weight:600;text-transform:uppercase;
+}
+.portrait-caption .divider{
+  display:flex;align-items:center;gap:10px;
+  color:var(--ink-2);font-size:13px;margin-top:6px;
+}
+.portrait-caption .divider .line{flex:1;height:1px;background:var(--line);}
+
+/* Right column */
+.right-col{position:relative;display:flex;flex-direction:column;}
+.title-block{position:relative;padding-left:24px;margin-bottom:26px;}
+.title-block::before{
+  content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;
+  background:linear-gradient(180deg,var(--gold) 0%,var(--navy) 100%);
+}
+.eyebrow{
+  font-family:var(--sans);font-size:12px;letter-spacing:0.42em;
+  color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:10px;
+}
+.main-title{
+  font-family:var(--serif);
+  font-size:48px;font-weight:700;color:var(--navy);
+  line-height:1.15;letter-spacing:0.03em;
+}
+.sub-title{
+  font-family:var(--serif);
+  font-size:19px;color:var(--ink-2);font-weight:500;
+  margin-top:10px;line-height:1.55;letter-spacing:0.02em;
+  font-style:italic;
+}
+.deco-line{
+  display:flex;align-items:center;gap:14px;
+  margin-top:16px;
+}
+.deco-line .bar{height:1px;width:80px;background:var(--gold);}
+.deco-line .dia{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);}
+.deco-line .thin{flex:1;height:1px;background:var(--line);}
+.deco-line .tag{
+  font-family:var(--sans);font-size:12px;letter-spacing:0.3em;
+  color:var(--navy);font-weight:600;
+}
+
+/* Cards 2x2 */
+.cards{
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:18px;flex:1;
+}
+.card{
+  position:relative;
+  background:var(--paper);
+  border:1px solid var(--line);
+  padding:18px 22px 18px 24px;
+  display:flex;flex-direction:column;
+  box-shadow:0 1px 0 rgba(13,33,55,0.03);
+}
+.card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--navy);
+}
+.card .num{
+  position:absolute;top:14px;right:18px;
+  font-family:var(--serif);font-size:22px;color:var(--gold);
+  font-weight:600;letter-spacing:0.05em;
+}
+.card .head{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--serif);
+  font-size:20px;font-weight:700;color:var(--navy);
+  letter-spacing:0.06em;margin-bottom:10px;
+}
+.card .head .icon{
+  width:26px;height:26px;flex-shrink:0;
+  border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);font-family:var(--serif);font-size:14px;font-weight:700;
+}
+.card .detail{
+  font-family:var(--sans);
+  font-size:14px;color:var(--ink-2);
+  line-height:1.75;letter-spacing:0.02em;
+  flex:1;
+}
+.card .tags{
+  margin-top:10px;padding-top:10px;
+  border-top:1px dashed var(--line);
+  display:flex;gap:8px;flex-wrap:wrap;
+}
+.card .tags span{
+  font-size:11px;color:var(--navy-2);
+  background:rgba(13,33,55,0.06);
+  padding:3px 9px;letter-spacing:0.1em;
+  border:1px solid rgba(13,33,55,0.12);
+}
+
+/* Bottom quote */
+.quote-strip{
+  position:absolute;left:64px;right:64px;bottom:44px;
+  height:110px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-left:4px solid var(--gold);
+  padding:18px 34px 18px 34px;
+  display:flex;align-items:center;gap:24px;
+}
+.quote-mark{
+  font-family:var(--serif);
+  font-size:72px;line-height:0.7;
+  color:var(--gold);font-weight:900;
+  flex-shrink:0;
+  align-self:flex-start;
+  margin-top:4px;
+}
+.quote-body{flex:1;display:flex;flex-direction:column;gap:6px;}
+.quote-text{
+  font-family:var(--serif);
+  font-size:15px;color:var(--navy);
+  line-height:1.7;letter-spacing:0.03em;
+  font-style:italic;
+}
+.quote-attr{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--sans);font-size:12px;
+  color:var(--ink-2);letter-spacing:0.18em;
+}
+.quote-attr .gline{width:40px;height:1px;background:var(--gold);}
+
+/* Footer meta */
+.footer-strip{
+  position:absolute;bottom:14px;left:64px;right:64px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--sans);font-size:11px;letter-spacing:0.24em;
+  color:var(--ink-2);
+}
+.footer-strip .fl{display:flex;align-items:center;gap:10px;}
+.footer-strip .fl .gd{width:16px;height:1px;background:var(--gold);}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="top-strip">
+      <div class="brand"><span class="dot"></span><span>《开源之道》 · 作者与文本定位</span></div>
+      <div class="meta">CHAPTER · 00 &nbsp;|&nbsp; AUTHOR & TEXT POSITIONING</div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: portrait -->
+      <div class="portrait-col">
+        <div class="portrait-card">
+          <div class="portrait-frame">
+            <div class="portrait-glyph">适</div>
+            <svg class="portrait-silhouette" viewBox="0 0 200 200" fill="#C9A227">
+              <circle cx="100" cy="60" r="32"/>
+              <path d="M40 200 C40 140 70 108 100 108 C130 108 160 140 160 200 Z"/>
+            </svg>
+          </div>
+          <div class="portrait-caption">
+            <div class="en">Author Portrait</div>
+            <div class="name">适兕 · 黄凯</div>
+            <div class="divider">
+              <span>Shisi</span>
+              <span class="line"></span>
+              <span>Huang Kai</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: content -->
+      <div class="right-col">
+        <div class="title-block">
+          <div class="eyebrow">Positioning & Context</div>
+          <div class="main-title">作者与文本定位</div>
+          <div class="sub-title">—— 以亲历者之笔，写一门可讨论、可衡量、可持续的公共事业</div>
+          <div class="deco-line">
+            <div class="bar"></div>
+            <div class="dia"></div>
+            <div class="thin"></div>
+            <div class="tag">FOUR FACETS · 四维定位</div>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="num">01</div>
+            <div class="head"><span class="icon">壹</span><span>作者身份</span></div>
+            <div class="detail">适兕（黄凯）长期活跃于开源社区，兼具<b>开发者、布道者与写作者</b>的多重身份；既在代码一线构建项目，也通过演讲、专栏与书籍持续输出思想。</div>
+            <div class="tags"><span>开发者</span><span>布道者</span><span>写作者</span></div>
+          </div>
+
+          <div class="card">
+            <div class="num">02</div>
+            <div class="head"><span class="icon">贰</span><span>作品定位</span></div>
+            <div class="detail">《开源之道》是<b>实践手记与思想随笔的合集</b>，而非纯技术教程。它关注社区运行、协议生态、价值流转等软性议题，强调叙事与反思。</div>
+            <div class="tags"><span>随笔</span><span>手记</span><span>非技术教程</span></div>
+          </div>
+
+          <div class="card">
+            <div class="num">03</div>
+            <div class="head"><span class="icon">叁</span><span>写作动机</span></div>
+            <div class="detail">回应开源运动从<b>「利他工程」向「价值经济」</b>演进过程中的诸多困惑——从社区治理到商业变现，本书试图为这场范式迁移提供一份诚实的记录。</div>
+            <div class="tags"><span>利他工程</span><span>价值经济</span><span>过程性困惑</span></div>
+          </div>
+
+          <div class="card">
+            <div class="num">04</div>
+            <div class="head"><span class="icon">肆</span><span>目标读者</span></div>
+            <div class="detail">面向<b>社区维护者</b>、<b>开源企业从业者</b>，以及关注知识共享议题的<b>读者与研究者</b>——凡是希望在开源世界中建立判断力的读者，都能从中找到参照。</div>
+            <div class="tags"><span>维护者</span><span>企业从业者</span><span>研究者</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom quote -->
+    <div class="quote-strip">
+      <div class="quote-mark">&ldquo;</div>
+      <div class="quote-body">
+        <div class="quote-text">适兕以亲历者视角，把多年在开源社区的观察、争论与实验整理成文。这本书不追求定义"正确的开源"，而是把开源作为一门可讨论、可衡量、可持续的公共事业来写。</div>
+        <div class="quote-attr"><span class="gline"></span><span>《开源之道》 · 编者按</span></div>
+      </div>
+    </div>
+
+    <div class="footer-strip">
+      <div class="fl"><span class="gd"></span><span>OPEN SOURCE · A SHARED ENTERPRISE</span></div>
+      <div class="fl"><span>SECTION 00 · AUTHOR & TEXT</span><span class="gd"></span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

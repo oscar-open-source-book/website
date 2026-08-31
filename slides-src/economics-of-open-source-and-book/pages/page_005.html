@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源产业的规模</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="../assets/echarts.min.js"></script>
+<style>
+:root {
+  --navy: #0D2137;
+  --navy-soft: #1D3A5C;
+  --gold: #C9A227;
+  --gold-soft: #D9BC5A;
+  --cream: #F5F3EE;
+  --paper: #FBF9F4;
+  --ink: #1B1B1B;
+  --muted: #6B6B6B;
+  --line: #D8D2C4;
+  --accent-bg: rgba(201, 162, 39, 0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--ink);
+  background: #EAE7DF;
+  -webkit-font-smoothing: antialiased;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #F5F3EE 0%, #EFEBE0 100%);
+}
+#bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: var(--navy);
+}
+#bg::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(180deg, rgba(13,33,55,0) 0%, rgba(13,33,55,0.04) 100%);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 80px 48px 88px;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 18px;
+  margin-bottom: 26px;
+}
+.title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.eyebrow {
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 2px;
+  line-height: 1.15;
+}
+.subtitle {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  color: var(--muted);
+  letter-spacing: 3px;
+  font-weight: 400;
+  margin-top: 4px;
+}
+.tag {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.tag span {
+  color: var(--navy);
+  font-weight: 500;
+}
+.kpi-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 30px;
+}
+.kpi {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 26px 28px 24px 28px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.kpi::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 3px;
+  background: var(--gold);
+}
+.kpi-label {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--navy-soft);
+  font-weight: 600;
+}
+.kpi-number {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.05;
+  letter-spacing: 0.5px;
+}
+.kpi-number .unit {
+  font-size: 22px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-left: 4px;
+  letter-spacing: 1px;
+}
+.kpi-note {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+.bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  flex: 1;
+  min-height: 0;
+}
+.chart-panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 18px 20px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+.chart-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  color: var(--navy);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.chart-unit {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 2px;
+}
+#chart_1 {
+  width: 100%;
+  height: 320px;
+}
+.chart-caption {
+  font-size: 11.5px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 6px;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 4px;
+}
+.point {
+  background: var(--paper);
+  border-left: 3px solid var(--gold);
+  padding: 12px 18px 12px 18px;
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 14px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.point-key {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 2px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.point-key .idx {
+  font-size: 11px;
+  color: var(--gold);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.point-text {
+  font-size: 12.5px;
+  color: var(--ink);
+  line-height: 1.65;
+}
+.footer {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.footer .page-no {
+  color: var(--navy);
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="eyebrow"><span>OPEN SOURCE ECONOMY · 01</span></div>
+        <h1><span>开源产业的规模</span></h1>
+        <div class="subtitle"><span>—— 产业数据说话：开放代码已成为数字经济最厚的一层基础设施</span></div>
+      </div>
+      <div class="tag"><span>数据页 · DATA</span></div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-label"><span>开源软件市场规模</span></div>
+        <div class="kpi-number"><span>约 1400</span><span class="unit">亿美元</span></div>
+        <div class="kpi-note"><span>含托管、服务、支持等衍生收入，构成开源产业完整链条</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label"><span>企业采用率</span></div>
+        <div class="kpi-number"><span>&gt; 90</span><span class="unit">%</span></div>
+        <div class="kpi-note"><span>主流企业软件栈中至少含一个开源组件，事实技术底座</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label"><span>全球贡献者</span></div>
+        <div class="kpi-number"><span>数百万</span><span class="unit">级</span></div>
+        <div class="kpi-note"><span>GitHub、GitLab 等平台合计活跃贡献者，覆盖全球开发者生态</span></div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="chart-panel">
+        <div class="chart-head">
+          <div class="chart-title"><span>全球开源软件市场规模演进</span></div>
+          <div class="chart-unit"><span>单位：亿美元</span></div>
+        </div>
+        <div id="chart_1" style="width:100%;height:320px;"></div>
+        <div class="chart-caption"><span>数据来源：综合 Gartner / IDC / Linux Foundation 公开口径整理，示意趋势</span></div>
+      </div>
+
+      <div class="points">
+        <div class="point">
+          <div class="point-key"><span class="idx">01</span><span>全球市场</span></div>
+          <div class="point-text"><span>开源相关软件与服务已形成千亿美元级产业带，覆盖基础设施与企业级市场</span></div>
+        </div>
+        <div class="point">
+          <div class="point-key"><span class="idx">02</span><span>人才规模</span></div>
+          <div class="point-text"><span>数百万开发者直接参与开源贡献，贡献者中位数年龄持续年轻化</span></div>
+        </div>
+        <div class="point">
+          <div class="point-key"><span class="idx">03</span><span>企业采用</span></div>
+          <div class="point-text"><span>九成以上企业软件栈中至少包含一个开源组件，成为事实上的技术底座</span></div>
+        </div>
+        <div class="point">
+          <div class="point-key"><span class="idx">04</span><span>商业化路径</span></div>
+          <div class="point-text"><span>从 SaaS、托管服务到咨询培训，开源上游成为多种商业模式的共同源头</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div><span>开源价值 · 不止于情怀，而是产业级基础设施</span></div>
+      <div class="page-no"><span>01 / 06</span></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var el = document.getElementById('chart_1');
+  var chart = echarts.init(el, null, {renderer:'svg'});
+  var option = {
+    animation: false,
+    grid: { top: 42, right: 24, bottom: 34, left: 52 },
+    tooltip: { show: false },
+    legend: {
+      show: true,
+      top: 0,
+      right: 0,
+      itemWidth: 14,
+      itemHeight: 8,
+      textStyle: { color: '#6B6B6B', fontSize: 11, fontFamily: 'Noto Sans SC' }
+    },
+    xAxis: {
+      type: 'category',
+      data: ['2018', '2019', '2020', '2021', '2022', '2023', '2024E'],
+      axisLine: { lineStyle: { color: '#B8B0A0' } },
+      axisTick: { show: false },
+      axisLabel: { color: '#3C3C3C', fontSize: 11, fontFamily: 'Noto Sans SC' }
+    },
+    yAxis: {
+      type: 'value',
+      max: 1600,
+      interval: 400,
+      axisLine: { show: false },
+      axisTick: { show: false },
+      splitLine: { lineStyle: { color: '#E4DFD0', type: 'dashed' } },
+      axisLabel: { color: '#6B6B6B', fontSize: 10, fontFamily: 'Noto Sans SC', formatter: '{value}' }
+    },
+    series: [
+      {
+        name: '开源软件与相关服务',
+        type: 'bar',
+        data: [680, 820, 950, 1080, 1220, 1350, 1400],
+        barWidth: 30,
+        itemStyle: {
+          color: {
+            type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: '#1D3A5C' },
+              { offset: 1, color: '#0D2137' }
+            ]
+          }
+        },
+        label: {
+          show: true,
+          position: 'top',
+          color: '#0D2137',
+          fontSize: 10,
+          fontFamily: 'Noto Sans SC',
+          fontWeight: 600,
+          formatter: '{c}'
+        }
+      },
+      {
+        name: '同比增速',
+        type: 'line',
+        yAxisIndex: 0,
+        data: [null, 20.6, 15.9, 13.7, 13.0, 10.7, 3.7],
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 7,
+        lineStyle: { color: '#C9A227', width: 2 },
+        itemStyle: { color: '#C9A227', borderColor: '#FFFFFF', borderWidth: 1 },
+        label: {
+          show: true,
+          position: 'top',
+          color: '#C9A227',
+          fontSize: 10,
+          fontFamily: 'Noto Sans SC',
+          formatter: function(p){ return p.value ? p.value + '%' : ''; }
+        },
+        yAxis: undefined
+      }
+    ]
+  };
+  // Add secondary yAxis for growth rate line
+  option.yAxis = [
+    {
+      type: 'value',
+      max: 1600,
+      interval: 400,
+      axisLine: { show: false },
+      axisTick: { show: false },
+      splitLine: { lineStyle: { color: '#E4DFD0', type: 'dashed' } },
+      axisLabel: { color: '#6B6B6B', fontSize: 10, fontFamily: 'Noto Sans SC' }
+    },
+    {
+      type: 'value',
+      max: 25,
+      min: 0,
+      axisLine: { show: false },
+      axisTick: { show: false },
+      splitLine: { show: false },
+      axisLabel: { color: '#C9A227', fontSize: 10, fontFamily: 'Noto Sans SC', formatter: '{value}%' }
+    }
+  ];
+  option.series[1].yAxisIndex = 1;
+  chart.setOption(option);
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>
