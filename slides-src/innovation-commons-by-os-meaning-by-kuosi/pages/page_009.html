@@ -3,686 +3,367 @@
 <head>
 <meta charset="UTF-8">
 <title>开源布道行动指南</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+Pro:wght@300;400;600;700&family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Serif+SC:wght@700;900&family=Source+Sans+Pro:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy: #0D2137;
-  --navy-light: #1B3A5C;
-  --amber: #B85C38;
-  --amber-light: #D4896A;
-  --cream: #F7F3ED;
-  --cream-dark: #EDE6D8;
-  --ink: #2A2A2A;
-  --ink-light: #5A5A5A;
-  --line: #C9BFA8;
+:root{
+  --bg:#F7F3ED;
+  --navy:#0D2137;
+  --ochre:#B85C38;
+  --navy-soft:#1A3350;
+  --paper:#FBF8F2;
+  --line:#D8CFBE;
+  --text-main:#2A2A2A;
+  --text-mute:#6B6358;
+  --serif:"Playfair Display","Noto Serif SC",Georgia,serif;
+  --sans:"Source Sans Pro","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:var(--sans);color:var(--text-main);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 64px 48px 64px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Background decorative */
+#bg::before{
+  content:"";position:absolute;top:-120px;right:-80px;width:520px;height:520px;
+  border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(184,92,56,0.08),transparent 70%);
+}
+#bg::after{
+  content:"";position:absolute;bottom:-140px;left:-100px;width:560px;height:560px;
+  border-radius:50%;background:radial-gradient(circle at 60% 40%,rgba(13,33,55,0.06),transparent 70%);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* Top rail */
+.rail{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.rail-left{display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:0.22em;color:var(--navy);font-weight:600;}
+.rail-left .dot{width:7px;height:7px;background:var(--ochre);border-radius:50%;}
+.rail-right{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text-mute);letter-spacing:0.05em;}
+.rail-right span{color:var(--ochre);font-weight:700;font-style:normal;font-family:var(--sans);margin:0 6px;}
 
-body {
-  background: var(--cream);
-  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
-  color: var(--ink);
-  overflow: hidden;
+/* Hero */
+.hero{margin-top:22px;position:relative;}
+.hero .eyebrow{font-size:11px;letter-spacing:0.35em;color:var(--ochre);font-weight:700;margin-bottom:10px;}
+.hero h1{
+  font-family:var(--serif);
+  font-weight:900;
+  font-size:74px;
+  line-height:1.02;
+  color:var(--navy);
+  letter-spacing:0.01em;
+}
+.hero h1 .accent{color:var(--ochre);font-style:italic;}
+.hero .sub{
+  margin-top:14px;
+  font-size:17px;
+  color:var(--text-mute);
+  font-weight:400;
+  letter-spacing:0.02em;
+  max-width:1100px;
+  line-height:1.55;
+}
+.hero .sub .mark{color:var(--navy);font-weight:600;}
+
+.hero-rule{
+  margin-top:16px;
+  display:flex;align-items:center;gap:18px;
+}
+.hero-rule .line{flex:1;height:1px;background:var(--line);}
+.hero-rule .tag{
+  font-size:11px;letter-spacing:0.25em;color:var(--navy);font-weight:700;
+  padding:5px 14px;border:1px solid var(--navy);border-radius:2px;
+}
+.hero-rule .arrow{font-family:var(--serif);font-size:22px;color:var(--ochre);font-style:italic;}
+
+/* Staircase section */
+.stage{
+  position:relative;
+  margin-top:16px;
+  width:100%;
+  height:440px;
+}
+.stage-bg{
+  position:absolute;inset:0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:
+    repeating-linear-gradient(90deg,transparent 0,transparent 40px,rgba(13,33,55,0.025) 40px,rgba(13,33,55,0.025) 41px),
+    repeating-linear-gradient(0deg,transparent 0,transparent 40px,rgba(13,33,55,0.025) 40px,rgba(13,33,55,0.025) 41px);
+}
+.stage-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+
+.step{
+  position:absolute;
+  width:300px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-top:3px solid var(--navy);
+  padding:16px 18px 16px 18px;
+  display:flex;flex-direction:column;
+  box-shadow:0 6px 20px rgba(13,33,55,0.06);
+}
+.step .num{
+  font-family:var(--serif);
+  font-weight:900;
+  font-size:44px;
+  color:var(--ochre);
+  line-height:1;
+  font-style:italic;
+}
+.step .num-tag{
+  display:inline-block;
+  font-size:9px;letter-spacing:0.3em;font-weight:700;
+  color:var(--navy);background:var(--bg);
+  padding:3px 8px;border:1px solid var(--line);border-radius:2px;
+  margin-top:6px;width:fit-content;
+}
+.step .icon-wrap{
+  position:absolute;top:14px;right:14px;
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+}
+.step .title{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:22px;
+  color:var(--navy);
+  margin-top:12px;
+  line-height:1.15;
+}
+.step .divider{height:1px;background:var(--line);margin:8px 0 8px 0;}
+.step .desc{
+  font-size:12.5px;
+  color:var(--text-mute);
+  line-height:1.55;
+  font-weight:400;
 }
 
-.wrapper {
-  width: 1600px;
-  height: 900px;
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
-  background: var(--cream);
+/* Steps positions — ascending */
+.s1{left:10px;top:250px;}
+.s2{left:360px;top:180px;}
+.s3{left:720px;top:110px;}
+.s4{left:1080px;top:30px;}
+
+/* Stage top labels */
+.axis-labels{
+  position:absolute;top:0;left:0;right:0;height:100%;pointer-events:none;
+}
+.axis-labels .stage-tag{
+  position:absolute;
+  font-size:9px;letter-spacing:0.28em;color:var(--text-mute);font-weight:600;
+  padding-top:10px;border-top:2px solid var(--ochre);
 }
 
-#bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: var(--cream);
+/* KPIs */
+.kpi-row{
+  display:flex;gap:20px;margin-top:14px;
+}
+.kpi{
+  flex:1;
+  display:flex;align-items:stretch;
+  border:1px solid var(--line);
+  background:var(--paper);
+  overflow:hidden;
+}
+.kpi .kpi-lead{
+  width:6px;background:var(--ochre);flex-shrink:0;
+}
+.kpi .kpi-body{padding:14px 20px;display:flex;align-items:center;gap:20px;flex:1;}
+.kpi .kpi-num{
+  font-family:var(--serif);
+  font-weight:900;
+  font-size:44px;
+  color:var(--navy);
+  line-height:1;
+  font-style:italic;
+  flex-shrink:0;
+}
+.kpi .kpi-num .unit{font-size:16px;font-style:normal;font-weight:700;color:var(--ochre);margin-left:4px;}
+.kpi .kpi-text{flex:1;display:flex;flex-direction:column;}
+.kpi .kpi-title{
+  font-size:14px;font-weight:700;color:var(--navy);line-height:1.35;
+  font-family:var(--serif);
+}
+.kpi .kpi-note{
+  font-size:11.5px;color:var(--text-mute);margin-top:4px;line-height:1.4;
 }
 
-#bg::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 1600px; height: 900px;
-  background: 
-    radial-gradient(ellipse at 15% 10%, rgba(184,92,56,0.05) 0%, transparent 40%),
-    radial-gradient(ellipse at 85% 90%, rgba(13,33,55,0.04) 0%, transparent 45%);
+/* Closing */
+.closing{
+  margin-top:12px;
+  display:flex;align-items:center;gap:16px;
+  padding:12px 22px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:var(--navy);
+}
+.closing .quote-mark{
+  font-family:var(--serif);font-size:42px;color:var(--ochre);font-style:italic;line-height:0.8;
+}
+.closing .text{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:18px;
+  color:var(--bg);
+  letter-spacing:0.02em;
+  font-style:italic;
+  flex:1;
+}
+.closing .foot{
+  font-size:10px;letter-spacing:0.3em;color:var(--ochre);font-weight:700;
 }
 
-#ct {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  padding: 38px 60px;
-  box-sizing: border-box;
+/* Footer strip */
+.footer-strip{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:10px;
+  font-size:10px;letter-spacing:0.2em;color:var(--text-mute);font-weight:600;
 }
+.footer-strip .f-left{display:flex;align-items:center;gap:12px;}
+.footer-strip .f-bar{width:30px;height:1px;background:var(--ochre);}
 
-/* ===== MASTHEAD ===== */
-.masthead {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding-bottom: 14px;
-  border-bottom: 2px solid var(--navy);
-  position: relative;
+/* Stage connector arrows on the diagonal */
+.connector{
+  position:absolute;
+  width:14px;height:14px;
+  border-right:2px solid var(--ochre);
+  border-top:2px solid var(--ochre);
+  transform:rotate(45deg);
+  top:-8px;right:-9px;
+  z-index:5;
 }
-
-.masthead::after {
-  content: '';
-  position: absolute;
-  left: 0; bottom: -6px;
-  width: 120px; height: 2px;
-  background: var(--amber);
-}
-
-.mast-left {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.mast-tag {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  color: var(--amber);
-  text-transform: uppercase;
-}
-
-.mast-issue {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  color: var(--ink-light);
-}
-
-.mast-right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.mast-right-text {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--ink-light);
-  text-align: right;
-  line-height: 1.5;
-}
-
-.mast-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--amber);
-}
-
-/* ===== TITLE ===== */
-.title-block {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-top: 22px;
-  margin-bottom: 24px;
-}
-
-.title-main {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.title-en {
-  font-family: 'Playfair Display', serif;
-  font-size: 13px;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--amber);
-  letter-spacing: 1px;
-}
-
-.title-cn {
-  font-family: 'Noto Serif SC', 'Playfair Display', serif;
-  font-size: 56px;
-  font-weight: 900;
-  color: var(--navy);
-  letter-spacing: 6px;
-  line-height: 1.1;
-}
-
-.title-cn .accent {
-  color: var(--amber);
-}
-
-.title-sub {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--ink-light);
-  max-width: 720px;
-  line-height: 1.7;
-  border-left: 3px solid var(--amber);
-  padding-left: 14px;
-  margin-bottom: 4px;
-}
-
-.growth-path {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
-  padding-left: 14px;
-}
-
-.growth-step {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: var(--navy);
-  background: var(--cream-dark);
-  padding: 4px 10px;
-  border: 1px solid var(--line);
-}
-
-.growth-arrow {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 11px;
-  color: var(--amber);
-  font-weight: 700;
-}
-
-.growth-step.hi {
-  background: var(--navy);
-  color: #fff;
-  border-color: var(--navy);
-}
-
-/* ===== MAIN CONTENT AREA ===== */
-.main-area {
-  display: flex;
-  gap: 30px;
-  height: 540px;
-}
-
-/* ===== STAIRCASE ===== */
-.staircase {
-  position: relative;
-  flex: 0 0 960px;
-  height: 540px;
-}
-
-/* Connecting stair lines */
-.stair-lines {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.step-card {
-  position: absolute;
-  width: 360px;
-  height: 150px;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--navy);
-  display: flex;
-  align-items: stretch;
-  box-shadow: 0 4px 16px rgba(13,33,55,0.06);
-  z-index: 1;
-}
-
-.step-card.amber-top {
-  border-top-color: var(--amber);
-}
-
-.step-left {
-  width: 80px;
-  flex-shrink: 0;
-  background: var(--navy);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: #fff;
-}
-
-.step-card.amber-top .step-left {
-  background: var(--amber);
-}
-
-.step-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.step-icon {
-  font-size: 22px;
-  line-height: 1;
-}
-
-.step-right {
-  flex: 1;
-  padding: 14px 16px 14px 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  min-width: 0;
-}
-
-.step-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 17px;
-  font-weight: 900;
-  color: var(--navy);
-  letter-spacing: 1px;
-}
-
-.step-card.amber-top .step-title {
-  color: var(--amber);
-}
-
-.step-prog {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 2px;
-}
-
-.step-prog-bar {
-  flex: 1;
-  height: 3px;
-  background: var(--cream-dark);
-  position: relative;
-}
-
-.step-prog-bar .fill {
-  position: absolute;
-  left: 0; top: 0; height: 100%;
-  background: var(--amber);
-}
-
-.step-prog-label {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--ink-light);
-  letter-spacing: 0.5px;
-}
-
-.step-desc {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--ink-light);
-  line-height: 1.55;
-}
-
-/* Step positions - ascending staircase */
-.step-1 { left: 0; top: 370px; }
-.step-2 { left: 200px; top: 270px; }
-.step-3 { left: 400px; top: 170px; }
-.step-4 { left: 600px; top: 70px; }
-
-/* ===== SIDEBAR DATA CARDS ===== */
-.sidebar {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.data-card {
-  background: var(--navy);
-  color: #fff;
-  padding: 22px 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.data-card.amber {
-  background: var(--amber);
-}
-
-.data-card::before {
-  content: '';
-  position: absolute;
-  right: -20px;
-  top: -20px;
-  width: 80px;
-  height: 80px;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 50%;
-}
-
-.data-card-tag {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 10px;
-}
-
-.data-card-label {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-bottom: 14px;
-}
-
-.data-card-value {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-}
-
-.data-card-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 62px;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.data-card-unit {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.85);
-}
-
-.data-card-detail {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 11px;
-  font-weight: 300;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.6;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.15);
-}
-
-/* Mini chart bars */
-.mini-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  height: 30px;
-  margin-top: 12px;
-}
-
-.mini-bar {
-  width: 8px;
-  background: rgba(255,255,255,0.4);
-  border-radius: 1px;
-}
-
-.mini-bar.hi { background: #fff; }
-
-/* ===== BOTTOM STRIP ===== */
-.bottom-strip {
-  position: absolute;
-  left: 60px;
-  right: 60px;
-  bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
-  gap: 30px;
-}
-
-.bottom-quote {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--navy);
-  font-style: italic;
-  letter-spacing: 1px;
-  flex: 1;
-}
-
-.bottom-quote .amber {
-  color: var(--amber);
-}
-
-.bottom-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
-}
-
-.bottom-meta-text {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--ink-light);
-  font-weight: 600;
-}
-
-.bottom-meta-dot {
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--amber);
-}
-
-/* Decorative corner marks */
-.corner-mark {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 1px solid var(--navy);
-}
-
-.corner-tl { top: 38px; left: 38px; border-right: none; border-bottom: none; }
-.corner-tr { top: 38px; right: 38px; border-left: none; border-bottom: none; }
-.corner-bl { bottom: 20px; left: 38px; border-right: none; border-top: none; }
-.corner-br { bottom: 20px; right: 38px; border-left: none; border-top: none; }
-
-/* SVG stair connector */
-.stair-svg {
-  position: absolute;
-  inset: 0;
-  width: 960px;
-  height: 540px;
-  z-index: 0;
-  pointer-events: none;
-}
+.s4 .connector{display:none;}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg"></div>
-  <div id="ct">
+<div id="bg"></div>
+<div id="ct">
 
-    <span class="corner-mark corner-tl"></span>
-    <span class="corner-mark corner-tr"></span>
-    <span class="corner-mark corner-bl"></span>
-    <span class="corner-mark corner-br"></span>
-
-    <!-- MASTHEAD -->
-    <div class="masthead">
-      <div class="mast-left">
-        <span class="mast-tag">Open Source · Field Guide</span>
-        <span class="mast-issue">VOL. 01 &nbsp;|&nbsp; 行动指南 &nbsp;|&nbsp; ISSUE MMXXV</span>
-      </div>
-      <div class="mast-right">
-        <span class="mast-dot"></span>
-        <span class="mast-right-text">FOUR STEPS<br>TO OPEN SOURCE LEADERSHIP</span>
-        <span class="mast-dot"></span>
-      </div>
-    </div>
-
-    <!-- TITLE BLOCK -->
-    <div class="title-block">
-      <div class="title-main">
-        <span class="title-en">The Open Source Evangelism Action Guide</span>
-        <span class="title-cn">开源布道<span class="accent">行动指南</span></span>
-      </div>
-      <div>
-        <p class="title-sub">从消费者到贡献者，再到领导者——开源布道是一条持续生长的成长曲线，每一步都让影响力向上延伸一寸。</p>
-        <div class="growth-path">
-          <span class="growth-step">消费者</span>
-          <span class="growth-arrow">→</span>
-          <span class="growth-step hi">贡献者</span>
-          <span class="growth-arrow">→</span>
-          <span class="growth-step">布道者</span>
-          <span class="growth-arrow">→</span>
-          <span class="growth-step hi">领导者</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- MAIN AREA -->
-    <div class="main-area">
-
-      <!-- STAIRCASE -->
-      <div class="staircase">
-        <svg class="stair-svg" viewBox="0 0 960 540" preserveAspectRatio="none">
-          <!-- Rising staircase connector -->
-          <path d="M 180 520 L 180 460 L 380 460 L 380 360 L 580 360 L 580 260 L 780 260 L 780 160 L 900 160" 
-                fill="none" stroke="#B85C38" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.5"/>
-          <circle cx="180" cy="520" r="4" fill="#B85C38" opacity="0.6"/>
-          <circle cx="380" cy="460" r="4" fill="#B85C38" opacity="0.6"/>
-          <circle cx="580" cy="360" r="4" fill="#B85C38" opacity="0.6"/>
-          <circle cx="780" cy="260" r="4" fill="#B85C38" opacity="0.6"/>
-          <circle cx="900" cy="160" r="5" fill="#0D2137"/>
-          <text x="910" y="145" font-family="Playfair Display, serif" font-size="12" font-weight="700" fill="#0D2137" font-style="italic">GROWTH ↑</text>
-        </svg>
-
-        <!-- Step 1 -->
-        <div class="step-card step-1">
-          <div class="step-left">
-            <span class="step-num">01</span>
-            <span class="step-icon">💻</span>
-          </div>
-          <div class="step-right">
-            <span class="step-title">贡献代码</span>
-            <div class="step-prog">
-              <div class="step-prog-bar"><span class="fill" style="width:25%"></span></div>
-              <span class="step-prog-label">STEP 1 / 4</span>
-            </div>
-            <p class="step-desc">从提交 Issue 到提交 PR，参与真实项目是理解开源最快的方式。</p>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="step-card step-2 amber-top">
-          <div class="step-left">
-            <span class="step-num">02</span>
-            <span class="step-icon">✍️</span>
-          </div>
-          <div class="step-right">
-            <span class="step-title">撰写技术文章</span>
-            <div class="step-prog">
-              <div class="step-prog-bar"><span class="fill" style="width:50%"></span></div>
-              <span class="step-prog-label">STEP 2 / 4</span>
-            </div>
-            <p class="step-desc">在博客、公众号或社区平台输出学习心得，既是复盘也是布道。</p>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="step-card step-3">
-          <div class="step-left">
-            <span class="step-num">03</span>
-            <span class="step-icon">🤝</span>
-          </div>
-          <div class="step-right">
-            <span class="step-title">组织线下 Meetup</span>
-            <div class="step-prog">
-              <div class="step-prog-bar"><span class="fill" style="width:75%"></span></div>
-              <span class="step-prog-label">STEP 3 / 4</span>
-            </div>
-            <p class="step-desc">面对面的技术交流能建立深层信任，是远程协作无法替代的纽带。</p>
-          </div>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="step-card step-4 amber-top">
-          <div class="step-left">
-            <span class="step-num">04</span>
-            <span class="step-icon">⚙️</span>
-          </div>
-          <div class="step-right">
-            <span class="step-title">维护开源项目</span>
-            <div class="step-prog">
-              <div class="step-prog-bar"><span class="fill" style="width:100%"></span></div>
-              <span class="step-prog-label">STEP 4 / 4</span>
-            </div>
-            <p class="step-desc">成为项目维护者，意味着承担责任同时也获得塑造技术方向的话语权。</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- SIDEBAR -->
-      <div class="sidebar">
-        <div class="data-card">
-          <span class="data-card-tag">DATA ANCHOR · 01</span>
-          <p class="data-card-label">GitHub 首次 PR 中位数</p>
-          <div class="data-card-value">
-            <span class="data-card-num">6</span>
-            <span class="data-card-unit">个月</span>
-          </div>
-          <div class="mini-bars">
-            <span class="mini-bar" style="height:8px"></span>
-            <span class="mini-bar" style="height:12px"></span>
-            <span class="mini-bar" style="height:16px"></span>
-            <span class="mini-bar" style="height:20px"></span>
-            <span class="mini-bar" style="height:24px"></span>
-            <span class="mini-bar hi" style="height:30px"></span>
-          </div>
-          <p class="data-card-detail">从注册到首次贡献的典型周期——耐心比速度更重要。</p>
-        </div>
-
-        <div class="data-card amber">
-          <span class="data-card-tag">DATA ANCHOR · 02</span>
-          <p class="data-card-label">社区 Meetup 年均参与</p>
-          <div class="data-card-value">
-            <span class="data-card-num">3</span>
-            <span class="data-card-unit">~</span>
-            <span class="data-card-num">5</span>
-            <span class="data-card-unit">场 / 年</span>
-          </div>
-          <div class="mini-bars">
-            <span class="mini-bar" style="height:14px"></span>
-            <span class="mini-bar hi" style="height:26px"></span>
-            <span class="mini-bar" style="height:18px"></span>
-            <span class="mini-bar hi" style="height:28px"></span>
-            <span class="mini-bar" style="height:16px"></span>
-            <span class="mini-bar hi" style="height:24px"></span>
-          </div>
-          <p class="data-card-detail">有效社交与深度学习的最佳平衡频率，少而精胜过多而散。</p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- BOTTOM STRIP -->
-    <div class="bottom-strip">
-      <p class="bottom-quote">"选择其中一条路径切入、<span class="amber">持续深耕</span>，影响力会自然生长。"</p>
-      <div class="bottom-meta">
-        <span class="bottom-meta-text">OPEN SOURCE</span>
-        <span class="bottom-meta-dot"></span>
-        <span class="bottom-meta-text">EVANGELISM</span>
-        <span class="bottom-meta-dot"></span>
-        <span class="bottom-meta-text">FIELD GUIDE</span>
-      </div>
-    </div>
-
+  <div class="rail">
+    <div class="rail-left"><span class="dot"></span><span>OPEN SOURCE · EVANGELISM</span></div>
+    <div class="rail-right">Issue <span>N° 04</span> · 开源布道专题</div>
   </div>
+
+  <div class="hero">
+    <div class="eyebrow">A FIELD GUIDE · 成长曲线</div>
+    <h1>开源布道<span class="accent">行动指南</span></h1>
+    <div class="sub">开源布道的路径是一条从<span class="mark">消费者</span>到<span class="mark">贡献者</span>再到<span class="mark">领导者</span>的成长曲线——每一级跃迁，都需要代码、文字、组织与责任四类具体行动共同支撑。</div>
+    <div class="hero-rule">
+      <span class="tag">STEP-BY-STEP</span>
+      <div class="line"></div>
+      <span class="arrow">从贡献到引领 &rarr;</span>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-bg"></div>
+    <svg class="stage-svg" viewBox="0 0 1472 440" preserveAspectRatio="none">
+      <line x1="30" y1="360" x2="1442" y2="40" stroke="#B85C38" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.6"/>
+      <circle cx="160" cy="360" r="4" fill="#0D2137"/>
+      <circle cx="520" cy="290" r="4" fill="#0D2137"/>
+      <circle cx="880" cy="220" r="4" fill="#0D2137"/>
+      <circle cx="1240" cy="150" r="4" fill="#0D2137"/>
+    </svg>
+
+    <div class="step s1">
+      <span class="connector"></span>
+      <div class="icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B85C38" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/><line x1="14" y1="4" x2="10" y2="20"/>
+        </svg>
+      </div>
+      <div class="num">01</div>
+      <span class="num-tag">CONTRIBUTE</span>
+      <div class="title">贡献代码</div>
+      <div class="divider"></div>
+      <div class="desc">从提交 Issue 到提交 PR，参与真实项目是理解开源最快的方式。</div>
+    </div>
+
+    <div class="step s2">
+      <span class="connector"></span>
+      <div class="icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B85C38" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v14H6.5A2.5 2.5 0 0 0 4 16.5V6A2.5 2.5 0 0 1 6.5 3.5z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/>
+        </svg>
+      </div>
+      <div class="num">02</div>
+      <span class="num-tag">WRITE</span>
+      <div class="title">撰写技术文章</div>
+      <div class="divider"></div>
+      <div class="desc">在博客、公众号或社区平台输出学习心得，既是复盘也是布道。</div>
+    </div>
+
+    <div class="step s3">
+      <span class="connector"></span>
+      <div class="icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B85C38" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M15 20a4.5 4.5 0 0 1 6-4"/>
+        </svg>
+      </div>
+      <div class="num">03</div>
+      <span class="num-tag">ORGANIZE</span>
+      <div class="title">组织线下 Meetup</div>
+      <div class="divider"></div>
+      <div class="desc">面对面的技术交流能建立深层信任，是远程协作无法替代的纽带。</div>
+    </div>
+
+    <div class="step s4">
+      <div class="icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B85C38" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4 7.2 16.9l.9-5.4L4.2 7.7l5.4-.8z"/>
+        </svg>
+      </div>
+      <div class="num">04</div>
+      <span class="num-tag">LEAD</span>
+      <div class="title">维护开源项目</div>
+      <div class="divider"></div>
+      <div class="desc">成为项目维护者意味着承担责任，但也获得塑造技术方向的话语权。</div>
+    </div>
+
+    <div class="axis-labels">
+      <span class="stage-tag" style="left:160px;bottom:6px;">L1 · 消费者</span>
+      <span class="stage-tag" style="left:520px;bottom:6px;">L2 · 贡献者</span>
+      <span class="stage-tag" style="left:880px;bottom:6px;">L3 · 布道者</span>
+      <span class="stage-tag" style="left:1230px;bottom:6px;">L4 · 领导者</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-lead"></div>
+      <div class="kpi-body">
+        <div class="kpi-num">6<span class="unit">个月</span></div>
+        <div class="kpi-text">
+          <div class="kpi-title">GitHub 首次 PR 中位数</div>
+          <div class="kpi-note">从注册到首次贡献的典型周期，耐心比速度更重要。</div>
+        </div>
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lead"></div>
+      <div class="kpi-body">
+        <div class="kpi-num">3&ndash;5<span class="unit">场/年</span></div>
+        <div class="kpi-text">
+          <div class="kpi-title">社区 Meetup 年均参与</div>
+          <div class="kpi-note">有效社交与学习的平衡频率，让影响力稳步累积。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="closing">
+    <span class="quote-mark">"</span>
+    <span class="text">选择其中一条切入，持续深耕，影响力会自然生长。</span>
+    <span class="foot">CLOSING NOTE</span>
+  </div>
+
+  <div class="footer-strip">
+    <div class="f-left"><span>OPEN SOURCE EVANGELISM</span><span class="f-bar"></span><span>2024 · ISSUE 04</span></div>
+    <div>成长曲线 · 行动指南 · 持续深耕</div>
+  </div>
+
+</div>
 </div>
 </body>
 </html>

@@ -5,228 +5,239 @@
 <head>
 <meta charset="UTF-8">
 <title>开源之道·适兕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+SC:wght@400;700;900&family=Source+Sans+Pro:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+SC:wght@700;900&family=Source+Sans+Pro:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
 :root{
-  --bg:#F7F3ED;
+  --cream:#F7F3ED;
   --navy:#0D2137;
+  --navy-soft:#1B3350;
   --terracotta:#B85C38;
-  --ink:#1a1a1a;
-  --muted:#5a5a5a;
-  --line:#0D2137;
+  --gold:#C9A97A;
+  --line:#D9CFC0;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:1600px;height:900px;overflow:hidden;}
 body{
+  width:1600px;height:900px;overflow:hidden;
   font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
-  background:var(--bg);
   color:var(--navy);
-  font-weight:400;
-  -webkit-font-smoothing:antialiased;
 }
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
 #bg{position:absolute;inset:0;z-index:0;}
-#ct{position:absolute;inset:0;z-index:1;padding:56px 72px 52px 72px;}
+#ct{position:absolute;inset:0;z-index:1;padding:0;}
 
-/* ===== Decorative bg layer ===== */
-.bg-geo-1{position:absolute;top:-40px;right:-60px;width:340px;height:340px;border:2px solid var(--navy);border-radius:50%;opacity:.18;}
-.bg-geo-2{position:absolute;top:20px;right:20px;width:180px;height:180px;background:var(--terracotta);opacity:.08;border-radius:50%;}
-.bg-geo-3{position:absolute;bottom:140px;left:-80px;width:280px;height:2px;background:var(--navy);opacity:.15;}
-.bg-geo-4{position:absolute;bottom:120px;left:80px;width:2px;height:60px;background:var(--terracotta);opacity:.4;}
+/* Background decoration */
+.bg-frame{position:absolute;top:36px;left:36px;right:36px;bottom:36px;border:1px solid var(--line);pointer-events:none;}
+.bg-frame-2{position:absolute;top:44px;left:44px;right:44px;bottom:44px;border-top:1px solid var(--line);border-left:1px solid var(--line);pointer-events:none;}
+.bg-corner-tr{position:absolute;top:60px;right:60px;width:80px;height:80px;border-top:1px solid var(--terracotta);border-right:1px solid var(--terracotta);}
+.bg-corner-bl{position:absolute;bottom:60px;left:60px;width:80px;height:80px;border-bottom:1px solid var(--terracotta);border-left:1px solid var(--terracotta);}
+.bg-mono{position:absolute;top:60px;left:60px;font-family:'Playfair Display',serif;font-size:13px;letter-spacing:6px;color:var(--navy-soft);}
+.bg-issue{position:absolute;top:60px;right:60px;font-family:'Playfair Display',serif;font-size:13px;letter-spacing:6px;color:var(--terracotta);text-align:right;}
+.bg-foot{position:absolute;bottom:60px;left:60px;font-family:'Playfair Display',serif;font-size:12px;letter-spacing:5px;color:var(--navy-soft);}
+.bg-foot-r{position:absolute;bottom:60px;right:60px;font-family:'Playfair Display',serif;font-size:12px;letter-spacing:5px;color:var(--navy-soft);text-align:right;}
 
-/* ===== Top meta strip ===== */
-.meta-strip{
-  display:flex;align-items:center;justify-content:space-between;
-  padding-bottom:14px;border-bottom:1px solid rgba(13,33,55,.25);
-  margin-bottom:22px;
-}
-.meta-left{display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:.22em;color:var(--navy);font-weight:600;}
-.meta-dot{width:8px;height:8px;background:var(--terracotta);border-radius:50%;}
-.meta-issue{font-family:'Playfair Display','Noto Serif SC',serif;font-size:14px;font-weight:700;color:var(--terracotta);letter-spacing:.15em;}
-.meta-right{display:flex;align-items:center;gap:20px;font-size:11px;letter-spacing:.2em;color:var(--muted);font-weight:400;}
+/* Main grid */
+.stage{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;}
+.left{width:60%;height:100%;position:relative;padding:130px 70px 160px 110px;}
+.right{width:40%;height:100%;position:relative;}
 
-/* ===== Title zone ===== */
-.title-zone{position:relative;display:flex;align-items:flex-start;gap:28px;padding-top:10px;}
-.title-deco{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;padding-top:30px;}
-.title-deco .deco-bar-v{width:2px;height:50px;background:var(--terracotta);}
-.title-deco .deco-bar-v2{width:2px;height:28px;background:var(--navy);}
-.title-deco .deco-bar-h{width:48px;height:1px;background:var(--navy);opacity:.5;}
-.title-deco .deco-square{width:18px;height:18px;background:var(--terracotta);margin-top:4px;}
-
-.title-main{flex:1;}
-.title-eyebrow{
-  font-size:12px;letter-spacing:.32em;color:var(--terracotta);font-weight:600;margin-bottom:10px;
-  display:flex;align-items:center;gap:10px;
+/* Left content */
+.eyebrow{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:16px;
+  letter-spacing:3px;color:var(--terracotta);margin-bottom:26px;
 }
-.title-eyebrow .eb-line{width:36px;height:1px;background:var(--terracotta);}
-.title-cn{
-  font-family:'Playfair Display','Noto Serif SC',serif;
-  font-weight:900;font-size:124px;line-height:1.0;color:var(--navy);
-  letter-spacing:.02em;
-  display:flex;align-items:flex-start;gap:6px;
-}
-.title-cn .char{display:inline-block;}
-.title-cn .dot-sep{
-  display:inline-block;width:22px;height:22px;background:var(--terracotta);border-radius:50%;
-  margin:14px 12px 0 12px;flex-shrink:0;
-}
-.title-en{
-  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
-  font-size:22px;color:var(--navy);opacity:.55;letter-spacing:.06em;margin-top:8px;margin-left:6px;
-}
-.subtitle{
-  font-family:'Playfair Display','Noto Serif SC',serif;font-weight:700;
-  font-size:22px;color:var(--navy);margin-top:22px;letter-spacing:.04em;
-  padding-left:2px;
-  display:flex;align-items:center;gap:14px;
-}
-.subtitle .sub-bar{width:44px;height:2px;background:var(--terracotta);flex-shrink:0;}
-
-/* ===== Middle divider ===== */
-.mid-divider{
-  display:flex;align-items:center;gap:14px;margin:28px 0 20px 0;
-}
-.mid-divider .ln{flex:1;height:1px;background:var(--navy);opacity:.25;}
-.mid-divider .lbl{font-size:10px;letter-spacing:.3em;color:var(--terracotta);font-weight:600;}
-.mid-divider .ln-short{width:60px;height:1px;background:var(--terracotta);opacity:.6;}
-
-/* ===== Three columns ===== */
-.three-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:36px;margin-bottom:20px;}
-.col{position:relative;padding-left:20px;}
-.col-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.col-head .dash{width:28px;height:2px;background:var(--terracotta);flex-shrink:0;}
-.col-head .num{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--terracotta);letter-spacing:.1em;}
-.col-head .label{font-size:11px;letter-spacing:.28em;color:var(--navy);font-weight:600;margin-left:2px;}
-.col-title{
+.eyebrow .dot{display:inline-block;width:6px;height:6px;background:var(--terracotta);border-radius:50%;margin:0 10px;vertical-align:middle;}
+.main-title{
   font-family:'Playfair Display','Noto Serif SC',serif;font-weight:900;
-  font-size:26px;color:var(--navy);margin-bottom:12px;letter-spacing:.02em;
+  font-size:112px;line-height:1.02;color:var(--navy);letter-spacing:-1px;
 }
-.col-desc{
-  font-size:13.5px;line-height:1.85;color:var(--muted);font-weight:400;letter-spacing:.01em;
-}
-.col-desc .hl{color:var(--terracotta);font-weight:600;}
+.main-title .sub-zh{font-family:'Noto Serif SC',serif;font-weight:900;font-size:72px;color:var(--navy);}
+.main-title .amp{color:var(--terracotta);font-style:italic;font-weight:400;font-size:80px;display:inline-block;transform:translateY(-8px);margin:0 12px;}
+.title-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:0;}
 
-.col-divider{position:absolute;left:0;top:0;width:1px;height:100%;background:var(--navy);opacity:.12;}
-.col:first-child .col-divider{display:none;}
+.divider{width:180px;height:2px;background:var(--terracotta);margin:32px 0 22px 0;}
 
-/* ===== Bottom narrative ===== */
-.bottom-narrative{
-  margin-top:6px;padding:20px 24px 18px 24px;
-  border-top:2px solid var(--navy);
-  border-bottom:1px solid rgba(13,33,55,.2);
-  display:flex;align-items:flex-start;gap:20px;
-  background:rgba(255,255,255,.35);
+.subtitle{
+  font-family:'Noto Serif SC',serif;font-weight:400;font-size:22px;line-height:1.5;
+  color:var(--navy-soft);letter-spacing:1px;max-width:800px;
 }
-.narr-icon{
-  font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:var(--terracotta);
-  line-height:1;flex-shrink:0;margin-top:-2px;
-}
-.narr-text{
-  font-size:13px;line-height:1.85;color:var(--navy);font-weight:400;letter-spacing:.02em;
-  flex:1;
-}
-.narr-text .em{color:var(--terracotta);font-weight:600;}
 
-/* ===== Footer strip ===== */
-.footer-strip{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-top:14px;font-size:10px;letter-spacing:.25em;color:var(--muted);font-weight:500;
+.bullets{margin-top:46px;display:flex;flex-direction:column;gap:18px;max-width:840px;}
+.bullet{display:flex;align-items:flex-start;gap:22px;}
+.b-num{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:400;
+  font-size:32px;color:var(--terracotta);line-height:1;min-width:50px;
 }
-.footer-strip .fl{display:flex;align-items:center;gap:10px;}
-.footer-strip .fl-dot{width:6px;height:6px;background:var(--terracotta);border-radius:50%;}
-.footer-strip .fr{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:var(--terracotta);font-weight:700;letter-spacing:.15em;}
+.b-body{flex:1;padding-top:4px;border-left:1px solid var(--line);padding-left:22px;}
+.b-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:18px;color:var(--navy);letter-spacing:1px;margin-bottom:6px;}
+.b-desc{font-family:'Source Sans Pro','Noto Sans SC',sans-serif;font-weight:300;font-size:14.5px;line-height:1.55;color:var(--navy-soft);letter-spacing:0.3px;}
+
+/* Right decorative column */
+.r-inner{position:absolute;top:130px;right:90px;width:380px;height:640px;}
+.r-title{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;letter-spacing:4px;color:var(--navy-soft);margin-bottom:18px;}
+.r-title::after{content:"";display:block;width:60px;height:1px;background:var(--terracotta);margin-top:10px;}
+
+.book-stack{position:relative;margin-bottom:30px;}
+.book{position:relative;height:82px;border:1px solid var(--navy);background:var(--cream);}
+.book.b1{width:240px;height:66px;border-color:var(--navy);margin-left:0;}
+.book.b2{width:280px;height:74px;border-color:var(--terracotta);background:#FDFBF7;margin-left:30px;margin-top:-2px;}
+.book.b3{width:220px;height:62px;border-color:var(--navy);margin-left:60px;margin-top:-2px;}
+.book .spine{position:absolute;top:8px;bottom:8px;left:10px;width:1px;background:var(--navy);}
+.book.b2 .spine{background:var(--terracotta);}
+.book .lines{position:absolute;top:18px;left:24px;right:14px;display:flex;flex-direction:column;gap:6px;}
+.book .lines i{display:block;height:1px;background:var(--navy);opacity:0.5;}
+.book.b2 .lines i{background:var(--terracotta);}
+.book .lines i.short{width:60%;}
+.book .lines i.mid{width:80%;}
+
+.code-art{position:relative;font-family:'Playfair Display',monospace;font-size:13px;color:var(--navy-soft);letter-spacing:1px;line-height:1.85;margin-bottom:30px;opacity:0.9;}
+.code-art .k{color:var(--terracotta);}
+.code-art .n{color:var(--navy);font-weight:600;}
+.code-art .c{color:var(--navy-soft);font-style:italic;opacity:0.65;}
+
+.geo-stack{position:relative;height:150px;margin-bottom:20px;}
+.geo-circle{position:absolute;width:110px;height:110px;border:1.5px solid var(--navy);border-radius:50%;top:20px;left:20px;}
+.geo-circle-2{position:absolute;width:110px;height:110px;border:1.5px solid var(--terracotta);border-radius:50%;top:20px;left:150px;}
+.geo-square{position:absolute;width:88px;height:88px;border:1px solid var(--navy);top:32px;left:280px;transform:rotate(45deg);}
+.geo-tri{position:absolute;width:0;height:0;top:30px;left:210px;border-left:50px solid transparent;border-right:50px solid transparent;border-bottom:88px solid transparent;}
+.geo-tri i{position:absolute;left:-50px;top:0;width:0;height:0;border-left:50px solid transparent;border-right:50px solid transparent;border-bottom:88px solid var(--navy);opacity:0.12;}
+
+.r-quote{
+  font-family:'Noto Serif SC',serif;font-style:italic;font-size:14px;line-height:1.7;
+  color:var(--navy-soft);border-left:2px solid var(--terracotta);padding-left:16px;
+}
+
+/* Bottom narrative */
+.bottom-band{
+  position:absolute;left:110px;right:110px;bottom:96px;
+  border-top:1px solid var(--line);padding-top:18px;
+}
+.bottom-band .quote-mark{font-family:'Playfair Display',serif;font-style:italic;font-size:48px;color:var(--terracotta);line-height:0;position:absolute;top:34px;left:-18px;}
+.bottom-band .narrative{
+  font-family:'Noto Serif SC','Playfair Display',serif;font-size:14.5px;line-height:1.85;
+  color:var(--navy);letter-spacing:0.8px;
+  text-align:center;font-weight:400;
+  padding:0 60px;
+}
+.bottom-band .narrative .em{color:var(--terracotta);font-weight:700;}
+
+/* Vertical small text on sides */
+.v-side{position:absolute;font-family:'Playfair Display',serif;font-size:11px;letter-spacing:6px;color:var(--navy-soft);transform:rotate(-90deg);transform-origin:left top;}
+.v-left{top:430px;left:50px;}
+.v-right{top:430px;right:50px;transform:rotate(90deg);transform-origin:right top;text-align:right;}
+
+/* Tiny ornaments */
+.tiny-mark{position:absolute;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--terracotta);}
 
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="bg-geo-1"></div>
-    <div class="bg-geo-2"></div>
-    <div class="bg-geo-3"></div>
-    <div class="bg-geo-4"></div>
+<div id="bg">
+  <div class="bg-frame"></div>
+  <div class="bg-frame-2"></div>
+  <div class="bg-corner-tr"></div>
+  <div class="bg-corner-bl"></div>
+  <div class="bg-mono">VOL · 01 / OPEN SOURCE</div>
+  <div class="bg-issue">A · 2024 · ESSAY</div>
+  <div class="bg-foot">— 杂志 / 编辑特刊 —</div>
+  <div class="bg-foot-r">— ISSUE 001 —</div>
+</div>
+
+<div id="ct">
+<div class="stage">
+<div class="left">
+  <div class="eyebrow"><span>OPEN SOURCE · READING · COMMUNITY</span><span class="dot"></span><span>卷 一 · 开篇</span></div>
+
+  <div class="main-title">
+    <div class="title-row">
+      <span class="sub-zh">开源之道</span>
+      <span class="amp">·</span>
+    </div>
+    <div class="title-row">
+      <span class="sub-zh" style="color:var(--terracotta);">适兕</span>
+    </div>
   </div>
-  <div id="ct">
 
-    <!-- Top meta strip -->
-    <div class="meta-strip">
-      <div class="meta-left">
-        <span class="meta-dot"></span>
-        <span>OPEN SOURCE · JOURNAL</span>
-      </div>
-      <div class="meta-issue">VOL. 01 &nbsp;|&nbsp; 2025 EDITION</div>
-      <div class="meta-right">
-        <span>ISSUE / 001</span>
-        <span>·</span>
-        <span>分享 / 封面</span>
-      </div>
-    </div>
+  <div class="divider"></div>
 
-    <!-- Title zone -->
-    <div class="title-zone">
-      <div class="title-deco">
-        <div class="deco-bar-v"></div>
-        <div class="deco-bar-v2"></div>
-        <div class="deco-bar-h"></div>
-        <div class="deco-square"></div>
-      </div>
-      <div class="title-main">
-        <div class="title-eyebrow"><span class="eb-line"></span><span>A JOURNEY INTO OPEN SOURCE</span></div>
-        <div class="title-cn">
-          <span class="char">开</span><span class="char">源</span><span class="char">之</span><span class="char">道</span>
-          <span class="dot-sep"></span>
-          <span class="char">适</span><span class="char">兕</span>
-        </div>
-        <div class="title-en">The Way of Open Source · Shi Si</div>
-        <div class="subtitle"><span class="sub-bar"></span><span>开源布道与阅读分享 — 从理念到实践的路径探索</span></div>
-      </div>
-    </div>
-
-    <!-- Mid divider -->
-    <div class="mid-divider">
-      <span class="lbl">本期内容速览</span>
-      <span class="ln-short"></span>
-      <span class="ln"></span>
-    </div>
-
-    <!-- Three columns -->
-    <div class="three-cols">
-      <div class="col">
-        <div class="col-divider"></div>
-        <div class="col-head"><span class="dash"></span><span class="num">01</span><span class="label">THEME</span></div>
-        <div class="col-title">主题定位</div>
-        <div class="col-desc">以<span class="hl">开源</span>为核心，串联<span class="hl">布道</span>、<span class="hl">阅读</span>与<span class="hl">社区参与</span>的完整叙事，呈现一条自洽而立体的分享主线。</div>
-      </div>
-      <div class="col">
-        <div class="col-divider"></div>
-        <div class="col-head"><span class="dash"></span><span class="num">02</span><span class="label">NARRATIVE</span></div>
-        <div class="col-title">内容脉络</div>
-        <div class="col-desc">从<span class="hl">开源哲学</span>出发，走向<span class="hl">技术实践</span>与<span class="hl">个人成长</span>的双向奔赴，兼顾思想深度与落地温度。</div>
-      </div>
-      <div class="col">
-        <div class="col-divider"></div>
-        <div class="col-head"><span class="dash"></span><span class="num">03</span><span class="label">AUDIENCE</span></div>
-        <div class="col-title">受众画像</div>
-        <div class="col-desc">面向<span class="hl">技术从业者</span>、<span class="hl">开源贡献者</span>及关注<span class="hl">创新生态</span>的跨界读者，共同走进开源的精神世界。</div>
-      </div>
-    </div>
-
-    <!-- Bottom narrative -->
-    <div class="bottom-narrative">
-      <div class="narr-icon">"</div>
-      <div class="narr-text">
-        本次分享以<span class="em">"开源之道"</span>为主线，融合<span class="em">适兕</span>的个人阅读体悟与开源布道经验，试图勾勒一条从<span class="em">理念觉醒</span>到<span class="em">行动落地</span>的完整路径，邀请每一位听众走进开源的精神世界。
-      </div>
-    </div>
-
-    <!-- Footer strip -->
-    <div class="footer-strip">
-      <div class="fl"><span class="fl-dot"></span><span>SHI SI / OPEN SOURCE BAPTIST</span></div>
-      <div class="fr">— From Ideas to Practice —</div>
-      <div class="fl"><span>2025 · 封面</span><span class="fl-dot"></span></div>
-    </div>
-
+  <div class="subtitle">
+    <span>开源布道与阅读分享 — 从理念到实践的路径探索</span>
   </div>
+
+  <div class="bullets">
+    <div class="bullet">
+      <div class="b-num"><span>01</span></div>
+      <div class="b-body">
+        <div class="b-title"><span>主题定位</span></div>
+        <div class="b-desc"><span>以开源为核心，串联布道、阅读与社区参与的完整叙事。</span></div>
+      </div>
+    </div>
+    <div class="bullet">
+      <div class="b-num"><span>02</span></div>
+      <div class="b-body">
+        <div class="b-title"><span>内容脉络</span></div>
+        <div class="b-desc"><span>从开源哲学出发，走向技术实践与个人成长的双向奔赴。</span></div>
+      </div>
+    </div>
+    <div class="bullet">
+      <div class="b-num"><span>03</span></div>
+      <div class="b-body">
+        <div class="b-title"><span>受众画像</span></div>
+        <div class="b-desc"><span>面向技术从业者、开源贡献者及关注创新生态的跨界读者。</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="right">
+  <div class="r-inner">
+    <div class="r-title"><span>FRONT MATTER / 装饰</span></div>
+
+    <div class="book-stack">
+      <div class="book b1">
+        <div class="spine"></div>
+        <div class="lines"><i></i><i class="short"></i><i class="mid"></i><i></i></div>
+      </div>
+      <div class="book b2">
+        <div class="spine"></div>
+        <div class="lines"><i></i><i class="short"></i><i class="mid"></i><i></i><i></i></div>
+      </div>
+      <div class="book b3">
+        <div class="spine"></div>
+        <div class="lines"><i class="short"></i><i></i><i class="short"></i></div>
+      </div>
+    </div>
+
+    <div class="code-art">
+<span class="k">$</span> <span class="n">read</span> &lt; <span class="c">path / open / source</span><br>
+<span class="k">$</span> <span class="n">git</span> <span class="c">commit</span> —m "become<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">yourself</span>, <span class="n">contribute</span>"<br>
+<span class="k">$</span> <span class="n">echo</span> <span class="c">"hello, world"</span>
+    </div>
+
+    <div class="geo-stack">
+      <div class="geo-circle"></div>
+      <div class="geo-circle-2"></div>
+      <div class="geo-tri"><i></i></div>
+      <div class="geo-square"></div>
+    </div>
+
+    <div class="r-quote">
+      <span>"代码是最诚实的日记，<br>开源是最慷慨的对话。"</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="v-side v-left">— CHAPTER ZERO —</div>
+<div class="v-side v-right">— A READER'S JOURNEY —</div>
+
+<div class="bottom-band">
+  <div class="narrative">
+    <span>本次分享以「<span class="em">开源之道</span>」为主线，融合适兕的个人阅读体悟与开源布道经验，试图勾勒一条从理念觉醒到行动落地的完整路径，邀请每一位听众走进开源的精神世界。</span>
+  </div>
+</div>
+</div>
 </div>
 </body>
 </html>

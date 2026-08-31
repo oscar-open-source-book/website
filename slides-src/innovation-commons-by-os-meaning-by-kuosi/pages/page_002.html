@@ -1,29 +1,26 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>第一章·开源的意义</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+Pro:wght@300;400;600&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
 
 :root {
   --navy: #0D2137;
+  --navy-light: #1a3555;
   --terracotta: #B85C38;
+  --terracotta-light: #d4825e;
   --cream: #F7F3ED;
-  --navy-light: #1a3a5c;
-  --line: rgba(13,33,55,0.18);
-  --text-muted: rgba(13,33,55,0.62);
-  --text-soft: rgba(13,33,55,0.35);
+  --cream-warm: #EFE7D8;
+  --gold: #C9A96E;
+  --text-muted: #5a5a5a;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
   background: var(--cream);
-  color: var(--navy);
   overflow: hidden;
 }
 
@@ -33,359 +30,580 @@ body {
   position: relative;
   overflow: hidden;
   margin: 0 auto;
+  font-family: 'Source Sans Pro', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--navy);
 }
 
 #bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: var(--cream);
-}
-
-#bg::before {
-  content: '';
-  position: absolute;
-  top: -120px;
-  right: -120px;
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, rgba(184,92,56,0.07) 0%, transparent 70%);
+  background: linear-gradient(135deg, #F7F3ED 0%, #EFE7D8 60%, #F7F3ED 100%);
 }
 
 #ct {
   position: absolute;
   inset: 0;
   z-index: 1;
-  padding: 50px 80px;
-  box-sizing: border-box;
+  padding: 0;
 }
 
+/* 顶部装饰条 */
 .top-bar {
+  position: absolute;
+  top: 40px;
+  left: 60px;
+  right: 60px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--line);
-  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
-  font-size: 12px;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.top-bar .brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
   letter-spacing: 4px;
-  color: var(--text-soft);
+  color: var(--navy);
+  text-transform: uppercase;
+  font-weight: 400;
 }
 
-.top-bar .brand { display: flex; align-items: center; gap: 14px; }
-.top-bar .brand-dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--terracotta);
-  display: inline-block;
+.top-bar .brand-zh {
+  font-family: 'Source Han Serif SC', 'Playfair Display', serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--terracotta);
+  margin-left: 16px;
 }
 
-.vertical-text {
-  position: absolute;
-  left: 26px;
-  top: 130px;
-  writing-mode: vertical-rl;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 11px;
-  letter-spacing: 5px;
-  color: rgba(13,33,55,0.22);
-  height: 560px;
+.top-bar .line-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--navy);
+  margin: 0 30px;
+  opacity: 0.5;
 }
 
-.corner-deco {
-  position: absolute;
-  bottom: 24px;
-  right: 32px;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 10px;
+.top-bar .page-info {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
   letter-spacing: 3px;
-  color: rgba(13,33,55,0.25);
+  color: var(--navy-light);
 }
 
-.main {
+/* 底部装饰 */
+.bottom-bar {
+  position: absolute;
+  bottom: 40px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.bottom-bar .line-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--navy);
+  margin: 0 30px;
+  opacity: 0.5;
+}
+
+.bottom-bar .foot-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--navy-light);
+}
+
+/* 主体网格 */
+.main-grid {
+  position: absolute;
+  top: 95px;
+  left: 60px;
+  right: 60px;
+  bottom: 85px;
   display: grid;
   grid-template-columns: 500px 1fr;
-  gap: 60px;
-  margin-top: 28px;
+  gap: 40px;
+  z-index: 2;
 }
 
-.num-block {
+/* 左侧：大数字区域 */
+.left-col {
   position: relative;
-  padding-top: 8px;
-}
-
-.num-label {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 12px;
-  letter-spacing: 7px;
-  color: var(--terracotta);
-  margin-bottom: 10px;
-}
-
-.num-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 18px;
-}
-
-.num {
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-weight: 900;
-  font-size: 360px;
-  line-height: 0.82;
-  color: var(--navy);
-  letter-spacing: -8px;
-}
-
-.num-side {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-  padding-bottom: 30px;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 30px;
 }
 
-.num-side-line {
-  width: 3px;
-  height: 80px;
-  background: var(--terracotta);
-}
-
-.num-side-text {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 18px;
-  color: var(--terracotta);
-  max-width: 80px;
-  line-height: 1.4;
-}
-
-.num-caption {
-  margin-top: 24px;
+.left-col .ornament-top {
   display: flex;
   align-items: center;
-  gap: 14px;
-}
-
-.caption-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--navy);
-  display: inline-block;
-}
-
-.caption-text {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 14px;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-}
-
-.right-block {
-  display: flex;
-  flex-direction: column;
-  padding-top: 16px;
-}
-
-.chap-tag {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 12px;
-  letter-spacing: 5px;
-  color: var(--terracotta);
+  gap: 12px;
   margin-bottom: 20px;
 }
 
-.title-main {
-  font-family: 'Playfair Display', 'Noto Serif SC', serif;
-  font-weight: 900;
-  font-size: 76px;
-  line-height: 1.08;
-  color: var(--navy);
-  margin-bottom: 14px;
-  letter-spacing: 2px;
-}
-
-.title-underline {
-  width: 80px;
-  height: 3px;
+.left-col .ornament-top .dot {
+  width: 6px;
+  height: 6px;
   background: var(--terracotta);
-  margin-bottom: 22px;
+  border-radius: 50%;
 }
 
-.title-sub {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 400;
-  font-size: 22px;
-  line-height: 1.5;
-  color: var(--navy-light);
-  margin-bottom: 30px;
-  padding-left: 18px;
-  border-left: 3px solid var(--terracotta);
+.left-col .ornament-top .short-line {
+  width: 50px;
+  height: 1px;
+  background: var(--terracotta);
 }
 
-.quote-box {
-  position: relative;
-  padding: 18px 22px 18px 48px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: rgba(184,92,56,0.03);
-  max-width: 640px;
-}
-
-.quote-mark {
-  position: absolute;
-  left: 12px;
-  top: -4px;
+.left-col .chapter-label {
   font-family: 'Playfair Display', serif;
-  font-size: 56px;
-  color: var(--terracotta);
-  line-height: 1;
-}
-
-.quote-text {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 1.95;
+  font-size: 14px;
+  letter-spacing: 8px;
   color: var(--navy);
+  text-transform: uppercase;
+  font-weight: 400;
 }
 
-/* 底部卡片 */
-.cards {
-  position: absolute;
-  bottom: 50px;
-  left: 80px;
-  right: 80px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  padding-top: 26px;
-  border-top: 1px solid var(--line);
+.left-col .big-number {
+  font-family: 'Playfair Display', 'Source Han Serif SC', serif;
+  font-size: 380px;
+  font-weight: 900;
+  line-height: 0.85;
+  color: var(--navy);
+  letter-spacing: -10px;
+  margin-top: 10px;
+  position: relative;
 }
 
-.cards-label {
+.left-col .big-number::after {
+  content: '';
   position: absolute;
-  top: -10px;
-  left: 0;
-  background: var(--cream);
-  padding-right: 14px;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 11px;
-  letter-spacing: 4px;
+  bottom: 30px;
+  right: -20px;
+  width: 24px;
+  height: 24px;
+  background: var(--terracotta);
+  border-radius: 50%;
+}
+
+.left-col .number-caption {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  font-family: 'Source Han Serif SC', 'Playfair Display', serif;
+  font-size: 16px;
+  letter-spacing: 8px;
   color: var(--terracotta);
+}
+
+.left-col .number-caption .mid-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--navy);
+  border-radius: 50%;
+}
+
+.left-col .decorative-text {
+  margin-top: 30px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--navy-light);
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+/* 右侧内容区 */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+/* 章节标题区 */
+.title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(13, 33, 55, 0.3);
+}
+
+.title-block .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.title-block .eyebrow .tag {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--terracotta);
+  font-weight: 700;
+}
+
+.title-block .eyebrow .line {
+  width: 60px;
+  height: 2px;
+  background: var(--terracotta);
+}
+
+.title-block .eyebrow .tag-zh {
+  font-family: 'Source Han Serif SC', serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--navy-light);
+}
+
+.title-block h1 {
+  font-family: 'Playfair Display', 'Source Han Serif SC', serif;
+  font-size: 68px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 4px;
+  line-height: 1.1;
+}
+
+.title-block .subtitle {
+  font-family: 'Source Han Serif SC', 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--navy-light);
+  letter-spacing: 3px;
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+.title-block .subtitle .accent {
+  color: var(--terracotta);
+  font-weight: 700;
+}
+
+/* 三块要点卡片 */
+.cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 28px;
 }
 
 .card {
+  background: white;
+  border: 1px solid rgba(13, 33, 55, 0.1);
+  padding: 22px 20px 20px 20px;
+  position: relative;
+  min-height: 200px;
   display: flex;
-  gap: 16px;
-  align-items: flex-start;
+  flex-direction: column;
 }
 
-.card-index {
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--navy);
+}
+
+.card:nth-child(2)::before {
+  background: var(--terracotta);
+}
+
+.card:nth-child(3)::before {
+  background: var(--gold);
+}
+
+.card .card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--terracotta);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.card .card-title {
+  font-family: 'Source Han Serif SC', 'Playfair Display', serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 4px;
+  margin-bottom: 4px;
+}
+
+.card .card-title-en {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-weight: 700;
-  font-size: 30px;
+  font-size: 12px;
   color: var(--terracotta);
-  line-height: 1;
-  min-width: 42px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
 }
 
-.card-body { flex: 1; padding-top: 2px; }
+.card .card-divider {
+  width: 30px;
+  height: 1px;
+  background: var(--navy);
+  opacity: 0.4;
+  margin-bottom: 12px;
+}
 
-.card-title {
-  font-family: 'Noto Serif SC', serif;
+.card .card-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+
+.card .card-foot {
+  margin-top: auto;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Playfair Display', serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--navy-light);
+  opacity: 0.6;
+}
+
+.card .card-foot .star {
+  color: var(--terracotta);
+}
+
+/* 底部叙述引言 */
+.narrative-block {
+  margin-top: 24px;
+  padding: 18px 30px 18px 30px;
+  position: relative;
+  background: var(--navy);
+  color: var(--cream);
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.narrative-block .quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 60px;
+  line-height: 0.8;
+  color: var(--terracotta);
   font-weight: 700;
-  font-size: 18px;
-  color: var(--navy);
-  margin-bottom: 8px;
-  letter-spacing: 1.5px;
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.narrative-block .quote-body {
+  flex: 1;
+}
+
+.narrative-block .quote-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--terracotta);
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.narrative-block .quote-text {
+  font-family: 'Source Han Serif SC', serif;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--cream);
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+
+.narrative-block .quote-text .highlight {
+  color: var(--terracotta-light);
+  font-weight: 700;
+}
+
+.narrative-block .quote-text .navy-accent {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* 左侧装饰角标 */
+.left-corner {
+  position: absolute;
+  bottom: 90px;
+  left: 60px;
   display: flex;
   align-items: center;
   gap: 10px;
+  z-index: 2;
 }
 
-.card-title-bar {
-  width: 20px;
-  height: 2px;
+.left-corner .lc-line {
+  width: 40px;
+  height: 1px;
   background: var(--navy);
-  display: inline-block;
+  opacity: 0.4;
 }
 
-.card-desc {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 300;
-  font-size: 12.5px;
-  line-height: 1.75;
-  color: var(--text-muted);
+.left-corner .lc-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--navy-light);
+  letter-spacing: 2px;
+}
+
+/* 页码 */
+.page-num {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  color: var(--navy);
+  z-index: 3;
+  letter-spacing: 2px;
+}
+
+.page-num .num-current {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--terracotta);
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="vertical-text"><span>OPEN SOURCE · 一 场 改 变 世 界 的 协 作 革 命</span></div>
-    <div class="corner-deco"><span>P. 02 / CHAPTER 01</span></div>
-  </div>
+  <div id="bg"></div>
   <div id="ct">
+
     <div class="top-bar">
-      <div class="brand">
-        <span class="brand-dot"></span>
-        <span><span>第 二 页 · 章 节 开 篇</span></span>
+      <div style="display:flex;align-items:center;">
+        <span class="brand">OPEN SOURCE / CHAPTER ONE</span>
+        <span class="brand-zh">开 源 · 篇 章</span>
       </div>
-      <div><span>OPEN SOURCE · 章 节 导 言</span></div>
+      <div class="line-rule"></div>
+      <span class="page-info">EDITORIAL · 2024</span>
     </div>
 
-    <div class="main">
-      <div class="num-block">
-        <div class="num-label"><span>C H A P T E R</span></div>
-        <div class="num-row">
-          <div class="num">01</div>
-          <div class="num-side">
-            <div class="num-side-line"></div>
-            <span class="num-side-text">— 缘 起 —</span>
+    <div class="page-num">
+      <span class="num-current">02</span> / 12
+    </div>
+
+    <div class="main-grid">
+
+      <!-- 左侧大数字 -->
+      <div class="left-col">
+        <div class="ornament-top">
+          <span class="short-line"></span>
+          <span class="dot"></span>
+          <span class="short-line"></span>
+        </div>
+        <div class="chapter-label">CHAPTER ONE</div>
+        <div class="big-number">01</div>
+        <div class="number-caption">
+          <span>第 一 章</span>
+          <span class="mid-dot"></span>
+          <span>序 章</span>
+        </div>
+        <div class="decorative-text">
+          A Revolution of<br>Collaboration
+        </div>
+      </div>
+
+      <!-- 右侧内容 -->
+      <div class="right-col">
+
+        <div class="title-block">
+          <div class="eyebrow">
+            <span class="tag">CHAPTER · 01</span>
+            <span class="line"></span>
+            <span class="tag-zh">章 节 引 言</span>
+          </div>
+          <h1>开源的意义</h1>
+          <div class="subtitle">
+            理解开源：一场改变世界的<span class="accent">协作革命</span>
           </div>
         </div>
-        <div class="num-caption">
-          <span class="caption-dot"></span>
-          <span class="caption-text">— 第 一 章 · 共 计 三 个 维 度 —</span>
-        </div>
-      </div>
 
-      <div class="right-block">
-        <div class="chap-tag"><span>FIRST CHAPTER · 第 一 章</span></div>
-        <h1 class="title-main"><span>开源的意义</span></h1>
-        <div class="title-underline"></div>
-        <div class="title-sub"><span>理解开源：一场改变世界的协作革命</span></div>
-        <div class="quote-box">
-          <span class="quote-mark">"</span>
-          <p class="quote-text"><span>在正式深入之前，我们需要建立一个共同的认知基础：开源不仅仅是一种代码分发方式，它是一种重塑人类协作模式的价值体系，理解了这一点，后续的所有讨论才具有真正的力量。</span></p>
+        <div class="cards-row">
+
+          <div class="card">
+            <span class="card-num">— 01 —</span>
+            <div class="card-title">哲学根基</div>
+            <div class="card-title-en">Philosophical Roots</div>
+            <div class="card-divider"></div>
+            <div class="card-text">
+              开源不只是技术协议，更是一种关于<span style="color:var(--terracotta);font-weight:600;">自由、协作与信任</span>的社会实验。
+            </div>
+            <div class="card-foot">
+              <span><span class="star">✦</span> FOUNDATION</span>
+              <span>Ⅰ</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card-num">— 02 —</span>
+            <div class="card-title">历史脉络</div>
+            <div class="card-title-en">Historical Thread</div>
+            <div class="card-divider"></div>
+            <div class="card-text">
+              从 GNU 运动到 Linux，从 Apache 到现代云原生，<span style="color:var(--terracotta);font-weight:600;">开源浪潮持续塑造技术格局</span>。
+            </div>
+            <div class="card-foot">
+              <span><span class="star">✦</span> HERITAGE</span>
+              <span>Ⅱ</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card-num">— 03 —</span>
+            <div class="card-title">现实影响</div>
+            <div class="card-title-en">Real-World Impact</div>
+            <div class="card-divider"></div>
+            <div class="card-text">
+              全球核心基础设施、企业级系统与创新产品，<span style="color:var(--terracotta);font-weight:600;">皆建立在开源基石之上</span>。
+            </div>
+            <div class="card-foot">
+              <span><span class="star">✦</span> INFLUENCE</span>
+              <span>Ⅲ</span>
+            </div>
+          </div>
+
         </div>
+
+        <div class="narrative-block">
+          <div class="quote-mark">"</div>
+          <div class="quote-body">
+            <div class="quote-label">PROLOGUE · 编 者 按</div>
+            <div class="quote-text">
+              在正式深入之前，我们需要建立<span class="highlight">一个共同的认知基础</span>——开源不仅仅是一种代码分发方式，它是一种<span class="navy-accent">重塑人类协作模式</span>的价值体系，理解了这一点，后续的所有讨论才具有<span class="highlight">真正的力量</span>。
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div class="cards">
-      <div class="cards-label"><span>本 章 三 个 维 度</span></div>
-      <div class="card">
-        <div class="card-index"><span>01</span></div>
-        <div class="card-body">
-          <div class="card-title"><span class="card-title-bar"></span><span>哲学根基</span></div>
-          <div class="card-desc"><span>开源不只是技术协议，更是一种关于自由、协作与信任的社会实验。</span></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-index"><span>02</span></div>
-        <div class="card-body">
-          <div class="card-title"><span class="card-title-bar"></span><span>历史脉络</span></div>
-          <div class="card-desc"><span>从 GNU 运动到 Linux，从 Apache 到现代云原生，开源浪潮持续塑造技术格局。</span></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-index"><span>03</span></div>
-        <div class="card-body">
-          <div class="card-title"><span class="card-title-bar"></span><span>现实影响</span></div>
-          <div class="card-desc"><span>全球核心基础设施、企业级系统与创新产品皆建立在开源基石之上。</span></div>
-        </div>
-      </div>
+    <div class="bottom-bar">
+      <span class="foot-text">— OPEN SOURCE MEANING —</span>
+      <div class="line-rule"></div>
+      <span class="foot-text">CHAPTER 01 · PG. 02</span>
     </div>
+
   </div>
 </div>
 </body>

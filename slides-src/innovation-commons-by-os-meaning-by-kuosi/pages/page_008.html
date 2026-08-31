@@ -1,26 +1,32 @@
-
-
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>第三章·布道实践</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+Pro:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy: #0D2137;
-  --terracotta: #B85C38;
   --cream: #F7F3ED;
-  --ink-soft: #1a2f47;
-  --line-soft: #c8bfae;
+  --navy: #0D2137;
+  --amber: #B85C38;
+  --navy-light: rgba(13, 33, 55, 0.12);
+  --amber-light: rgba(184, 92, 56, 0.15);
+  --serif: 'Playfair Display', 'Noto Serif SC', serif;
+  --sans: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
 }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 1600px; height: 900px; overflow: hidden; }
+
 body {
-  background: var(--cream);
-  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+  width: 1600px;
+  height: 900px;
+  font-family: var(--sans);
   color: var(--navy);
+  background: var(--cream);
+  overflow: hidden;
 }
+
 .wrapper {
   width: 1600px;
   height: 900px;
@@ -29,262 +35,335 @@ body {
   margin: 0 auto;
   background: var(--cream);
 }
-#bg { position: absolute; inset: 0; z-index: 0; }
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
 #ct {
-  position: absolute; inset: 0; z-index: 1;
-  padding: 56px 72px 48px 72px;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
   box-sizing: border-box;
 }
 
-/* 顶部细横线装饰条 */
-.top-rule {
-  position: absolute;
-  top: 48px; left: 72px; right: 72px;
-  height: 1px;
-  background: var(--navy);
-  z-index: 2;
+/* Top header bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(13, 33, 55, 0.18);
 }
-.top-meta {
-  position: absolute;
-  top: 22px; left: 72px; right: 72px;
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 12px; letter-spacing: 3px; color: var(--navy);
+
+.top-bar-left {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--navy);
   text-transform: uppercase;
-  z-index: 2;
-}
-.top-meta .brand { font-weight: 600; }
-.top-meta .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta); margin: 0 10px; vertical-align: middle; }
-
-/* 主区域 */
-.main-grid {
-  position: absolute;
-  top: 82px; left: 72px; right: 72px; bottom: 168px;
-  display: grid;
-  grid-template-columns: 660px 1fr;
-  gap: 60px;
 }
 
-/* 左侧巨型数字 + 涟漪 */
+.top-bar-right {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--amber);
+  letter-spacing: 1px;
+}
+
+/* Main content area */
+.main {
+  display: flex;
+  height: calc(100% - 70px);
+  margin-top: 28px;
+}
+
+/* Left: big number with ripples */
 .left-zone {
-  position: relative;
+  width: 720px;
   height: 100%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
-.ripple-stage {
+
+.ripple-container {
   position: relative;
-  width: 580px; height: 580px;
-  display: flex; align-items: center; justify-content: center;
+  width: 560px;
+  height: 560px;
 }
+
 .ripple {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid var(--navy);
-  opacity: 0.14;
+  border: 1px solid var(--navy-light);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.ripple.r1 { width: 580px; height: 580px; opacity: 0.10; border-width: 1px; }
-.ripple.r2 { width: 480px; height: 480px; opacity: 0.16; border-width: 1px; }
-.ripple.r3 { width: 380px; height: 380px; opacity: 0.22; border-width: 1px; }
-.ripple.r4 { width: 280px; height: 280px; opacity: 0.30; border-width: 1px; }
-.ripple.r5 { width: 190px; height: 190px; opacity: 0.42; border-width: 1.5px; }
-.ripple.r-terra {
-  width: 335px; height: 335px;
-  border: 1.5px solid var(--terracotta);
-  opacity: 0.55;
-}
-.ripple-dot {
+
+.ripple.r1 { width: 200px; height: 200px; border-color: rgba(13, 33, 55, 0.22); }
+.ripple.r2 { width: 320px; height: 320px; border-color: rgba(13, 33, 55, 0.15); }
+.ripple.r3 { width: 440px; height: 440px; border-color: rgba(13, 33, 55, 0.10); }
+.ripple.r4 { width: 560px; height: 560px; border-color: rgba(13, 33, 55, 0.06); }
+.ripple.r5 { width: 680px; height: 680px; border-color: rgba(13, 33, 55, 0.035); }
+
+.ripple-fill {
   position: absolute;
-  width: 10px; height: 10px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  background: var(--terracotta);
-  z-index: 3;
-  box-shadow: 0 0 0 6px rgba(184, 92, 56, 0.15);
+  background: radial-gradient(circle, rgba(184, 92, 56, 0.10) 0%, rgba(184, 92, 56, 0) 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .big-number {
-  position: relative;
-  z-index: 4;
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 340px;
-  line-height: 0.85;
-  color: var(--navy);
-  letter-spacing: -10px;
-}
-
-/* 左侧底部小字标注 */
-.left-caption {
   position: absolute;
-  bottom: -10px; left: 0; right: 0;
-  text-align: center;
-  font-size: 11px;
-  letter-spacing: 4px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 220px;
+  line-height: 1;
   color: var(--navy);
-  opacity: 0.65;
-  text-transform: uppercase;
-}
-.left-caption-en {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 14px;
-  letter-spacing: 2px;
-  opacity: 0.55;
-  margin-top: 4px;
+  letter-spacing: -8px;
 }
 
-/* 右侧内容 */
+.big-number .num-stroke {
+  display: block;
+}
+
+/* Network dots around ripples */
+.net-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  top: 50%;
+  left: 50%;
+}
+
+.net-dot.d1 { transform: translate(-50%, -50%) translate(68px, -68px); }
+.net-dot.d2 { transform: translate(-50%, -50%) translate(-90px, -40px); background: var(--navy); }
+.net-dot.d3 { transform: translate(-50%, -50%) translate(110px, 30px); }
+.net-dot.d4 { transform: translate(-50%, -50%) translate(-70px, 90px); background: var(--navy); }
+.net-dot.d5 { transform: translate(-50%, -50%) translate(30px, 120px); }
+.net-dot.d6 { transform: translate(-50%, -50%) translate(-160px, 50px); width: 4px; height: 4px; }
+.net-dot.d7 { transform: translate(-50%, -50%) translate(180px, -30px); width: 4px; height: 4px; }
+.net-dot.d8 { transform: translate(-50%, -50%) translate(-100px, 140px); width: 4px; height: 4px; background: var(--navy); }
+
+.net-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 1px;
+  background: rgba(13, 33, 55, 0.2);
+  transform-origin: 0 0;
+}
+
+/* Chapter label below number */
+.chapter-label {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  color: var(--amber);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Right zone */
 .right-zone {
+  flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding-top: 4px;
+  padding-left: 32px;
+  position: relative;
 }
-.chapter-tag {
-  display: flex; align-items: center; gap: 12px;
-  font-size: 12px; letter-spacing: 4px;
-  color: var(--terracotta);
-  font-weight: 600;
-  margin-bottom: 18px;
-}
-.chapter-tag .bar { width: 36px; height: 2px; background: var(--terracotta); }
 
 .chapter-title {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
+  font-family: var(--serif);
+  font-weight: 700;
   font-size: 58px;
-  line-height: 1.05;
+  line-height: 1.1;
   color: var(--navy);
   letter-spacing: -1px;
-  margin-bottom: 6px;
-}
-.chapter-title .num-cn {
-  font-weight: 400;
-  font-style: italic;
-  font-size: 32px;
-  color: var(--terracotta);
-  margin-right: 10px;
-  vertical-align: 6px;
-}
-.chapter-title-cn {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  font-size: 32px;
-  color: var(--ink-soft);
-  margin-bottom: 20px;
-  letter-spacing: 4px;
-}
-.chapter-sub {
-  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 1.7;
-  color: var(--navy);
-  opacity: 0.82;
-  max-width: 620px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--line-soft);
-  margin-bottom: 26px;
 }
 
-/* 三维度 */
-.dimensions { display: flex; flex-direction: column; gap: 18px; }
-.dim-row {
-  display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 20px;
-  align-items: start;
-}
-.dim-index {
-  font-family: 'Playfair Display', serif;
+.chapter-title .accent {
+  color: var(--amber);
   font-style: italic;
-  font-weight: 700;
-  font-size: 28px;
-  color: var(--terracotta);
-  line-height: 1;
-  padding-top: 4px;
 }
-.dim-index .line {
-  display: block;
-  width: 22px; height: 1px;
-  background: var(--terracotta);
-  margin-top: 10px;
-  opacity: 0.7;
+
+.title-underline {
+  width: 80px;
+  height: 3px;
+  background: var(--amber);
+  margin: 18px 0 14px;
 }
-.dim-body { display: flex; flex-direction: column; gap: 6px; }
-.dim-head {
-  display: flex; align-items: baseline; gap: 12px;
-}
-.dim-title-cn {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 700;
+
+.subtitle {
+  font-family: var(--sans);
   font-size: 17px;
-  color: var(--navy);
-  letter-spacing: 2px;
-}
-.dim-title-en {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 13px;
-  color: var(--navy);
-  opacity: 0.45;
-  letter-spacing: 1px;
-}
-.dim-desc {
-  font-size: 13.5px;
-  line-height: 1.65;
-  color: var(--navy);
-  opacity: 0.78;
   font-weight: 300;
-  max-width: 620px;
+  line-height: 1.6;
+  color: rgba(13, 33, 55, 0.75);
+  max-width: 640px;
+  letter-spacing: 0.5px;
 }
 
-/* 底部收束语 */
-.foot-zone {
-  position: absolute;
-  left: 72px; right: 72px; bottom: 48px;
-  display: flex; align-items: flex-start; gap: 28px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line-soft);
+/* Three topics */
+.topics {
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
-.foot-mark {
-  flex-shrink: 0;
-  font-family: 'Playfair Display', serif;
+
+.topic-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 14px 0 14px 0;
+  border-top: 1px solid rgba(13, 33, 55, 0.12);
+}
+
+.topic-num {
+  font-family: var(--serif);
   font-style: italic;
-  font-weight: 900;
-  font-size: 44px;
-  color: var(--terracotta);
-  line-height: 0.9;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  min-width: 40px;
+  padding-top: 2px;
 }
-.foot-text {
+
+.topic-content {
   flex: 1;
-  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
-  font-size: 13.5px;
-  line-height: 1.75;
+}
+
+.topic-title {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 700;
   color: var(--navy);
-  font-weight: 400;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.topic-desc {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(13, 33, 55, 0.7);
+}
+
+/* Bottom narrative */
+.bottom-narrative {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px 0 0;
+  border-top: 1px solid rgba(13, 33, 55, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.narrative-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--navy);
+  max-width: 1050px;
   letter-spacing: 0.3px;
 }
-.foot-text .strong { font-weight: 700; color: var(--navy); }
-.foot-text .terra { color: var(--terracotta); font-weight: 700; }
 
-/* 底部细横线 */
-.bottom-rule {
-  position: absolute;
-  bottom: 18px; left: 72px; right: 72px;
-  height: 1px;
-  background: var(--navy);
-  z-index: 2;
+.narrative-quote .hl {
+  color: var(--amber);
+  font-weight: 700;
+  font-style: normal;
 }
-.bottom-meta {
-  position: absolute;
-  bottom: 4px; left: 72px; right: 72px;
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 10px; letter-spacing: 3px; color: var(--navy);
-  opacity: 0.55;
+
+.narrative-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex-shrink: 0;
+}
+
+.narrative-meta {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--navy);
   text-transform: uppercase;
-  z-index: 2;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(13, 33, 55, 0.2);
+  padding-left: 16px;
+  line-height: 1.5;
+}
+
+.narrative-meta .m-line1 { color: var(--amber); }
+
+/* Grid dot decoration top-right */
+.grid-dots {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 8px);
+  grid-template-rows: repeat(4, 8px);
+  gap: 10px;
+}
+
+.grid-dots span {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(13, 33, 55, 0.2);
+  justify-self: center;
+  align-self: center;
+}
+
+.grid-dots span.amber { background: var(--amber); }
+
+/* Side vertical text */
+.side-vertical {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  color: rgba(13, 33, 55, 0.4);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 </style>
 </head>
@@ -293,96 +372,92 @@ body {
   <div id="bg"></div>
   <div id="ct">
 
-    <div class="top-meta">
-      <span class="brand"><span>开源布道 · Open Source Advocacy</span></span>
-      <span>CHAPTER · 03 <span class="dot"></span> PRACTICE</span>
+    <div class="top-bar">
+      <span class="top-bar-left">Chapter Transition · 章节过渡</span>
+      <span class="top-bar-right">From Self to Community · 从自我到社群</span>
     </div>
-    <div class="top-rule"></div>
 
-    <div class="main-grid">
+    <div class="main">
 
-      <!-- 左侧：巨型数字 + 涟漪 -->
       <div class="left-zone">
-        <div class="ripple-stage">
-          <div class="ripple r1"></div>
-          <div class="ripple r2"></div>
-          <div class="ripple r3"></div>
-          <div class="ripple ripple-terra"></div>
-          <div class="ripple r4"></div>
+        <div class="ripple-container">
           <div class="ripple r5"></div>
-          <div class="ripple-dot"></div>
-          <div class="big-number">03</div>
-          <div class="left-caption">
-            <div><span>影响力 · 涟漪 · 外扩</span></div>
-            <div class="left-caption-en">Ripple of Influence</div>
-          </div>
+          <div class="ripple r4"></div>
+          <div class="ripple r3"></div>
+          <div class="ripple r2"></div>
+          <div class="ripple r1"></div>
+          <div class="ripple-fill"></div>
+
+          <div class="net-dot d1"></div>
+          <div class="net-dot d2"></div>
+          <div class="net-dot d3"></div>
+          <div class="net-dot d4"></div>
+          <div class="net-dot d5"></div>
+          <div class="net-dot d6"></div>
+          <div class="net-dot d7"></div>
+          <div class="net-dot d8"></div>
+
+          <div class="big-number"><span class="num-stroke">03</span></div>
+
+          <div class="chapter-label">Chapter Zero Three</div>
         </div>
       </div>
 
-      <!-- 右侧：章节标题 + 三维度 -->
       <div class="right-zone">
-        <div class="chapter-tag">
-          <span class="bar"></span>
-          <span>CHAPTER THREE</span>
-        </div>
-        <div class="chapter-title">
-          <span class="num-cn">Ch.</span>Advocacy
-        </div>
-        <div class="chapter-title-cn">布 道 实 践</div>
-        <div class="chapter-sub">
-          从个人行动到社区影响：成为开源生态的活跃节点 —— 每一个提交、每一次分享、每一场协作，都是影响力向外扩散的涟漪。
+
+        <div class="grid-dots">
+          <span></span><span></span><span class="amber"></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span class="amber"></span>
+          <span class="amber"></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span class="amber"></span><span></span>
         </div>
 
-        <div class="dimensions">
+        <h1 class="chapter-title">第三章 · <span class="accent">布道实践</span></h1>
+        <div class="title-underline"></div>
+        <p class="subtitle">从个人行动到社区影响：<br>成为开源生态的活跃节点</p>
 
-          <div class="dim-row">
-            <div class="dim-index">01<span class="line"></span></div>
-            <div class="dim-body">
-              <div class="dim-head">
-                <span class="dim-title-cn">布道的含义</span>
-                <span class="dim-title-en">What Advocacy Means</span>
-              </div>
-              <div class="dim-desc">不是单向说教，而是通过分享、演示与协作感染他人加入开源，在平等对话中点燃对技术的热爱。</div>
+        <div class="topics">
+
+          <div class="topic-item">
+            <div class="topic-num">01</div>
+            <div class="topic-content">
+              <div class="topic-title">布道的含义</div>
+              <div class="topic-desc">不是单向说教，而是通过分享、演示与协作感染他人，让其主动加入开源共建。</div>
             </div>
           </div>
 
-          <div class="dim-row">
-            <div class="dim-index">02<span class="line"></span></div>
-            <div class="dim-body">
-              <div class="dim-head">
-                <span class="dim-title-cn">个人路径</span>
-                <span class="dim-title-en">The Individual Path</span>
-              </div>
-              <div class="dim-desc">从首次 PR、技术分享、到维护社区，逐步扩大影响力半径，让每一次参与都成为下一段旅程的起点。</div>
+          <div class="topic-item">
+            <div class="topic-num">02</div>
+            <div class="topic-content">
+              <div class="topic-title">个人路径</div>
+              <div class="topic-desc">从首次 PR 提交、技术分享到逐步维护社区，稳步扩大个人的影响力半径。</div>
             </div>
           </div>
 
-          <div class="dim-row">
-            <div class="dim-index">03<span class="line"></span></div>
-            <div class="dim-body">
-              <div class="dim-head">
-                <span class="dim-title-cn">组织角色</span>
-                <span class="dim-title-en">Organizational Roles</span>
-              </div>
-              <div class="dim-desc">企业开源办公室、开源布道师等新兴岗位正在重塑技术传播格局，让影响力从个体走向系统。</div>
+          <div class="topic-item">
+            <div class="topic-num">03</div>
+            <div class="topic-content">
+              <div class="topic-title">组织角色</div>
+              <div class="topic-desc">企业开源办公室、开源布道师等新兴岗位，正在重塑技术传播的整体格局。</div>
             </div>
           </div>
 
         </div>
+
       </div>
     </div>
 
-    <div class="foot-zone">
-      <div class="foot-mark">"</div>
-      <div class="foot-text">
-        <span class="strong">开源布道不是演讲台上的独白</span>，而是<span class="terra">日常生活中</span>每一次代码提交、技术分享与社区互动中持续释放的影响力。本章将探讨如何从个人实践出发，逐步成长为连接开源生态中<span class="terra">多个节点的活跃枢纽</span>——让影响力如同水波般层层扩散，从一粒石子激起的涟漪，汇聚成推动开源文化前行的潮汐。
-      </div>
-    </div>
+    <div class="side-vertical">Influence · Ripples · Network</div>
 
-    <div class="bottom-rule"></div>
-    <div class="bottom-meta">
-      <span>FROM INDIVIDUAL ACTION TO COMMUNITY IMPACT</span>
-      <span>03 / 05 <span class="dot" style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--terracotta);margin:0 10px;vertical-align:middle;"></span> NEXT CHAPTER</span>
+    <div class="bottom-narrative">
+      <div class="narrative-dot"></div>
+      <div class="narrative-quote">
+        开源布道不是<span class="hl">演讲台上的独白</span>，而是日常生活中每一次<span class="hl">代码提交</span>、<span class="hl">技术分享</span>与<span class="hl">社区互动</span>中持续释放的影响力。
+      </div>
+      <div class="narrative-meta">
+        <div class="m-line1">Ch.03</div>
+        <div>03 / 12</div>
+      </div>
     </div>
 
   </div>
