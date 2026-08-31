@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>推荐阅读书单</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --terracotta:#B85C38;
+  --cream:#F7F3ED;
+  --cream-dark:#EFE8DC;
+  --ink:#1a1a1a;
+  --gold:#C9A86A;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Noto Sans SC','Source Sans Pro',sans-serif;
+  color:var(--ink);
+  background:var(--cream);
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+  background:var(--cream);
+}
+
+#bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:
+    radial-gradient(ellipse at 92% -10%, rgba(184,92,56,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at -5% 105%, rgba(13,33,55,0.06) 0%, transparent 50%),
+    var(--cream);
+}
+
+#ct{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  padding:48px 64px;
+  box-sizing:border-box;
+}
+
+/* 顶部栏 */
+.top-bar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:40px;
+  padding-bottom:22px;
+  border-bottom:1px solid rgba(13,33,55,0.18);
+}
+
+.top-left{flex:1;max-width:940px;}
+
+.eyebrow{
+  font-family:'Playfair Display',serif;
+  font-size:14px;
+  letter-spacing:6px;
+  color:var(--terracotta);
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.main-title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:64px;
+  font-weight:900;
+  color:var(--navy);
+  letter-spacing:4px;
+  line-height:1.05;
+}
+
+.sub-title{
+  margin-top:14px;
+  font-size:14.5px;
+  line-height:1.8;
+  color:#4a4a4a;
+  font-weight:300;
+  max-width:860px;
+}
+
+.sub-title b{color:var(--navy);font-weight:700;}
+
+/* KPI 区 */
+.kpi-zone{
+  display:flex;
+  gap:14px;
+  flex-shrink:0;
+  padding-top:6px;
+}
+
+.kpi-card{
+  width:170px;
+  background:var(--navy);
+  color:var(--cream);
+  padding:16px 18px 18px;
+  position:relative;
+  overflow:hidden;
+}
+
+.kpi-card::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;height:4px;
+  background:var(--terracotta);
+}
+
+.kpi-num{
+  font-family:'Playfair Display',serif;
+  font-size:42px;
+  font-weight:900;
+  line-height:1;
+  color:var(--gold);
+}
+
+.kpi-num .unit{
+  font-size:18px;
+  font-weight:700;
+  margin-left:2px;
+  color:var(--cream);
+}
+
+.kpi-label{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:2px;
+  margin-top:8px;
+  color:var(--cream);
+}
+
+.kpi-note{
+  font-size:11px;
+  font-weight:300;
+  color:rgba(247,243,237,0.7);
+  margin-top:4px;
+  line-height:1.5;
+}
+
+/* 卡片网格 */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+  margin-top:26px;
+}
+
+.book-card{
+  display:flex;
+  background:#fff;
+  box-shadow:0 2px 18px rgba(13,33,55,0.07);
+  overflow:hidden;
+  position:relative;
+  min-height:290px;
+}
+
+.spine{
+  width:46px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 0 16px;
+  position:relative;
+  color:var(--cream);
+}
+
+.spine .spine-num{
+  font-family:'Playfair Display',serif;
+  font-size:32px;
+  font-weight:900;
+  line-height:1;
+  opacity:0.9;
+}
+
+.spine .spine-label{
+  font-size:9px;
+  letter-spacing:3px;
+  writing-mode:vertical-rl;
+  font-weight:700;
+  opacity:0.75;
+  transform:rotate(180deg);
+}
+
+.spine::before{
+  content:"";
+  position:absolute;
+  top:14px;bottom:14px;left:50%;width:1px;
+  background:rgba(247,243,237,0.25);
+  transform:translateX(-50%);
+}
+
+.spine-color-1{background:var(--navy);}
+.spine-color-2{background:var(--terracotta);}
+.spine-color-3{background:#2F5D50;}
+.spine-color-4{background:#4A3A6A;}
+
+.spine-num-1{color:var(--gold);}
+.spine-num-2{color:#F0D8C4;}
+.spine-num-3{color:#A8D5C0;}
+.spine-num-4{color:#D8CFEC;}
+
+.book-body{
+  flex:1;
+  padding:20px 26px 20px 24px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+.book-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.book-no{
+  font-family:'Playfair Display',serif;
+  font-size:13px;
+  color:var(--terracotta);
+  font-weight:700;
+  letter-spacing:2px;
+}
+
+.diff-tag{
+  font-size:10px;
+  font-weight:700;
+  padding:4px 10px;
+  letter-spacing:2px;
+  border:1.5px solid currentColor;
+  white-space:nowrap;
+}
+
+.diff-basic{color:var(--navy);background:rgba(13,33,55,0.06);}
+.diff-intro{color:var(--terracotta);background:rgba(184,92,56,0.08);}
+.diff-pro{color:#2F5D50;background:rgba(47,93,80,0.08);}
+.diff-found{color:#4A3A6A;background:rgba(74,58,106,0.08);}
+
+.book-title{
+  font-family:'Noto Serif SC','Playfair Display',serif;
+  font-size:24px;
+  font-weight:900;
+  color:var(--navy);
+  margin-top:8px;
+  letter-spacing:1px;
+  line-height:1.25;
+}
+
+.book-divider{
+  width:36px;
+  height:2px;
+  background:var(--terracotta);
+  margin-top:12px;
+}
+
+.book-author{
+  font-size:12px;
+  color:#666;
+  font-weight:400;
+  margin-top:10px;
+  font-style:italic;
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  letter-spacing:0.5px;
+}
+
+.book-desc{
+  font-size:13px;
+  line-height:1.75;
+  color:#3a3a3a;
+  margin-top:8px;
+  font-weight:300;
+}
+
+.book-footer{
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-top:12px;
+  border-top:1px dashed rgba(13,33,55,0.15);
+}
+
+.book-cat{
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--navy);
+  font-weight:700;
+  opacity:0.7;
+}
+
+.book-pages{
+  font-family:'Playfair Display',serif;
+  font-size:11px;
+  color:var(--terracotta);
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+/* 底部收束 */
+.footer-line{
+  margin-top:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:22px;
+}
+
+.footer-line .ft-deco{
+  flex:0 0 80px;
+  height:1px;
+  background:var(--navy);
+  opacity:0.4;
+}
+
+.footer-line .ft-text{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:17px;
+  color:var(--navy);
+  font-weight:700;
+  letter-spacing:6px;
+}
+
+.footer-line .ft-text em{
+  color:var(--terracotta);
+  font-style:normal;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="top-bar">
+  <div class="top-left">
+    <div class="eyebrow"><span>READING · LIST · 2024</span></div>
+    <h1 class="main-title">推荐阅读书单</h1>
+    <p class="sub-title">覆盖<b>开源哲学</b>、<b>工程实践</b>与<b>商业策略</b>三个维度，按由浅入深顺序阅读，可构建对开源生态的<b>立体理解</b>。</p>
+  </div>
+  <div class="kpi-zone">
+    <div class="kpi-card">
+      <div class="kpi-num">12<span class="unit">本</span></div>
+      <div class="kpi-label">推荐书目</div>
+      <div class="kpi-note">核心书单<br>按难度分级</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num">3–5<span class="unit">本</span></div>
+      <div class="kpi-label">入门门槛</div>
+      <div class="kpi-note">建议新手<br>优先阅读</div>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- 卡片 1 -->
+  <div class="book-card">
+    <div class="spine spine-color-1">
+      <div class="spine-num spine-num-1">01</div>
+      <div class="spine-label"><span>THE CATHEDRAL</span></div>
+      <div class="spine-num" style="font-size:14px;opacity:0.6">·</div>
+    </div>
+    <div class="book-body">
+      <div class="book-header">
+        <div class="book-no"><span>VOL. I</span></div>
+        <div class="diff-tag diff-intro"><span>入门奠基</span></div>
+      </div>
+      <div class="book-title">《大教堂与集市》</div>
+      <div class="book-divider"></div>
+      <div class="book-author"><span>Eric S. Raymond 著</span></div>
+      <div class="book-desc">开源运动奠基之作，阐述两种软件开发范式的本质差异，理解"集市式协作"如何成为开源世界的底层方法论。</div>
+      <div class="book-footer">
+        <div class="book-cat"><span>OPEN SOURCE · PHILOSOPHY</span></div>
+        <div class="book-pages"><span>★★★★☆</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 卡片 2 -->
+  <div class="book-card">
+    <div class="spine spine-color-2">
+      <div class="spine-num spine-num-2">02</div>
+      <div class="spine-label"><span>DOCUMENTATION</span></div>
+      <div class="spine-num" style="font-size:14px;opacity:0.6">·</div>
+    </div>
+    <div class="book-body">
+      <div class="book-header">
+        <div class="book-no"><span>VOL. II</span></div>
+        <div class="diff-tag diff-basic"><span>入门实用</span></div>
+      </div>
+      <div class="book-title">《如何撰写开源文档》</div>
+      <div class="book-divider"></div>
+      <div class="book-author"><span>实践向 · 多位作者</span></div>
+      <div class="book-desc">从项目 README 到 API 文档，掌握清晰表达与知识传递的实用技巧，让好代码被更多人理解、使用与贡献。</div>
+      <div class="book-footer">
+        <div class="book-cat"><span>ENGINEERING · WRITING</span></div>
+        <div class="book-pages"><span>★★★☆☆</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 卡片 3 -->
+  <div class="book-card">
+    <div class="spine spine-color-3">
+      <div class="spine-num spine-num-3">03</div>
+      <div class="spine-label"><span>BUSINESS MODEL</span></div>
+      <div class="spine-num" style="font-size:14px;opacity:0.6">·</div>
+    </div>
+    <div class="book-body">
+      <div class="book-header">
+        <div class="book-no"><span>VOL. III</span></div>
+        <div class="diff-tag diff-pro"><span>进阶战略</span></div>
+      </div>
+      <div class="book-title">《开源商业战略》</div>
+      <div class="book-divider"></div>
+      <div class="book-author"><span>战略向 · 多位作者</span></div>
+      <div class="book-desc">分析 Red Hat、Google 等巨头的开源变现路径，理解商业与社区的双螺旋，构建对"开源即商业模式"的系统认知。</div>
+      <div class="book-footer">
+        <div class="book-cat"><span>STRATEGY · BUSINESS</span></div>
+        <div class="book-pages"><span>★★★★☆</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 卡片 4 -->
+  <div class="book-card">
+    <div class="spine spine-color-4">
+      <div class="spine-num spine-num-4">04</div>
+      <div class="spine-label"><span>CLEAN CODE</span></div>
+      <div class="spine-num" style="font-size:14px;opacity:0.6">·</div>
+    </div>
+    <div class="book-body">
+      <div class="book-header">
+        <div class="book-no"><span>VOL. IV</span></div>
+        <div class="diff-tag diff-found"><span>基础必修</span></div>
+      </div>
+      <div class="book-title">《代码整洁之道》</div>
+      <div class="book-divider"></div>
+      <div class="book-author"><span>技术向 · 经典手册</span></div>
+      <div class="book-desc">不仅关乎代码质量，更是开源社区代码审查文化的底层训练手册，塑造每一位贡献者的工程素养与协作习惯。</div>
+      <div class="book-footer">
+        <div class="book-cat"><span>CRAFT · DISCIPLINE</span></div>
+        <div class="book-pages"><span>★★★★★</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-line">
+  <div class="ft-deco"></div>
+  <div class="ft-text"><span>从哲学到实践 · 从工程到商业 · 构建<em>开源认知</em>全貌</span></div>
+  <div class="ft-deco"></div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

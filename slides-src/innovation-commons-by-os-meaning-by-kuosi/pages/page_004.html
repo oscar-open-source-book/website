@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源生态全景数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --orange: #B85C38;
+  --cream: #F7F3ED;
+  --cream-dark: #EDE6DA;
+  --navy-light: #1A3A5C;
+  --text-muted: #5A6673;
+  --gold: #C9A24B;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  border: 2px solid var(--orange);
+  border-radius: 50%;
+  opacity: 0.08;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  border: 2px solid var(--navy);
+  border-radius: 50%;
+  opacity: 0.05;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 50px 30px 50px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--navy);
+  margin-bottom: 18px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kicker {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: 'Playfair Display', 'PingFang SC', serif;
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 300;
+  max-width: 600px;
+  text-align: right;
+  line-height: 1.5;
+}
+
+.subtitle .accent {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* Main content */
+.main {
+  display: flex;
+  flex: 1;
+  gap: 24px;
+  min-height: 0;
+}
+
+/* Left column - KPI cards */
+.left-col {
+  width: 660px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border-left: 4px solid var(--orange);
+  padding: 10px 18px;
+  gap: 18px;
+  box-shadow: 0 1px 4px rgba(13,33,55,0.06);
+  flex: 1;
+  min-height: 0;
+}
+
+.kpi-card .kpi-index {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  opacity: 0.3;
+  width: 36px;
+  flex-shrink: 0;
+}
+
+.kpi-card .kpi-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 130px;
+}
+
+.kpi-card .kpi-num .unit {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--orange);
+  margin-left: 2px;
+}
+
+.kpi-card .kpi-num .plus {
+  font-size: 22px;
+  color: var(--orange);
+  font-weight: 700;
+}
+
+.kpi-card .kpi-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.kpi-card .kpi-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+
+.kpi-card .kpi-desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* Right column */
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.chart-block {
+  background: #FFFFFF;
+  padding: 12px 16px 10px 16px;
+  box-shadow: 0 1px 4px rgba(13,33,55,0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-block.top { flex: 1.2; min-height: 0; }
+.chart-block.bottom { flex: 1; min-height: 0; }
+
+.chart-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.chart-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.chart-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--orange);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px solid var(--orange);
+  padding: 2px 8px;
+}
+
+.chart-block.bottom .doughnut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+.chart-block.bottom .chart-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.doughnut-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px dashed rgba(13,33,55,0.12);
+}
+
+.doughnut-stat:last-child { border-bottom: none; }
+
+.doughnut-stat .ds-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.doughnut-stat .ds-num .sm {
+  font-size: 12px;
+  color: var(--orange);
+}
+
+.doughnut-stat .ds-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Bottom banner */
+.bottom-banner {
+  margin-top: 14px;
+  background: var(--navy);
+  color: #FFFFFF;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.bottom-banner .banner-text {
+  font-family: 'Playfair Display', 'PingFang SC', serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.bottom-banner .banner-text .hl {
+  color: var(--orange);
+}
+
+.bottom-banner .banner-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.bottom-banner .banner-meta .meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.bottom-banner .banner-meta .meta-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.bottom-banner .banner-meta .meta-label {
+  font-size: 9px;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.bottom-banner .banner-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255,255,255,0.3);
+}
+
+.bottom-banner .tag-pill {
+  font-size: 10px;
+  letter-spacing: 2px;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  padding: 3px 10px;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="header">
+      <div class="header-left">
+        <span class="kicker">DATA REPORT · 2024</span>
+        <span class="title">开源生态全景数据</span>
+      </div>
+      <span class="subtitle">开源已从边缘运动演变为<span class="accent">数字经济的底层基础设施</span>——每一组数字背后，都是生态繁荣与治理挑战的双重叙事。</span>
+    </div>
+
+    <div class="main">
+      <div class="left-col">
+        <div class="kpi-card">
+          <span class="kpi-index">01</span>
+          <span class="kpi-num">$570<span class="unit">亿</span></span>
+          <div class="kpi-text">
+            <span class="kpi-label">2024 全球开源软件市场规模</span>
+            <span class="kpi-desc">年复合增长率约 15%，持续刷新历史峰值</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-index">02</span>
+          <span class="kpi-num">90<span class="unit">%</span><span class="plus">+</span></span>
+          <div class="kpi-text">
+            <span class="kpi-label">企业采用率</span>
+            <span class="kpi-desc">科技企业在生产环境至少使用一个开源组件</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-index">03</span>
+          <span class="kpi-num">80/20</span>
+          <div class="kpi-text">
+            <span class="kpi-label">头部贡献集中度</span>
+            <span class="kpi-desc">前 10% 贡献者创造约 80% 代码产出，帕累托分布显著</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-index">04</span>
+          <span class="kpi-num">6<span class="unit">倍</span><span class="plus">+</span></span>
+          <div class="kpi-text">
+            <span class="kpi-label">中国贡献者五年增长</span>
+            <span class="kpi-desc">贡献者数量跃居全球第二，人才流动趋势加速</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-index">05</span>
+          <span class="kpi-num">90<span class="unit">%</span><span class="plus">+</span></span>
+          <div class="kpi-text">
+            <span class="kpi-label">开源安全占比</span>
+            <span class="kpi-desc">恶意软件样本中含开源组件，供应链安全备受关注</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="chart-block top">
+          <div class="chart-title-row">
+            <span class="chart-title">五大核心指标量级对比</span>
+            <span class="chart-tag">INDEX</span>
+          </div>
+          <div id="chart_1" style="width:100%;height:100%;flex:1;min-height:0;"></div>
+        </div>
+        <div class="chart-block bottom">
+          <div class="chart-title-row">
+            <span class="chart-title">贡献分布帕累托效应</span>
+            <span class="chart-tag">PARETO</span>
+          </div>
+          <div class="doughnut-wrap">
+            <div id="chart_2" style="width:200px;height:190px;flex-shrink:0;"></div>
+            <div class="chart-info">
+              <div class="doughnut-stat">
+                <span class="ds-num">80<span class="sm">%</span></span>
+                <span class="ds-text">前 10% 贡献者代码产出占比</span>
+              </div>
+              <div class="doughnut-stat">
+                <span class="ds-num">20<span class="sm">%</span></span>
+                <span class="ds-text">剩余 90% 贡献者代码产出占比</span>
+              </div>
+              <div class="doughnut-stat">
+                <span class="ds-num">K8s<span class="sm">/Docker</span></span>
+                <span class="ds-text">云原生项目已成云计算事实标准</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-banner">
+      <span class="banner-text">繁荣与挑战并存，开源正重塑<span class="hl">数字经济的底层格局</span>。</span>
+      <div class="banner-meta">
+        <div class="meta-item">
+          <span class="meta-num">15<span style="font-size:11px;">%</span></span>
+          <span class="meta-label">CAGR</span>
+        </div>
+        <div class="banner-divider"></div>
+        <div class="meta-item">
+          <span class="meta-num">No.2</span>
+          <span class="meta-label">CHINA</span>
+        </div>
+        <div class="banner-divider"></div>
+        <div class="meta-item">
+          <span class="meta-num">570<span style="font-size:11px;">亿$</span></span>
+          <span class="meta-label">MARKET</span>
+        </div>
+      </div>
+      <span class="tag-pill">OPEN SOURCE 2024</span>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer: 'svg'});
+  chart.setOption({
+    backgroundColor: 'transparent',
+    grid: { left: 110, right: 60, top: 10, bottom: 20, containLabel: false },
+    tooltip: { show: false },
+    xAxis: {
+      type: 'value',
+      max: 100,
+      axisLine: { lineStyle: { color: '#0D2137', opacity: 0.3 } },
+      axisTick: { show: false },
+      splitLine: { lineStyle: { color: '#0D2137', opacity: 0.08 } },
+      axisLabel: { color: '#5A6673', fontSize: 10, fontFamily: 'Source Sans Pro' }
+    },
+    yAxis: {
+      type: 'category',
+      data: ['开源安全占比', '中国贡献者增长', '头部贡献集中度', '企业采用率', '市场规模(亿$)'],
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: { color: '#0D2137', fontSize: 11, fontWeight: 600, fontFamily: 'Source Sans Pro' }
+    },
+    series: [{
+      type: 'bar',
+      data: [
+        { value: 95, itemStyle: { color: '#B85C38' } },
+        { value: 72, itemStyle: { color: '#B85C38' } },
+        { value: 80, itemStyle: { color: '#0D2137' } },
+        { value: 93, itemStyle: { color: '#0D2137' } },
+        { value: 88, itemStyle: { color: '#0D2137' } }
+      ],
+      barWidth: 16,
+      label: {
+        show: true,
+        position: 'right',
+        color: '#0D2137',
+        fontSize: 11,
+        fontWeight: 700,
+        fontFamily: 'Playfair Display',
+        formatter: function(p) {
+          var labels = ['90%+','6倍+','80/20','90%+','$570亿'];
+          return labels[p.dataIndex];
+        }
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+
+<script>(function(){
+  var chart = echarts.init(document.getElementById('chart_2'), null, {renderer: 'svg'});
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { show: false },
+    legend: {
+      orient: 'horizontal',
+      bottom: 0,
+      left: 'center',
+      data: ['前10%贡献者','其余90%贡献者'],
+      textStyle: { color: '#5A6673', fontSize: 9, fontFamily: 'Source Sans Pro' },
+      itemWidth: 8,
+      itemHeight: 8
+    },
+    series: [{
+      type: 'pie',
+      radius: ['52%', '78%'],
+      center: ['50%', '44%'],
+      avoidLabelOverlap: false,
+      label: {
+        show: true,
+        formatter: '{d}%',
+        color: '#0D2137',
+        fontSize: 12,
+        fontWeight: 700,
+        fontFamily: 'Playfair Display'
+      },
+      labelLine: { show: false },
+      data: [
+        { value: 80, name: '前10%贡献者', itemStyle: { color: '#0D2137' } },
+        { value: 20, name: '其余90%贡献者', itemStyle: { color: '#B85C38' } }
+      ]
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<title>深度阅读方法论</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;
+  --rust:#B85C38;
+  --cream:#F7F3ED;
+  --cream2:#EFE8DA;
+  --navy-soft:#1a3a5c;
+  --line:#C9BFA8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;font-family:'Source Sans Pro','Noto Sans SC',sans-serif;color:var(--navy);background:var(--cream);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(180deg, var(--cream) 0%, var(--cream) 60%, #F0E9D8 100%);
+}
+#bg::before{content:"";position:absolute;top:0;left:0;width:6px;height:100%;background:var(--navy);}
+#bg::after{content:"";position:absolute;top:0;right:0;width:220px;height:100%;background:linear-gradient(90deg, transparent 0%, rgba(13,33,55,0.03) 100%);}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 72px 40px 80px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* ===== HEADER ===== */
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.page-tag{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:3px;color:var(--rust);font-weight:700;}
+.page-tag .num{font-size:28px;font-weight:900;color:var(--navy);margin-right:8px;vertical-align:-2px;}
+.masthead{font-family:'Playfair Display',serif;font-size:12px;letter-spacing:4px;color:var(--navy);opacity:0.6;text-align:right;line-height:1.8;}
+.masthead .bar{display:inline-block;width:40px;height:1px;background:var(--navy);vertical-align:middle;margin:0 8px;}
+
+.title-row{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--navy);padding-bottom:12px;margin-bottom:14px;}
+.title-block .kicker{font-family:'Source Sans Pro',sans-serif;font-size:11px;letter-spacing:5px;color:var(--rust);font-weight:600;margin-bottom:6px;}
+.title-block h1{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:900;font-size:46px;color:var(--navy);line-height:1;letter-spacing:2px;}
+.title-block h1 .accent{color:var(--rust);font-style:italic;}
+.title-meta{text-align:right;font-size:10px;letter-spacing:2px;color:var(--navy);opacity:0.55;line-height:1.8;padding-bottom:6px;}
+.title-meta .big{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--rust);letter-spacing:0;}
+
+.lead{font-family:'Noto Serif SC','Playfair Display',serif;font-size:14px;line-height:1.85;color:var(--navy);font-weight:400;margin-bottom:16px;position:relative;padding-left:18px;}
+.lead::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--rust);}
+.lead .drop{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--rust);float:left;line-height:0.9;margin-right:6px;margin-top:4px;}
+
+/* ===== MAIN GRID ===== */
+.main{display:grid;grid-template-columns:340px 1fr;gap:24px;flex:1;}
+
+/* ===== LEFT COLUMN: 三层递进法 ===== */
+.left-col{display:flex;flex-direction:column;gap:10px;}
+.col-head{display:flex;align-items:center;gap:10px;margin-bottom:2px;}
+.col-head .idx{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--rust);letter-spacing:2px;}
+.col-head h3{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;color:var(--navy);letter-spacing:1px;}
+.col-head .rule{flex:1;height:1px;background:var(--line);}
+
+.flow{display:flex;flex-direction:column;gap:8px;flex:1;}
+.flow-node{background:var(--cream2);border:1px solid var(--line);border-left:4px solid var(--navy);padding:12px 14px;display:flex;align-items:flex-start;gap:12px;position:relative;}
+.flow-node .badge{width:36px;height:36px;border-radius:50%;background:var(--rust);color:#fff;font-family:'Playfair Display',serif;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 0 3px var(--cream);}
+.flow-node .body{flex:1;}
+.flow-node .body .tag{font-size:9px;letter-spacing:3px;color:var(--rust);font-weight:700;margin-bottom:3px;}
+.flow-node .body .txt{font-family:'Noto Serif SC',serif;font-size:13px;line-height:1.55;color:var(--navy);font-weight:500;}
+.flow-node .body .desc{font-size:11px;color:var(--navy);opacity:0.65;margin-top:4px;line-height:1.5;}
+.flow-arrow{width:2px;height:8px;background:var(--navy);margin-left:30px;position:relative;}
+.flow-arrow::before{content:"";position:absolute;left:-4px;top:6px;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--navy);}
+
+/* ===== KPI STRIP ===== */
+.kpi-strip{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+.kpi-card{background:var(--navy);color:#fff;padding:10px 14px;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden;}
+.kpi-card .kpi-label{font-size:9px;letter-spacing:2px;opacity:0.7;font-weight:400;}
+.kpi-card .kpi-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;line-height:1.1;}
+.kpi-card .kpi-val .hl{color:var(--rust);}
+.kpi-card .kpi-note{font-size:9px;opacity:0.75;line-height:1.4;margin-top:2px;}
+.kpi-card::after{content:"";position:absolute;top:0;right:0;width:24px;height:24px;background:var(--rust);clip-path:polygon(100% 0,100% 100%,0 0);}
+
+/* ===== RIGHT COLUMN ===== */
+.right-col{display:flex;flex-direction:column;gap:10px;}
+.right-col .col-head h3{font-size:18px;}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;}
+.method-card{background:#fff;border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;transition:none;}
+.method-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--rust);}
+.method-card .card-num{position:absolute;top:8px;right:12px;font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--navy);opacity:0.08;line-height:1;}
+.method-card .mc-head{display:flex;align-items:center;gap:10px;}
+.method-card .mc-num{width:30px;height:30px;border:1.5px solid var(--rust);border-radius:50%;color:var(--rust);font-family:'Playfair Display',serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.method-card .mc-title{font-family:'Noto Serif SC',serif;font-size:16px;font-weight:700;color:var(--navy);letter-spacing:0.5px;}
+.method-card .mc-en{font-size:9px;letter-spacing:2px;color:var(--rust);font-weight:600;margin-top:1px;}
+.method-card .mc-divider{width:30px;height:2px;background:var(--navy);margin:2px 0;}
+.method-card .mc-body{font-size:11.5px;line-height:1.65;color:var(--navy);font-weight:400;}
+.method-card .mc-body .strong{color:var(--rust);font-weight:700;}
+.method-card .mc-tags{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.method-card .mc-tag{font-size:9px;letter-spacing:1px;padding:2px 7px;border:1px solid var(--line);color:var(--navy);opacity:0.7;}
+
+/* ===== FOOTER ===== */
+.footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);}
+.footer .quote{font-family:'Playfair Display','Noto Serif SC',serif;font-size:12px;font-style:italic;color:var(--navy);opacity:0.7;letter-spacing:0.5px;}
+.footer .quote .mk{color:var(--rust);font-size:18px;font-weight:900;margin-right:4px;}
+.footer .pagination{font-family:'Playfair Display',serif;font-size:11px;letter-spacing:3px;color:var(--navy);opacity:0.65;font-weight:600;}
+.footer .pagination .pg{color:var(--rust);font-size:16px;font-weight:900;margin:0 4px;}
+</style>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="page-tag"><span class="num">07</span> CONTENT / 方法论</div>
+  <div class="masthead">READING · SYSTEM<span class="bar"></span>DEPTH METHOD<span class="bar"></span>VOL.01</div>
+</div>
+
+<div class="title-row">
+  <div class="title-block">
+    <div class="kicker">CHAPTER SEVEN — METHODOLOGY</div>
+    <h1>深度阅读<span class="accent">方法论</span></h1>
+  </div>
+  <div class="title-meta">
+    <div>输入 · 加工 · 输出</div>
+    <div class="big">3 环节</div>
+  </div>
+</div>
+
+<div class="lead">
+  <span class="drop">阅</span>读从来不是被动的信息接收，而是主动的认知建构。一个有效的阅读系统需要输入、加工、输出三个环节紧密咬合，才能将书本知识转化为可迁移的能力与可复用的洞察。
+</div>
+
+<div class="main">
+
+  <!-- LEFT -->
+  <div class="left-col">
+    <div class="col-head">
+      <span class="idx">Ⅰ</span>
+      <h3>三层递进法</h3>
+      <span class="rule"></span>
+    </div>
+
+    <div class="flow">
+      <div class="flow-node">
+        <div class="badge">1</div>
+        <div class="body">
+          <div class="tag">FIRST PASS · 全局</div>
+          <div class="txt">读摘要与目录，建立全局认知</div>
+          <div class="desc">10–15 分钟速览，勾勒出全书的骨架与脉络</div>
+        </div>
+      </div>
+      <div class="flow-arrow"></div>
+      <div class="flow-node">
+        <div class="badge">2</div>
+        <div class="body">
+          <div class="tag">SECOND PASS · 论点</div>
+          <div class="txt">通读正文，捕捉核心论点</div>
+          <div class="desc">跟随作者逻辑推进，标记关键论证与转承</div>
+        </div>
+      </div>
+      <div class="flow-arrow"></div>
+      <div class="flow-node">
+        <div class="badge">3</div>
+        <div class="body">
+          <div class="tag">THIRD PASS · 内化</div>
+          <div class="txt">精读细节，内化为个人思考</div>
+          <div class="desc">反复推敲，与既有知识建立链接并沉淀</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-label">日均阅读</div>
+        <div class="kpi-val"><span class="hl">30</span>–<span class="hl">60</span><span style="font-size:14px;opacity:0.7;margin-left:4px;">分钟</span></div>
+        <div class="kpi-note">保持持续性与质量平衡</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">知识留存率</div>
+        <div class="kpi-val"><span class="hl">50%</span><span style="font-size:16px;opacity:0.7;">+</span></div>
+        <div class="kpi-note">输出驱动比被动阅读高 2 倍</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-col">
+    <div class="col-head">
+      <span class="idx">Ⅱ</span>
+      <h3>四大方法论要点</h3>
+      <span class="rule"></span>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="method-card">
+        <span class="card-num">01</span>
+        <div class="mc-head">
+          <div class="mc-num">①</div>
+          <div>
+            <div class="mc-title">三层递进法</div>
+            <div class="mc-en">THREE-LAYER APPROACH</div>
+          </div>
+        </div>
+        <div class="mc-divider"></div>
+        <div class="mc-body">
+          先读<span class="strong">摘要与目录</span>建立全局认知，再<span class="strong">通读正文</span>捕捉论点，最后<span class="strong">精读细节</span>内化思考——由宏观到微观，层层深入。
+        </div>
+        <div class="mc-tags">
+          <span class="mc-tag">全局 → 论点 → 细节</span>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <span class="card-num">02</span>
+        <div class="mc-head">
+          <div class="mc-num">②</div>
+          <div>
+            <div class="mc-title">批注系统</div>
+            <div class="mc-en">ANNOTATION SYSTEM</div>
+          </div>
+        </div>
+        <div class="mc-divider"></div>
+        <div class="mc-body">
+          使用<span class="strong">高亮</span>、<span class="strong">边注</span>与<span class="strong">数字笔记工具</span>，将阅读转化为可检索的知识资产，让每一页都留下思考的印记。
+        </div>
+        <div class="mc-tags">
+          <span class="mc-tag">高亮</span><span class="mc-tag">边注</span><span class="mc-tag">数字笔记</span>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <span class="card-num">03</span>
+        <div class="mc-head">
+          <div class="mc-num">③</div>
+          <div>
+            <div class="mc-title">输出驱动</div>
+            <div class="mc-en">OUTPUT-DRIVEN</div>
+          </div>
+        </div>
+        <div class="mc-divider"></div>
+        <div class="mc-body">
+          读完每章写一段<span class="strong">总结</span>或发一条<span class="strong">技术博客</span>，以输出倒逼理解的深度，把知识真正"写进脑子"。
+        </div>
+        <div class="mc-tags">
+          <span class="mc-tag">总结</span><span class="mc-tag">博客</span><span class="mc-tag">费曼</span>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <span class="card-num">04</span>
+        <div class="mc-head">
+          <div class="mc-num">④</div>
+          <div>
+            <div class="mc-title">社群讨论</div>
+            <div class="mc-en">COMMUNITY DISCUSSION</div>
+          </div>
+        </div>
+        <div class="mc-divider"></div>
+        <div class="mc-body">
+          加入<span class="strong">读书会</span>或<span class="strong">线上讨论组</span>，在观点碰撞中发现个人视角的<span class="strong">盲区与偏见</span>，拓宽认知边界。
+        </div>
+        <div class="mc-tags">
+          <span class="mc-tag">读书会</span><span class="mc-tag">讨论组</span><span class="mc-tag">视角</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="quote"><span class="mk">"</span>阅读的本质，是把别人的思想，变成自己的判断力。<span class="mk">"</span></div>
+  <div class="pagination">PAGE <span class="pg">07</span> / 深度阅读方法论</div>
+</div>
+
+</div>
+</div>

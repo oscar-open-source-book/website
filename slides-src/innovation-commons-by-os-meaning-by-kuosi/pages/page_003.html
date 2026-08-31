@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源的核心精神</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Noto+Serif+SC:wght@400;600;700;900&family=Source+Sans+Pro:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --terracotta: #B85C38;
+  --cream: #F7F3ED;
+  --text-muted: #6B6560;
+  --card-bg: #FFFFFF;
+  --border-line: #D4C9B8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 6px;
+  background: var(--navy);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -60px;
+  width: 240px; height: 240px;
+  border: 1px solid var(--terracotta);
+  border-radius: 50%;
+  opacity: 0.18;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-line);
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.eyebrow {
+  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--terracotta);
+}
+
+.main-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.1;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.main-title .accent {
+  color: var(--terracotta);
+  font-style: italic;
+  font-weight: 600;
+}
+
+.main-title .deco-line {
+  display: inline-block;
+  width: 60px;
+  height: 1px;
+  background: var(--terracotta);
+  margin-bottom: 18px;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  padding-bottom: 6px;
+}
+
+.subtitle {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: right;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.page-number {
+  font-size: 11px;
+  color: var(--terracotta);
+  letter-spacing: 3px;
+  font-weight: 600;
+}
+
+.quadrants {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  height: 452px;
+}
+
+.quad-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-line);
+  border-left: 4px solid var(--terracotta);
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(13, 33, 55, 0.05);
+}
+
+.quad-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 32px; height: 32px;
+  border-bottom: 1px solid var(--border-line);
+  border-right: 1px solid var(--border-line);
+  background: linear-gradient(135deg, transparent 50%, var(--border-line) 50%);
+  opacity: 0.4;
+}
+
+.quad-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border: 1.5px solid var(--terracotta);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+}
+
+.quad-icon svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--terracotta);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.quad-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.quad-num {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--terracotta);
+}
+
+.quad-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+.quad-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.quad-tag {
+  font-size: 10px;
+  color: var(--navy);
+  letter-spacing: 2px;
+  font-weight: 600;
+  border-top: 1px solid var(--border-line);
+  padding-top: 7px;
+  margin-top: 3px;
+}
+
+.data-cards {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+  height: 66px;
+}
+
+.data-card {
+  background: var(--navy);
+  color: var(--cream);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.data-card-accent {
+  border-left: 4px solid var(--terracotta);
+}
+
+.data-num {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--terracotta);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.data-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.data-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: 0.5px;
+}
+
+.data-source {
+  font-size: 10px;
+  color: rgba(247, 243, 237, 0.55);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.data-divider {
+  width: 1px;
+  height: 38px;
+  background: rgba(247, 243, 237, 0.2);
+  flex-shrink: 0;
+}
+
+.data-licenses {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cream);
+  letter-spacing: 1.5px;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.data-licenses-sub {
+  font-size: 10px;
+  color: rgba(247, 243, 237, 0.55);
+  font-weight: 400;
+  margin-top: 3px;
+  letter-spacing: 0.3px;
+}
+
+.footer {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-line);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer-marker {
+  width: 28px;
+  height: 1px;
+  background: var(--terracotta);
+  flex-shrink: 0;
+}
+
+.footer-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-weight: 400;
+  font-style: italic;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+}
+
+.footer-text strong {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--navy);
+  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <span class="eyebrow">第 一 章 · 开 源 精 神</span>
+        <span class="main-title">开源的<span class="accent">核心精神</span><span class="deco-line"></span></span>
+      </div>
+      <div class="header-right">
+        <span class="subtitle">以开放之心，铸数字之基——四根支柱，一个共同体</span>
+        <span class="page-number">P. 03 / 内 容</span>
+      </div>
+    </div>
+
+    <div class="quadrants">
+
+      <div class="quad-card">
+        <div class="quad-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 13l5-5 3 3"/>
+            <path d="M3 8l5-5 3 3"/>
+            <path d="M3 18l5-5 3 3"/>
+            <path d="M11 3h10v18h-10"/>
+            <path d="M11 8h10"/>
+            <path d="M11 16h10"/>
+            <path d="M15.5 8v8"/>
+          </svg>
+        </div>
+        <div class="quad-content">
+          <span class="quad-num">— 01 / 04 —</span>
+          <span class="quad-title">自由分享</span>
+          <p class="quad-desc">允许任何人自由使用、修改与再分发代码，打破知识垄断与技术壁垒，让创新成果成为全人类共享的公共财富。</p>
+          <span class="quad-tag">自 由 · 开 放 无 限</span>
+        </div>
+      </div>
+
+      <div class="quad-card">
+        <div class="quad-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="5" cy="6" r="1.8"/>
+            <circle cx="19" cy="6" r="1.8"/>
+            <circle cx="12" cy="13" r="2.2"/>
+            <circle cx="4.5" cy="19" r="1.8"/>
+            <circle cx="19.5" cy="19" r="1.8"/>
+            <line x1="6.5" y1="7" x2="10.2" y2="11.2"/>
+            <line x1="17.5" y1="7" x2="13.8" y2="11.2"/>
+            <line x1="6" y1="17.8" x2="10.5" y2="14.5"/>
+            <line x1="18" y1="17.8" x2="13.5" y2="14.5"/>
+            <line x1="6.8" y1="6" x2="17.2" y2="6" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="quad-content">
+          <span class="quad-num">— 02 / 04 —</span>
+          <span class="quad-title">开放协作</span>
+          <p class="quad-desc">跨组织、跨地域的分布式协作模式，让全球开发者共同参与同一项目，汇聚分散智慧，创造超越个体极限的集体成果。</p>
+          <span class="quad-tag">协 作 · 分 布 共 生</span>
+        </div>
+      </div>
+
+      <div class="quad-card">
+        <div class="quad-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3l8 2.5v6.5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V5.5L12 3z"/>
+            <path d="M12 9a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>
+            <circle cx="12" cy="13" r="1.4" style="fill: #B85C38; stroke: none;"/>
+            <path d="M9.5 21l-1.5 1.5M14.5 21l1.5 1.5" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="quad-content">
+          <span class="quad-num">— 03 / 04 —</span>
+          <span class="quad-title">透明可信</span>
+          <p class="quad-desc">源码公开意味着一切逻辑可审查，安全漏洞与恶意后门无处藏身，信任源于可验证而非不可质疑的权威背书。</p>
+          <span class="quad-tag">透 明 · 可 审 可 验</span>
+        </div>
+      </div>
+
+      <div class="quad-card">
+        <div class="quad-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="7" r="2.4"/>
+            <circle cx="5.5" cy="9.5" r="2"/>
+            <circle cx="18.5" cy="9.5" r="2"/>
+            <path d="M7 20c0-3 2-4.8 5-4.8s5 1.8 5 4.8"/>
+            <path d="M1.5 20c0-2.5 1.5-4.2 3.5-4.2"/>
+            <path d="M22.5 20c0-2.5-1.5-4.2-3.5-4.2"/>
+            <path d="M9 14.2c-1.5 0-3 0-4.5 0.5" opacity="0.5"/>
+            <path d="M15 14.2c1.5 0 3 0 4.5 0.5" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="quad-content">
+          <span class="quad-num">— 04 / 04 —</span>
+          <span class="quad-title">社区自治</span>
+          <p class="quad-desc">去中心化的决策机制，以贡献质量而非职级决定话语权与影响力，每一个有能力的参与者都能推动社区向前发展。</p>
+          <span class="quad-tag">自 治 · 贡 献 为 本</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="data-cards">
+      <div class="data-card data-card-accent">
+        <span class="data-num">1000万+</span>
+        <div class="data-divider"></div>
+        <div class="data-text">
+          <span class="data-label">全球活跃开源贡献者</span>
+          <span class="data-source">数据来源：GitHub 2023 年度开发者报告</span>
+        </div>
+      </div>
+      <div class="data-card">
+        <div class="data-text">
+          <span class="data-label" style="color: var(--terracotta); font-size: 11px; letter-spacing: 2px;">核心开源协议</span>
+          <span class="data-licenses">GPL / MIT / Apache-2.0 / BSD</span>
+          <span class="data-source">覆盖绝大多数主流开源项目</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-marker"></span>
+      <p class="footer-text">开源精神的四根支柱——<strong>自由分享</strong>、<strong>开放协作</strong>、<strong>透明可信</strong>、<strong>社区自治</strong>——构成了现代数字协作的底层操作系统，它们超越了技术本身，成为一种可以迁移到教育、科学乃至社会治理中的通用方法论。</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
