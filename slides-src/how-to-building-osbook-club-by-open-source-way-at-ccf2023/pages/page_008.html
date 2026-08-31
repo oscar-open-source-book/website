@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>关键指标与里程碑</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
+
+:root {
+  --primary: #795548;
+  --primary-dark: #4E342E;
+  --accent: #BCAAA4;
+  --accent-light: #D7CCC8;
+  --bg: #F5F0EB;
+  --bg-warm: #EFE7DF;
+  --text-main: #3E2723;
+  --text-sub: #6D4C41;
+  --line: #D7CCC8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1600px;
+  height: 900px;
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 64px 40px 64px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Header Section ===== */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.header-eyebrow {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--primary);
+  letter-spacing: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--primary);
+  display: inline-block;
+}
+
+.title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+  font-style: italic;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.header-tag {
+  font-size: 11px;
+  color: var(--primary);
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+
+.header-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.header-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+
+.header-dots span:nth-child(2) { background: var(--primary); }
+.header-dots span:nth-child(3) { background: var(--accent-light); }
+
+/* ===== Narrative Line ===== */
+.narrative {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-sub);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+  padding: 6px 40px 14px 40px;
+  position: relative;
+}
+
+.narrative::before,
+.narrative::after {
+  content: '——';
+  color: var(--accent);
+  font-weight: 300;
+  margin: 0 8px;
+}
+
+/* ===== Grid Section ===== */
+.grid-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-row {
+  display: flex;
+  flex: 1;
+}
+
+.grid-cell {
+  flex: 1;
+  padding: 20px 22px 16px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  position: relative;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.grid-cell:nth-child(3n) { border-right: none; }
+.grid-row:nth-child(2) .grid-cell { border-bottom: none; }
+
+.cell-seq {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  font-weight: 400;
+  position: absolute;
+  top: 18px;
+  left: 20px;
+}
+
+.cell-seq-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.cell-number {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 1px;
+  line-height: 1.1;
+  margin-top: 4px;
+}
+
+.cell-number-unit {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: 4px;
+}
+
+.cell-label {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+.cell-divider {
+  width: 30px;
+  height: 1px;
+  background: var(--accent);
+  margin-top: 8px;
+}
+
+.cell-desc {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin-top: 8px;
+  letter-spacing: 0.3px;
+}
+
+.cell-trend {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+/* ===== Banner Section ===== */
+.banner {
+  margin-top: 16px;
+  background: var(--bg-warm);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--primary);
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 0 0 auto;
+}
+
+.banner-bignum {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.banner-bignum-unit {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: 2px;
+}
+
+.banner-divider-v {
+  width: 1px;
+  height: 38px;
+  background: var(--accent);
+}
+
+.banner-label-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.banner-label {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.banner-sublabel {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--text-sub);
+  letter-spacing: 0.5px;
+}
+
+.banner-middle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 20px;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  height: 100%;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-sub);
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.banner-tags {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.banner-tag-row {
+  display: flex;
+  gap: 8px;
+}
+
+.banner-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+  letter-spacing: 1px;
+  background: rgba(255,255,255,0.4);
+}
+
+.banner-tag-note {
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+/* ===== Footer ===== */
+.footer {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.footer-line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  margin: 0 16px;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="header-eyebrow"><span>KEY METRICS &amp; MILESTONES</span></div>
+        <div class="title">关键指标与里程碑</div>
+        <div class="subtitle">数字背后：一个开源读书会的成长轨迹</div>
+      </div>
+      <div class="header-right">
+        <div class="header-tag">DATA DASHBOARD · 06+01</div>
+        <div class="header-dots"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+
+    <!-- Narrative -->
+    <div class="narrative">这些数字不仅衡量了 OSBook Club 自身的成长，更证明了一个开源读书会可以成长为真正的技术社区基础设施——它连接人、连接书、连接代码，形成一个自我强化的知识网络</div>
+
+    <!-- Grid -->
+    <div class="grid-section">
+      <div class="grid-row">
+        <div class="grid-cell">
+          <div class="cell-seq"><span class="cell-seq-dot"></span>01 / 06</div>
+          <div class="cell-number">200<span class="cell-number-unit">+</span></div>
+          <div class="cell-label">首年活跃成员</div>
+          <div class="cell-divider"></div>
+          <div class="cell-desc">覆盖 15 个城市，形成全国性的分布式共读网络</div>
+          <div class="cell-trend">◀ MEMBERS</div>
+        </div>
+        <div class="grid-cell">
+          <div class="cell-seq"><span class="cell-seq-dot"></span>02 / 06</div>
+          <div class="cell-number">12<span class="cell-number-unit">本</span></div>
+          <div class="cell-label">共读书目</div>
+          <div class="cell-divider"></div>
+          <div class="cell-desc">深度共读，每本 4-6 周，覆盖系统设计、算法、AI 等领域</div>
+          <div class="cell-trend">◀ BOOKS</div>
+        </div>
+        <div class="grid-cell">
+          <div class="cell-seq"><span class="cell-seq-dot"></span>03 / 06</div>
+          <div class="cell-number">800<span class="cell-number-unit">+</span></div>
+          <div class="cell-label">累计笔记</div>
+          <div class="cell-divider"></div>
+          <div class="cell-desc">结构化 Markdown 笔记，形成可复用知识资产</div>
+          <div class="cell-trend">◀ NOTES</div>
+        </div>
+      </div>
+      <div class="grid-row">
+        <div class="grid-cell">
+          <div class="cell-seq"><span class="cell-seq-dot"></span>04 / 06</div>
+          <div class="cell-number">1,500<span class="cell-number-unit">+</span></div>
+          <div class="cell-label">GitHub Star</div>
+          <div class="cell-divider"></div>
+          <div class="cell-desc">核心仓库年度数据，持续稳步增长</div>
+          <div class="cell-trend">◀ STAR</div>
+        </div>
+        <div class="grid-cell">
+          <div class="cell-seq"><span class="cell-seq-dot"></span>05 / 06</div>
+          <div class="cell-number">30<span class="cell-number-unit">+</span></div>
+          <div class="cell-label">Fork 社区数</div>
+          <div class="cell-divider"></div>
+          <div class="cell-desc">独立 fork 并运营的子俱乐部，形成社区生态</div>
+          <div class="cell-trend">◀ FORK</div>
+        </div>
+        <div class="grid-cell">
+          <div class="cell-seq"><span class="cell-seq-dot"></span>06 / 06</div>
+          <div class="cell-number">8<span class="cell-number-unit">场</span></div>
+          <div class="cell-label">线下 meetup</div>
+          <div class="cell-divider"></div>
+          <div class="cell-desc">平均到场率 78%，线下连接质量持续走高</div>
+          <div class="cell-trend">◀ MEETUP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Banner -->
+    <div class="banner">
+      <div class="banner-left">
+        <div class="banner-bignum">5万<span class="banner-bignum-unit">+</span></div>
+        <div class="banner-divider-v"></div>
+        <div class="banner-label-block">
+          <div class="banner-label">电子书阅读量</div>
+          <div class="banner-sublabel">读书笔记合集出版电子书</div>
+        </div>
+      </div>
+      <div class="banner-middle">
+        <span>读书笔记合集出版电子书，累计阅读 5 万+，跨越纸质与数字的边界</span>
+      </div>
+      <div class="banner-tags">
+        <div class="banner-tag-row">
+          <span class="banner-tag">Rust</span>
+          <span class="banner-tag">K8s</span>
+          <span class="banner-tag">AI</span>
+        </div>
+        <div class="banner-tag-note">跨社区联合共读 · CROSS-COMMUNITY</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span>OSBOOK CLUB</span>
+      <span class="footer-line"></span>
+      <span>07 DATA POINTS · 六宫格 + 一横幅</span>
+      <span class="footer-line"></span>
+      <span>2024</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
