@@ -1,0 +1,189 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源的思想源头</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --cyan: #00BCD4;
+  --bg: #F5F7FA;
+  --text-main: #0D2137;
+  --text-muted: #5A6B7B;
+  --white: #FFFFFF;
+  --border: #E1E8EF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', 'Noto Sans SC', sans-serif; background: var(--bg); }
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg { position: absolute; inset: 0; z-index: 0; background: var(--bg); }
+#ct { position: absolute; inset: 0; z-index: 1; padding: 52px 60px 44px 60px; box-sizing: border-box; display: flex; flex-direction: column; }
+
+.header { margin-bottom: 28px; }
+.page-tag { font-size: 12px; font-weight: 500; color: var(--text-muted); letter-spacing: 4px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+.page-tag .bar { width: 36px; height: 1px; background: var(--cyan); display: inline-block; }
+.page-tag .num { color: var(--cyan); font-weight: 600; }
+h1 { font-size: 42px; font-weight: 700; color: var(--navy); letter-spacing: 2px; line-height: 1.2; position: relative; padding-left: 22px; }
+h1::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 5px; height: 40px; background: var(--cyan); }
+.narrative { font-size: 14px; line-height: 1.85; color: var(--text-muted); max-width: 1400px; font-weight: 400; margin-top: 18px; padding-left: 22px; }
+.narrative strong { color: var(--navy); font-weight: 600; }
+
+.main { flex: 1; display: flex; gap: 40px; align-items: flex-start; }
+
+.left-col { width: 540px; flex-shrink: 0; display: flex; flex-direction: column; }
+.timeline-img-wrap { width: 500px; height: 280px; overflow: hidden; border-radius: 8px; background: var(--navy); margin-bottom: 22px; box-shadow: 0 4px 16px rgba(13,33,55,0.12); }
+.timeline-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-caption { font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; margin-bottom: 18px; padding-left: 4px; }
+
+.annotations { display: flex; flex-direction: column; gap: 10px; }
+.annotation-item { display: flex; align-items: flex-start; gap: 14px; padding: 11px 16px; background: var(--white); border-left: 3px solid var(--cyan); border-radius: 4px; }
+.annotation-num { font-size: 12px; font-weight: 700; color: var(--cyan); min-width: 26px; font-family: 'Inter', sans-serif; letter-spacing: 0.5px; padding-top: 1px; }
+.annotation-text { flex: 1; }
+.annotation-title { font-size: 12.5px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+.annotation-desc { font-size: 11px; line-height: 1.55; color: var(--text-muted); font-weight: 400; }
+
+.right-col { flex: 1; display: flex; flex-direction: column; }
+.section-label { font-size: 12px; font-weight: 600; color: var(--navy); letter-spacing: 3px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.section-label .sq { width: 6px; height: 6px; background: var(--cyan); display: inline-block; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.kpi-row { display: flex; gap: 18px; }
+.kpi-card { flex: 1; background: var(--white); border-radius: 10px; padding: 26px 20px 22px 20px; box-shadow: 0 2px 14px rgba(13,33,55,0.05); position: relative; overflow: hidden; }
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--cyan); }
+.kpi-tag { font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 2px; margin-bottom: 10px; }
+.kpi-year { font-size: 44px; font-weight: 700; color: var(--cyan); font-family: 'Inter', sans-serif; letter-spacing: -1px; line-height: 1; margin-bottom: 14px; }
+.kpi-label { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.kpi-desc { font-size: 11.5px; line-height: 1.65; color: var(--text-muted); }
+
+.summary-section { margin-top: 22px; }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.summary-card { background: var(--white); border-radius: 8px; padding: 18px 18px; display: flex; gap: 14px; align-items: flex-start; border: 1px solid var(--border); }
+.summary-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--navy); color: var(--cyan); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.summary-content { flex: 1; }
+.summary-head { font-size: 12.5px; font-weight: 600; color: var(--navy); margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+.summary-head .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); display: inline-block; }
+.summary-text { font-size: 11px; line-height: 1.6; color: var(--text-muted); }
+
+.footer-bar { margin-top: auto; padding-top: 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
+.footer-left { font-size: 11px; color: var(--text-muted); letter-spacing: 3px; font-weight: 500; }
+.footer-right { font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+<div class="header">
+<div class="page-tag"><span class="bar"></span><span>CHAPTER</span><span class="num">03</span><span>历史溯源</span></div>
+<h1>开源的思想源头</h1>
+<p class="narrative">开源的思想源头可以追溯到 <strong>Unix 在贝尔实验室被允许免费用于学术研究</strong> 的时期，<strong>Stallman 的自由软件运动</strong> 用 GPL 这把法律扳手把代码共享变成不可逆的权利，<strong>1998 年 OSI 成立</strong> 则让这种思想进入主流技术话语体系。</p>
+</div>
+
+<div class="main">
+<div class="left-col">
+<div class="timeline-img-wrap">
+<img src="../images/page_003_timeline_bg.png" alt="时间轴抽象插画：深蓝背景上青色发光竖线贯穿上下，沿线分布五个发光圆点节点">
+</div>
+<div class="img-caption">时间脉络 · 从学术共享到主流技术话语</div>
+
+<div class="annotations">
+<div class="annotation-item">
+<div class="annotation-num">01</div>
+<div class="annotation-text">
+<div class="annotation-title">学术共享传统</div>
+<div class="annotation-desc">贝尔实验室与早期 Unix 开发者共享源代码、协作改进的实践奠定基石。</div>
+</div>
+</div>
+<div class="annotation-item">
+<div class="annotation-num">02</div>
+<div class="annotation-text">
+<div class="annotation-title">自由软件运动</div>
+<div class="annotation-desc">1983 年 Stallman 发起 GNU 计划，提出软件四大自由：运行、学习、修改、分发。</div>
+</div>
+</div>
+<div class="annotation-item">
+<div class="annotation-num">03</div>
+<div class="annotation-text">
+<div class="annotation-title">GNU GPL 许可证</div>
+<div class="annotation-desc">1989 年首个 Copyleft 许可证发布，确保衍生作品同样保持开源自由。</div>
+</div>
+</div>
+<div class="annotation-item">
+<div class="annotation-num">04</div>
+<div class="annotation-text">
+<div class="annotation-title">开源一词的诞生</div>
+<div class="annotation-desc">1998 年 OSI 成立，将 open source 从 free software 中独立，更利于商业推广。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="right-col">
+<div class="section-label"><span class="sq"></span>关键年份里程碑</div>
+<div class="kpi-row">
+<div class="kpi-card">
+<div class="kpi-tag">GNU PROJECT</div>
+<div class="kpi-year">1983</div>
+<div class="kpi-label">GNU 计划发起</div>
+<div class="kpi-desc">Stallman 宣布启动 GNU 操作系统开发，开启自由软件运动。</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-tag">GPL V1</div>
+<div class="kpi-year">1989</div>
+<div class="kpi-label">GPL v1 发布</div>
+<div class="kpi-desc">首个正式 Copyleft 开源许可证诞生，以法律保障代码共享自由。</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-tag">OSI FOUNDED</div>
+<div class="kpi-year">1998</div>
+<div class="kpi-label">OSI 成立</div>
+<div class="kpi-desc">开源倡议组织确立开源定义，"开源"正式成为主流技术话语。</div>
+</div>
+</div>
+
+<div class="summary-section">
+<div class="section-label"><span class="sq"></span>思想演进核心脉络</div>
+<div class="summary-grid">
+<div class="summary-card">
+<div class="summary-icon">∞</div>
+<div class="summary-content">
+<div class="summary-head"><span class="dot"></span>共享基因</div>
+<div class="summary-text">Unix 时代的协作精神孕育了开源最原始的文化基因。</div>
+</div>
+</div>
+<div class="summary-card">
+<div class="summary-icon">§</div>
+<div class="summary-content">
+<div class="summary-head"><span class="dot"></span>法律保障</div>
+<div class="summary-text">GPL 把道德共识转化为具有约束力的法律权利，不可逆。</div>
+</div>
+</div>
+<div class="summary-card">
+<div class="summary-icon">◆</div>
+<div class="summary-content">
+<div class="summary-head"><span class="dot"></span>主流化</div>
+<div class="summary-text">OSI 建立统一标准，让开源理念被企业与开发者广泛接受。</div>
+</div>
+</div>
+<div class="summary-card">
+<div class="summary-icon">→</div>
+<div class="summary-content">
+<div class="summary-head"><span class="dot"></span>持续演化</div>
+<div class="summary-text">从自由软件到开源生态，思想内核一脉相承且不断扩展。</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer-bar">
+<span class="footer-left">OPEN SOURCE · GENESIS</span>
+<span class="footer-right">第 03 页 / 共 12 页</span>
+</div>
+</div>
+</div>
+</body>
+</html>

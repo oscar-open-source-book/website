@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源社区的力量</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --bg:#F5F7FA;
+  --primary:#0D2137;
+  --accent:#00BCD4;
+  --accent2:#0088A8;
+  --text:#1A2A3F;
+  --text-light:#4A5A6F;
+  --card:#FFFFFF;
+  --line:#E2E8F0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Noto Sans SC',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;margin:0 auto;
+  font-family:'Noto Sans SC',sans-serif;
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 900px 500px at 12% 8%, rgba(0,188,212,0.08), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 88% 92%, rgba(13,33,55,0.06), transparent 60%),
+    #F5F7FA;
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:48px 60px 40px 60px;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;
+}
+/* Header */
+.header{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:22px;}
+.header .eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:12px;font-weight:500;letter-spacing:3px;
+  color:var(--accent2);margin-bottom:14px;
+  font-family:'Inter',sans-serif;
+}
+.eyebrow::before{
+  content:"";display:inline-block;width:28px;height:2px;background:var(--accent);
+}
+h1{
+  font-family:'Inter',sans-serif;
+  font-weight:900;font-size:52px;
+  color:var(--primary);letter-spacing:1px;
+  line-height:1.05;
+}
+h1 .accent-dot{color:var(--accent);}
+.subtitle{
+  margin-top:14px;max-width:1300px;
+  font-size:14px;line-height:1.85;color:var(--text-light);
+  font-weight:300;
+}
+.subtitle .hl{color:var(--primary);font-weight:500;}
+
+/* Main area */
+.main{
+  display:grid;grid-template-columns:1fr 1fr;gap:28px;
+  margin-bottom:22px;
+}
+
+/* Map panel */
+.map-panel{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:22px 24px 18px 24px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.map-panel .panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.panel-title{
+  font-family:'Inter',sans-serif;
+  font-weight:700;font-size:15px;color:var(--primary);
+  display:flex;align-items:center;gap:8px;
+}
+.panel-title .dot{
+  width:8px;height:8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px var(--accent);
+}
+.panel-tag{
+  font-size:11px;color:var(--accent2);font-weight:500;
+  font-family:'Inter',sans-serif;letter-spacing:1px;
+}
+.map-wrap{
+  position:relative;flex:1;
+  background:
+    linear-gradient(180deg, #F0F4F8 0%, #E8EEF5 100%);
+  border-radius:10px;
+  overflow:hidden;
+  min-height:270px;
+}
+.map-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(13,33,55,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13,33,55,0.06) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+/* Continent shapes */
+.continent{
+  position:absolute;border-radius:30%;
+  opacity:0.65;
+}
+.cont-europe{
+  left:46%;top:18%;width:14%;height:18%;
+  background:#0D2137;border-radius:40% 55% 45% 35%;
+  transform:rotate(-8deg);opacity:0.18;
+}
+.cont-africa{
+  left:46%;top:40%;width:13%;height:26%;
+  background:#0D2137;border-radius:45% 50% 40% 50%;
+  opacity:0.16;
+}
+.cont-asia{
+  left:60%;top:14%;width:26%;height:28%;
+  background:#0D2137;border-radius:50% 40% 55% 45%;
+  opacity:0.18;
+}
+.cont-na{
+  left:6%;top:16%;width:22%;height:28%;
+  background:#0D2137;border-radius:45% 40% 50% 45%;
+  transform:rotate(6deg);opacity:0.18;
+}
+.cont-sa{
+  left:22%;top:52%;width:12%;height:26%;
+  background:#0D2137;border-radius:40% 50% 45% 55%;
+  opacity:0.16;
+}
+.cont-au{
+  left:82%;top:66%;width:10%;height:10%;
+  background:#0D2137;border-radius:50% 45% 50% 45%;
+  opacity:0.18;
+}
+.cont-uk{
+  left:40%;top:22%;width:4%;height:6%;
+  background:#0D2137;border-radius:40%;opacity:0.20;
+}
+
+/* Nodes */
+.node{
+  position:absolute;width:10px;height:10px;border-radius:50%;
+  background:var(--accent);
+  transform:translate(-50%,-50%);
+}
+.node::before{
+  content:"";position:absolute;inset:-6px;border-radius:50%;
+  background:radial-gradient(circle, rgba(0,188,212,0.55) 0%, transparent 70%);
+  animation:glow 2.4s ease-in-out infinite;
+}
+.node::after{
+  content:"";position:absolute;inset:-2px;border-radius:50%;
+  border:1.5px solid var(--accent);opacity:0.5;
+}
+.node.lg{width:14px;height:14px;}
+.node.lg::before{inset:-10px;}
+.node.sm{width:7px;height:7px;}
+
+.node.n1{left:14%;top:32%;animation:nfloat 3s ease-in-out infinite;}
+.node.n2{left:18%;top:44%;}
+.node.n3{left:22%;top:28%;}
+.node.n4{left:42%;top:30%;}
+.node.n5{left:50%;top:26%;}
+.node.n6{left:54%;top:36%;}
+.node.n7{left:66%;top:24%;}
+.node.n8{left:72%;top:34%;}
+.node.n9{left:78%;top:22%;}
+.node.n10{left:74%;top:42%;}
+.node.n11{left:84%;top:70%;}
+.node.n12{left:50%;top:52%;}
+.node.n13{left:46%;top:60%;}
+.node.n14{left:26%;top:64%;}
+.node.n15{left:80%;top:30%;}
+
+@keyframes glow{
+  0%,100%{transform:scale(1);opacity:0.7;}
+  50%{transform:scale(1.5);opacity:1;}
+}
+@keyframes nfloat{
+  0%,100%{transform:translate(-50%,-50%) scale(1);}
+  50%{transform:translate(-50%,-50%) scale(1.3);}
+}
+
+/* Connection lines via SVG */
+.map-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.map-svg line{stroke:var(--accent);stroke-width:0.8;opacity:0.35;}
+
+/* Map labels */
+.map-label{
+  position:absolute;font-size:10px;font-weight:500;
+  color:var(--primary);
+  font-family:'Inter',sans-serif;
+  background:rgba(255,255,255,0.85);
+  padding:2px 7px;border-radius:4px;
+  border:1px solid rgba(0,188,212,0.3);
+  white-space:nowrap;
+  transform:translate(-50%,-50%);
+}
+.map-label.l1{left:16%;top:22%;}
+.map-label.l2{left:48%;top:16%;}
+.map-label.l3{left:74%;top:14%;}
+.map-label.l4{left:74%;top:48%;}
+.map-label.l5{left:26%;top:72%;}
+.map-label.l6{left:86%;top:80%;}
+
+.map-legend{
+  display:flex;gap:16px;margin-top:8px;align-items:center;
+  font-size:11px;color:var(--text-light);
+}
+.map-legend .item{display:flex;align-items:center;gap:5px;}
+.map-legend .swatch{
+  width:8px;height:8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 6px var(--accent);
+}
+.map-legend .swatch.sm{width:5px;height:5px;}
+.map-stats{
+  display:flex;gap:18px;margin-top:6px;
+  font-size:11px;color:var(--text-light);
+  font-family:'Inter',sans-serif;
+}
+.map-stats strong{color:var(--primary);font-weight:700;}
+
+/* Right column: 4 cards */
+.cards{
+  display:flex;flex-direction:column;gap:10px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 16px;
+  display:grid;grid-template-columns:48px 1fr auto;
+  gap:14px;align-items:center;
+  position:relative;overflow:hidden;
+  flex:1;
+  min-height:72px;
+}
+.card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--accent), var(--accent2));
+}
+.card-icon{
+  width:44px;height:44px;border-radius:10px;
+  background:linear-gradient(135deg, rgba(0,188,212,0.15), rgba(0,188,212,0.05));
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(0,188,212,0.25);
+}
+.card-icon svg{width:22px;height:22px;}
+.card-body{display:flex;flex-direction:column;gap:3px;}
+.card-num{
+  font-family:'Inter',sans-serif;
+  font-size:10px;color:var(--accent2);font-weight:600;
+  letter-spacing:1.5px;
+}
+.card-title{
+  font-size:14px;font-weight:700;color:var(--primary);
+}
+.card-desc{
+  font-size:11.5px;line-height:1.55;color:var(--text-light);
+}
+.card-tag{
+  font-family:'Inter',sans-serif;
+  font-size:10px;color:var(--accent);font-weight:600;
+  padding:3px 8px;border-radius:4px;
+  background:rgba(0,188,212,0.1);
+  border:1px solid rgba(0,188,212,0.2);
+  white-space:nowrap;
+}
+
+/* KPI bottom */
+.kpis{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.kpi{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px 22px;
+  display:grid;grid-template-columns:auto 1fr;
+  gap:18px;align-items:center;
+  position:relative;overflow:hidden;
+}
+.kpi::after{
+  content:"";position:absolute;right:-30px;top:-30px;
+  width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle, rgba(0,188,212,0.10), transparent 70%);
+}
+.kpi-num{
+  font-family:'Inter',sans-serif;
+  font-weight:900;font-size:44px;
+  color:var(--primary);
+  line-height:1;
+  letter-spacing:-1px;
+  position:relative;z-index:1;
+}
+.kpi-num .unit{font-size:22px;color:var(--accent2);font-weight:700;margin-left:2px;}
+.kpi-body{display:flex;flex-direction:column;gap:4px;position:relative;z-index:1;}
+.kpi-label{
+  font-size:13px;font-weight:700;color:var(--primary);
+}
+.kpi-desc{
+  font-size:11px;color:var(--text-light);line-height:1.55;
+}
+.kpi-bar{
+  margin-top:6px;height:3px;width:100%;
+  background:#E8EEF5;border-radius:2px;overflow:hidden;
+}
+.kpi-bar span{
+  display:block;height:100%;
+  background:linear-gradient(90deg, var(--accent), var(--primary));
+  border-radius:2px;
+}
+.kpi-bar .b1{width:88%;}
+.kpi-bar .b2{width:75%;}
+.kpi-bar .b3{width:92%;}
+
+/* Footer line */
+.footer{
+  margin-top:14px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+  font-size:10.5px;color:var(--text-light);
+  font-family:'Inter',sans-serif;letter-spacing:1px;
+}
+.footer .left{display:flex;align-items:center;gap:10px;}
+.footer .left .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 6px var(--accent);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+  <div class="header">
+    <div class="eyebrow"><span>OPEN SOURCE · COMMUNITY</span></div>
+    <h1>开源社区的力量<span class="accent-dot">.</span></h1>
+    <div class="subtitle">
+      开源社区是人类历史上<span class="hl">最独特的知识生产协作模式</span>——没有 CEO 和 HR，只有 Issue、PR 和 Code Review；这种去中心化的自治组织在复杂软件项目中展现出惊人的<span class="hl">效率与韧性</span>，也创造了无数技术人才的成长故事。
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- LEFT: Map panel -->
+    <div class="map-panel">
+      <div class="panel-head">
+        <div class="panel-title"><span class="dot"></span>全球贡献者分布热区</div>
+        <div class="panel-tag">CONTRIBUTOR HEATMAP</div>
+      </div>
+      <div class="map-wrap">
+        <div class="map-grid"></div>
+
+        <div class="continent cont-na"></div>
+        <div class="continent cont-europe"></div>
+        <div class="continent cont-uk"></div>
+        <div class="continent cont-africa"></div>
+        <div class="continent cont-sa"></div>
+        <div class="continent cont-asia"></div>
+        <div class="continent cont-au"></div>
+
+        <svg class="map-svg" viewBox="0 0 600 300" preserveAspectRatio="none">
+          <line x1="84" y1="96" x2="252" y2="78"/>
+          <line x1="252" y1="78" x2="330" y2="72"/>
+          <line x1="330" y1="72" x2="396" y2="90"/>
+          <line x1="396" y1="90" x2="468" y2="66"/>
+          <line x1="84" y1="96" x2="132" y2="132"/>
+          <line x1="252" y1="78" x2="300" y2="156"/>
+          <line x1="396" y1="90" x2="444" y2="126"/>
+          <line x1="444" y1="126" x2="480" y2="180"/>
+          <line x1="132" y1="132" x2="156" y2="192"/>
+          <line x1="300" y1="156" x2="282" y2="180"/>
+          <line x1="480" y1="180" x2="504" y2="210"/>
+          <line x1="396" y1="90" x2="420" y1="90"/>
+          <line x1="156" y1="192" x2="276" y2="210"/>
+        </svg>
+
+        <div class="node lg n1"></div>
+        <div class="node sm n2"></div>
+        <div class="node n3"></div>
+        <div class="node n4"></div>
+        <div class="node lg n5"></div>
+        <div class="node n6"></div>
+        <div class="node lg n7"></div>
+        <div class="node n8"></div>
+        <div class="node n9"></div>
+        <div class="node sm n10"></div>
+        <div class="node n11"></div>
+        <div class="node sm n12"></div>
+        <div class="node sm n13"></div>
+        <div class="node sm n14"></div>
+        <div class="node n15"></div>
+
+        <div class="map-label l1">北美</div>
+        <div class="map-label l2">欧洲</div>
+        <div class="map-label l3">东亚</div>
+        <div class="map-label l4">印度</div>
+        <div class="map-label l5">南美</div>
+        <div class="map-label l6">大洋洲</div>
+      </div>
+      <div class="map-stats">
+        <div><strong>6</strong> 大洲活跃</div>
+        <div><strong>15+</strong> 核心节点</div>
+        <div><strong>跨越 24 时区</strong></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: 4 cards -->
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 010 18"/><path d="M12 3a14 14 0 000 18"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-num">01 / GLOBAL NETWORK</div>
+          <div class="card-title">全球协作网络</div>
+          <div class="card-desc">Linux 内核有数千名贡献者跨越时区与语言共同维护，是史上最大的开源协作实验。</div>
+        </div>
+        <div class="card-tag">COLLABORATION</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="6" r="3"/><circle cx="5" cy="18" r="3"/><circle cx="19" cy="18" r="3"/><path d="M12 9v3M12 12l-5 3M12 12l5 3"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-num">02 / GOVERNANCE</div>
+          <div class="card-title">去中心化治理</div>
+          <div class="card-desc">CNCF、Apache Foundation 等基金会以社区投票决定项目方向，权力分散于贡献者之间。</div>
+        </div>
+        <div class="card-tag">DECENTRALIZED</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-8"/><path d="M22 20H2"/><circle cx="10" cy="6" r="1.5" fill="#00BCD4"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-num">03 / GROWTH PATH</div>
+          <div class="card-title">新人成长路径</div>
+          <div class="card-desc">从 Issue 评论到 Pull Request 再到核心维护者，开源提供清晰的技术成长阶梯。</div>
+        </div>
+        <div class="card-tag">CAREER LADDER</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3v18"/><path d="M5 7c3 2 11 2 14 0M5 17c3-2 11-2 14 0"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-num">04 / BORDERLESS</div>
+          <div class="card-title">知识无国界</div>
+          <div class="card-desc">发展中国家开发者可通过开源项目直接接触最前沿技术，弥合全球数字鸿沟。</div>
+        </div>
+        <div class="card-tag">EQUAL ACCESS</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="kpis">
+
+    <div class="kpi">
+      <div class="kpi-num">19,000<span class="unit">+</span></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Linux 内核贡献者</div>
+        <div class="kpi-desc">累计提交代码的独立贡献者数，跨越数十年持续演进。</div>
+        <div class="kpi-bar"><span class="b1"></span></div>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-num">150<span class="unit">+</span></div>
+      <div class="kpi-body">
+        <div class="kpi-label">CNCF 项目数</div>
+        <div class="kpi-desc">云原生计算基金会管理的毕业与孵化项目规模。</div>
+        <div class="kpi-bar"><span class="b2"></span></div>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-num">90<span class="unit">%+</span></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Stack Overflow 调查</div>
+        <div class="kpi-desc">受访者日常工作中使用开源代码的比例，已成为行业基础设施。</div>
+        <div class="kpi-bar"><span class="b3"></span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="left"><span class="dot"></span><span>POWER OF OPEN SOURCE COMMUNITY</span></div>
+    <div>无 CEO · 无 HR · 唯有 Issue · PR · Code Review</div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
