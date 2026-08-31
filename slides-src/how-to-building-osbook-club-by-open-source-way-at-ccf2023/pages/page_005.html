@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二章 · 开源方法论</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --coffee:#795548;
+  --coffee-dark:#5D4037;
+  --coffee-light:#A1887F;
+  --warm-gray:#BCAAA4;
+  --cream:#F5F0EB;
+  --cream-deep:#EFE7DD;
+  --ink:#3E2723;
+  --text-main:#4E342E;
+  --text-sub:#8D6E63;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Noto Sans SC',sans-serif;
+  color:var(--text-main);
+  background:var(--cream);
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  font-family:'Noto Sans SC',sans-serif;
+}
+
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(188,170,164,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(121,85,72,0.10) 0%, transparent 55%),
+    var(--cream);
+}
+
+#bg::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--warm-gray) 30%,var(--warm-gray) 70%,transparent);
+  opacity:0.6;
+}
+
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:56px 72px;
+  display:flex;flex-direction:column;
+}
+
+/* ── Header ── */
+.header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-bottom:24px;
+  border-bottom:1px solid rgba(188,170,164,0.5);
+}
+
+.chapter-tag{
+  display:flex;align-items:center;gap:18px;
+  margin-bottom:14px;
+}
+
+.chapter-tag .num-badge{
+  width:56px;height:56px;
+  border:1.5px solid var(--coffee);
+  color:var(--coffee);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif SC',serif;
+  font-size:22px;font-weight:700;
+  letter-spacing:1px;
+  border-radius:2px;
+  background:rgba(255,255,255,0.4);
+}
+
+.chapter-tag .tag-line{
+  display:flex;flex-direction:column;gap:4px;
+}
+
+.chapter-tag .tag-label{
+  font-size:11px;font-weight:500;
+  letter-spacing:6px;color:var(--coffee-light);
+  text-transform:uppercase;
+}
+
+.chapter-tag .tag-name{
+  font-size:14px;color:var(--text-sub);
+  letter-spacing:3px;
+}
+
+.main-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:64px;font-weight:700;
+  color:var(--coffee-dark);
+  letter-spacing:8px;
+  line-height:1.1;
+}
+
+.main-title .dot{
+  color:var(--warm-gray);
+  margin:0 6px;
+  font-weight:400;
+}
+
+.subtitle{
+  margin-top:14px;
+  font-family:'Noto Serif SC',serif;
+  font-style:italic;
+  font-size:20px;
+  color:var(--coffee-light);
+  letter-spacing:2px;
+}
+
+.header-right{
+  text-align:right;
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+}
+
+.header-right .pg-label{
+  font-size:11px;letter-spacing:5px;
+  color:var(--coffee-light);
+}
+
+.header-right .pg-num{
+  font-family:'Noto Serif SC',serif;
+  font-size:18px;color:var(--coffee);
+  letter-spacing:2px;
+}
+
+.header-right .divider-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--coffee);opacity:0.5;
+  margin-top:4px;
+}
+
+/* ── Intro strip ── */
+.intro-strip{
+  margin-top:30px;
+  display:flex;align-items:center;gap:20px;
+}
+
+.intro-strip .bar{
+  width:48px;height:1px;background:var(--coffee);opacity:0.6;
+}
+
+.intro-strip .text{
+  font-family:'Noto Serif SC',serif;
+  font-size:15px;color:var(--text-sub);
+  letter-spacing:2px;line-height:1.8;
+}
+
+.intro-strip .text em{
+  font-style:normal;color:var(--coffee);font-weight:600;
+}
+
+/* ── Flow section ── */
+.flow-section{
+  flex:1;
+  margin-top:38px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+
+.flow-section-title{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:36px;
+}
+
+.flow-section-title .line{
+  flex:0 0 36px;height:1px;background:var(--coffee);opacity:0.5;
+}
+
+.flow-section-title .label{
+  font-family:'Noto Serif SC',serif;
+  font-size:18px;color:var(--coffee);
+  letter-spacing:6px;font-weight:600;
+}
+
+.flow-section-title .sub-label{
+  font-size:12px;color:var(--warm-gray);
+  letter-spacing:3px;margin-left:6px;
+}
+
+.flow-container{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;
+  position:relative;
+  padding:0 20px;
+}
+
+.flow-container::before{
+  content:'';
+  position:absolute;
+  top:36px;
+  left:60px;right:60px;
+  height:1px;
+  background:linear-gradient(90deg,
+    rgba(121,85,72,0) 0%,
+    rgba(121,85,72,0.4) 8%,
+    rgba(121,85,72,0.4) 92%,
+    rgba(121,85,72,0) 100%);
+  z-index:0;
+}
+
+.step{
+  flex:1;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  position:relative;z-index:1;
+  padding:0 8px;
+}
+
+.step .circle{
+  width:72px;height:72px;
+  border-radius:50%;
+  border:1.5px solid var(--coffee);
+  background:var(--cream);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  margin-bottom:18px;
+  position:relative;
+  transition:none;
+}
+
+.step .circle .num{
+  font-family:'Noto Serif SC',serif;
+  font-size:18px;font-weight:700;
+  color:var(--coffee);
+  line-height:1;
+}
+
+.step .circle .num-sub{
+  font-size:8px;color:var(--warm-gray);
+  letter-spacing:2px;margin-top:3px;
+}
+
+.step:nth-child(odd) .circle{
+  background:var(--coffee);
+  border-color:var(--coffee);
+}
+.step:nth-child(odd) .circle .num{
+  color:var(--cream);
+}
+.step:nth-child(odd) .circle .num-sub{
+  color:var(--warm-gray);
+}
+
+.step .keyword{
+  font-family:'Noto Serif SC',serif;
+  font-size:22px;font-weight:600;
+  color:var(--coffee-dark);
+  letter-spacing:6px;
+  margin-bottom:6px;
+}
+
+.step .keyword-en{
+  font-family:'Noto Serif SC',serif;
+  font-style:italic;
+  font-size:11px;color:var(--coffee-light);
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+
+.step .desc{
+  font-size:11.5px;
+  color:var(--text-sub);
+  letter-spacing:1px;
+  line-height:1.7;
+  max-width:200px;
+}
+
+.step .desc .hl{
+  color:var(--coffee);
+  font-weight:500;
+}
+
+.step .bottom-bar{
+  margin-top:12px;
+  width:32px;height:2px;
+  background:var(--coffee);
+  opacity:0.3;
+}
+
+.step:nth-child(odd) .bottom-bar{
+  opacity:0.7;
+}
+
+.step-connector{
+  flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;
+  padding-top:32px;
+  color:var(--warm-gray);
+  font-size:14px;
+  width:24px;
+}
+
+/* ── Manifesto ── */
+.manifesto{
+  margin-top:28px;
+  padding:28px 48px;
+  background:linear-gradient(90deg,
+    rgba(121,85,72,0.06) 0%,
+    rgba(121,85,72,0.02) 50%,
+    rgba(121,85,72,0.06) 100%);
+  border-left:3px solid var(--coffee);
+  border-right:1px solid rgba(188,170,164,0.4);
+  display:flex;align-items:center;gap:32px;
+  position:relative;
+}
+
+.manifesto .quote-mark{
+  font-family:'Noto Serif SC',serif;
+  font-size:64px;font-weight:900;
+  color:var(--coffee);
+  opacity:0.2;
+  line-height:0.5;
+  flex-shrink:0;
+}
+
+.manifesto .manifesto-text{
+  font-family:'Noto Serif SC',serif;
+  font-size:15px;
+  color:var(--text-main);
+  line-height:2;
+  letter-spacing:1.5px;
+  flex:1;
+}
+
+.manifesto .manifesto-text strong{
+  color:var(--coffee-dark);
+  font-weight:700;
+}
+
+.manifesto .manifesto-tag{
+  flex-shrink:0;
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+  border-left:1px solid rgba(188,170,164,0.5);
+  padding-left:24px;
+}
+
+.manifesto .manifesto-tag .t-label{
+  font-size:10px;letter-spacing:4px;
+  color:var(--coffee-light);
+}
+
+.manifesto .manifesto-tag .t-name{
+  font-family:'Noto Serif SC',serif;
+  font-size:13px;color:var(--coffee);
+  letter-spacing:3px;
+}
+
+/* ── Footer ── */
+.footer{
+  margin-top:20px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:18px;
+  border-top:1px solid rgba(188,170,164,0.4);
+}
+
+.footer-left{
+  display:flex;align-items:center;gap:14px;
+}
+
+.footer-left .dot-accent{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--coffee);
+}
+
+.footer-left .fl-text{
+  font-size:11px;color:var(--coffee-light);
+  letter-spacing:3px;
+}
+
+.footer-right{
+  display:flex;align-items:center;gap:20px;
+}
+
+.footer-right .fr-item{
+  font-size:11px;color:var(--coffee-light);
+  letter-spacing:3px;
+}
+
+.footer-right .fr-sep{
+  width:1px;height:12px;background:var(--warm-gray);opacity:0.5;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div>
+        <div class="chapter-tag">
+          <div class="num-badge">
+            <span>02</span>
+          </div>
+          <div class="tag-line">
+            <span class="tag-label">CHAPTER · 章节</span>
+            <span class="tag-name">方法论 / Methodology</span>
+          </div>
+        </div>
+        <h1 class="main-title">第二章<span class="dot">·</span>开源方法论</h1>
+        <div class="subtitle">How to build it the open-source way</div>
+      </div>
+      <div class="header-right">
+        <span class="pg-label">CHAPTER OPENER</span>
+        <span class="pg-num">02 / 08</span>
+        <span class="divider-dot"></span>
+      </div>
+    </div>
+
+    <div class="intro-strip">
+      <span class="bar"></span>
+      <span class="text">
+        把开源社区治理的那套方法论 — <em>贡献指南 · 代码审查 · 版本发布</em> —
+        原封不动搬到阅读上来，让读书会像一个开源项目一样被设计、被维护、被 fork。
+      </span>
+    </div>
+
+    <div class="flow-section">
+      <div class="flow-section-title">
+        <span class="line"></span>
+        <span class="label">五步流程</span>
+        <span class="sub-label">FIVE-STEP METHODOLOGY</span>
+      </div>
+
+      <div class="flow-container">
+        <div class="step">
+          <div class="circle">
+            <span class="num">01</span>
+            <span class="num-sub">STEP</span>
+          </div>
+          <span class="keyword">选书</span>
+          <span class="keyword-en">SELECT</span>
+          <span class="desc"><span class="hl">社区投票</span>加主题策展，<br>去中心化决策</span>
+          <span class="bottom-bar"></span>
+        </div>
+
+        <div class="step-connector"><span>›</span></div>
+
+        <div class="step">
+          <div class="circle">
+            <span class="num">02</span>
+            <span class="num-sub">STEP</span>
+          </div>
+          <span class="keyword">组织</span>
+          <span class="keyword-en">ORGANIZE</span>
+          <span class="desc"><span class="hl">轮值主理人</span>制度，<br>人人可参与治理</span>
+          <span class="bottom-bar"></span>
+        </div>
+
+        <div class="step-connector"><span>›</span></div>
+
+        <div class="step">
+          <div class="circle">
+            <span class="num">03</span>
+            <span class="num-sub">STEP</span>
+          </div>
+          <span class="keyword">协作</span>
+          <span class="keyword-en">COLLABORATE</span>
+          <span class="desc">用 <span class="hl">Git 工作流</span>管理笔记、<br>讨论和版本演进</span>
+          <span class="bottom-bar"></span>
+        </div>
+
+        <div class="step-connector"><span>›</span></div>
+
+        <div class="step">
+          <div class="circle">
+            <span class="num">04</span>
+            <span class="num-sub">STEP</span>
+          </div>
+          <span class="keyword">产出</span>
+          <span class="keyword-en">PUBLISH</span>
+          <span class="desc">以<span class="hl">开源许可证</span>发布，<br>可复用可延伸</span>
+          <span class="bottom-bar"></span>
+        </div>
+
+        <div class="step-connector"><span>›</span></div>
+
+        <div class="step">
+          <div class="circle">
+            <span class="num">05</span>
+            <span class="num-sub">STEP</span>
+          </div>
+          <span class="keyword">演进</span>
+          <span class="keyword-en">EVOLVE</span>
+          <span class="desc">通过 <span class="hl">Issue</span> 与 <span class="hl">Roadmap</span><br>持续迭代规则与主题</span>
+          <span class="bottom-bar"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="manifesto">
+      <span class="quote-mark">「</span>
+      <span class="manifesto-text">
+        把开源社区治理的那套方法论 — <strong>贡献指南、代码审查、版本发布</strong> —
+        原封不动搬到阅读上来。让读书会像一个开源项目一样<strong>被设计、被维护、被 fork</strong>。
+      </span>
+      <span class="manifesto-tag">
+        <span class="t-label">MANIFESTO</span>
+        <span class="t-name">方法论宣言</span>
+      </span>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <span class="dot-accent"></span>
+        <span class="fl-text">阅读即协作 · 知识即开源</span>
+      </div>
+      <div class="footer-right">
+        <span class="fr-item">读 者 · 即 · 贡 献 者</span>
+        <span class="fr-sep"></span>
+        <span class="fr-item">READERS ARE CONTRIBUTORS</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

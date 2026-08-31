@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>什么是 OSBook Club</title>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+<style>
+:root{
+  --primary:#795548;
+  --primary-deep:#5D4037;
+  --accent:#BCAAA4;
+  --accent-light:#D7CCC8;
+  --bg:#F5F0EB;
+  --bg-warm:#EDE4DC;
+  --text-main:#3E2723;
+  --text-sub:#6D4C41;
+  --line:#D7CCC8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* decorative bg elements */
+.bg-corner-tl{position:absolute;top:-120px;left:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(188,170,164,0.25),transparent 70%);}
+.bg-corner-br{position:absolute;bottom:-150px;right:-150px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(121,85,72,0.12),transparent 70%);}
+.bg-line{position:absolute;top:0;bottom:0;width:1px;background:var(--line);opacity:0.4;}
+
+/* header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+.title-block{flex:1;}
+.eyebrow{font-size:13px;letter-spacing:6px;color:var(--primary);font-weight:500;margin-bottom:12px;}
+.main-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:54px;color:var(--primary-deep);letter-spacing:2px;line-height:1.15;}
+.title-underline{display:inline-block;width:80px;height:3px;background:var(--primary);margin-top:14px;}
+.header-mark{font-family:'Noto Serif SC',serif;font-size:14px;color:var(--accent);letter-spacing:3px;padding-bottom:8px;text-align:right;line-height:1.6;}
+
+/* narrative */
+.narrative{margin-top:18px;padding:0 8px;font-size:16px;line-height:1.85;color:var(--text-sub);max-width:1400px;}
+.narrative .quote-mark{font-family:'Noto Serif SC',serif;font-size:32px;color:var(--primary);font-weight:700;line-height:0;margin-right:6px;vertical-align:-8px;}
+.narrative .em{color:var(--primary-deep);font-weight:500;}
+.narrative .divider-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);margin:0 12px;vertical-align:middle;}
+
+/* diagram area */
+.diagram{position:relative;flex:1;margin-top:14px;}
+.diagram-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.center-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;flex-direction:column;align-items:center;justify-content:center;color:#F5F0EB;box-shadow:0 8px 30px rgba(121,85,72,0.25),0 0 0 8px rgba(188,170,164,0.2);z-index:3;}
+.center-node .cn-label{font-size:11px;letter-spacing:4px;opacity:0.8;margin-bottom:6px;}
+.center-node .cn-title{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;letter-spacing:1px;line-height:1.3;text-align:center;}
+.center-node .cn-sub{font-size:10px;letter-spacing:2px;opacity:0.7;margin-top:8px;}
+.center-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:220px;height:220px;border-radius:50%;border:1px dashed var(--accent);z-index:2;}
+.center-ring-2{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:280px;height:280px;border-radius:50%;border:1px solid rgba(188,170,164,0.35);z-index:1;}
+
+.pillar{position:absolute;width:320px;padding:20px 22px;background:#FAF6F2;border:1px solid var(--line);border-radius:6px;box-shadow:0 4px 18px rgba(121,85,72,0.08);z-index:3;}
+.pillar-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+.pillar-num{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;color:var(--primary);width:28px;height:28px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--accent-light);}
+.pillar-title{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;color:var(--primary-deep);}
+.pillar-body{font-size:13.5px;line-height:1.7;color:var(--text-sub);}
+.pillar-tag{display:inline-block;font-size:10px;letter-spacing:2px;color:var(--primary);background:rgba(188,170,164,0.25);padding:3px 8px;border-radius:2px;margin-top:10px;}
+
+.p1{top:0;left:0;}
+.p2{top:0;right:0;}
+.p3{bottom:8px;left:0;}
+.p4{bottom:8px;right:0;}
+
+/* data strip */
+.data-strip{margin-top:14px;display:flex;gap:24px;padding-top:18px;border-top:1px solid var(--line);}
+.data-card{flex:1;display:flex;align-items:center;gap:20px;padding:16px 22px;background:var(--bg-warm);border-radius:6px;border-left:3px solid var(--primary);}
+.data-num{font-family:'Noto Serif SC',serif;font-size:42px;font-weight:900;color:var(--primary-deep);line-height:1;letter-spacing:1px;flex-shrink:0;}
+.data-unit{font-size:14px;color:var(--primary);font-weight:500;margin-left:-8px;}
+.data-info{display:flex;flex-direction:column;gap:4px;}
+.data-label{font-size:15px;font-weight:700;color:var(--text-main);font-family:'Noto Serif SC',serif;}
+.data-desc{font-size:12px;color:var(--text-sub);line-height:1.5;}
+.data-connector{display:flex;align-items:center;justify-content:center;width:40px;flex-shrink:0;color:var(--accent);font-size:18px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-corner-tl"></div>
+    <div class="bg-corner-br"></div>
+  </div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <div class="eyebrow">CONCEPT · 概念说明</div>
+        <h1 class="main-title">什么是 OSBook Club</h1>
+        <div class="title-underline"></div>
+      </div>
+      <div class="header-mark">
+        Open Source · Book · Community<br>
+        <span style="color:var(--primary);">OPEN SOURCE</span>&nbsp;BOOK CLUB
+      </div>
+    </div>
+
+    <p class="narrative">
+      <span class="quote-mark">"</span>OSBook Club 不是<span class="em">一个产品</span>，而是一个<span class="em">协议</span>——它定义了'怎样一群人，用什么样的节奏，把阅读变成公共品'。<span class="divider-dot"></span>选书不再由少数编辑决定，笔记不再躺在个人硬盘，讨论不再消失在群里。
+    </p>
+
+    <div class="diagram">
+      <svg class="diagram-svg" viewBox="0 0 1480 460" preserveAspectRatio="none">
+        <line x1="240" y1="100" x2="700" y2="210" stroke="#BCAAA4" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
+        <line x1="1240" y1="100" x2="780" y2="210" stroke="#BCAAA4" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
+        <line x1="240" y1="360" x2="700" y2="250" stroke="#BCAAA4" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
+        <line x1="1240" y1="360" x2="780" y2="250" stroke="#BCAAA4" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
+      </svg>
+
+      <div class="center-ring-2"></div>
+      <div class="center-ring"></div>
+      <div class="center-node">
+        <div class="cn-label">PROTOCOL</div>
+        <div class="cn-title">OSBook Club</div>
+        <div class="cn-sub">核 · 心 · 概 · 念</div>
+      </div>
+
+      <div class="pillar p1">
+        <div class="pillar-head">
+          <div class="pillar-num">01</div>
+          <div class="pillar-title">定义</div>
+        </div>
+        <div class="pillar-body">以开源协作方式组织、运行、演进的开发者读书会。</div>
+        <div class="pillar-tag">DEFINITION</div>
+      </div>
+
+      <div class="pillar p2">
+        <div class="pillar-head">
+          <div class="pillar-num">02</div>
+          <div class="pillar-title">三大支柱</div>
+        </div>
+        <div class="pillar-body">选书透明化、阅读社交化、产出资产化。</div>
+        <div class="pillar-tag">THREE PILLARS</div>
+      </div>
+
+      <div class="pillar p3">
+        <div class="pillar-head">
+          <div class="pillar-num">03</div>
+          <div class="pillar-title">与商业读书会区别</div>
+        </div>
+        <div class="pillar-body">无课程销售、无等级付费，完全依靠社区共识运转。</div>
+        <div class="pillar-tag">DIFFERENTIATION</div>
+      </div>
+
+      <div class="pillar p4">
+        <div class="pillar-head">
+          <div class="pillar-num">04</div>
+          <div class="pillar-title">核心产出</div>
+        </div>
+        <div class="pillar-body">读书笔记、开源仓库、线下分享、跨书讨论帖。</div>
+        <div class="pillar-tag">DELIVERABLES</div>
+      </div>
+    </div>
+
+    <div class="data-strip">
+      <div class="data-card">
+        <div style="display:flex;align-items:baseline;">
+          <span class="data-num">4</span>
+          <span class="data-unit">周</span>
+        </div>
+        <div class="data-info">
+          <span class="data-label">发起周期</span>
+          <span class="data-desc">从征集到首批成员入场的典型时长</span>
+        </div>
+      </div>
+      <div class="data-connector">·</div>
+      <div class="data-card">
+        <div style="display:flex;align-items:baseline;">
+          <span class="data-num">8</span>
+          <span class="data-unit">人</span>
+        </div>
+        <div class="data-info">
+          <span class="data-label">最小可行规模</span>
+          <span class="data-desc">能形成有效讨论与轮值的下限</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

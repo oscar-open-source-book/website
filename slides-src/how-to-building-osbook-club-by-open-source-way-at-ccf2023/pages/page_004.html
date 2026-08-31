@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源阅读生态数据</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brown: #795548;
+  --brown-deep: #5D3F37;
+  --brown-light: #A1887F;
+  --warm-gray: #BCAAA4;
+  --warm-gray-light: #D7CCC8;
+  --cream: #F5F0EB;
+  --cream-deep: #EDE5DE;
+  --ink: #3E2723;
+  --ink-soft: #5D4037;
+  --line: #E0D5CC;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cream);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--brown);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--line);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Header === */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.header-left { display: flex; flex-direction: column; gap: 6px; }
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--brown-light);
+  font-weight: 500;
+}
+
+.title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 2px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+
+.header-right .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--brown);
+}
+
+.header-right .bar {
+  width: 60px; height: 1px;
+  background: var(--warm-gray);
+}
+
+.header-right .meta {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--warm-gray);
+}
+
+/* === Narrative === */
+.narrative {
+  margin-top: 20px;
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+}
+
+.narrative-accent {
+  width: 3px;
+  background: var(--brown);
+  flex-shrink: 0;
+}
+
+.narrative-text {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--ink-soft);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  flex: 1;
+}
+
+.narrative-text .hl {
+  color: var(--brown);
+  font-weight: 500;
+}
+
+/* === Matrix === */
+.matrix {
+  margin-top: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.row-top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  height: 210px;
+}
+
+.row-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  height: 210px;
+}
+
+.card {
+  background: #FBF8F4;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--brown);
+  padding: 22px 26px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-bottom {
+  flex-direction: row;
+  align-items: center;
+  gap: 28px;
+}
+
+.card-badge {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--warm-gray);
+  font-family: 'Noto Serif SC', serif;
+}
+
+.card-label {
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--brown-light);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.card-number {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--brown);
+  line-height: 1.1;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.card-number .unit {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--brown-light);
+}
+
+.card-divider {
+  width: 36px;
+  height: 1px;
+  background: var(--warm-gray-light);
+  margin: 12px 0 10px;
+}
+
+.card-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+.card-tag {
+  position: absolute;
+  bottom: 14px;
+  right: 18px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+}
+
+/* Bottom cards layout */
+.card-bottom .left-part {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 28px;
+  border-right: 1px solid var(--line);
+  height: 100%;
+  justify-content: center;
+  gap: 4px;
+}
+
+.card-bottom .right-part {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-bottom .card-number {
+  font-size: 48px;
+}
+
+/* Contrast card (center highlight) */
+.card-highlight {
+  background: var(--brown);
+  border-top: 3px solid var(--brown-deep);
+}
+
+.card-highlight .card-label { color: var(--warm-gray-light); }
+.card-highlight .card-number { color: #F5F0EB; }
+.card-highlight .card-number .unit { color: var(--warm-gray-light); }
+.card-highlight .card-divider { background: rgba(255,255,255,0.2); }
+.card-highlight .card-desc { color: var(--warm-gray-light); }
+.card-highlight .card-badge { color: rgba(255,255,255,0.4); }
+.card-highlight .card-tag { color: rgba(255,255,255,0.4); }
+
+/* === Footer === */
+.footer {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer-left .sq {
+  width: 6px; height: 6px;
+  background: var(--brown);
+}
+
+.footer-text {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--ink-soft);
+  font-weight: 300;
+}
+
+.footer-text .strong {
+  color: var(--brown);
+  font-weight: 500;
+}
+
+.footer-right {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--warm-gray);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="eyebrow"><span>OPEN SOURCE · READING · DATA</span></div>
+        <div class="title"><span>开源阅读生态数据</span></div>
+      </div>
+      <div class="header-right">
+        <span class="dot"></span>
+        <span class="bar"></span>
+        <span class="meta"><span>2023 / SNAPSHOT</span></span>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="narrative-accent"></div>
+      <div class="narrative-text">
+        <span>数据告诉我们——<span class="hl">需求旺盛、供给稀缺</span>，而缺乏结构化机制的读书会注定短命，这恰恰是 <span class="hl">OSBook Club</span> 要填补的空白：用开源的工程化思维，把阅读变成可持续的公共基础设施。</span>
+      </div>
+    </div>
+
+    <div class="matrix">
+
+      <div class="row-top">
+
+        <div class="card">
+          <span class="card-badge">N° 01</span>
+          <div class="card-label"><span>GitHub 技术书籍仓库</span></div>
+          <div class="card-number"><span>120,000</span><span class="unit">+</span></div>
+          <div class="card-divider"></div>
+          <div class="card-desc"><span>截至 2023 年全球公开仓库估算</span></div>
+          <span class="card-tag">SUPPLY</span>
+        </div>
+
+        <div class="card card-highlight">
+          <span class="card-badge">N° 02</span>
+          <div class="card-label"><span>中文活跃开源读书会</span></div>
+          <div class="card-number"><span>&lt; 30</span></div>
+          <div class="card-divider"></div>
+          <div class="card-desc"><span>仍在持续运营、有公开产出的团体</span></div>
+          <span class="card-tag">SCARCITY</span>
+        </div>
+
+        <div class="card">
+          <span class="card-badge">N° 03</span>
+          <div class="card-label"><span>开发者共读意愿</span></div>
+          <div class="card-number"><span>72</span><span class="unit">%</span></div>
+          <div class="card-divider"></div>
+          <div class="card-desc"><span>调研表示愿意参与有质量的共读活动</span></div>
+          <span class="card-tag">DEMAND</span>
+        </div>
+
+      </div>
+
+      <div class="row-bottom">
+
+        <div class="card card-bottom">
+          <span class="card-badge">N° 04</span>
+          <div class="left-part">
+            <div class="card-label"><span>3 个月流失率（无机制）</span></div>
+            <div class="card-number"><span>60</span><span class="unit">%+</span></div>
+          </div>
+          <div class="right-part">
+            <div class="card-desc"><span>传统松散的读书群统计</span></div>
+            <div class="card-divider" style="margin-top:10px;"></div>
+            <div class="card-desc" style="color:var(--brown-light);"><span>没有结构化机制，绝大多数读书会在三个月内消亡</span></div>
+          </div>
+          <span class="card-tag">CHURN</span>
+        </div>
+
+        <div class="card card-bottom">
+          <span class="card-badge">N° 05</span>
+          <div class="left-part">
+            <div class="card-label"><span>结构化笔记引用提升</span></div>
+            <div class="card-number"><span>4</span><span class="unit">×</span></div>
+          </div>
+          <div class="right-part">
+            <div class="card-desc"><span>对比个人随意笔记</span></div>
+            <div class="card-divider" style="margin-top:10px;"></div>
+            <div class="card-desc" style="color:var(--brown);font-weight:500;"><span>工程化笔记体系让知识复用的概率提升四倍</span></div>
+          </div>
+          <span class="card-tag">IMPACT</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <span class="sq"></span>
+        <span class="footer-text"><span>供给侧极度稀缺</span> · <span>需求侧高度活跃</span> · <span class="strong">结构化机制是唯一答案</span></span>
+      </div>
+      <div class="footer-right"><span>OSBOOK CLUB · 2023</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
