@@ -1,0 +1,453 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录 · From Upstream to Upstream First</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brown-dark: #5D4037;
+  --brown: #795548;
+  --tan: #C49A6C;
+  --cream: #F5F0E8;
+  --cream-soft: #EDE5D5;
+  --ink: #3E2E24;
+  --ink-soft: #6B5548;
+  --line: rgba(121, 85, 72, 0.28);
+  --line-soft: rgba(121, 85, 72, 0.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  font-size: 16px;
+  line-height: 1.7;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+/* ── Background decorations ───────────────────────── */
+.bg-rect {
+  position: absolute;
+  top: 0; right: 0;
+  width: 900px; height: 900px;
+  background: linear-gradient(180deg, #F5F0E8 0%, #EFE6D3 100%);
+}
+.bg-paper {
+  position: absolute;
+  left: 0; top: 0;
+  width: 900px; height: 900px;
+  background: var(--cream);
+}
+.bg-band-top {
+  position: absolute;
+  left: 0; right: 0;
+  top: 0;
+  height: 6px;
+  background: var(--brown);
+}
+.bg-band-bottom {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--brown-dark);
+}
+.bg-grid-hint {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, rgba(121, 85, 72, 0.03) 1px, transparent 1px);
+  background-size: 160px 160px;
+  pointer-events: none;
+}
+
+/* ── Landscape illustration ───────────────────────── */
+.landscape {
+  position: absolute;
+  right: 0;
+  top: 130px;
+  width: 830px;
+  height: 560px;
+  pointer-events: none;
+}
+
+/* ── Japanese-style corner frame marks ────────────── */
+.corner-mark {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
+.corner-mark::before,
+.corner-mark::after {
+  content: '';
+  position: absolute;
+  background: var(--brown);
+}
+.corner-mark.tl { top: 40px; left: 40px; }
+.corner-mark.tl::before { top: 0; left: 0; width: 40px; height: 1.5px; }
+.corner-mark.tl::after { top: 0; left: 0; width: 1.5px; height: 40px; }
+.corner-mark.tr { top: 40px; right: 40px; }
+.corner-mark.tr::before { top: 0; right: 0; width: 40px; height: 1.5px; }
+.corner-mark.tr::after { top: 0; right: 0; width: 1.5px; height: 40px; }
+.corner-mark.bl { bottom: 40px; left: 40px; }
+.corner-mark.bl::before { bottom: 0; left: 0; width: 40px; height: 1.5px; }
+.corner-mark.bl::after { bottom: 0; left: 0; width: 1.5px; height: 40px; }
+.corner-mark.br { bottom: 40px; right: 40px; }
+.corner-mark.br::before { bottom: 0; right: 0; width: 40px; height: 1.5px; }
+.corner-mark.br::after { bottom: 0; right: 0; width: 1.5px; height: 40px; }
+
+/* ── Vertical title ──────────────────────────────── */
+.title-vertical {
+  position: absolute;
+  left: 120px;
+  top: 95px;
+  writing-mode: vertical-rl;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 96px;
+  letter-spacing: 22px;
+  color: var(--brown-dark);
+  line-height: 1.05;
+  height: 700px;
+}
+
+/* ── Seal (印章) ─────────────────────────────────── */
+.seal {
+  position: absolute;
+  left: 82px;
+  bottom: 110px;
+  width: 74px;
+  height: 74px;
+  background: #8E3B2E;
+  border: 2.5px solid #6E2A20;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  color: #F5F0E8;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 6px;
+  box-shadow: inset 0 0 0 1.5px rgba(245, 240, 232, 0.35);
+  transform: rotate(-3deg);
+}
+
+/* ── English subtitle (right side) ───────────────── */
+.subtitle-block {
+  position: absolute;
+  right: 110px;
+  top: 110px;
+  width: 560px;
+}
+.eyebrow {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--tan);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 34px;
+  height: 1px;
+  background: var(--tan);
+  vertical-align: middle;
+  margin-right: 12px;
+  margin-bottom: 2px;
+}
+.subtitle-en {
+  font-family: 'Noto Serif SC', serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--brown);
+  font-size: 22px;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+  width: 100%;
+}
+.subtitle-cn {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+  margin-top: 12px;
+  font-weight: 400;
+}
+
+/* ── Narrative ───────────────────────────────────── */
+.narrative {
+  position: absolute;
+  left: 470px;
+  top: 260px;
+  width: 380px;
+}
+.narrative-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  color: var(--brown-dark);
+  letter-spacing: 0.35em;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.narrative-label::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--tan);
+  margin-right: 12px;
+  vertical-align: middle;
+  transform: translateY(-2px) rotate(45deg);
+}
+.narrative-line {
+  width: 60px;
+  height: 2px;
+  background: var(--brown);
+  margin-bottom: 20px;
+}
+.narrative-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  line-height: 2.15;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+}
+.narrative-text .em {
+  color: var(--brown-dark);
+  font-weight: 600;
+}
+
+/* ── Main themes (tags) ──────────────────────────── */
+.themes {
+  position: absolute;
+  left: 470px;
+  bottom: 90px;
+  width: 900px;
+  display: flex;
+  gap: 34px;
+}
+.theme {
+  flex: 1;
+  padding: 22px 20px 20px 20px;
+  border-top: 2px solid var(--brown);
+  position: relative;
+  background: linear-gradient(180deg, rgba(245, 240, 232, 0.65) 0%, rgba(245, 240, 232, 0) 100%);
+}
+.theme-num {
+  position: absolute;
+  top: -14px;
+  left: 20px;
+  background: var(--cream);
+  padding: 0 10px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  color: var(--tan);
+  letter-spacing: 0.25em;
+  font-weight: 500;
+}
+.theme-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 22px;
+  color: var(--brown-dark);
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.08em;
+}
+.theme-title::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--tan);
+  margin-top: 10px;
+}
+.theme-desc {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  letter-spacing: 0.03em;
+  font-weight: 300;
+}
+
+/* ── Footer mark ─────────────────────────────────── */
+.footer-mark {
+  position: absolute;
+  right: 100px;
+  bottom: 34px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  letter-spacing: 0.4em;
+  font-weight: 400;
+}
+.footer-mark::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--ink-soft);
+  vertical-align: middle;
+  margin-right: 12px;
+  margin-bottom: 2px;
+}
+
+/* ── Vertical small note on left edge ────────────── */
+.side-note {
+  position: absolute;
+  left: 60px;
+  top: 130px;
+  writing-mode: vertical-rl;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  color: var(--tan);
+  letter-spacing: 0.5em;
+  font-weight: 400;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-paper"></div>
+    <div class="bg-rect"></div>
+    <div class="bg-grid-hint"></div>
+
+    <!-- Mountain / water illustration -->
+    <svg class="landscape" viewBox="0 0 830 560" preserveAspectRatio="xMidYMid meet">
+      <!-- Sun disc -->
+      <circle cx="640" cy="140" r="70" fill="#C49A6C" opacity="0.35"/>
+      <circle cx="640" cy="140" r="46" fill="#C49A6C" opacity="0.5"/>
+      <circle cx="640" cy="140" r="24" fill="#8B6A52" opacity="0.55"/>
+
+      <!-- Distant mountains (lightest) -->
+      <path d="M 0 305 L 90 210 L 175 268 L 270 158 L 365 235 L 470 130 L 585 225 L 695 178 L 830 250 L 830 560 L 0 560 Z"
+            fill="#C49A6C" opacity="0.22"/>
+
+      <!-- Mid mountains -->
+      <path d="M 0 355 L 85 300 L 195 350 L 305 230 L 425 322 L 555 205 L 685 310 L 795 258 L 830 292 L 830 560 L 0 560 Z"
+            fill="#A67F5E" opacity="0.42"/>
+
+      <!-- Foreground mountains (deepest) -->
+      <path d="M 0 430 L 115 368 L 240 418 L 360 305 L 490 400 L 615 275 L 730 380 L 830 335 L 830 560 L 0 560 Z"
+            fill="#795548" opacity="0.78"/>
+
+      <!-- Water ripples -->
+      <g stroke="#5D4037" fill="none" stroke-linecap="round">
+        <line x1="30" y1="500" x2="200" y2="500" stroke-width="1" opacity="0.32"/>
+        <line x1="240" y1="500" x2="360" y2="500" stroke-width="1" opacity="0.32"/>
+        <line x1="400" y1="500" x2="540" y2="500" stroke-width="1" opacity="0.32"/>
+        <line x1="580" y1="500" x2="720" y2="500" stroke-width="1" opacity="0.32"/>
+        <line x1="760" y1="500" x2="810" y2="500" stroke-width="1" opacity="0.32"/>
+
+        <line x1="10" y1="518" x2="140" y2="518" stroke-width="1" opacity="0.22"/>
+        <line x1="180" y1="518" x2="340" y2="518" stroke-width="1" opacity="0.22"/>
+        <line x1="380" y1="518" x2="500" y2="518" stroke-width="1" opacity="0.22"/>
+        <line x1="540" y1="518" x2="700" y2="518" stroke-width="1" opacity="0.22"/>
+        <line x1="740" y1="518" x2="820" y2="518" stroke-width="1" opacity="0.22"/>
+
+        <line x1="60" y1="536" x2="220" y2="536" stroke-width="0.8" opacity="0.16"/>
+        <line x1="260" y1="536" x2="420" y2="536" stroke-width="0.8" opacity="0.16"/>
+        <line x1="460" y1="536" x2="620" y2="536" stroke-width="0.8" opacity="0.16"/>
+        <line x1="660" y1="536" x2="820" y2="536" stroke-width="0.8" opacity="0.16"/>
+      </g>
+
+      <!-- Birds -->
+      <g fill="none" stroke="#5D4037" stroke-width="1.4" stroke-linecap="round" opacity="0.65">
+        <path d="M 460 100 Q 467 94 474 100 Q 481 94 488 100"/>
+        <path d="M 510 122 Q 516 117 522 122 Q 528 117 534 122"/>
+        <path d="M 395 140 Q 401 135 407 140 Q 413 135 419 140"/>
+      </g>
+    </svg>
+
+    <div class="bg-band-top"></div>
+    <div class="bg-band-bottom"></div>
+
+    <!-- Corner frame marks -->
+    <div class="corner-mark tl"></div>
+    <div class="corner-mark tr"></div>
+    <div class="corner-mark bl"></div>
+    <div class="corner-mark br"></div>
+  </div>
+
+  <div id="ct">
+    <!-- Vertical title -->
+    <div class="title-vertical">开源之书记录</div>
+
+    <!-- Side vertical note -->
+    <div class="side-note">甲 辰 年 · 甲 子 卷</div>
+
+    <!-- Seal -->
+    <div class="seal"><span>源流</span></div>
+
+    <!-- English subtitle -->
+    <div class="subtitle-block">
+      <div class="eyebrow"><span>OPEN SOURCE · A RECORD</span></div>
+      <div class="subtitle-en"><span>From Upstream<br>to Upstream First.</span></div>
+      <div class="subtitle-cn"><span>从上游，到上游优先</span></div>
+    </div>
+
+    <!-- Narrative -->
+    <div class="narrative">
+      <div class="narrative-label"><span>序 · 源流记</span></div>
+      <div class="narrative-line"></div>
+      <div class="narrative-text">
+        <span>开源发展史是一部不断向<span class="em">源流汇聚</span>的历史。本书记录从早期"<span class="em">从下游到上游</span>"的觉醒，到今日"<span class="em">Upstream First</span>"成为社区共识的全过程，试图为每一位开源参与者提供一份<span class="em">可读、可感</span>的思想地图。</span>
+      </div>
+    </div>
+
+    <!-- Three main themes -->
+    <div class="themes">
+      <div class="theme">
+        <div class="theme-num"><span>壹 / 源流回望</span></div>
+        <div class="theme-title"><span>源流回望</span></div>
+        <div class="theme-desc"><span>追溯开源协作中"上游"概念的起源与演变脉络，回到思想的源头。</span></div>
+      </div>
+      <div class="theme">
+        <div class="theme-num"><span>贰 / 理念跃迁</span></div>
+        <div class="theme-title"><span>理念跃迁</span></div>
+        <div class="theme-desc"><span>从被动下游到主动上游，完成一场思维范式的深层转换。</span></div>
+      </div>
+      <div class="theme">
+        <div class="theme-num"><span>叁 / 布道践行</span></div>
+        <div class="theme-title"><span>布道践行</span></div>
+        <div class="theme-desc"><span>开源布道者如何推动社区向上游沉淀贡献，将共识化为日常。</span></div>
+      </div>
+    </div>
+
+    <!-- Footer mark -->
+    <div class="footer-mark"><span>OPEN SOURCE HISTORY · 2024</span></div>
+  </div>
+</div>
+</body>
+</html>
