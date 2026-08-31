@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源生态数据概览</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0a1628;
+  --bg-card: #0f2140;
+  --bg-card-2: #12284a;
+  --text-main: #E8EEF5;
+  --text-dim: #78909F;
+  --border-glow: rgba(33,150,243,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'JetBrains Mono','Inter','Noto Sans SC',monospace;background:var(--bg-dark);color:var(--text-main);overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#0a1628 0%,#0d1f3c 50%,#0a1628 100%);}
+#bg{position:absolute;inset:0;z-index:0;}
+#bg::before{content:"";position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(33,150,243,0.12) 0%,transparent 70%);border-radius:50%;}
+#bg::after{content:"";position:absolute;bottom:-150px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,188,212,0.10) 0%,transparent 70%);border-radius:50%;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 56px 40px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+.header{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.title-row{display:flex;align-items:center;gap:18px;}
+.title-bar{width:6px;height:44px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:3px;}
+h1{font-family:'Inter','Noto Sans SC',sans-serif;font-weight:800;font-size:34px;color:var(--text-main);letter-spacing:1px;}
+.subtitle{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--neutral);line-height:1.7;padding-left:24px;max-width:1380px;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px;}
+.kpi-card{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;}
+.kpi-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+.kpi-card::after{content:"";position:absolute;bottom:-30px;right:-30px;width:80px;height:80px;border:2px solid rgba(33,150,243,0.15);border-radius:50%;}
+.kpi-label{font-family:'Inter','Noto Sans SC',sans-serif;font-size:12px;color:var(--neutral);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
+.kpi-value{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:42px;color:var(--text-main);line-height:1.1;margin:6px 0 4px;}
+.kpi-value .accent{color:var(--accent);font-size:30px;}
+.kpi-value .plus{color:var(--primary);font-size:30px;}
+.kpi-desc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--neutral);line-height:1.5;}
+.kpi-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--accent);letter-spacing:1px;margin-top:6px;opacity:0.85;}
+
+.main-area{display:grid;grid-template-columns:800px 1fr;gap:20px;flex:1;min-height:0;}
+
+.chart-wrap{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.chart-wrap::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.chart-title{font-family:'Inter','Noto Sans SC',sans-serif;font-size:14px;font-weight:700;color:var(--text-main);letter-spacing:0.5px;}
+.chart-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--neutral);}
+#chart_1{width:750px;height:300px;}
+
+.bullet-wrap{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.bullet-wrap::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--accent),var(--primary));}
+.bullet-title{font-family:'Inter','Noto Sans SC',sans-serif;font-size:13px;font-weight:700;color:var(--text-main);letter-spacing:0.5px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.bullet-title-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);}
+.bullet-list{display:flex;flex-direction:column;gap:10px;flex:1;}
+.bullet-item{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:rgba(33,150,243,0.06);border-left:3px solid var(--primary);border-radius:4px;}
+.bullet-item .idx{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:22px;line-height:1.4;}
+.bullet-item .body{flex:1;}
+.bullet-item .bt{font-family:'Inter','Noto Sans SC',sans-serif;font-size:11.5px;font-weight:700;color:var(--text-main);margin-bottom:2px;}
+.bullet-item .bd{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--neutral);line-height:1.5;}
+
+.footer{margin-top:14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--neutral);letter-spacing:0.5px;padding:10px 0;border-top:1px solid rgba(33,150,243,0.2);position:relative;}
+.footer::before{content:"◆";color:var(--accent);margin-right:10px;}
+.footer::after{content:"◆";color:var(--accent);margin-left:10px;}
+.footer .hl{color:var(--text-main);font-weight:700;}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+<div class="header">
+  <div class="title-row">
+    <div class="title-bar"></div>
+    <h1>开源生态数据概览</h1>
+  </div>
+  <div class="subtitle">从贡献者到项目数，从商业价值到区域分布，这些指标共同描绘出一个蓬勃生长、不断扩张的开源世界。</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi-card">
+    <div>
+      <div class="kpi-label">全球贡献者</div>
+      <div class="kpi-value">1000<span class="accent">万</span><span class="plus">+</span></div>
+    </div>
+    <div class="kpi-desc">持续增长的开发者群体</div>
+    <div class="kpi-tag">// GLOBAL CONTRIBUTORS</div>
+  </div>
+  <div class="kpi-card">
+    <div>
+      <div class="kpi-label">GitHub 项目</div>
+      <div class="kpi-value">4<span class="accent">亿</span><span class="plus">+</span></div>
+    </div>
+    <div class="kpi-desc">全球最大代码托管平台</div>
+    <div class="kpi-tag">// GITHUB REPOSITORIES</div>
+  </div>
+  <div class="kpi-card">
+    <div>
+      <div class="kpi-label">基础设施占比</div>
+      <div class="kpi-value">70<span class="accent">%</span><span class="plus">+</span></div>
+    </div>
+    <div class="kpi-desc">开源在关键基础设施中的渗透率</div>
+    <div class="kpi-tag">// INFRASTRUCTURE SHARE</div>
+  </div>
+  <div class="kpi-card">
+    <div>
+      <div class="kpi-label">中国贡献者增速</div>
+      <div class="kpi-value" style="font-size:28px;">全球<span class="accent">前列</span></div>
+    </div>
+    <div class="kpi-desc">亚太区增长最快市场之一</div>
+    <div class="kpi-tag">// CHINA GROWTH RATE</div>
+  </div>
+</div>
+
+<div class="main-area">
+  <div class="chart-wrap">
+    <div class="chart-head">
+      <span class="chart-title">// 开源生态规模指数对比</span>
+      <span class="chart-sub">INDEX COMPARISON · 2024</span>
+    </div>
+    <div id="chart_1" style="width:750px;height:300px;"></div>
+  </div>
+
+  <div class="bullet-wrap">
+    <div class="bullet-title"><span class="bullet-title-dot"></span>核心洞察 / KEY INSIGHTS</div>
+    <div class="bullet-list">
+      <div class="bullet-item">
+        <span class="idx">01</span>
+        <div class="body">
+          <div class="bt">贡献者规模</div>
+          <div class="bd">全球开源贡献者已超过 1000 万，覆盖几乎所有主流编程语言。</div>
+        </div>
+      </div>
+      <div class="bullet-item">
+        <span class="idx">02</span>
+        <div class="body">
+          <div class="bt">项目数量</div>
+          <div class="bd">GitHub 平台托管项目超过 4 亿个，月活跃用户持续增长。</div>
+        </div>
+      </div>
+      <div class="bullet-item">
+        <span class="idx">03</span>
+        <div class="body">
+          <div class="bt">商业价值</div>
+          <div class="bd">开源软件占关键基础设施核心比例高达 70% 以上。</div>
+        </div>
+      </div>
+      <div class="bullet-item">
+        <span class="idx">04</span>
+        <div class="body">
+          <div class="bt">中国力量</div>
+          <div class="bd">中国开源贡献者数量位居全球前列，增速持续领跑。</div>
+        </div>
+      </div>
+      <div class="bullet-item">
+        <span class="idx">05</span>
+        <div class="body">
+          <div class="bt">知识流动</div>
+          <div class="bd">每月产生的技术博客与文档数以百万计，形成庞大的知识网络。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer"><span class="hl">开源生态正以前所未有的速度扩张</span>，数字背后是全球协作的力量。</div>
+
+</div>
+</div>
+
+<script src="../assets/echarts.min.js"></script>
+<script>(function(){
+  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:120,right:60,top:14,bottom:24},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+    xAxis:{
+      type:'value',
+      max:100,
+      axisLine:{lineStyle:{color:'#78909F'}},
+      axisLabel:{color:'#B0BEC5',fontFamily:'JetBrains Mono',fontSize:10,formatter:'{value}'},
+      splitLine:{lineStyle:{color:'rgba(33,150,243,0.10)'}}
+    },
+    yAxis:{
+      type:'category',
+      data:['基础设施渗透','中国贡献者增速','贡献者规模','项目数量'],
+      axisLine:{lineStyle:{color:'#78909F'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#E8EEF5',fontFamily:'JetBrains Mono','Noto Sans SC',fontSize:12,fontWeight:700}
+    },
+    series:[{
+      type:'bar',
+      barWidth:22,
+      data:[
+        {value:72,itemStyle:{color:{type:'linear',x:0,y:0,x2:1,y2:0,colorStops:[{offset:0,color:'#2196F3'},{offset:1,color:'#00BCD4'}]}}},
+        {value:88,itemStyle:{color:{type:'linear',x:0,y:0,x2:1,y2:0,colorStops:[{offset:0,color:'#2196F3'},{offset:1,color:'#00BCD4'}]}}},
+        {value:85,itemStyle:{color:{type:'linear',x:0,y:0,x2:1,y2:0,colorStops:[{offset:0,color:'#2196F3'},{offset:1,color:'#00BCD4'}]}}},
+        {value:98,itemStyle:{color:{type:'linear',x:0,y:0,x2:1,y2:0,colorStops:[{offset:0,color:'#2196F3'},{offset:1,color:'#00BCD4'}]}}}
+      ],
+      itemStyle:{borderRadius:[0,4,4,0]},
+      label:{
+        show:true,
+        position:'right',
+        color:'#00BCD4',
+        fontFamily:'JetBrains Mono',
+        fontSize:11,
+        fontWeight:700,
+        formatter:function(p){
+          var labels = ['72 分','88 分','85 分','98 分'];
+          return labels[p.dataIndex];
+        }
+      }
+    }]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();</script>
+</body>
+</html>

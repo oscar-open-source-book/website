@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>从阅读到分享</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-secondary: #B0BEC5;
+  --bg-dark: #0A1628;
+  --bg-card: #112240;
+  --bg-node: #0F2035;
+  --text-main: #E8F0FE;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, #0d1f3c 0%, #07101f 65%, #040a14 100%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 36px 60px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+h1 {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  margin-bottom: 14px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.diagram {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-container {
+  position: relative;
+  width: 640px;
+  height: 500px;
+}
+
+.ring-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.center-flywheel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flywheel-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 150, 243, 0.2) 0%, rgba(0, 188, 212, 0.05) 50%, transparent 75%);
+}
+
+.flywheel-outer {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 25px rgba(33, 150, 243, 0.5), inset 0 0 18px rgba(33, 150, 243, 0.3);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flywheel-ring2 {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 188, 212, 0.5);
+}
+
+.flywheel-inner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary), 0 0 24px rgba(33, 150, 243, 0.4);
+  z-index: 2;
+}
+
+.flywheel-spoke {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 52px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  transform-origin: top center;
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.flywheel-spoke:nth-child(3) { transform: translate(-50%, 0) rotate(60deg); }
+.flywheel-spoke:nth-child(4) { transform: translate(-50%, 0) rotate(120deg); }
+.flywheel-spoke:nth-child(5) { transform: translate(-50%, 0) rotate(180deg); }
+.flywheel-spoke:nth-child(6) { transform: translate(-50%, 0) rotate(240deg); }
+.flywheel-spoke:nth-child(7) { transform: translate(-50%, 0) rotate(300deg); }
+
+.center-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 70px);
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  letter-spacing: 3px;
+  text-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+}
+
+.node {
+  position: absolute;
+  width: 210px;
+  padding: 18px 16px;
+  background: linear-gradient(135deg, var(--bg-node) 0%, var(--bg-card) 100%);
+  border: 1px solid rgba(33, 150, 243, 0.4);
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(33, 150, 243, 0.12), inset 0 1px 0 rgba(255,255,255,0.05);
+  text-align: center;
+}
+
+.node::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+  border: 2px solid var(--bg-dark);
+}
+
+.node-top { top: 0; left: 50%; transform: translateX(-50%); }
+.node-right { top: 50%; right: 0; transform: translateY(-50%); }
+.node-bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
+.node-left { top: 50%; left: 0; transform: translateY(-50%); }
+
+.node-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--accent);
+  letter-spacing: 2.5px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.node-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.node-desc {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.arrow-cluster {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.arrow-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent), 0 0 20px rgba(0, 188, 212, 0.5);
+}
+
+.arrow-triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.arrow-tr { top: 90px; left: calc(50% + 145px); }
+.arrow-rb { top: calc(50% + 145px); left: calc(50% + 145px); }
+.arrow-bl { bottom: 90px; left: calc(50% - 145px); }
+.arrow-lt { top: 90px; left: calc(50% - 145px); }
+
+.arrow-tr .arrow-triangle {
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent var(--accent) transparent;
+  transform: rotate(45deg);
+}
+
+.arrow-rb .arrow-triangle {
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent var(--accent) transparent;
+  transform: rotate(135deg);
+}
+
+.arrow-bl .arrow-triangle {
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent var(--accent) transparent;
+  transform: rotate(225deg);
+}
+
+.arrow-lt .arrow-triangle {
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent var(--accent) transparent;
+  transform: rotate(315deg);
+}
+
+.footer {
+  text-align: center;
+  padding: 14px 0 0 0;
+  border-top: 1px solid rgba(33, 150, 243, 0.2);
+  margin-top: 8px;
+}
+
+.footer-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+.footer-text .highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.deco-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.4;
+  z-index: 0;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+</div>
+<div id="ct">
+  <span class="deco-dot" style="top:30px;left:80px;"></span>
+  <span class="deco-dot" style="top:55px;left:1500px;"></span>
+  <span class="deco-dot" style="top:430px;left:55px;"></span>
+  <span class="deco-dot" style="top:460px;left:1525px;"></span>
+  <span class="deco-dot" style="top:830px;left:120px;"></span>
+  <span class="deco-dot" style="top:830px;left:1470px;"></span>
+
+  <div class="header">
+    <h1>从阅读到分享</h1>
+    <p class="subtitle">阅读与分享不是单向流水线，而是一个闭环——输入知识、内化为见解、输出给社区、再根据反馈修正认知，开源文化特别强调输出环节。</p>
+  </div>
+
+  <div class="diagram">
+    <div class="ring-container">
+
+      <svg class="ring-svg" viewBox="0 0 640 500" fill="none">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.5"/>
+            <stop offset="100%" style="stop-color:#00BCD4;stop-opacity:0.5"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <ellipse cx="320" cy="250" rx="240" ry="200" stroke="url(#ringGrad)" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.6"/>
+        <ellipse cx="320" cy="250" rx="200" ry="165" stroke="#2196F3" stroke-width="1" stroke-dasharray="2 4" opacity="0.3"/>
+
+        <path d="M 470 130 A 180 140 0 0 1 490 270" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" opacity="0.6" filter="url(#glow)"/>
+        <path d="M 490 270 A 180 140 0 0 1 380 420" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" opacity="0.6" filter="url(#glow)"/>
+        <path d="M 380 420 A 180 140 0 0 1 170 380" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" opacity="0.6" filter="url(#glow)"/>
+        <path d="M 170 380 A 180 140 0 0 1 160 150" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" opacity="0.6" filter="url(#glow)"/>
+        <path d="M 160 150 A 180 140 0 0 1 380 110" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" opacity="0.6" filter="url(#glow)"/>
+
+        <circle cx="470" cy="130" r="3" fill="#00BCD4" opacity="0.7"/>
+        <circle cx="380" cy="420" r="3" fill="#00BCD4" opacity="0.7"/>
+        <circle cx="170" cy="380" r="3" fill="#00BCD4" opacity="0.7"/>
+        <circle cx="160" cy="150" r="3" fill="#00BCD4" opacity="0.7"/>
+      </svg>
+
+      <div class="center-flywheel">
+        <div class="flywheel-glow"></div>
+        <div class="flywheel-outer">
+          <div class="flywheel-ring2"></div>
+          <div class="flywheel-spoke"></div>
+          <div class="flywheel-spoke"></div>
+          <div class="flywheel-spoke"></div>
+          <div class="flywheel-spoke"></div>
+          <div class="flywheel-spoke"></div>
+          <div class="flywheel-spoke"></div>
+          <div class="flywheel-inner"></div>
+        </div>
+        <div class="center-label"><span>学习飞轮</span></div>
+      </div>
+
+      <div class="node node-top">
+        <div class="node-step"><span>STAGE 01</span></div>
+        <div class="node-title"><span>输入阶段</span></div>
+        <div class="node-desc"><span>广泛阅读开源社区文档、博客、书籍，积累原始素材与洞察</span></div>
+      </div>
+
+      <div class="node node-right">
+        <div class="node-step"><span>STAGE 02</span></div>
+        <div class="node-title"><span>消化阶段</span></div>
+        <div class="node-desc"><span>结合实践进行深度思考，提炼可复用的模式与方法论</span></div>
+      </div>
+
+      <div class="node node-bottom">
+        <div class="node-step"><span>STAGE 03</span></div>
+        <div class="node-title"><span>输出阶段</span></div>
+        <div class="node-desc"><span>以笔记、演讲、开源项目形式将所得回馈给社区</span></div>
+      </div>
+
+      <div class="node node-left">
+        <div class="node-step"><span>STAGE 04</span></div>
+        <div class="node-title"><span>反馈闭环</span></div>
+        <div class="node-desc"><span>社区回应激发新一轮阅读，形成持续学习的飞轮效应</span></div>
+      </div>
+
+      <div class="arrow-cluster arrow-tr">
+        <span class="arrow-dot"></span>
+        <span class="arrow-triangle"></span>
+      </div>
+      <div class="arrow-cluster arrow-rb">
+        <span class="arrow-dot"></span>
+        <span class="arrow-triangle"></span>
+      </div>
+      <div class="arrow-cluster arrow-bl">
+        <span class="arrow-dot"></span>
+        <span class="arrow-triangle"></span>
+      </div>
+      <div class="arrow-cluster arrow-lt">
+        <span class="arrow-dot"></span>
+        <span class="arrow-triangle"></span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-text">学习飞轮：<span class="highlight">输入 → 消化 → 输出 → 反馈</span>，四阶段循环模型</span>
+  </div>
+</div>
+</div>
+</body>
+</html>

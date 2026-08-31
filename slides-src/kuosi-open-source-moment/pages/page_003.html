@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源精神的本质</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+SC:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --neutral:#B0BEC5;
+  --bg:#0B0F14;
+  --bg-2:#111821;
+  --card-bg:rgba(20,30,46,0.65);
+  --text:#E6EDF3;
+  --text-dim:#8896A6;
+  --glow-blue:rgba(33,150,243,0.45);
+  --glow-cyan:rgba(0,188,212,0.45);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{font-family:'JetBrains Mono','Inter','Noto Sans SC',monospace;color:var(--text);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:linear-gradient(135deg,#0B0F14 0%,#0D1620 50%,#0B0F14 100%);}
+#bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+#bg::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(ellipse 600px 400px at 15% 20%, rgba(33,150,243,0.12), transparent 70%),
+  radial-gradient(ellipse 500px 350px at 85% 80%, rgba(0,188,212,0.10), transparent 70%);
+}
+#bg .grid{position:absolute;inset:0;background-image:
+  linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+#bg .deco-ring{position:absolute;border-radius:50%;border:1px solid rgba(33,150,243,0.12);}
+#bg .r1{width:520px;height:520px;top:-180px;right:-140px;}
+#bg .r2{width:380px;height:380px;bottom:-120px;left:-100px;border-color:rgba(0,188,212,0.10);}
+#bg .r3{width:220px;height:220px;top:340px;left:60%;border-color:rgba(0,188,212,0.08);}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 60px 30px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:18px;position:relative;}
+.header .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:6px;margin-bottom:10px;}
+.header h1{font-family:'Noto Sans SC','Inter',sans-serif;font-weight:900;font-size:52px;letter-spacing:4px;background:linear-gradient(90deg,#2196F3 0%,#00BCD4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:0 0 40px rgba(33,150,243,0.2);line-height:1.1;}
+.header .subtitle-row{margin-top:14px;display:flex;align-items:center;gap:18px;}
+.header .keyword-bar{font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:20px;color:var(--text);letter-spacing:3px;padding:8px 26px;border:1px solid rgba(33,150,243,0.4);border-radius:30px;background:rgba(33,150,243,0.08);box-shadow:0 0 20px rgba(33,150,243,0.15) inset;}
+.header .tag-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--neutral);letter-spacing:2px;}
+.header .line-deco{width:100%;height:1px;margin-top:14px;background:linear-gradient(90deg,transparent, rgba(33,150,243,0.5), rgba(0,188,212,0.5), transparent);}
+
+/* Main */
+.main{flex:1;display:grid;grid-template-columns:560px 1fr;gap:40px;align-items:stretch;}
+
+/* Left: Concept diagram */
+.diagram-panel{position:relative;background:var(--card-bg);border:1px solid rgba(33,150,243,0.2);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;overflow:hidden;}
+.diagram-panel::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#2196F3,#00BCD4);}
+.panel-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--neutral);letter-spacing:3px;margin-bottom:8px;display:flex;justify-content:space-between;}
+.panel-label .lbl-r{color:var(--accent);}
+.diagram-title{font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:16px;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.diagram-title::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--glow-cyan);}
+.diagram-canvas{position:relative;flex:1;display:flex;align-items:center;justify-content:center;}
+#diagram-svg{width:100%;height:100%;display:block;}
+
+.node-label{position:absolute;font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:13px;color:var(--text);text-align:center;line-height:1.3;pointer-events:none;text-shadow:0 0 8px rgba(33,150,243,0.4);}
+.node-sub{display:block;font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10px;color:var(--neutral);letter-spacing:1px;margin-top:3px;}
+.node-1{top:18px;left:50%;transform:translateX(-50%);}
+.node-2{top:50%;right:12px;transform:translateY(-50%);}
+.node-3{bottom:18px;left:50%;transform:translateX(-50%);}
+.node-4{top:50%;left:12px;transform:translateY(-50%);}
+.center-hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:70px;border-radius:50%;border:1px solid rgba(0,188,212,0.4);background:rgba(0,188,212,0.08);display:flex;align-items:center;justify-content:center;font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:12px;color:var(--accent);letter-spacing:2px;box-shadow:0 0 20px rgba(0,188,212,0.25) inset, 0 0 30px rgba(0,188,212,0.15);animation:pulseHub 3s ease-in-out infinite;}
+@keyframes pulseHub{0%,100%{box-shadow:0 0 20px rgba(0,188,212,0.25) inset, 0 0 30px rgba(0,188,212,0.15);}50%{box-shadow:0 0 25px rgba(0,188,212,0.35) inset, 0 0 45px rgba(0,188,212,0.25);}}
+
+/* Right: Cards */
+.cards-panel{display:flex;flex-direction:column;gap:14px;}
+.card{position:relative;background:var(--card-bg);border:1px solid rgba(33,150,243,0.2);border-radius:12px;padding:16px 22px;display:grid;grid-template-columns:190px 1fr;gap:22px;align-items:center;overflow:hidden;}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#2196F3,#00BCD4);}
+.card::after{content:"";position:absolute;top:0;right:0;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.06),transparent 70%);pointer-events:none;}
+.card-index{position:absolute;top:8px;right:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--neutral);letter-spacing:2px;opacity:0.6;}
+.card-left{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.card-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Noto Sans SC',sans-serif;font-weight:900;font-size:18px;color:#fff;position:relative;}
+.card-icon::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(33,150,243,0.3);box-shadow:0 0 12px rgba(33,150,243,0.2);}
+.card-icon.c1{background:linear-gradient(135deg,#2196F3,#1976D2);}
+.card-icon.c2{background:linear-gradient(135deg,#42A5F5,#2196F3);}
+.card-icon.c3{background:linear-gradient(135deg,#26C6DA,#00BCD4);}
+.card-icon.c4{background:linear-gradient(135deg,#00BCD4,#0097A7);}
+.card-title{font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:16px;color:var(--text);letter-spacing:1px;text-align:center;}
+.card-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:2px;}
+.card-right{display:flex;flex-direction:column;gap:6px;}
+.card-desc{font-family:'JetBrains Mono','Noto Sans SC',monospace;font-size:13px;line-height:1.65;color:var(--text);letter-spacing:0.5px;}
+.card-desc .hl{color:var(--accent);font-weight:500;}
+.card-desc .hl2{color:var(--primary);font-weight:500;}
+.card-tag{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--neutral);letter-spacing:1.5px;}
+.card-tag::before{content:"";display:inline-block;width:16px;height:1px;background:var(--accent);}
+
+/* Footer */
+.footer{margin-top:16px;background:linear-gradient(90deg,rgba(33,150,243,0.08),rgba(0,188,212,0.06),rgba(33,150,243,0.08));border:1px solid rgba(33,150,243,0.2);border-radius:12px;padding:16px 26px;display:flex;align-items:center;gap:20px;}
+.footer-icon{flex-shrink:0;width:44px;height:44px;border-radius:50%;border:1px solid rgba(0,188,212,0.4);background:rgba(0,188,212,0.08);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:500;box-shadow:0 0 16px rgba(0,188,212,0.2);}
+.footer-text{font-family:'Noto Sans SC','JetBrains Mono',sans-serif;font-size:13px;line-height:1.7;color:var(--neutral);letter-spacing:0.5px;}
+.footer-text .em{color:var(--text);font-weight:700;}
+.footer-text .accent{color:var(--accent);font-weight:700;}
+.footer-text .blue{color:var(--primary);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg">
+  <div class="grid"></div>
+  <div class="deco-ring r1"></div>
+  <div class="deco-ring r2"></div>
+  <div class="deco-ring r3"></div>
+</div>
+<div id="ct">
+
+  <div class="header">
+    <div class="eyebrow"><span>OPEN&nbsp;SOURCE&nbsp;·&nbsp;ESSENCE&nbsp;·&nbsp;CORE</span></div>
+    <h1>开源精神的本质</h1>
+    <div class="subtitle-row">
+      <span class="tag-note">// DIMENSIONS 04</span>
+      <span class="keyword-bar">平权 · 信任 · 利他 · 演进</span>
+      <span class="tag-note">开源精神四大维度</span>
+    </div>
+    <div class="line-deco"></div>
+  </div>
+
+  <div class="main">
+
+    <div class="diagram-panel">
+      <div class="panel-label"><span class="lbl-l">// CONCEPT_RELATION_MAP</span><span class="lbl-r">v1.0</span></div>
+      <div class="diagram-title">四大维度 · 概念关系网络</div>
+      <div class="diagram-canvas">
+        <svg id="diagram-svg" viewBox="0 0 500 460" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="grad-blue-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#00BCD4" stop-opacity="0.9"/>
+            </linearGradient>
+            <linearGradient id="grad-cyan-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00BCD4" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0.9"/>
+            </linearGradient>
+            <radialGradient id="nodeGrad1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#2196F3" stop-opacity="0.35"/>
+              <stop offset="70%" stop-color="#2196F3" stop-opacity="0.08"/>
+              <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="glowLine" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="2.5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- Connection lines: outer ring -->
+          <g filter="url(#glowLine)" stroke-width="1.8" fill="none">
+            <line x1="250" y1="70" x2="420" y2="230" stroke="url(#grad-blue-cyan)"/>
+            <line x1="420" y1="230" x2="250" y2="390" stroke="url(#grad-blue-cyan)"/>
+            <line x1="250" y1="390" x2="80" y2="230" stroke="url(#grad-cyan-blue)"/>
+            <line x1="80" y1="230" x2="250" y2="70" stroke="url(#grad-cyan-blue)"/>
+          </g>
+          <!-- Diagonal cross connections -->
+          <g stroke-width="1.2" fill="none" stroke-dasharray="4 4" opacity="0.5">
+            <line x1="250" y1="70" x2="250" y2="390" stroke="url(#grad-blue-cyan)"/>
+            <line x1="80" y1="230" x2="420" y2="230" stroke="url(#grad-cyan-blue)"/>
+          </g>
+
+          <!-- Node circles -->
+          <g>
+            <circle cx="250" cy="70" r="38" fill="url(#nodeGrad1)" stroke="#2196F3" stroke-width="2"/>
+            <circle cx="250" cy="70" r="38" fill="none" stroke="#2196F3" stroke-width="0.6" opacity="0.4"/>
+            <circle cx="250" cy="70" r="4" fill="#2196F3"/>
+
+            <circle cx="420" cy="230" r="38" fill="url(#nodeGrad1)" stroke="#42A5F5" stroke-width="2"/>
+            <circle cx="420" cy="230" r="38" fill="none" stroke="#42A5F5" stroke-width="0.6" opacity="0.4"/>
+            <circle cx="420" cy="230" r="4" fill="#42A5F5"/>
+
+            <circle cx="250" cy="390" r="38" fill="url(#nodeGrad1)" stroke="#00BCD4" stroke-width="2"/>
+            <circle cx="250" cy="390" r="38" fill="none" stroke="#00BCD4" stroke-width="0.6" opacity="0.4"/>
+            <circle cx="250" cy="390" r="4" fill="#00BCD4"/>
+
+            <circle cx="80" cy="230" r="38" fill="url(#nodeGrad1)" stroke="#26C6DA" stroke-width="2"/>
+            <circle cx="80" cy="230" r="38" fill="none" stroke="#26C6DA" stroke-width="0.6" opacity="0.4"/>
+            <circle cx="80" cy="230" r="4" fill="#26C6DA"/>
+          </g>
+
+          <!-- Direction arrows on connections -->
+          <g fill="#00BCD4" opacity="0.7">
+            <polygon points="330,140 342,132 340,146"/>
+            <polygon points="330,320 318,328 320,314"/>
+            <polygon points="170,320 158,328 160,314"/>
+            <polygon points="170,140 182,132 184,146"/>
+          </g>
+        </svg>
+        <span class="node-label node-1">知识平权<span class="node-sub">EQUALIZE KNOWLEDGE</span></span>
+        <span class="node-label node-2">信任机制<span class="node-sub">TRUST MECHANISM</span></span>
+        <span class="node-label node-3">利他即利己<span class="node-sub">ALTRUISM = SELFISHNESS</span></span>
+        <span class="node-label node-4">持续演进<span class="node-sub">CONTINUOUS EVOLUTION</span></span>
+        <div class="center-hub"><span>OS_SPIRIT</span></div>
+      </div>
+    </div>
+
+    <div class="cards-panel">
+
+      <div class="card">
+        <span class="card-index">// 01</span>
+        <div class="card-left">
+          <div class="card-icon c1"><span>知</span></div>
+          <div class="card-title">知识平权</div>
+          <div class="card-num">DIMENSION / 01</div>
+        </div>
+        <div class="card-right">
+          <span class="card-tag">EQUALIZE KNOWLEDGE</span>
+          <div class="card-desc">开源让每一个有想法的人都能<span class="hl2">接触核心实现</span>，<span class="hl">打破知识垄断</span>，让技术不再是少数人的特权。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-index">// 02</span>
+        <div class="card-left">
+          <div class="card-icon c2"><span>信</span></div>
+          <div class="card-title">信任机制</div>
+          <div class="card-num">DIMENSION / 02</div>
+        </div>
+        <div class="card-right">
+          <span class="card-tag">TRUST MECHANISM</span>
+          <div class="card-desc">通过<span class="hl2">透明协作与版本历史</span>，建立超越机构的<span class="hl">社区级信任体系</span>，代码即承诺。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-index">// 03</span>
+        <div class="card-left">
+          <div class="card-icon c3"><span>利</span></div>
+          <div class="card-title">利他即利己</div>
+          <div class="card-num">DIMENSION / 03</div>
+        </div>
+        <div class="card-right">
+          <span class="card-tag">ALTRUISM = SELFISHNESS</span>
+          <div class="card-desc"><span class="hl2">贡献社区最终回馈自身</span>，形成<span class="hl">正向循环的协作经济</span>，付出即收获。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-index">// 04</span>
+        <div class="card-left">
+          <div class="card-icon c4"><span>进</span></div>
+          <div class="card-title">持续演进</div>
+          <div class="card-num">DIMENSION / 04</div>
+        </div>
+        <div class="card-right">
+          <span class="card-tag">CONTINUOUS EVOLUTION</span>
+          <div class="card-desc">代码在<span class="hl2">众包迭代</span>中不断进化，<span class="hl">比封闭开发更具生命力</span>，永不冻结。</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-icon"><span>&gt;_</span></div>
+    <div class="footer-text">
+      开源精神的内核是<span class="em">相信开放能释放更多可能</span>。它把知识从机构私有变为<span class="accent">公共资产</span>，让每一个参与者既是<span class="blue">消费者</span>也是<span class="blue">贡献者</span>。这种<span class="accent">'利他即利己'</span>的协作经济，构成了<span class="em">现代软件产业的底层操作系统</span>。
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+><head>
+<meta charset="UTF-8">
+<title>精选书单推荐</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0D1117;
+  --bg-card: #161B22;
+  --bg-card-hover: #1C2330;
+  --grid-line: rgba(33, 150, 243, 0.06);
+  --text-main: #E6EDF3;
+  --text-dim: #8B949E;
+  --border-subtle: rgba(226, 237, 243, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  font-size: 14px;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0D1117 0%, #0B1420 50%, #0A1220 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 10%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 90%, rgba(0, 188, 212, 0.06) 0%, transparent 50%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 48px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  opacity: 0.8;
+}
+
+.main-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 900;
+  font-size: 48px;
+  color: var(--text-main);
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.main-title .accent {
+  color: var(--accent);
+  text-shadow: 0 0 24px rgba(0, 188, 212, 0.4);
+}
+
+.main-title .bar {
+  display: inline-block;
+  width: 4px;
+  height: 44px;
+  background: linear-gradient(to bottom, var(--accent), var(--primary));
+  border-radius: 2px;
+}
+
+.header-meta {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--neutral);
+  line-height: 1.8;
+  opacity: 0.7;
+}
+
+.header-meta .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  margin-left: 6px;
+  color: var(--accent);
+}
+
+/* Narrative */
+.narrative {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 13px;
+  color: var(--neutral);
+  line-height: 1.9;
+  padding: 16px 24px;
+  background: rgba(33, 150, 243, 0.04);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.narrative::before {
+  content: '">"';
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.4;
+}
+
+/* Bookshelf */
+.shelf-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shelf-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(0, 188, 212, 0.3), transparent);
+}
+
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.book-card {
+  position: relative;
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 0;
+  height: 380px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-subtle);
+  transition: none;
+}
+
+.book-spine {
+  height: 6px;
+  background: linear-gradient(to right, var(--accent), var(--primary));
+  position: relative;
+}
+
+.book-spine::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  transform: skewX(-30deg);
+}
+
+.book-inner {
+  padding: 20px 18px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.book-spine-deco {
+  height: 72px;
+  margin: 8px 0 14px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.12) 0%, rgba(0, 188, 212, 0.06) 100%);
+  border: 1px solid rgba(33, 150, 243, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.book-spine-deco::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: rgba(0, 188, 212, 0.3);
+}
+
+.book-spine-deco .ring {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-dark);
+}
+
+.book-spine-deco .ring-inner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+}
+
+.book-spine-deco .lines {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.book-spine-deco .lines span {
+  display: block;
+  height: 2px;
+  background: rgba(176, 190, 197, 0.15);
+  border-radius: 1px;
+}
+
+.book-spine-deco .lines span:nth-child(1) { width: 60%; }
+.book-spine-deco .lines span:nth-child(2) { width: 80%; }
+.book-spine-deco .lines span:nth-child(3) { width: 40%; }
+
+.book-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text-main);
+  line-height: 1.35;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.book-author {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.book-desc {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11.5px;
+  color: var(--neutral);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.book-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.book-dim {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.book-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  padding: 2px 8px;
+  border: 1px solid rgba(0, 188, 212, 0.3);
+  border-radius: 3px;
+}
+
+/* Data cards */
+.data-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.data-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.data-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--primary);
+}
+
+.data-card:nth-child(2)::before {
+  background: var(--accent);
+}
+
+.data-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 6px;
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.data-card:nth-child(2) .data-icon {
+  background: rgba(0, 188, 212, 0.1);
+  border-color: rgba(0, 188, 212, 0.2);
+  color: var(--accent);
+}
+
+.data-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.data-title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+.data-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--neutral);
+  line-height: 1.6;
+}
+
+.data-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  padding-left: 16px;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.data-metric .num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.data-metric .unit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+/* Footer line */
+.footer-line {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+}
+
+.footer-line .dots {
+  display: flex;
+  gap: 4px;
+}
+
+.footer-line .dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-subtle);
+}
+
+.footer-line .dots span:nth-child(1) { background: var(--accent); }
+.footer-line .dots span:nth-child(2) { background: var(--primary); }
+.footer-line .dots span:nth-child(3) { background: rgba(33, 150, 243, 0.4); }
+.footer-line .dots span:nth-child(4) { background: rgba(33, 150, 243, 0.2); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-block">
+        <span class="page-num">// PAGE 07 / BOOKSHELF</span>
+        <h1 class="main-title">
+          <span class="bar"></span>
+          <span class="accent">精选书单</span>
+          <span>推荐</span>
+        </h1>
+      </div>
+      <div class="header-meta">
+        <span>OPEN SOURCE READING</span><br>
+        <span>4 TITLES</span> &nbsp; <span class="tag">CLASSIC</span> <span class="tag">CORE</span>
+      </div>
+    </div>
+
+    <div class="narrative">
+      好的书能让人跨越时间与其他思想者对话。本册选取四本不同维度的经典：从开源理念到工程实践，从协作模式到创业文化，它们共同构成了开源阅读的基础书目，值得反复研读。
+    </div>
+
+    <div class="shelf-label"><span>▍ THE BOOKSHELF · 四本经典书目</span></div>
+
+    <div class="shelf">
+
+      <div class="book-card">
+        <div class="book-spine"></div>
+        <div class="book-inner">
+          <span class="book-index">VOL. 01</span>
+          <div class="book-spine-deco">
+            <div class="ring"><div class="ring-inner"></div></div>
+            <div class="lines"><span></span><span></span><span></span></div>
+          </div>
+          <h3 class="book-title">开源之道</h3>
+          <span class="book-author">— 刘遄 / 众作者合集</span>
+          <p class="book-desc">国内开源布道的标杆性文集，汇集数十位资深开发者的思想精华。</p>
+          <div class="book-footer">
+            <span class="book-dim">DIMENSION / 理念</span>
+            <span class="book-tag">必 读</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-spine"></div>
+        <div class="book-inner">
+          <span class="book-index">VOL. 02</span>
+          <div class="book-spine-deco">
+            <div class="ring"><div class="ring-inner"></div></div>
+            <div class="lines"><span></span><span></span><span></span></div>
+          </div>
+          <h3 class="book-title">大教堂与集市</h3>
+          <span class="book-author">— Eric S. Raymond</span>
+          <p class="book-desc">埃里克·雷蒙德经典之作，奠定开源协作模式的理论基石。</p>
+          <div class="book-footer">
+            <span class="book-dim">DIMENSION / 协作</span>
+            <span class="book-tag">经 典</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-spine"></div>
+        <div class="book-inner">
+          <span class="book-index">VOL. 03</span>
+          <div class="book-spine-deco">
+            <div class="ring"><div class="ring-inner"></div></div>
+            <div class="lines"><span></span><span></span><span></span></div>
+          </div>
+          <h3 class="book-title">黑客与画家</h3>
+          <span class="book-author">— Paul Graham</span>
+          <p class="book-desc">保罗·格雷厄姆对开源与创业文化的深刻洞察，启发无数开发者。</p>
+          <div class="book-footer">
+            <span class="book-dim">DIMENSION / 文化</span>
+            <span class="book-tag">启 发</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-spine"></div>
+        <div class="book-inner">
+          <span class="book-index">VOL. 04</span>
+          <div class="book-spine-deco">
+            <div class="ring"><div class="ring-inner"></div></div>
+            <div class="lines"><span></span><span></span><span></span></div>
+          </div>
+          <h3 class="book-title">代码整洁之道</h3>
+          <span class="book-author">— Robert C. Martin</span>
+          <p class="book-desc">工程实践经典，从代码层面理解开源质量与协作的共通语言。</p>
+          <div class="book-footer">
+            <span class="book-dim">DIMENSION / 实践</span>
+            <span class="book-tag">工 程</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="data-row">
+      <div class="data-card">
+        <div class="data-icon">04</div>
+        <div class="data-text">
+          <span class="data-title">推荐书目 4 本，覆盖理念、实践、文化三个维度</span>
+          <span class="data-sub">// IDEAS · PRACTICE · CULTURE · COLLABORATION</span>
+        </div>
+        <div class="data-metric">
+          <span class="num">4</span>
+          <span class="unit">BOOKS</span>
+        </div>
+      </div>
+      <div class="data-card">
+        <div class="data-icon">Q</div>
+        <div class="data-text">
+          <span class="data-title">阅读周期建议每季度 1 本，保持持续输入的稳健节奏</span>
+          <span class="data-sub">// 1 BOOK / QUARTER · SUSTAINABLE INPUT RHYTHM</span>
+        </div>
+        <div class="data-metric">
+          <span class="num">1/Q</span>
+          <span class="unit">PACE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-line">
+      <span>// REFERENCE SHELF · SEASON 01</span>
+      <div class="dots"><span></span><span></span><span></span><span></span></div>
+      <span>KEEP READING · KEEP BUILDING</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

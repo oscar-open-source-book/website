@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>社区实践指南</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+SC:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --accent: #00BCD4;
+  --text-dim: #B0BEC5;
+  --bg-dark: #0A0E1A;
+  --bg-card: #111827;
+  --bg-card-2: #1A2332;
+  --glow: rgba(33, 150, 243, 0.5);
+  --glow-cyan: rgba(0, 188, 212, 0.6);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-dark);
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: #E0E6ED;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0A0E1A 0%, #0D1424 40%, #0A1628 70%, #080C14 100%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 85%, rgba(33,150,243,0.06) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(0,188,212,0.05) 0%, transparent 35%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 45px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.header .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+.header h1 {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 52px;
+  background: linear-gradient(135deg, #E0E6ED 0%, #2196F3 50%, #00BCD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 4px;
+}
+
+.header .narrative {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 17px;
+  color: var(--text-dim);
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+.header .narrative .path {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.header .narrative .arrow {
+  color: var(--accent);
+  margin: 0 6px;
+  font-weight: 700;
+}
+
+/* Divider line */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--primary) 30%, var(--accent) 70%, transparent 100%);
+  margin: 14px 0 20px;
+  opacity: 0.5;
+}
+
+/* Staircase area */
+.staircase {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 10px;
+  position: relative;
+}
+
+.step {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.step-1 { height: 320px; margin-bottom: 0; }
+.step-2 { height: 380px; margin-bottom: 30px; }
+.step-3 { height: 440px; margin-bottom: 60px; }
+.step-4 { height: 500px; margin-bottom: 90px; }
+
+.step-inner {
+  position: relative;
+  height: 100%;
+  background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-card-2) 100%);
+  border: 1px solid rgba(33,150,243,0.15);
+  border-top: 2px solid var(--primary);
+  border-radius: 12px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.step-2 .step-inner { border-top-color: #42A5F5; }
+.step-3 .step-inner { border-top-color: #00BCD4; }
+.step-4 .step-inner { border-top-color: #26C6DA; }
+
+/* Step grid pattern background */
+.step-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+/* Step number badge */
+.step-number {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.step-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--bg-dark);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px var(--glow);
+}
+
+.step-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+
+/* Glowing node */
+.glow-node {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: rgba(33,150,243,0.08);
+  border: 1px solid rgba(33,150,243,0.2);
+  border-radius: 8px;
+}
+
+.glow-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--glow-cyan), 0 0 24px var(--glow-cyan);
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.glow-node-text {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #E0E6ED;
+  letter-spacing: 0.5px;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 12px var(--glow-cyan), 0 0 24px var(--glow-cyan); transform: scale(1); }
+  50% { box-shadow: 0 0 20px var(--glow-cyan), 0 0 40px var(--glow-cyan); transform: scale(1.2); }
+}
+
+/* Step title */
+.step-title {
+  position: relative;
+  z-index: 2;
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.step-4 .step-title { font-size: 24px; }
+
+/* Step description */
+.step-desc {
+  position: relative;
+  z-index: 2;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  flex: 1;
+}
+
+/* Tags at bottom of each step */
+.step-tags {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(33,150,243,0.15);
+}
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--accent);
+  padding: 3px 9px;
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 4px;
+  background: rgba(0,188,212,0.06);
+  letter-spacing: 0.5px;
+}
+
+.tag.primary {
+  color: var(--primary);
+  border-color: rgba(33,150,243,0.3);
+  background: rgba(33,150,243,0.06);
+}
+
+/* Side decoration - ascending arrow lines */
+.staircase-arrows {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Bottom footer */
+.footer {
+  text-align: center;
+  margin-top: 14px;
+  padding: 12px 0 0;
+  border-top: 1px solid rgba(33,150,243,0.12);
+  position: relative;
+}
+
+.footer-text {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 16px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+}
+
+.footer-text .highlight {
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Corner decorations */
+.corner-deco {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgba(33,150,243,0.2);
+  z-index: 0;
+}
+.corner-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+.corner-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+.corner-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+/* Level indicator bar */
+.level-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(10,14,26,0.5);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  position: relative;
+  z-index: 2;
+}
+.level-bar .level-fill {
+  flex: 1;
+  height: 3px;
+  background: rgba(33,150,243,0.15);
+  border-radius: 2px;
+  margin: 0 8px;
+  position: relative;
+  overflow: hidden;
+}
+.level-bar .level-fill span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  box-shadow: 0 0 8px var(--glow-cyan);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+    <div class="corner-deco corner-tl"></div>
+    <div class="corner-deco corner-tr"></div>
+    <div class="corner-deco corner-bl"></div>
+    <div class="corner-deco corner-br"></div>
+
+    <div class="header">
+      <div class="eyebrow">&lt; OPEN SOURCE / COMMUNITY / ROADMAP /&gt;</div>
+      <h1>社 区 实 践 指 南</h1>
+      <div class="narrative">
+        参与开源社区是一个<span class="path">阶梯式成长</span>的过程，四阶段路径：
+        围观<span class="arrow">→</span>贡献<span class="arrow">→</span>维护<span class="arrow">→</span>发起，每一步都在积累技术能力与社区影响力
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="staircase">
+      <div class="step step-1">
+        <div class="step-inner">
+          <div class="step-number">
+            <div class="step-num">01</div>
+            <div class="step-label">LEVEL · 入门</div>
+          </div>
+          <div class="glow-node">
+            <div class="glow-dot"></div>
+            <div class="glow-node-text">key action: observe</div>
+          </div>
+          <div class="step-title">参与讨论</div>
+          <div class="step-desc">
+            从 <span style="color:var(--primary);font-family:'JetBrains Mono',monospace;">Issue</span> 和 <span style="color:var(--primary);font-family:'JetBrains Mono',monospace;">Discussion</span> 入手，理解项目社区的文化氛围与协作节奏，建立对代码库和生态的基本认知。
+          </div>
+          <div class="step-tags">
+            <span class="tag primary"># 阅读 Issue</span>
+            <span class="tag"># 参与 Discussion</span>
+            <span class="tag primary"># 熟悉社区</span>
+          </div>
+          <div class="level-bar">
+            <span>L1</span>
+            <div class="level-fill"><span style="width:25%;"></span></div>
+            <span>25%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step step-2">
+        <div class="step-inner">
+          <div class="step-number">
+            <div class="step-num">02</div>
+            <div class="step-label">LEVEL · 进阶</div>
+          </div>
+          <div class="glow-node">
+            <div class="glow-dot"></div>
+            <div class="glow-node-text">key action: contribute</div>
+          </div>
+          <div class="step-title">提交 PR</div>
+          <div class="step-desc">
+            从修复文档错别字到实现完整功能，逐步提升贡献的复杂度与影响力。每一次 <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;">Pull Request</span> 都是对个人技术能力与代码审校能力的实战打磨。
+          </div>
+          <div class="step-tags">
+            <span class="tag"># 文档修正</span>
+            <span class="tag primary"># Bug 修复</span>
+            <span class="tag"># 功能实现</span>
+            <span class="tag primary"># Code Review</span>
+          </div>
+          <div class="level-bar">
+            <span>L2</span>
+            <div class="level-fill"><span style="width:50%;"></span></div>
+            <span>50%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step step-3">
+        <div class="step-inner">
+          <div class="step-number">
+            <div class="step-num">03</div>
+            <div class="step-label">LEVEL · 高阶</div>
+          </div>
+          <div class="glow-node">
+            <div class="glow-dot"></div>
+            <div class="glow-node-text">key action: maintain</div>
+          </div>
+          <div class="step-title">维护项目</div>
+          <div class="step-desc">
+            成为维护者需要技术判断力与社区沟通能力，是最高阶的参与形式。你需要把控项目方向、评审贡献、协调分歧，在技术决策与社区治理之间取得平衡。
+          </div>
+          <div class="step-tags">
+            <span class="tag primary"># 技术决策</span>
+            <span class="tag"># 社区治理</span>
+            <span class="tag primary"># 版本管理</span>
+            <span class="tag"># Release</span>
+          </div>
+          <div class="level-bar">
+            <span>L3</span>
+            <div class="level-fill"><span style="width:75%;"></span></div>
+            <span>75%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step step-4">
+        <div class="step-inner">
+          <div class="step-number">
+            <div class="step-num">04</div>
+            <div class="step-label">LEVEL · 创造</div>
+          </div>
+          <div class="glow-node">
+            <div class="glow-dot"></div>
+            <div class="glow-node-text">key action: create</div>
+          </div>
+          <div class="step-title">发起项目</div>
+          <div class="step-desc">
+            将积累的洞察与经验转化为自己的开源项目，完成从消费者到创造者的身份转变。你不仅是技术的实践者，更是新生态的奠基人，用自己的项目为社区贡献价值。
+          </div>
+          <div class="step-tags">
+            <span class="tag"># 洞察转化</span>
+            <span class="tag primary"># 架构设计</span>
+            <span class="tag"># 生态建设</span>
+            <span class="tag primary"># 从零到一</span>
+            <span class="tag"># 开源领导者</span>
+          </div>
+          <div class="level-bar">
+            <span>L4</span>
+            <div class="level-fill"><span style="width:100%;"></span></div>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">
+        <span class="highlight">从围观到发起</span>，每一步都是开源之路上最真实的<span class="highlight">成长记录</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

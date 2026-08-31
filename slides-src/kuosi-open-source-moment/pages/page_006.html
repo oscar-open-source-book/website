@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二章 · 阅读与记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --neutral: #B0BEC5;
+  --bg-dark: #0A0E1A;
+  --bg-mid: #111827;
+  --bg-card: #131B2E;
+  --text-main: #E8EEF7;
+  --text-dim: #7E8AA0;
+  --glow-blue: rgba(33, 150, 243, 0.35);
+  --glow-cyan: rgba(0, 188, 212, 0.28);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', 'JetBrains Mono', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 30%, rgba(33,150,243,0.10) 0%, transparent 50%),
+              radial-gradient(ellipse at 85% 75%, rgba(0,188,212,0.08) 0%, transparent 45%),
+              #0A0E1A;
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 70px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 30px;
+}
+
+/* Left column - Chapter number area */
+.left-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 20px;
+  border-right: 1px solid rgba(33,150,243,0.15);
+}
+
+.chapter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  color: var(--cyan);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.chapter-label-line {
+  width: 50px;
+  height: 1px;
+  background: var(--cyan);
+  margin-bottom: 22px;
+}
+
+.bignum {
+  font-family: 'Inter', sans-serif;
+  font-size: 340px;
+  font-weight: 900;
+  line-height: 0.85;
+  background: linear-gradient(135deg, #2196F3 0%, #00BCD4 60%, #1565C0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -15px;
+  position: relative;
+  z-index: 2;
+  text-shadow: none;
+  filter: drop-shadow(0 0 40px rgba(33,150,243,0.25));
+}
+
+.bignum-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--neutral);
+  letter-spacing: 3px;
+  margin-top: 12px;
+  opacity: 0.7;
+}
+
+/* Geometric decorations around the number */
+.geo-cube {
+  position: absolute;
+  border: 1px solid rgba(0,188,212,0.3);
+}
+.geo-cube-1 {
+  width: 120px; height: 120px;
+  top: 40px; right: 30px;
+  transform: rotate(15deg);
+  background: rgba(0,188,212,0.04);
+}
+.geo-cube-2 {
+  width: 80px; height: 80px;
+  top: 100px; right: 90px;
+  transform: rotate(-10deg);
+  border-color: rgba(33,150,243,0.3);
+  background: rgba(33,150,243,0.04);
+}
+.geo-cube-3 {
+  width: 50px; height: 50px;
+  bottom: 130px; left: 10px;
+  transform: rotate(30deg);
+  border-color: rgba(0,188,212,0.25);
+}
+.geo-cube-4 {
+  width: 30px; height: 30px;
+  top: 200px; left: 20px;
+  transform: rotate(45deg);
+  border-color: rgba(33,150,243,0.35);
+  background: rgba(33,150,243,0.06);
+}
+
+/* Floating book pages decoration */
+.page-deco {
+  position: absolute;
+  background: rgba(33,150,243,0.06);
+  border: 1px solid rgba(33,150,243,0.2);
+  width: 60px;
+  height: 75px;
+}
+.page-deco::before {
+  content: '';
+  position: absolute;
+  top: 12px; left: 8px; right: 8px;
+  height: 1px;
+  background: rgba(0,188,212,0.3);
+  box-shadow: 0 8px 0 rgba(0,188,212,0.2), 0 16px 0 rgba(0,188,212,0.15), 0 24px 0 rgba(0,188,212,0.1);
+}
+.page-deco-1 { top: 60px; left: 480px; transform: rotate(-8deg); }
+.page-deco-2 { top: 130px; left: 510px; transform: rotate(5deg); width: 50px; height: 63px; }
+.page-deco-3 { bottom: 160px; right: -10px; transform: rotate(12deg); width: 55px; height: 70px; }
+
+/* Right column */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 10px;
+}
+
+.title-block {
+  margin-top: 10px;
+}
+
+.title-zh {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.title-zh .accent {
+  color: var(--primary);
+}
+
+.subtitle {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--neutral);
+  letter-spacing: 6px;
+  padding-left: 4px;
+  border-left: 2px solid var(--cyan);
+  padding: 4px 0 4px 14px;
+  margin-bottom: 30px;
+}
+
+/* Three keywords */
+.keywords-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 28px;
+}
+
+.keyword {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 52px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  background: linear-gradient(135deg, #2196F3, #00BCD4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: 0 24px;
+  position: relative;
+}
+
+.keyword-sep {
+  color: var(--cyan);
+  font-size: 36px;
+  font-weight: 300;
+  opacity: 0.6;
+}
+
+.keywords-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--neutral);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+/* Three points */
+.points-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.point-card {
+  background: rgba(19, 27, 46, 0.7);
+  border: 1px solid rgba(33,150,243,0.18);
+  border-top: 2px solid var(--primary);
+  padding: 16px 16px 18px 16px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.point-card:nth-child(2) {
+  border-top-color: var(--cyan);
+}
+
+.point-card:nth-child(3) {
+  border-top-color: #1565C0;
+}
+
+.point-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 1px solid var(--cyan);
+  border-right: 1px solid var(--cyan);
+}
+
+.point-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.point-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.point-desc {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--neutral);
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+}
+
+/* Narrative section */
+.narrative {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, rgba(33,150,243,0.08) 0%, rgba(0,188,212,0.04) 50%, transparent 100%);
+  border-left: 3px solid var(--primary);
+  position: relative;
+}
+
+.narrative-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  color: var(--cyan);
+  flex-shrink: 0;
+  letter-spacing: 2px;
+}
+
+.narrative-text {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--neutral);
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+  flex: 1;
+}
+
+.narrative-text .hl {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.narrative-text .hl-cyan {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+/* Decorative dots */
+.deco-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--cyan);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+/* Footer bar */
+.footer-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 70px;
+  right: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  z-index: 2;
+}
+
+.footer-bar .dot-sep {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+  margin: 0 8px;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="left-col">
+      <div class="geo-cube geo-cube-1"></div>
+      <div class="geo-cube geo-cube-2"></div>
+      <div class="geo-cube geo-cube-3"></div>
+      <div class="geo-cube geo-cube-4"></div>
+      <div class="page-deco page-deco-1"></div>
+      <div class="page-deco page-deco-2"></div>
+
+      <div class="chapter-label"><span>CHAPTER</span></div>
+      <div class="chapter-label-line"></div>
+      <div class="bignum"><span>02</span></div>
+      <div class="bignum-caption"><span>READING &amp; RECORDING</span></div>
+    </div>
+
+    <div class="right-col">
+      <div class="title-block">
+        <div class="title-zh"><span>第二章</span> · <span class="accent">阅读与记录</span></div>
+        <div class="subtitle"><span>构建个人知识体系</span></div>
+
+        <div class="keywords-tag"><span>READING TRIAD · 阅读三要素</span></div>
+        <div class="keywords-row">
+          <div class="keyword"><span>选材</span></div>
+          <span class="keyword-sep">·</span>
+          <div class="keyword"><span>记录</span></div>
+          <span class="keyword-sep">·</span>
+          <div class="keyword"><span>链接</span></div>
+        </div>
+      </div>
+
+      <div class="points-grid">
+        <div class="point-card">
+          <div class="point-num"><span>01 / SELECT</span></div>
+          <div class="point-title"><span>选材有度</span></div>
+          <div class="point-desc"><span>从经典著作到前沿博客，按需筛选高质量阅读材料，以质量驱动阅读深度。</span></div>
+        </div>
+        <div class="point-card">
+          <div class="point-num"><span>02 / RECORD</span></div>
+          <div class="point-title"><span>记录成法</span></div>
+          <div class="point-desc"><span>用自己的语言重写要点，形成可检索、可复用的笔记体系，让知识沉淀为资产。</span></div>
+        </div>
+        <div class="point-card">
+          <div class="point-num"><span>03 / LINK</span></div>
+          <div class="point-title"><span>链接思维</span></div>
+          <div class="point-desc"><span>将新知识与既有认知网络连接，构建个人知识图谱，让孤岛信息产生共振。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <div class="narrative-icon"><span>&#9670; NOTE</span></div>
+      <div class="narrative-text">
+        <span>阅读的质量取决于<span class="hl">选材</span>与<span class="hl-cyan">记录</span>的方式。开源世界的优质输入来源广泛——官方文档、技术博客、书籍、Issue 讨论——关键在于建立属于自己的<span class="hl">记录与链接</span>方法，让<span class="hl-cyan">每次阅读</span>都成为知识网络的<span class="hl">新节点</span>。</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bar">
+    <span><span>PART</span><span class="dot-sep"></span><span>02 / 05</span><span class="dot-sep"></span><span>READING &amp; RECORDING</span></span>
+    <span><span>CHAPTER TRANSITION</span><span class="dot-sep"></span><span>2024</span></span>
+  </div>
+</div>
+</body>
+</html>

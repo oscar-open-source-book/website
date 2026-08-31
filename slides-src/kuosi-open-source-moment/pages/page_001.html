@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+
+:root {
+  --primary: #2196F3;
+  --cyan: #00BCD4;
+  --gray: #B0BEC5;
+  --dark-bg: #0a0e1a;
+  --dark-card: #111627;
+  --text-main: #e8eaf0;
+  --text-dim: #7a8899;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  background: var(--dark-bg);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: radial-gradient(ellipse at 30% 20%, #111c33 0%, #0a0e1a 60%, #060a14 100%);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Circuit lines decoration */
+.circuit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+}
+
+.circuit svg { width: 100%; height: 100%; }
+
+/* Particles */
+.particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--cyan), 0 0 12px rgba(0,188,212,0.4);
+  animation: float 6s ease-in-out infinite;
+}
+
+.particle:nth-child(1) { left: 8%; top: 15%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 22%; top: 80%; animation-delay: 1s; width: 2px; height: 2px; }
+.particle:nth-child(3) { left: 45%; top: 25%; animation-delay: 2s; background: var(--primary); box-shadow: 0 0 6px var(--primary), 0 0 12px rgba(33,150,243,0.4); }
+.particle:nth-child(4) { left: 70%; top: 60%; animation-delay: 3s; }
+.particle:nth-child(5) { left: 85%; top: 20%; animation-delay: 4s; width: 4px; height: 4px; }
+.particle:nth-child(6) { left: 15%; top: 50%; animation-delay: 1.5s; background: var(--primary); box-shadow: 0 0 6px var(--primary); }
+.particle:nth-child(7) { left: 55%; top: 88%; animation-delay: 2.5s; }
+.particle:nth-child(8) { left: 92%; top: 75%; animation-delay: 0.8s; width: 2px; height: 2px; background: var(--primary); box-shadow: 0 0 5px var(--primary); }
+.particle:nth-child(9) { left: 35%; top: 5%; animation-delay: 3.5s; }
+.particle:nth-child(10) { left: 62%; top: 42%; animation-delay: 4.5s; width: 2px; height: 2px; }
+.particle:nth-child(11) { left: 4%; top: 35%; animation-delay: 5s; background: var(--primary); box-shadow: 0 0 5px var(--primary); }
+.particle:nth-child(12) { left: 78%; top: 30%; animation-delay: 2.2s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.4; }
+  25% { transform: translateY(-10px) translateX(5px); opacity: 1; }
+  50% { transform: translateY(5px) translateX(-3px); opacity: 0.6; }
+  75% { transform: translateY(-5px) translateX(3px); opacity: 0.9; }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* Top bar with data labels */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(33,150,243,0.2);
+  flex-shrink: 0;
+}
+
+.data-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--gray);
+}
+
+.data-label .tag {
+  background: rgba(33,150,243,0.15);
+  border: 1px solid rgba(33,150,243,0.4);
+  color: var(--primary);
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.data-label .value {
+  color: var(--text-main);
+  font-size: 13px;
+}
+
+.data-label .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--cyan);
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Title area */
+.title-area {
+  text-align: center;
+  padding: 35px 0 20px 0;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.title-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.cover-title {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 76px;
+  font-weight: 700;
+  letter-spacing: 12px;
+  background: linear-gradient(135deg, #64b5f6 0%, #2196F3 30%, #00BCD4 60%, #4dd0e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(33,150,243,0.3);
+  position: relative;
+  display: inline-block;
+}
+
+.cover-title .glow-underline {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--cyan), transparent);
+  opacity: 0.6;
+}
+
+.subtitle {
+  margin-top: 28px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  color: var(--gray);
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(33,150,243,0.3);
+}
+
+.subtitle .accent {
+  color: var(--cyan);
+}
+
+/* Three columns */
+.three-col {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+  flex-shrink: 0;
+}
+
+.col-card {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(17,22,39,0.9) 0%, rgba(10,14,26,0.95) 100%);
+  border: 1px solid rgba(33,150,243,0.25);
+  border-radius: 8px;
+  padding: 22px 22px 20px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.col-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+  opacity: 0.7;
+}
+
+.col-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(0,188,212,0.08) 0%, transparent 70%);
+}
+
+.col-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  background: rgba(33,150,243,0.08);
+  box-shadow: 0 0 15px rgba(33,150,243,0.2), inset 0 0 10px rgba(33,150,243,0.1);
+}
+
+.col-icon svg { width: 22px; height: 22px; }
+
+.col-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  letter-spacing: 2px;
+}
+
+.col-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.col-desc {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+/* Bottom narrative */
+.narrative {
+  margin-top: 22px;
+  background: linear-gradient(135deg, rgba(33,150,243,0.06) 0%, rgba(0,188,212,0.04) 100%);
+  border-left: 2px solid var(--primary);
+  border-radius: 0 6px 6px 0;
+  padding: 16px 24px;
+  flex-shrink: 0;
+}
+
+.narrative-text {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--gray);
+  letter-spacing: 0.5px;
+}
+
+.narrative-text .highlight {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+.narrative-text .highlight-blue {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Bottom footer */
+.footer-bar {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid rgba(33,150,243,0.15);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  flex-shrink: 0;
+}
+
+.footer-left { display: flex; align-items: center; gap: 12px; }
+.footer-right { display: flex; align-items: center; gap: 12px; }
+
+.footer-bar .sep {
+  width: 4px;
+  height: 4px;
+  background: var(--cyan);
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.footer-bar .accent-text { color: var(--cyan); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="circuit">
+      <svg viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 120 L200 120 L240 160 L400 160" stroke="#2196F3" stroke-width="1" opacity="0.4"/>
+        <circle cx="200" cy="120" r="4" fill="#00BCD4" opacity="0.6"/>
+        <circle cx="240" cy="160" r="3" fill="#2196F3" opacity="0.5"/>
+        <path d="M1600 200 L1400 200 L1360 240 L1200 240" stroke="#00BCD4" stroke-width="1" opacity="0.35"/>
+        <circle cx="1400" cy="200" r="4" fill="#2196F3" opacity="0.5"/>
+        <path d="M0 780 L150 780 L190 740 L350 740" stroke="#2196F3" stroke-width="1" opacity="0.3"/>
+        <circle cx="150" cy="780" r="3" fill="#00BCD4" opacity="0.5"/>
+        <path d="M1600 700 L1450 700 L1410 660 L1250 660" stroke="#00BCD4" stroke-width="1" opacity="0.3"/>
+        <circle cx="1450" cy="700" r="3" fill="#2196F3" opacity="0.4"/>
+        <path d="M800 0 L800 80 L840 120" stroke="#2196F3" stroke-width="1" opacity="0.25"/>
+        <path d="M800 900 L800 830 L760 790" stroke="#00BCD4" stroke-width="1" opacity="0.25"/>
+        <path d="M500 0 L500 60 L460 100 L350 100" stroke="#00BCD4" stroke-width="0.8" opacity="0.25"/>
+        <path d="M1100 900 L1100 840 L1140 800 L1250 800" stroke="#2196F3" stroke-width="0.8" opacity="0.25"/>
+        <path d="M60 380 L120 380 L160 420 L280 420" stroke="#00BCD4" stroke-width="0.8" opacity="0.2"/>
+        <path d="M1540 480 L1480 480 L1440 440 L1320 440" stroke="#2196F3" stroke-width="0.8" opacity="0.2"/>
+        <path d="M60 540 L100 540 L140 580 L260 580" stroke="#2196F3" stroke-width="0.8" opacity="0.18"/>
+        <path d="M1540 350 L1480 350 L1440 310 L1300 310" stroke="#00BCD4" stroke-width="0.8" opacity="0.18"/>
+      </svg>
+    </div>
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+  </div>
+  <div id="ct">
+    <div class="top-bar">
+      <div class="data-label">
+        <span class="dot"></span>
+        <span class="tag">THEME</span>
+        <span class="value">开源布道与阅读分享</span>
+      </div>
+      <div class="data-label">
+        <span class="tag">NARRATOR</span>
+        <span class="value">开源之道·适兕</span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+    <div class="title-area">
+      <div class="cover-title">
+        开源之书记录
+        <span class="glow-underline"></span>
+      </div>
+      <div class="subtitle">kuosi-open-source-moment <span class="accent">·</span> 开源布道与阅读分享</div>
+    </div>
+
+    <div class="three-col">
+      <div class="col-card">
+        <div class="col-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.8" stroke-linecap="round">
+            <path d="M12 2 L12 6 M12 18 L12 22 M4.93 4.93 L7.76 7.76 M16.24 16.24 L19.07 19.07 M2 12 L6 12 M18 12 L22 12 M4.93 19.07 L7.76 16.24 M16.24 7.76 L19.07 4.93"/>
+            <circle cx="12" cy="12" r="4" fill="rgba(33,150,243,0.15)"/>
+          </svg>
+        </div>
+        <div class="col-num">// 01</div>
+        <div class="col-title">开源之道</div>
+        <div class="col-desc">以开源精神为底色，记录每一次阅读、每一次分享的瞬间</div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4.5C4 4 6 3 9 3 C10.5 3 12 3.5 12 4.5 C12 3.5 13.5 3 15 3 C18 3 20 4 20 4.5 L20 19.5 C20 20 18 19 15 19 C13.5 19 12 19.5 12 20 C12 19.5 10.5 19 9 19 C6 19 4 20 4 19.5 Z"/>
+            <line x1="12" y1="4.5" x2="12" y2="20"/>
+            <line x1="9" y1="8" x2="11" y2="8" stroke-opacity="0.5"/>
+            <line x1="9" y1="12" x2="11" y2="12" stroke-opacity="0.5"/>
+            <line x1="13" y1="8" x2="15" y2="8" stroke-opacity="0.5"/>
+            <line x1="13" y1="12" x2="15" y2="12" stroke-opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="col-num">// 02</div>
+        <div class="col-title">阅读为舟</div>
+        <div class="col-desc">从经典著作到最新博客，用文字构建知识桥梁</div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21 L3 5 L16 5 C18 5 20 6 20 8 C20 10 18 11 16 11 L3 11"/>
+            <path d="M3 11 L3 21" stroke-width="1.5"/>
+            <circle cx="16" cy="8" r="1.5" fill="#00BCD4" stroke="none"/>
+            <path d="M9 14 L9 19 M13 14 L13 19 M17 14 L17 19" stroke-opacity="0.5" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="col-num">// 03</div>
+        <div class="col-title">分享为帆</div>
+        <div class="col-desc">让思想流动起来，形成社区共读共写的良性循环</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      <p class="narrative-text">
+        本册记录围绕<span class="highlight-blue">开源布道与阅读分享</span>展开，以<span class="highlight">『开源之道·适兕』</span>为叙述视角，串起对开源精神的思考、对阅读方法的沉淀，以及将知识回馈给社区的实践。它既是一本阅读笔记，也是一份开源生活方式的宣言。
+      </p>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-left">
+        <span>KUOSI · OPEN SOURCE</span>
+        <span class="sep"></span>
+        <span class="accent-text">RECORDS</span>
+      </div>
+      <div class="footer-right">
+        <span>开源之道</span>
+        <span class="sep"></span>
+        <span class="accent-text">阅读为舟 · 分享为帆</span>
+        <span class="sep"></span>
+        <span>2025</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
