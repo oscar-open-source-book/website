@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>第二章 · 开源实践指南</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Cormorant+Garamond:wght@300;400;500;600&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --navy-light: #1E3A5C;
+  --navy-mist: #E4E7EC;
+  --gold: #C9A227;
+  --gold-soft: #D9B95A;
+  --gold-faint: rgba(201, 162, 39, 0.18);
+  --beige: #F4F1EA;
+  --beige-warm: #EDE7D8;
+  --ink: #2A2A2A;
+  --muted: #6B6B6B;
+  --rule: rgba(13, 33, 55, 0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Serif Pro', 'Noto Serif SC', 'Songti SC', Georgia, serif;
+  color: var(--ink);
+  background: #E8E4D8;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--beige);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 12% 20%, rgba(13, 33, 55, 0.05) 0%, transparent 45%),
+    radial-gradient(ellipse at 88% 82%, rgba(201, 162, 39, 0.06) 0%, transparent 50%);
+}
+
+/* Corner ornaments */
+.corner {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  z-index: 1;
+  pointer-events: none;
+}
+.corner-tl { top: 40px; left: 40px; border-top: 1.5px solid var(--navy); border-left: 1.5px solid var(--navy); }
+.corner-br { bottom: 40px; right: 40px; border-bottom: 1.5px solid var(--navy); border-right: 1.5px solid var(--navy); }
+.corner-tl::after, .corner-br::after {
+  content: '';
+  position: absolute;
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+.corner-tl::after { top: -3px; left: -3px; }
+.corner-br::after { bottom: -3px; right: -3px; }
+
+/* Header row */
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 40px;
+}
+.brand {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.42em;
+  color: var(--navy);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.brand .dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 10px 2px 10px;
+}
+.page-meta {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Main body grid */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Chapter number */
+.chapter-block {
+  position: relative;
+  padding-top: 10px;
+}
+.chapter-label {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 14px;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.chapter-zh {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.35em;
+  color: var(--navy);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.big-num {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 340px;
+  line-height: 0.85;
+  font-weight: 500;
+  color: transparent;
+  -webkit-text-stroke: 2.5px var(--navy);
+  letter-spacing: -0.03em;
+  position: relative;
+  margin-left: -8px;
+  display: block;
+}
+.big-num .fill {
+  color: var(--gold-faint);
+  -webkit-text-stroke: 0;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.num-under {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.num-under .line {
+  height: 1px;
+  width: 80px;
+  background: var(--navy);
+}
+.num-under .txt {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.num-under .gdot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+/* Right content */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  padding-top: 6px;
+}
+
+.eyebrow {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+h1.title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 78px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  margin-bottom: 20px;
+}
+h1.title .accent {
+  color: var(--gold);
+}
+
+.subtitle {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--navy-light);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  padding-left: 18px;
+  border-left: 2px solid var(--gold);
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+.quote {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  max-width: 640px;
+  padding: 18px 24px 18px 28px;
+  background: rgba(13, 33, 55, 0.035);
+  border-left: 3px solid var(--navy);
+  position: relative;
+}
+.quote::before {
+  content: '\201C';
+  position: absolute;
+  top: -8px;
+  right: 18px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 68px;
+  color: var(--gold-soft);
+  line-height: 1;
+  font-weight: 500;
+}
+.quote em {
+  color: var(--navy);
+  font-weight: 600;
+  font-style: normal;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 1px;
+}
+
+/* Bottom cards */
+.cards {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+}
+
+.card {
+  position: relative;
+  padding: 22px 24px 22px 24px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(13, 33, 55, 0.1);
+  transition: none;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+}
+.card::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 1px;
+  height: 40px;
+  background: var(--gold);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.card-num {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.icon-box {
+  width: 46px;
+  height: 46px;
+  border: 1.2px solid var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--beige);
+  flex-shrink: 0;
+}
+.icon-box svg { display: block; }
+
+.card-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+.card-title .en {
+  display: block;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 3px;
+  text-transform: uppercase;
+}
+.card-desc {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+.card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 4px 10px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  background: var(--gold-faint);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 22px;
+  margin-top: 20px;
+  border-top: 1px solid var(--rule);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.footer .mid-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer .mid-dots .d {
+  width: 4px; height: 4px;
+  background: var(--navy);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+.footer .mid-dots .d.gold {
+  background: var(--gold);
+  opacity: 1;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-br"></div>
+
+  <div id="ct">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="brand">
+        <span>OPEN</span><span class="dot"></span><span>SOURCE</span><span class="dot"></span><span>GUIDE</span>
+      </div>
+      <div class="page-meta">
+        Chapter 02 / 06 &nbsp;·&nbsp; Section Divider
+      </div>
+    </div>
+
+    <!-- Main grid -->
+    <div class="main">
+
+      <!-- Left: big 02 -->
+      <div class="chapter-block">
+        <div class="chapter-label">Chapter Two</div>
+        <div class="chapter-zh">第 二 章</div>
+
+        <div class="big-num">
+          <span class="fill">02</span>
+          <span style="position:relative;">02</span>
+        </div>
+
+        <div class="num-under">
+          <span class="line"></span>
+          <span class="gdot"></span>
+          <span class="txt">Practice &nbsp;·&nbsp; Action</span>
+        </div>
+      </div>
+
+      <!-- Right: title + quote -->
+      <div class="right-col">
+        <div class="eyebrow">— The Practice Chapter —</div>
+
+        <h1 class="title">开源<span class="accent">实践</span>指南</h1>
+
+        <div class="subtitle">
+          从理念走向行动：如何真正参与开源
+        </div>
+
+        <div class="quote">
+          理念之外，更重要的是<em>行动</em>。本节将围绕阅读笔记中反复出现的实践主题，从<em>入门路径</em>、<em>生态数据</em>到<em>社区治理</em>，给出可操作的指南，帮助读者迈出第一步。
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Three cards -->
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-head">
+          <div class="icon-box">
+            <!-- Document icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D2137" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+              <path d="M14 3v5h5"/>
+              <line x1="8" y1="12" x2="15" y2="12"/>
+              <line x1="8" y1="15" x2="15" y2="15"/>
+              <line x1="8" y1="18" x2="13" y2="18"/>
+            </svg>
+          </div>
+          <div class="card-num">01</div>
+        </div>
+        <div class="card-title">
+          入门路径
+          <span class="en">Getting Started</span>
+        </div>
+        <div class="card-desc">
+          从提交 Issue、修复文档到参与核心代码，逐级深入，构建清晰的贡献阶梯。
+        </div>
+        <div class="card-tag">Pathway</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="icon-box">
+            <!-- Chart icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D2137" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="20" x2="20" y2="20"/>
+              <line x1="4" y1="20" x2="4" y2="4"/>
+              <rect x="7" y="12" width="2.6" height="6" fill="#0D2137" fill-opacity="0.15"/>
+              <rect x="11.2" y="8" width="2.6" height="10" fill="#0D2137" fill-opacity="0.15"/>
+              <rect x="15.4" y="5" width="2.6" height="13" fill="#0D2137" fill-opacity="0.15"/>
+              <polyline points="7,10 11,7 15,4 19,6" stroke="#C9A227" stroke-width="1.4"/>
+              <circle cx="7" cy="10" r="1.3" fill="#C9A227"/>
+              <circle cx="11" cy="7" r="1.3" fill="#C9A227"/>
+              <circle cx="15" cy="4" r="1.3" fill="#C9A227"/>
+              <circle cx="19" cy="6" r="1.3" fill="#C9A227"/>
+            </svg>
+          </div>
+          <div class="card-num">02</div>
+        </div>
+        <div class="card-title">
+          生态数据
+          <span class="en">Ecosystem Data</span>
+        </div>
+        <div class="card-desc">
+          用真实数据看全球开源生态规模与增长趋势，把握社区演进的关键指标。
+        </div>
+        <div class="card-tag">Metrics</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="icon-box">
+            <!-- Collaboration nodes icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D2137" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="7" r="2.2" fill="#F4F1EA"/>
+              <circle cx="18" cy="7" r="2.2" fill="#F4F1EA"/>
+              <circle cx="12" cy="17" r="2.2" fill="#F4F1EA"/>
+              <line x1="7.5" y1="8.3" x2="10.5" y2="15.5"/>
+              <line x1="16.5" y1="8.3" x2="13.5" y2="15.5"/>
+              <line x1="8.2" y1="7" x2="15.8" y2="7"/>
+              <circle cx="12" cy="17" r="2.2" stroke="#C9A227" fill="#C9A227" fill-opacity="0.2"/>
+            </svg>
+          </div>
+          <div class="card-num">03</div>
+        </div>
+        <div class="card-title">
+          最佳实践
+          <span class="en">Best Practices</span>
+        </div>
+        <div class="card-desc">
+          社区治理、代码审查、贡献者体验等关键实践要点，塑造健康的协作文化。
+        </div>
+        <div class="card-tag">Governance</div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>Academic Research Series · 学术报告系列</div>
+      <div class="mid-dots">
+        <span class="d"></span>
+        <span class="d gold"></span>
+        <span class="d"></span>
+      </div>
+      <div>02 &nbsp;/&nbsp; 06</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

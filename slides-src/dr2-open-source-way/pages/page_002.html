@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>为什么选择开源</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Georgia&family=Noto+Serif+SC:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --navy-soft:#1B3350;
+  --gold:#C9A227;
+  --gold-soft:#E0C367;
+  --cream:#F4F1EA;
+  --cream-2:#EBE5D7;
+  --ink:#2A2E36;
+  --rule:#C7BFA9;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:'Source Serif Pro','Noto Serif SC',Georgia,serif;
+  color:var(--ink);
+  background:var(--cream);
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:var(--cream);
+}
+
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:64px 72px 56px;box-sizing:border-box;}
+
+/* Background decorative layer */
+.bg-grad{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#F4F1EA 0%,#EDE7D6 55%,#F4F1EA 100%);
+}
+.bg-glow{
+  position:absolute;top:-140px;right:-160px;width:640px;height:640px;
+  background:radial-gradient(circle at center,rgba(201,162,39,0.18) 0%,rgba(201,162,39,0.06) 40%,rgba(201,162,39,0) 70%);
+  filter:blur(2px);
+}
+.bg-corner{
+  position:absolute;left:-80px;bottom:-80px;width:360px;height:360px;
+  background:radial-gradient(circle at center,rgba(13,33,55,0.10) 0%,rgba(13,33,55,0) 65%);
+}
+
+/* Top frame */
+.top-rule{
+  position:absolute;top:52px;left:72px;right:72px;
+  display:flex;align-items:center;gap:18px;
+}
+.top-rule .line{flex:1;height:1px;background:var(--rule);}
+.top-rule .mark{
+  font-family:Georgia,serif;letter-spacing:0.4em;font-size:11px;
+  color:var(--navy);text-transform:uppercase;
+}
+.top-rule .mark .dot{color:var(--gold);}
+.top-rule .zh{
+  font-family:'Noto Serif SC',serif;font-size:12px;color:var(--navy);letter-spacing:0.35em;
+}
+
+/* Main layout */
+.main{
+  position:absolute;top:120px;left:72px;right:72px;height:490px;
+  display:grid;grid-template-columns:1fr 720px;gap:56px;
+}
+
+/* Left column */
+.left{
+  display:flex;flex-direction:column;justify-content:center;position:relative;
+  padding-right:8px;
+}
+.chapter-label{
+  font-family:Georgia,serif;letter-spacing:0.55em;font-size:12px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:6px;
+}
+.chapter-label span{color:var(--navy);}
+.chapter-label .zh{font-family:'Noto Serif SC',serif;letter-spacing:0.4em;color:var(--navy);margin-left:10px;}
+
+.ch-num-row{display:flex;align-items:flex-end;gap:22px;margin-bottom:8px;}
+.ch-num{
+  font-family:Georgia,serif;font-weight:400;
+  font-size:280px;line-height:0.82;letter-spacing:-0.04em;
+  color:var(--navy);
+  position:relative;
+}
+.ch-num .accent{color:var(--gold);}
+.ch-num-side{
+  padding-bottom:22px;display:flex;flex-direction:column;gap:8px;
+}
+.ch-num-side .vertical-line{
+  width:2px;height:80px;background:var(--gold);
+}
+.ch-num-side .of{
+  font-family:Georgia,serif;font-size:14px;letter-spacing:0.35em;color:var(--navy);
+  writing-mode:vertical-rl;text-orientation:mixed;
+}
+
+.ch-title-block{
+  border-left:3px solid var(--gold);padding-left:22px;margin-top:6px;
+}
+.ch-title{
+  font-family:'Noto Serif SC',Georgia,serif;font-weight:600;
+  font-size:52px;line-height:1.15;color:var(--navy);
+  letter-spacing:0.04em;
+}
+.ch-subtitle{
+  font-family:'Source Serif Pro','Noto Serif SC',serif;
+  font-style:italic;font-size:19px;color:var(--navy-soft);
+  margin-top:12px;letter-spacing:0.02em;line-height:1.5;
+}
+.ch-quote-mark{
+  font-family:Georgia,serif;color:var(--gold);font-size:26px;margin-right:2px;
+}
+
+.ch-intro{
+  margin-top:24px;font-size:15px;line-height:1.85;color:#3A3E46;
+  max-width:640px;
+}
+.ch-intro .drop{
+  font-family:Georgia,serif;font-size:34px;color:var(--gold);
+  float:left;line-height:0.9;padding:6px 10px 0 0;font-weight:400;
+}
+
+/* Right column: image */
+.right{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.img-frame{
+  position:relative;width:700px;height:390px;
+  background:var(--cream-2);
+  box-shadow:0 20px 50px rgba(13,33,55,0.22),0 4px 14px rgba(13,33,55,0.10);
+  overflow:hidden;
+}
+.img-frame img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.img-frame::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 1px rgba(201,162,39,0.35);
+}
+.img-corner{
+  position:absolute;width:26px;height:26px;border:2px solid var(--gold);
+}
+.img-corner.tl{top:-2px;left:-2px;border-right:none;border-bottom:none;}
+.img-corner.tr{top:-2px;right:-2px;border-left:none;border-bottom:none;}
+.img-corner.bl{bottom:-2px;left:-2px;border-right:none;border-top:none;}
+.img-corner.br{bottom:-2px;right:-2px;border-left:none;border-top:none;}
+
+.img-caption{
+  margin-top:18px;display:flex;align-items:center;gap:14px;
+  font-family:Georgia,serif;font-size:11px;letter-spacing:0.35em;
+  color:var(--navy);text-transform:uppercase;
+}
+.img-caption .rule{width:60px;height:1px;background:var(--gold);}
+.img-caption .zh{
+  font-family:'Noto Serif SC',serif;letter-spacing:0.3em;font-size:12px;
+  color:var(--navy);
+}
+
+/* Bottom section */
+.bottom{
+  position:absolute;left:72px;right:72px;bottom:56px;
+}
+.bottom-head{
+  display:flex;align-items:center;gap:14px;margin-bottom:18px;
+}
+.bottom-head .bar{width:36px;height:2px;background:var(--gold);}
+.bottom-head .zh{
+  font-family:'Noto Serif SC',serif;font-weight:600;font-size:16px;
+  color:var(--navy);letter-spacing:0.3em;
+}
+.bottom-head .en{
+  font-family:Georgia,serif;font-size:11px;letter-spacing:0.4em;color:#8A8272;
+  text-transform:uppercase;margin-left:auto;
+}
+.bottom-head .en .dot{color:var(--gold);margin:0 6px;}
+
+.modules{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px;
+}
+.module{
+  position:relative;padding:18px 20px 18px 22px;
+  background:linear-gradient(180deg,rgba(255,253,247,0.85) 0%,rgba(255,255,255,0.6) 100%);
+  border:1px solid var(--rule);
+  border-top:2px solid var(--gold);
+}
+.module .m-num{
+  position:absolute;top:10px;right:16px;
+  font-family:Georgia,serif;font-size:13px;letter-spacing:0.2em;
+  color:var(--gold);
+}
+.module .m-title{
+  font-family:'Noto Serif SC',Georgia,serif;font-weight:600;
+  font-size:20px;color:var(--navy);letter-spacing:0.05em;margin-bottom:8px;
+}
+.module .m-title .en{
+  font-family:Georgia,serif;font-weight:400;font-style:italic;
+  font-size:12px;color:#8A8272;letter-spacing:0.2em;margin-left:8px;
+}
+.module .m-desc{
+  font-family:'Source Serif Pro','Noto Serif SC',serif;
+  font-size:13.5px;line-height:1.75;color:#3A3E46;
+}
+.module .m-rule{
+  position:absolute;left:22px;bottom:14px;width:22px;height:1px;background:var(--gold);
+}
+
+/* Bottom-right icons */
+.icon-strip{
+  position:absolute;right:72px;bottom:14px;
+  display:flex;align-items:center;gap:14px;
+  font-family:'Courier New',monospace;font-size:14px;color:var(--gold-soft);
+  opacity:0.75;letter-spacing:0.15em;
+}
+.icon-strip .sep{color:var(--rule);}
+.icon-strip .term{color:var(--gold);}
+
+/* Footer line */
+.footer-line{
+  position:absolute;left:72px;bottom:22px;right:72px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:Georgia,serif;font-size:10px;letter-spacing:0.4em;
+  color:#8A8272;text-transform:uppercase;
+}
+.footer-line .center{color:var(--navy);}
+.footer-line .center .gold{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-grad"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-corner"></div>
+  </div>
+
+  <div id="ct">
+
+    <!-- Top rule -->
+    <div class="top-rule">
+      <div class="mark">CHAPTER<span class="dot"> · </span>I</div>
+      <div class="line"></div>
+      <div class="zh">第<span class="mark" style="display:inline;padding:0 4px;">壹</span>章</div>
+      <div class="line"></div>
+      <div class="mark">OPEN · SOURCE</div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Left -->
+      <div class="left">
+        <div class="chapter-label">SECTION <span>·</span> 章节引言<span class="zh">序 章</span></div>
+
+        <div class="ch-num-row">
+          <div class="ch-num">0<span class="accent">1</span></div>
+          <div class="ch-num-side">
+            <div class="vertical-line"></div>
+            <div class="of">of VIII</div>
+          </div>
+        </div>
+
+        <div class="ch-title-block">
+          <div class="ch-title">为什么选择开源</div>
+          <div class="ch-subtitle"><span class="ch-quote-mark">“</span>开源不止是代码，更是一种协作哲学<span class="ch-quote-mark">”</span></div>
+        </div>
+
+        <div class="ch-intro">
+          <span class="drop">入</span>正题之前，需要先回答一个根本问题：为什么我们值得花时间去理解开源？开源运动背后有一整套关于协作、信任与知识的哲学，这正是本节要展开的脉络。
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="right">
+        <div class="img-frame">
+          <div class="img-corner tl"></div>
+          <div class="img-corner tr"></div>
+          <div class="img-corner bl"></div>
+          <div class="img-corner br"></div>
+          <img src="../images/page_002_chapter.png" alt="章节导览式装饰图：一本摊开的精装书与金色柔光">
+        </div>
+        <div class="img-caption">
+          <div class="rule"></div>
+          <div>FIG. 01</div>
+          <div class="zh">开 卷</div>
+          <div class="rule"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="bottom">
+      <div class="bottom-head">
+        <div class="bar"></div>
+        <div class="zh">本节阅读线索</div>
+        <div class="en">THREE THREADS<span class="dot">◆</span>READING MAP</div>
+      </div>
+
+      <div class="modules">
+        <div class="module">
+          <div class="m-num">i.</div>
+          <div class="m-title">历史脉络<span class="en">HISTORY</span></div>
+          <div class="m-desc">从自由软件运动到现代开源生态，理念如何一步步演化。</div>
+          <div class="m-rule"></div>
+        </div>
+
+        <div class="module">
+          <div class="m-num">ii.</div>
+          <div class="m-title">现实驱动<span class="en">DRIVERS</span></div>
+          <div class="m-desc">企业、社区、个人三方如何在开源中各自获得价值。</div>
+          <div class="m-rule"></div>
+        </div>
+
+        <div class="module">
+          <div class="m-num">iii.</div>
+          <div class="m-title">阅读视角<span class="en">BOOKS</span></div>
+          <div class="m-desc">本次分享选择的核心书单，以及编排它们的逻辑线索。</div>
+          <div class="m-rule"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icon strip -->
+    <div class="icon-strip">
+      <span>{ }</span>
+      <span class="sep">·</span>
+      <span>&lt; / &gt;</span>
+      <span class="sep">·</span>
+      <span class="term">$ _</span>
+      <span class="sep">·</span>
+      <span>&#9081;</span>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-line">
+      <div>OPEN SOURCE · A PHILOSOPHY OF COLLABORATION</div>
+      <div class="center">MMXXIV<span class="gold"> ◆ </span>SECTION I</div>
+      <div>P. 02 / 24</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

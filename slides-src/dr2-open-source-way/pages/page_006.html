@@ -1,0 +1,558 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>全球开源生态数据</title>
+<script src="../assets/echarts.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --gold: #C9A227;
+  --cream: #F4F1EA;
+  --bg-light: #FAF8F3;
+  --muted: #6B7280;
+  --border: rgba(13, 33, 55, 0.15);
+  --border-strong: rgba(13, 33, 55, 0.28);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Serif Pro', 'Noto Serif SC', Georgia, serif;
+  background: #EDEAE1;
+  color: var(--navy);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: var(--cream);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #F4F1EA 0%, #EAE6DC 100%);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 162, 39, 0.08) 0%, transparent 65%);
+}
+
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -140px;
+  left: -140px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13, 33, 55, 0.05) 0%, transparent 65%);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 44px 60px 40px 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.5px;
+  line-height: 1.15;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  padding-bottom: 4px;
+}
+
+.section-no {
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.header-rule {
+  width: 100px;
+  height: 3px;
+  background: var(--gold);
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 610px 1fr;
+  gap: 30px;
+  flex-shrink: 0;
+}
+
+/* KPI Panel */
+.kpi-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 185px 185px;
+  gap: 16px;
+}
+
+.kpi-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  padding: 18px 22px 16px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(13, 33, 55, 0.04);
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 30px;
+  background: var(--gold);
+}
+
+.kpi-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--navy);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.kpi-value {
+  font-family: Georgia, 'Noto Serif SC', serif;
+  font-size: 52px;
+  color: var(--gold);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+.kpi-desc {
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Chart Section */
+.chart-section {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  padding: 14px 18px 14px 18px;
+  box-shadow: 0 2px 8px rgba(13, 33, 55, 0.04);
+}
+
+.chart-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chart-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.5px;
+}
+
+.chart-subtitle {
+  font-size: 11.5px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+#chart_1 {
+  width: 760px;
+  height: 350px;
+}
+
+/* Key Points Strip */
+.key-points {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 22px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border);
+}
+
+.key-point-card {
+  padding: 0 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+}
+
+.key-point-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background: var(--border);
+}
+
+.key-point-num {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.key-point-title {
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.5px;
+}
+
+.key-point-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-diamond {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.footer-text {
+  font-size: 13px;
+  color: var(--navy);
+  line-height: 1.5;
+  font-style: italic;
+  text-align: center;
+  max-width: 1400px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <span class="eyebrow">OPEN SOURCE · GLOBAL ECOSYSTEM DATA</span>
+        <h1>全球开源生态数据</h1>
+      </div>
+      <div class="header-right">
+        <span class="section-no">Section · Data Overview</span>
+        <div class="header-rule"></div>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div class="kpi-panel">
+        <div class="kpi-card">
+          <span class="kpi-label">全球开源贡献者</span>
+          <span class="kpi-value">数千万</span>
+          <span class="kpi-desc">活跃在 GitHub、GitLab 等平台的开发者</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">企业开源采用率</span>
+          <span class="kpi-value">90%+</span>
+          <span class="kpi-desc">大型企业生产环境使用开源的比例</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">开源项目年增长率</span>
+          <span class="kpi-value">20%+</span>
+          <span class="kpi-desc">主要平台上开源仓库的年增长率</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">中国贡献者占比</span>
+          <span class="kpi-value">逐年上升</span>
+          <span class="kpi-desc">中国在全球开源社区中的参与度持续提高</span>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <div class="chart-header">
+          <span class="chart-title">开源生态增长趋势</span>
+          <span class="chart-subtitle">主要开源平台活跃仓库总量（单位：百万）与企业采用率对比 · 示意</span>
+        </div>
+        <div id="chart_1" style="width:760px;height:350px;"></div>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="key-point-card">
+        <span class="key-point-num">01</span>
+        <span class="key-point-title">开发者规模</span>
+        <span class="key-point-desc">全球开源贡献者已超过数千万，覆盖几乎所有主流技术领域。</span>
+      </div>
+      <div class="key-point-card">
+        <span class="key-point-num">02</span>
+        <span class="key-point-title">项目数量增长</span>
+        <span class="key-point-desc">GitHub 等平台上的开源仓库以年均双位数速度持续增长。</span>
+      </div>
+      <div class="key-point-card">
+        <span class="key-point-num">03</span>
+        <span class="key-point-title">企业采用率</span>
+        <span class="key-point-desc">超过九成的大型企业已在生产环境中使用开源软件。</span>
+      </div>
+      <div class="key-point-card">
+        <span class="key-point-num">04</span>
+        <span class="key-point-title">资金流向</span>
+        <span class="key-point-desc">基金会与企业基金会正加大对核心开源项目的资金支持。</span>
+      </div>
+      <div class="key-point-card">
+        <span class="key-point-num">05</span>
+        <span class="key-point-title">中国贡献</span>
+        <span class="key-point-desc">中国开发者在全球开源贡献中的占比逐年上升，生态日趋活跃。</span>
+      </div>
+      <div class="key-point-card">
+        <span class="key-point-num">06</span>
+        <span class="key-point-title">关键洞察</span>
+        <span class="key-point-desc">开源已从边缘走向基础设施，成为数字经济的基石之一。</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-diamond"></span>
+      <span class="footer-text">数据告诉我们，开源已经不是小众选择，而是整个软件产业的事实标准。本节汇总了从阅读笔记中整理的生态数据，帮助读者对开源的规模与影响力建立直觉。</span>
+      <span class="footer-diamond"></span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var chartEl = document.getElementById('chart_1');
+  var chart = echarts.init(chartEl, null, { renderer: 'svg' });
+  chart.setOption({
+    backgroundColor: 'transparent',
+    animation: false,
+    textStyle: {
+      fontFamily: 'Source Serif Pro, Noto Serif SC, Georgia, serif'
+    },
+    tooltip: {
+      trigger: 'axis',
+      backgroundColor: '#FFFFFF',
+      borderColor: '#0D2137',
+      borderWidth: 1,
+      textStyle: {
+        color: '#0D2137',
+        fontFamily: 'Source Serif Pro, Noto Serif SC, Georgia, serif',
+        fontSize: 12
+      }
+    },
+    grid: { left: 52, right: 58, top: 46, bottom: 32, containLabel: false },
+    legend: {
+      data: [
+        { name: '活跃仓库总量' },
+        { name: '企业采用率' }
+      ],
+      right: 8,
+      top: 4,
+      icon: 'roundRect',
+      itemWidth: 12,
+      itemHeight: 8,
+      itemGap: 20,
+      textStyle: {
+        color: '#0D2137',
+        fontSize: 11.5,
+        fontFamily: 'Noto Serif SC, Georgia, serif'
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
+      boundaryGap: false,
+      axisLine: { lineStyle: { color: 'rgba(13,33,55,0.35)' } },
+      axisTick: { lineStyle: { color: 'rgba(13,33,55,0.35)' } },
+      axisLabel: {
+        color: '#0D2137',
+        fontSize: 11,
+        fontFamily: 'Source Serif Pro, Georgia, serif'
+      }
+    },
+    yAxis: [
+      {
+        type: 'value',
+        name: '仓库总量（百万）',
+        nameTextStyle: {
+          color: '#0D2137',
+          fontSize: 10.5,
+          padding: [0, 0, 0, -20],
+          fontFamily: 'Noto Serif SC, Georgia, serif'
+        },
+        splitLine: { lineStyle: { color: 'rgba(13,33,55,0.08)', type: 'dashed' } },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: {
+          color: '#6B7280',
+          fontSize: 10,
+          fontFamily: 'Source Serif Pro, Georgia, serif'
+        }
+      },
+      {
+        type: 'value',
+        name: '企业采用率 (%)',
+        nameTextStyle: {
+          color: '#0D2137',
+          fontSize: 10.5,
+          padding: [0, -20, 0, 0],
+          fontFamily: 'Noto Serif SC, Georgia, serif'
+        },
+        splitLine: { show: false },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        max: 100,
+        axisLabel: {
+          color: '#6B7280',
+          fontSize: 10,
+          fontFamily: 'Source Serif Pro, Georgia, serif',
+          formatter: '{value}%'
+        }
+      }
+    ],
+    series: [
+      {
+        name: '活跃仓库总量',
+        type: 'line',
+        data: [0.5, 0.9, 1.4, 2.1, 3.0, 4.2, 5.8, 7.9, 10.4],
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 9,
+        lineStyle: { color: '#0D2137', width: 2.5 },
+        itemStyle: {
+          color: '#C9A227',
+          borderColor: '#0D2137',
+          borderWidth: 2
+        },
+        areaStyle: {
+          color: {
+            type: 'linear',
+            x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: 'rgba(13,33,55,0.22)' },
+              { offset: 1, color: 'rgba(13,33,55,0)' }
+            ]
+          }
+        },
+        label: {
+          show: true,
+          position: 'top',
+          color: '#0D2137',
+          fontSize: 10.5,
+          fontFamily: 'Source Serif Pro, Georgia, serif',
+          formatter: '{c}'
+        },
+        z: 3
+      },
+      {
+        name: '企业采用率',
+        type: 'line',
+        yAxisIndex: 1,
+        data: [52, 58, 65, 71, 76, 82, 87, 92, 95],
+        smooth: true,
+        symbol: 'diamond',
+        symbolSize: 8,
+        lineStyle: { color: '#C9A227', width: 1.8, type: 'dashed' },
+        itemStyle: {
+          color: '#C9A227',
+          borderColor: '#C9A227',
+          borderWidth: 2
+        },
+        label: {
+          show: true,
+          position: 'bottom',
+          color: '#C9A227',
+          fontSize: 10,
+          fontFamily: 'Source Serif Pro, Georgia, serif',
+          formatter: '{c}%'
+        },
+        z: 2
+      }
+    ]
+  });
+  window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
+})();
+</script>
+</body>
+</html>
