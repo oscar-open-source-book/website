@@ -1,208 +1,320 @@
+
+
 <!DOCTYPE html>
 <html lang="zh-Hans">
-<head>
+><head>
 <meta charset="UTF-8">
 <title>全球开源图景</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
-:root{
-  --bg:#F5F5F5;
-  --navy:#0D2137;
-  --red:#E53935;
-  --gray:#8A8A8A;
-  --gray-light:#BFBFBF;
-  --line:#D8D8D8;
+:root {
+  --bg: #F5F5F5;
+  --navy: #0D2137;
+  --red: #E53935;
+  --text-main: #1A1A1A;
+  --text-mute: #6B7280;
+  --line: #D0D5DD;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans SC',sans-serif;color:var(--navy);background:var(--bg);}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
-#bg{position:absolute;inset:0;z-index:0;}
-#ct{position:absolute;inset:0;z-index:1;padding:48px 72px;box-sizing:border-box;display:flex;flex-direction:column;}
-
-/* background decorations */
-.bg-frame{position:absolute;inset:32px;border:1px solid var(--line);pointer-events:none;}
-.bg-frame::before{content:"";position:absolute;left:-1px;top:-1px;width:120px;height:1px;background:var(--navy);}
-.bg-frame::after{content:"";position:absolute;right:-1px;bottom:-1px;width:120px;height:1px;background:var(--red);}
-.bg-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--red);}
-.bg-dot.d1{top:40px;left:40px;}
-.bg-dot.d2{top:40px;right:40px;background:var(--navy);}
-.bg-dot.d3{bottom:40px;left:40px;background:var(--navy);}
-.bg-dot.d4{bottom:40px;right:40px;}
-
-/* header row */
-.top-row{display:flex;justify-content:space-between;align-items:flex-start;padding-top:20px;}
-.part-block{display:flex;align-items:baseline;gap:18px;}
-.part-label{font-family:'Noto Serif SC',serif;font-weight:900;font-size:96px;line-height:.9;color:var(--navy);letter-spacing:-2px;}
-.part-meta{display:flex;flex-direction:column;gap:6px;padding-bottom:8px;}
-.part-tag{font-size:12px;font-weight:500;letter-spacing:6px;color:var(--red);text-transform:uppercase;}
-.part-cn{font-size:13px;color:var(--gray);letter-spacing:3px;}
-.top-right{text-align:right;display:flex;flex-direction:column;gap:8px;padding-top:12px;}
-.top-right .brand{font-family:'Noto Serif SC',serif;font-size:14px;font-weight:500;color:var(--navy);letter-spacing:4px;}
-.top-right .brand-line{display:flex;align-items:center;justify-content:flex-end;gap:10px;}
-.top-right .brand-line span{display:inline-block;width:40px;height:1px;background:var(--navy);}
-.top-right .date{font-size:11px;color:var(--gray);letter-spacing:3px;}
-
-/* center title area */
-.title-area{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:18px;}
-.title-ornament{display:flex;align-items:center;gap:14px;}
-.title-ornament .ln{width:80px;height:1px;background:var(--gray-light);}
-.title-ornament .sq{width:8px;height:8px;background:var(--red);}
-.title-ornament .ln2{width:80px;height:1px;background:var(--gray-light);}
-.main-title{font-family:'Noto Serif SC',serif;font-weight:900;font-size:96px;color:var(--navy);letter-spacing:8px;line-height:1;text-align:center;}
-.subtitle{font-family:'Noto Serif SC',serif;font-weight:500;font-size:22px;color:var(--red);letter-spacing:6px;}
-.subtitle-wrap{display:flex;align-items:center;gap:16px;}
-.subtitle-wrap .red-bar{width:28px;height:2px;background:var(--red);}
-.narrative{font-size:13px;line-height:1.9;color:var(--gray);text-align:center;max-width:960px;font-weight:300;letter-spacing:1px;}
-
-/* divider */
-.divider{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;}
-.divider .seg{height:1px;width:140px;background:var(--gray-light);}
-.divider .mid{width:18px;height:1px;background:var(--navy);position:relative;}
-.divider .mid::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:6px;height:6px;border:1px solid var(--navy);}
-
-/* key points */
-.points{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-top:18px;}
-.point{padding:20px 28px;border-left:1px solid var(--line);position:relative;}
-.point:first-child{border-left:none;padding-left:12px;}
-.point:last-child{padding-right:12px;}
-.point-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
-.point-num{font-family:'Noto Serif SC',serif;font-weight:700;font-size:14px;color:var(--red);letter-spacing:2px;}
-.point-rule{flex:1;height:1px;background:var(--line);}
-.point-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:26px;color:var(--navy);letter-spacing:2px;margin-bottom:8px;}
-.point-desc{font-size:12.5px;line-height:1.85;color:#5A5A5A;font-weight:300;}
-
-/* KPI row */
-.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:auto;padding-top:14px;gap:0;}
-.kpi{padding:18px 24px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:6px;position:relative;}
-.kpi:first-child{border-left:none;padding-left:8px;}
-.kpi:last-child{padding-right:8px;}
-.kpi-top{display:flex;align-items:center;justify-content:space-between;}
-.kpi-label{font-size:11px;font-weight:500;color:var(--red);letter-spacing:4px;}
-.kpi-tag{font-size:10px;color:var(--gray);letter-spacing:2px;border:1px solid var(--line);padding:2px 8px;}
-.kpi-number{font-family:'Noto Serif SC',serif;font-weight:900;font-size:44px;color:var(--navy);letter-spacing:1px;line-height:1;display:flex;align-items:baseline;gap:4px;}
-.kpi-number .unit{font-size:18px;font-weight:500;color:var(--navy);letter-spacing:1px;}
-.kpi-context{font-size:11px;color:var(--gray);line-height:1.7;font-weight:300;}
-.kpi-bottom{display:flex;align-items:center;gap:8px;margin-top:4px;}
-.kpi-bottom .dot{width:5px;height:5px;background:var(--red);border-radius:50%;}
-.kpi-bottom .note{font-size:10px;color:var(--gray-light);letter-spacing:2px;}
-
-/* footer */
-.footer{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;padding-top:8px;}
-.footer-l{font-size:10px;color:var(--gray-light);letter-spacing:4px;}
-.footer-r{display:flex;align-items:center;gap:10px;font-size:10px;color:var(--gray-light);letter-spacing:3px;}
-.footer-r .bar{width:30px;height:1px;background:var(--gray-light);}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 72px 100px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+/* Header tag row */
+.chapter-tag {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 6px;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.chapter-tag .dot {
+  width: 8px; height: 8px;
+  background: var(--red);
+  display: inline-block;
+}
+.chapter-tag .bar {
+  width: 60px; height: 1px;
+  background: var(--navy);
+  display: inline-block;
+}
+.chapter-tag .meta {
+  font-weight: 300;
+  color: var(--text-mute);
+  letter-spacing: 3px;
+}
+/* Main title area */
+.title-block {
+  text-align: center;
+  margin-top: 14px;
+}
+.main-title {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 104px;
+  color: var(--navy);
+  letter-spacing: 18px;
+  line-height: 1.05;
+  margin-bottom: 22px;
+}
+.subtitle {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--red);
+  letter-spacing: 4px;
+  margin-bottom: 26px;
+}
+.subtitle .divider {
+  display: inline-block;
+  width: 36px;
+  height: 1px;
+  background: var(--red);
+  vertical-align: middle;
+  margin: 0 14px 4px;
+}
+.intro {
+  max-width: 1080px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--text-mute);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+/* KPI cards */
+.kpi-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  margin-top: 44px;
+}
+.kpi-card {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--navy);
+  padding: 28px 30px 24px;
+  position: relative;
+  min-height: 178px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.kpi-card .kpi-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.kpi-card .kpi-value {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.kpi-card .kpi-value .accent {
+  color: var(--red);
+}
+.kpi-card .kpi-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-main);
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+.kpi-card .kpi-source {
+  font-size: 10px;
+  color: var(--text-mute);
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #EEEEEE;
+}
+/* Divider line */
+.mid-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+  margin: 28px 0 18px;
+  position: relative;
+}
+.mid-divider::before {
+  content: '';
+  position: absolute;
+  left: 0; top: -2px;
+  width: 48px; height: 5px;
+  background: var(--red);
+}
+.mid-divider::after {
+  content: '';
+  position: absolute;
+  right: 0; top: -1px;
+  width: 30px; height: 3px;
+  background: var(--navy);
+}
+/* Bottom data points */
+.data-points {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.data-point {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 0 8px;
+  border-left: 2px solid var(--navy);
+  padding-left: 18px;
+}
+.data-point .dp-num {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.data-point .dp-num .red {
+  color: var(--red);
+}
+.data-point .dp-text {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.5;
+  font-weight: 400;
+}
+/* Footer */
+.footer {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.footer .f-line {
+  flex: 1;
+  height: 1px;
+  background: var(--navy);
+}
+.footer .f-red {
+  width: 24px;
+  height: 3px;
+  background: var(--red);
+}
+.footer .f-text {
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--text-mute);
+  font-weight: 300;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg">
-    <div class="bg-frame"></div>
-    <div class="bg-dot d1"></div>
-    <div class="bg-dot d2"></div>
-    <div class="bg-dot d3"></div>
-    <div class="bg-dot d4"></div>
-  </div>
+  <div id="bg"></div>
   <div id="ct">
+    <div class="chapter-tag">
+      <span class="bar"></span>
+      <span class="dot"></span>
+      <span>PART 01 / GLOBAL LANDSCAPE</span>
+      <span class="meta">· 第一章 ·</span>
+    </div>
 
-    <!-- top row -->
-    <div class="top-row">
-      <div class="part-block">
-        <div class="part-label"><span>PART 01</span></div>
-        <div class="part-meta">
-          <span class="part-tag">CHAPTER · 章节</span>
-          <span class="part-cn">第一章　开篇总览</span>
-        </div>
+    <div class="title-block">
+      <div class="main-title">全球开源图景</div>
+      <div class="subtitle">
+        <span class="divider"></span>
+        PART 01 · 规模、参与者与市场轮廓
+        <span class="divider"></span>
       </div>
-      <div class="top-right">
-        <div class="brand-line"><span></span><span class="brand">OPEN SOURCE REPORT</span><span></span></div>
-        <div class="date">2024 · GLOBAL PERSPECTIVE</div>
+      <div class="intro">
+        本章节快速勾勒开源软件的全球画像：产业规模、用户体量、生态项目数量与关键指标，为后续深入讨论奠定事实基础与分析框架。
       </div>
     </div>
 
-    <!-- title area -->
-    <div class="title-area">
-      <div class="title-ornament">
-        <span class="ln"></span><span class="sq"></span><span class="ln2"></span>
-      </div>
-      <h1 class="main-title"><span>全球开源图景</span></h1>
-      <div class="subtitle-wrap">
-        <span class="red-bar"></span>
-        <span class="subtitle">规模、参与者与市场轮廓</span>
-        <span class="red-bar"></span>
-      </div>
-      <p class="narrative">本章节快速勾勒开源软件的全球画像：产业规模、用户体量、生态项目数量与关键指标，为后续深入讨论奠定事实基础与分析框架</p>
-      <div class="divider"><span class="seg"></span><span class="mid"></span><span class="seg"></span></div>
-    </div>
-
-    <!-- three key points -->
-    <div class="points">
-      <div class="point">
-        <div class="point-head">
-          <span class="point-num">01</span>
-          <span class="point-rule"></span>
-        </div>
-        <div class="point-title"><span>万亿级产业</span></div>
-        <div class="point-desc">开源软件及相关服务已构成规模超两千亿美元的全球性产业，成为数字经济的核心基础设施。</div>
-      </div>
-      <div class="point">
-        <div class="point-head">
-          <span class="point-num">02</span>
-          <span class="point-rule"></span>
-        </div>
-        <div class="point-title"><span>数十亿用户</span></div>
-        <div class="point-desc">全球有超过三十亿终端用户日常依赖开源技术运行应用与系统，渗透率持续攀升。</div>
-      </div>
-      <div class="point">
-        <div class="point-head">
-          <span class="point-num">03</span>
-          <span class="point-rule"></span>
-        </div>
-        <div class="point-title"><span>百万级项目</span></div>
-        <div class="point-desc">GitHub 平台托管项目突破一亿个，活跃仓库数量持续增长，全球协作生态空前繁荣。</div>
-      </div>
-    </div>
-
-    <!-- KPI row -->
     <div class="kpi-row">
-      <div class="kpi">
-        <div class="kpi-top">
-          <span class="kpi-label">产业规模</span>
-          <span class="kpi-tag">2023 · USD</span>
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">产 业 规 模</div>
+          <div class="kpi-value"><span class="accent">2000</span>亿美元<span class="accent">+</span></div>
+          <div class="kpi-desc">开源软件及相关服务已构成规模超两千亿美元的全球性产业，涵盖基础设施、云服务、企业授权与技术支持等核心板块。</div>
         </div>
-        <div class="kpi-number"><span>2000</span><span class="unit">亿美元+</span></div>
-        <div class="kpi-context">开源软件市场 2023 年估算规模，涵盖许可、商业发行版与云托管服务。</div>
-        <div class="kpi-bottom"><span class="dot"></span><span class="note">MARKET SIZE</span></div>
+        <div class="kpi-source">数据口径：2023 年全球市场估算</div>
       </div>
-      <div class="kpi">
-        <div class="kpi-top">
-          <span class="kpi-label">代码生态</span>
-          <span class="kpi-tag">GITHUB</span>
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">用 户 体 量</div>
+          <div class="kpi-value"><span class="accent">30</span>亿<span class="accent">+</span></div>
+          <div class="kpi-desc">全球有超过三十亿终端用户日常依赖开源技术运行应用与系统，从智能手机操作系统到互联网核心协议，无处不在。</div>
         </div>
-        <div class="kpi-number"><span>1</span><span class="unit">亿+</span></div>
-        <div class="kpi-context">GitHub 累计仓库数量，全球开发者协作的最大单一代码项目集散地。</div>
-        <div class="kpi-bottom"><span class="dot"></span><span class="note">REPOSITORIES</span></div>
+        <div class="kpi-source">数据口径：全球终端用户估算</div>
       </div>
-      <div class="kpi">
-        <div class="kpi-top">
-          <span class="kpi-label">中国力量</span>
-          <span class="kpi-tag">CHINA</span>
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">生 态 项 目</div>
+          <div class="kpi-value"><span class="accent">1</span>亿<span class="accent">+</span></div>
+          <div class="kpi-desc">GitHub 平台托管项目突破一亿个，活跃仓库数量持续增长，覆盖编程语言、行业领域与开源治理模式的全谱系。</div>
         </div>
-        <div class="kpi-number"><span>5000</span><span class="unit">万+</span></div>
-        <div class="kpi-context">中国贡献者规模位居全球首位，成为开源生态中增长最快的参与者群体。</div>
-        <div class="kpi-bottom"><span class="dot"></span><span class="note">CONTRIBUTORS</span></div>
+        <div class="kpi-source">数据口径：GitHub 累计仓库统计</div>
       </div>
     </div>
 
-    <!-- footer -->
+    <div class="mid-divider"></div>
+
+    <div class="data-points">
+      <div class="data-point">
+        <span class="dp-num"><span class="red">1</span>亿+</span>
+        <span class="dp-text">GitHub 累计仓库<br>（全球代码项目）</span>
+      </div>
+      <div class="data-point">
+        <span class="dp-num"><span class="red">5000</span>万+</span>
+        <span class="dp-text">中国贡献者规模<br>（全球最多）</span>
+      </div>
+      <div class="data-point">
+        <span class="dp-num"><span class="red">2000</span>亿美元+</span>
+        <span class="dp-text">开源软件市场规模<br>（2023 年估算）</span>
+      </div>
+    </div>
+
     <div class="footer">
-      <span class="footer-l">CHAPTER · 01 / GLOBAL OPEN SOURCE LANDSCAPE</span>
-      <div class="footer-r">
-        <span class="bar"></span>
-        <span>PART 01 · 全球开源图景</span>
-        <span class="bar"></span>
-      </div>
+      <span class="f-red"></span>
+      <span class="f-text">CHAPTER ONE · OPEN SOURCE LANDSCAPE</span>
+      <span class="f-line"></span>
+      <span class="f-red"></span>
     </div>
-
   </div>
 </div>
 </body>
