@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Part 03 布道实践</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --navy:#0D2137;
+  --gold:#C9A227;
+  --gray:#F5F5F5;
+  --gold-light:#E8D48B;
+  --navy-soft:#16324F;
+  --text-body:#2C3E50;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--text-body);background:var(--gray);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--gray);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 72px;display:flex;flex-direction:column;}
+
+/* Background decoration */
+.bg-navy-block{position:absolute;top:0;left:0;width:640px;height:900px;background:var(--navy);z-index:0;}
+.bg-navy-block::before{content:"";position:absolute;top:0;right:0;width:1px;height:100%;background:var(--gold);opacity:0.5;}
+.bg-gold-triangle{position:absolute;top:60px;right:80px;width:0;height:0;border-left:60px solid transparent;border-right:60px solid transparent;border-bottom:100px solid var(--gold);opacity:0.08;}
+.bg-gold-circle{position:absolute;bottom:80px;right:100px;width:140px;height:140px;border:2px solid var(--gold);border-radius:50%;opacity:0.2;}
+.bg-gold-line1{position:absolute;top:30%;left:50%;width:200px;height:1px;background:var(--gold);opacity:0.3;}
+.bg-gold-line2{position:absolute;bottom:25%;left:55%;width:160px;height:1px;background:var(--gold);opacity:0.2;}
+
+/* Header */
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.part-label{font-family:'Noto Serif SC',serif;font-size:14px;color:var(--gold);letter-spacing:6px;font-weight:500;}
+.part-label-line{display:flex;align-items:center;gap:14px;}
+.part-label-line .line{width:80px;height:1px;background:var(--gold);opacity:0.6;}
+.chapter-meta{font-family:'Noto Sans SC',sans-serif;font-size:12px;color:var(--text-body);opacity:0.5;letter-spacing:2px;}
+
+/* Hero section */
+.hero{display:flex;align-items:center;gap:40px;margin-top:8px;}
+.hero-number{font-family:'Noto Serif SC',serif;font-size:280px;font-weight:900;color:var(--gold);line-height:0.85;letter-spacing:-8px;position:relative;}
+.hero-number::after{content:"";position:absolute;bottom:20px;left:10px;width:100px;height:4px;background:var(--gold-light);opacity:0.5;}
+.hero-text{flex:1;padding-top:20px;}
+.hero-text .pre-title{font-family:'Noto Serif SC',serif;font-size:18px;color:var(--gold-light);letter-spacing:8px;margin-bottom:12px;}
+.hero-text h1{font-family:'Noto Serif SC',serif;font-size:72px;font-weight:700;color:#fff;letter-spacing:8px;line-height:1.1;}
+.hero-text .subtitle{font-family:'Noto Sans SC',sans-serif;font-size:20px;color:var(--gold-light);margin-top:20px;letter-spacing:3px;font-weight:300;}
+.hero-text .gold-underline{width:120px;height:3px;background:var(--gold);margin-top:16px;}
+
+/* Decorative speaker icon area */
+.speaker-deco{position:absolute;top:100px;right:120px;width:180px;height:180px;opacity:0.15;}
+.speaker-deco .wave1{position:absolute;top:30px;left:60px;width:60px;height:60px;border:3px solid var(--gold);border-radius:50%;border-left-color:transparent;border-top-color:transparent;}
+.speaker-deco .wave2{position:absolute;top:10px;left:40px;width:100px;height:100px;border:3px solid var(--gold);border-radius:50%;border-left-color:transparent;border-top-color:transparent;}
+.speaker-deco .wave3{position:absolute;top:-10px;left:20px;width:140px;height:140px;border:2px solid var(--gold);border-radius:50%;border-left-color:transparent;border-top-color:transparent;}
+.speaker-deco .megaphone{position:absolute;bottom:10px;left:30px;width:0;height:0;border-left:50px solid var(--gold);border-top:20px solid transparent;border-bottom:20px solid transparent;}
+
+/* Chat bubble decorations */
+.bubble1{position:absolute;top:60px;right:360px;width:50px;height:40px;background:var(--gold);border-radius:8px;opacity:0.2;}
+.bubble2{position:absolute;top:90px;right:300px;width:35px;height:30px;background:var(--gold-light);border-radius:6px;opacity:0.15;}
+
+/* Narrative section */
+.narrative{margin-top:24px;margin-bottom:24px;padding:22px 36px;border-left:4px solid var(--gold);background:rgba(13,33,55,0.04);position:relative;}
+.narrative::before{content:"";position:absolute;top:0;left:4px;width:4px;height:20px;background:var(--gold);}
+.narrative-text{font-family:'Noto Serif SC',serif;font-size:17px;color:var(--navy);line-height:1.9;letter-spacing:1px;}
+.narrative-text .highlight{color:var(--gold);font-weight:700;}
+.narrative-text .navy-strong{color:var(--navy);font-weight:700;}
+
+/* Three columns */
+.columns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:20px;}
+.col-card{background:#fff;border:1px solid rgba(13,33,55,0.08);padding:24px 24px 22px 24px;position:relative;display:flex;flex-direction:column;min-height:230px;}
+.col-card::before{content:"";position:absolute;top:0;left:0;width:60px;height:4px;background:var(--gold);}
+.col-card::after{content:"";position:absolute;top:0;right:0;width:1px;height:40px;background:var(--gold);opacity:0.4;}
+.col-num{font-family:'Noto Serif SC',serif;font-size:36px;font-weight:700;color:var(--gold);opacity:0.4;position:absolute;top:16px;right:20px;letter-spacing:-2px;}
+.col-icon{font-family:'Noto Serif SC',serif;font-size:16px;color:var(--gold);letter-spacing:3px;font-weight:500;margin-bottom:6px;}
+.col-title{font-family:'Noto Serif SC',serif;font-size:26px;font-weight:700;color:var(--navy);letter-spacing:2px;margin-bottom:4px;}
+.col-divider{width:40px;height:2px;background:var(--gold);margin-bottom:14px;}
+.col-desc{font-family:'Noto Sans SC',sans-serif;font-size:14px;color:var(--text-body);line-height:1.85;font-weight:300;letter-spacing:0.5px;}
+.col-desc .accent{color:var(--navy);font-weight:500;}
+.col-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.col-tag{font-size:11px;color:var(--navy);border:1px solid var(--gold);padding:3px 10px;border-radius:2px;letter-spacing:1px;font-weight:400;background:rgba(201,162,39,0.05);}
+
+/* Bottom tags row */
+.bottom-tags{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:8px;}
+.tag-item{display:flex;align-items:center;gap:14px;padding:14px 20px;background:var(--navy);position:relative;}
+.tag-item::after{content:"";position:absolute;top:0;right:0;width:8px;height:8px;background:var(--gold);}
+.tag-item .tag-icon{width:32px;height:32px;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC',serif;font-size:14px;color:var(--gold);font-weight:700;flex-shrink:0;}
+.tag-item .tag-text{font-family:'Noto Sans SC',sans-serif;font-size:12px;color:#fff;line-height:1.6;letter-spacing:0.5px;}
+.tag-item .tag-text .label{color:var(--gold-light);font-size:11px;letter-spacing:2px;display:block;margin-bottom:2px;font-weight:300;}
+.tag-item .tag-text .value{font-weight:500;font-size:13px;}
+
+/* Footer */
+.footer-line{position:absolute;bottom:20px;left:72px;right:72px;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-body);opacity:0.4;letter-spacing:3px;}
+.footer-line .fl-line{flex:1;height:1px;background:var(--text-body);opacity:0.3;margin:0 16px;}
+
+/* Geometric gold dots */
+.gold-dots{position:absolute;top:40px;left:40px;display:flex;gap:6px;}
+.gold-dots span{width:8px;height:8px;background:var(--gold);border-radius:50%;}
+.gold-dots span:nth-child(2){opacity:0.6;}
+.gold-dots span:nth-child(3){opacity:0.3;}
+
+/* Small decorative elements */
+.corner-deco-tl{position:absolute;top:40px;left:40px;width:30px;height:30px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);}
+.corner-deco-br{position:absolute;bottom:40px;right:72px;width:30px;height:30px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);opacity:0.5;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="bg-navy-block"></div>
+    <div class="bg-gold-triangle"></div>
+    <div class="bg-gold-circle"></div>
+    <div class="bg-gold-line1"></div>
+    <div class="bg-gold-line2"></div>
+  </div>
+  <div id="ct">
+    <div class="gold-dots">
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="header">
+      <div class="part-label-line">
+        <span class="part-label"><span>PART</span></span>
+        <span class="line"></span>
+        <span class="part-label" style="color:var(--navy);opacity:0.6;"><span>THIRD SECTION</span></span>
+      </div>
+      <div class="chapter-meta"><span>CHAPTER TRANSITION / 章节过渡</span></div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-number"><span>03</span></div>
+      <div class="hero-text">
+        <div class="pre-title"><span>EVANGELISM · 传播之道</span></div>
+        <h1><span>布道实践</span></h1>
+        <div class="gold-underline"></div>
+        <div class="subtitle"><span>把阅读转化为开源社区的行动</span></div>
+      </div>
+    </div>
+
+    <div class="bubble1"></div>
+    <div class="bubble2"></div>
+
+    <div class="speaker-deco">
+      <div class="wave1"></div>
+      <div class="wave2"></div>
+      <div class="wave3"></div>
+      <div class="megaphone"></div>
+    </div>
+
+    <div class="narrative">
+      <p class="narrative-text">阅读的最终目的是<span class="highlight">行动</span>。第三部分将许可证知识落地到<span class="navy-strong">新项目选型</span>、<span class="navy-strong">既有项目合规管理</span>以及<span class="navy-strong">社区布道</span>三个可操作层面——知识只有流动起来，才会产生真正的价值。</p>
+    </div>
+
+    <div class="columns">
+      <div class="col-card">
+        <div class="col-num"><span>01</span></div>
+        <div class="col-icon"><span>选型建议</span></div>
+        <div class="col-title"><span>选型建议</span></div>
+        <div class="col-divider"></div>
+        <p class="col-desc">新项目默认从 <span class="accent">Apache 2.0</span> 或 <span class="accent">MIT</span> 起步；库项目可考虑 <span class="accent">MPL</span> 或 <span class="accent">LGPL</span>，兼顾生态兼容性与社区接受度。</p>
+        <div class="col-tags">
+          <span class="col-tag">Apache 2.0</span>
+          <span class="col-tag">MIT</span>
+          <span class="col-tag">MPL</span>
+          <span class="col-tag">LGPL</span>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="col-num"><span>02</span></div>
+        <div class="col-icon"><span>合规清单</span></div>
+        <div class="col-title"><span>合规清单</span></div>
+        <div class="col-divider"></div>
+        <p class="col-desc">定期扫描依赖的许可证组合，建立 <span class="accent">SPDX</span> 标识与合规台账，在 CI 流程中嵌入自动检测，避免无意侵权与授权冲突。</p>
+        <div class="col-tags">
+          <span class="col-tag">SPDX</span>
+          <span class="col-tag">FOSSA</span>
+          <span class="col-tag">CI 扫描</span>
+          <span class="col-tag">合规台账</span>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="col-num"><span>03</span></div>
+        <div class="col-icon"><span>布道路径</span></div>
+        <div class="col-title"><span>布道路径</span></div>
+        <div class="col-divider"></div>
+        <p class="col-desc">在团队内办读书分享、在开源社区贡献文档与教程，将个人理解转化为集体知识，让许可合规意识在组织中持续循环放大。</p>
+        <div class="col-tags">
+          <span class="col-tag">读书分享</span>
+          <span class="col-tag">文档贡献</span>
+          <span class="col-tag">教程输出</span>
+          <span class="col-tag">社区布道</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-tags">
+      <div class="tag-item">
+        <div class="tag-icon"><span>A</span></div>
+        <div class="tag-text">
+          <span class="label">推荐起步协议</span>
+          <span class="value">Apache 2.0（含专利授权）</span>
+        </div>
+      </div>
+      <div class="tag-item">
+        <div class="tag-icon"><span>S</span></div>
+        <div class="tag-text">
+          <span class="label">合规工具</span>
+          <span class="value">SPDX / FOSSA（许可证标识与扫描）</span>
+        </div>
+      </div>
+      <div class="tag-item">
+        <div class="tag-icon"><span>★</span></div>
+        <div class="tag-text">
+          <span class="label">布道形式</span>
+          <span class="value">分享 / 教程 / 贡献（三管齐下）</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-line">
+    <span>开源许可证 · 系统解读</span>
+    <span class="fl-line"></span>
+    <span>PART 03 / 03 — 布道实践</span>
+  </div>
+  <div class="corner-deco-br"></div>
+</div>
+</body>
+</html>

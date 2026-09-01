@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Part 01 · 走近开源</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --navy:#0D2137;
+  --navy-deep:#081626;
+  --navy-soft:#14324f;
+  --gold:#C9A227;
+  --gold-soft:#E2C25C;
+  --bg:#F5F5F5;
+  --ink:#1a1a1a;
+  --ink-mid:#3a3a3a;
+  --ink-soft:#6b6b6b;
+  --line:#c8c0a8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Noto Sans SC',sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+}
+
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+  background:var(--bg);
+}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:0;}
+
+/* 顶部细装饰条 */
+.top-rule{
+  position:absolute;left:0;top:0;width:100%;height:6px;
+  background:linear-gradient(90deg,var(--navy) 0%,var(--navy) 31.25%,var(--gold) 31.25%,var(--gold) 33%,var(--navy) 33%,var(--navy) 100%);
+}
+
+/* 左侧藏蓝色块 */
+.left-panel{
+  position:absolute;left:0;top:0;width:500px;height:900px;
+  background:var(--navy);
+  overflow:hidden;
+}
+.left-panel::before{
+  content:"";
+  position:absolute;left:0;top:0;width:100%;height:100%;
+  background:radial-gradient(ellipse at 30% 20%, var(--navy-soft) 0%, var(--navy) 60%, var(--navy-deep) 100%);
+}
+.left-inner{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:80px 60px;
+  color:#fff;
+}
+
+.left-top{
+  display:flex;flex-direction:column;gap:14px;
+  position:relative;z-index:1;
+}
+.chapter-label{
+  font-family:'Noto Serif SC',serif;
+  font-size:15px;letter-spacing:8px;
+  color:var(--gold);
+  font-weight:600;
+}
+.chapter-tag{
+  width:46px;height:2px;background:var(--gold);
+}
+.chapter-meta{
+  margin-top:6px;
+  font-size:12px;letter-spacing:3px;
+  color:rgba(255,255,255,0.55);
+}
+
+.big-numeral{
+  position:relative;z-index:1;
+  font-family:'Noto Serif SC',serif;
+  font-weight:900;
+  font-size:380px;
+  line-height:0.85;
+  color:var(--gold);
+  letter-spacing:-4px;
+  text-align:center;
+  text-shadow:0 6px 24px rgba(0,0,0,0.35);
+}
+.big-numeral .sub{
+  display:block;
+  font-size:14px;letter-spacing:12px;
+  color:rgba(201,162,39,0.7);
+  font-weight:400;
+  margin-top:18px;
+}
+
+.left-bottom{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;gap:10px;
+  border-top:1px solid rgba(201,162,39,0.25);
+  padding-top:20px;
+}
+.side-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:26px;font-weight:700;color:#fff;
+  letter-spacing:2px;
+}
+.side-sub{
+  font-size:12px;color:rgba(255,255,255,0.5);
+  letter-spacing:2px;line-height:1.7;
+}
+
+/* 右侧内容 */
+.right-panel{
+  position:absolute;left:500px;top:0;width:1100px;height:900px;
+  padding:70px 80px 70px 70px;
+  display:flex;flex-direction:column;
+}
+
+.right-top{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:22px;
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  font-family:'Noto Serif SC',serif;
+  font-size:14px;letter-spacing:6px;color:var(--navy);
+  font-weight:600;
+}
+.brand .dot{color:var(--gold);}
+.pg{
+  font-family:'Noto Serif SC',serif;
+  font-size:13px;color:var(--ink-soft);
+  letter-spacing:2px;
+}
+.pg .num{color:var(--navy);font-weight:600;font-size:15px;}
+
+/* 主标题区 */
+.title-block{
+  margin-top:48px;
+  display:flex;align-items:flex-start;gap:28px;
+}
+.title-divider{
+  width:3px;align-self:stretch;
+  background:linear-gradient(180deg,var(--gold) 0%,var(--navy) 100%);
+  min-height:110px;
+}
+.title-main{display:flex;flex-direction:column;gap:12px;}
+.pt-label{
+  font-family:'Noto Serif SC',serif;
+  font-size:16px;letter-spacing:8px;color:var(--gold);
+  font-weight:600;
+}
+.main-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:60px;font-weight:700;color:var(--navy);
+  letter-spacing:6px;line-height:1.15;
+}
+.sub-title{
+  font-size:19px;color:var(--ink-mid);
+  letter-spacing:3px;font-weight:300;line-height:1.6;
+  margin-top:8px;
+}
+
+/* 三个引导要点 */
+.points{
+  margin-top:48px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:28px;
+}
+.point{
+  position:relative;
+  padding:24px 20px 22px 20px;
+  background:#fff;
+  border-top:3px solid var(--navy);
+  border-left:1px solid #eaeaea;
+  border-right:1px solid #eaeaea;
+  border-bottom:1px solid #eaeaea;
+  box-shadow:0 2px 8px rgba(13,33,55,0.04);
+}
+.point-num{
+  font-family:'Noto Serif SC',serif;
+  font-size:32px;font-weight:700;color:var(--gold);
+  line-height:1;
+}
+.point-rule{
+  width:28px;height:1px;background:var(--gold);
+  margin:10px 0 12px 0;
+}
+.point-h{
+  font-family:'Noto Serif SC',serif;
+  font-size:18px;font-weight:700;color:var(--navy);
+  letter-spacing:3px;
+  margin-bottom:10px;
+}
+.point-body{
+  font-size:13px;color:var(--ink-mid);
+  line-height:1.75;letter-spacing:0.5px;
+  font-weight:300;
+}
+
+/* 底部数据导览 */
+.foot-nav{
+  margin-top:auto;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+}
+.data-mark{
+  display:flex;align-items:flex-end;gap:18px;
+}
+.dm-num{
+  font-family:'Noto Serif SC',serif;
+  font-size:44px;font-weight:700;color:var(--navy);
+  line-height:1;letter-spacing:1px;
+}
+.dm-num .unit{
+  font-size:18px;color:var(--gold);font-weight:600;margin-left:2px;
+}
+.dm-meta{display:flex;flex-direction:column;gap:4px;padding-bottom:4px;}
+.dm-label{
+  font-size:13px;color:var(--navy);font-weight:600;letter-spacing:3px;
+  font-family:'Noto Serif SC',serif;
+}
+.dm-sub{
+  font-size:11px;color:var(--ink-soft);letter-spacing:1px;
+}
+
+.dm-arrow{
+  display:flex;align-items:center;gap:14px;
+  padding-bottom:8px;
+}
+.dm-arrow .label{
+  font-size:13px;color:var(--navy);font-weight:600;letter-spacing:3px;
+  font-family:'Noto Serif SC',serif;
+}
+.dm-chapters{display:flex;gap:8px;}
+.chip{
+  font-family:'Noto Serif SC',serif;
+  font-size:14px;color:var(--navy);
+  background:transparent;border:1px solid var(--navy);
+  padding:6px 12px;letter-spacing:3px;font-weight:600;
+}
+.chip .idx{color:var(--gold);margin-right:4px;}
+
+.dm-tail{
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+  padding-bottom:6px;
+}
+.dm-tail .arrow{
+  font-family:'Noto Serif SC',serif;
+  font-size:22px;color:var(--gold);letter-spacing:4px;
+}
+.dm-tail .cap{
+  font-size:11px;color:var(--ink-soft);letter-spacing:2px;
+}
+
+/* 右下角小装饰 */
+.corner-mark{
+  position:absolute;right:60px;bottom:36px;
+  font-size:10px;letter-spacing:4px;color:var(--ink-soft);
+  font-family:'Noto Serif SC',serif;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="top-rule"></div>
+
+  <div id="ct">
+    <div class="left-panel">
+      <div class="left-inner">
+        <div class="left-top">
+          <span class="chapter-label">PART · 序章</span>
+          <span class="chapter-tag"></span>
+          <span class="chapter-meta">CHAPTER OPENING · 01 / 06</span>
+        </div>
+
+        <div class="big-numeral">
+          01
+          <span class="sub">— OPEN SOURCE —</span>
+        </div>
+
+        <div class="left-bottom">
+          <span class="side-title">走近开源</span>
+          <span class="side-sub">走近开源软件的世界<br>理解许可证的语言与边界</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="right-top">
+        <span class="brand">开源许可证研究 <span class="dot">·</span> 章节导览</span>
+        <span class="pg">P <span class="num">01</span> / 12</span>
+      </div>
+
+      <div class="title-block">
+        <div class="title-divider"></div>
+        <div class="title-main">
+          <span class="pt-label">PART 01</span>
+          <span class="main-title">走近开源</span>
+          <span class="sub-title">开源许可证的基础概念与核心分类</span>
+        </div>
+      </div>
+
+      <div class="points">
+        <div class="point">
+          <span class="point-num">01</span>
+          <span class="point-rule"></span>
+          <span class="point-h">为何要读</span>
+          <span class="point-body">开源软件占据云计算、移动应用与企业基础设施的绝大多数，许可证决定了我们如何合法地使用它们。</span>
+        </div>
+        <div class="point">
+          <span class="point-num">02</span>
+          <span class="point-rule"></span>
+          <span class="point-h">核心问题</span>
+          <span class="point-body">许可证回答了代码可以被复制、修改、分发到何种程度的根本问题，是开发者与使用者之间的契约。</span>
+        </div>
+        <div class="point">
+          <span class="point-num">03</span>
+          <span class="point-rule"></span>
+          <span class="point-h">阅读顺序</span>
+          <span class="point-body">先建立许可证家族的概念地图，再逐步深入到具体条款的细节对比，由面到点、层层递进。</span>
+        </div>
+      </div>
+
+      <div class="foot-nav">
+        <div class="data-mark">
+          <span class="dm-num">≈80<span class="unit">%</span></span>
+          <span class="dm-meta">
+            <span class="dm-label">开源项目占比</span>
+            <span class="dm-sub">典型企业技术栈中开源组件的占比</span>
+          </span>
+        </div>
+
+        <div class="dm-arrow">
+          <span class="label">关键章节</span>
+          <span class="dm-chapters">
+            <span class="chip"><span class="idx">01</span>概念</span>
+            <span class="chip"><span class="idx">02</span>分类</span>
+            <span class="chip"><span class="idx">03</span>选型</span>
+          </span>
+        </div>
+
+        <div class="dm-tail">
+          <span class="arrow">→ NEXT</span>
+          <span class="cap">深入概念与分类</span>
+        </div>
+      </div>
+
+      <span class="corner-mark">— CHAPTER 01 OF 06 —</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

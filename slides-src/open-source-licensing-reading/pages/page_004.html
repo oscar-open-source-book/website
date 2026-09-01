@@ -1,0 +1,210 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>许可证的核心分类</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --navy:#0D2137;
+  --navy-light:#1A3554;
+  --gold:#C9A227;
+  --gold-light:#E8D48B;
+  --bg:#F5F3EE;
+  --card-bg:#FFFFFF;
+  --text-main:#1A1A1A;
+  --text-sub:#555555;
+  --line:#E0DBD0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--text-main);background:var(--bg);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:50px 70px 45px 70px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* decorative bg layer */
+.bg-deco{position:absolute;inset:0;overflow:hidden;z-index:0;}
+.bg-deco::before{content:"";position:absolute;top:-200px;right:-150px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,39,0.07),transparent 70%);}
+.bg-deco::after{content:"";position:absolute;bottom:-250px;left:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(13,33,55,0.05),transparent 70%);}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px;}
+.header-left{display:flex;flex-direction:column;gap:8px;}
+.title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:40px;color:var(--navy);letter-spacing:2px;line-height:1.1;}
+.subtitle{font-size:16px;color:var(--text-sub);font-weight:300;letter-spacing:1px;}
+.subtitle .gold{color:var(--gold);font-weight:500;}
+.header-right{display:flex;align-items:center;gap:12px;padding-bottom:6px;}
+.tag{font-size:12px;color:var(--navy);background:var(--gold-light);padding:6px 14px;border-radius:2px;font-weight:500;letter-spacing:2px;}
+.tag-line{width:60px;height:2px;background:var(--gold);}
+
+.divider{margin:18px 0 22px 0;height:1px;background:linear-gradient(90deg,var(--navy) 0%,var(--gold) 40%,var(--line) 100%);}
+
+/* Spectrum Section */
+.spectrum-section{margin-bottom:20px;}
+.spectrum-title{font-family:'Noto Serif SC',serif;font-size:15px;color:var(--navy);font-weight:600;margin-bottom:14px;letter-spacing:1px;}
+.spectrum-title .num{color:var(--gold);font-weight:700;margin-right:8px;}
+
+.spectrum-wrap{position:relative;padding:0 0 30px 0;}
+.spectrum-bar{position:relative;height:14px;border-radius:7px;
+  background:linear-gradient(90deg,rgba(201,162,39,0.25) 0%,rgba(201,162,39,0.4) 20%,rgba(13,33,55,0.35) 45%,rgba(13,33,55,0.55) 65%,rgba(13,33,55,0.3) 85%,rgba(201,162,39,0.3) 100%);}
+.spectrum-axis{position:absolute;left:0;right:0;top:30px;height:1px;background:var(--line);}
+.spectrum-axis-ticks{position:absolute;left:0;right:0;top:26px;height:9px;display:flex;justify-content:space-between;padding:0 5%;}
+.spectrum-axis-ticks span{width:1px;height:9px;background:var(--line);}
+
+.anchors{position:absolute;left:5%;right:5%;top:-6px;height:26px;display:flex;justify-content:space-between;align-items:center;}
+.anchor{width:26px;height:26px;border-radius:50%;background:var(--gold);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--gold),0 2px 8px rgba(201,162,39,0.4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--navy);font-family:'Noto Serif SC',serif;}
+
+.labels-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px;}
+.label-card{background:var(--card-bg);border:1px solid var(--line);border-top:3px solid var(--gold);padding:14px 16px 14px 16px;position:relative;}
+.label-card .lc-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.lc-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC',serif;}
+.lc-name{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:600;color:var(--navy);}
+.lc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.lc-tag{font-size:10px;background:rgba(13,33,55,0.06);color:var(--navy);padding:3px 8px;border-radius:2px;letter-spacing:0.5px;}
+.lc-desc{font-size:11px;color:var(--text-sub);line-height:1.55;}
+
+.spectrum-footer{margin-top:12px;display:flex;justify-content:space-between;align-items:center;padding:0 5%;font-size:11px;color:var(--text-sub);letter-spacing:1px;}
+.spectrum-footer .arrow{flex:1;margin:0 12px;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);position:relative;}
+.spectrum-footer .arrow::after{content:"›";position:absolute;right:-2px;top:-7px;color:var(--gold);font-size:14px;}
+
+/* KPI Cards */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:14px;}
+.kpi-card{background:var(--card-bg);border:1px solid var(--line);padding:18px 20px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;}
+.kpi-card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gold);}
+.kpi-card.kpi-navy::before{background:var(--navy);}
+.kpi-card .kpi-head{display:flex;align-items:center;justify-content:space-between;}
+.kpi-badge{font-size:11px;letter-spacing:2px;font-weight:500;color:var(--gold);background:rgba(201,162,39,0.1);padding:4px 10px;}
+.kpi-card.kpi-navy .kpi-badge{color:var(--navy-light);background:rgba(13,33,55,0.06);}
+.kpi-type{font-size:11px;color:var(--text-sub);letter-spacing:1px;}
+.kpi-title{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;color:var(--navy);line-height:1.3;}
+.kpi-title .accent{color:var(--gold);}
+.kpi-divider{height:1px;background:var(--line);margin:2px 0;}
+.kpi-desc{font-size:12px;color:var(--text-sub);line-height:1.6;}
+.kpi-license-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;}
+.kpi-license{font-size:10.5px;padding:3px 8px;background:var(--navy);color:var(--gold-light);border-radius:2px;font-weight:500;letter-spacing:0.5px;}
+.kpi-card.kpi-navy .kpi-license{background:var(--navy);}
+.kpi-card .kpi-license{background:rgba(201,162,39,0.15);color:var(--navy);}
+
+/* Closing */
+.closing{margin-top:auto;background:linear-gradient(90deg,var(--navy) 0%,var(--navy-light) 100%);padding:16px 30px;display:flex;align-items:center;gap:16px;border-radius:2px;}
+.closing .cl-icon{width:36px;height:36px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:'Noto Serif SC',serif;font-size:16px;font-weight:700;flex-shrink:0;}
+.closing .cl-text{font-family:'Noto Serif SC',serif;font-size:16px;color:#FFFFFF;font-weight:500;letter-spacing:1px;line-height:1.4;}
+.closing .cl-text .hl{color:var(--gold);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"><div class="bg-deco"></div></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="header-left">
+        <div class="title">许可证的核心分类</div>
+        <div class="subtitle">按传染性由弱到强排列 · <span class="gold">三大阵营 + 边缘形态</span></div>
+      </div>
+      <div class="header-right">
+        <span class="tag">SPECTRUM</span>
+        <span class="tag-line"></span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="spectrum-section">
+      <div class="spectrum-title"><span class="num">01</span>许可证连续性光谱</div>
+      <div class="spectrum-wrap">
+        <div class="spectrum-bar"></div>
+        <div class="anchors">
+          <div class="anchor">壹</div>
+          <div class="anchor">贰</div>
+          <div class="anchor">叁</div>
+          <div class="anchor">肆</div>
+        </div>
+        <div class="spectrum-axis"></div>
+        <div class="spectrum-axis-ticks">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="labels-row">
+        <div class="label-card">
+          <div class="lc-head"><div class="lc-num">壹</div><div class="lc-name">宽松型</div></div>
+          <div class="lc-tags"><span class="lc-tag">MIT</span><span class="lc-tag">BSD</span><span class="lc-tag">Apache 2.0</span></div>
+          <div class="lc-desc">最低约束：允许闭源商用，几乎无传染性。</div>
+        </div>
+        <div class="label-card">
+          <div class="lc-head"><div class="lc-num">贰</div><div class="lc-name">弱 Copyleft</div></div>
+          <div class="lc-tags"><span class="lc-tag">LGPL</span><span class="lc-tag">MPL</span></div>
+          <div class="lc-desc">混合友好：修改部分需开源，整体可商用。</div>
+        </div>
+        <div class="label-card">
+          <div class="lc-head"><div class="lc-num">叁</div><div class="lc-name">强 Copyleft</div></div>
+          <div class="lc-tags"><span class="lc-tag">GPLv2</span><span class="lc-tag">GPLv3</span></div>
+          <div class="lc-desc">强传染：衍生作品必须整体开源。</div>
+        </div>
+        <div class="label-card">
+          <div class="lc-head"><div class="lc-num">肆</div><div class="lc-name">其他形态</div></div>
+          <div class="lc-tags"><span class="lc-tag">CC0</span><span class="lc-tag">BSL</span><span class="lc-tag">SSPL</span></div>
+          <div class="lc-desc">非 OSI 认证变体：公共领域 / 商务许可 / 服务共享。</div>
+        </div>
+      </div>
+
+      <div class="spectrum-footer">
+        <span>宽松 · 低传染</span>
+        <span class="arrow"></span>
+        <span>严格 · 强传染</span>
+        <span class="arrow"></span>
+        <span>边缘 · 非认证</span>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-badge">CLASS Ⅰ</span>
+          <span class="kpi-type">宽松型</span>
+        </div>
+        <div class="kpi-title">代表 MIT / BSD / Apache<br><span class="accent">—— 最低约束</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc">允许自由修改、分发与闭源商用，仅保留版权声明。是企业级项目最主流的默认选择，几乎零摩擦接入任何商业产品。</div>
+        <div class="kpi-license-list">
+          <span class="kpi-license">MIT</span><span class="kpi-license">BSD-3</span><span class="kpi-license">Apache-2.0</span>
+        </div>
+      </div>
+      <div class="kpi-card kpi-navy">
+        <div class="kpi-head">
+          <span class="kpi-badge">CLASS Ⅱ</span>
+          <span class="kpi-type">强 Copyleft</span>
+        </div>
+        <div class="kpi-title">代表 GPLv2 / GPLv3<br><span class="accent">—— 强传染</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc">任何衍生或链接作品均须以同等协议开源。对核心基础设施类项目保护力度最强，但与企业闭源需求存在根本冲突。</div>
+        <div class="kpi-license-list">
+          <span class="kpi-license">GPLv2</span><span class="kpi-license">GPLv3</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-badge">CLASS Ⅲ</span>
+          <span class="kpi-type">弱 Copyleft</span>
+        </div>
+        <div class="kpi-title">代表 LGPL / MPL<br><span class="accent">—— 混合友好</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-desc">介于两者之间：动态链接可商用，仅修改库本身需开源。为库型项目和插件生态提供了兼顾开放与商业的折中路径。</div>
+        <div class="kpi-license-list">
+          <span class="kpi-license">LGPL-2.1</span><span class="kpi-license">MPL-2.0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="closing">
+      <div class="cl-icon">✦</div>
+      <div class="cl-text">选型的本质，就是在这条<span class="hl">连续谱</span>上找到<span class="hl">自己团队的舒适区</span>。</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

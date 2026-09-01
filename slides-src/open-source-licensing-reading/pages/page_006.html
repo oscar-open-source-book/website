@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>Part 02 · 深度阅读</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --gold: #C9A227;
+  --bg: #F5F5F5;
+  --text-main: #1A1A1A;
+  --text-sub: #555555;
+  --text-light: #888888;
+  --line: #E0E0E0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  overflow: hidden;
+}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 56px 72px;
+  box-sizing: border-box;
+}
+
+/* ===== Top header area ===== */
+.header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 6px;
+}
+.chapter-num-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+.bignum {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 148px;
+  line-height: 0.88;
+  color: var(--navy);
+  letter-spacing: -4px;
+}
+.bignum-deco {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 14px;
+}
+.gold-bar {
+  width: 60px;
+  height: 2px;
+  background: var(--gold);
+}
+.bignum-tag {
+  margin-top: 14px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.title-block {
+  flex: 1;
+  padding-top: 12px;
+}
+.title-top-label {
+  font-size: 12px;
+  letter-spacing: 8px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+.main-title {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--navy);
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+.main-title .dot {
+  color: var(--gold);
+  margin: 0 8px;
+}
+.sub-title {
+  margin-top: 14px;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--navy);
+  letter-spacing: 4px;
+  opacity: 0.85;
+}
+.sub-title-line {
+  margin-top: 16px;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, var(--gold) 0, var(--gold) 60px, var(--line) 60px, var(--line) 100%);
+}
+
+/* ===== Magnifier SVG area (right side) ===== */
+.motif-area {
+  width: 260px;
+  height: 160px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ===== Three columns ===== */
+.three-col {
+  display: flex;
+  gap: 24px;
+  margin-top: 30px;
+}
+.col-card {
+  flex: 1;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--navy);
+  padding: 24px 24px 22px 24px;
+  position: relative;
+  min-height: 210px;
+}
+.col-card .col-idx {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  font-weight: 600;
+}
+.col-card .col-title {
+  margin-top: 6px;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+.col-card .col-divider {
+  margin: 12px 0 14px 0;
+  width: 36px;
+  height: 2px;
+  background: var(--gold);
+}
+.col-card .col-desc {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-sub);
+  font-weight: 400;
+}
+.col-card .col-kw {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.col-card .kw-tag {
+  font-size: 11px;
+  padding: 3px 9px;
+  border: 1px solid var(--gold);
+  color: var(--navy);
+  border-radius: 2px;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+/* ===== Bottom summary row ===== */
+.bottom-area {
+  margin-top: 22px;
+  display: flex;
+  align-items: stretch;
+  gap: 28px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+.summary-text {
+  flex: 1;
+  font-size: 13.5px;
+  line-height: 1.95;
+  color: var(--text-sub);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  padding-right: 12px;
+  border-right: 1px solid var(--line);
+}
+.summary-text .em {
+  color: var(--navy);
+  font-weight: 500;
+}
+.summary-text .quote {
+  color: var(--navy);
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 600;
+}
+
+.data-points {
+  width: 360px;
+  display: flex;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.data-point {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background: var(--navy);
+  color: #FFFFFF;
+  padding: 16px 18px;
+  position: relative;
+}
+.data-point::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gold);
+}
+.data-point .dp-num {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 36px;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.data-point .dp-num .unit {
+  font-size: 16px;
+  margin-left: 4px;
+  font-weight: 600;
+}
+.data-point .dp-label {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #FFFFFF;
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+.data-point .dp-sub {
+  margin-top: 4px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+/* ===== Decorative ===== */
+.deco-corner-tl, .deco-corner-tr, .deco-corner-bl, .deco-corner-br {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-color: var(--gold);
+  z-index: 1;
+}
+.deco-corner-tl { top: 30px; left: 30px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+.deco-corner-tr { top: 30px; right: 30px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+.deco-corner-bl { bottom: 30px; left: 30px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+.deco-corner-br { bottom: 30px; right: 30px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+
+.page-meta {
+  position: absolute;
+  bottom: 34px;
+  left: 72px;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--text-light);
+  z-index: 2;
+}
+.page-num {
+  position: absolute;
+  bottom: 34px;
+  right: 72px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--text-light);
+  z-index: 2;
+}
+.page-num .pn-num {
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: 6px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="deco-corner-tl"></div>
+    <div class="deco-corner-tr"></div>
+    <div class="deco-corner-bl"></div>
+    <div class="deco-corner-br"></div>
+
+    <div class="header-row">
+      <div class="chapter-num-block">
+        <div class="bignum">02</div>
+        <div class="bignum-deco">
+          <div class="gold-bar"></div>
+          <div class="bignum-tag">CHAPTER</div>
+        </div>
+      </div>
+
+      <div class="title-block">
+        <div class="title-top-label">PART · 02 · DEEP READING</div>
+        <div class="main-title">Part 02<span class="dot">·</span>深度阅读</div>
+        <div class="sub-title">从条款文本到实际约束的解读</div>
+        <div class="sub-title-line"></div>
+      </div>
+
+      <div class="motif-area">
+        <svg viewBox="0 0 260 160" width="260" height="160" xmlns="http://www.w3.org/2000/svg">
+          <!-- Document behind -->
+          <g>
+            <rect x="14" y="20" width="160" height="128" rx="2" fill="#FFFFFF" stroke="#0D2137" stroke-width="1.5"/>
+            <line x1="28" y1="40" x2="158" y2="40" stroke="#C9A227" stroke-width="1.2"/>
+            <line x1="28" y1="52" x2="140" y2="52" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+            <line x1="28" y1="62" x2="150" y2="62" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+            <line x1="28" y1="72" x2="130" y2="72" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+            <line x1="28" y1="82" x2="155" y2="82" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+            <line x1="28" y1="92" x2="120" y2="92" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+            <line x1="28" y1="102" x2="148" y2="102" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+            <line x1="28" y1="112" x2="135" y2="112" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+            <line x1="28" y1="122" x2="110" y2="122" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+            <line x1="28" y1="132" x2="152" y2="132" stroke="#0D2137" stroke-width="0.6" opacity="0.45"/>
+          </g>
+          <!-- Magnifier -->
+          <g transform="translate(118,42)">
+            <circle cx="0" cy="0" r="42" fill="rgba(245,245,245,0.35)" stroke="#C9A227" stroke-width="3"/>
+            <circle cx="0" cy="0" r="36" fill="none" stroke="#0D2137" stroke-width="1" opacity="0.3"/>
+            <line x1="30" y1="30" x2="60" y2="60" stroke="#0D2137" stroke-width="6" stroke-linecap="round"/>
+            <line x1="30" y1="30" x2="60" y2="60" stroke="#C9A227" stroke-width="2" stroke-linecap="round"/>
+            <!-- cross hair inside magnifier -->
+            <line x1="-20" y1="0" x2="20" y2="0" stroke="#0D2137" stroke-width="0.6" opacity="0.5" stroke-dasharray="3,3"/>
+            <line x1="0" y1="-20" x2="0" y2="20" stroke="#0D2137" stroke-width="0.6" opacity="0.5" stroke-dasharray="3,3"/>
+            <circle cx="0" cy="0" r="3" fill="#C9A227"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="col-card">
+        <div class="col-idx">— 01 / 阅读方法</div>
+        <div class="col-title">阅读方法</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">逐条对照协议原文，结合典型判例与开源基金会的合规案例理解意图。</div>
+        <div class="col-kw">
+          <span class="kw-tag">逐条对照</span>
+          <span class="kw-tag">判例参考</span>
+          <span class="kw-tag">意图解读</span>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="col-idx">— 02 / 重点条款</div>
+        <div class="col-title">重点条款</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">分发义务、署名要求、专利条款、终止条件，是最容易踩坑的四个方向。</div>
+        <div class="col-kw">
+          <span class="kw-tag">分发义务</span>
+          <span class="kw-tag">署名要求</span>
+          <span class="kw-tag">专利条款</span>
+          <span class="kw-tag">终止条件</span>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="col-idx">— 03 / 案例导向</div>
+        <div class="col-title">案例导向</div>
+        <div class="col-divider"></div>
+        <div class="col-desc">通过真实项目从 MIT 改为 Apache、GPL 传染引发的商业纠纷等案例加深印象。</div>
+        <div class="col-kw">
+          <span class="kw-tag">真实项目</span>
+          <span class="kw-tag">许可证迁移</span>
+          <span class="kw-tag">争议复盘</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-area">
+      <div class="summary-text">
+        进入第二部分，我们把阅读聚焦到<span class="quote">"条款到底意味着什么"</span>。许可证的文字看似简单，但在具体场景中<span class="em">每一条都可能是关键</span>。我们以案例为导向，看真实的项目是如何踩坑、如何改选的。
+      </div>
+      <div class="data-points">
+        <div class="data-point">
+          <div class="dp-num">4<span class="unit">项</span></div>
+          <div class="dp-label">关键条款数</div>
+          <div class="dp-sub">分发 · 署名 · 专利 · 终止</div>
+        </div>
+        <div class="data-point">
+          <div class="dp-num">5<span class="unit">+ 例</span></div>
+          <div class="dp-label">参考案例</div>
+          <div class="dp-sub">来自 FSF 与 CNCF 公开资料</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-meta">SPDX LICENSE · 白皮书 · CHAPTER 02</div>
+    <div class="page-num"><span class="pn-num">02</span>/ 07</div>
+
+  </div>
+</div>
+</body>
+</html>
