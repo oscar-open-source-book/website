@@ -3,294 +3,531 @@
 <head>
 <meta charset="UTF-8">
 <title>开源的规模与渗透</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#0D2137;
-  --red:#E53935;
-  --bg:#F5F5F5;
-  --card:#FFFFFF;
-  --grey:#8A8F98;
-  --line:#D9DEE4;
-  --serif:'Noto Serif SC',serif;
-  --sans:'Noto Sans SC',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:var(--sans);color:var(--navy);background:var(--bg);}
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
-#bg{position:absolute;inset:0;z-index:0;}
-#ct{position:absolute;inset:0;z-index:1;padding:40px 60px 40px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
-/* Background decoration */
-#bg::before{
-  content:'';position:absolute;top:0;left:0;width:100%;height:6px;
-  background:var(--navy);
-}
-#bg::after{
-  content:'';position:absolute;bottom:0;left:0;width:100%;height:3px;
-  background:var(--red);
+:root {
+  --primary: #0D2137;
+  --accent: #E53935;
+  --bg: #F5F5F5;
+  --text-main: #1a1a1a;
+  --text-secondary: #555555;
+  --line: #d0d0d0;
+  --card-bg: #ffffff;
 }
 
-/* ---- Banner ---- */
-.banner{position:relative;padding:20px 0 22px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px;}
-.banner-tag{display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:3px;color:var(--grey);font-weight:500;}
-.banner-tag .dot{width:8px;height:8px;background:var(--red);border-radius:50%;}
-.banner-tag .bar{width:48px;height:1px;background:var(--grey);}
-.banner-title{font-family:var(--serif);font-weight:900;font-size:52px;line-height:1.1;color:var(--navy);letter-spacing:1px;}
-.banner-title .accent{color:var(--red);}
-.banner-intro{font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.7;color:#3a4050;max-width:1280px;letter-spacing:0.3px;}
-.banner-side{position:absolute;top:24px;right:0;font-family:var(--serif);font-size:11px;letter-spacing:4px;color:var(--grey);text-align:right;}
-.banner-side .num{display:block;font-size:22px;color:var(--navy);font-weight:700;letter-spacing:1px;margin-top:4px;}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ---- Body ---- */
-.body{flex:1;display:grid;grid-template-columns:340px 1fr 360px;gap:28px;padding-top:22px;padding-bottom:14px;}
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: #e8e8e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
 
-/* Column headers */
-.col-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.col-head .line{flex:1;height:1px;background:var(--line);}
-.col-head .label{font-family:var(--serif);font-size:13px;font-weight:700;color:var(--navy);letter-spacing:2px;}
-.col-head .idx{font-family:var(--serif);font-size:11px;color:var(--red);font-weight:700;letter-spacing:1px;}
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: #ffffff;
+}
 
-/* --- Left: KPI cards --- */
-.col-left{display:flex;flex-direction:column;}
-.kpi-stack{display:flex;flex-direction:column;gap:12px;}
-.kpi-card{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);padding:16px 18px;position:relative;}
-.kpi-card .kpi-tag{font-size:10px;letter-spacing:2px;color:var(--grey);font-weight:500;margin-bottom:6px;}
-.kpi-card .kpi-num{font-family:var(--serif);font-weight:900;font-size:42px;line-height:1;color:var(--navy);letter-spacing:-1px;}
-.kpi-card .kpi-num .unit{font-size:18px;font-weight:700;color:var(--red);margin-left:2px;}
-.kpi-card .kpi-desc{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.5;font-weight:400;}
-.kpi-card .kpi-bar{position:absolute;right:14px;top:14px;width:36px;height:3px;background:var(--navy);opacity:0.2;}
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #F5F5F5 0%, #ffffff 50%, #F5F5F5 100%);
+}
 
-/* --- Center: point cards --- */
-.col-center{display:flex;flex-direction:column;}
-.point-stack{display:flex;flex-direction:column;gap:10px;}
-.point-card{background:var(--card);border:1px solid var(--line);padding:12px 16px;display:flex;gap:14px;align-items:flex-start;transition:all .2s;}
-.point-card .pc-num{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--red);min-width:32px;line-height:1.2;}
-.point-card .pc-body{flex:1;display:flex;flex-direction:column;gap:4px;}
-.point-card .pc-icon{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:1px;color:var(--grey);font-weight:500;}
-.point-card .pc-icon svg{flex-shrink:0;}
-.point-card .pc-title{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--navy);line-height:1.3;}
-.point-card .pc-desc{font-size:12.5px;color:#3a4050;line-height:1.6;font-weight:300;}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
 
-/* --- Right: community card --- */
-.col-right{display:flex;flex-direction:column;}
-.community-card{background:var(--navy);color:#fff;padding:20px 20px 18px 20px;position:relative;overflow:hidden;border:1px solid var(--navy);}
-.community-card .cc-num{font-family:var(--serif);font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.5);font-weight:500;}
-.community-card .cc-tag{font-size:10px;letter-spacing:2px;color:var(--red);font-weight:700;margin-top:4px;}
-.community-card .cc-title{font-family:var(--serif);font-size:20px;font-weight:700;color:#fff;margin-top:8px;line-height:1.35;}
-.community-card .cc-desc{font-size:12px;color:rgba(255,255,255,0.75);line-height:1.65;margin-top:8px;font-weight:300;}
-.community-card .cc-num-big{font-family:var(--serif);font-size:36px;font-weight:900;color:#fff;margin-top:12px;line-height:1;}
-.community-card .cc-num-big .unit{font-size:14px;color:var(--red);font-weight:700;margin-left:2px;}
-.community-card .cc-num-cap{font-size:10px;letter-spacing:1px;color:rgba(255,255,255,0.5);margin-top:4px;}
+/* Header Section */
+.header {
+  position: relative;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
 
-/* Network graphic */
-.network-wrap{margin-top:14px;background:var(--card);border:1px solid var(--line);padding:14px 16px;}
-.network-wrap .nw-head{font-family:var(--serif);font-size:12px;font-weight:700;color:var(--navy);letter-spacing:1px;margin-bottom:8px;}
-.network{position:relative;width:100%;height:180px;}
-.node{position:absolute;border-radius:50%;background:var(--navy);}
-.node.n1{width:10px;height:10px;left:50%;top:8px;margin-left:-5px;}
-.node.n2{width:7px;height:7px;left:18%;top:38%;margin-left:-3.5px;}
-.node.n3{width:7px;height:7px;left:82%;top:38%;margin-left:-3.5px;}
-.node.n4{width:6px;height:6px;left:8%;top:62%;margin-left:-3px;}
-.node.n5{width:6px;height:6px;left:28%;top:72%;margin-left:-3px;}
-.node.n6{width:6px;height:6px;left:52%;top:78%;margin-left:-3px;}
-.node.n7{width:6px;height:6px;left:72%;top:72%;margin-left:-3px;}
-.node.n8{width:6px;height:6px;left:92%;top:62%;margin-left:-3px;}
-.node.n9{width:5px;height:5px;left:14%;top:18%;margin-left:-2.5px;background:var(--red);}
-.node.n10{width:5px;height:5px;left:86%;top:18%;margin-left:-2.5px;background:var(--red);}
-.node.n11{width:5px;height:5px;left:60%;top:32%;margin-left:-2.5px;background:var(--red);}
-.node.n12{width:5px;height:5px;left:38%;top:32%;margin-left:-2.5px;background:var(--red);}
-.node.n13{width:5px;height:5px;left:50%;top:48%;margin-left:-2.5px;background:var(--red);}
-.node.n14{width:4px;height:4px;left:42%;top:58%;margin-left:-2px;}
-.node.n15{width:4px;height:4px;left:58%;top:58%;margin-left:-2px;}
-.node.n16{width:4px;height:4px;left:22%;top:88%;margin-left:-2px;background:var(--red);}
-.node.n17{width:4px;height:4px;left:78%;top:88%;margin-left:-2px;background:var(--red);}
-.line-link{position:absolute;background:var(--line);transform-origin:left center;height:1px;}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 120px;
+  height: 3px;
+  background: var(--accent);
+}
+
+.header-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.header-meta .meta-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-meta .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.header-meta .meta-right {
+  font-family: 'Noto Serif SC', serif;
+  font-style: italic;
+  font-size: 12px;
+}
+
+h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 44px;
+  color: var(--primary);
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+
+.lead {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-top: 10px;
+  max-width: 1380px;
+  font-weight: 300;
+}
+
+.lead strong {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Three Column Section */
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  margin-top: 20px;
+}
+
+.col-card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--primary);
+  padding: 20px 22px;
+  position: relative;
+  min-height: 220px;
+}
+
+.col-card .col-num {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #e8e8e8;
+}
+
+.col-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.col-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.col-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  font-weight: 300;
+}
+
+.col-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+  letter-spacing: 0.5px;
+}
+
+.col-bar-track {
+  width: 100%;
+  height: 6px;
+  background: #ececec;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.col-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+}
+
+.col-tag {
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* Middle Section */
+.mid-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 18px;
+}
+
+.mid-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  border-left: 3px solid var(--accent);
+}
+
+.mid-card .mid-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+
+.mid-card .mid-content {
+  flex: 1;
+}
+
+.mid-card .mid-label {
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.mid-card .mid-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.mid-card .mid-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* KPI Section */
+.kpi-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.kpi-card {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: var(--accent);
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  opacity: 0.3;
+}
+
+.kpi-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.kpi-body {
+  flex: 1;
+}
+
+.kpi-value {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: #b0c4de;
+  margin-top: 3px;
+  line-height: 1.4;
+  font-weight: 300;
+}
+
+.kpi-sub {
+  font-size: 9.5px;
+  color: #8899aa;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
 
 /* Footer */
-.footer{border-top:1px solid var(--line);padding-top:12px;display:flex;align-items:center;justify-content:space-between;}
-.footer-text{font-family:var(--serif);font-size:14px;font-weight:500;color:var(--navy);position:relative;padding-bottom:4px;}
-.footer-text::after{content:'';position:absolute;bottom:0;left:0;width:64px;height:2px;background:var(--red);}
-.footer-meta{font-size:11px;letter-spacing:2px;color:var(--grey);font-weight:500;}
+.footer {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-statement {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.footer-statement .accent {
+  color: var(--accent);
+}
+
+.footer-right {
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-<div id="bg"></div>
-<div id="ct">
+  <div id="bg"></div>
+  <div id="ct">
 
-  <!-- Banner -->
-  <div class="banner">
-    <div class="banner-tag">
-      <span class="dot"></span>
-      <span>OPEN SOURCE</span>
-      <span class="bar"></span>
-      <span>SCALE &amp; PENETRATION</span>
+    <!-- Header -->
+    <div class="header">
+      <div class="header-meta">
+        <div class="meta-left">
+          <span class="dot"></span>
+          <span>专题报告 · 开源生态洞察</span>
+        </div>
+        <div class="meta-right">Open Source Scale & Penetration</div>
+      </div>
+      <h1>开源的规模与渗透</h1>
+      <p class="lead">开源软件已深度渗透从基础设施到应用层的技术栈，<strong>云原生、人工智能、移动设备</strong>等赛道均以开源为核心引擎，企业用户覆盖从初创到世界五百强。</p>
     </div>
-    <div class="banner-title">开源的<span class="accent">规模</span>与<span class="accent">渗透</span></div>
-    <div class="banner-intro">开源软件已深度渗透从基础设施到应用层的技术栈，云原生、人工智能、移动设备等赛道均以开源为核心引擎，企业用户覆盖从初创到世界五百强。</div>
-    <div class="banner-side">
-      CHAPTER 03
-      <span class="num">03 / 12</span>
+
+    <!-- Three Columns -->
+    <div class="three-col">
+
+      <div class="col-card">
+        <span class="col-num">01</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 40 40" width="40" height="40" fill="none">
+            <rect x="4" y="8" width="32" height="12" rx="1" stroke="#0D2137" stroke-width="1.5"/>
+            <rect x="4" y="22" width="32" height="12" rx="1" stroke="#0D2137" stroke-width="1.5"/>
+            <circle cx="9" cy="14" r="1.5" fill="#E53935"/>
+            <circle cx="9" cy="28" r="1.5" fill="#E53935"/>
+            <rect x="14" y="11" width="20" height="2.5" rx="0.5" fill="#0D2137" opacity="0.2"/>
+            <rect x="14" y="16" width="14" height="2.5" rx="0.5" fill="#0D2137" opacity="0.2"/>
+            <rect x="14" y="25" width="20" height="2.5" rx="0.5" fill="#0D2137" opacity="0.2"/>
+            <rect x="14" y="30" width="14" height="2.5" rx="0.5" fill="#0D2137" opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="col-title">云原生基石</div>
+        <div class="col-desc">Kubernetes 与 Docker 等开源项目成为云原生基础设施的核心底座，支撑容器编排、微服务治理与服务网格的完整技术体系。</div>
+        <div class="col-bar-label"><span>容器化部署覆盖率</span><span>85%</span></div>
+        <div class="col-bar-track"><div class="col-bar-fill" style="width:85%"></div></div>
+        <div class="col-tag">Kubernetes · Docker · CNCF</div>
+      </div>
+
+      <div class="col-card">
+        <span class="col-num">02</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 40 40" width="40" height="40" fill="none">
+            <circle cx="20" cy="20" r="15" stroke="#0D2137" stroke-width="1.5"/>
+            <path d="M5 20h30M20 5v30M9 9l22 22M31 9L9 31" stroke="#0D2137" stroke-width="0.8" opacity="0.3"/>
+            <circle cx="20" cy="20" r="6" fill="#E53935" opacity="0.15"/>
+            <circle cx="20" cy="20" r="3" fill="#E53935"/>
+          </svg>
+        </div>
+        <div class="col-title">企业全面拥抱</div>
+        <div class="col-desc">全球 Fortune 500 企业中超过九成在生产环境中使用开源软件，开源已从技术选择升级为商业战略的核心组成部分。</div>
+        <div class="col-bar-label"><span>Fortune 500 采用率</span><span>90%+</span></div>
+        <div class="col-bar-track"><div class="col-bar-fill" style="width:90%"></div></div>
+        <div class="col-tag">企业级采用 · 生产环境</div>
+      </div>
+
+      <div class="col-card">
+        <span class="col-num">03</span>
+        <div class="col-icon">
+          <svg viewBox="0 0 40 40" width="40" height="40" fill="none">
+            <circle cx="20" cy="20" r="16" stroke="#0D2137" stroke-width="1.5"/>
+            <path d="M20 4 L20 36 M4 20 L36 20" stroke="#0D2137" stroke-width="0.8" opacity="0.25"/>
+            <path d="M20 20 L32 10 A16 16 0 0 1 32 30 Z" fill="#0D2137" opacity="0.08"/>
+            <path d="M20 20 L8 10 A16 16 0 0 0 8 30 Z" fill="#E53935" opacity="0.12"/>
+            <circle cx="20" cy="20" r="2.5" fill="#E53935"/>
+          </svg>
+        </div>
+        <div class="col-title">操作系统主导</div>
+        <div class="col-desc">Linux 占据全球服务器市场份额超过 96%，Android 主导移动设备操作系统市场，开源已成为数字世界的底层运行内核。</div>
+        <div class="col-bar-label"><span>Linux 服务器份额</span><span>96%+</span></div>
+        <div class="col-bar-track"><div class="col-bar-fill" style="width:96%"></div></div>
+        <div class="col-tag">Linux · Android · 内核级渗透</div>
+      </div>
+
     </div>
+
+    <!-- Middle Section -->
+    <div class="mid-section">
+
+      <div class="mid-card">
+        <div class="mid-icon">
+          <svg viewBox="0 0 44 44" width="44" height="44" fill="none">
+            <path d="M22 4 L36 12 L36 32 L22 40 L8 32 L8 12 Z" stroke="#0D2137" stroke-width="1.5" fill="none"/>
+            <path d="M22 4 L22 40 M8 12 L36 32 M36 12 L8 32" stroke="#0D2137" stroke-width="0.6" opacity="0.3"/>
+            <circle cx="22" cy="22" r="5" fill="#E53935" opacity="0.85"/>
+            <circle cx="22" cy="22" r="2" fill="#ffffff"/>
+          </svg>
+        </div>
+        <div class="mid-content">
+          <div class="mid-label">AI · OPEN SOURCE</div>
+          <div class="mid-title">人工智能开源</div>
+          <div class="mid-desc">TensorFlow、PyTorch 等框架以开源方式推动 AI 技术普惠化，极大降低了人工智能的研发与应用门槛。</div>
+        </div>
+      </div>
+
+      <div class="mid-card">
+        <div class="mid-icon">
+          <svg viewBox="0 0 44 44" width="44" height="44" fill="none">
+            <circle cx="14" cy="16" r="5" stroke="#0D2137" stroke-width="1.5" fill="none"/>
+            <circle cx="32" cy="14" r="4" stroke="#0D2137" stroke-width="1.5" fill="none"/>
+            <circle cx="22" cy="30" r="4.5" stroke="#0D2137" stroke-width="1.5" fill="none"/>
+            <path d="M18 18 L28 14 M16 20 L20 27 M26 16 L23 26" stroke="#0D2137" stroke-width="0.8" opacity="0.4"/>
+            <circle cx="14" cy="16" r="2" fill="#E53935"/>
+            <circle cx="32" cy="14" r="1.5" fill="#E53935"/>
+            <circle cx="22" cy="30" r="1.8" fill="#E53935"/>
+          </svg>
+        </div>
+        <div class="mid-content">
+          <div class="mid-label">COMMUNITY · COLLABORATION</div>
+          <div class="mid-title">开发者社区</div>
+          <div class="mid-desc">全球活跃开源贡献者超过四千万人，形成跨组织协作网络，代码共享与集体创新成为软件开发的主流范式。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- KPI Section -->
+    <div class="kpi-section">
+
+      <div class="kpi-card">
+        <svg class="kpi-icon" viewBox="0 0 40 40" width="40" height="40" fill="none">
+          <rect x="6" y="8" width="28" height="10" rx="1" stroke="#ffffff" stroke-width="1.2"/>
+          <rect x="6" y="22" width="28" height="10" rx="1" stroke="#ffffff" stroke-width="1.2"/>
+          <rect x="6" y="32" width="28" height="3" rx="0.5" fill="#ffffff" opacity="0.4"/>
+          <circle cx="10" cy="13" r="1.2" fill="#E53935"/>
+          <circle cx="10" cy="27" r="1.2" fill="#E53935"/>
+        </svg>
+        <div class="kpi-body">
+          <div class="kpi-value">96%+</div>
+          <div class="kpi-label">Linux 服务器份额</div>
+          <div class="kpi-sub">全球服务器市场占比</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <svg class="kpi-icon" viewBox="0 0 40 40" width="40" height="40" fill="none">
+          <path d="M8 34 L8 18 L14 18 L14 34 M14 34 L14 12 L20 12 L20 34 M20 34 L20 8 L26 8 L26 34 M26 34 L26 16 L32 16 L32 34" stroke="#ffffff" stroke-width="1.2"/>
+          <path d="M26 8 L26 16 L32 16 L32 8" fill="#E53935" opacity="0.7"/>
+          <line x1="4" y1="34" x2="36" y2="34" stroke="#ffffff" stroke-width="1"/>
+        </svg>
+        <div class="kpi-body">
+          <div class="kpi-value">90%+</div>
+          <div class="kpi-label">Fortune 500 采用率</div>
+          <div class="kpi-sub">生产环境使用开源软件</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <svg class="kpi-icon" viewBox="0 0 40 40" width="40" height="40" fill="none">
+          <circle cx="20" cy="20" r="15" stroke="#ffffff" stroke-width="1.2"/>
+          <path d="M5 20 Q20 10 35 20 Q20 30 5 20Z" stroke="#ffffff" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="14" cy="18" r="2" fill="#ffffff"/>
+          <circle cx="20" cy="15" r="2.5" fill="#E53935"/>
+          <circle cx="27" cy="20" r="2" fill="#ffffff"/>
+          <circle cx="17" cy="24" r="1.8" fill="#ffffff"/>
+          <circle cx="24" cy="25" r="1.8" fill="#ffffff"/>
+        </svg>
+        <div class="kpi-body">
+          <div class="kpi-value">4000万+</div>
+          <div class="kpi-label">全球活跃贡献者</div>
+          <div class="kpi-sub">2023 年统计</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-statement">开源已成为技术世界的<span class="accent">通用语言</span>。</div>
+      <div class="footer-right">OPEN SOURCE · SCALE & PENETRATION</div>
+    </div>
+
   </div>
-
-  <!-- Body -->
-  <div class="body">
-
-    <!-- Left: KPI -->
-    <div class="col-left">
-      <div class="col-head">
-        <span class="idx">Ⅰ</span>
-        <span class="label">关键数据</span>
-        <span class="line"></span>
-      </div>
-      <div class="kpi-stack">
-        <div class="kpi-card">
-          <span class="kpi-bar"></span>
-          <div class="kpi-tag">服务器市场份额</div>
-          <div class="kpi-num">96<span class="unit">%+</span></div>
-          <div class="kpi-desc">Linux 占据全球服务器市场份额，成为企业数据中心与云平台的绝对主力操作系统。</div>
-        </div>
-        <div class="kpi-card">
-          <span class="kpi-bar"></span>
-          <div class="kpi-tag">Fortune 500 采用率</div>
-          <div class="kpi-num">90<span class="unit">%+</span></div>
-          <div class="kpi-desc">全球世界五百强企业中超过九成在生产环境中使用开源软件，覆盖核心业务系统。</div>
-        </div>
-        <div class="kpi-card">
-          <span class="kpi-bar"></span>
-          <div class="kpi-tag">全球活跃贡献者 · 2023</div>
-          <div class="kpi-num">4000<span class="unit">万+</span></div>
-          <div class="kpi-desc">来自全球各地的开发者共同协作，形成跨组织、跨地域的开源创新网络。</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Center: Points -->
-    <div class="col-center">
-      <div class="col-head">
-        <span class="idx">Ⅱ</span>
-        <span class="label">渗透维度</span>
-        <span class="line"></span>
-      </div>
-      <div class="point-stack">
-
-        <div class="point-card">
-          <div class="pc-num">01</div>
-          <div class="pc-body">
-            <span class="pc-icon">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 14c0-2.8 2.2-5 5-5h.5C9.4 6.5 11.5 5 14 5s4.5 1.5 5.5 4h.5c2.8 0 5 2.2 5 5s-2.2 5-5 5H8c-2.8 0-5-2.2-5-5z" stroke="#0D2137" stroke-width="1.5"/></svg>
-              CLOUD NATIVE
-            </span>
-            <div class="pc-title">云原生基石</div>
-            <div class="pc-desc">Kubernetes 与 Docker 等开源项目成为云原生基础设施的核心底座，重塑了现代应用的部署与运维范式。</div>
-          </div>
-        </div>
-
-        <div class="point-card">
-          <div class="pc-num">02</div>
-          <div class="pc-body">
-            <span class="pc-icon">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" stroke="#0D2137" stroke-width="1.5"/><path d="M8 4v16M16 4v16M3 10h18M3 16h18" stroke="#0D2137" stroke-width="1"/></svg>
-              ENTERPRISE
-            </span>
-            <div class="pc-title">企业全面拥抱</div>
-            <div class="pc-desc">全球 Fortune 500 企业中超过九成在生产环境中使用开源软件，开源已从边缘工具变为核心生产资产。</div>
-          </div>
-        </div>
-
-        <div class="point-card">
-          <div class="pc-num">03</div>
-          <div class="pc-body">
-            <span class="pc-icon">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" stroke="#0D2137" stroke-width="1.5"/><path d="M3 18h18M8 21h8" stroke="#0D2137" stroke-width="1.5"/><circle cx="7" cy="7" r="0.8" fill="#E53935"/></svg>
-              OS &amp; DEVICE
-            </span>
-            <div class="pc-title">操作系统主导</div>
-            <div class="pc-desc">Linux 占据全球服务器市场份额超过百分之九十六，Android 主导移动设备生态，开源 OS 无处不在。</div>
-          </div>
-        </div>
-
-        <div class="point-card">
-          <div class="pc-num">04</div>
-          <div class="pc-body">
-            <span class="pc-icon">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="#0D2137" stroke-width="1.5"/><circle cx="12" cy="4" r="2" stroke="#0D2137" stroke-width="1.2"/><circle cx="20" cy="10" r="2" stroke="#0D2137" stroke-width="1.2"/><circle cx="20" cy="18" r="2" stroke="#0D2137" stroke-width="1.2"/><circle cx="4" cy="18" r="2" stroke="#0D2137" stroke-width="1.2"/><circle cx="4" cy="10" r="2" stroke="#0D2137" stroke-width="1.2"/><path d="M12 7l0 2M14 9l4-1M16 15l4 1M8 15l-4 1M8 9l-4-1" stroke="#0D2137" stroke-width="1"/></svg>
-              ARTIFICIAL INTELLIGENCE
-            </span>
-            <div class="pc-title">人工智能开源</div>
-            <div class="pc-desc">TensorFlow、PyTorch 等框架以开源方式推动 AI 技术普惠化，降低创新门槛，加速全球 AI 应用落地。</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Right: Community -->
-    <div class="col-right">
-      <div class="col-head">
-        <span class="idx">Ⅲ</span>
-        <span class="label">协作网络</span>
-        <span class="line"></span>
-      </div>
-      <div class="community-card">
-        <div class="cc-num">COMMUNITY</div>
-        <div class="cc-tag">开发者社区</div>
-        <div class="cc-title">跨组织协作<br>全球开源网络</div>
-        <div class="cc-desc">全球活跃开源贡献者超过四千万人，开发者、企业与研究机构通过代码、文档与社区治理共同驱动技术演进，形成超越组织边界的协作网络。</div>
-        <div class="cc-num-big">4000<span class="unit">万+</span></div>
-        <div class="cc-num-cap">全球活跃开源贡献者 · 2023</div>
-      </div>
-
-      <div class="network-wrap">
-        <div class="nw-head">协作网络拓扑示意</div>
-        <div class="network">
-          <!-- Links -->
-          <div class="line-link" style="left:50%;top:18px;width:26%;transform:rotate(62deg);"></div>
-          <div class="line-link" style="left:50%;top:18px;width:26%;transform:rotate(-62deg);"></div>
-          <div class="line-link" style="left:20%;top:36px;width:55%;transform:rotate(45deg);"></div>
-          <div class="line-link" style="left:32%;top:52px;width:35%;transform:rotate(-45deg);"></div>
-          <div class="line-link" style="left:52%;top:52px;width:35%;transform:rotate(45deg);"></div>
-          <div class="line-link" style="left:70%;top:52px;width:20%;transform:rotate(0deg);"></div>
-          <div class="line-link" style="left:18%;top:88px;width:20%;transform:rotate(-55deg);"></div>
-          <div class="line-link" style="left:28%;top:95px;width:18%;transform:rotate(60deg);"></div>
-          <div class="line-link" style="left:52%;top:98px;width:20%;transform:rotate(-55deg);"></div>
-          <div class="line-link" style="left:72%;top:95px;width:20%;transform:rotate(55deg);"></div>
-          <div class="line-link" style="left:82%;top:88px;width:14%;transform:rotate(-55deg);"></div>
-          <div class="line-link" style="left:50%;top:48px;width:18%;transform:rotate(90deg);opacity:0.4;"></div>
-
-          <!-- Nodes -->
-          <div class="node n1"></div>
-          <div class="node n2"></div>
-          <div class="node n3"></div>
-          <div class="node n4"></div>
-          <div class="node n5"></div>
-          <div class="node n6"></div>
-          <div class="node n7"></div>
-          <div class="node n8"></div>
-          <div class="node n9"></div>
-          <div class="node n10"></div>
-          <div class="node n11"></div>
-          <div class="node n12"></div>
-          <div class="node n13"></div>
-          <div class="node n14"></div>
-          <div class="node n15"></div>
-          <div class="node n16"></div>
-          <div class="node n17"></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <div class="footer-text">开源已成技术栈的隐形底座</div>
-    <div class="footer-meta">SCALE × PENETRATION · 2024</div>
-  </div>
-
-</div>
 </div>
 </body>
 </html>

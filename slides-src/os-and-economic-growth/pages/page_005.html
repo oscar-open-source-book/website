@@ -1,410 +1,200 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
-<title>增长驱动机制 · PART 02</title>
+<title>增长驱动机制</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
-:root {
-  --navy: #0D2137;
-  --red: #E53935;
-  --light: #F5F5F5;
-  --light-alt: #EAEAEA;
-  --gold: #C9A96E;
-  --text-main: #1A1A1A;
-  --text-muted: #5A5A5A;
-  --text-on-navy: #E8E8E8;
-  --text-on-navy-dim: #9AB0C8;
+:root{
+  --navy:#0D2137;
+  --red:#E53935;
+  --neutral:#F5F5F5;
+  --serif:'Noto Serif SC', serif;
+  --sans:'Noto Sans SC', sans-serif;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-body {
-  font-family: 'Noto Sans SC', sans-serif;
-  background: var(--light);
-  color: var(--text-main);
-  overflow: hidden;
+body{font-family:var(--sans);background:#fff;}
+
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--neutral);}
+
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;}
+
+/* 顶部叙事条 */
+.top-strip{
+  position:absolute;top:0;left:0;width:1600px;height:62px;
+  background:#fff;
+  border-bottom:1px solid #e0e0e0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 60px;
+  z-index:2;
+}
+.top-strip .tag{
+  font-family:var(--serif);font-weight:700;font-size:14px;color:var(--navy);
+  letter-spacing:2px;display:flex;align-items:center;gap:12px;
+}
+.top-strip .tag::before{
+  content:"";display:inline-block;width:28px;height:2px;background:var(--red);
+}
+.top-strip .narrative{
+  font-family:var(--sans);font-weight:300;font-size:12px;color:#444;
+  letter-spacing:0.5px;max-width:1000px;line-height:1.6;
+}
+.top-strip .meta{
+  font-family:var(--serif);font-size:13px;color:var(--navy);letter-spacing:3px;
+  font-weight:700;
 }
 
-.wrapper {
-  width: 1600px;
-  height: 900px;
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
+/* 主体区 */
+.main{position:absolute;top:62px;left:0;width:1600px;height:838px;display:flex;}
+
+/* 左侧藏蓝色块 */
+.left-block{
+  width:660px;height:838px;background:var(--navy);position:relative;
+  overflow:hidden;
+}
+.left-block .corner-top{
+  position:absolute;top:36px;left:44px;
+  font-family:var(--sans);font-weight:700;font-size:12px;color:var(--red);
+  letter-spacing:4px;display:flex;align-items:center;gap:14px;
+}
+.left-block .corner-top .dot{width:8px;height:8px;background:var(--red);border-radius:50%;display:inline-block;}
+
+.left-block .ghost-num{
+  position:absolute;top:60px;right:-30px;
+  font-family:var(--serif);font-weight:900;font-size:420px;color:rgba(255,255,255,0.04);
+  line-height:1;letter-spacing:-10px;
 }
 
-#bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: var(--light);
+.left-block .divider-h{
+  position:absolute;left:44px;top:110px;width:64px;height:2px;background:var(--red);
 }
 
-#ct {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  padding: 0;
-  display: flex;
+.left-block .title-cn{
+  position:absolute;left:44px;top:170px;
+  font-family:var(--serif);font-weight:900;
+  font-size:96px;color:#fff;line-height:1.18;letter-spacing:6px;
+}
+.left-block .title-cn .accent{color:var(--red);}
+
+.left-block .title-en{
+  position:absolute;left:46px;top:438px;
+  font-family:var(--serif);font-weight:400;font-size:14px;color:rgba(255,255,255,0.5);
+  letter-spacing:8px;
 }
 
-/* ===== LEFT PANEL ===== */
-.left-panel {
-  width: 720px;
-  height: 900px;
-  background: var(--navy);
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
+.left-block .left-divider{
+  position:absolute;left:44px;top:472px;width:120px;height:1px;background:rgba(255,255,255,0.2);
 }
 
-.left-panel::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--red);
+.left-block .left-quote{
+  position:absolute;left:44px;top:496px;width:500px;
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:17px;
+  color:rgba(255,255,255,0.82);line-height:1.8;letter-spacing:1px;
 }
 
-.left-deco-number {
-  position: absolute;
-  bottom: -60px;
-  right: -30px;
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 900;
-  font-size: 520px;
-  color: rgba(255,255,255,0.035);
-  line-height: 1;
-  letter-spacing: -20px;
-  user-select: none;
-  pointer-events: none;
+.left-block .left-quote .mark{
+  font-family:var(--serif);font-size:48px;color:var(--red);line-height:0;
+  vertical-align:-18px;margin-right:4px;
 }
 
-.left-content {
-  position: absolute;
-  top: 80px;
-  left: 70px;
-  right: 60px;
-  display: flex;
-  flex-direction: column;
+/* 数据标签卡片 */
+.data-card{
+  position:absolute;left:44px;bottom:48px;width:500px;
+  background:#fff;padding:18px 24px;
+  display:flex;align-items:center;gap:20px;
+}
+.data-card .num-big{
+  font-family:var(--serif);font-weight:900;font-size:42px;color:var(--red);
+  line-height:1;letter-spacing:-1px;
+}
+.data-card .num-big .pct{font-size:24px;font-weight:700;margin-left:2px;}
+.data-card .v-bar{width:1px;height:42px;background:#e0e0e0;}
+.data-card .d-info .d-label{font-family:var(--serif);font-weight:700;font-size:13px;color:var(--navy);letter-spacing:2px;}
+.data-card .d-info .d-sub{font-family:var(--sans);font-weight:300;font-size:11px;color:#888;letter-spacing:1px;margin-top:4px;}
+
+/* 左侧底部装饰 */
+.left-block .bottom-mark{
+  position:absolute;left:44px;bottom:18px;
+  font-family:var(--sans);font-weight:300;font-size:10px;color:rgba(255,255,255,0.35);
+  letter-spacing:3px;
+}
+.left-block .corner-deco{
+  position:absolute;right:30px;bottom:30px;width:60px;height:60px;
+  border-top:1px solid rgba(255,255,255,0.15);border-right:1px solid rgba(255,255,255,0.15);
 }
 
-.chapter-label {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-bottom: 60px;
+/* 右侧白区 */
+.right-area{
+  width:940px;height:838px;background:#fff;
+  padding:56px 60px 50px 60px;
+  display:flex;flex-direction:column;position:relative;
+}
+.right-area .r-top-tag{
+  font-family:var(--serif);font-weight:700;font-size:12px;color:var(--red);
+  letter-spacing:5px;display:flex;align-items:center;gap:12px;margin-bottom:6px;
+}
+.right-area .r-top-tag .line{flex:1;height:1px;background:#e0e0e0;}
+.right-area .r-sub-title{
+  font-family:var(--serif);font-weight:700;font-size:22px;color:var(--navy);
+  letter-spacing:3px;margin-bottom:6px;
+}
+.right-area .r-sub-desc{
+  font-family:var(--sans);font-weight:300;font-size:12px;color:#888;
+  letter-spacing:2px;margin-bottom:22px;
 }
 
-.chapter-label .red-bar {
-  width: 56px;
-  height: 3px;
-  background: var(--red);
+.points-list{flex:1;display:flex;flex-direction:column;}
+
+.point-item{
+  display:flex;align-items:flex-start;gap:26px;
+  padding:18px 0 18px 0;
+  position:relative;
+}
+.point-item + .point-item{border-top:1px solid #eee;padding-top:20px;margin-top:6px;}
+
+.point-num{
+  font-family:var(--serif);font-weight:900;font-size:52px;color:var(--red);
+  line-height:1;letter-spacing:-2px;min-width:80px;
+  position:relative;
+}
+.point-num .micro{
+  display:block;font-family:var(--sans);font-weight:700;font-size:9px;color:var(--red);
+  letter-spacing:3px;margin-top:6px;
 }
 
-.chapter-label .label-text {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  letter-spacing: 6px;
-  color: var(--text-on-navy-dim);
+.point-content{flex:1;padding-top:4px;}
+.point-title{
+  font-family:var(--serif);font-weight:700;font-size:22px;color:var(--navy);
+  letter-spacing:2px;line-height:1.4;margin-bottom:10px;
+}
+.point-title .red-dot{
+  display:inline-block;width:6px;height:6px;background:var(--red);border-radius:50%;
+  margin-right:10px;vertical-align:middle;
+}
+.point-desc{
+  font-family:var(--sans);font-weight:300;font-size:14px;color:#555;
+  line-height:1.75;letter-spacing:0.5px;max-width:700px;
 }
 
-.left-title {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 700;
-  font-size: 96px;
-  line-height: 1.1;
-  color: #FFFFFF;
-  letter-spacing: 4px;
-  margin-bottom: 28px;
+/* 右侧底部装饰 */
+.right-foot{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:16px;padding-top:14px;border-top:2px solid var(--navy);
 }
+.right-foot .rf-left{
+  font-family:var(--serif);font-weight:700;font-size:12px;color:var(--navy);letter-spacing:4px;
+}
+.right-foot .rf-right{
+  font-family:var(--sans);font-weight:300;font-size:10px;color:#aaa;letter-spacing:3px;
+}
+.right-foot .rf-mid{display:flex;gap:6px;}
+.right-foot .rf-mid .sq{width:8px;height:8px;background:var(--navy);}
+.right-foot .rf-mid .sq.r{background:var(--red);}
 
-.left-title .accent {
-  color: var(--red);
-}
-
-.left-subtitle {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 400;
-  font-size: 22px;
-  color: var(--text-on-navy-dim);
-  letter-spacing: 2px;
-  line-height: 1.6;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.15);
-  width: 440px;
-}
-
-.left-footer {
-  position: absolute;
-  bottom: 60px;
-  left: 70px;
-  right: 60px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-
-.left-footer-left {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.left-footer-left .kw {
-  font-size: 12px;
-  letter-spacing: 4px;
-  color: var(--text-on-navy-dim);
-  font-weight: 400;
-}
-
-.left-footer-left .kw-row {
-  display: flex;
-  gap: 16px;
-  font-size: 13px;
-  letter-spacing: 2px;
-  color: var(--text-on-navy);
-  font-weight: 400;
-}
-
-.left-footer-left .kw-row span {
-  position: relative;
-  padding-left: 14px;
-}
-
-.left-footer-left .kw-row span::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 6px;
-  height: 1px;
-  background: var(--red);
-  transform: translateY(-0.5px);
-}
-
-.left-footer-right {
-  text-align: right;
-  font-family: 'Noto Serif SC', serif;
-  color: var(--text-on-navy-dim);
-  font-size: 13px;
-  letter-spacing: 3px;
-  line-height: 1.8;
-}
-
-/* ===== RIGHT PANEL ===== */
-.right-panel {
-  flex: 1;
-  height: 900px;
-  background: var(--light);
-  position: relative;
-  padding: 80px 70px 60px 70px;
-  display: flex;
-  flex-direction: column;
-}
-
-.right-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  padding-bottom: 18px;
-  border-bottom: 2px solid var(--navy);
-}
-
-.right-header .rh-title {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 5px;
-  color: var(--navy);
-}
-
-.right-header .rh-meta {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 12px;
-  letter-spacing: 3px;
-  color: var(--text-muted);
-}
-
-.points-list {
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-}
-
-.point-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 28px;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--light-alt);
-  position: relative;
-}
-
-.point-num {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 900;
-  font-size: 52px;
-  color: var(--red);
-  line-height: 1;
-  min-width: 78px;
-  letter-spacing: -1px;
-}
-
-.point-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-top: 6px;
-}
-
-.point-title {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 700;
-  font-size: 24px;
-  color: var(--navy);
-  letter-spacing: 2px;
-  line-height: 1.3;
-}
-
-.point-desc {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.7;
-  letter-spacing: 0.5px;
-  max-width: 620px;
-}
-
-.point-tag {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 500;
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: var(--red);
-  margin-top: 4px;
-}
-
-/* Data callout */
-.data-callout {
-  margin-top: 28px;
-  background: var(--navy);
-  padding: 26px 32px;
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  position: relative;
-  overflow: hidden;
-}
-
-.data-callout::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 6px;
-  height: 100%;
-  background: var(--red);
-}
-
-.data-callout .dc-label {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 4px;
-  color: var(--text-on-navy-dim);
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  padding-right: 8px;
-  border-right: 1px solid rgba(255,255,255,0.2);
-  line-height: 1.4;
-}
-
-.data-callout .dc-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.data-callout .dc-text {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  color: var(--text-on-navy-dim);
-  letter-spacing: 2px;
-}
-
-.data-callout .dc-number {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 900;
-  font-size: 56px;
-  color: #FFFFFF;
-  line-height: 1;
-  letter-spacing: -1px;
-}
-
-.data-callout .dc-number .pct {
-  font-size: 34px;
-  color: var(--red);
-  font-weight: 700;
-  margin-left: 4px;
-}
-
-.data-callout .dc-num-range {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 500;
-  font-size: 13px;
-  color: var(--gold);
-  letter-spacing: 2px;
-  margin-top: 2px;
-}
-
-/* Right footer */
-.right-footer {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 18px;
-  border-top: 1px solid var(--light-alt);
-}
-
-.right-footer .rf-left {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 11px;
-  letter-spacing: 4px;
-  color: var(--text-muted);
-  font-weight: 400;
-}
-
-.right-footer .rf-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.right-footer .rf-right .dot {
-  width: 8px;
-  height: 8px;
-  background: var(--red);
-  border-radius: 0;
-  transform: rotate(45deg);
-}
-
-.right-footer .rf-right .rf-text {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 13px;
-  letter-spacing: 3px;
-  color: var(--navy);
-  font-weight: 600;
-}
 </style>
 </head>
 <body>
@@ -412,93 +202,105 @@ body {
   <div id="bg"></div>
   <div id="ct">
 
-    <!-- LEFT PANEL -->
-    <div class="left-panel">
-      <div class="left-deco-number">02</div>
-
-      <div class="left-content">
-        <div class="chapter-label">
-          <div class="red-bar"></div>
-          <div class="label-text"><span>PART 02</span></div>
-        </div>
-
-        <h1 class="left-title">增长<br>驱动<span class="accent">机制</span></h1>
-
-        <p class="left-subtitle"><span>开源如何成为经济引擎</span></p>
-      </div>
-
-      <div class="left-footer">
-        <div class="left-footer-left">
-          <div class="kw"><span>本章关键词</span></div>
-          <div class="kw-row">
-            <span>成本降维</span>
-            <span>扩散加速</span>
-            <span>生态催生</span>
-          </div>
-        </div>
-        <div class="left-footer-right">
-          <span>CHAPTER</span><br>
-          <span style="font-size:20px;color:#FFFFFF;font-weight:700;letter-spacing:2px;">TWO</span>
-        </div>
-      </div>
+    <div class="top-strip">
+      <div class="tag"><span>增长驱动机制</span></div>
+      <div class="narrative">本节深入分析开源软件驱动经济增长的三大机制：成本降维、扩散加速与生态催生，为理解开源经济模式提供清晰的理论框架与分析视角</div>
+      <div class="meta">2024 / EDITORIAL</div>
     </div>
 
-    <!-- RIGHT PANEL -->
-    <div class="right-panel">
-      <div class="right-header">
-        <div class="rh-title"><span>三 大 机 制 · 概 览</span></div>
-        <div class="rh-meta"><span>03 Mechanisms</span></div>
-      </div>
+    <div class="main">
 
-      <div class="points-list">
+      <div class="left-block">
+        <div class="ghost-num">02</div>
 
-        <div class="point-item">
-          <div class="point-num"><span>01</span></div>
-          <div class="point-body">
-            <div class="point-title"><span>降低创新成本</span></div>
-            <div class="point-desc"><span>开源复用让企业可将研发投入集中在差异化场景而非重复造轮子</span></div>
-            <div class="point-tag"><span>COST REDUCTION</span></div>
+        <div class="corner-top">
+          <span class="dot"></span>
+          <span>PART 02</span>
+        </div>
+
+        <div class="divider-h"></div>
+
+        <div class="title-cn">
+          增长<span class="accent">驱动</span><br>机&nbsp;制
+        </div>
+
+        <div class="title-en">GROWTH &nbsp;·&nbsp; DRIVING &nbsp;·&nbsp; MECHANISM</div>
+
+        <div class="left-divider"></div>
+
+        <div class="left-quote">
+          <span class="mark">"</span>开源如何成为经济引擎——三个机制，一条清晰的理论路径。
+        </div>
+
+        <div class="data-card">
+          <div class="num-big">30<span class="pct">–</span>50<span class="pct">%</span></div>
+          <div class="v-bar"></div>
+          <div class="d-info">
+            <div class="d-label">研发成本节省</div>
+            <div class="d-sub">企业平均估算 · 开源复用带来的边际效益</div>
           </div>
         </div>
 
-        <div class="point-item">
-          <div class="point-num"><span>02</span></div>
-          <div class="point-body">
-            <div class="point-title"><span>加速技术扩散</span></div>
-            <div class="point-desc"><span>标准协议下的代码共享使新技术在数月内即可完成全球普及</span></div>
-            <div class="point-tag"><span>DIFFUSION ACCELERATION</span></div>
+        <div class="corner-deco"></div>
+        <div class="bottom-mark">CHAPTER · 02 &nbsp;/&nbsp; GROWTH DRIVING</div>
+      </div>
+
+      <div class="right-area">
+        <div class="r-top-tag">
+          <span>OPEN SOURCE AS ECONOMIC ENGINE</span>
+          <span class="line"></span>
+        </div>
+        <div class="r-sub-title">开源如何成为经济引擎</div>
+        <div class="r-sub-desc">THREE MECHANISMS · 三大机制综述</div>
+
+        <div class="points-list">
+
+          <div class="point-item">
+            <div class="point-num">
+              01
+              <span class="micro">COST</span>
+            </div>
+            <div class="point-content">
+              <div class="point-title"><span class="red-dot"></span>降低创新成本</div>
+              <div class="point-desc">开源复用让企业可将研发投入集中在差异化场景而非重复造轮子，将有限的资源投入更具竞争价值的创新环节。</div>
+            </div>
           </div>
-        </div>
 
-        <div class="point-item">
-          <div class="point-num"><span>03</span></div>
-          <div class="point-body">
-            <div class="point-title"><span>催生产业生态</span></div>
-            <div class="point-desc"><span>围绕核心开源项目形成的咨询、培训、商业支持市场持续扩张</span></div>
-            <div class="point-tag"><span>ECOSYSTEM EMERGENCE</span></div>
+          <div class="point-item">
+            <div class="point-num">
+              02
+              <span class="micro">DIFFUSION</span>
+            </div>
+            <div class="point-content">
+              <div class="point-title"><span class="red-dot"></span>加速技术扩散</div>
+              <div class="point-desc">标准协议下的代码共享使新技术在数月内即可完成全球普及，打破了传统商业软件的传播壁垒与时间滞后。</div>
+            </div>
           </div>
+
+          <div class="point-item">
+            <div class="point-num">
+              03
+              <span class="micro">ECOSYSTEM</span>
+            </div>
+            <div class="point-content">
+              <div class="point-title"><span class="red-dot"></span>催生产业生态</div>
+              <div class="point-desc">围绕核心开源项目形成的咨询、培训、商业支持市场持续扩张，构建起从工具到服务的完整价值链。</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="right-foot">
+          <div class="rf-left">SECTION 02 · 增长驱动机制</div>
+          <div class="rf-mid">
+            <span class="sq"></span><span class="sq r"></span><span class="sq"></span>
+          </div>
+          <div class="rf-right">END OF CHAPTER HEADER</div>
         </div>
 
       </div>
 
-      <div class="data-callout">
-        <div class="dc-label"><span>关键数据</span></div>
-        <div class="dc-main">
-          <div class="dc-text"><span>研发成本节省</span></div>
-          <div class="dc-number"><span>30-50<span class="pct">%</span></span></div>
-          <div class="dc-num-range"><span>企业平均估算</span></div>
-        </div>
-      </div>
-
-      <div class="right-footer">
-        <div class="rf-left"><span>THE OPEN SOURCE ECONOMY</span></div>
-        <div class="rf-right">
-          <div class="dot"></div>
-          <div class="rf-text"><span>进入正题</span></div>
-        </div>
-      </div>
     </div>
-
   </div>
 </div>
 </body>

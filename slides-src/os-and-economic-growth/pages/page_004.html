@@ -1,348 +1,284 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>核心数据一览</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<script src="../assets/echarts.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --primary:#0D2137;
-  --accent:#E53935;
-  --bg:#F5F5F5;
-  --card:#FFFFFF;
-  --line:#D8D8D8;
-  --muted:#6B7B8D;
-  --gold:#C8A95A;
+  --navy:#0D2137;
+  --red:#E53935;
+  --gray-bg:#F5F5F5;
+  --card-bg:#FFFFFF;
+  --line:#D9DEE3;
+  --text-main:#1A2740;
+  --text-sub:#5A6B80;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:1600px;height:900px;overflow:hidden;}
-body{
-  font-family:'Noto Sans SC',sans-serif;
-  color:var(--primary);
-  background:var(--bg);
-  font-size:14px;
-  font-weight:400;
-  line-height:1.5;
+body{font-family:'Noto Sans SC',sans-serif;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--gray-bg);}
+#bg{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,#F5F5F5 0%,#EDEFF3 100%);
 }
-.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
-#bg{position:absolute;inset:0;z-index:0;background:var(--bg);}
-#ct{position:absolute;inset:0;z-index:1;padding:38px 50px 32px 50px;box-sizing:border-box;display:flex;flex-direction:column;}
+#bg::before{content:"";position:absolute;top:-120px;right:-120px;width:380px;height:380px;
+  background:radial-gradient(circle,var(--navy) 0%,transparent 70%);opacity:0.06;border-radius:50%;}
+#bg::after{content:"";position:absolute;bottom:-100px;left:-80px;width:300px;height:300px;
+  background:radial-gradient(circle,var(--red) 0%,transparent 70%);opacity:0.08;border-radius:50%;}
+#ct{position:absolute;inset:0;z-index:1;padding:40px 50px;display:flex;flex-direction:column;}
 
-/* HEADER */
-.header{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:2px solid var(--primary);margin-bottom:18px;}
+/* ===== Header ===== */
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--navy);}
 .header-left{display:flex;flex-direction:column;gap:6px;}
-.eyebrow{font-size:11px;font-weight:500;letter-spacing:4px;color:var(--muted);text-transform:uppercase;}
-.main-title{font-family:'Noto Serif SC',serif;font-size:52px;font-weight:900;color:var(--primary);letter-spacing:4px;line-height:1;}
-.subtitle{font-size:13px;color:var(--muted);font-weight:300;margin-top:4px;}
-.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-bottom:6px;}
-.tag-red{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;letter-spacing:2px;}
-.tag-num{font-family:'Noto Serif SC',serif;font-size:13px;color:var(--muted);font-weight:400;letter-spacing:1px;}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:4px;color:var(--red);text-transform:uppercase;}
+.title{font-family:'Noto Serif SC',serif;font-size:34px;font-weight:900;color:var(--navy);letter-spacing:1px;}
+.title .accent{color:var(--red);}
+.subtitle{font-size:12px;color:var(--text-sub);letter-spacing:1px;margin-top:2px;}
+.header-right{font-family:'Noto Serif SC',serif;font-size:12px;color:var(--text-sub);text-align:right;line-height:1.7;}
+.header-right .issue{font-size:22px;font-weight:700;color:var(--navy);display:block;margin-bottom:2px;}
 
-/* MAIN GRID */
-.main{display:flex;gap:24px;flex:1;min-height:0;}
-.left-col{width:810px;display:flex;flex-direction:column;gap:14px;min-height:0;}
-.right-col{width:640px;display:flex;flex-direction:column;min-height:0;}
+/* ===== Main Grid ===== */
+.main{flex:1;display:grid;grid-template-columns:45% 55%;gap:30px;min-height:0;}
 
-/* KPI CARDS */
-.kpi-list{display:flex;flex-direction:column;gap:8px;}
-.kpi-row{
-  background:var(--card);
-  border-left:3px solid var(--primary);
-  padding:9px 16px;
-  display:flex;align-items:center;gap:16px;
-  box-shadow:0 1px 3px rgba(13,33,55,0.06);
-  height:70px;
-}
-.kpi-index{font-family:'Noto Serif SC',serif;font-size:12px;color:var(--muted);font-weight:700;width:24px;letter-spacing:1px;}
-.kpi-num{font-family:'Noto Serif SC',serif;font-size:36px;font-weight:900;color:var(--accent);line-height:1;min-width:150px;letter-spacing:1px;}
-.kpi-num-sub{font-size:13px;color:var(--muted);font-weight:400;margin-left:2px;}
-.kpi-divider{width:1px;height:42px;background:var(--line);}
+/* ===== Left: KPI Cards ===== */
+.kpi-col{display:flex;flex-direction:column;gap:10px;}
+.kpi-card{background:var(--card-bg);border-left:4px solid var(--navy);padding:12px 18px;display:flex;align-items:center;gap:16px;box-shadow:0 1px 3px rgba(13,33,55,0.06);position:relative;overflow:hidden;}
+.kpi-card.accent{border-left-color:var(--red);}
+.kpi-card::after{content:"";position:absolute;right:0;top:0;bottom:0;width:3px;background:var(--line);}
+.kpi-num{font-family:'Noto Serif SC',serif;font-size:30px;font-weight:900;color:var(--navy);white-space:nowrap;min-width:130px;line-height:1.1;}
+.kpi-card.accent .kpi-num{color:var(--red);}
+.kpi-num .unit{font-size:14px;font-weight:500;margin-left:2px;}
 .kpi-text{flex:1;display:flex;flex-direction:column;gap:3px;}
-.kpi-label{font-size:13px;font-weight:700;color:var(--primary);letter-spacing:0.5px;}
-.kpi-desc{font-size:11px;color:var(--muted);font-weight:300;line-height:1.4;}
+.kpi-label{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:0.5px;}
+.kpi-desc{font-size:10.5px;color:var(--text-sub);line-height:1.5;}
+.kpi-index{font-family:'Noto Serif SC',serif;font-size:11px;color:var(--red);font-weight:700;position:absolute;top:8px;right:12px;letter-spacing:1px;}
 
-/* CHARTS */
-.charts-row{display:flex;gap:14px;height:240px;}
-.chart-box{
-  background:var(--card);
-  padding:10px 12px 6px 12px;
-  flex:1;
-  display:flex;flex-direction:column;
-  box-shadow:0 1px 3px rgba(13,33,55,0.06);
-  border-top:2px solid var(--accent);
-}
-.chart-title{font-size:11px;font-weight:700;color:var(--primary);letter-spacing:1px;margin-bottom:2px;}
-.chart-subtitle{font-size:9px;color:var(--muted);font-weight:300;margin-bottom:2px;}
-.chart-container{flex:1;width:100%;}
+/* ===== Right Column ===== */
+.right-col{display:flex;flex-direction:column;gap:14px;min-height:0;}
 
-/* RIGHT INSIGHTS */
-.insights-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.insights-header::before{content:'';display:inline-block;width:24px;height:2px;background:var(--accent);}
-.insights-header span{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--primary);}
-.insights-header .sub{font-size:10px;color:var(--muted);font-weight:300;margin-left:auto;letter-spacing:1px;}
+/* Charts Row */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;height:230px;}
+.chart-box{background:var(--card-bg);padding:12px 14px 8px;box-shadow:0 1px 3px rgba(13,33,55,0.06);display:flex;flex-direction:column;}
+.chart-title{font-family:'Noto Serif SC',serif;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.chart-sub{font-size:10px;color:var(--text-sub);margin-bottom:4px;letter-spacing:0.5px;}
+.chart-box .chart-canvas{flex:1;width:100%;}
 
-.insight-list{display:flex;flex-direction:column;gap:6px;flex:1;}
-.insight-item{
-  background:var(--card);
-  padding:8px 14px;
-  display:flex;gap:12px;
-  border-bottom:1px solid var(--line);
-  flex:1;
-}
-.insight-num{
-  font-family:'Noto Serif SC',serif;
-  font-size:22px;font-weight:900;
-  color:var(--accent);
-  line-height:1;
-  width:32px;
-  flex-shrink:0;
-}
-.insight-body{flex:1;display:flex;flex-direction:column;gap:2px;}
-.insight-title{font-size:13px;font-weight:700;color:var(--primary);letter-spacing:0.5px;}
-.insight-text{font-size:10.5px;color:var(--muted);font-weight:300;line-height:1.5;}
+/* Interpretations */
+.interp-section{flex:1;display:flex;flex-direction:column;background:var(--navy);padding:16px 18px;color:#fff;position:relative;overflow:hidden;}
+.interp-section::before{content:"";position:absolute;top:0;left:0;width:6px;height:100%;background:var(--red);}
+.interp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.interp-head-l{font-family:'Noto Serif SC',serif;font-size:14px;font-weight:700;letter-spacing:1px;}
+.interp-head-r{font-size:10px;color:#8FA0B5;letter-spacing:1px;}
+.interp-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:8px 14px;}
+.interp-item{display:flex;flex-direction:column;gap:3px;border-top:1px solid rgba(255,255,255,0.15);padding-top:6px;}
+.interp-item .tag{display:flex;align-items:center;gap:6px;}
+.interp-item .dot{width:6px;height:6px;background:var(--red);border-radius:50%;flex-shrink:0;}
+.interp-item .label{font-size:11px;font-weight:700;color:var(--red);letter-spacing:0.5px;}
+.interp-item .desc{font-size:10px;color:#C5D0E0;line-height:1.55;}
 
-/* FOOTER */
-.footer{
-  margin-top:12px;
-  padding:10px 18px;
-  background:var(--primary);
-  color:#fff;
-  display:flex;align-items:center;gap:14px;
-  position:relative;
-}
-.footer::before{content:'';display:inline-block;width:4px;height:24px;background:var(--accent);}
-.footer-text{font-size:11px;font-weight:300;line-height:1.5;letter-spacing:0.5px;flex:1;}
-.footer-mark{font-family:'Noto Serif SC',serif;font-size:10px;color:var(--accent);font-weight:700;letter-spacing:3px;}
+/* ===== Footer ===== */
+.footer{margin-top:14px;padding:12px 18px;background:var(--card-bg);border-top:2px solid var(--navy);border-bottom:2px solid var(--navy);display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(13,33,55,0.06);}
+.footer-mark{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:900;color:var(--red);flex-shrink:0;line-height:1;}
+.footer-text{font-family:'Noto Serif SC',serif;font-size:12.5px;color:var(--navy);line-height:1.7;font-weight:500;letter-spacing:0.3px;}
+.footer-text .em{color:var(--red);font-weight:700;}
+.footer-tag{margin-left:auto;font-size:10px;color:var(--text-sub);letter-spacing:2px;flex-shrink:0;text-align:right;}
 </style>
 </head>
 <body>
 <div class="wrapper">
-<div id="bg"></div>
-<div id="ct">
+  <div id="bg"></div>
+  <div id="ct">
 
-<div class="header">
-  <div class="header-left">
-    <span class="eyebrow">OPEN SOURCE · DATA INSIGHTS</span>
-    <span class="main-title">核心数据一览</span>
-    <span class="subtitle">—— 从市场体量到全球格局，开源软件的关键数字全景</span>
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <span class="eyebrow">DATA OVERVIEW · 数据专题</span>
+        <div class="title">核心数据<span class="accent">一览</span></div>
+        <div class="subtitle">聚焦开源软件在经济层面的多重影响力 · 2018—2023 全球视角</div>
+      </div>
+      <div class="header-right">
+        <span class="issue">No. 01</span>
+        杂志数据专题 · 开源经济影响力<br>
+        OPEN SOURCE · ECONOMIC IMPACT
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="main">
+
+      <!-- Left: KPI Cards -->
+      <div class="kpi-col">
+        <div class="kpi-card">
+          <div class="kpi-index">01</div>
+          <div class="kpi-num">2000<span class="unit">亿美元</span></div>
+          <div class="kpi-text">
+            <span class="kpi-label">开源软件市场 2023 年规模</span>
+            <span class="kpi-desc">较 2018 年增长 2.5 倍，五年复合增速显著领跑软件行业</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-index">02</div>
+          <div class="kpi-num">15<span class="unit">% / 年</span></div>
+          <div class="kpi-text">
+            <span class="kpi-label">GitHub 项目年增速</span>
+            <span class="kpi-desc">全球新增开源仓库数量持续攀升，生态活跃度屡创新高</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-index">03</div>
+          <div class="kpi-num">40<span class="unit">万 +</span></div>
+          <div class="kpi-text">
+            <span class="kpi-label">美国开源相关岗位</span>
+            <span class="kpi-desc">开源岗位已深度嵌入科技、金融、制造等多行业用人结构</span>
+          </div>
+        </div>
+        <div class="kpi-card accent">
+          <div class="kpi-index">04</div>
+          <div class="kpi-num">60<span class="unit">%</span></div>
+          <div class="kpi-text">
+            <span class="kpi-label">MIT 与 Apache 2.0 许可证合计份额</span>
+            <span class="kpi-desc">两大宽松型许可证主导开源分发，成为企业采用首选</span>
+          </div>
+        </div>
+        <div class="kpi-card accent">
+          <div class="kpi-index">05</div>
+          <div class="kpi-num">20<span class="unit">% +</span></div>
+          <div class="kpi-text">
+            <span class="kpi-label">中国贡献者年增速</span>
+            <span class="kpi-desc">中国开源贡献者五年增长超过三倍，稳居全球贡献者首位</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <div class="charts-row">
+          <div class="chart-box">
+            <div class="chart-title">开源市场规模增长曲线</div>
+            <div class="chart-sub">2018—2023 全球 · 单位：亿美元</div>
+            <div id="chart_1" class="chart-canvas" style="width:100%;height:170px;"></div>
+          </div>
+          <div class="chart-box">
+            <div class="chart-title">开源许可证占比分布</div>
+            <div class="chart-sub">MIT 与 Apache 2.0 合计 60%</div>
+            <div id="chart_2" class="chart-canvas" style="width:100%;height:170px;"></div>
+          </div>
+        </div>
+
+        <div class="interp-section">
+          <div class="interp-head">
+            <span class="interp-head-l">▎ 六维解读 · 数据背后的经济图景</span>
+            <span class="interp-head-r">SIX DIMENSIONS</span>
+          </div>
+          <div class="interp-grid">
+            <div class="interp-item">
+              <div class="tag"><span class="dot"></span><span class="label">市场规模</span></div>
+              <div class="desc">全球开源软件市场从 2018 年的八百亿美元增长至 2023 年的两千亿美元。</div>
+            </div>
+            <div class="interp-item">
+              <div class="tag"><span class="dot"></span><span class="label">融资增长</span></div>
+              <div class="desc">开源公司年度融资总额在 2021 年峰值超过六十亿美元，随后回稳。</div>
+            </div>
+            <div class="interp-item">
+              <div class="tag"><span class="dot"></span><span class="label">就业带动</span></div>
+              <div class="desc">开源相关岗位在美国市场已超四十万个，中国岗位增速位居全球前列。</div>
+            </div>
+            <div class="interp-item">
+              <div class="tag"><span class="dot"></span><span class="label">项目增长</span></div>
+              <div class="desc">GitHub 新增仓库数量每年以百分之十五的速度持续增长。</div>
+            </div>
+            <div class="interp-item">
+              <div class="tag"><span class="dot"></span><span class="label">许可证分布</span></div>
+              <div class="desc">MIT 与 Apache 2.0 合计占据开源许可证使用的百分之六十。</div>
+            </div>
+            <div class="interp-item">
+              <div class="tag"><span class="dot"></span><span class="label">中国增长</span></div>
+              <div class="desc">中国开源贡献者数量五年内增长超过三倍，稳居全球首位。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-mark">「</div>
+      <div class="footer-text">从市场体量到就业岗位，从项目增长到区域对比，开源软件已成为<span class="em">数字经济中最具活力的增长极</span>，数据维度全面印证其不可替代的经济影响力。</div>
+      <div class="footer-tag">END · 数据来源综合整理</div>
+    </div>
+
   </div>
-  <div class="header-right">
-    <span class="tag-red">DATA DASHBOARD</span>
-    <span class="tag-num">Vol.01 / 2024</span>
-  </div>
 </div>
 
-<div class="main">
-
-<div class="left-col">
-
-<div class="kpi-list">
-
-<div class="kpi-row">
-  <span class="kpi-index">01</span>
-  <span class="kpi-num">2000<span class="kpi-num-sub">亿美元</span></span>
-  <span class="kpi-divider"></span>
-  <span class="kpi-text">
-    <span class="kpi-label">开源软件市场 (2023)</span>
-    <span class="kpi-desc">全球市场规模已达两千亿美元，较 2018 年增长 2.5 倍</span>
-  </span>
-</div>
-
-<div class="kpi-row">
-  <span class="kpi-index">02</span>
-  <span class="kpi-num">15%<span class="kpi-num-sub">/年</span></span>
-  <span class="kpi-divider"></span>
-  <span class="kpi-text">
-    <span class="kpi-label">GitHub 项目年增速</span>
-    <span class="kpi-desc">全球新增仓库数量持续高速增长，生态繁荣</span>
-  </span>
-</div>
-
-<div class="kpi-row">
-  <span class="kpi-index">03</span>
-  <span class="kpi-num">40<span class="kpi-num-sub">万+</span></span>
-  <span class="kpi-divider"></span>
-  <span class="kpi-text">
-    <span class="kpi-label">开源相关岗位 (美国)</span>
-    <span class="kpi-desc">就业市场持续扩张，吸引大量开发者投身开源领域</span>
-  </span>
-</div>
-
-<div class="kpi-row">
-  <span class="kpi-index">04</span>
-  <span class="kpi-num">60<span class="kpi-num-sub">%</span></span>
-  <span class="kpi-divider"></span>
-  <span class="kpi-text">
-    <span class="kpi-label">MIT + Apache 2.0 份额</span>
-    <span class="kpi-desc">两者合计占据开源许可证使用总量的六成，为主流选择</span>
-  </span>
-</div>
-
-<div class="kpi-row">
-  <span class="kpi-index">05</span>
-  <span class="kpi-num">20%<span class="kpi-num-sub">+ /年</span></span>
-  <span class="kpi-divider"></span>
-  <span class="kpi-text">
-    <span class="kpi-label">中国贡献者年增速</span>
-    <span class="kpi-desc">五年内增长超过三倍，稳居全球开源贡献者首位</span>
-  </span>
-</div>
-
-</div>
-
-<div class="charts-row">
-  <div class="chart-box">
-    <span class="chart-title">开源市场规模 2018–2023</span>
-    <span class="chart-subtitle">单位：亿美元 · 数据来源：行业综合统计</span>
-    <div id="chart_1" class="chart-container" style="width:100%;height:200px;"></div>
-  </div>
-  <div class="chart-box">
-    <span class="chart-title">开源许可证分布占比</span>
-    <span class="chart-subtitle">MIT + Apache 2.0 合计 60%</span>
-    <div id="chart_2" class="chart-container" style="width:100%;height:200px;"></div>
-  </div>
-</div>
-
-</div>
-
-<div class="right-col">
-
-<div class="insights-header">
-  <span>解读要点</span>
-  <span class="sub">INSIGHTS · 06</span>
-</div>
-
-<div class="insight-list">
-
-<div class="insight-item">
-  <span class="insight-num">01</span>
-  <span class="insight-body">
-    <span class="insight-title">市场规模</span>
-    <span class="insight-text">全球开源软件市场从 2018 年的八百亿美元增长至 2023 年的两千亿美元，五年间翻了 2.5 倍，展现出强劲的增长动能。</span>
-  </span>
-</div>
-
-<div class="insight-item">
-  <span class="insight-num">02</span>
-  <span class="insight-body">
-    <span class="insight-title">融资增长</span>
-    <span class="insight-text">开源公司年度融资总额在 2021 年峰值超过六十亿美元，随后回稳，资本市场对开源商业模式持续关注。</span>
-  </span>
-</div>
-
-<div class="insight-item">
-  <span class="insight-num">03</span>
-  <span class="insight-body">
-    <span class="insight-title">就业带动</span>
-    <span class="insight-text">开源相关岗位在美国市场已超四十万个，中国岗位增速位居全球前列，开源正在重塑全球技术就业格局。</span>
-  </span>
-</div>
-
-<div class="insight-item">
-  <span class="insight-num">04</span>
-  <span class="insight-body">
-    <span class="insight-title">项目增长</span>
-    <span class="insight-text">GitHub 新增仓库数量每年以百分之十五的速度持续增长，全球开发者协作创新的热度不断攀升。</span>
-  </span>
-</div>
-
-<div class="insight-item">
-  <span class="insight-num">05</span>
-  <span class="insight-body">
-    <span class="insight-title">许可证分布</span>
-    <span class="insight-text">MIT 与 Apache 2.0 合计占据开源许可证使用的百分之六十，商业友好型许可证成为行业主流共识。</span>
-  </span>
-</div>
-
-<div class="insight-item">
-  <span class="insight-num">06</span>
-  <span class="insight-body">
-    <span class="insight-title">中国增长</span>
-    <span class="insight-text">中国开源贡献者数量五年内增长超过三倍，稳居全球首位，成为推动开源生态发展的核心力量。</span>
-  </span>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="footer">
-  <span class="footer-text">从市场体量到就业岗位，从项目增长到区域对比，开源软件已成为数字经济中最具活力的增长极，数据维度全面印证其不可替代的经济影响力。</span>
-  <span class="footer-mark">CORE DATA · 2024</span>
-</div>
-
-</div>
-</div>
-
-<script>(function(){
-  var chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
+<script src="../assets/echarts.min.js"></script>
+<script>
+(function(){
+  const chart = echarts.init(document.getElementById('chart_1'), null, {renderer:'svg'});
   chart.setOption({
-    grid:{left:42,right:10,top:18,bottom:24},
-    tooltip:{trigger:'axis'},
+    grid:{left:42,right:14,top:14,bottom:22},
     xAxis:{
       type:'category',
       data:['2018','2019','2020','2021','2022','2023'],
-      axisLine:{lineStyle:{color:'#0D2137'}},
-      axisLabel:{color:'#0D2137',fontSize:10,fontFamily:'Noto Sans SC'},
-      axisTick:{show:false}
+      axisLine:{lineStyle:{color:'#D9DEE3'}},
+      axisTick:{show:false},
+      axisLabel:{color:'#5A6B80',fontSize:10,fontFamily:'Noto Sans SC'}
     },
     yAxis:{
       type:'value',
-      axisLabel:{color:'#6B7B8D',fontSize:9,formatter:'{value}',fontFamily:'Noto Sans SC'},
-      splitLine:{lineStyle:{color:'#E0E0E0',type:'dashed'}},
-      axisLine:{show:false},axisTick:{show:false}
+      axisLine:{show:false},
+      axisTick:{show:false},
+      splitLine:{lineStyle:{color:'#EDEFF3',type:'dashed'}},
+      axisLabel:{color:'#5A6B80',fontSize:9,fontFamily:'Noto Sans SC',formatter:'{value}亿'}
     },
     series:[{
-      type:'bar',
-      data:[
-        {value:800,itemStyle:{color:'#0D2137'}},
-        {value:1050,itemStyle:{color:'#0D2137'}},
-        {value:1300,itemStyle:{color:'#0D2137'}},
-        {value:1550,itemStyle:{color:'#0D2137'}},
-        {value:1800,itemStyle:{color:'#0D2137'}},
-        {value:2000,itemStyle:{color:'#E53935'}}
-      ],
-      barWidth:'55%',
+      type:'line',
+      data:[800,1050,1300,1500,1750,2000],
+      smooth:true,
+      symbol:'circle',
+      symbolSize:7,
+      lineStyle:{color:'#0D2137',width:2.5},
+      itemStyle:{color:'#E53935',borderColor:'#0D2137',borderWidth:1.5},
+      areaStyle:{color:{
+        type:'linear',x:0,y:0,x2:0,y2:1,
+        colorStops:[{offset:0,color:'rgba(13,33,55,0.18)'},{offset:1,color:'rgba(13,33,55,0.01)'}]
+      }},
       label:{show:true,position:'top',color:'#0D2137',fontSize:9,fontWeight:700,fontFamily:'Noto Sans SC'}
     }]
   });
   window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
-})();</script>
-
-<script>(function(){
-  var chart = echarts.init(document.getElementById('chart_2'), null, {renderer:'svg'});
+})();
+</script>
+<script>
+(function(){
+  const chart = echarts.init(document.getElementById('chart_2'), null, {renderer:'svg'});
   chart.setOption({
-    tooltip:{trigger:'item',formatter:'{b}: {d}%'},
-    legend:{
-      orient:'vertical',
-      right:4,
-      top:'center',
-      textStyle:{color:'#0D2137',fontSize:9,fontFamily:'Noto Sans SC'},
-      itemWidth:8,itemHeight:8,itemGap:5
-    },
     series:[{
       type:'pie',
-      radius:['42%','68%'],
-      center:['32%','50%'],
+      radius:['38%','62%'],
+      center:['50%','52%'],
       avoidLabelOverlap:true,
-      label:{show:true,position:'center',formatter:'MIT+\nApache 2.0\n60%',color:'#E53935',fontSize:11,fontWeight:700,fontFamily:'Noto Serif SC',lineHeight:14},
-      labelLine:{show:false},
+      itemStyle:{borderColor:'#fff',borderWidth:2},
+      label:{color:'#0D2137',fontSize:10,fontFamily:'Noto Sans SC',formatter:'{b}\n{d}%'},
+      labelLine:{length:6,length2:6},
       data:[
-        {value:35,name:'MIT',itemStyle:{color:'#E53935'}},
-        {value:25,name:'Apache 2.0',itemStyle:{color:'#0D2137'}},
-        {value:15,name:'GPL 家族',itemStyle:{color:'#5A7A9B'}},
-        {value:12,name:'BSD 家族',itemStyle:{color:'#8BA3BE'}},
-        {value:13,name:'其他',itemStyle:{color:'#C8D3E0'}}
+        {value:30,name:'MIT',itemStyle:{color:'#E53935'}},
+        {value:30,name:'Apache 2.0',itemStyle:{color:'#0D2137'}},
+        {value:15,name:'GPL',itemStyle:{color:'#3E5C76'}},
+        {value:10,name:'BSD',itemStyle:{color:'#7B97B0'}},
+        {value:15,name:'其他',itemStyle:{color:'#C5D0E0'}}
       ]
+    },{
+      type:'pie',
+      radius:['0%','30%'],
+      silent:true,
+      label:{show:true,position:'center',color:'#0D2137',fontSize:18,fontWeight:700,fontFamily:'Noto Serif SC',formatter:'60%\nMIT+Apache'},
+      labelLine:{show:false},
+      data:[{value:100,itemStyle:{color:'transparent'}}]
     }]
   });
   window.__pptxChartsReady = (window.__pptxChartsReady || 0) + 1;
-})();</script>
-
+})();
+</script>
 </body>
 </html>
