@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>从阅读中认识开源</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
+:root{
+  --coffee:#795548;
+  --coffee-light:#8D6E63;
+  --coffee-dark:#5D4037;
+  --blue:#6B8BA4;
+  --blue-light:#9CB8CB;
+  --warm:#F7F3EE;
+  --warm-2:#EFEBE3;
+  --text-main:#3E3A37;
+  --text-sub:#6D6560;
+  --line:#D9D2C8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Noto Sans SC',sans-serif;
+  color:var(--text-main);
+  background:var(--warm);
+}
+.wrapper{
+  width:1600px;height:900px;
+  position:relative;overflow:hidden;
+  margin:0 auto;
+}
+#bg{
+  position:absolute;inset:0;z-index:0;
+  background:var(--warm);
+}
+#bg::before{
+  content:'';
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:
+    radial-gradient(1200px 600px at 15% 100%, rgba(189,148,118,0.06), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, rgba(107,139,164,0.05), transparent 55%);
+}
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:52px 72px 44px 72px;
+  box-sizing:border-box;
+}
+
+/* Header area */
+.page-tag{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text-sub);letter-spacing:4px;
+  margin-bottom:8px;
+}
+.page-tag .left{display:flex;align-items:center;gap:14px;}
+.page-tag .num{
+  font-family:'Noto Serif SC',serif;font-size:28px;color:var(--coffee);
+  font-weight:600;line-height:1;letter-spacing:0;
+}
+.page-tag .num-row{display:flex;align-items:baseline;gap:8px;}
+.page-tag .line{width:48px;height:1px;background:var(--line);}
+
+.title-area{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:14px;
+}
+.title-block{max-width:820px;}
+.title-main{
+  font-family:'Noto Serif SC',serif;
+  font-size:48px;font-weight:700;color:var(--coffee-dark);
+  letter-spacing:4px;line-height:1.2;
+}
+.title-main .accent{color:var(--coffee);}
+.title-sub{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:13px;color:var(--text-sub);letter-spacing:8px;
+  margin-top:10px;font-weight:300;
+}
+.title-deco{
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+  padding-bottom:6px;
+}
+.title-deco .book{
+  width:44px;height:52px;border:1px solid var(--coffee-light);
+  position:relative;border-radius:1px 3px 3px 1px;
+}
+.title-deco .book::after{
+  content:'';position:absolute;left:4px;top:8px;width:2px;height:36px;
+  background:var(--coffee-light);
+}
+.title-deco .book::before{
+  content:'';position:absolute;left:0;top:0;width:3px;height:100%;
+  background:var(--coffee-light);
+}
+.title-deco .label{font-size:10px;color:var(--text-sub);letter-spacing:3px;}
+
+/* Intro paragraph */
+.intro{
+  font-size:15px;line-height:1.9;color:var(--text-sub);
+  max-width:1360px;margin-bottom:28px;font-weight:300;
+  padding-left:22px;border-left:2px solid var(--coffee-light);
+}
+.intro .hl{color:var(--coffee);font-weight:500;}
+
+/* 5-step flow */
+.flow-wrap{
+  display:flex;align-items:stretch;gap:0;
+  margin-bottom:24px;
+}
+.step{
+  flex:1;position:relative;padding:0 8px;
+}
+.step .num-circle{
+  width:54px;height:54px;border-radius:50%;
+  border:1.5px solid var(--coffee-light);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif SC',serif;font-size:20px;color:var(--coffee);
+  font-weight:600;margin:0 auto 10px auto;
+  background:var(--warm);
+  position:relative;z-index:2;
+}
+.step .num-circle .ord{font-size:11px;font-family:'Noto Sans SC';color:var(--text-sub);letter-spacing:2px;display:block;line-height:1;}
+.step .icon-box{
+  height:54px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:10px;
+}
+.step .card{
+  background:#FBF8F2;
+  border:1px solid var(--line);
+  padding:16px 14px 16px 14px;
+  min-height:158px;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.step .card::before{
+  content:'';position:absolute;top:0;left:14px;right:14px;height:2px;
+  background:var(--coffee);
+}
+.step .s-title{
+  font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600;
+  color:var(--coffee-dark);letter-spacing:2px;
+  margin:6px 0 10px 0;text-align:center;
+}
+.step .s-text{
+  font-size:12px;line-height:1.75;color:var(--text-sub);
+  font-weight:300;text-align:center;
+}
+.step .s-tag{
+  font-size:10px;color:var(--blue);letter-spacing:3px;
+  text-align:center;margin-top:auto;padding-top:8px;
+  border-top:1px dashed var(--line);
+}
+/* connector arrows between steps */
+.connector{
+  align-self:flex-start;margin-top:22px;
+  width:22px;height:54px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.connector::before{
+  content:'';position:absolute;left:0;right:0;top:50%;height:1px;
+  background:var(--coffee-light);
+}
+.connector::after{
+  content:'';position:absolute;right:0;top:50%;
+  transform:translateY(-50%);
+  border-left:5px solid var(--coffee-light);
+  border-top:3.5px solid transparent;
+  border-bottom:3.5px solid transparent;
+}
+
+/* Bottom data cards */
+.data-row{
+  display:flex;gap:20px;margin-top:4px;
+}
+.data-card{
+  flex:1;background:#FBF8F2;border:1px solid var(--line);
+  padding:14px 22px;display:flex;align-items:center;gap:18px;
+  position:relative;
+}
+.data-card .deco-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--coffee);
+  flex-shrink:0;
+}
+.data-card .body{flex:1;}
+.data-card .label{
+  font-size:10px;letter-spacing:3px;color:var(--text-sub);
+  margin-bottom:4px;
+}
+.data-card .val{
+  font-family:'Noto Serif SC',serif;font-size:16px;color:var(--coffee-dark);
+  font-weight:600;letter-spacing:1px;line-height:1.3;
+}
+.data-card .val .big{font-size:24px;color:var(--coffee);}
+.data-card .note{
+  font-size:11px;color:var(--text-sub);font-weight:300;
+  margin-top:3px;line-height:1.5;
+}
+.data-card.right{justify-content:flex-end;}
+.data-card.right .data-text{text-align:right;}
+.data-card.right .deco-dot{background:var(--blue);}
+
+.footer{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
+  font-size:10px;color:var(--text-sub);letter-spacing:3px;
+}
+.footer .center{display:flex;gap:24px;}
+.footer .dot{width:3px;height:3px;border-radius:50%;background:var(--coffee-light);display:inline-block;margin:0 6px;vertical-align:middle;}
+
+/* Book icons via CSS */
+.icon-book{
+  width:28px;height:22px;border:1.2px solid var(--coffee);
+  border-radius:1px 3px 3px 1px;position:relative;
+}
+.icon-book::before{content:'';position:absolute;left:0;top:0;width:2px;height:100%;background:var(--coffee);}
+.icon-book::after{content:'';position:absolute;left:4px;top:5px;width:16px;height:1px;background:var(--coffee-light);}
+.icon-book .line2{position:absolute;left:4px;top:9px;width:16px;height:1px;background:var(--coffee-light);}
+.icon-book .line3{position:absolute;left:4px;top:13px;width:12px;height:1px;background:var(--coffee-light);}
+
+.icon-pages{display:flex;gap:2px;align-items:flex-end;}
+.icon-pages span{width:6px;background:var(--coffee-light);border-radius:0 0 1px 1px;}
+.icon-pages span:nth-child(1){height:16px;}
+.icon-pages span:nth-child(2){height:20px;}
+.icon-pages span:nth-child(3){height:14px;background:var(--coffee);}
+
+.icon-hand{
+  width:22px;height:22px;position:relative;
+}
+.icon-hand::before{
+  content:'';position:absolute;left:2px;top:2px;width:8px;height:16px;
+  border:1.5px solid var(--coffee);border-radius:1px 3px 3px 1px;
+}
+.icon-hand::after{
+  content:'';position:absolute;right:1px;bottom:1px;width:10px;height:10px;
+  border-radius:50%;border:1.5px solid var(--coffee);
+  background:var(--coffee);
+}
+
+.icon-arrow-up{
+  width:22px;height:22px;position:relative;
+}
+.icon-arrow-up .circle{
+  position:absolute;left:1px;top:1px;width:14px;height:14px;
+  border:1.5px solid var(--coffee);border-radius:50%;
+}
+.icon-arrow-up .arrow{
+  position:absolute;right:0;top:6px;width:0;height:0;
+  border-left:6px solid var(--coffee);
+  border-top:4px solid transparent;border-bottom:4px solid transparent;
+}
+
+.icon-people{display:flex;gap:2px;align-items:flex-end;}
+.icon-people span{
+  width:9px;height:9px;border-radius:50% 50% 2px 2px;
+  background:var(--coffee-light);
+}
+.icon-people span:nth-child(2){background:var(--coffee);}
+.icon-people span:nth-child(4){background:var(--coffee);}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="page-tag">
+      <div class="left">
+        <span class="line"></span>
+        <span>PART · 04</span>
+      </div>
+      <div class="right">
+        <span>READING · OPEN SOURCE</span>
+        <span class="line"></span>
+      </div>
+    </div>
+
+    <div class="title-area">
+      <div class="title-block">
+        <div class="title-main">从<span class="accent">阅读</span>中认识开源</div>
+        <div class="title-sub">FROM READING · TO OPEN SOURCE</div>
+      </div>
+      <div class="title-deco">
+        <div class="book"></div>
+        <span class="label">CHAPTER 04</span>
+      </div>
+    </div>
+
+    <div class="intro">
+      <span>阅读是进入开源世界最稳妥的一条路。它帮我们<span class="hl">跳出技术细节</span>，去理解开源为什么如此重要、它从何处来、又将向何处去。而最好的阅读，是<span class="hl">带着问题去读</span>，带着行动去读。</span>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="step">
+        <div class="icon-box">
+          <div class="icon-book">
+            <span class="line2"></span>
+            <span class="line3"></span>
+          </div>
+        </div>
+        <div class="num-circle"><span>01</span></div>
+        <div class="card">
+          <div class="s-title">阅读的价值</div>
+          <div class="s-text">书籍沉淀的是思想脉络，是碎片化信息无法替代的深度入口。</div>
+          <div class="s-tag">深度入口</div>
+        </div>
+      </div>
+      <div class="connector"></div>
+
+      <div class="step">
+        <div class="icon-box">
+          <div class="icon-pages">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="num-circle"><span>02</span></div>
+        <div class="card">
+          <div class="s-title">三类读物</div>
+          <div class="s-text">历史类讲述来路，理论类阐述逻辑，实践类指导落地。</div>
+          <div class="s-tag">历史 · 理论 · 实践</div>
+        </div>
+      </div>
+      <div class="connector"></div>
+
+      <div class="step">
+        <div class="icon-box">
+          <div class="icon-hand"></div>
+        </div>
+        <div class="num-circle"><span>03</span></div>
+        <div class="card">
+          <div class="s-title">边读边做</div>
+          <div class="s-text">读完一段就动手参与，把书中的理念投射到真实项目中。</div>
+          <div class="s-tag">知行合一</div>
+        </div>
+      </div>
+      <div class="connector"></div>
+
+      <div class="step">
+        <div class="icon-box">
+          <div class="icon-arrow-up">
+            <span class="circle"></span>
+            <span class="arrow"></span>
+          </div>
+        </div>
+        <div class="num-circle"><span>04</span></div>
+        <div class="card">
+          <div class="s-title">读以致用</div>
+          <div class="s-text">最终目的是参与社区、贡献代码，让阅读成果在开源中落地。</div>
+          <div class="s-tag">贡献落地</div>
+        </div>
+      </div>
+      <div class="connector"></div>
+
+      <div class="step">
+        <div class="icon-box">
+          <div class="icon-people">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="num-circle"><span>05</span></div>
+        <div class="card">
+          <div class="s-title">与社区共读</div>
+          <div class="s-text">加入读书会或社群，用讨论与提问放大一个人的阅读半径。</div>
+          <div class="s-tag">社群放大</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-row">
+      <div class="data-card">
+        <div class="deco-dot"></div>
+        <div class="body">
+          <div class="label">推荐读物类别</div>
+          <div class="val"><span class="big">3</span> 类　·　历史 · 理论 · 实践</div>
+          <div class="note">覆盖来路、逻辑与落地，构建完整的认知三角。</div>
+        </div>
+      </div>
+      <div class="data-card right">
+        <div class="body data-text">
+          <div class="label">阅读节奏建议</div>
+          <div class="val"><span class="big">1</span> 本 / 月　·　结合实践参与</div>
+          <div class="note">避免只读不练，让每一本书都转化为一次真实的开源参与。</div>
+        </div>
+        <div class="deco-dot"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>OPEN SOURCE · JOURNEY</span>
+      <div class="center">
+        <span>阅读<span class="dot"></span>思考<span class="dot"></span>行动</span>
+      </div>
+      <span>P.04 / 07</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

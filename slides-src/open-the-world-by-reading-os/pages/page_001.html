@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>开源之书记录</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --main: #795548;
+  --main-light: #A07D6D;
+  --main-dark: #5D3E34;
+  --bg: #F7F3EE;
+  --bg-warm: #F2EDE6;
+  --accent: #6B8BA4;
+  --accent-light: #94B0C4;
+  --text-main: #4A3B33;
+  --text-sub: #8A7A70;
+  --line: #C9BDB0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  color: var(--text-main);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 50px 80px;
+  box-sizing: border-box;
+}
+
+/* Corner ornaments */
+.corner-tl, .corner-tr, .corner-bl, .corner-br {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  z-index: 2;
+}
+.corner-tl { top: 32px; left: 32px; border-right: none; border-bottom: none; }
+.corner-tr { top: 32px; right: 32px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 32px; left: 32px; border-right: none; border-top: none; }
+.corner-br { bottom: 32px; right: 32px; border-left: none; border-top: none; }
+
+/* === TOP DECORATION ROW === */
+.top-deco {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  margin-top: 10px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 3;
+}
+
+/* CSS Coffee Cup */
+.coffee-cup {
+  position: relative;
+  width: 48px;
+  height: 38px;
+}
+.coffee-cup .cup-body {
+  width: 42px;
+  height: 32px;
+  border: 1.5px solid var(--main);
+  border-radius: 4px 4px 8px 8px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.coffee-cup .cup-handle {
+  width: 12px;
+  height: 14px;
+  border: 1.5px solid var(--main);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  position: absolute;
+  right: -12px;
+  top: 8px;
+}
+.coffee-cup .steam {
+  position: absolute;
+  top: -16px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+}
+.coffee-cup .steam span {
+  width: 1.5px;
+  height: 12px;
+  background: var(--accent-light);
+  border-radius: 2px;
+  display: inline-block;
+  animation: none;
+}
+.coffee-cup .steam span:nth-child(2) { height: 10px; }
+.coffee-cup .steam span:nth-child(3) { height: 14px; }
+.coffee-cup .saucer {
+  width: 58px;
+  height: 3px;
+  background: var(--main);
+  border-radius: 2px;
+  position: absolute;
+  bottom: -4px;
+  left: -8px;
+}
+
+/* CSS Open Book */
+.open-book {
+  position: relative;
+  width: 60px;
+  height: 38px;
+}
+.open-book .page-left {
+  width: 26px;
+  height: 30px;
+  border: 1.5px solid var(--accent);
+  border-right: none;
+  border-radius: 2px 0 0 2px;
+  position: absolute;
+  left: 0;
+  top: 4px;
+  background: linear-gradient(to right, rgba(107,139,164,0.04), transparent);
+}
+.open-book .page-right {
+  width: 26px;
+  height: 30px;
+  border: 1.5px solid var(--accent);
+  border-left: none;
+  border-radius: 0 2px 2px 0;
+  position: absolute;
+  right: 0;
+  top: 4px;
+  background: linear-gradient(to left, rgba(107,139,164,0.04), transparent);
+}
+.open-book .page-line-l, .open-book .page-line-r {
+  position: absolute;
+  height: 1px;
+  background: var(--accent-light);
+  opacity: 0.5;
+}
+.open-book .page-line-l { top: 12px; left: 4px; width: 14px; }
+.open-book .page-line-l.b2 { top: 16px; width: 12px; }
+.open-book .page-line-l.b3 { top: 20px; width: 13px; }
+.open-book .page-line-r { top: 12px; right: 4px; width: 14px; }
+.open-book .page-line-r.b2 { top: 16px; width: 11px; }
+.open-book .page-line-r.b3 { top: 20px; width: 13px; }
+.open-book .spine {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 1.5px;
+  height: 30px;
+  background: var(--accent);
+  transform: translateX(-50%);
+}
+.open-book .bookmark {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  width: 6px;
+  height: 16px;
+  background: var(--accent-light);
+  border-radius: 0 0 1px 1px;
+}
+
+/* Sub-deco labels */
+.deco-label {
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 4px;
+  writing-mode: vertical-rl;
+  line-height: 1.6;
+}
+
+.deco-row-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+
+.deco-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.7;
+}
+
+/* === TITLE === */
+.title-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 14px;
+  gap: 50px;
+  position: relative;
+  z-index: 3;
+}
+
+.title-vertical {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 72px;
+  color: var(--main);
+  writing-mode: vertical-rl;
+  letter-spacing: 14px;
+  line-height: 1.1;
+  padding: 12px 20px;
+  position: relative;
+}
+
+.title-vertical::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  width: 2px;
+  height: 70%;
+  background: var(--line);
+  transform: translateY(-50%);
+}
+
+.title-vertical::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  width: 2px;
+  height: 70%;
+  background: var(--line);
+  transform: translateY(-50%);
+}
+
+.title-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.title-side .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.title-side .thin-line {
+  width: 1px;
+  height: 80px;
+  background: var(--line);
+}
+
+.title-side .en-text {
+  font-size: 10px;
+  color: var(--text-sub);
+  letter-spacing: 3px;
+  writing-mode: vertical-rl;
+  font-family: 'Noto Serif SC', serif;
+  font-style: italic;
+}
+
+/* Subtitle */
+.subtitle-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 18px;
+  gap: 6px;
+  position: relative;
+  z-index: 3;
+}
+
+.subtitle {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  color: var(--main-light);
+  letter-spacing: 8px;
+  font-weight: 400;
+}
+
+.subtitle-en {
+  font-size: 10px;
+  color: var(--text-sub);
+  letter-spacing: 4px;
+  opacity: 0.65;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  position: relative;
+  z-index: 3;
+}
+
+.divider .line {
+  width: 160px;
+  height: 1px;
+  background: var(--line);
+}
+
+.divider .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--main);
+}
+
+.divider .diamond {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
+/* === THREE INFO COLUMNS === */
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+  margin-top: 24px;
+  position: relative;
+  z-index: 3;
+}
+
+.info-card {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px 26px;
+  position: relative;
+  min-height: 155px;
+}
+
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 24px;
+  width: 36px;
+  height: 2px;
+  background: var(--main);
+}
+
+.info-card .card-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.info-card .card-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--main);
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.info-card .card-text {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--text-main);
+  font-weight: 300;
+}
+
+.info-card .card-text strong {
+  color: var(--main);
+  font-weight: 500;
+}
+
+/* === METADATA CARDS === */
+.meta-row {
+  display: flex;
+  justify-content: center;
+  gap: 200px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 3;
+}
+
+.meta-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 22px;
+  border: 1px dashed var(--line);
+  border-radius: 30px;
+  background: rgba(107,139,164,0.05);
+}
+
+.meta-card .meta-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg);
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.meta-card .meta-icon.accent {
+  background: var(--accent);
+}
+
+.meta-card .meta-label {
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 2px;
+  margin-bottom: 3px;
+}
+
+.meta-card .meta-value {
+  font-size: 14px;
+  color: var(--main);
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-family: 'Noto Serif SC', serif;
+}
+
+/* === BOTTOM PARAGRAPH === */
+.bottom-area {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+}
+
+.bottom-frame {
+  width: 820px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.bottom-frame::before,
+.bottom-frame::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  transform: rotate(45deg);
+}
+
+.bottom-frame::before { left: 20px; }
+.bottom-frame::after { right: 20px; }
+
+.bottom-label {
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 6px;
+  font-weight: 500;
+}
+
+.bottom-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  line-height: 2;
+  color: var(--text-main);
+  text-align: center;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.bottom-text .highlight {
+  color: var(--main);
+  font-weight: 500;
+}
+
+.bottom-text .highlight-accent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Floating decorative elements */
+.float-deco {
+  position: absolute;
+  z-index: 2;
+  opacity: 0.4;
+}
+
+.float-deco.tl { top: 80px; left: 60px; }
+.float-deco.tr { top: 80px; right: 60px; }
+
+.float-branch {
+  width: 60px;
+  height: 1px;
+  background: var(--line);
+  position: relative;
+}
+
+.float-branch::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  right: 15px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--main-light);
+}
+
+.float-branch::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-light);
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="corner-tl"></div>
+    <div class="corner-tr"></div>
+    <div class="corner-bl"></div>
+    <div class="corner-br"></div>
+
+    <div class="float-deco tl">
+      <div class="float-branch"></div>
+    </div>
+    <div class="float-deco tr">
+      <div class="float-branch" style="transform: scaleX(-1);"></div>
+    </div>
+
+    <!-- TOP DECORATION -->
+    <div class="top-deco">
+      <div class="deco-side">
+        <div class="deco-label"><span>静&nbsp;谧&nbsp;书&nbsp;桌</span></div>
+      </div>
+
+      <div class="coffee-cup">
+        <div class="steam"><span></span><span></span><span></span></div>
+        <div class="cup-body"></div>
+        <div class="cup-handle"></div>
+        <div class="saucer"></div>
+      </div>
+
+      <div class="open-book">
+        <div class="bookmark"></div>
+        <div class="page-left">
+          <div class="page-line-l"></div>
+          <div class="page-line-l b2"></div>
+          <div class="page-line-l b3"></div>
+        </div>
+        <div class="page-right">
+          <div class="page-line-r"></div>
+          <div class="page-line-r b2"></div>
+          <div class="page-line-r b3"></div>
+        </div>
+        <div class="spine"></div>
+      </div>
+
+      <div class="deco-side">
+        <div class="deco-label"><span>一&nbsp;杯&nbsp;咖&nbsp;啡</span></div>
+      </div>
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-area">
+      <div class="title-side">
+        <div class="dot"></div>
+        <div class="thin-line"></div>
+        <span class="en-text">OPEN SOURCE</span>
+        <div class="thin-line"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="title-vertical"><span>开源之书记录</span></div>
+
+      <div class="title-side">
+        <div class="dot"></div>
+        <div class="thin-line"></div>
+        <span class="en-text">READING NOTES</span>
+        <div class="thin-line"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+
+    <!-- SUBTITLE -->
+    <div class="subtitle-area">
+      <div class="subtitle"><span>以阅读开源之名 · 打开世界之窗</span></div>
+      <div class="subtitle-en"><span>OPEN A WINDOW TO THE WORLD THROUGH READING</span></div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="divider">
+      <div class="line"></div>
+      <div class="dot"></div>
+      <div class="diamond"></div>
+      <div class="dot"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- THREE INFO COLUMNS -->
+    <div class="info-row">
+      <div class="info-card">
+        <div class="card-num"><span>01 / ABOUT</span></div>
+        <div class="card-title"><span>关于这份记录</span></div>
+        <div class="card-text"><span>围绕<strong>开源文化</strong>、<strong>经典著作</strong>与<strong>阅读方法</strong>，形成一份可传承的布道笔记。</span></div>
+      </div>
+      <div class="info-card">
+        <div class="card-num"><span>02 / SPEAKER</span></div>
+        <div class="card-title"><span>分享者 · 适兕</span></div>
+        <div class="card-text"><span>来自<strong>开源之道</strong>，希望把读过的开源书与思考传递给每一位同路人。</span></div>
+      </div>
+      <div class="info-card">
+        <div class="card-num"><span>03 / PHILOSOPHY</span></div>
+        <div class="card-title"><span>核心理念</span></div>
+        <div class="card-text"><span>开源不仅是技术协议，更是一种<strong>协作、分享与共建</strong>的世界观。</span></div>
+      </div>
+    </div>
+
+    <!-- METADATA CARDS -->
+    <div class="meta-row">
+      <div class="meta-card">
+        <div class="meta-icon"><span>讲</span></div>
+        <div>
+          <div class="meta-label"><span>分享者</span></div>
+          <div class="meta-value"><span>开源之道 · 适兕</span></div>
+        </div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-icon accent"><span>题</span></div>
+        <div>
+          <div class="meta-label"><span>主题定位</span></div>
+          <div class="meta-value"><span>开源布道 × 阅读分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM PARAGRAPH -->
+    <div class="bottom-area">
+      <div class="bottom-frame">
+        <div class="bottom-label"><span>CLO · SU · RE ·</span></div>
+        <div class="bottom-text"><span>这是一份以<span class="highlight">阅读</span>为路径、以<span class="highlight">开源</span>为精神的分享记录。我们相信，通过读懂一本本开源书，可以逐步看清这个由<span class="highlight-accent">代码、社区与共识</span>构成的广阔世界。愿这份笔记成为你走进开源的<span class="highlight">一扇门</span>。</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

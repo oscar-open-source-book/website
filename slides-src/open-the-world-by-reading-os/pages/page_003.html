@@ -1,0 +1,182 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+><head>
+<meta charset="UTF-8">
+<title>开源的精神内核</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F3EE;
+  --coffee:#795548;
+  --coffee-soft:#9c7a6b;
+  --coffee-light:#cbbba9;
+  --blue:#6B8BA4;
+  --blue-soft:#a8bccd;
+  --ink:#3a2a24;
+  --line:#d9cf c2;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Noto Sans SC",sans-serif;color:var(--ink);background:var(--cream);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--cream);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:54px 60px 46px 60px;box-sizing:border-box;display:flex;flex-direction:column;}
+
+/* 日式网格纹理背景 */
+.grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(121,85,72,0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(121,85,72,0.06) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+.grid-fade{position:absolute;inset:0;background:radial-gradient(ellipse at center, rgba(247,243,238,0) 30%, rgba(247,243,238,0.85) 90%);}
+
+/* 顶部标题区 */
+.head-wrap{position:relative;padding-bottom:18px;border-bottom:1px solid rgba(121,85,72,0.28);}
+.head-row{display:flex;align-items:flex-end;justify-content:space-between;}
+.title-block .eyebrow{font-size:13px;letter-spacing:6px;color:var(--blue);font-weight:500;margin-bottom:14px;}
+.title-block h1{font-family:"Noto Serif SC",serif;font-size:58px;font-weight:700;color:var(--coffee);letter-spacing:6px;line-height:1.1;}
+.title-meta{display:flex;flex-direction:column;align-items:flex-end;text-align:right;color:var(--coffee-soft);font-size:12px;letter-spacing:3px;line-height:1.7;}
+.title-meta .num{font-family:"Noto Serif SC",serif;font-size:36px;color:var(--coffee);letter-spacing:2px;line-height:1;}
+
+.sub-text{margin-top:22px;font-size:16.5px;line-height:1.95;color:#5a4640;letter-spacing:1.5px;text-align:justify;max-width:1480px;}
+.sub-text .kw{color:var(--coffee);font-weight:700;font-family:"Noto Serif SC",serif;letter-spacing:2px;}
+
+/* 五列卡片 */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:30px;border-top:1px solid rgba(121,85,72,0.22);border-bottom:1px solid rgba(121,85,72,0.22);}
+.card{padding:26px 22px 24px 22px;position:relative;display:flex;flex-direction:column;border-right:1px solid rgba(121,85,72,0.22);}
+.card:last-child{border-right:none;}
+.card .idx{font-family:"Noto Serif SC",serif;font-size:14px;color:var(--blue);letter-spacing:3px;margin-bottom:10px;font-weight:400;}
+.card .kw-cn{font-family:"Noto Serif SC",serif;font-size:24px;font-weight:700;color:var(--coffee);letter-spacing:3px;line-height:1.3;margin-bottom:14px;}
+.card .divider{width:32px;height:2px;background:var(--blue);margin-bottom:14px;}
+.card .desc{font-size:13.5px;line-height:1.85;color:#5a4640;letter-spacing:0.8px;}
+.card .foot-mark{margin-top:18px;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--coffee-soft);letter-spacing:2px;}
+.card .dot{width:6px;height:6px;border-radius:50%;background:var(--coffee-light);}
+
+/* 装饰角 */
+.corner{position:absolute;width:14px;height:14px;border:1px solid var(--coffee-light);}
+.corner.tl{top:-5px;left:-5px;border-right:none;border-bottom:none;}
+.corner.br{bottom:-5px;right:-5px;border-left:none;border-top:none;}
+
+/* 底部数据条 */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;}
+.stat{display:flex;align-items:center;gap:20px;padding:18px 24px;background:rgba(255,252,247,0.6);border:1px solid rgba(121,85,72,0.2);position:relative;}
+.stat .label-bar{width:4px;background:var(--coffee);align-self:stretch;}
+.stat .stat-body{flex:1;}
+.stat .stat-tag{font-size:11px;letter-spacing:3px;color:var(--blue);margin-bottom:6px;}
+.stat .stat-title{font-family:"Noto Serif SC",serif;font-size:16px;font-weight:700;color:var(--coffee);letter-spacing:2px;margin-bottom:4px;}
+.stat .stat-desc{font-size:12.5px;line-height:1.7;color:#6a564e;letter-spacing:0.6px;}
+.stat .big-num{font-family:"Noto Serif SC",serif;font-size:42px;color:var(--coffee);font-weight:700;line-height:1;letter-spacing:1px;}
+.stat .num-unit{font-size:13px;color:var(--coffee-soft);letter-spacing:2px;margin-top:4px;text-align:center;}
+
+.foot-bar{margin-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--coffee-soft);letter-spacing:3px;}
+.foot-bar .deco{flex:1;height:1px;background:rgba(121,85,72,0.2);margin:0 20px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="grid-bg"></div>
+    <div class="grid-fade"></div>
+  </div>
+  <div id="ct">
+
+    <div class="head-wrap">
+      <div class="head-row">
+        <div class="title-block">
+          <div class="eyebrow"><span>THE INNER CORE OF OPEN SOURCE</span></div>
+          <h1><span>开源的精神内核</span></h1>
+        </div>
+        <div class="title-meta">
+          <span><span class="num">五</span></span>
+          <span>关键词 · 五种精神</span>
+          <span>OPEN · COLLABORATE · RESPOND</span>
+        </div>
+      </div>
+      <p class="sub-text">开源精神的内核可浓缩为五个关键词——<span class="kw">开放</span>、<span class="kw">协作</span>、<span class="kw">责任</span>、<span class="kw">透明</span>、<span class="kw">长期</span>，它们彼此支撑，构成了现代开源项目得以运转的底层逻辑，读懂这一点，是理解所有开源著作的前提。</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <div class="idx"><span>NO.01</span></div>
+        <div class="kw-cn"><span>开放源代码</span></div>
+        <div class="divider"></div>
+        <div class="desc"><span>代码可见、可审查、可修改，是开源一切价值的物质基础。</span></div>
+        <div class="foot-mark"><span class="dot"></span><span>开源 · 起点</span></div>
+      </div>
+      <div class="card">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <div class="idx"><span>NO.02</span></div>
+        <div class="kw-cn"><span>协作与共治</span></div>
+        <div class="divider"></div>
+        <div class="desc"><span>贡献者、维护者与用户共同决策项目的方向与规范。</span></div>
+        <div class="foot-mark"><span class="dot"></span><span>共建 · 共识</span></div>
+      </div>
+      <div class="card">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <div class="idx"><span>NO.03</span></div>
+        <div class="kw-cn"><span>自由与责任</span></div>
+        <div class="divider"></div>
+        <div class="desc"><span>在享有使用与修改自由的同时，也要承担回馈社区的责任。</span></div>
+        <div class="foot-mark"><span class="dot"></span><span>权利 · 义务</span></div>
+      </div>
+      <div class="card">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <div class="idx"><span>NO.04</span></div>
+        <div class="kw-cn"><span>透明与信任</span></div>
+        <div class="divider"></div>
+        <div class="desc"><span>公开的开发流程构建起信任，让陌生人也能放心协作。</span></div>
+        <div class="foot-mark"><span class="dot"></span><span>公开 · 可信</span></div>
+      </div>
+      <div class="card">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <div class="idx"><span>NO.05</span></div>
+        <div class="kw-cn"><span>长期主义</span></div>
+        <div class="divider"></div>
+        <div class="desc"><span>许多开源项目以十年为单位持续演进，体现对生态的长远承诺。</span></div>
+        <div class="foot-mark"><span class="dot"></span><span>十年 · 承诺</span></div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="label-bar"></span>
+        <div class="stat-body">
+          <div class="stat-tag"><span>OSS 定义要素</span></div>
+          <div class="stat-title"><span>开放源码的五大基石</span></div>
+          <div class="stat-desc"><span>开放源码、自由使用、修改、分发、再授权——共同界定何为开源。</span></div>
+        </div>
+        <div>
+          <div class="big-num"><span>5</span></div>
+          <div class="num-unit"><span>项要素</span></div>
+        </div>
+      </div>
+      <div class="stat">
+        <span class="label-bar"></span>
+        <div class="stat-body">
+          <div class="stat-tag"><span>开源宪章签署方</span></div>
+          <div class="stat-title"><span>全球共建者的承诺</span></div>
+          <div class="stat-desc"><span>包括 Apache、Linux 基金会、谷歌等在内的数十家组织共同签署。</span></div>
+        </div>
+        <div>
+          <div class="big-num"><span>45+</span></div>
+          <div class="num-unit"><span>家组织</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-bar">
+      <span>OPEN SOURCE · 精神内核</span>
+      <span class="deco"></span>
+      <span>开源 · 协作 · 责任 · 透明 · 长期</span>
+      <span class="deco"></span>
+      <span>P.01</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
