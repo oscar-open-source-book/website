@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>开源的三种面孔</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Sans+Pro:wght@300;400;600;700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg: #F5F1E6;
+  --navy: #0D2137;
+  --brick: #C8553D;
+  --ink: #0D2137;
+  --muted: #6B7280;
+  --line: #D9D2C0;
+  --cream: #EDE7D3;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  font-family: 'Source Sans Pro', 'Noto Sans SC', -apple-system, sans-serif;
+  color: var(--ink);
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+
+#bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: var(--navy);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 36px 60px 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.masthead .issue {
+  color: var(--brick);
+  font-weight: 700;
+}
+
+.title-area {
+  padding: 20px 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--brick);
+  font-weight: 600;
+}
+
+.kicker .rule {
+  flex: 0 0 80px;
+  height: 1px;
+  background: var(--brick);
+}
+
+.kicker .dot {
+  width: 6px; height: 6px;
+  background: var(--brick);
+  border-radius: 50%;
+}
+
+h1 {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 68px;
+  line-height: 1.0;
+  color: var(--navy);
+  letter-spacing: -1px;
+}
+
+h1 .accent {
+  color: var(--brick);
+  font-style: italic;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #3D4A5C;
+  max-width: 1240px;
+  font-weight: 400;
+  border-left: 2px solid var(--navy);
+  padding-left: 16px;
+  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+}
+
+.subtitle strong {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.columns {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.col {
+  padding: 22px 26px 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.col + .col {
+  border-left: 1px solid var(--line);
+}
+
+.col-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.num {
+  font-family: 'Playfair Display', serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--brick);
+  line-height: 1;
+  font-style: italic;
+}
+
+.col-tag {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: right;
+  padding-top: 6px;
+  font-weight: 600;
+}
+
+.icon-wrap {
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+}
+
+.icon-tech {
+  position: relative;
+  width: 76px;
+  height: 76px;
+}
+
+.icon-tech .ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--navy);
+  border-radius: 50%;
+}
+
+.icon-tech .ring-inner {
+  position: absolute;
+  inset: 12px;
+  border: 1.5px solid var(--navy);
+  border-radius: 50%;
+}
+
+.icon-tech .center {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px; height: 12px;
+  background: var(--brick);
+  border-radius: 50%;
+}
+
+.icon-tech .node {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: var(--navy);
+  border-radius: 50%;
+}
+
+.icon-tech .node.n1 { left: 35px; top: -1px; }
+.icon-tech .node.n2 { left: 71px; top: 35px; }
+.icon-tech .node.n3 { left: 35px; top: 71px; }
+.icon-tech .node.n4 { left: -1px; top: 35px; }
+
+.icon-soc {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+}
+
+.icon-soc .person {
+  width: 16px; height: 52px;
+  border: 2px solid var(--navy);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+}
+
+.icon-soc .person .head {
+  position: absolute;
+  top: -11px; left: 50%;
+  transform: translateX(-50%);
+  width: 11px; height: 11px;
+  border: 2px solid var(--navy);
+  border-radius: 50%;
+}
+
+.icon-soc .person.mid { height: 66px; border-color: var(--brick); }
+.icon-soc .person.mid .head { border-color: var(--brick); background: var(--brick); }
+
+.icon-soc .arrow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 6px;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.icon-biz {
+  position: relative;
+  width: 78px;
+  height: 76px;
+}
+
+.icon-biz .bar {
+  position: absolute;
+  bottom: 0;
+  width: 13px;
+  background: var(--navy);
+}
+
+.icon-biz .bar.b1 { left: 0; height: 24px; }
+.icon-biz .bar.b2 { left: 16px; height: 38px; }
+.icon-biz .bar.b3 { left: 32px; height: 52px; }
+.icon-biz .bar.b4 { left: 48px; height: 66px; background: var(--brick); }
+
+.icon-biz .axis {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--navy);
+}
+
+.icon-biz .arrow-up {
+  position: absolute;
+  top: -2px; right: 0;
+  font-size: 22px;
+  color: var(--brick);
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
+
+.col-title-cn {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+  line-height: 1.2;
+  letter-spacing: 2px;
+}
+
+.col-en {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brick);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.col-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: #2D3A4E;
+  font-weight: 400;
+}
+
+.col-desc .hl {
+  color: var(--brick);
+  font-weight: 600;
+}
+
+.col-desc .hl-navy {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.col-foot {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.col-foot .tag {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--navy);
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.col-foot .tag.brick {
+  border-color: var(--brick);
+  color: var(--brick);
+}
+
+.col-foot .note {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.footer-banner {
+  margin-top: 16px;
+  background: var(--brick);
+  padding: 16px 28px 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  color: #FFFFFF;
+  position: relative;
+}
+
+.footer-banner::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--navy);
+}
+
+.fb-label {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.4);
+  padding-right: 22px;
+}
+
+.fb-text {
+  font-size: 13px;
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  flex: 1;
+}
+
+.fb-text strong {
+  font-weight: 700;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="masthead">
+      <span>Open Source Review · 专栏</span>
+      <span class="issue">VOL. 01 / 观点</span>
+      <span>Est. 2025</span>
+    </div>
+
+    <div class="title-area">
+      <div class="kicker">
+        <span class="rule"></span>
+        <span class="dot"></span>
+        <span>A Manifesto in Three Acts</span>
+      </div>
+      <h1>开源的<span class="accent">三种</span>面孔</h1>
+      <p class="subtitle">
+        开源从来不只是<strong>「把代码公开」</strong>这么简单——它既是技术层面的基础设施，也是社会层面的协作实验，更是商业层面的一条路径。理解开源，首先要接受它的<strong>多面性</strong>。
+      </p>
+    </div>
+
+    <div class="columns">
+
+      <div class="col">
+        <div class="col-head">
+          <span class="num">01</span>
+          <span class="col-tag">Act I</span>
+        </div>
+        <div class="icon-wrap">
+          <div class="icon-tech">
+            <div class="ring"></div>
+            <div class="ring-inner"></div>
+            <div class="center"></div>
+            <div class="node n1"></div>
+            <div class="node n2"></div>
+            <div class="node n3"></div>
+            <div class="node n4"></div>
+          </div>
+        </div>
+        <div class="col-title-cn">技术之公地</div>
+        <div class="col-en">The Technological Commons</div>
+        <p class="col-desc">
+          开源让代码从私有产物变为<span class="hl">可共享、可复用的公共知识资产</span>。依赖管理与模块生态让每一位开发者站在巨人的肩膀上，<span class="hl-navy">工程迭代</span>被前所未有地加速。
+        </p>
+        <div class="col-foot">
+          <span class="tag">基础设施</span>
+          <span class="note">Code as public good</span>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="col-head">
+          <span class="num">02</span>
+          <span class="col-tag">Act II</span>
+        </div>
+        <div class="icon-wrap">
+          <div class="icon-soc">
+            <div class="person"><span class="head"></span></div>
+            <div class="person mid"><span class="head"></span></div>
+            <div class="person"><span class="head"></span></div>
+            <div class="arrow">↑</div>
+          </div>
+        </div>
+        <div class="col-title-cn">社会运动</div>
+        <div class="col-en">A Social Movement</div>
+        <p class="col-desc">
+          从 <span class="hl">Copyleft</span> 到开放协作，开源承载了对<span class="hl-navy">自由、透明与共治</span>的社会想象——它不只是协议文本，更是一种关于「我们如何共同创造」的治理实验。
+        </p>
+        <div class="col-foot">
+          <span class="tag brick">协作实验</span>
+          <span class="note">Community &amp; governance</span>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="col-head">
+          <span class="num">03</span>
+          <span class="col-tag">Act III</span>
+        </div>
+        <div class="icon-wrap">
+          <div class="icon-biz">
+            <div class="axis"></div>
+            <div class="bar b1"></div>
+            <div class="bar b2"></div>
+            <div class="bar b3"></div>
+            <div class="bar b4"></div>
+            <div class="arrow-up">↗</div>
+          </div>
+        </div>
+        <div class="col-title-cn">商业模式</div>
+        <div class="col-en">A Business Model</div>
+        <p class="col-desc">
+          <span class="hl">红帽、MongoDB、GitLab</span> 等公司证明了开源并非「零经济价值」——通过服务、订阅与生态平台，开源可以驱动<span class="hl-navy">可持续的商业生态</span>。
+        </p>
+        <div class="col-foot">
+          <span class="tag">商业路径</span>
+          <span class="note">Sustainable ecosystem</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-banner">
+      <span class="fb-label">第四层含义</span>
+      <span class="fb-text">
+        <strong>矛盾与张力：</strong>开源内部始终存在自由与商业、社区与治理、开放与控制的深层矛盾——这正是它作为一面多棱镜，持续折射技术与时代关系的真实所在。
+      </span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

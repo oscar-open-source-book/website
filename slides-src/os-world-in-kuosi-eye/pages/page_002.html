@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第一章 · 为什么谈开源</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+Pro:wght@300;400;600&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --cream: #F5F1E6;
+  --coral: #C8553D;
+  --coral-light: #E88772;
+  --ink: #1a1a1a;
+  --muted: #6b6560;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1600px; height:900px; overflow:hidden; }
+body {
+  font-family: 'Source Sans Pro','Noto Sans SC', sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+}
+
+.wrapper { width:1600px; height:900px; position:relative; overflow:hidden; margin:0 auto; }
+#bg { position:absolute; inset:0; z-index:0; background: var(--cream); }
+#ct { position:absolute; inset:0; z-index:1; }
+
+/* ===== Left Panel: Navy with big 01 ===== */
+.left-panel {
+  position:absolute;
+  left:0; top:0;
+  width:560px; height:900px;
+  background: var(--navy);
+  overflow:hidden;
+}
+.left-panel::before {
+  content:"";
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:6px;
+  background: var(--coral);
+}
+
+.left-inner {
+  position:absolute;
+  inset:0;
+  padding:60px 50px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  color: var(--cream);
+}
+
+.brand-row {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  font-size:13px;
+  letter-spacing:0.32em;
+  color: var(--coral-light);
+  font-weight:600;
+}
+.brand-row .dot {
+  width:8px; height:8px;
+  background: var(--coral);
+  border-radius:50%;
+  display:inline-block;
+}
+
+.chapter-label {
+  font-family:'Playfair Display', serif;
+  font-style:italic;
+  font-size:20px;
+  color: var(--coral-light);
+  letter-spacing:0.08em;
+  margin-bottom:8px;
+}
+
+.big-number {
+  font-family:'Playfair Display', serif;
+  font-weight:900;
+  font-size:420px;
+  line-height:0.82;
+  color: var(--cream);
+  letter-spacing:-0.03em;
+  position:relative;
+}
+.big-number .num-0 { color: var(--cream); }
+.big-number .num-1 { color: var(--coral); }
+
+.zero-line {
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-top:18px;
+}
+.zero-line .thin {
+  flex:1;
+  height:1px;
+  background: var(--coral);
+  opacity:0.7;
+}
+.zero-line .txt {
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  font-size:11px;
+  letter-spacing:0.36em;
+  color: var(--coral-light);
+  font-weight:600;
+}
+
+.left-footer {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.left-footer .foot-line {
+  height:1px;
+  background: rgba(245,241,230,0.25);
+}
+.left-footer .foot-meta {
+  display:flex;
+  justify-content:space-between;
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  font-size:11px;
+  letter-spacing:0.28em;
+  color: rgba(245,241,230,0.55);
+  font-weight:400;
+}
+
+/* ===== Right Panel ===== */
+.right-panel {
+  position:absolute;
+  left:560px; top:0;
+  width:1040px; height:900px;
+  padding:60px 70px 50px 65px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Top meta strip */
+.top-strip {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:22px;
+  border-bottom:1px solid rgba(13,33,55,0.15);
+}
+.top-strip .left-meta {
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  font-size:12px;
+  letter-spacing:0.32em;
+  color: var(--coral);
+  font-weight:600;
+}
+.top-strip .right-meta {
+  font-family:'Playfair Display', serif;
+  font-style:italic;
+  font-size:14px;
+  color: var(--muted);
+}
+
+/* Title block */
+.title-block {
+  margin-top:34px;
+  margin-bottom:28px;
+}
+.title-eyebrow {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:18px;
+}
+.title-eyebrow .bar {
+  width:48px; height:2px;
+  background: var(--coral);
+}
+.title-eyebrow .txt {
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  font-size:12px;
+  letter-spacing:0.34em;
+  color: var(--coral);
+  font-weight:600;
+}
+
+.main-title {
+  font-family:'Playfair Display','Noto Serif SC', serif;
+  font-weight:900;
+  font-size:64px;
+  line-height:1.08;
+  color: var(--navy);
+  letter-spacing:0.01em;
+}
+.main-title .accent {
+  color: var(--coral);
+}
+.main-title .cn {
+  font-family:'Noto Serif SC','Playfair Display', serif;
+  font-weight:900;
+}
+
+.title-rule {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-top:22px;
+}
+.title-rule .thin {
+  flex:0 0 120px;
+  height:1px;
+  background: var(--navy);
+}
+.title-rule .diamond {
+  width:8px; height:8px;
+  background: var(--coral);
+  transform: rotate(45deg);
+}
+.title-rule .thin-2 {
+  flex:1;
+  height:1px;
+  background: rgba(13,33,55,0.2);
+}
+
+.subtitle {
+  margin-top:18px;
+  font-family:'Playfair Display', serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:24px;
+  color: var(--muted);
+  letter-spacing:0.02em;
+}
+.subtitle-cn {
+  margin-top:8px;
+  font-family:'Noto Serif SC','Playfair Display', serif;
+  font-weight:400;
+  font-size:15px;
+  color: var(--muted);
+  letter-spacing:0.12em;
+}
+
+/* Stances */
+.stances {
+  margin-top:32px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.stance {
+  display:flex;
+  align-items:stretch;
+  gap:24px;
+  padding:18px 22px 18px 22px;
+  background: rgba(255,255,255,0.55);
+  border-left:3px solid var(--coral);
+  border-radius:2px;
+}
+.stance .idx {
+  flex:0 0 64px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  border-right:1px solid rgba(13,33,55,0.12);
+  padding-right:16px;
+}
+.stance .idx .n {
+  font-family:'Playfair Display', serif;
+  font-weight:900;
+  font-size:36px;
+  color: var(--coral);
+  line-height:1;
+}
+.stance .idx .l {
+  font-family:'Source Sans Pro',sans-serif;
+  font-size:10px;
+  letter-spacing:0.28em;
+  color: var(--navy);
+  font-weight:600;
+  margin-top:4px;
+}
+.stance .body {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  padding-top:2px;
+}
+.stance .stance-title {
+  font-family:'Noto Serif SC','Playfair Display',serif;
+  font-weight:900;
+  font-size:22px;
+  color: var(--navy);
+  letter-spacing:0.02em;
+}
+.stance .stance-title .en {
+  font-family:'Playfair Display', serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:15px;
+  color: var(--coral);
+  margin-left:12px;
+  letter-spacing:0.04em;
+}
+.stance .stance-desc {
+  font-family:'Noto Sans SC','Source Sans Pro',sans-serif;
+  font-weight:400;
+  font-size:14px;
+  line-height:1.6;
+  color: #4a4540;
+  letter-spacing:0.02em;
+}
+
+/* Footer strip */
+.foot-strip {
+  margin-top:auto;
+  padding-top:20px;
+  border-top:1px solid rgba(13,33,55,0.12);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.foot-strip .quote {
+  font-family:'Playfair Display', serif;
+  font-style:italic;
+  font-size:15px;
+  color: var(--navy);
+  letter-spacing:0.01em;
+}
+.foot-strip .quote .c {
+  font-family:'Noto Serif SC', serif;
+  font-style:normal;
+  color: var(--coral);
+  margin-right:10px;
+  font-weight:700;
+}
+.foot-strip .right-side {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-family:'Source Sans Pro','Noto Sans SC',sans-serif;
+  font-size:11px;
+  letter-spacing:0.3em;
+  color: var(--muted);
+  font-weight:600;
+}
+.foot-strip .right-side .pg {
+  font-family:'Playfair Display', serif;
+  font-style:italic;
+  font-size:22px;
+  color: var(--navy);
+  font-weight:700;
+  letter-spacing:0;
+}
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- LEFT NAVY PANEL -->
+    <div class="left-panel">
+      <div class="left-inner">
+        <div class="brand-row">
+          <span class="dot"></span>
+          <span>READER'S COLUMN</span>
+        </div>
+
+        <div>
+          <div class="chapter-label"><span>A New Chapter</span></div>
+          <div class="big-number">
+            <span class="num-0">0</span><span class="num-1">1</span>
+          </div>
+          <div class="zero-line">
+            <span class="thin"></span>
+            <span class="txt">CHAPTER ONE</span>
+            <span class="thin"></span>
+          </div>
+        </div>
+
+        <div class="left-footer">
+          <div class="foot-line"></div>
+          <div class="foot-meta">
+            <span>2024 · ESSAY</span>
+            <span>N° 001</span>
+          </div>
+          <div class="foot-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT CONTENT PANEL -->
+    <div class="right-panel">
+
+      <div class="top-strip">
+        <div class="left-meta"><span>OPEN SOURCE · A READER'S NOTE</span></div>
+        <div class="right-meta"><span>Vol. I — Prologue</span></div>
+      </div>
+
+      <div class="title-block">
+        <div class="title-eyebrow">
+          <span class="bar"></span>
+          <span class="txt"><span>CHAPTER ONE · PROLOGUE</span></span>
+        </div>
+        <h1 class="main-title">
+          <span class="cn">第一章</span>
+          <span class="accent">·</span>
+          <span class="cn">为什么</span><br>
+          <span class="cn">谈<span class="accent">开源</span></span>
+        </h1>
+        <div class="title-rule">
+          <span class="thin"></span>
+          <span class="diamond"></span>
+          <span class="thin-2"></span>
+        </div>
+        <div class="subtitle"><span>From a Personal Reading Perspective</span></div>
+        <div class="subtitle-cn"><span>—— 一次私人阅读视角下的开场白</span></div>
+      </div>
+
+      <div class="stances">
+        <div class="stance">
+          <div class="idx">
+            <div class="n">i.</div>
+            <div class="l">NOT A GUIDE</div>
+          </div>
+          <div class="body">
+            <div class="stance-title">
+              <span>不是教程</span>
+              <span class="en">It's not a tutorial.</span>
+            </div>
+            <div class="stance-desc">不追求手把手的入门指南，而是分享阅读中真实的思考、犹豫与困惑。</div>
+          </div>
+        </div>
+
+        <div class="stance">
+          <div class="idx">
+            <div class="n">ii.</div>
+            <div class="l">NOT A SLOGAN</div>
+          </div>
+          <div class="body">
+            <div class="stance-title">
+              <span>不是口号</span>
+              <span class="en">It's not a slogan.</span>
+            </div>
+            <div class="stance-desc">不喊"开源万岁"，而是诚实地呈现开源的多面性、矛盾与内在张力。</div>
+          </div>
+        </div>
+
+        <div class="stance">
+          <div class="idx">
+            <div class="n">iii.</div>
+            <div class="l">NOT THE END</div>
+          </div>
+          <div class="body">
+            <div class="stance-title">
+              <span>不是终点</span>
+              <span class="en">It's not the destination.</span>
+            </div>
+            <div class="stance-desc">这只是一次阅读旅程的中间站，邀请读者一起继续往下走。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot-strip">
+        <div class="quote">
+          <span class="c">"</span>
+          <span>Not a lecture, but an opening line of a conversation.</span>
+        </div>
+        <div class="right-side">
+          <span>TURN THE PAGE</span>
+          <span class="pg">→</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
