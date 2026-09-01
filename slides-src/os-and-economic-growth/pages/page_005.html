@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>增长驱动机制 · PART 02</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --navy: #0D2137;
+  --red: #E53935;
+  --light: #F5F5F5;
+  --light-alt: #EAEAEA;
+  --gold: #C9A96E;
+  --text-main: #1A1A1A;
+  --text-muted: #5A5A5A;
+  --text-on-navy: #E8E8E8;
+  --text-on-navy-dim: #9AB0C8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--light);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 1600px;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--light);
+}
+
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  display: flex;
+}
+
+/* ===== LEFT PANEL ===== */
+.left-panel {
+  width: 720px;
+  height: 900px;
+  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.left-panel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--red);
+}
+
+.left-deco-number {
+  position: absolute;
+  bottom: -60px;
+  right: -30px;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 520px;
+  color: rgba(255,255,255,0.035);
+  line-height: 1;
+  letter-spacing: -20px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.left-content {
+  position: absolute;
+  top: 80px;
+  left: 70px;
+  right: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chapter-label {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 60px;
+}
+
+.chapter-label .red-bar {
+  width: 56px;
+  height: 3px;
+  background: var(--red);
+}
+
+.chapter-label .label-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 6px;
+  color: var(--text-on-navy-dim);
+}
+
+.left-title {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 1.1;
+  color: #FFFFFF;
+  letter-spacing: 4px;
+  margin-bottom: 28px;
+}
+
+.left-title .accent {
+  color: var(--red);
+}
+
+.left-subtitle {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--text-on-navy-dim);
+  letter-spacing: 2px;
+  line-height: 1.6;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  width: 440px;
+}
+
+.left-footer {
+  position: absolute;
+  bottom: 60px;
+  left: 70px;
+  right: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.left-footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.left-footer-left .kw {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--text-on-navy-dim);
+  font-weight: 400;
+}
+
+.left-footer-left .kw-row {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--text-on-navy);
+  font-weight: 400;
+}
+
+.left-footer-left .kw-row span {
+  position: relative;
+  padding-left: 14px;
+}
+
+.left-footer-left .kw-row span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 1px;
+  background: var(--red);
+  transform: translateY(-0.5px);
+}
+
+.left-footer-right {
+  text-align: right;
+  font-family: 'Noto Serif SC', serif;
+  color: var(--text-on-navy-dim);
+  font-size: 13px;
+  letter-spacing: 3px;
+  line-height: 1.8;
+}
+
+/* ===== RIGHT PANEL ===== */
+.right-panel {
+  flex: 1;
+  height: 900px;
+  background: var(--light);
+  position: relative;
+  padding: 80px 70px 60px 70px;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--navy);
+}
+
+.right-header .rh-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 5px;
+  color: var(--navy);
+}
+
+.right-header .rh-meta {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+}
+
+.points-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.point-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--light-alt);
+  position: relative;
+}
+
+.point-num {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 52px;
+  color: var(--red);
+  line-height: 1;
+  min-width: 78px;
+  letter-spacing: -1px;
+}
+
+.point-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.point-title {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--navy);
+  letter-spacing: 2px;
+  line-height: 1.3;
+}
+
+.point-desc {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+  max-width: 620px;
+}
+
+.point-tag {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--red);
+  margin-top: 4px;
+}
+
+/* Data callout */
+.data-callout {
+  margin-top: 28px;
+  background: var(--navy);
+  padding: 26px 32px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.data-callout::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px;
+  height: 100%;
+  background: var(--red);
+}
+
+.data-callout .dc-label {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--text-on-navy-dim);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding-right: 8px;
+  border-right: 1px solid rgba(255,255,255,0.2);
+  line-height: 1.4;
+}
+
+.data-callout .dc-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.data-callout .dc-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--text-on-navy-dim);
+  letter-spacing: 2px;
+}
+
+.data-callout .dc-number {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 56px;
+  color: #FFFFFF;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.data-callout .dc-number .pct {
+  font-size: 34px;
+  color: var(--red);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.data-callout .dc-num-range {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+/* Right footer */
+.right-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid var(--light-alt);
+}
+
+.right-footer .rf-left {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.right-footer .rf-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.right-footer .rf-right .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 0;
+  transform: rotate(45deg);
+}
+
+.right-footer .rf-right .rf-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--navy);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="left-deco-number">02</div>
+
+      <div class="left-content">
+        <div class="chapter-label">
+          <div class="red-bar"></div>
+          <div class="label-text"><span>PART 02</span></div>
+        </div>
+
+        <h1 class="left-title">增长<br>驱动<span class="accent">机制</span></h1>
+
+        <p class="left-subtitle"><span>开源如何成为经济引擎</span></p>
+      </div>
+
+      <div class="left-footer">
+        <div class="left-footer-left">
+          <div class="kw"><span>本章关键词</span></div>
+          <div class="kw-row">
+            <span>成本降维</span>
+            <span>扩散加速</span>
+            <span>生态催生</span>
+          </div>
+        </div>
+        <div class="left-footer-right">
+          <span>CHAPTER</span><br>
+          <span style="font-size:20px;color:#FFFFFF;font-weight:700;letter-spacing:2px;">TWO</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="right-header">
+        <div class="rh-title"><span>三 大 机 制 · 概 览</span></div>
+        <div class="rh-meta"><span>03 Mechanisms</span></div>
+      </div>
+
+      <div class="points-list">
+
+        <div class="point-item">
+          <div class="point-num"><span>01</span></div>
+          <div class="point-body">
+            <div class="point-title"><span>降低创新成本</span></div>
+            <div class="point-desc"><span>开源复用让企业可将研发投入集中在差异化场景而非重复造轮子</span></div>
+            <div class="point-tag"><span>COST REDUCTION</span></div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <div class="point-num"><span>02</span></div>
+          <div class="point-body">
+            <div class="point-title"><span>加速技术扩散</span></div>
+            <div class="point-desc"><span>标准协议下的代码共享使新技术在数月内即可完成全球普及</span></div>
+            <div class="point-tag"><span>DIFFUSION ACCELERATION</span></div>
+          </div>
+        </div>
+
+        <div class="point-item">
+          <div class="point-num"><span>03</span></div>
+          <div class="point-body">
+            <div class="point-title"><span>催生产业生态</span></div>
+            <div class="point-desc"><span>围绕核心开源项目形成的咨询、培训、商业支持市场持续扩张</span></div>
+            <div class="point-tag"><span>ECOSYSTEM EMERGENCE</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="data-callout">
+        <div class="dc-label"><span>关键数据</span></div>
+        <div class="dc-main">
+          <div class="dc-text"><span>研发成本节省</span></div>
+          <div class="dc-number"><span>30-50<span class="pct">%</span></span></div>
+          <div class="dc-num-range"><span>企业平均估算</span></div>
+        </div>
+      </div>
+
+      <div class="right-footer">
+        <div class="rf-left"><span>THE OPEN SOURCE ECONOMY</span></div>
+        <div class="rf-right">
+          <div class="dot"></div>
+          <div class="rf-text"><span>进入正题</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
