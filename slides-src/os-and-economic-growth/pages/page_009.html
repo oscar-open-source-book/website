@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>阅读与启示</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --navy:#0D2137;
+  --red:#E53935;
+  --bg:#F5F5F5;
+  --text-main:#1a1a1a;
+  --text-sub:#4a4a4a;
+  --line:#cccccc;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1600px;height:900px;overflow:hidden;font-family:'Noto Sans SC',sans-serif;color:var(--text-main);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:0;box-sizing:border-box;}
+
+/* 顶部装饰条 */
+.top-bar{position:absolute;top:0;left:0;width:1600px;height:8px;background:var(--navy);}
+.top-bar-accent{position:absolute;top:8px;left:0;width:1600px;height:3px;background:var(--red);}
+
+/* 页眉 */
+.page-header{position:absolute;top:30px;left:60px;right:60px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-sub);letter-spacing:2px;}
+.page-header .brand{font-family:'Noto Serif SC',Georgia,serif;font-weight:600;color:var(--navy);letter-spacing:4px;font-size:14px;}
+.page-header .pageno{font-family:'Noto Serif SC',Georgia,serif;font-size:14px;color:var(--navy);letter-spacing:3px;}
+
+/* 左侧大号引号 */
+.big-quote{position:absolute;top:70px;left:45px;font-family:'Noto Serif SC',Georgia,serif;font-size:360px;line-height:0.85;color:var(--red);opacity:0.12;font-weight:900;user-select:none;z-index:0;}
+
+/* 主标题区 */
+.title-zone{position:absolute;top:90px;left:160px;right:160px;display:flex;align-items:flex-start;gap:40px;z-index:2;}
+.part-num{font-family:'Noto Serif SC',Georgia,serif;font-weight:900;font-size:130px;line-height:0.9;color:var(--navy);letter-spacing:-2px;}
+.part-num .slash{color:var(--red);font-weight:400;}
+.title-text{flex:1;padding-top:20px;border-top:3px solid var(--navy);padding-top:18px;}
+.part-label{font-family:'Noto Serif SC',Georgia,serif;font-size:16px;letter-spacing:8px;color:var(--red);font-weight:600;margin-bottom:12px;}
+.main-title{font-family:'Noto Serif SC',Georgia,serif;font-weight:900;font-size:68px;color:var(--navy);line-height:1.1;letter-spacing:6px;}
+.subtitle{margin-top:18px;font-family:'Noto Sans SC',sans-serif;font-size:16px;color:var(--text-sub);letter-spacing:4px;font-weight:400;}
+.subtitle .dot{display:inline-block;width:6px;height:6px;background:var(--red);border-radius:50%;vertical-align:middle;margin:0 12px;}
+
+/* 导语区 */
+.lede-zone{position:absolute;top:370px;left:160px;right:160px;z-index:2;}
+.lede-line{width:80px;height:3px;background:var(--red);margin-bottom:22px;}
+.lede-text{font-family:'Noto Serif SC',Georgia,serif;font-size:22px;line-height:1.75;color:var(--navy);font-weight:400;letter-spacing:1px;}
+.lede-text .hl{color:var(--red);font-weight:600;}
+.lede-text .en{font-family:Georgia,'Noto Serif SC',serif;font-style:italic;font-size:15px;color:var(--text-sub);letter-spacing:1px;margin-left:10px;}
+
+/* 三栏 */
+.three-col{position:absolute;bottom:100px;left:60px;right:60px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;z-index:2;}
+.col{padding:28px 30px;position:relative;}
+.col+.col{border-left:1px solid var(--line);}
+.col-num{font-family:'Noto Serif SC',Georgia,serif;font-size:13px;letter-spacing:4px;color:var(--red);font-weight:600;margin-bottom:10px;}
+.col-title{font-family:'Noto Serif SC',Georgia,serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px;letter-spacing:2px;}
+.col-divider{width:30px;height:2px;background:var(--navy);margin-bottom:14px;}
+.col-body{font-family:'Noto Sans SC',sans-serif;font-size:13px;line-height:1.85;color:var(--text-sub);font-weight:400;}
+.col-body .book{color:var(--navy);font-weight:500;}
+.col-tag{display:inline-block;margin-top:14px;padding:3px 10px;background:var(--navy);color:#fff;font-size:11px;letter-spacing:2px;}
+
+/* 数据标签 */
+.data-badge{position:absolute;top:340px;right:60px;width:220px;padding:22px 20px;background:var(--navy);color:#fff;z-index:3;}
+.data-badge::before{content:'';position:absolute;top:-3px;left:20px;right:20px;height:3px;background:var(--red);}
+.data-badge-label{font-size:11px;letter-spacing:3px;color:var(--red);margin-bottom:12px;font-weight:500;}
+.data-badge-num{font-family:'Noto Serif SC',Georgia,serif;font-size:48px;font-weight:900;line-height:1;color:#fff;}
+.data-badge-num .unit{font-size:18px;font-weight:400;margin-left:4px;letter-spacing:1px;}
+.data-badge-desc{font-size:12px;color:#aaa;letter-spacing:1px;margin-top:10px;line-height:1.6;}
+.data-badge-tags{display:flex;gap:6px;margin-top:12px;}
+.data-badge-tags span{flex:1;text-align:center;padding:4px 0;border:1px solid #3a4a5a;font-size:10px;letter-spacing:1px;color:#ccc;}
+
+/* 底部 */
+.footer{position:absolute;bottom:25px;left:60px;right:60px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-sub);letter-spacing:3px;z-index:2;}
+.footer .left{display:flex;align-items:center;gap:15px;}
+.footer .left .line{width:120px;height:1px;background:var(--line);}
+
+/* 右侧书籍意象 */
+.book-icon{position:absolute;right:70px;bottom:280px;display:flex;flex-direction:column;gap:8px;z-index:1;opacity:0.9;}
+.book-icon .b{width:50px;height:35px;background:var(--navy);border-right:3px solid var(--red);}
+.book-icon .b:nth-child(2){background:var(--red);width:45px;}
+.book-icon .b:nth-child(3){background:var(--navy);width:50px;}
+
+/* 装饰小元素 */
+.deco-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--red);}
+.deco-line{position:absolute;height:1px;background:var(--navy);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg">
+    <div class="big-quote">"</div>
+    <div class="deco-dot" style="top:180px;right:30px;"></div>
+    <div class="deco-dot" style="top:195px;right:50px;background:var(--navy);opacity:0.4;"></div>
+    <div class="deco-line" style="top:868px;left:60px;width:120px;"></div>
+  </div>
+  <div id="ct">
+    <div class="top-bar"></div>
+    <div class="top-bar-accent"></div>
+
+    <div class="page-header">
+      <span class="brand">开 源 经 济 · 研 究 报 告</span>
+      <span class="pageno">— 09 / 24 —</span>
+    </div>
+
+    <div class="title-zone">
+      <div class="part-num">0<span class="slash">3</span></div>
+      <div class="title-text">
+        <div class="part-label">PART THREE</div>
+        <div class="main-title">阅 读 与 启 示</div>
+        <div class="subtitle"><span>PART 03</span><span class="dot"></span><span>延伸阅读与个人行动</span></div>
+      </div>
+    </div>
+
+    <div class="data-badge">
+      <div class="data-badge-label">DATA · 数 据 标 签</div>
+      <div class="data-badge-num">3<span class="unit">份</span></div>
+      <div class="data-badge-desc">推荐年度报告<br/>CNCF / Linux Foundation / GitHub</div>
+      <div class="data-badge-tags">
+        <span>CNCF</span>
+        <span>LF</span>
+        <span>GitHub</span>
+      </div>
+    </div>
+
+    <div class="book-icon">
+      <div class="b"></div>
+      <div class="b"></div>
+      <div class="b"></div>
+    </div>
+
+    <div class="lede-zone">
+      <div class="lede-line"></div>
+      <p class="lede-text">
+        从<span class="hl">阅读</span>到<span class="hl">实践</span>，从<span class="hl">理解</span>到<span class="hl">参与</span>——
+        深度融入开源经济浪潮，让知识转化为行动的起点。<span class="en">From reading to practice, from understanding to engagement.</span>
+      </p>
+    </div>
+
+    <div class="three-col">
+      <div class="col">
+        <div class="col-num">CHAPTER · 01</div>
+        <div class="col-title">经典著作</div>
+        <div class="col-divider"></div>
+        <div class="col-body">
+          推荐阅读<span class="book">《Creating a Commercial Open Source Business》</span>等开源商业经典著作，系统理解开源商业模式演进路径与商业变现的核心逻辑。
+        </div>
+        <div class="col-tag">RECOMMENDED</div>
+      </div>
+      <div class="col">
+        <div class="col-num">CHAPTER · 02</div>
+        <div class="col-title">报告与数据</div>
+        <div class="col-divider"></div>
+        <div class="col-body">
+          持续关注 <span class="book">CNCF</span>、<span class="book">Linux Foundation</span> 与 <span class="book">GitHub</span> 年度开源报告，掌握行业趋势脉搏，把握社区生态发展态势。
+        </div>
+        <div class="col-tag">ANNUAL REPORT</div>
+      </div>
+      <div class="col">
+        <div class="col-num">CHAPTER · 03</div>
+        <div class="col-title">行动建议</div>
+        <div class="col-divider"></div>
+        <div class="col-body">
+          从提交 <span class="book">Issue</span> 到参与<span class="book">社区治理</span>，每位开发者都能贡献力量。从小处着手，逐步走向开源生态的核心舞台。
+        </div>
+        <div class="col-tag">TAKE ACTION</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="left">
+        <span class="line"></span>
+        <span>READING &amp; INSIGHT</span>
+      </div>
+      <span>CHAPTER TRANSITION · 章 节 过 渡</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

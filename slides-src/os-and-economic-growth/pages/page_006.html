@@ -1,362 +1,415 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <title>从代码到产值</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
-
-:root{
-  --navy:#0D2137;
-  --navy-soft:#1B3452;
-  --paper:#F5F5F5;
-  --paper-warm:#FBFAF7;
-  --red:#E53935;
-  --red-soft:#FBE6E5;
-  --ink:#1A1A1A;
-  --muted:#5A6573;
-  --line:#D9D9D9;
+:root {
+  --navy: #0D2137;
+  --vermilion: #E53935;
+  --bg: #F5F5F5;
+  --text-main: #1a1a1a;
+  --text-muted: #5a6270;
+  --line: #d0d0d0;
+  --card-bg: #ffffff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--text-main);
+  background: var(--bg);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.wrapper { width: 1600px; height: 900px; position: relative; overflow: hidden; margin: 0 auto; }
+#bg { position: absolute; inset: 0; z-index: 0; background: var(--bg); }
+#bg::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -80px;
+  width: 380px; height: 380px;
+  border-radius: 50%;
+  background: rgba(13,33,55,0.04);
+}
+#bg::after {
+  content: '';
+  position: absolute;
+  bottom: -160px; left: -100px;
+  width: 340px; height: 340px;
+  border-radius: 50%;
+  background: rgba(229,57,53,0.05);
+}
+#ct {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 45px 60px 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:1600px;height:900px;overflow:hidden;}
-
-body{
-  font-family:'Noto Sans SC',sans-serif;
-  color:var(--ink);
-  background:var(--paper-warm);
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--navy);
+  padding-bottom: 16px;
+  margin-bottom: 28px;
+  flex-shrink: 0;
+}
+.header-left { display: flex; flex-direction: column; gap: 6px; }
+.kicker {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 6px;
+  color: var(--vermilion);
+}
+.main-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: 4px;
+  line-height: 1;
+}
+.title-accent {
+  display: inline-block;
+  border-bottom: 4px solid var(--vermilion);
+  padding-bottom: 3px;
+}
+.sub-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  margin-top: 6px;
+}
+.header-meta {
+  text-align: right;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  line-height: 1.9;
+}
+.header-meta .vol {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
 }
 
-.wrapper{
-  width:1600px;height:900px;
-  position:relative;overflow:hidden;margin:0 auto;
-  background:var(--paper-warm);
+.body-grid {
+  display: grid;
+  grid-template-columns: 540px 1fr;
+  gap: 40px;
+  flex: 1;
+  min-height: 0;
 }
 
-#bg{
-  position:absolute;inset:0;z-index:0;
-  background:
-    linear-gradient(180deg, #FFFFFF 0%, var(--paper-warm) 45%, #EFEDE8 100%);
+.narrative { display: flex; flex-direction: column; gap: 18px; }
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--vermilion);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.section-label .line { flex: 1; height: 1px; background: var(--line); }
+
+.narrative-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  line-height: 1.95;
+  color: var(--navy);
+  text-align: justify;
+  font-weight: 400;
+  text-indent: 2em;
+}
+.narrative-text .highlight {
+  color: var(--vermilion);
+  font-weight: 600;
+  border-bottom: 1px solid var(--vermilion);
+}
+.narrative-text .navy-strong { color: var(--navy); font-weight: 700; }
+
+.narrative-text-small {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--navy);
+  text-align: justify;
+  font-weight: 400;
+}
+.narrative-text-small .navy-strong { color: var(--navy); font-weight: 700; }
+
+.pull-quote {
+  position: relative;
+  padding: 16px 22px 16px 52px;
+  background: var(--card-bg);
+  border-left: 3px solid var(--vermilion);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.pull-quote::before {
+  content: '\201C';
+  position: absolute;
+  left: 14px;
+  top: 6px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 46px;
+  color: var(--vermilion);
+  font-weight: 900;
+  line-height: 1;
+}
+.pull-quote .q-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.7;
+}
+.pull-quote .q-author {
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
 }
 
-#bg::before{
-  content:"";
-  position:absolute;left:0;top:0;bottom:0;width:10px;
-  background:var(--navy);
+.footer-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.footer-strip .dot {
+  width: 6px; height: 6px;
+  background: var(--vermilion);
+  border-radius: 50%;
 }
 
-#bg::after{
-  content:"";
-  position:absolute;right:0;top:0;width:160px;height:6px;
-  background:var(--red);
+.right-col { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+
+.data-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  flex-shrink: 0;
+}
+.data-card {
+  background: var(--card-bg);
+  padding: 18px 20px 16px;
+  box-shadow: 0 3px 12px rgba(13,33,55,0.08);
+  border-top: 3px solid var(--navy);
+  position: relative;
+  overflow: hidden;
+}
+.data-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 56px; height: 56px;
+  background: var(--navy);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+  opacity: 0.08;
+}
+.data-card .dc-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.data-card .dc-number-row {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  line-height: 1;
+}
+.data-card .dc-number {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 44px;
+  font-weight: 900;
+  color: var(--vermilion);
+  letter-spacing: -1px;
+}
+.data-card .dc-unit {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--vermilion);
+}
+.data-card .dc-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-top: 6px;
+}
+.data-card .dc-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.55;
+}
+.data-card .dc-bar {
+  margin-top: 10px;
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.data-card .dc-bar .fill {
+  position: absolute;
+  left: 0; top: 0; height: 100%;
+  background: var(--vermilion);
 }
 
-#ct{
-  position:absolute;inset:0;z-index:1;
-  padding:46px 72px 40px 84px;
-  box-sizing:border-box;
-  display:flex;flex-direction:column;
+.flow-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+.flow-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.flow-header .ft {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.flow-header .fl { flex: 1; height: 1px; background: var(--line); }
+.flow-header .fa {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--vermilion);
+  font-weight: 500;
 }
 
-/* ===== TOP HEADER ===== */
-.header{
-  display:flex;align-items:flex-start;justify-content:space-between;
-  gap:40px;
-  padding-bottom:22px;
-  border-bottom:1px solid var(--line);
+.flow-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+.flow-card {
+  background: var(--card-bg);
+  padding: 12px 12px 12px 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  border-bottom: 2px solid var(--navy);
+  min-height: 0;
+}
+.flow-card .fc-num-cn {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.flow-card .fc-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--vermilion);
+  line-height: 1.1;
+}
+.flow-card .fc-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+.flow-card .fc-text {
+  font-size: 10px;
+  line-height: 1.55;
+  color: var(--text-muted);
+  flex: 1;
+}
+.flow-card .fc-tag {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--vermilion);
+  font-weight: 700;
+  padding-top: 4px;
+  border-top: 1px dashed var(--line);
+}
+.flow-card .fc-arrow {
+  position: absolute;
+  top: 50%;
+  right: -11px;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 14px;
+  background: var(--vermilion);
+  clip-path: polygon(0 30%, 55% 30%, 55% 0, 100% 50%, 55% 100%, 55% 70%, 0 70%);
+  z-index: 2;
 }
 
-.header-left{flex:0 0 560px;}
-.eyebrow{
-  display:flex;align-items:center;gap:12px;
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:12px;font-weight:500;letter-spacing:4px;
-  color:var(--muted);
-  margin-bottom:14px;
+.cycle-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--navy);
+  border-radius: 2px;
+  flex-shrink: 0;
 }
-.eyebrow .dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--red);display:inline-block;
+.cycle-bar .cb-icon {
+  width: 24px; height: 24px;
+  border: 2px solid var(--vermilion);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--vermilion);
+  font-weight: 700;
+  flex-shrink: 0;
 }
-.eyebrow .bar{
-  width:36px;height:2px;background:var(--navy);display:inline-block;
+.cycle-bar .cb-text {
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  font-weight: 500;
+  flex: 1;
+  color: #fff;
 }
-
-.main-title{
-  font-family:'Noto Serif SC',serif;
-  font-weight:900;
-  font-size:56px;
-  color:var(--navy);
-  letter-spacing:6px;
-  line-height:1.1;
-}
-.main-title .amp{
-  color:var(--red);
-  font-weight:700;
-  margin:0 6px;
-}
-.title-sub{
-  margin-top:10px;
-  font-family:'Noto Serif SC',serif;
-  font-size:14px;font-weight:600;
-  color:var(--muted);
-  letter-spacing:8px;
-}
-
-.header-right{
-  flex:1;
-  padding-top:6px;
-  max-width:780px;
-}
-.narrative{
-  font-family:'Noto Serif SC',serif;
-  font-weight:600;
-  font-size:16px;
-  line-height:1.85;
-  color:var(--navy-soft);
-  letter-spacing:0.5px;
-  border-left:3px solid var(--red);
-  padding-left:20px;
-}
-.narrative .hl{color:var(--red);font-weight:700;}
-
-/* ===== BODY ===== */
-.body{
-  flex:1;
-  display:flex;
-  gap:36px;
-  margin-top:22px;
-  padding-bottom:14px;
-}
-
-/* LEFT */
-.left{
-  flex:0 0 360px;
-  display:flex;flex-direction:column;
-  padding-right:24px;
-  border-right:1px solid var(--line);
-}
-.left-tag{
-  display:flex;align-items:center;gap:8px;
-  font-size:11px;letter-spacing:3px;
-  color:var(--muted);font-weight:500;
-  margin-bottom:12px;
-}
-.left-tag .num{
-  font-family:'Noto Serif SC',serif;
-  font-weight:700;color:var(--navy);
-  font-size:13px;letter-spacing:0;
-}
-.left-title{
-  font-family:'Noto Serif SC',serif;
-  font-weight:700;font-size:22px;
-  color:var(--navy);
-  line-height:1.4;
-  margin-bottom:16px;
-}
-.left-text{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:13px;line-height:1.95;
-  color:#3A4351;font-weight:400;
-}
-.left-text .red{color:var(--red);font-weight:700;}
-.left-text .b{color:var(--navy);font-weight:700;}
-
-.left-stats{
-  margin-top:20px;
-  display:flex;gap:10px;
-}
-.stat-mini{
-  flex:1;
-  padding:14px 12px;
-  background:var(--paper);
-  border-top:3px solid var(--navy);
-}
-.stat-mini .v{
-  font-family:'Noto Serif SC',serif;
-  font-weight:900;font-size:26px;color:var(--red);
-  line-height:1;
-}
-.stat-mini .v .u{font-size:13px;color:var(--navy);font-weight:700;margin-left:2px;}
-.stat-mini .l{
-  font-size:11px;color:var(--muted);
-  margin-top:8px;letter-spacing:1px;
-  line-height:1.5;
-}
-
-.left-footer{
-  margin-top:auto;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-  display:flex;align-items:center;gap:10px;
-  font-size:11px;letter-spacing:2px;
-  color:var(--muted);
-}
-.left-footer .sq{
-  width:10px;height:10px;background:var(--red);
-}
-
-/* RIGHT */
-.right{
-  flex:1;
-  display:flex;flex-direction:column;
-  gap:18px;
-}
-
-/* KPI row */
-.kpi-row{
-  display:flex;gap:20px;
-}
-.kpi{
-  flex:1;
-  background:#FFFFFF;
-  border:1px solid var(--line);
-  padding:18px 22px;
-  position:relative;
-  display:flex;flex-direction:column;gap:6px;
-  box-shadow:0 1px 3px rgba(13,33,55,0.06);
-}
-.kpi::before{
-  content:"";
-  position:absolute;left:0;top:0;bottom:0;width:4px;
-  background:var(--red);
-}
-.kpi-tag{
-  display:flex;align-items:center;justify-content:space-between;
-  font-size:10px;letter-spacing:3px;
-  color:var(--muted);font-weight:500;
-}
-.kpi-tag .id{
-  font-family:'Noto Serif SC',serif;
-  color:var(--navy);font-weight:700;
-}
-.kpi-value{
-  font-family:'Noto Serif SC',serif;
-  font-weight:900;font-size:38px;
-  color:var(--red);
-  line-height:1.1;
-  display:flex;align-items:baseline;gap:6px;
-}
-.kpi-value .u{
-  font-size:15px;color:var(--navy);
-  font-weight:700;font-family:'Noto Sans SC',sans-serif;
-}
-.kpi-desc{
-  font-family:'Noto Sans SC',sans-serif;
-  font-size:12px;line-height:1.7;
-  color:var(--muted);
-}
-.kpi-desc .b{color:var(--navy);font-weight:700;}
-
-/* FLOW */
-.flow-wrap{
-  flex:1;
-  display:flex;flex-direction:column;
-}
-.flow-head{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:10px;
-}
-.flow-title{
-  font-family:'Noto Serif SC',serif;
-  font-weight:700;font-size:16px;
-  color:var(--navy);
-  display:flex;align-items:center;gap:10px;
-}
-.flow-title .bar{
-  width:24px;height:2px;background:var(--red);
-  display:inline-block;
-}
-.flow-sub{
-  font-size:11px;letter-spacing:2px;color:var(--muted);
-}
-
-.flow{
-  display:flex;align-items:stretch;gap:6px;
-  flex:1;
-}
-.card{
-  flex:1;
-  background:#FFFFFF;
-  border:1px solid var(--line);
-  border-top:3px solid var(--navy);
-  padding:14px 12px 12px 12px;
-  display:flex;flex-direction:column;gap:8px;
-  position:relative;
-  box-shadow:0 1px 3px rgba(13,33,55,0.06);
-}
-.card .idx{
-  font-family:'Noto Serif SC',serif;
-  font-weight:900;font-size:22px;
-  color:var(--navy);
-  line-height:1;
-  display:flex;align-items:center;gap:6px;
-}
-.card .idx .arrow{
-  font-size:14px;color:var(--red);font-weight:700;
-}
-.card .name{
-  font-family:'Noto Serif SC',serif;
-  font-weight:700;font-size:14px;
-  color:var(--navy);
-  line-height:1.4;
-}
-.card .desc{
-  font-size:11px;line-height:1.65;
-  color:var(--muted);
-  font-weight:400;
-}
-.card .desc .r{color:var(--red);font-weight:700;}
-.card .desc .b{color:var(--navy);font-weight:700;}
-
-.card.accent{
-  background:var(--red-soft);
-  border-top-color:var(--red);
-}
-.card.accent .idx{color:var(--red);}
-.card.accent .name{color:var(--red);}
-
-.flow-arrow{
-  align-self:center;
-  color:var(--red);
-  font-size:16px;font-weight:900;
-  flex:0 0 auto;
-  font-family:'Noto Sans SC',sans-serif;
-}
-
-/* ===== FOOTER ===== */
-.footer{
-  margin-top:10px;
-  padding-top:16px;
-  border-top:1px solid var(--line);
-  display:flex;align-items:center;justify-content:space-between;
-  gap:24px;
-}
-.footer-quote{
-  font-family:'Noto Serif SC',serif;
-  font-weight:700;font-size:20px;
-  color:var(--navy);
-  letter-spacing:4px;
-  display:flex;align-items:center;gap:14px;
-}
-.footer-quote .mark{
-  font-size:26px;color:var(--red);
-  font-weight:900;line-height:1;
-}
-.footer-quote .sep{
-  width:6px;height:6px;background:var(--red);
-  display:inline-block;
-}
-.footer-meta{
-  display:flex;align-items:center;gap:18px;
-  font-size:11px;letter-spacing:2px;color:var(--muted);
-}
-.footer-meta .divider{
-  width:1px;height:12px;background:var(--line);
-}
-.footer-meta .page{
-  font-family:'Noto Serif SC',serif;
-  color:var(--navy);font-weight:700;
+.cycle-bar .cb-text strong { color: var(--vermilion); font-weight: 700; }
+.cycle-bar .cb-tags { display: flex; gap: 6px; }
+.cycle-bar .cb-tag {
+  padding: 3px 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+  font-size: 9px;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: #fff;
 }
 </style>
 </head>
@@ -367,127 +420,128 @@ body{
 
     <div class="header">
       <div class="header-left">
-        <div class="eyebrow">
+        <div class="kicker"><span>SPECIAL REPORT / 专 题 报 道</span></div>
+        <h1 class="main-title"><span class="title-accent">从代码到产值</span></h1>
+        <div class="sub-title">开源代码作为数字经济底层基础设施的乘数效应研究</div>
+      </div>
+      <div class="header-meta">
+        <div class="vol"><span>№ 01</span></div>
+        <div><span>VOL · 开源经济</span></div>
+        <div><span>SERIES / 数字经济观察</span></div>
+      </div>
+    </div>
+
+    <div class="body-grid">
+
+      <div class="narrative">
+        <div class="section-label">
+          <span><span>编 者 按</span></span>
+          <span class="line"></span>
+          <span><span>PREFACE</span></span>
+        </div>
+
+        <div class="narrative-text">
+          <span>开源代码的<span class="navy-strong">公共品属性</span>使其成为<span class="navy-strong">数字经济的底层基础设施</span>，从平台经济到产业升级，开源持续释放<span class="highlight">就业乘数效应</span>与<span class="highlight">标准统一红利</span>，形成正向循环。</span>
+        </div>
+
+        <div class="pull-quote">
+          <div class="q-text"><span>代码不止于代码——每一行开源贡献都在为整个数字生态注入复利。</span></div>
+          <div class="q-author"><span>—— 数字经济编辑部</span></div>
+        </div>
+
+        <div class="narrative-text-small">
+          <span>开源运动自上世纪八十年代发起以来，已从理想主义者的宣言演变为全球数字经济的事实标准。从底层的 Linux 内核到上层的 Kubernetes 编排，从机器学习框架到前端生态，开源构成了互联网时代最坚实的<span class="navy-strong">技术地基</span>，持续释放乘数效应。</span>
+        </div>
+
+        <div class="footer-strip">
           <span class="dot"></span>
-          <span class="bar"></span>
-          <span>PART 06 / ECOSYSTEM</span>
-        </div>
-        <h1 class="main-title">从代码<span class="amp">→</span>到产值</h1>
-        <div class="title-sub">FROM&nbsp;CODE&nbsp;TO&nbsp;OUTPUT</div>
-      </div>
-      <div class="header-right">
-        <p class="narrative">
-          开源代码的<span class="hl">公共品属性</span>使其成为数字经济的底层基础设施——从平台经济到产业升级，开源持续释放<span class="hl">就业乘数效应</span>与<span class="hl">标准统一红利</span>，形成正向循环。
-        </p>
-      </div>
-    </div>
-
-    <div class="body">
-
-      <div class="left">
-        <div class="left-tag">
-          <span class="num">01</span>
-          <span>BACKGROUND / 引入</span>
-        </div>
-        <div class="left-title">开源不是免费的午餐，<br>而是数字经济的<span style="color:var(--red);">地基</span>。</div>
-        <p class="left-text">
-          当云计算、大数据、人工智能逐层堆叠起现代数字经济的骨架，<span class="b">Linux、Kubernetes、Apache 系列、开源数据库与 AI 框架</span>，共同构成了支撑这一切的技术底座。企业以零成本接入、以低门槛二次开发，<span class="red">将研发资源聚焦于差异化创新</span>，而非重复造轮子。
-        </p>
-        <p class="left-text">
-          这种"<span class="b">一次贡献、多方复用</span>"的机制，不仅降低了社会整体的数字化成本，更在就业、标准、产业协同三个维度产生<span class="red">乘数级</span>的正外部性——这正是本报告所关注的核心命题。
-        </p>
-
-        <div class="left-stats">
-          <div class="stat-mini">
-            <div class="v">10<span class="u">亿+</span></div>
-            <div class="l">全球活跃<br>开源贡献者</div>
-          </div>
-          <div class="stat-mini">
-            <div class="v">10<span class="u">万亿</span></div>
-            <div class="l">开源支撑的<br>数字经济体量</div>
-          </div>
-        </div>
-
-        <div class="left-footer">
-          <span class="sq"></span>
-          <span>OPEN&nbsp;SOURCE&nbsp;AS&nbsp;PUBLIC&nbsp;GOOD</span>
+          <span><span>KEYWORDS</span></span>
+          <span><span>开源生态 · 数字经济 · 就业乘数 · 标准红利</span></span>
         </div>
       </div>
 
-      <div class="right">
+      <div class="right-col">
 
-        <div class="kpi-row">
-          <div class="kpi">
-            <div class="kpi-tag">
-              <span class="id">KPI&nbsp;01</span>
-              <span>MARKET&nbsp;SHARE</span>
+        <div class="data-cards">
+          <div class="data-card">
+            <div class="dc-label"><span>CORE METRIC 01</span></div>
+            <div class="dc-number-row">
+              <span class="dc-number">80</span><span class="dc-unit">%+</span>
             </div>
-            <div class="kpi-value">80<span class="u">%+</span></div>
-            <div class="kpi-desc">全球云基础设施市场中，<span class="b">八成以上建立在开源技术栈之上</span>——Linux、Kubernetes、OpenStack 等共同支撑起公有云与私有云的底座。</div>
+            <div class="dc-title"><span>云基础设施开源占比</span></div>
+            <div class="dc-desc"><span>全球云市场八成以上建立在开源技术栈之上，构成数字经济底座。</span></div>
+            <div class="dc-bar"><div class="fill" style="width:82%;"></div></div>
           </div>
-          <div class="kpi">
-            <div class="kpi-tag">
-              <span class="id">KPI&nbsp;02</span>
-              <span>JOBS&nbsp;MULTIPLIER</span>
+          <div class="data-card">
+            <div class="dc-label"><span>CORE METRIC 02</span></div>
+            <div class="dc-number-row">
+              <span class="dc-number">1</span><span class="dc-unit">:</span><span class="dc-number">3~5</span>
             </div>
-            <div class="kpi-value">1<span class="u">:</span>3<span class="u">~5</span></div>
-            <div class="kpi-desc">每增加一个核心开源开发者，可带动<span class="b">3~5 个周边相关岗位</span>——测试、运维、产品、商务，形成<span class="b">就业乘数效应</span>。</div>
-          </div>
-        </div>
-
-        <div class="flow-wrap">
-          <div class="flow-head">
-            <div class="flow-title"><span class="bar"></span><span>五条价值链路 · VALUE CHAIN</span></div>
-            <div class="flow-sub">01&nbsp;→&nbsp;05 / FLOW</div>
-          </div>
-
-          <div class="flow">
-            <div class="card accent">
-              <div class="idx">01</div>
-              <div class="name">平台经济基础</div>
-              <div class="desc">全球云基础设施市场<span class="r">八成以上</span>建立在开源技术栈之上，构成数字经济的底座。</div>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="card">
-              <div class="idx">02<span class="arrow">▸</span></div>
-              <div class="name">创业加速器</div>
-              <div class="desc">开源让初创公司以<span class="b">极低成本</span>构建 MVP，快速迭代验证市场。</div>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="card accent">
-              <div class="idx">03</div>
-              <div class="name">就业乘数效应</div>
-              <div class="desc">1 名核心开源开发者可带动周边<span class="r">3~5 个</span>相关岗位就业。</div>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="card">
-              <div class="idx">04<span class="arrow">▸</span></div>
-              <div class="name">产业升级杠杆</div>
-              <div class="desc">开源中间件助力传统企业以<span class="b">较低门槛</span>完成数字化转型。</div>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="card">
-              <div class="idx">05<span class="arrow">▸</span></div>
-              <div class="name">标准统一红利</div>
-              <div class="desc">开源标准减少技术碎片化，<span class="b">显著降低</span>产业链协同成本。</div>
-            </div>
+            <div class="dc-title"><span>就业乘数效应</span></div>
+            <div class="dc-desc"><span>每增加一个核心开源开发者，可带动周边三至五个相关岗位。</span></div>
+            <div class="dc-bar"><div class="fill" style="width:70%;"></div></div>
           </div>
         </div>
 
-      </div>
+        <div class="flow-section">
+          <div class="flow-header">
+            <span class="ft"><span>五重驱动 · 从代码到产值的递进链条</span></span>
+            <span class="fl"></span>
+            <span class="fa"><span>FLOW</span></span>
+          </div>
 
-    </div>
+          <div class="flow-cards">
+            <div class="flow-card">
+              <div class="fc-num-cn"><span>STEP 01</span></div>
+              <div class="fc-num"><span>一</span></div>
+              <div class="fc-title"><span>平台经济基础</span></div>
+              <div class="fc-text"><span>全球云基础设施市场八成以上建立在开源技术栈之上，构成数字经济的底座。</span></div>
+              <div class="fc-tag"><span>BASE</span></div>
+              <div class="fc-arrow"></div>
+            </div>
+            <div class="flow-card">
+              <div class="fc-num-cn"><span>STEP 02</span></div>
+              <div class="fc-num"><span>二</span></div>
+              <div class="fc-title"><span>创业加速器</span></div>
+              <div class="fc-text"><span>开源技术让初创公司能以极低成本构建 MVP 并快速迭代验证市场。</span></div>
+              <div class="fc-tag"><span>ACCEL</span></div>
+              <div class="fc-arrow"></div>
+            </div>
+            <div class="flow-card">
+              <div class="fc-num-cn"><span>STEP 03</span></div>
+              <div class="fc-num"><span>三</span></div>
+              <div class="fc-title"><span>就业乘数效应</span></div>
+              <div class="fc-text"><span>每增加一个核心开源开发者，可带动周边三到五个相关岗位。</span></div>
+              <div class="fc-tag"><span>MULTIPLIER</span></div>
+              <div class="fc-arrow"></div>
+            </div>
+            <div class="flow-card">
+              <div class="fc-num-cn"><span>STEP 04</span></div>
+              <div class="fc-num"><span>四</span></div>
+              <div class="fc-title"><span>产业升级杠杆</span></div>
+              <div class="fc-text"><span>开源中间件助力传统企业以较低门槛完成数字化转型与系统升级。</span></div>
+              <div class="fc-tag"><span>LEVERAGE</span></div>
+              <div class="fc-arrow"></div>
+            </div>
+            <div class="flow-card" style="border-bottom-color: var(--vermilion);">
+              <div class="fc-num-cn"><span>STEP 05</span></div>
+              <div class="fc-num"><span>五</span></div>
+              <div class="fc-title"><span>标准统一红利</span></div>
+              <div class="fc-text"><span>开源标准减少技术碎片化，显著降低产业链上下游协同成本。</span></div>
+              <div class="fc-tag"><span>STANDARD</span></div>
+            </div>
+          </div>
 
-    <div class="footer">
-      <div class="footer-quote">
-        <span class="mark">「</span>
-        <span>开源即基础设施，代码即产值</span>
-        <span class="mark">」</span>
-      </div>
-      <div class="footer-meta">
-        <span>REPORT&nbsp;·&nbsp;OPEN&nbsp;SOURCE&nbsp;VALUE</span>
-        <span class="divider"></span>
-        <span class="page">PAGE&nbsp;06&nbsp;/&nbsp;12</span>
+          <div class="cycle-bar">
+            <div class="cb-icon"><span>↻</span></div>
+            <div class="cb-text"><span><strong>正向循环</strong> · 代码沉淀 → 技术复用 → 降本增效 → 产值放大 → 反哺生态</span></div>
+            <div class="cb-tags">
+              <span class="cb-tag"><span>CODE</span></span>
+              <span class="cb-tag"><span>VALUE</span></span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 

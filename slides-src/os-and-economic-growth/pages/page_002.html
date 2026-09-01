@@ -1,320 +1,326 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-Hans">
-><head>
+<html lang="zh-CN">
+<head>
 <meta charset="UTF-8">
 <title>全球开源图景</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #F5F5F5;
-  --navy: #0D2137;
-  --red: #E53935;
-  --text-main: #1A1A1A;
-  --text-mute: #6B7280;
-  --line: #D0D5DD;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root{
+  --primary:#0D2137;
+  --accent:#E53935;
+  --bg:#F5F5F5;
+  --ink:#1a1a1a;
+  --muted:#6b7280;
+  --line:#0D2137;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 1600px; height: 900px; overflow: hidden; }
-body {
-  font-family: 'Noto Sans SC', sans-serif;
-  background: var(--bg);
-  color: var(--text-main);
-  -webkit-font-smoothing: antialiased;
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;}
+body{
+  font-family:'Noto Sans SC',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
 }
-.wrapper {
-  width: 1600px;
-  height: 900px;
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
+.wrapper{
+  width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;
+  background:var(--bg);
 }
-#bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: var(--bg);
+#bg{position:absolute;inset:0;z-index:0;}
+#bg .bg-deco{position:absolute;inset:0;overflow:hidden;}
+#bg .bg-deco::before{
+  content:"";position:absolute;top:-120px;right:-80px;width:420px;height:420px;
+  border:1px solid var(--primary);border-radius:50%;opacity:0.06;
 }
-#ct {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  padding: 72px 100px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+#bg .bg-deco::after{
+  content:"";position:absolute;bottom:-160px;left:-100px;width:480px;height:480px;
+  border:1px solid var(--accent);border-radius:50%;opacity:0.08;
 }
-/* Header tag row */
-.chapter-tag {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 6px;
-  color: var(--navy);
-  margin-bottom: 8px;
+#bg .corner-mark{
+  position:absolute;top:0;right:0;width:120px;height:120px;
+  background:var(--primary);
 }
-.chapter-tag .dot {
-  width: 8px; height: 8px;
-  background: var(--red);
-  display: inline-block;
+#bg .corner-mark-tl{
+  position:absolute;top:0;left:0;width:80px;height:6px;background:var(--primary);
 }
-.chapter-tag .bar {
-  width: 60px; height: 1px;
-  background: var(--navy);
-  display: inline-block;
+#bg .corner-mark-tr{
+  position:absolute;top:0;right:0;width:6px;height:60px;background:var(--primary);
 }
-.chapter-tag .meta {
-  font-weight: 300;
-  color: var(--text-mute);
-  letter-spacing: 3px;
+#bg .side-bar{
+  position:absolute;top:60px;left:0;width:6px;height:120px;background:var(--accent);
 }
-/* Main title area */
-.title-block {
-  text-align: center;
-  margin-top: 14px;
+#ct{
+  position:absolute;inset:0;z-index:1;
+  padding:0;
+  display:flex;flex-direction:column;
 }
-.main-title {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 900;
-  font-size: 104px;
-  color: var(--navy);
-  letter-spacing: 18px;
-  line-height: 1.05;
-  margin-bottom: 22px;
+/* === HEADER STRIP === */
+.masthead{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:36px 72px 20px 72px;
+  border-bottom:1px solid var(--primary);
 }
-.subtitle {
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  color: var(--red);
-  letter-spacing: 4px;
-  margin-bottom: 26px;
+.masthead-left{display:flex;align-items:center;gap:16px;}
+.masthead-brand{
+  font-family:'Noto Serif SC',serif;font-weight:700;
+  font-size:14px;letter-spacing:6px;color:var(--primary);
 }
-.subtitle .divider {
-  display: inline-block;
-  width: 36px;
-  height: 1px;
-  background: var(--red);
-  vertical-align: middle;
-  margin: 0 14px 4px;
+.masthead-sep{width:40px;height:1px;background:var(--primary);opacity:0.4;}
+.masthead-issue{
+  font-size:11px;letter-spacing:3px;color:var(--muted);
+  font-weight:400;
 }
-.intro {
-  max-width: 1080px;
-  margin: 0 auto;
-  font-size: 14px;
-  line-height: 1.9;
-  color: var(--text-mute);
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  text-align: center;
+.masthead-right{display:flex;align-items:center;gap:20px;}
+.masthead-tag{
+  font-size:11px;letter-spacing:3px;color:var(--primary);font-weight:500;
+  padding:4px 12px;border:1px solid var(--primary);
 }
-/* KPI cards */
-.kpi-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 28px;
-  margin-top: 44px;
+.masthead-dots{display:flex;gap:6px;}
+.masthead-dots span{width:6px;height:6px;background:var(--primary);border-radius:50%;opacity:0.3;}
+.masthead-dots span:nth-child(2){background:var(--accent);opacity:1;}
+
+/* === TITLE BLOCK === */
+.title-block{
+  padding:28px 72px 0 72px;
+  display:grid;grid-template-columns:120px 1fr auto;gap:36px;align-items:start;
 }
-.kpi-card {
-  background: #FFFFFF;
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--navy);
-  padding: 28px 30px 24px;
-  position: relative;
-  min-height: 178px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.chap-num{
+  font-family:'Noto Serif SC',serif;
+  font-weight:900;font-size:96px;line-height:1;color:var(--accent);
+  font-style:italic;
 }
-.kpi-card .kpi-label {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 4px;
-  color: var(--navy);
-  margin-bottom: 10px;
+.chap-num-sub{
+  font-size:10px;letter-spacing:4px;color:var(--muted);
+  margin-top:6px;font-weight:400;font-style:normal;
 }
-.kpi-card .kpi-value {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 700;
-  font-size: 40px;
-  color: var(--navy);
-  line-height: 1.1;
-  margin-bottom: 12px;
+.chap-title-wrap{padding-top:4px;}
+.chap-main{
+  font-family:'Noto Serif SC',serif;
+  font-weight:900;font-size:112px;line-height:1.0;color:var(--primary);
+  letter-spacing:2px;
 }
-.kpi-card .kpi-value .accent {
-  color: var(--red);
+.chap-sub{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:18px;letter-spacing:4px;color:var(--accent);
+  margin-top:16px;font-weight:500;
 }
-.kpi-card .kpi-desc {
-  font-size: 12px;
-  line-height: 1.7;
-  color: var(--text-main);
-  font-weight: 400;
-  letter-spacing: 0.3px;
+.chap-sub-line{
+  width:60px;height:2px;background:var(--accent);margin-bottom:14px;
 }
-.kpi-card .kpi-source {
-  font-size: 10px;
-  color: var(--text-mute);
-  font-weight: 300;
-  letter-spacing: 1px;
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px solid #EEEEEE;
+.title-right{
+  padding-top:8px;text-align:right;
 }
-/* Divider line */
-.mid-divider {
-  width: 100%;
-  height: 1px;
-  background: var(--line);
-  margin: 28px 0 18px;
-  position: relative;
+.title-right .ornament{
+  width:60px;height:60px;border:1px solid var(--primary);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif SC',serif;font-size:24px;color:var(--primary);
+  font-weight:700;
 }
-.mid-divider::before {
-  content: '';
-  position: absolute;
-  left: 0; top: -2px;
-  width: 48px; height: 5px;
-  background: var(--red);
+.title-right .ornament-label{
+  font-size:10px;letter-spacing:3px;color:var(--muted);
+  margin-top:10px;
 }
-.mid-divider::after {
-  content: '';
-  position: absolute;
-  right: 0; top: -1px;
-  width: 30px; height: 3px;
-  background: var(--navy);
+
+/* === THREE CARDS === */
+.cards-section{
+  padding:36px 72px 0 72px;
+  border-top:1px solid rgba(13,33,55,0.15);
+  border-bottom:1px solid rgba(13,33,55,0.15);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
 }
-/* Bottom data points */
-.data-points {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
+.card{
+  position:relative;padding:20px 22px 22px 22px;
+  background:#ffffff;
+  border:1px solid rgba(13,33,55,0.12);
 }
-.data-point {
-  flex: 1;
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 0 8px;
-  border-left: 2px solid var(--navy);
-  padding-left: 18px;
+.card::before{
+  content:"";position:absolute;top:0;left:0;width:4px;height:100%;
+  background:var(--accent);
 }
-.data-point .dp-num {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 700;
-  font-size: 20px;
-  color: var(--navy);
-  white-space: nowrap;
+.card-num{
+  font-family:'Noto Serif SC',serif;font-size:14px;
+  letter-spacing:3px;color:var(--muted);font-weight:500;
+  margin-bottom:10px;
 }
-.data-point .dp-num .red {
-  color: var(--red);
+.card-title{
+  font-family:'Noto Serif SC',serif;font-size:26px;
+  font-weight:700;color:var(--primary);line-height:1.3;
+  margin-bottom:10px;
 }
-.data-point .dp-text {
-  font-size: 12px;
-  color: var(--text-mute);
-  line-height: 1.5;
-  font-weight: 400;
+.card-line{width:30px;height:2px;background:var(--primary);margin-bottom:12px;}
+.card-desc{
+  font-size:13px;line-height:1.75;color:#444;font-weight:400;
 }
-/* Footer */
-.footer {
-  margin-top: 22px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.card-foot{
+  margin-top:14px;padding-top:10px;border-top:1px dashed rgba(13,33,55,0.15);
+  font-size:11px;letter-spacing:2px;color:var(--muted);font-weight:400;
 }
-.footer .f-line {
-  flex: 1;
-  height: 1px;
-  background: var(--navy);
+
+/* === METRICS BAR === */
+.metrics-section{
+  padding:28px 72px 20px 72px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
 }
-.footer .f-red {
-  width: 24px;
-  height: 3px;
-  background: var(--red);
+.metric{
+  display:flex;align-items:center;gap:20px;
+  padding:18px 22px;
+  background:var(--primary);
+  color:#fff;
+  position:relative;
 }
-.footer .f-text {
-  font-size: 11px;
-  letter-spacing: 4px;
-  color: var(--text-mute);
-  font-weight: 300;
+.metric:nth-child(2){background:var(--accent);}
+.metric-num{
+  font-family:'Noto Serif SC',serif;
+  font-weight:900;font-size:42px;line-height:1;color:#fff;
+  white-space:nowrap;
+}
+.metric-num .unit{font-size:18px;font-weight:700;margin-left:4px;letter-spacing:1px;}
+.metric-info{display:flex;flex-direction:column;gap:4px;border-left:1px solid rgba(255,255,255,0.25);padding-left:16px;flex:1;}
+.metric-label{font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.7);font-weight:400;}
+.metric-sub{font-size:13px;font-weight:500;color:#fff;line-height:1.4;}
+
+/* === FOOTER QUOTE === */
+.footer-quote{
+  padding:16px 72px 0 72px;
+  display:flex;align-items:center;gap:20px;
+  margin-top:8px;
+}
+.footer-line{flex:0 0 80px;height:1px;background:var(--primary);}
+.footer-text{
+  font-size:12px;line-height:1.7;color:var(--muted);font-weight:400;
+  font-style:italic;letter-spacing:1px;
+}
+.footer-quote-right{
+  margin-left:auto;display:flex;align-items:center;gap:12px;
+}
+.footer-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;}
+.footer-label{font-size:10px;letter-spacing:4px;color:var(--primary);font-weight:500;}
+
+/* === BOTTOM STRIP === */
+.bottom-strip{
+  margin-top:auto;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 72px 28px 72px;
+}
+.bottom-left{
+  font-size:10px;letter-spacing:4px;color:var(--muted);font-weight:400;
+}
+.bottom-center{
+  display:flex;gap:8px;align-items:center;
+}
+.bottom-center span{width:30px;height:2px;background:var(--primary);opacity:0.3;}
+.bottom-center span:nth-child(2){background:var(--accent);opacity:1;}
+.bottom-right{
+  font-family:'Noto Serif SC',serif;font-size:12px;color:var(--primary);font-weight:700;letter-spacing:2px;
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div id="bg"></div>
+  <div id="bg">
+    <div class="bg-deco"></div>
+    <div class="corner-mark"></div>
+    <div class="corner-mark-tl"></div>
+    <div class="corner-mark-tr"></div>
+    <div class="side-bar"></div>
+  </div>
   <div id="ct">
-    <div class="chapter-tag">
-      <span class="bar"></span>
-      <span class="dot"></span>
-      <span>PART 01 / GLOBAL LANDSCAPE</span>
-      <span class="meta">· 第一章 ·</span>
+
+    <!-- MASTHEAD -->
+    <div class="masthead">
+      <div class="masthead-left">
+        <span class="masthead-brand"><span>OPEN SOURCE REPORT</span></span>
+        <span class="masthead-sep"></span>
+        <span class="masthead-issue"><span>VOL. 01 · 2024</span></span>
+      </div>
+      <div class="masthead-right">
+        <span class="masthead-dots"><span></span><span></span><span></span></span>
+        <span class="masthead-tag"><span>CHAPTER OPENING</span></span>
+      </div>
     </div>
 
+    <!-- TITLE BLOCK -->
     <div class="title-block">
-      <div class="main-title">全球开源图景</div>
-      <div class="subtitle">
-        <span class="divider"></span>
-        PART 01 · 规模、参与者与市场轮廓
-        <span class="divider"></span>
+      <div>
+        <div class="chap-num">01</div>
+        <div class="chap-num-sub"><span>CHAPTER</span></div>
       </div>
-      <div class="intro">
-        本章节快速勾勒开源软件的全球画像：产业规模、用户体量、生态项目数量与关键指标，为后续深入讨论奠定事实基础与分析框架。
+      <div class="chap-title-wrap">
+        <div class="chap-main">全球开源图景</div>
+        <div class="chap-sub-line"></div>
+        <div class="chap-sub"><span>PART 01 · 规模、参与者与市场轮廓</span></div>
+      </div>
+      <div class="title-right">
+        <div class="ornament"><span>OS</span></div>
+        <div class="ornament-label"><span>GLOBAL · 2024</span></div>
       </div>
     </div>
 
-    <div class="kpi-row">
-      <div class="kpi-card">
-        <div>
-          <div class="kpi-label">产 业 规 模</div>
-          <div class="kpi-value"><span class="accent">2000</span>亿美元<span class="accent">+</span></div>
-          <div class="kpi-desc">开源软件及相关服务已构成规模超两千亿美元的全球性产业，涵盖基础设施、云服务、企业授权与技术支持等核心板块。</div>
+    <!-- THREE CARDS -->
+    <div class="cards-section">
+      <div class="card">
+        <div class="card-num"><span>核心要点 · 01</span></div>
+        <div class="card-title">万亿级产业</div>
+        <div class="card-line"></div>
+        <div class="card-desc">开源软件及相关服务已构成规模超两千亿美元的全球性产业，从基础软件到云服务、从企业解决方案到开发者工具，覆盖完整价值链。</div>
+        <div class="card-foot"><span>MARKET · 200B+ USD</span></div>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>核心要点 · 02</span></div>
+        <div class="card-title">数十亿用户</div>
+        <div class="card-line"></div>
+        <div class="card-desc">全球超过三十亿终端用户日常依赖开源技术运行应用与系统，从操作系统到浏览器、从数据库到云计算基础设施，渗透无处不在。</div>
+        <div class="card-foot"><span>USERS · 3B+ GLOBAL</span></div>
+      </div>
+      <div class="card">
+        <div class="card-num"><span>核心要点 · 03</span></div>
+        <div class="card-title">百万级项目</div>
+        <div class="card-line"></div>
+        <div class="card-desc">GitHub 平台托管项目突破一亿个且活跃仓库持续增长，形成全球开发者协作的最大数字基础设施与知识共创网络。</div>
+        <div class="card-foot"><span>PROJECTS · 100M+ REPOS</span></div>
+      </div>
+    </div>
+
+    <!-- METRICS BAR -->
+    <div class="metrics-section">
+      <div class="metric">
+        <div class="metric-num">2000<span class="unit">亿美元+</span></div>
+        <div class="metric-info">
+          <span class="metric-label"><span>KEY METRIC · 01</span></span>
+          <span class="metric-sub">开源软件市场<br>2023年估算规模</span>
         </div>
-        <div class="kpi-source">数据口径：2023 年全球市场估算</div>
       </div>
-      <div class="kpi-card">
-        <div>
-          <div class="kpi-label">用 户 体 量</div>
-          <div class="kpi-value"><span class="accent">30</span>亿<span class="accent">+</span></div>
-          <div class="kpi-desc">全球有超过三十亿终端用户日常依赖开源技术运行应用与系统，从智能手机操作系统到互联网核心协议，无处不在。</div>
+      <div class="metric">
+        <div class="metric-num">1<span class="unit">亿+</span></div>
+        <div class="metric-info">
+          <span class="metric-label"><span>KEY METRIC · 02</span></span>
+          <span class="metric-sub">GitHub 累计仓库<br>全球代码项目总量</span>
         </div>
-        <div class="kpi-source">数据口径：全球终端用户估算</div>
       </div>
-      <div class="kpi-card">
-        <div>
-          <div class="kpi-label">生 态 项 目</div>
-          <div class="kpi-value"><span class="accent">1</span>亿<span class="accent">+</span></div>
-          <div class="kpi-desc">GitHub 平台托管项目突破一亿个，活跃仓库数量持续增长，覆盖编程语言、行业领域与开源治理模式的全谱系。</div>
+      <div class="metric">
+        <div class="metric-num">5000<span class="unit">万+</span></div>
+        <div class="metric-info">
+          <span class="metric-label"><span>KEY METRIC · 03</span></span>
+          <span class="metric-sub">中国贡献者数量<br>全球开发者最多</span>
         </div>
-        <div class="kpi-source">数据口径：GitHub 累计仓库统计</div>
       </div>
     </div>
 
-    <div class="mid-divider"></div>
-
-    <div class="data-points">
-      <div class="data-point">
-        <span class="dp-num"><span class="red">1</span>亿+</span>
-        <span class="dp-text">GitHub 累计仓库<br>（全球代码项目）</span>
-      </div>
-      <div class="data-point">
-        <span class="dp-num"><span class="red">5000</span>万+</span>
-        <span class="dp-text">中国贡献者规模<br>（全球最多）</span>
-      </div>
-      <div class="data-point">
-        <span class="dp-num"><span class="red">2000</span>亿美元+</span>
-        <span class="dp-text">开源软件市场规模<br>（2023 年估算）</span>
+    <!-- FOOTER QUOTE -->
+    <div class="footer-quote">
+      <span class="footer-line"></span>
+      <span class="footer-text"><span>"本章节快速勾勒开源软件的全球画像：产业规模、用户体量、生态项目数量与关键指标，为后续深入讨论奠定事实基础与分析框架。"</span></span>
+      <div class="footer-quote-right">
+        <span class="footer-dot"></span>
+        <span class="footer-label"><span>EDITOR'S NOTE</span></span>
       </div>
     </div>
 
-    <div class="footer">
-      <span class="f-red"></span>
-      <span class="f-text">CHAPTER ONE · OPEN SOURCE LANDSCAPE</span>
-      <span class="f-line"></span>
-      <span class="f-red"></span>
+    <!-- BOTTOM STRIP -->
+    <div class="bottom-strip">
+      <span class="bottom-left"><span>OPEN SOURCE REPORT · GLOBAL LANDSCAPE</span></span>
+      <div class="bottom-center"><span></span><span></span><span></span></div>
+      <span class="bottom-right"><span>— 第一章 · 卷首 —</span></span>
     </div>
+
   </div>
 </div>
 </body>
