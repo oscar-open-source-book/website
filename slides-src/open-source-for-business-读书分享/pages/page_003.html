@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>本书核心框架</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --bg:#1E293B;
+  --bg-deep:#0F172A;
+  --card:#162033;
+  --card-border:#1E4E7A;
+  --text-main:#E2E8F0;
+  --text-dim:#94A3B8;
+  --glow:rgba(33,150,243,0.35);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--text-main);
+  background:var(--bg-deep);
+}
+
+.wrapper{
+  width:1600px;
+  height:900px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto;
+}
+
+#bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:
+    radial-gradient(1200px 700px at 80% -10%, rgba(33,150,243,0.12) 0%, transparent 60%),
+    radial-gradient(1000px 600px at -10% 110%, rgba(0,188,212,0.10) 0%, transparent 55%),
+    linear-gradient(160deg,#0F172A 0%, #1E293B 60%, #0F172A 100%);
+}
+
+#bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(33,150,243,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33,150,243,0.05) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, black 40%, transparent 85%);
+}
+
+#ct{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  padding:48px 72px 40px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Header */
+.header{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  margin-bottom:14px;
+}
+
+.eyebrow{
+  font-family:'Orbitron',sans-serif;
+  font-size:13px;
+  letter-spacing:6px;
+  color:var(--accent);
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.eyebrow::before, .eyebrow::after{
+  content:"";
+  width:60px;
+  height:1px;
+  background:linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:48px;
+  letter-spacing:3px;
+  background:linear-gradient(90deg,#60B4FA 0%, #2196F3 45%, #00BCD4 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 40px rgba(33,150,243,0.25);
+}
+
+.narrative{
+  margin-top:12px;
+  font-size:14.5px;
+  line-height:1.75;
+  color:var(--text-dim);
+  max-width:1280px;
+  text-align:center;
+}
+.narrative b{color:#93C5FD;font-weight:600;}
+
+/* Matrix */
+.matrix{
+  margin-top:18px;
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:22px;
+}
+
+.quad{
+  position:relative;
+  background:linear-gradient(135deg,#162033 0%, #1A2740 100%);
+  border:1.5px solid var(--card-border);
+  border-radius:14px;
+  padding:22px 26px;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  overflow:hidden;
+  transition:transform .3s;
+}
+.quad::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:4px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+  box-shadow:0 0 14px var(--glow);
+}
+.quad::after{
+  content:"";
+  position:absolute;
+  right:-60px;top:-60px;
+  width:180px;height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(33,150,243,0.10) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.icon-wrap{
+  flex-shrink:0;
+  width:96px;height:96px;
+  border-radius:16px;
+  background:linear-gradient(135deg, rgba(33,150,243,0.18), rgba(0,188,212,0.10));
+  border:1px solid rgba(33,150,243,0.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 20px rgba(33,150,243,0.15) inset, 0 0 18px rgba(33,150,243,0.10);
+}
+
+.q-body{flex:1;min-width:0;position:relative;z-index:1;}
+
+.q-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;
+  letter-spacing:2px;
+  color:var(--accent);
+  margin-bottom:6px;
+}
+.q-tag .num{
+  display:inline-block;
+  width:22px;height:22px;
+  line-height:22px;
+  text-align:center;
+  border-radius:6px;
+  background:rgba(0,188,212,0.15);
+  border:1px solid rgba(0,188,212,0.4);
+  font-size:11px;
+  color:#67E8F9;
+}
+.q-tag .sep{width:20px;height:1px;background:rgba(0,188,212,0.4);}
+
+.q-title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  font-size:22px;
+  color:#E0F2FE;
+  margin-bottom:8px;
+  letter-spacing:1px;
+}
+
+.q-desc{
+  font-size:13.5px;
+  line-height:1.7;
+  color:var(--text-dim);
+}
+
+.q-meta{
+  margin-top:10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.q-meta span{
+  font-size:11px;
+  color:#7DD3FC;
+  background:rgba(33,150,243,0.08);
+  border:1px solid rgba(33,150,243,0.22);
+  padding:3px 10px;
+  border-radius:20px;
+  letter-spacing:0.5px;
+}
+
+/* Center connector */
+.connector{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:60px;height:60px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(15,23,42,0.95) 0%, #0F172A 100%);
+  border:1.5px solid var(--accent);
+  box-shadow:0 0 24px rgba(0,188,212,0.35);
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:#67E8F9;
+}
+
+/* Footer */
+.footer{
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding:14px 30px;
+  border-top:1px solid rgba(33,150,243,0.2);
+  border-bottom:1px solid rgba(33,150,243,0.2);
+  background:linear-gradient(90deg, rgba(33,150,243,0.06), rgba(0,188,212,0.08), rgba(33,150,243,0.06));
+  border-radius:8px;
+}
+.footer .line{
+  font-family:'Orbitron',sans-serif;
+  font-size:13px;
+  letter-spacing:2px;
+  color:#93C5FD;
+}
+.footer .line b{color:#67E8F9;font-weight:700;}
+.footer .arrow{
+  color:var(--accent);
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+}
+.footer .tag{
+  font-size:11px;
+  color:var(--text-dim);
+  letter-spacing:1.5px;
+  font-family:'Orbitron',sans-serif;
+  border-left:1px solid rgba(0,188,212,0.4);
+  padding-left:12px;
+}
+
+/* SVG icon colors */
+.icon-svg{width:48px;height:48px;stroke:var(--accent);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.icon-svg .fill{fill:rgba(0,188,212,0.15);stroke:var(--primary);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="eyebrow"><span>CORE FRAMEWORK</span></div>
+      <h1 class="title">本书核心框架</h1>
+      <p class="narrative">
+        全书构建了一个四象限的分析框架，先回答<b>开源为何有价值</b>，再讨论<b>如何靠它赚钱</b>，接着研究<b>怎样治理好一个社区</b>，最后给出<b>企业可照做的行动路径</b>，这一框架贯穿始终。
+      </p>
+    </div>
+
+    <div class="matrix">
+
+      <!-- Q1 价值命题 -->
+      <div class="quad">
+        <div class="icon-wrap">
+          <svg class="icon-svg" viewBox="0 0 48 48">
+            <path class="fill" d="M24 6 L30 18 L43 20 L33 29 L36 43 L24 36 L12 43 L15 29 L5 20 L18 18 Z"/>
+            <circle cx="24" cy="25" r="4" stroke="#2196F3"/>
+          </svg>
+        </div>
+        <div class="q-body">
+          <div class="q-tag"><span class="num">01</span><span class="sep"></span><span>VALUE PROPOSITION</span></div>
+          <div class="q-title">价值命题</div>
+          <div class="q-desc">开源通过降低协作门槛重塑软件开发的<b style="color:#93C5FD">经济模型</b>，使创新不再被少数组织垄断，价值在开放网络中被放大与复利。</div>
+          <div class="q-meta">
+            <span>协作门槛</span><span>经济模型</span><span>价值放大</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 商业模式 -->
+      <div class="quad">
+        <div class="icon-wrap">
+          <svg class="icon-svg" viewBox="0 0 48 48">
+            <circle class="fill" cx="24" cy="24" r="16"/>
+            <path d="M24 12 V36 M18 18 C18 16, 20 15, 22 15 C26 15, 30 17, 30 21 C30 25, 26 27, 22 27 C18 27, 18 30, 18 30"/>
+          </svg>
+        </div>
+        <div class="q-body">
+          <div class="q-tag"><span class="num">02</span><span class="sep"></span><span>BUSINESS MODEL</span></div>
+          <div class="q-title">商业模式</div>
+          <div class="q-desc">从<b style="color:#93C5FD">服务收费</b>到<b style="color:#93C5FD">平台抽取</b>，多种路径验证了开源商业的可持续性，让"免费"与"盈利"真正并行。</div>
+          <div class="q-meta">
+            <span>服务收费</span><span>平台抽取</span><span>可持续</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 社区治理 -->
+      <div class="quad">
+        <div class="icon-wrap">
+          <svg class="icon-svg" viewBox="0 0 48 48">
+            <circle class="fill" cx="24" cy="14" r="5"/>
+            <circle class="fill" cx="12" cy="34" r="5"/>
+            <circle class="fill" cx="36" cy="34" r="5"/>
+            <path d="M24 19 V28 M24 28 L14 30 M24 28 L34 30 M12 14 H36" stroke-opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="q-body">
+          <div class="q-tag"><span class="num">03</span><span class="sep"></span><span>COMMUNITY GOVERNANCE</span></div>
+          <div class="q-title">社区治理</div>
+          <div class="q-desc">健康的<b style="color:#93C5FD">治理结构</b>是项目生命力与用户信任的根本保障，制度与文化共同决定社区能否穿越周期。</div>
+          <div class="q-meta">
+            <span>治理结构</span><span>用户信任</span><span>穿越周期</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 落地路径 -->
+      <div class="quad">
+        <div class="icon-wrap">
+          <svg class="icon-svg" viewBox="0 0 48 48">
+            <path class="fill" d="M8 40 L8 8 L18 8 L18 40 Z"/>
+            <path class="fill" d="M22 40 L22 16 L32 16 L32 40 Z"/>
+            <path class="fill" d="M36 40 L36 24 L44 24 L44 40 Z"/>
+            <path d="M24 6 L24 14 M38 20 L38 28"/>
+          </svg>
+        </div>
+        <div class="q-body">
+          <div class="q-tag"><span class="num">04</span><span class="sep"></span><span>ADOPTION PATH</span></div>
+          <div class="q-title">落地路径</div>
+          <div class="q-desc">企业从<b style="color:#93C5FD">使用</b>到<b style="color:#93C5FD">参与</b>再到<b style="color:#93C5FD">主导</b>，渐进式构建开源战略路线图，让转型可执行、可衡量、可复用。</div>
+          <div class="q-meta">
+            <span>使用</span><span>参与</span><span>主导</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">CORE</div>
+    </div>
+
+    <div class="footer">
+      <span class="line"><b>价值</b></span>
+      <span class="arrow">→</span>
+      <span class="line"><b>商业</b></span>
+      <span class="arrow">→</span>
+      <span class="line"><b>治理</b></span>
+      <span class="arrow">→</span>
+      <span class="line"><b>落地</b></span>
+      <span class="line"><span>四步闭环贯穿全书</span></span>
+      <span class="tag">CLOSED LOOP</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

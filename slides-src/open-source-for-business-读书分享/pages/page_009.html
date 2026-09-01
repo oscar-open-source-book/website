@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<title>企业开源实践路径</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1E293B;
+  --bg-deep:#0F172A;
+  --primary:#2196F3;
+  --accent:#00BCD4;
+  --accent2:#7C4DFF;
+  --text:#F1F5F9;
+  --text-dim:#94A3B8;
+  --line:rgba(33,150,243,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;color:var(--text);overflow:hidden;}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;background:
+  linear-gradient(180deg,#0F172A 0%,#1E293B 55%,#132034 100%);
+}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px;display:flex;flex-direction:column;}
+.grid-bg{position:absolute;inset:0;z-index:0;
+  background:
+    repeating-linear-gradient(0deg,rgba(33,150,243,0.04) 0 1px,transparent 1px 80px),
+    repeating-linear-gradient(90deg,rgba(33,150,243,0.04) 0 1px,transparent 1px 80px);
+  pointer-events:none;}
+.glow{position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(33,150,243,0.18),transparent 65%);
+  pointer-events:none;z-index:0;}
+.glow.g1{top:-180px;right:-120px;}
+.glow.g2{bottom:-260px;left:-160px;background:radial-gradient(circle,rgba(0,188,212,0.14),transparent 65%);}
+
+/* header */
+.header{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2;}
+.title-wrap{max-width:1000px;}
+.tag{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--accent);letter-spacing:3px;font-weight:600;margin-bottom:14px;font-family:'Orbitron',sans-serif;}
+.tag::before{content:"";width:32px;height:2px;background:var(--accent);display:inline-block;}
+h1{font-family:'Orbitron',sans-serif;font-weight:900;font-size:54px;letter-spacing:2px;line-height:1.1;
+  background:linear-gradient(90deg,#E3F2FD 0%,#2196F3 55%,#00BCD4 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.subtitle{margin-top:16px;font-size:15px;line-height:1.7;color:var(--text-dim);max-width:980px;}
+.meta{display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Orbitron',sans-serif;}
+.meta-code{font-size:13px;color:var(--accent);letter-spacing:2px;}
+.meta-box{border:1px solid var(--line);padding:10px 16px;font-size:11px;color:var(--text-dim);letter-spacing:2px;border-radius:4px;background:rgba(15,23,42,0.5);}
+
+/* core */
+.core{display:flex;gap:28px;margin-top:34px;flex:1;position:relative;z-index:2;align-items:stretch;}
+.steps-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:0;position:relative;}
+.steps{display:flex;align-items:flex-end;gap:22px;height:440px;}
+.step{flex:1;border-radius:10px 10px 0 0;position:relative;padding:22px 22px 24px;display:flex;flex-direction:column;justify-content:flex-start;border:1px solid var(--line);border-bottom:none;overflow:hidden;}
+.step::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--c);}
+.step1{height:210px;background:linear-gradient(180deg,rgba(33,150,243,0.18),rgba(33,150,243,0.04));--c:var(--primary);}
+.step2{height:315px;background:linear-gradient(180deg,rgba(33,150,243,0.28),rgba(0,188,212,0.06));--c:#42A5F5;}
+.step3{height:420px;background:linear-gradient(180deg,rgba(0,188,212,0.32),rgba(33,150,243,0.08));--c:var(--accent);}
+.step-num{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--accent);letter-spacing:3px;margin-bottom:6px;}
+.step-title{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.step-word{font-size:12px;color:var(--text-dim);letter-spacing:2px;margin-bottom:14px;font-family:'Orbitron',sans-serif;}
+.step-line{width:36px;height:2px;background:var(--c);margin-bottom:14px;}
+.step-desc{font-size:13.5px;line-height:1.7;color:var(--text);opacity:0.9;}
+.step-icon{position:absolute;right:18px;top:16px;width:32px;height:32px;border:1px solid var(--c);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:13px;color:var(--c);}
+.rise-arrow{position:absolute;bottom:-32px;left:0;right:0;height:60px;display:flex;align-items:flex-end;justify-content:flex-end;pointer-events:none;}
+.rise-arrow .arr{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--accent);letter-spacing:3px;}
+.axis-label{position:absolute;font-family:'Orbitron',sans-serif;font-size:11px;color:var(--text-dim);letter-spacing:2px;}
+
+/* risks */
+.risks{width:340px;background:linear-gradient(180deg,rgba(15,23,42,0.85),rgba(15,23,42,0.5));border:1px solid var(--line);border-left:3px solid #FF7043;border-radius:8px;padding:22px 22px;display:flex;flex-direction:column;position:relative;}
+.risks::before{content:"RISK";position:absolute;top:12px;right:16px;font-family:'Orbitron',sans-serif;font-size:10px;color:#FF7043;letter-spacing:3px;opacity:0.6;}
+.risks-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.risks-sub{font-size:12px;color:var(--text-dim);letter-spacing:2px;margin-bottom:18px;font-family:'Orbitron',sans-serif;}
+.risk-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px dashed rgba(255,255,255,0.08);}
+.risk-item:last-child{border-bottom:none;}
+.risk-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;border:1px solid #FF7043;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:12px;color:#FF7043;font-weight:700;}
+.risk-body{flex:1;}
+.risk-name{font-size:14.5px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.risk-desc{font-size:11.5px;color:var(--text-dim);line-height:1.55;}
+.risk-foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font-size:11px;color:var(--text-dim);line-height:1.6;font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+
+/* kpi */
+.kpi-row{display:flex;gap:24px;margin-top:24px;position:relative;z-index:2;}
+.kpi{flex:1;display:flex;align-items:center;gap:20px;padding:18px 24px;border:1px solid var(--line);border-radius:8px;background:rgba(15,23,42,0.6);}
+.kpi-accent{width:4px;align-self:stretch;border-radius:2px;background:linear-gradient(180deg,var(--primary),var(--accent));}
+.kpi-value{font-family:'Orbitron',sans-serif;font-size:34px;font-weight:900;color:var(--text);line-height:1;}
+.kpi-unit{font-size:13px;color:var(--accent);margin-left:6px;font-family:'Orbitron',sans-serif;}
+.kpi-label-wrap{flex:1;}
+.kpi-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.kpi-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+.kpi-deco{width:60px;height:60px;flex-shrink:0;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:10px;color:var(--accent);letter-spacing:1px;}
+
+/* footer */
+.footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-family:'Orbitron',sans-serif;font-size:10px;color:var(--text-dim);letter-spacing:2px;position:relative;z-index:2;}
+.footer-dots{display:flex;gap:6px;}
+.footer-dots span{width:6px;height:6px;border-radius:50%;background:var(--primary);opacity:0.4;}
+.footer-dots span:nth-child(3){background:var(--accent);opacity:0.9;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="bg"></div>
+  <div class="grid-bg"></div>
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div id="ct">
+
+    <div class="header">
+      <div class="title-wrap">
+        <div class="tag"><span>OPEN SOURCE / ROADMAP</span></div>
+        <h1>企业开源实践路径</h1>
+        <p class="subtitle">企业参与开源通常经历用—参与—主导三阶段，书中提供了可操作的路线图与风险检查表，帮助不同成熟度的团队选择合适起步方式。</p>
+      </div>
+      <div class="meta">
+        <div class="meta-code">// 2025.GUIDE</div>
+        <div class="meta-box">STAGE · 01 → 03</div>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="steps-area">
+        <div class="steps">
+          <div class="step step1">
+            <div class="step-icon"><span>01</span></div>
+            <div class="step-num"><span>STAGE 01</span></div>
+            <div class="step-title"><span>使用</span></div>
+            <div class="step-word"><span>ADOPT</span></div>
+            <div class="step-line"></div>
+            <p class="step-desc"><span>合规选用开源组件，建立内部资产盘点机制，夯实起步根基。</span></p>
+          </div>
+          <div class="step step2">
+            <div class="step-icon"><span>02</span></div>
+            <div class="step-num"><span>STAGE 02</span></div>
+            <div class="step-title"><span>参与</span></div>
+            <div class="step-word"><span>CONTRIBUTE</span></div>
+            <div class="step-line"></div>
+            <p class="step-desc"><span>派遣工程师回馈上游，提交代码与文档，建立社区影响力与核心人脉。</span></p>
+          </div>
+          <div class="step step3">
+            <div class="step-icon"><span>03</span></div>
+            <div class="step-num"><span>STAGE 03</span></div>
+            <div class="step-title"><span>主导</span></div>
+            <div class="step-word"><span>LEAD</span></div>
+            <div class="step-line"></div>
+            <p class="step-desc"><span>孵化自有开源项目，对外输出技术品牌，掌握生态话语权与标准定义权。</span></p>
+          </div>
+        </div>
+        <div class="rise-arrow">
+          <div class="arr"><span>成熟度递增 ─▶</span></div>
+        </div>
+      </div>
+
+      <div class="risks">
+        <div class="risks-title"><span>风险提示便签</span></div>
+        <div class="risks-sub"><span>THREE KEY RISKS</span></div>
+        <div class="risk-item">
+          <div class="risk-num"><span>01</span></div>
+          <div class="risk-body">
+            <div class="risk-name"><span>许可证合规</span></div>
+            <div class="risk-desc"><span>GPL 等传染性许可证误用，可能引发源码强制公开与法律纠纷。</span></div>
+          </div>
+        </div>
+        <div class="risk-item">
+          <div class="risk-num"><span>02</span></div>
+          <div class="risk-body">
+            <div class="risk-name"><span>供应链安全</span></div>
+            <div class="risk-desc"><span>依赖包被植入恶意代码或版本失控，威胁整体系统安全。</span></div>
+          </div>
+        </div>
+        <div class="risk-item">
+          <div class="risk-num"><span>03</span></div>
+          <div class="risk-body">
+            <div class="risk-name"><span>人才流失</span></div>
+            <div class="risk-desc"><span>核心工程师因社区声誉被竞品吸引，技术与经验随之外流。</span></div>
+          </div>
+        </div>
+        <div class="risk-foot"><span>// 建议定期审计 + 建立风险检查表</span></div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-accent"></div>
+        <div class="kpi-value"><span>6-12</span><span class="kpi-unit">个月</span></div>
+        <div class="kpi-label-wrap">
+          <div class="kpi-label"><span>建议起步时间</span></div>
+          <div class="kpi-desc"><span>从"使用"阶段沉淀到完成"参与"阶段首波贡献的合理窗口期</span></div>
+        </div>
+        <div class="kpi-deco"><span>TIME</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-accent"></div>
+        <div class="kpi-value"><span>3</span><span class="kpi-unit">大</span></div>
+        <div class="kpi-label-wrap">
+          <div class="kpi-label"><span>关键风险数量</span></div>
+          <div class="kpi-desc"><span>合规 · 安全 · 人才，三大核心风险贯穿开源全生命周期</span></div>
+        </div>
+        <div class="kpi-deco"><span>RISK</span></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div><span>ENTERPRISE · OPEN SOURCE · PATHWAY</span></div>
+      <div class="footer-dots"><span></span><span></span><span></span><span></span><span></span></div>
+      <div><span>PAGE / 01</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
