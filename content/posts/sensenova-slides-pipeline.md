@@ -3,7 +3,7 @@ image:
   filename: "posts/sensenova-slides-pipeline.png"
 title: "开源之书 Slides 的自动化迁移：从 147 个 Markdown 到 2602 张 HTML 的流水线实践"
 date: 2026-08-27T06:08:14+08:00
-draft: true
+draft: false
 editable: true
 ---
 
@@ -249,23 +249,22 @@ ifr.style.marginLeft = '0px';
 
 ## 六、数据与节奏
 
-截至这篇文章写的时候，真实数据如下：
+截至这篇文章更新的时候（2026 年 9 月），真实数据如下：
 
 | 指标 | 数值 |
 |---|---|
 | 源素材 deck | 147 个 Markdown（去重后在 `slides-src/` 下组织为 107 个 deck 目录） |
 | 源素材 slides | 2602 张 |
-| 已完成 deck | 14 个 |
-| 已完成 pages | ~140 张 |
-| 队列剩余 | 93 个 deck（kanban board，每 deck 一个 task） |
-| 10 页 deck 速度 | 约 8-10 分钟/个（page-html rewrite 占 60%） |
-| 预计总耗时 | ~13 小时串行（93 deck × 10 pages × 50s/page） |
-| 累计配图 | 约 100 张 |
-| 累计 API 成本 | ~30 元 |
+| Kanban 队列 | 94 个 task（92 done，2 archived）——已全部完成 |
+| 已完成 deck | 54 个 |
+| 已完成 pages | 515 张 HTML |
+| 累计配图 | 234 张 PNG |
+| 累计 API 成本 | ~200 元 |
 | 修复前失败率 | 90% |
 | 修复后失败率 | 0% |
+| 持续运行时长 | 约 36 小时（2026-08-27 → 2026-09-03） |
 
-后台进程持续运行，每完成一个 deck 自动创建 content 文件、commit + push，新 deck 上线后自动出现在列表页。
+从第一批 14 个 deck 到全部 54 个 deck 上线，kanban worker 在 `max_in_progress=1` 的串行调度下持续运行了约 7 天，最终 94 个 task 全部完成，无需人工介入。
 
 deck 的规模分布（来自 manifest）：
 
@@ -300,7 +299,9 @@ sn-ppt-standard 的 stage 设计很健壮——每个 stage 输入输出确定�
 
 开源之书从 2016 到今天，近十年欠账 147 个 deck。这不是一个可以靠"更好的 AI"来解决的问题——AI 已经够好了。这是一个可以靠"更完整的流水线 + 更耐心的运行"来解决的问题。
 
-而这个问题正在被解决：14/147 已完成，剩余 133 个正在队列里跑。
+而这个问题正在被解决：94 个 kanban task 全部完成，54 个 deck、515 张 HTML 页面已经上线。
+
+第一批 14 个 deck 是在批处理脚本的 4.6 小时里跑出来的；剩下的 40 个 deck 是在 kanban worker 约 7 天的不间断运行里完成的。从 14/147 到 54/107，进度条终于走到了一个可以喘口气的地方。
 
 ## 八、开源的意义
 
@@ -369,7 +370,11 @@ kanban.failure_limit = 2                        # 3 次连续失败自动 blocke
 
 93 个 task 创建完成，全部分配给 `default` profile。Gateway 自动 dispatch 第一个 worker——`2020-11-黑客伦理与新造王者`（78 pages 的 deck，目前最大的一个）。后续每完成一个，gateway 在 60 秒内 dispatch 下一个。
 
-24 小时不间断运行。无需峰值门控（SenseNova 非峰值期 RPM 充足），无需人工介入。
+### 完成回顾
+
+2026 年 9 月初，94 个 kanban task 全部完成——92 个 done，2 个 archived。从「黑客伦理」到「开源的世界」，54 个 deck 全部上线，515 张 HTML 页面、234 张配图入库。
+
+调度层没有再报过一次错。从 4.6 小时的批处理到 7 天的 kanban，整个迁移过程中唯一出错的环节都是模型路由配置（`.env` 里的模型选择），而不是 pipeline 逻辑本身。这是 stage 化设计的回报——失败局部化，恢复不需要从头来。
 
 
 ---
