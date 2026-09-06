@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>大分流 · 今日之墙</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0D0B09;
+  --card:#1A1612;
+  --border:#2E2520;
+  --amber:#C4923A;
+  --bronze:#B4A078;
+  --cream:#F0E8D8;
+  --muted:#8A7E70;
+  --accent-glow:rgba(196,146,58,0.15);
+  --wall-red:#A0522D;
+  --wall-blue:#4A6FA5;
+  --wall-gold:#B8860B;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1600px;height:900px;overflow:hidden;background:var(--bg);}
+body{font-family:'Inter','Noto Sans SC',sans-serif;color:var(--cream);}
+.wrapper{width:1600px;height:900px;position:relative;overflow:hidden;margin:0 auto;background:
+  radial-gradient(ellipse at 85% 15%, var(--accent-glow) 0%, transparent 55%),
+  radial-gradient(ellipse at 50% 80%, rgba(160,82,45,0.06) 0%, transparent 50%),
+  radial-gradient(ellipse at 15% 50%, rgba(74,111,165,0.05) 0%, transparent 50%),
+  var(--bg);}
+#bg{position:absolute;inset:0;z-index:0;}
+#ct{position:absolute;inset:0;z-index:1;padding:48px 60px 40px 60px;display:flex;flex-direction:column;}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px var(--amber);}
+.brand-text{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--bronze);letter-spacing:3px;}
+.slide-tag{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;}
+
+/* Main layout */
+.main{display:grid;grid-template-columns:700px 1fr;gap:48px;flex:1;margin-top:28px;align-items:start;}
+
+/* Left column */
+.kicker{font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:4px;color:var(--amber);font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.kicker .bar{width:32px;height:2px;background:var(--amber);}
+.title-zh{font-family:'Noto Serif SC',serif;font-size:52px;line-height:1.15;font-weight:900;color:var(--cream);margin-bottom:4px;letter-spacing:1px;}
+.title-zh .accent{color:var(--amber);}
+.title-en{font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:5px;color:var(--muted);margin-bottom:22px;}
+
+/* Three walls grid */
+.walls{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
+.wall-card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px 14px;position:relative;overflow:hidden;}
+.wall-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;}
+.wall-card.eu::before{background:var(--wall-blue);}
+.wall-card.us::before{background:var(--wall-red);}
+.wall-card.cn::before{background:var(--wall-gold);}
+.wall-country{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:3px;font-weight:600;margin-bottom:6px;}
+.wall-card.eu .wall-country{color:var(--wall-blue);}
+.wall-card.us .wall-country{color:var(--wall-red);}
+.wall-card.cn .wall-country{color:var(--wall-gold);}
+.wall-policy{font-family:'Noto Serif SC',serif;font-size:14px;font-weight:700;color:var(--cream);margin-bottom:6px;line-height:1.3;}
+.wall-detail{font-size:11px;color:var(--muted);line-height:1.6;}
+.wall-impact{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.wall-impact-label{font-family:'Roboto Mono',monospace;font-size:9px;color:var(--amber);letter-spacing:1.5px;margin-bottom:4px;}
+.wall-impact-text{font-size:11px;color:var(--cream);opacity:0.8;line-height:1.5;}
+
+/* Dilemma row */
+.dilemma{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.dilemma-icon{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--amber);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Roboto Mono',monospace;font-size:13px;color:var(--amber);font-weight:700;}
+.dilemma-text{font-size:13px;color:var(--cream);opacity:0.9;}
+.dilemma-text strong{color:var(--amber);}
+
+/* Right column - Hero */
+.hero-wrap{position:relative;width:780px;height:580px;border-radius:8px;overflow:hidden;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.4);}
+.hero-wrap img{width:780px;height:580px;object-fit:cover;display:block;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,11,9,0.35) 0%,rgba(13,11,9,0) 45%,rgba(13,11,9,0.4) 100%);pointer-events:none;}
+.hero-corner{position:absolute;top:14px;right:16px;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--amber);opacity:0.75;letter-spacing:2px;}
+.hero-caption{position:absolute;left:16px;bottom:14px;display:flex;align-items:center;gap:8px;}
+.hero-cap-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);}
+.hero-cap-text{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:2px;}
+
+/* Bottom tagline */
+.bottom-wrap{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.bottom-left{display:flex;align-items:center;gap:10px;}
+.bottom-left .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);}
+.bottom-left .text{font-family:'Roboto Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;}
+.bottom-right{font-family:'Noto Serif SC',serif;font-size:14px;color:var(--bronze);font-style:italic;}
+
+/* Decorative scan line */
+.scan-line{position:absolute;top:48px;left:60px;width:180px;height:1px;background:linear-gradient(90deg,transparent,rgba(196,146,58,0.35));}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div id="bg"></div>
+<div id="ct">
+
+  <div class="scan-line"></div>
+
+  <div class="header">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <div class="brand-text">/ GREAT DIVERGENCE · FISHBOWL</div>
+    </div>
+    <div class="slide-tag">// 02 — WALLS AFTER THE DIVERGENCE</div>
+  </div>
+
+  <div class="main">
+    <div class="left-col">
+      <div class="kicker"><div class="bar"></div>TWO · 今日之墙</div>
+      <div class="title-zh">开源世界<span class="accent">竖起了墙</span></div>
+      <div class="title-en">THE COMMONS IS NOW ZONED</div>
+
+      <div class="walls">
+        <div class="wall-card eu">
+          <div class="wall-country">EU · 数字主权</div>
+          <div class="wall-policy">Digital Sovereignty</div>
+          <div class="wall-detail">欧盟推动技术栈去美去中化，开源项目面临"原产地"审查</div>
+          <div class="wall-impact">
+            <div class="wall-impact-label">// IMPACT</div>
+            <div class="wall-impact-text">代码库有了"地理归属"，fork 可能被视为"政治选择"</div>
+          </div>
+        </div>
+        <div class="wall-card us">
+          <div class="wall-country">US · 芯片法案</div>
+          <div class="wall-policy">CHIPS &amp; Science Act</div>
+          <div class="wall-detail">出口管制、实体清单、AI 芯片限制——基础设施层开始地理化</div>
+          <div class="wall-impact">
+            <div class="wall-impact-label">// IMPACT</div>
+            <div class="wall-impact-text">大模型训练环境被切割，HuggingFace 镜像与封锁成为日常</div>
+          </div>
+        </div>
+        <div class="wall-card cn">
+          <div class="wall-country">CN · 信创</div>
+          <div class="wall-policy">信息技术应用创新</div>
+          <div class="wall-detail">国家级开源基金会、AI 模型登记备案、企业联合体行政逻辑</div>
+          <div class="wall-impact">
+            <div class="wall-impact-label">// IMPACT</div>
+            <div class="wall-impact-text">合规 ≠ 贡献，安全审查成为参与门槛而非社区共识</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dilemma">
+        <div class="dilemma-icon">?</div>
+        <div class="dilemma-text">同一批人，同样的灯——但空间里<strong>不再空了</strong>。它被法律、地缘政治和登记制度填充了。</div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="hero-wrap">
+        <img src="../images/page_002_hero.png" alt="今日之墙——开源空间的地理化割裂">
+        <div class="hero-overlay"></div>
+        <div class="hero-corner">// ZONED.2026</div>
+        <div class="hero-caption">
+          <div class="hero-cap-dot"></div>
+          <div class="hero-cap-text">SAME PEOPLE · SAME LANTERNS · NEW WALLS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-wrap">
+    <div class="bottom-left">
+      <div class="dot"></div>
+      <div class="text">OPEN SOURCE · WAY · FISHBOWL SEP.7</div>
+    </div>
+    <div class="bottom-right">"不是有人建了墙——是有人给空间赋予了治理权。"</div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
