@@ -1,7 +1,7 @@
 ---
 date: 2026-09-06
 image:
-  filename: "2026-09-06-shanghai-meetup-photo1.jpg"
+  filename: "events/2026-09-06-shanghai-reading-meetup.jpg"
   caption: "OSCAR·开源之书·共读 · 华东师范大学 · 合影留念"
 title: "「OSCAR·开源之书·共读」线下分享交流·上海站· 2026-09-06"
 subtitle: "「OSCAR·开源之书·共读」线下分享"
