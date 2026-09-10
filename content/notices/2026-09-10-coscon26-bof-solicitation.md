@@ -69,7 +69,7 @@ editable: true
 
 ## 四、我们需要你反馈的问题
 
-如果你想在这场 BoF 之前留下意见，欢迎在下面留一句、一段，或直接把这份 markdown 复制进 [GitHub Discussion](https://github.com/OCselected/open-source-reading/discussions)：
+如果你想在这场 BoF 之前留下意见，欢迎在下面留一句、一段，或直接编辑这份意见征集稿的源代码提 PR：
 
 **方向问题**：
 
