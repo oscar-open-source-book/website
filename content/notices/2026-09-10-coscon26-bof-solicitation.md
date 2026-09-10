@@ -96,8 +96,8 @@ editable: true
 **提交方式**（选一种最方便的）：
 
 - 回复本条消息（如果这条是通过飞书群转发）
-- 通过 [OCselected/oscar-open-source-book Issues](https://github.com/OCselected/oscar-open-source-book/issues) 留言
-- 直接编辑 [这份意见征集稿的源代码](https://github.com/OCselected/oscar-open-source-book/blob/main/website/content/notices/2026-09-10-coscon26-bof-solicitation.md) 提 PR
+- 通过 [oscar-open-source-book/website Issues](https://github.com/oscar-open-source-book/website/issues) 留言
+- 直接编辑 [这份意见征集稿的源代码](https://github.com/oscar-open-source-book/website/blob/main/content/notices/2026-09-10-coscon26-bof-solicitation.md) 提 PR
 
 ---
 
