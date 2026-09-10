@@ -25,7 +25,7 @@ editable: true
 
 第十一届中国开源年会 COSCon'26 正式开放同场活动征集，我们（「开源之书·共读」小组）打算申请成为联合出品社区，办一场关于 **Agentic 时代的开源知识阅读** 的 BoF。
 
-这是「开源之书·共读」首次把共读带进 COSCon 主会场，也是十年共读在 Agentic 时代的第一个正式动作。
+这是「开源之书·共读」首次把共读带进 COSCon 主会场，也是八年共读在 Agentic 时代的第一个正式动作。
 
 在 9 月 24 日截止日期前，我们想让每一位共读者知道我们在准备什么、想听你们说点什么，也顺便把「开源之书·共读」的声音一起送进 COSCon。
 
@@ -96,8 +96,8 @@ editable: true
 **提交方式**（选一种最方便的）：
 
 - 回复本条消息（如果这条是通过飞书群转发）
-- 在 [OCselected/open-source-reading Discussions](https://github.com/OCselected/open-source-reading/discussions) 留言
-- 直接编辑 [这份意见征集稿的 markdown](https://github.com/OCselected/oscar-open-source-book/blob/main/website/content/notices/2026-09-10-coscon26-bof-solicitation.md) 提 PR
+- 通过 [OCselected/oscar-open-source-book Issues](https://github.com/OCselected/oscar-open-source-book/issues) 留言
+- 直接编辑 [这份意见征集稿的源代码](https://github.com/OCselected/oscar-open-source-book/blob/main/website/content/notices/2026-09-10-coscon26-bof-solicitation.md) 提 PR
 
 ---
 
