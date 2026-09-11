@@ -1,19 +1,21 @@
 ---
 image:
   filename: "posts/sensenova-slides-pipeline.png"
-title: "开源之书 Slides 的自动化迁移：从 147 个 Markdown 到 2602 张 HTML 的流水线实践"
+title: "演示文稿的文本化和版本化，以及利用SenseNova U1.5 Lite 实时生成的能力"
 date: 2026-08-27T06:08:14+08:00
 draft: false
 editable: true
 ---
 
-# 开源之书 Slides 的自动化迁移：从 147 个 Markdown 到 2602 张 HTML 的流水线实践
+# 演示文稿的文本化和版本化，以及利用SenseNova U1.5 Lite 实时生成的能力
 
-> *不是"用 AI 做 PPT"，是一次近十年积压的债务清理。*
+> *不是"用 AI 做 PPT"，而是把演示文稿拆回文本叙事，再让它重新拥有版本、上下文和实时再生成能力。*
 
 ## 一、起点：近十年欠账
 
-开源之道从 2016 年 12 月起步，近十年间沉淀了 147 场分享、27 场线下活动、77 本共读书籍的 Markdown 记录，累计 2602 张 slide 的原始素材。这些素材躺在 `~/developing/markdown-to-slides/开源之书/pptx-to-md/` 下——纯文本，可 Git，可 grep，可 diff，但**没有一处可以点开看**。
+这篇文章讲的是开源之书 Slides 的一次基础设施迁移：把近十年积累的多个 PPTX 演示文稿，先用商汤大模型和 Hermes Agent 辅助转成 Markdown 叙事，再把 Markdown 作为可 Git、可 diff、可 grep、可审计的文本源，最后通过 SenseNova U1.5 Lite 和 sn-ppt-standard 流水线实时生成 HTML 页面与配图。PPTX 是展示容器，Markdown 才是知识容器；当知识容器被版本化之后，演示文稿才第一次具备了像代码一样的演化能力。
+
+开源之道从 2016 年 12 月起步，近十年间沉淀了 147 场分享、27 场线下活动、77 本共读书籍的 Markdown 记录，累计 2602 张 slide 的原始素材。这些素材原本躺在 PPTX 文件里，后来被迁移为 Markdown，最终组织进 `slides-src/`。PPTX 能放映，却很难协作；Markdown 能保留每一页的文本叙事，却还没有统一的展示层。
 
 这不是"内容不够"的问题，恰恰相反，是**内容太多、缺展示层**的问题。
 
@@ -42,6 +44,14 @@ preflight → style → outline → asset-plan → gen-image → page-html → e
 每个 stage 的输入输出都是确定性的 JSON——`preflight` 读 `source.md` 产出 `document_digest.json`，`outline` 读 digest 产出 `slide_outline.json`，`asset-plan` 读 outline 产出 `asset_plan.json`。以此类推，环环相扣。
 
 stage 化设计对存量迁移的意义是**可插拔、可重试、可跳过**：一个 deck 的 gen-image 失败了，下一个 deck 从头开始，不用重跑全部。已经完成的 style、outline 在下次运行时自动跳过。
+
+### Hermes Agent：让 pipeline 拥有执行、记忆和修复能力
+
+这条流水线不是单点脚本。它的执行环境是 **Hermes Agent**：Agent 负责读取仓库、调用 stage、检查中间 JSON、在失败时定位模型路由或超时问题，再把恢复策略写回脚本和 Kanban task。这个环境的关键不是“会调用 API”，而是它把模型调用、文件状态、任务队列和部署反馈连接成一个可恢复闭环。
+
+![SenseNova Slides Pipeline architecture](/assets/media/posts/sensenova-slides-pipeline-architecture.svg)
+
+这条架构线里有三个可审计对象：`Markdown` 是事实源，`JSON stage artifacts` 是生成中间态，`HTML deck` 是发布态。Agent 的价值不是替代这三者，而是在它们之间建立可恢复的调度与修复。
 
 配图选择 SenseNova U1.5 Lite——商汤"日日新"系列的新一代图片创作模型，2026 年 8 月正式发布。较上一代 U1 Fast 在构图、光影、材质细节和高分辨率输出上全面提升。选它的另一个原因是**它能同时承担文生图和 VLM 质检两个角色**：生成配图，然后用同样的模型能力自检图片质量。
 
@@ -321,6 +331,8 @@ slide 写作的下一个十年，不是更好的 PPT 软件，而是让 slide �
 
 ## 九、从批处理到 Kanban：任务调度的一次重构
 
+如果只把 pipeline 看成脚本，问题停在“跑完 147 个 deck”。但真正的问题是：近十年素材不是一批同质任务，而是不同页数、不同主题、不同图像复杂度的长尾队列。这里需要 Agent 的任务拆解能力，而不是一个更长的后台进程。
+
 六月的后台进程跑通了 14 个 deck 后，剩下的 133 个 deck 需要一个更稳的任务调度方式。最初的想法是 `terminal(background=true)` 跑一个 22 小时的 Python 脚本——`run_queue.py` 循环遍历 manifest，每个 deck 跑六个 stage，失败了重试，完成了 commit + push。它跑了 40 个 deck，凌晨因为会话回收死了。
 
 **批处理的结构性问题**：`terminal(background=true)` 的进程是 Hermes 会话的子进程。Hermes dashboard 重启、会话超时、系统负载抖动，进程就会被 SIGTERM。这不是"加个 nohup"能解决的问题——批处理脚本本身没有失败恢复机制，脚本死了，进度就丢了。
@@ -352,6 +364,7 @@ kanban.failure_limit = 2                        # 3 次连续失败自动 blocke
 
 考虑过每个 slide 一个 task（107 deck × 10 pages = ~1070 tasks）。否决了——单个 deck 内部 stage 之间有依赖（preflight → style → outline → asset-plan → batch-gen-image → batch-page-html），一个 deck 一个 task 让 stage 间的状态检查（文件存在即 skip）留在同一进程内，最简。**跨 deck 的并发控制交给 kanban，deck 内的串行交给 `run_one_deck.py`。**
 
+这正是 Kanban 在 Agent 工作流里的价值：它不是传统项目看板，而是一个可恢复的任务事实源。每个 deck 的状态、重试次数、失败原因和幂等键都被显式记录；Agent 不需要“记住”当前跑到哪里，只需要读取队列，处理下一张可运行卡片。对 147 个 deck 这种长尾任务来说，这种拆解比让 LLM 一次性规划全部生成路径更可靠。
 ### 冒烟测试暴露的两个 pipeline 层问题
 
 第一次用 kanban worker 跑 `2024-10-ignorance-and-awe` 时，`batch-page-html` 10 页全部失败，日志里是两类错误：
