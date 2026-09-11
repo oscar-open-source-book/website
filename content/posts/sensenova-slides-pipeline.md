@@ -66,190 +66,39 @@ stage 化设计对存量迁移的意义是**可插拔、可重试、可跳过**�
 
 147 个 deck 串行跑下来，**22 小时起步**。
 
-## 三、第一批跑通：20 个 deck，三个 Bug
+## 三、运行中的摩擦，与 Agent + Skill + 模型的分工
 
-先跑最快的 15-slide deck（约 20 个）验证 pipeline，预期 1-2 小时。实际结果：**4.6 小时，2 个成功，18 个失败**。
+从 20 个 deck 的验证批开始，真正的问题不再只是“能不能生成”，而是**不同环节之间的边界是否清晰**。
 
-失败不是 pipeline 的设计缺陷，是运行环境的配置缺陷。三个独立的 bug 叠加，每一个都花了不短的时间定位。
+验证批运行时遇到的三类问题，本质上都指向同一个工程教训：
 
-### Bug 1：LLM 配额耗尽
+1. **模型路由要显式配置。** outline、asset-plan、page-html 走文本/推理模型；gen-image 走文生图模型；VLM 质检走视觉模型。任何一个环境变量没覆盖，错误信息都可能伪装成“图片没生成”或“模型返回为空”。
+2. **长任务要按资源边界拆分。** 78 页的大 deck 一次批量生图必然超过常规 timeout。最后采用的策略不是“把超时调更长”，而是逐张生成、单图超时、deck 级重试。
+3. **发布系统有自己的发现规则。** Hugo 的 `content/` 是路由和元数据，`static/` 是资源；slides 播放器里硬编码的 deck id 和 iframe 缩放逻辑，也必须在模板层修正，否则静态文件“存在”但不等于“可见”。
 
-**现象**：outline 阶段返回 `429 insufficient_quota`。
+这些问题当然重要，但它们不是这篇文章的主线。它们更像迁移过程中的摩擦：真实、必要、可修，但不应掩盖真正有价值的变化——**演示文稿第一次成为 Agent 工作流里的可调度对象**。
 
-**根因**：`~/.hermes/.env` 里写的是 `SN_TEXT_MODEL=deepseek-v4-flash`——这个模型在跑其他任务时配额耗尽了。sn-ppt-standard 的 `run_stage.py` 从 `.env` 读取模型配置，outline 用的就是 deepseek-v4-flash，调一次报一次 429。
-
-**修复**：在批量脚本 `/tmp/run_queue.py` 的 subprocess 调用里，显式覆盖环境变量：
-
-```python
-env={**os.environ,
-     "SN_TEXT_MODEL": "sensenova-6.8-flash-lite",
-     "SN_IMAGE_GEN_MODEL": "sensenova-u1.5-lite",
-     "SN_IMAGE_GEN_MODEL_TYPE": "sensenova"}
+```text
+PPTX / Markdown
+   ↓
+Hermes Agent：理解目标、读取仓库、调用工具、判断状态、恢复失败
+   ↓
+SenseNova Skills：把任务拆成可执行 stage，约束输入输出和重试边界
+   ↓
+SenseNova Models：6.8 Flash Lite 负责推理与 HTML，U1.5 Lite 负责配图与视觉表达
+   ↓
+Hugo / GitHub Actions：发布、索引、版本化
 ```
 
-`SN_TEXT_MODEL` 改为 `sensenova-6.8-flash-lite`（当时可用且配额充足）。这一改，outline 和 asset-plan 全部跑通。
+**Hermes Agent 是操作主体。** 它不是“调用模型 API 的脚本”，而是维护上下文、调用 skill、读取日志、判断失败类型、决定重试策略的执行者。Agent 的价值在于把分散的模型能力和文件状态连接起来：哪一个 stage 完成了，哪一个图片失败了，哪一个 deck 可以进入下一个任务，都由 Agent 根据事实和工具反馈推进。
 
-### Bug 2：gen-image 600 秒超时
+**SenseNova Skills 是流程约束。** `sn-ppt-standard` 把工作拆成 `preflight → style → outline → asset-plan → gen-image → page-html → export`。每个 stage 有明确输入、输出、JSON artifact 和可跳过条件。Skill 约束了模型的自由度：模型不是每次从零创作整套 PPT，而是在确定的中间态上继续生成。这样，Agent 的错误可以被定位到某个 stage，而不是淹没在“生成结果不好”这个黑盒里。
 
-**现象**：`subprocess.TimeoutExpired: Command '... batch-gen-image ...' timed out after 600 seconds`。
+**SenseNova 模型提供具体生产能力。** `sensenova-6.8-flash-lite` 负责文本理解、大纲、HTML 结构和页面修复；`sensenova-u1.5-lite` 负责实时配图，承担文生图能力。它们不是同一件事：文本模型负责结构与叙事，图像模型负责视觉表达；Agent 负责让它们在同一条流水线里协作。
 
-**根因**：一开始用 `batch-gen-image --concurrency 4` 批量生成一个 deck 的所有图片，对 78 页的大 deck 来说，批量生成超过 600 秒。
+这就是这条 pipeline 的核心：不是“让大模型做 PPT”，而是让 **Agent 调度 Skill，Skill 调用 Model，Model 产出可审计 artifact，Agent 再根据 artifact 继续推进**。
 
-第一版修复：改成逐张 `gen-image --page N --slot ID`，每张单独跑，加上 `--timeout 600` 参数。
-
-**第二层根因**：run_stage.py 的 gen-image 子命令根本不认 `--timeout` 参数——它是 argparse，只接受 `--deck-dir`、`--page`、`--slot`。结果每调用一次都报 `usage: run_stage [-h] ...`，全失败。
-
-**最终修复**：去掉 `--timeout 600` 参数，改用 Python subprocess 自身的 `timeout=660`。单张 gen-image 正常需要 5-6 分钟，660 秒足够。
-
-```python
-r = subprocess.run(
-    [sys.executable, RUN_STAGE, "gen-image", "--deck-dir", deck_dir,
-     "--page", str(pn), "--slot", slot_id],
-    capture_output=True, text=True, timeout=660, env=env
-)
-```
-
-### Bug 3：VLM QC 误杀（最隐蔽，花了最长时间）
-
-**现象**：前两个 bug 修完后，gen-image 逐张能跑通，但返回 `{"status": "failed", "error": "gen-image p1 hero: rejected by VLM QC (No image provided to review.)"}`。
-
-**排查过程**：
-
-1. 直接调 U1.5 Lite API 手动生成图片 → **成功**。说明模型本身没问题。
-2. 用同样的 env 调 `run_stage.py gen-image` → **失败**，报错 "No image provided to review"。
-3. 检查 U1.5 Lite 的响应 → 确实返回了图片。VLM 质检收到图片却说"没有图片"。
-4. 检查 VLM 质检用的是什么模型 → 走的是 `SN_CHAT_MODEL`，不是 `SN_IMAGE_GEN_MODEL`。
-5. 检查 `.env` 里的 `SN_CHAT_MODEL` → `deepseek-v4-flash`（配额已耗尽）。
-6. **定位**：subprocess 只覆盖了 `SN_TEXT_MODEL` 和 `SN_IMAGE_GEN_MODEL`，没覆盖 `SN_CHAT_MODEL` 和 `SN_VISION_MODEL`。VLM 质检调用 deepseek-v4-flash 失败 → 认为没有收到图片 → 拒绝。
-
-**修复**：env 完整覆盖四个模型变量：
-
-```python
-env={**os.environ,
-     "SN_TEXT_MODEL": "sensenova-6.8-flash-lite",
-     "SN_CHAT_MODEL": "sensenova-6.8-flash-lite",
-     "SN_VISION_MODEL": "sensenova-6.8-flash-lite",
-     "SN_IMAGE_GEN_MODEL": "sensenova-u1.5-lite",
-     "SN_IMAGE_GEN_MODEL_TYPE": "sensenova"}
-```
-
-修完这一行，18 个 deck 的 VLM QC 误杀全部消失。继续跑，20 个 deck 中 13 个成功。
-
-**教训**：stage 化的 pipeline 里，每个 stage 可能依赖不同的模型——gen-image 用图片生成模型，VLM QC 用对话/视觉模型。这两个模型在同一个 subprocess 里共用同一个 env，任何一个覆盖不全都会引发连锁失败。
-
-这个 bug 的隐蔽性在于：**错误信息指向的是"图片没生成"，但真实问题是"质检用的模型挂了"**。如果一开始就看日志里的模型名称，能省下大量时间。
-
-## 四、部署：Hugo 发现不了静态文件
-
-第一批 14 个 deck 全部生成完毕，静态文件在 `static/slides/<deck_id>/pages/page_XXX.html` 下，images 也在。提交、push、CI 部署成功。
-
-打开列表页 `https://osbook.opensourceway.blog/slides/`——**一个 deck 都没有**。
-
-根因不是静态文件的问题。Hugo 的列表页 `layouts/slides/list.html` 用这段模板发现 deck：
-
-```hugo
-{{ $all := where .Site.RegularPages "Type" "slides" }}
-```
-
-`RegularPages` 只包括 `content/` 下的 Markdown 文件。**静态文件 Hugo 看不见**——它只看 `content/slides/` 下的 `.md` 文件。每个 deck 需要一个 content 文件才能被列表页发现。
-
-补写 13 个 content 文件，每个约 10 行：
-
-```yaml
----
-title: "6 年记忆"
-date: 2026-08-27
-type: slides
-slides_deck_id: "6-years-memory"
-slides_count: 10
-weight: 1
----
-```
-
-提交、push、部署——**14 个 deck 全部上线**。
-
-**教训**：部署之前要先想清楚，Hugo 怎么发现内容。静态文件和 content 是两个世界，静态文件提供资源，content 提供路由和元数据，缺一不可。
-
-后来在批量脚本里加了一步：每完成一个 deck，自动创建对应的 content 文件，然后 commit + push。新 deck 生成完就能上线，不需要人工干预。
-
-## 五、展示：三重截断
-
-14 个 deck 上线后，列表页缩略图全部显示 `dev-together-2024` 的封面。
-
-### 截断 1：deckId 硬编码
-
-**现象**：所有 deck 的缩略图都是同一个。
-
-**根因**：`layouts/slides/single.html` 第 2 行：
-
-```hugo
-{{ $deckId := "dev-together-2024" }}
-```
-
-所有 iframe 的 `src` 都指向 `/slides/dev-together-2024/pages/page_XXX.html`。第 3 行还有个 `$total := 7`，把每个 deck 都限制在 7 页。
-
-**修复**：从 frontmatter 读取：
-
-```hugo
-{{ $deckId := .Params.slides_deck_id }}
-{{ $total := .Params.slides_count | default 7 }}
-```
-
-提交、部署。缩略图正常了，但主 slide 内容被裁掉右边一部分。
-
-### 截断 2：iframe 内容超过 iframe 尺寸
-
-**现象**：slide 内容向右超出，右边一截看不见。
-
-**根因分析**：
-
-slide 页面内部是 `body{width:1600px;height:900px}`——这是 slide 生成的原生尺寸。iframe 容器（`slide-wrap`）在 1920px 宽度的浏览器里，扣除导航栏、padding 等，实际宽度只有 1248px。
-
-第一版修复：CSS 给 iframe 加 `transform: scale(0.8)`，把 1600×900 缩到 1280×720。
-
-```css
-.slide-iframe { transform: scale(0.8); transform-origin: top left; }
-```
-
-但 `transform` 只缩放 iframe 元素本身——iframe 内部的内容（body、.wrapper）还是 1600×900。iframe 元素缩到 1280×720，内容还是 1600×900，**内容溢出到 iframe 外面**。
-
-第二版修复：往 iframe 内部注入 `<style>`，把内部内容也缩放：
-
-```js
-const st = doc.createElement('style');
-st.id = 'os-slide-scale';
-st.textContent = 'html,body{margin:0;padding:0;overflow:hidden;}html{transform-origin:top left;transform:scale(0.8);}';
-doc.head.appendChild(st);
-```
-
-这次内部内容确实缩了，但**还是不对**：iframe 视口是 1248px，`html{scale(0.8)}` = 1280×720 渲染，超出 1248 的部分被 overflow:hidden 裁掉 32px。而且 `transform-origin: top left` 加上 JS 里的居中补偿 `marginLeft = (1600-1600*s)/2`，**两个方向在打架**——origin 想从左上角缩，offset 想居中，最终向右偏移约 176px，右侧内容被推出去。
-
-第三版（最终修复）：回到 iframe 本身做缩放，不用内部注入，不用居中补偿：
-
-```css
-.slide-wrap { overflow: hidden; }
-.slide-iframe {
-  width: 1600px; height: 900px;
-  transform-origin: center center;
-}
-```
-
-```js
-const scale = Math.min(wrap.clientWidth / 1600, wrap.clientHeight / 900, 1);
-ifr.style.transform = `scale(${scale})`;
-ifr.style.marginLeft = '0px';
-```
-
-`transform-origin: center center` 让 iframe 从中心缩放，scale = 1248/1600 = 0.78，1600×900 渲染为 1248×702，**正好等于 iframe 容器尺寸**。不用偏移，不用注入，不截断。
-
-**三个坑的教训**：
-
-- `transform` 缩放的是**元素盒子**，不是盒子内部的内容。
-- `transform-origin: top left` + `marginLeft` 补偿的组合在 0.8 倍缩放时偏移 176px，肉眼可见。
-- 用 `center center` + 不偏移，才是最简单的。
-- iframe 缩放和容器缩放是两个不同的世界，不要混用。
-
-## 六、数据与节奏
+## 四、数据与节奏
 
 截至这篇文章更新的时候（2026 年 9 月），真实数据如下：
 
@@ -278,7 +127,7 @@ deck 的规模分布（来自 manifest）：
 
 中位数约 15 页，平均 18 页。最长的一个 deck 78 页——这个 deck 的图片生成阶段，batch-gen-image 一次超时 600 秒就是被它触发的。
 
-## 七、为什么不是"AI 做 PPT"
+## 五、为什么不是"AI 做 PPT"
 
 这篇文章很容易写成"用 AI 批量做 PPT 的体验"，开头讲痛点，中间讲技术选型，结尾讲工程闭环。但真实的经验和这个叙事完全不一样。
 
@@ -286,7 +135,7 @@ deck 的规模分布（来自 manifest）：
 
 **第一，AI 没出错，出错的从来是我们给它的环境。**
 
-U1.5 Lite 生成了图片，VLM 质检也收到了图片，但 VLM 质检用的是另一个模型（deepseek-v4-flash），那个模型的配额耗尽了。VLM 调用失败 → "没有图片" → 拒绝。这是一个纯粹的运维 bug——模型路由配置错了。不是 U1.5 Lite 的图片有问题，不是 VLM 的质量标准有问题，是**模型路由错了**。
+U1.5 Lite 生成了图片，VLM 质检也收到了图片，但质检阶段被路由到了另一个不可用的模型。VLM 调用失败 → "没有图片" → 拒绝。这是一个纯粹的运维 bug——模型路由配置错了。不是 U1.5 Lite 的图片有问题，不是 VLM 的质量标准有问题，是**模型路由错了**。
 
 在 147 个 deck 的迁移过程中，U1.5 Lite 没有一次生成失败过，VLM 质检没有一次因为图片本身的质量而拒绝过。所有的失败都来自外部环境——配额、超时、参数拼写、transform-origin。
 
@@ -304,7 +153,7 @@ sn-ppt-standard 的 stage 设计很健壮——每个 stage 输入输出确定�
 
 第一批 14 个 deck 是在批处理脚本的 4.6 小时里跑出来的；剩下的 40 个 deck 是在 kanban worker 约 7 天的不间断运行里完成的。从 14/147 到 54/107，进度条终于走到了一个可以喘口气的地方。
 
-## 八、开源的意义
+## 六、开源的意义
 
 这个流水线最终产出的不是 147 个 HTML 页面，是一个可以复用的模式。
 
@@ -320,7 +169,7 @@ sn-ppt-standard 的 stage 设计很健壮——每个 stage 输入输出确定�
 slide 写作的下一个十年，不是更好的 PPT 软件，而是让 slide 像代码一样可 Git、可 CI、可复用。而这件事，不需要设计师，只需要一套能跑通的流水线。
 
 
-## 九、从批处理到 Kanban：任务调度的一次重构
+## 七、从批处理到 Kanban：任务调度的一次重构
 
 如果只把 pipeline 看成脚本，问题停在“跑完 147 个 deck”。但真正的问题是：近十年素材不是一批同质任务，而是不同页数、不同主题、不同图像复杂度的长尾队列。这里需要 Agent 的任务拆解能力，而不是一个更长的后台进程。
 
@@ -362,11 +211,11 @@ kanban.failure_limit = 2                        # 3 次连续失败自动 blocke
 
 **第一个问题：模型路由错误。**
 
-默认模型 `deepseek-v4-flash` 是推理模型，HTML 内容写在 `reasoning_content` 而非 `content`。`model_client` 读取 `content` 字段，为空 → "LLM response had no usable text"。切到 `sensenova-6.8-flash-lite` 后解决。
+默认模型返回的 HTML 内容没有被读取到 `content` 字段，`model_client` 只能看到空文本，于是报 "LLM response had no usable text"。切到 `sensenova-6.8-flash-lite` 后解决。
 
 **第二个问题：Rate limit。**
 
-`deepseek-v4-flash` 的 TPM/RPM 配额极低。`batch-page-html` 并发 4 时，10 页同时请求触发 `429 Too Many Requests` + `inference tpm exhausted`。`sensenova-6.8-flash-lite` 的配额高一个数量级，`concurrency=1` 即可流畅运行。
+默认模型的 TPM/RPM 配额不够支撑批量页面生成。`batch-page-html` 并发 4 时，10 页同时请求触发 `429 Too Many Requests` + `inference tpm exhausted`。`sensenova-6.8-flash-lite` 的配额更合适，`concurrency=1` 即可流畅运行。
 
 这两个问题都不属于"AI 出错"——是**模型路由配置**和**并发参数**的问题。修正后 `run_one_deck.py` 在 env 中显式覆盖 `SN_TEXT_MODEL` / `SN_CHAT_MODEL` / `SN_VISION_MODEL`。
 
