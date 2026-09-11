@@ -49,7 +49,7 @@ stage 化设计对存量迁移的意义是**可插拔、可重试、可跳过**�
 
 这条流水线不是单点脚本。它的执行环境是 **Hermes Agent**：Agent 负责读取仓库、调用 stage、检查中间 JSON、在失败时定位模型路由或超时问题，再把恢复策略写回脚本和 Kanban task。这个环境的关键不是“会调用 API”，而是它把模型调用、文件状态、任务队列和部署反馈连接成一个可恢复闭环。
 
-![SenseNova Slides Pipeline architecture](/assets/media/posts/sensenova-slides-pipeline-architecture.svg)
+![SenseNova Slides Pipeline architecture](/media/posts/sensenova-slides-pipeline-architecture.svg)
 
 这条架构线里有三个可审计对象：`Markdown` 是事实源，`JSON stage artifacts` 是生成中间态，`HTML deck` 是发布态。Agent 的价值不是替代这三者，而是在它们之间建立可恢复的调度与修复。
 
@@ -57,18 +57,16 @@ stage 化设计对存量迁移的意义是**可插拔、可重试、可跳过**�
 
 一个 10 页 deck 的完整生命周期（实测）：
 
-| Stage | 输入 | 输出 | 耗时 | 成本 |
-|---|---|---|---|---|
-| preflight | source.md | document_digest.json | <1s | 0 |
-| style | style_catalog.md | style_spec.json | <1s | 0 |
-| outline | digest + style | outline.json（10 页） | 30-60s | <0.5元 |
-| asset-plan | outline | asset_plan.json（6-9 个 slots） | 60-90s | <1元 |
-| gen-image | asset_plan + prompt | page_XXX_slot.png | 5-6 min/张 | ~0.3元/张 |
-| page-html | outline + images | page_XXX.html | 30-60s/页 | <0.2元/页 |
+| Stage | 输入 | 输出 | 耗时 |
+|---|---|---|---|
+| preflight | source.md | document_digest.json | <1s |
+| style | style_catalog.md | style_spec.json | <1s |
+| outline | digest + style | outline.json（10 页） | 30-60s |
+| asset-plan | outline | asset_plan.json（6-9 个 slots） | 60-90s |
+| gen-image | asset_plan + prompt | page_XXX_slot.png | 5-6 min/张 |
+| page-html | outline + images | page_XXX.html | 30-60s/页 |
 
 **总耗时**：约 50-65 分钟/个 10 页 deck。
-
-**总成本**：约 5-8 元/个 deck（含配图和 LLM 调用）。
 
 瓶颈一目了然：**gen-image 每张 5-6 分钟**，是全部 stage 里最慢的。一张图片要经历 prompt 生成、U1.5 Lite API 调用（约 2 分钟）、VLM 质检（约 1 分钟）、可能的重试。一个 10 页 deck 有 6-9 张配图，光图片就要 40-50 分钟。
 
@@ -269,7 +267,6 @@ ifr.style.marginLeft = '0px';
 | 已完成 deck | 54 个 |
 | 已完成 pages | 515 张 HTML |
 | 累计配图 | 234 张 PNG |
-| 累计 API 成本 | ~200 元 |
 | 修复前失败率 | 90% |
 | 修复后失败率 | 0% |
 | 持续运行时长 | 约 36 小时（2026-08-27 → 2026-09-03） |
@@ -289,7 +286,7 @@ deck 的规模分布（来自 manifest）：
 
 ## 七、为什么不是"AI 做 PPT"
 
-这篇文章很容易写成"用 AI 批量做 PPT 的体验"，开头讲痛点，中间讲技术选型，结尾讲成本对比。但真实的经验和这个叙事完全不一样。
+这篇文章很容易写成"用 AI 批量做 PPT 的体验"，开头讲痛点，中间讲技术选型，结尾讲工程闭环。但真实的经验和这个叙事完全不一样。
 
 **三个反常识的观察：**
 
