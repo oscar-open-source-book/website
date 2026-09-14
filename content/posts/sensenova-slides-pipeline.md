@@ -29,11 +29,7 @@ PPTX 是展示容器，Markdown 才是知识容器。当知识容器被版本化
 
 ## 二、流水线的骨架：把生成拆成可审计的工序
 
-选型没有太多犹豫。SenseNova 提供的 `sn-ppt-standard` skill 已经定义了一个完整的 stage 化 pipeline：
-
-```
-preflight → style → outline → asset-plan → gen-image → page-html → export
-```
+选型没有太多犹豫。SenseNova 提供的 `sn-ppt-standard` skill 已经定义了一个完整的 stage 化 pipeline。它把 `preflight`、`style`、`outline`、`asset-plan`、`gen-image`、`page-html` 和 `export` 串成一条可审计工序链。
 
 每个 stage 的输入输出都是确定性的 JSON。`preflight` 读 `source.md`，产出 `document_digest.json`；`outline` 读 digest，产出 `slide_outline.json`；`asset-plan` 读 outline，产出 `asset_plan.json`。以此类推，环环相扣。
 
@@ -43,7 +39,7 @@ stage 化设计对存量迁移的意义是**可插拔、可重试、可跳过**�
 
 这条流水线不是单点脚本。它的执行环境是 **Hermes Agent**：Agent 负责读取仓库、调用 stage、检查中间 JSON、在失败时定位模型路由或超时问题，再把恢复策略写回脚本和 Kanban task。这个环境的关键不是“会调用 API”，而是它把模型调用、文件状态、任务队列和部署反馈连接成一个可恢复闭环。
 
-![SenseNova Slides Pipeline architecture](/media/posts/sensenova-slides-pipeline-architecture.svg)
+![SenseNova Slides Pipeline stages](/media/posts/sensenova-slides-pipeline-stage-flow.svg)
 
 这条架构线里有三个可审计对象：`Markdown` 是事实源，`JSON stage artifacts` 是生成中间态，`HTML deck` 是发布态。Agent 的价值不是替代这三者，而是在它们之间建立可恢复的调度与修复。
 
@@ -78,17 +74,7 @@ stage 化设计对存量迁移的意义是**可插拔、可重试、可跳过**�
 
 这些问题当然重要，但它们不是这篇文章的主线。它们更像迁移过程中的摩擦：真实、必要、可修，但不应掩盖真正有价值的变化——**演示文稿第一次成为 Agent 工作流里的可调度对象**。
 
-```text
-PPTX / Markdown
-   ↓
-Hermes Agent：理解目标、读取仓库、调用工具、判断状态、恢复失败
-   ↓
-SenseNova Skills：把任务拆成可执行 stage，约束输入输出和重试边界
-   ↓
-SenseNova Models：6.8 Flash Lite 负责推理与 HTML，U1.5 Lite 负责配图与视觉表达
-   ↓
-Hugo / GitHub Actions：发布、索引、版本化
-```
+![Agent, Skill, and Model collaboration](/media/posts/sensenova-slides-pipeline-agent-skill-model.svg)
 
 **Hermes Agent 是操作主体。** 它不是“调用模型 API 的脚本”，而是维护上下文、调用 skill、读取日志、判断失败类型、决定重试策略的执行者。Agent 的价值在于把分散的模型能力和文件状态连接起来：哪一个 stage 完成了，哪一个图片失败了，哪一个 deck 可以进入下一个任务，都由 Agent 根据事实和工具反馈推进。
 
@@ -183,6 +169,8 @@ Kanban 的强项，是让 Agent 不靠“记忆”推进工作。Agent 不需要
 每个 task 的粒度也值得记录。我们没有把 107 个 deck 拆成 1000 多张 per-page task，而是选择 per-deck。原因是单个 deck 内部存在强依赖：preflight、style、outline、asset-plan、batch-gen-image、batch-page-html 之间共享上下文和文件状态，跨 stage 的错误恢复最好留在同一个 worker 内完成。跨 deck 的并发和恢复交给 Kanban，deck 内部的串行和状态跳过交给 `run_one_deck.py`。这形成了清晰的层级：Kanban 管全局节奏，脚本管局部工序，Skill 管生成规范，Model 管具体生产能力。
 
 第一次用 Kanban 跑 `2024-10-ignorance-and-awe` 时，冒烟测试暴露了两个 pipeline 层问题。`batch-page-html` 十页全部失败，日志里不是页面内容失败，而是模型路由没有把输出放到可读的 `content` 字段；随后又遇到并发过高导致的 TPM/RPM 限额。修正是显式覆盖 `SN_TEXT_MODEL`、`SN_CHAT_MODEL`、`SN_VISION_MODEL`，并把页面生成并发降到 1。这两个问题再次说明：失败通常不在 AI 的能力边界里，而在 Agent 运行的基础设施边界里。
+
+![Kanban persistent loop](/media/posts/sensenova-slides-pipeline-kanban-loop.svg)
 
 从调度角度看，Kanban 的持续能力有三层。第一层是恢复：任务状态不依赖聊天上下文，Hermes 会话重启后仍能继续；第二层是审计：每次失败都留下 task、worker、错误和重试记录；第三层是节制：失败次数超过阈值自动 blocked，避免一个坏配置反复消耗配额。对于 147 个 deck、2602 张 slide 这种长尾迁移，真正的瓶颈不是模型能否生成一页，而是系统能否在没有人类持续陪跑的情况下，持续、稳定、可解释地推进几十上百个对象。
 
