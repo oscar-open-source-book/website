@@ -1,8 +1,13 @@
 ---
+date: 2026-08-24
+image:
+  filename: "about/who-we-are.png"
 title: "关于「OSCAR·开源之书·共读」"
+subtitle: "让开源从阅读进入行动，从行动沉淀为共同体"
 type: about
 weight: 10
 editable: true
+summary: "OSCAR·开源之书·共读围绕开源思想、价值与行动，通过共读、分享、赞助、主持和持续贡献，建立开源人的归属感与知识体系。"
 ---
 
 ### about-content1
