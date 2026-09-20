@@ -3,7 +3,7 @@ image:
   filename: "about/history.jpg"
 title: "我们的价值观"
 
-weight: 98
+layout_weight: 98
 editable: true
 ---
 
