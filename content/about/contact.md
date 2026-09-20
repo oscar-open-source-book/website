@@ -2,7 +2,7 @@
 image:
   filename: "about/contact.jpg"
 title: '欢迎加入我们'
-date: 2018-02-22T17:01:34+07:00
+date: 2018-02-01
 heroBackground: 'https://source.unsplash.com/random/?library'
 
 layout_weight: 95
