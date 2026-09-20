@@ -7,7 +7,7 @@ description: "人没有表达，是不可能被他人理解的，因为主体间
 icon: 'services/icons8-collaboration-80.png'
 featured: true
 draft: false
-weight: 2
+weight: 40
 heroHeading: '「开源之书」·对话'
 heroSubHeading: '我们坚信对话是寻求解决问题的良好途径'
 heroBackground: 'services/dialogue-book.jpg'

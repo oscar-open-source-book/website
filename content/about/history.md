@@ -1,8 +1,9 @@
 ---
 image:
-  filename: "about/fallback.jpg"
+  filename: "about/history.jpg"
 title: "我们的价值观"
 
+weight: 98
 editable: true
 ---
 
