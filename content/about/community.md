@@ -11,6 +11,7 @@ heroHeading: '学习共同体构建'
 heroSubHeading: '作为一个学习共同体，当然有其自身的特点和凝聚力。'
 heroBackground: 'services/service1.jpg'
 
+weight: 70
 editable: true
 ---
 
