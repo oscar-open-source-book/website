@@ -1,5 +1,5 @@
 ---
-date: 2026-08-24
+date: 2018-01-01
 image:
   filename: "about/who-we-are.jpg"
 title: "关于「OSCAR·开源之书·共读」"
