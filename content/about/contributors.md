@@ -1,5 +1,5 @@
 ---
-date: 2026-08-23
+date: 2018-10-07
 image:
   filename: "about/contributors-wall.jpg"
 title: "亲力亲为者"

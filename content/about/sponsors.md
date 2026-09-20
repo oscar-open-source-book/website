@@ -1,5 +1,5 @@
 ---
-date: 2026-08-24
+date: 2018-10-08
 image:
   filename: "about/sponsors.jpg"
 title: "Capital by Sponsor！"

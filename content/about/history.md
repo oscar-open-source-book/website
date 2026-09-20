@@ -1,4 +1,6 @@
 ---
+date: 2018-01-02
+
 image:
   filename: "about/history.jpg"
 title: "我们的价值观"
