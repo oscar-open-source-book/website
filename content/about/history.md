@@ -1,48 +1,52 @@
 ---
 date: 2018-01-02
-
 image:
   filename: "about/history.jpg"
 title: "我们的价值观"
-
+subtitle: "从阅读开源史、开源经济学、开源人士与开源组织，提炼开源之道的行动原则"
+summary: "从阅读开源史、开源经济学、开源人士与开源组织，提炼开源之道的行动原则：无知与敬畏、互惠与回报、从上游到上游优先、以行动形成共同学习共同体。"
 layout_weight: 98
 editable: true
 ---
 
-### history-content1
+# 我们的价值观
 
----
-title: 'No Limits'
-date: 2018-12-06T09:29:16+10:00
-weight: 1
-background: 'https://source.unsplash.com/zglUlG8k47I/1600x500'
-align: right
----
+「OSCAR·开源之书·共读」的 slides 不只是分享 PPT，而是一条从阅读、讨论、记录到贡献的行动链。我们把《开源的简史》《互惠的经济学》《开源人士画像》《从上游到上游优先》《开源的商业与经济学》等主题反复放在一起读，提炼出四个共同的价值方向。
 
-Theres no limits, Lorem ipsum dolor sit amet, et essent mediocritatem quo, choro volumus oporteat an mei. Numquam dolores mel eu, mea docendi omittantur et, mea ea duis erat. Elit melius cu ius. Per ex novum tantas putant, ei his nullam aliquam apeirian. Aeterno quaestio constituto sea an, no eum intellegat assueverit.
+## 一、无知与敬畏
 
-### history-content2
+开源不是“知道全部之后才有资格参与”。恰恰相反，真正的参与始于承认自己的无知，并在阅读、提问、对话和贡献中保持敬畏。
 
----
-title: 'Integrity & Performance'
-weight: 2
-date: 2018-12-06T09:29:16+10:00
-background: 'https://source.unsplash.com/_v-EHHKKW3w/1600x700'
-align: left
----
+- 先把边界讲清楚，再谈建设；
+- 不因为熟悉一个项目就轻视他人经验；
+- 让新人通过共读看见开源思想，而不只是工具操作。
 
-Theres no limits, Lorem ipsum dolor sit amet, et essent mediocritatem quo, choro volumus oporteat an mei. Numquam dolores mel eu, mea docendi omittantur et, mea ea duis erat. Elit melius cu ius. Per ex novum tantas putant, ei his nullam aliquam apeirian.
+## 二、互惠与回报
 
-### history-content3
+开源的核心不是无条件的索取，而是互惠。互惠可以被理解为贡献、反馈、传播、维护、赞助和署名。
 
----
-title: 'Giving Back'
-weight: 3
-date: 2018-12-06T09:29:16+10:00
-background: ''
-align: right
-button: 'Contact Us'
-buttonLink: 'contact'
----
+- 用贡献回应代码；
+- 用记录回应经验；
+- 用资源回应长期维护；
+- 用公共表达让知识继续流动。
 
-Theres no limits, Lorem ipsum dolor sit amet, et essent mediocritatem quo, choro volumus oporteat an mei. Numquam dolores mel eu, mea docendi omittantur.
+## 三、从上游到上游优先
+
+开源组织最健康的方向，是理解上游、尊重上游、贡献上游。我们讨论 OSPO、企业开源、许可证、治理和协作演进，最终都回到一个问题：如何让贡献回到真正的源头。
+
+- 不把“内部仓库”误认为开源；
+- 不只做下游包装，更参与上游设计；
+- 让企业在组织内部形成开源判断力。
+
+## 四、共同学习与公共贡献
+
+线下 meetup、读书会、线上讨论、赞助者名录和贡献者墙，都是共同学习共同体的一部分。我们记录谁参与、谁分享、谁维护、谁支持，让开源共同体不是抽象口号，而是可见的人、行动和信任。
+
+- 每次分享都留下记录；
+- 每位贡献者都被看见；
+- 每位赞助者都被公开感谢；
+- 每个行动都可以被后续的人继承。
+
+## 一句话概括
+
+**开源之道，是从无知出发，以互惠为契约，向上游学习，并让每一次阅读都变成共同行动。**
