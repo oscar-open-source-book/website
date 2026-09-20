@@ -7,7 +7,7 @@ description: "企业内的知识流动也在面临着巨大的挑战，从开源
 icon: 'services/icons8-enterprise-80.png'
 draft: false
 featured: true
-weight: 2
+weight: 60
 heroHeading: '走进组织'
 heroSubHeading: '企业、非营利机构、学术团体都在拥抱开源，为什么不选择一起进步了呢？'
 heroBackground: 'services/service2.jpg'

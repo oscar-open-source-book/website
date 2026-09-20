@@ -7,7 +7,7 @@ description: "开源的大会是开源人聚会的好时段，我们必须把握
 icon: 'services/icons8-virtual-80.png'
 featured: true
 draft: false
-weight: 6
+weight: 50
 heroHeading: '会议活动'
 heroSubHeading: ''
 heroBackground: 'services/service2.jpg'

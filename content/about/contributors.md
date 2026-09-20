@@ -1,11 +1,12 @@
 ---
 date: 2026-08-23
 image:
-  filename: "about/contributors-wall.png"
+  filename: "about/contributors-wall.jpg"
 title: "亲力亲为者"
 subtitle: "每一个行动都值得记录"
 type: page
 summary: "OSCAR·开源之书·共读 2019–2026 年 70 位核心贡献者名单，含 126 记 kudos。"
+weight: 20
 tags:
   - 贡献者
   - 社区
@@ -86,7 +87,7 @@ Kudos 计数规则：每位贡献者最低 1 记，额外贡献另计。
 | YHJ | 内容分享者、活动筹备 | 1 |
 | 一亩阳光 | 个人赞助者 | 1 |
 | 王豪 | 上海站分享者 | 1 |
-| 明城 | 上海站分享者 | 1 |
+| 明城 | 上海站AMA主持 | 1 |
 | 山有扶苏 | 上海站分享者 | 1 |
 | 李大维 | 上海站分享者 | 1 |
 | 苗雪纯 | 上海站分享者 | 1 |

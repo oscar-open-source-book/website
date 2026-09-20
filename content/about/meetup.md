@@ -7,7 +7,7 @@ description: "面对面的见面交流读书心得仍然是最佳选择。"
 icon: 'services/icons8-reading-80.png'
 draft: false
 featured: true
-weight: 1
+weight: 30
 heroHeading: '线下共读'
 heroSubHeading: '面对面的见面交流读书心得仍然是最佳选择。'
 heroBackground: 'services/service1.jpg'

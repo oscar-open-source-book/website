@@ -1,11 +1,11 @@
 ---
 date: 2026-08-24
 image:
-  filename: "about/sponsors.png"
+  filename: "about/sponsors.jpg"
 title: "Capital by Sponsor！"
 subtitle: "「OSCAR·开源之书·共读」赞助者名录"
 type: about
-weight: 30
+weight: 10
 
 editable: true
 ---
