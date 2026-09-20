@@ -6,7 +6,7 @@ title: "亲力亲为者"
 subtitle: "每一个行动都值得记录"
 type: page
 summary: "OSCAR·开源之书·共读 2019–2026 年 70 位核心贡献者名单，含 126 记 kudos。"
-weight: 20
+layout_weight: 20
 tags:
   - 贡献者
   - 社区

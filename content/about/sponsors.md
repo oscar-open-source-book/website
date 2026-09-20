@@ -5,7 +5,7 @@ image:
 title: "Capital by Sponsor！"
 subtitle: "「OSCAR·开源之书·共读」赞助者名录"
 type: about
-weight: 10
+layout_weight: 10
 
 editable: true
 ---
