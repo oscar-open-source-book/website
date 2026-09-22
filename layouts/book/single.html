@@ -1,21 +1,39 @@
 {{ define "main" }}
 {{ $cover := .Params.image }}
-{{ if $cover }}
-{{ $filename := $cover.filename | default "" }}
-{{ if $filename }}
-{{ $resource := resources.GetMatch (printf "media/%s" $filename) }}
-{{ if $resource }}
+{{ $filename := "" }}
+{{ with $cover }}{{ $filename = .filename | default "" }}{{ end }}
+{{ $summary := .Description | default .Params.summary }}
+{{ $coverResource := "" }}
+{{ if $filename }}{{ $coverResource = resources.GetMatch (printf "media/%s" $filename) }}{{ end }}
+
+{{ if and $coverResource $summary }}
+<div class="mx-auto max-w-screen-xl px-4 pt-4">
+  <div class="grid gap-6 md:grid-cols-[360px_1fr] md:items-start mb-8">
+    <div>
+      <img
+        src="{{ $coverResource.RelPermalink }}"
+        alt="{{ .Title | plainify }}"
+        class="rounded-lg shadow-lg w-full max-w-sm mx-auto object-cover"
+        loading="lazy"
+      />
+    </div>
+    <div class="prose prose-slate lg:prose-xl dark:prose-invert max-w-none">
+      <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">{{ .Title }}</h1>
+      <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">{{ $summary }}</p>
+    </div>
+  </div>
+</div>
+{{ else if $coverResource }}
 <div class="mx-auto max-w-screen-xl px-4 pt-4">
   <img
-    src="{{ $resource.RelPermalink }}"
+    src="{{ $coverResource.RelPermalink }}"
     alt="{{ .Title | plainify }}"
     class="rounded-lg shadow-lg w-full max-w-md mx-auto object-cover"
     loading="lazy"
   />
 </div>
 {{ end }}
-{{ end }}
-{{ end }}
+
 <article class="mx-auto max-w-screen-xl px-4 py-4 prose prose-slate lg:prose-xl dark:prose-invert">
   {{ .Content }}
 </article>
