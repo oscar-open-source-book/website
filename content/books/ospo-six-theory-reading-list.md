@@ -33,7 +33,6 @@ editable: true
 
 ## 一、开放式创新：Open Innovation
 
-<div class="ospo-book-card">
 ![《开放式创新：创造与盈利的力量》封面](/media/books/open-innovation-chesbrough.png)
 
 ### 1. 《开放式创新：创造与盈利的力量》
@@ -51,11 +50,9 @@ editable: true
 **适兕评注**
 
 开放式创新不是“把代码放出去”的技术动作，而是企业重新定义生产边界的制度动作。OSPO 的核心，不是传播，而是让边界上的知识流动变得可管理。
-</div>
 
 ## 二、交易成本与外部性：Transaction Costs and Externalities
 
-<div class="ospo-book-card">
 ![《企业的性质：起源、演化与发展》封面](/media/books/nature-of-the-firm-coase-williamson.png)
 
 ### 2. 《企业的性质：起源、演化与发展》
@@ -73,9 +70,7 @@ Coase 的经典问题“企业为什么存在”，在 OSPO 语境里可以被�
 **适兕评注**
 
 OSPO 的经济功能，不是“多一个开源部门”，而是把分散的边界交易成本内部化：统一预算、统一账号、统一审查、统一资产台账。
-</div>
 
-<div class="ospo-book-card">
 ![《市场与层级：分析与反托拉斯含义》封面](/media/books/markets-and-hierarchies-williamson.png)
 
 ### 3. 《市场与层级：分析与反托拉斯含义》
@@ -93,11 +88,9 @@ OSPO 正处在一种混合治理结构中间：它既不完全像市场，也不
 **适兕评注**
 
 开源让企业同时面对市场、层级和共同体三种秩序。OSPO 的工作，是在三种秩序之间维护企业可承受的治理摩擦。
-</div>
 
 ## 三、制度理论：Institutional Theory
 
-<div class="ospo-book-card">
 ![《组织新制度主义》封面](/media/books/new-institutionalism-dimaggio-powell.png)
 
 ### 4. 《组织新制度主义》
@@ -115,9 +108,7 @@ OSPO 常常不是纯技术决策，而是制度决策：它要让政策、管理
 **适兕评注**
 
 OSPO 的合法性不来自它管了多少项目，而来自它能解释自己为什么存在：它回应政策、同业、风险、战略和社区的多重制度压力。
-</div>
 
-<div class="ospo-book-card">
 ![《组织与组织行为：理性、自然和开放系统视角》封面](/media/books/organizations-scott-davis.png)
 
 ### 5. 《组织与组织行为：理性、自然和开放系统视角》
@@ -133,11 +124,9 @@ OSPO 的合法性不来自它管了多少项目，而来自它能解释自己为
 **适兕评注**
 
 如果只从效率看 OSPO，它会被压缩成合规部门；如果只从文化看 OSPO，它会被浪漫化为社区热情。只有把 OSPO 当成开放系统中的制度装置，才能理解它为什么需要预算、授权、流程和社区身份。
-</div>
 
 ## 四、边界跨越：Boundary Spanning
 
-<div class="ospo-book-card">
 ![《边界组织：让意外的盟友协作》封面](/media/books/boundary-organizations-omahony-bechky.png)
 
 ### 6. 《边界组织：让意外的盟友协作》
@@ -155,9 +144,7 @@ OSPO 的合法性不来自它管了多少项目，而来自它能解释自己为
 **适兕评注**
 
 OSPO 最重要的能力之一，不是会开会，而是会“翻译”。它要把社区语言译成风险、合规、战略和业务语言，也要把内部技术路线译成上游、基金会和社区能参与的语言。
-</div>
 
-<div class="ospo-book-card">
 ![《边界之外的知识整合》封面](/media/books/managing-knowledge-integration-across-boundaries.png)
 
 ### 7. 《边界之外的知识整合》
@@ -173,11 +160,9 @@ OSPO 面对的不只是“社区”这个抽象对象，还有大量具体知识
 **适兕评注**
 
 开源治理的难点，不在代码是否公开，而在知识是否能穿过边界。OSPO 是知识跨界的组织化装置。
-</div>
 
 ## 五、信息处理观：Information Processing View
 
-<div class="ospo-book-card">
 ![《组织设计：战略、结构与流程》封面](/media/books/designing-organizations-galbraith.png)
 
 ### 8. 《组织设计：战略、结构与流程》
@@ -195,9 +180,7 @@ OSPO 的接口人网络、技术评审委员会、双周例会、项目 Owner �
 **适兕评注**
 
 OSPO 不是把开源塞进现有科层，而是为科层增加一套横向信息处理装置。没有横向机制，开源会在部门边界上碎掉。
-</div>
 
-<div class="ospo-book-card">
 ![《设计真正有效的矩阵组织》封面](/media/books/designing-matrix-organizations-galbraith.png)
 
 ### 9. 《设计真正有效的矩阵组织》
@@ -213,11 +196,9 @@ OSPO 常常处在矩阵结构中：研发负责人管项目，法务管合规，
 **适兕评注**
 
 OSPO 的问题常常不是“没人懂开源”，而是“懂了的人没有被授权处理边界问题”。矩阵设计就是让懂的人获得足够决策路径。
-</div>
 
 ## 六、组织双元：Organizational Ambidexterity
 
-<div class="ospo-book-card">
 ![《探索与利用的组织学习》封面](/media/books/exploration-exploitation-march.png)
 
 ### 10. 《探索与利用的组织学习》
@@ -238,9 +219,7 @@ March 的探索 / 利用二分法，是理解 OSPO 双组设计的基础。文�
 **适兕评注**
 
 OSPO 不能只做守门人，也不能只做传教士。它必须同时管理秩序与实验，这就是组织双元。
-</div>
 
-<div class="ospo-book-card">
 ![《引领与颠覆：解决创新者窘境》封面](/media/books/lead-and-disrupt-oreilly-tushman.png)
 
 ### 11. 《引领与颠覆：解决创新者窘境》
@@ -258,27 +237,22 @@ O'Reilly 与 Tushman 把 March 的双元思想推进到组织设计层面：成�
 **适兕评注**
 
 企业需要 OSPO，不是因为开源热闹，而是因为成熟组织必须同时保住秩序和探索未来。OSPO 是企业面向开源生态的双元器官。
-</div>
 
 ## 延伸阅读：把 OSPO 放回开源之道
 
-<div class="ospo-book-card">
 ![《组织理论：理性、自然与开放系统的视角》封面](/media/books/organizations-scott-davis.png)
 
 ### 12. 《组织理论：理性、自然与开放系统的视角》
 
 - **作者**：W. Richard Scott & Gerald F. Davis
 - **站内已有**：[organizations-rational-natural-open-systems](/books/organizations-rational-natural-open-systems/)
-</div>
 
-<div class="ospo-book-card">
 ![《公共事物的治理之道：集体行动制度的演进》封面](/media/books/governing-the-commons-the-evolution-of-institutions-for-collective-action.png)
 
 ### 13. 《公共事物的治理之道：集体行动制度的演进》
 
 - **作者**：Elinor Ostrom
 - **站内已有**：[governing-the-commons-the-evolution-of-institutions-for-collective-action](/books/governing-the-commons-the-evolution-of-institutions-for-collective-action/)
-</div>
 
 ### 14. 如果时间有限，按问题读
 
