@@ -111,7 +111,7 @@ OSPO 的合法性不来自它管了多少项目，而来自它能解释自己为
 
 ### 5. 《组织与组织行为：理性、自然和开放系统视角》
 
-![《组织与组织行为：理性、自然和开放系统视角》封面](/media/books/organizations-scott-davis.jpg)
+![《组织与组织行为：理性、自然和开放系统视角》封面](/media/books/organizations-scott-davis.png)
 
 - **作者**：W. Richard Scott & Gerald F. Davis
 - **原书名**：*Organizations: Rational, Natural, and Open Systems Perspectives*
@@ -242,11 +242,17 @@ O'Reilly 与 Tushman 把 March 的双元思想推进到组织设计层面：成�
 
 ### 12. 《组织理论：理性、自然与开放系统的视角》
 
-- 本站已有：[organizations-rational-natural-open-systems](/books/organizations-rational-natural-open-systems/)
+![《组织理论：理性、自然与开放系统的视角》封面](/media/books/organizations-scott-davis.png)
+
+- **作者**：W. Richard Scott & Gerald F. Davis
+- **站内已有**：[organizations-rational-natural-open-systems](/books/organizations-rational-natural-open-systems/)
 
 ### 13. 《公共事物的治理之道：集体行动制度的演进》
 
-- 本站已有：[governing-the-commons-the-evolution-of-institutions-for-collective-action](/books/governing-the-commons-the-evolution-of-institutions-for-collective-action/)
+![《公共事物的治理之道：集体行动制度的演进》封面](/media/books/governing-the-commons-the-evolution-of-institutions-for-collective-action.png)
+
+- **作者**：Elinor Ostrom
+- **站内已有**：[governing-the-commons-the-evolution-of-institutions-for-collective-action](/books/governing-the-commons-the-evolution-of-institutions-for-collective-action/)
 
 ### 14. 如果时间有限，按问题读
 
