@@ -39,115 +39,55 @@
   {{ .Content }}
 </article>
 {{ partial "page_edit_button" . }}
-{{ end }}
-{{/* Local style: reading-list covers sit left like Douban/Amazon entries */}}
+{{/* Static CSS: reading-list covers sit left like Douban/Amazon entries */}}
 {{ if eq .RelPermalink "/books/ospo-six-theory-reading-list/" }}
 <style>
-.ospo-reading-list .reading-list-image{
-  width: 180px;
+.ospo-book-card{
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  padding: 22px 0;
+  border-top: 1px solid rgba(15,31,61,0.12);
+  margin: 10px 0 18px;
+}
+.ospo-book-card > img,
+.ospo-book-card img{
+  width: 190px;
   max-width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 10px 22px rgba(15, 31, 61, .18);
-}
-.ospo-reading-list .reading-list-figure{
-  display: flex;
-  align-items: flex-start;
-  gap: 26px;
-  margin: 18px 0 28px;
-}
-.ospo-reading-list .reading-list-cover{
-  flex: 0 0 180px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 14px 32px rgba(15,31,61,0.18);
   margin: 0;
-  text-align: left;
+  display: block;
 }
-.ospo-reading-list .reading-list-cover figure{
-  margin: 0;
-}
-.ospo-reading-list .reading-list-body{
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.ospo-reading-list .reading-list-body > h3{
-  margin-top: 2px;
-}
-.ospo-reading-list .reading-list-body > p,
-.ospo-reading-list .reading-list-body > ul,
-.ospo-reading-list .reading-list-body > blockquote{
-  margin-top: 8px;
-}
-.ospo-reading-list .reading-list-body > h3:first-child{
+.ospo-book-card h3{
   margin-top: 0;
 }
-@media (max-width: 720px){
-  .ospo-reading-list .reading-list-figure{
-    gap: 16px;
+.ospo-book-card p,
+.ospo-book-card ul{
+  margin-top: 0.7em;
+}
+@media (max-width: 760px){
+  .ospo-book-card{
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 18px;
   }
-  .ospo-reading-list .reading-list-cover{
-    flex-basis: 128px;
-  }
-  .ospo-reading-list .reading-list-image{
-    width: 128px;
+  .ospo-book-card > img,
+  .ospo-book-card img{
+    width: 140px;
   }
 }
 @media (max-width: 520px){
-  .ospo-reading-list .reading-list-figure{
-    flex-direction: column;
+  .ospo-book-card{
+    grid-template-columns: 1fr;
+    padding: 18px 0;
   }
-  .ospo-reading-list .reading-list-cover{
-    flex-basis: auto;
-    max-width: 220px;
-    text-align: center;
+  .ospo-book-card > img,
+  .ospo-book-card img{
+    width: min(220px, 100%);
+    margin: 0 auto 12px;
   }
 }
 </style>
-<script>
-(function(){
-  var article = document.getElementById('ospoReadingListArticle');
-  if (!article || article.dataset.layoutApplied) return;
-  var heads = Array.prototype.slice.call(article.querySelectorAll('h3'));
-  heads.forEach(function(h3){
-    var next = h3.nextElementSibling;
-    var p = null;
-    while(next && (next.nodeType === 3 && next.textContent.trim() === '')){
-      next = next.nextElementSibling;
-    }
-    if (!next || next.tagName !== 'P' || !next.querySelector('img')) return;
-    p = next;
-    var img = p.querySelector('img');
-    img.classList.add('reading-list-image');
-    var cover = document.createElement('div');
-    cover.className = 'reading-list-cover';
-    var body = document.createElement('div');
-    body.className = 'reading-list-body';
-    var wrap = document.createElement('div');
-    wrap.className = 'reading-list-figure';
-    var imgParent = img.parentElement;
-    var hasExtra = imgParent && imgParent !== p && imgParent.children.length > 1;
-    if (imgParent && imgParent.tagName === 'DIV' && p.querySelector('div.flex')) {
-      cover.appendChild(imgParent);
-    } else {
-      cover.appendChild(img.cloneNode(true));
-    }
-    wrap.appendChild(cover);
-    body.appendChild(h3);
-    var cur = p.nextSibling;
-    while(cur){
-      if(cur.nodeType === 3){
-        if(cur.textContent.trim() !== '') break;
-        var tmp = cur; cur = cur.nextSibling; tmp.remove();
-        continue;
-      }
-      if(cur.nodeType !== 1) break;
-      if(cur.tagName === 'H2' || cur.tagName === 'H3') break;
-      if(cur.tagName === 'BLOCKQUOTE' || cur.tagName === 'HR' || cur.classList && cur.classList.contains('reading-list-figure')) break;
-      body.appendChild(cur);
-      cur = cur.nextSibling;
-    }
-    p.remove();
-    wrap.appendChild(body);
-    h3.parentNode.replaceChild(wrap, h3);
-  });
-  article.dataset.layoutApplied = 'true';
-})();
-</script>
 {{ end }}
