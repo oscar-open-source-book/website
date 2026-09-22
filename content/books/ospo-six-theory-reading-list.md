@@ -1,14 +1,16 @@
 ---
 image:
   filename: "books/ospo-six-theory-reading-list.png"
+  caption: "OSPO 六个管理学解释书单"
 title: "OSPO 落地实践：六个管理学解释的书单"
 date: 2026-09-22T12:00:00+08:00
 originalTitle: "OSPO Practice: A Reading List for Six Management Theories"
-author: "XF架构商业笔记；适兕 / 窄廊整理"
+author: "XF架构商业笔记；「开源之道」·适兕 × 「开源之道」·窄廊"
 category: "管理类"
 type: book
 weight: 0
-recommender: "[适兕](https://opensourceway.community/all_about_kuosi)，「开源之道」主创。推荐理由：「OSPO 不是一个岗位，而是企业把开源边界重新组织起来的装置。」"
+summary: "把 XF架构商业笔记的《OSPO 落地实践》放回组织理论里读：开放式创新、交易成本、制度理论、边界跨越、信息处理与组织双元，组成一张理解企业开源办公室的制度阅读地图。"
+recommender: "「开源之道」·适兕 × 「开源之道」·窄廊。推荐理由：「OSPO 不是开源办公室的缩写，而是企业把开源边界重新组织起来的制度入口。」"
 editable: true
 ---
 
@@ -24,7 +26,7 @@ editable: true
 | --- | --- | --- |
 | 开放式创新 | 知识双向流动如何被治理？ | Chesbrough《开放式创新》 |
 | 交易成本与外部性 | 谁承担跨边界交易、合规和重复投入的成本？ | Coase / Williamson |
-| 制度理论 | 组织为什么需要合法性？OSPO 如何回应政策与同业压力？ | DiMaggio & Powell；Meyer & Rowan |
+| 制度理论 | 组织为什么需要合法性？OSPO 如何回应政策与同业压力？ | DiMaggio & Powell；Scott & Davis |
 | 边界跨越 | 如何把社区、基金会、标准组织的信息转译成内部决策？ | O'Mahony & Bechky；Tell et al. |
 | 信息处理观 | 横向信息流如何突破纵向科层？ | Galbraith |
 | 组织双元 | 如何同时做管控（exploitation）与探索（exploration）？ | March；O'Reilly & Tushman |
@@ -32,6 +34,8 @@ editable: true
 ## 一、开放式创新：Open Innovation
 
 ### 1. 《开放式创新：创造与盈利的力量》
+
+![《开放式创新：创造与盈利的力量》封面](/media/books/open-innovation-chesbrough.png)
 
 - **作者**：Henry Chesbrough
 - **原书名**：*Open Innovation: The New Imperative for Creating and Profiting from Technology*
@@ -51,6 +55,8 @@ editable: true
 
 ### 2. 《企业的性质：起源、演化与发展》
 
+![《企业的性质：起源、演化与发展》封面](/media/books/nature-of-the-firm-coase-williamson.png)
+
 - **作者 / 编者**：Oliver E. Williamson & Sidney G. Winter（eds.），收录 Ronald H. Coase
 - **原书名**：*The Nature of the Firm: Origins, Evolution, and Development*
 - **出版社 / 时间**：Oxford University Press, 1991 / 1993
@@ -66,6 +72,8 @@ Coase 的经典问题“企业为什么存在”，在 OSPO 语境里可以被�
 OSPO 的经济功能，不是“多一个开源部门”，而是把分散的边界交易成本内部化：统一预算、统一账号、统一审查、统一资产台账。
 
 ### 3. 《市场与层级：分析与反托拉斯含义》
+
+![《市场与层级：分析与反托拉斯含义》封面](/media/books/markets-and-hierarchies-williamson.png)
 
 - **作者**：Oliver E. Williamson
 - **原书名**：*Markets and Hierarchies: Analysis and Antitrust Implications*
@@ -85,6 +93,8 @@ OSPO 正处在一种混合治理结构中间：它既不完全像市场，也不
 
 ### 4. 《组织新制度主义》
 
+![《组织新制度主义》封面](/media/books/new-institutionalism-dimaggio-powell.png)
+
 - **编者**：Paul J. DiMaggio & Walter W. Powell
 - **原书名**：*The New Institutionalism in Organizational Analysis*
 - **出版社 / 时间**：University of Chicago Press, 1991
@@ -100,6 +110,8 @@ OSPO 常常不是纯技术决策，而是制度决策：它要让政策、管理
 OSPO 的合法性不来自它管了多少项目，而来自它能解释自己为什么存在：它回应政策、同业、风险、战略和社区的多重制度压力。
 
 ### 5. 《组织与组织行为：理性、自然和开放系统视角》
+
+![《组织与组织行为：理性、自然和开放系统视角》封面](/media/books/organizations-scott-davis.jpg)
 
 - **作者**：W. Richard Scott & Gerald F. Davis
 - **原书名**：*Organizations: Rational, Natural, and Open Systems Perspectives*
@@ -117,6 +129,8 @@ OSPO 的合法性不来自它管了多少项目，而来自它能解释自己为
 
 ### 6. 《边界组织：让意外的盟友协作》
 
+![《边界组织：让意外的盟友协作》封面](/media/books/boundary-organizations-omahony-bechky.png)
+
 - **作者**：Siobhan O'Mahony & Beth A. Bechky
 - **原书名**：*Boundary Organizations: Enabling Collaboration among Unexpected Allies*
 - **出版信息**：Administrative Science Quarterly, 53(3), 2008
@@ -132,6 +146,8 @@ OSPO 的合法性不来自它管了多少项目，而来自它能解释自己为
 OSPO 最重要的能力之一，不是会开会，而是会“翻译”。它要把社区语言译成风险、合规、战略和业务语言，也要把内部技术路线译成上游、基金会和社区能参与的语言。
 
 ### 7. 《边界之外的知识整合》
+
+![《边界之外的知识整合》封面](/media/books/managing-knowledge-integration-across-boundaries.png)
 
 - **作者 / 编者**：Christian Tell, Christian Berggren, Stefano Brusoni, Axel C. H. Van de Ven（eds.）
 - **原书名**：*Managing Knowledge Integration Across Boundaries*
@@ -149,6 +165,8 @@ OSPO 面对的不只是“社区”这个抽象对象，还有大量具体知识
 
 ### 8. 《组织设计：战略、结构与流程》
 
+![《组织设计：战略、结构与流程》封面](/media/books/designing-organizations-galbraith.png)
+
 - **作者**：Jay R. Galbraith
 - **原书名**：*Designing Organizations: Strategy, Structure, and Process at the Business Unit and Enterprise Levels*
 - **出版社 / 时间**：Jossey-Bass / Wiley, 3rd ed., 2014
@@ -165,6 +183,8 @@ OSPO 不是把开源塞进现有科层，而是为科层增加一套横向信息
 
 ### 9. 《设计真正有效的矩阵组织》
 
+![《设计真正有效的矩阵组织》封面](/media/books/designing-matrix-organizations-galbraith.png)
+
 - **作者**：Jay R. Galbraith
 - **原书名**：*Designing Matrix Organizations That Actually Work*
 - **出版社 / 时间**：Wharton Digital Press, 2014
@@ -180,6 +200,8 @@ OSPO 的问题常常不是“没人懂开源”，而是“懂了的人没有被
 ## 六、组织双元：Organizational Ambidexterity
 
 ### 10. 《探索与利用的组织学习》
+
+![《探索与利用的组织学习》封面](/media/books/exploration-exploitation-march.png)
 
 - **作者**：James G. March
 - **原论文**：*Exploration and Exploitation in Organizational Learning*
@@ -199,6 +221,8 @@ March 的探索 / 利用二分法，是理解 OSPO 双组设计的基础。文�
 OSPO 不能只做守门人，也不能只做传教士。它必须同时管理秩序与实验，这就是组织双元。
 
 ### 11. 《引领与颠覆：解决创新者窘境》
+
+![《引领与颠覆：解决创新者窘境》封面](/media/books/lead-and-disrupt-oreilly-tushman.png)
 
 - **作者**：Charles A. O'Reilly III & Michael L. Tushman
 - **原书名**：*Lead and Disrupt: How to Solve the Innovator's Dilemma*
@@ -224,9 +248,7 @@ O'Reilly 与 Tushman 把 March 的双元思想推进到组织设计层面：成�
 
 - 本站已有：[governing-the-commons-the-evolution-of-institutions-for-collective-action](/books/governing-the-commons-the-evolution-of-institutions-for-collective-action/)
 
-### 14. 《组织行为学》/组织社会学经典论文集
-
-如果读者时间有限，建议不要先读最厚的一本，而是按这个问题读：
+### 14. 如果时间有限，按问题读
 
 > 你的企业为什么需要一个 OSPO？
 
@@ -239,7 +261,9 @@ O'Reilly 与 Tushman 把 March 的双元思想推进到组织设计层面：成�
 
 ## 推荐人
 
-[适兕](https://opensourceway.community/all_about_kuosi)，「开源之道」主创。适兕亲荐——OSPO 不是开源办公室的缩写，而是企业把开源边界重新组织起来的制度入口。
+「开源之道」·适兕 × 「开源之道」·窄廊。
+
+适兕与窄廊共同推荐：OSPO 不是开源办公室的缩写，而是企业把开源边界重新组织起来的制度入口。
 
 ---
 
