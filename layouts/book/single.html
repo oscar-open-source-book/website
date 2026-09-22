@@ -42,17 +42,23 @@
 {{/* Static CSS: reading-list covers sit left like Douban/Amazon entries */}}
 {{ if eq .RelPermalink "/books/ospo-six-theory-reading-list/" }}
 <style>
-.ospo-book-card{
+.ospo-reading-list .reading-list-figure{
   display: grid;
   grid-template-columns: 190px minmax(0, 1fr);
   gap: 28px;
   align-items: start;
-  padding: 22px 0;
+  margin: 18px 0 28px;
+  padding-top: 22px;
   border-top: 1px solid rgba(15,31,61,0.12);
-  margin: 10px 0 18px;
 }
-.ospo-book-card > img,
-.ospo-book-card img{
+.ospo-reading-list .reading-list-cover{
+  margin: 0;
+}
+.ospo-reading-list .reading-list-cover figure{
+  margin: 0;
+}
+.ospo-reading-list .reading-list-cover img,
+.ospo-reading-list .reading-list-image{
   width: 190px;
   max-width: 100%;
   height: auto;
@@ -61,34 +67,69 @@
   margin: 0;
   display: block;
 }
-.ospo-book-card h3{
+.ospo-reading-list .reading-list-body{
+  min-width: 0;
+}
+.ospo-reading-list .reading-list-body h3{
   margin-top: 0;
 }
-.ospo-book-card p,
-.ospo-book-card ul{
+.ospo-reading-list .reading-list-body p,
+.ospo-reading-list .reading-list-body ul{
   margin-top: 0.7em;
 }
 @media (max-width: 760px){
-  .ospo-book-card{
+  .ospo-reading-list .reading-list-figure{
     grid-template-columns: 140px minmax(0, 1fr);
     gap: 18px;
   }
-  .ospo-book-card > img,
-  .ospo-book-card img{
+  .ospo-reading-list .reading-list-cover img,
+  .ospo-reading-list .reading-list-image{
     width: 140px;
   }
 }
 @media (max-width: 520px){
-  .ospo-book-card{
+  .ospo-reading-list .reading-list-figure{
     grid-template-columns: 1fr;
-    padding: 18px 0;
   }
-  .ospo-book-card > img,
-  .ospo-book-card img{
+  .ospo-reading-list .reading-list-cover img,
+  .ospo-reading-list .reading-list-image{
     width: min(220px, 100%);
     margin: 0 auto 12px;
   }
 }
 </style>
-{{ end }}
+<script>
+(function(){
+  var article = document.getElementById('ospoReadingListArticle');
+  if (!article || article.dataset.layoutApplied) return;
+  var heads = Array.prototype.slice.call(article.querySelectorAll('h3'));
+  heads.forEach(function(h3){
+    var next = h3.previousElementSibling;
+    while(next && next.tagName !== 'P') next = next.previousElementSibling;
+    if (!next || !next.querySelector('img') || next.querySelector('a:not(img)')) return;
+    var img = next.querySelector('img');
+    img.classList.add('reading-list-image');
+    var cover = document.createElement('div');
+    cover.className = 'reading-list-cover';
+    cover.appendChild(next.querySelector('figure') || img);
+    var body = document.createElement('div');
+    body.className = 'reading-list-body';
+    var wrap = document.createElement('div');
+    wrap.className = 'reading-list-figure';
+    wrap.appendChild(cover);
+    body.appendChild(h3);
+    var cur = h3.nextElementSibling;
+    while(cur){
+      if(cur.nodeType !== 1) break;
+      if(cur.tagName === 'H2' || cur.tagName === 'H3') break;
+      if(cur.classList && cur.classList.contains('reading-list-figure')) break;
+      body.appendChild(cur);
+      cur = cur.nextElementSibling;
+    }
+    wrap.appendChild(body);
+    next.parentNode.replaceChild(wrap, next);
+  });
+  article.dataset.layoutApplied = 'true';
+})();
+</script>
 {{ end }}
