@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: {submodules: true, fetch-depth: 0}
+        with: {submodules: true, fetch-depth: 1}
       - uses: actions/setup-go@v5
         with: {go-version: '1.22'}
       - uses: actions/setup-node@v4
@@ -37,8 +37,12 @@ jobs:
             }
       - name: Build search index
         run: npx pagefind --site public   
+      - name: Slim publish assets
+        run: python3 scripts/slim_publish_assets.py
+      - name: Publish size report
+        run: du -sh public || true  
       - uses: actions/upload-pages-artifact@v3
-        with: {path: ./public}
+        with: {path: ./public}  
   deploy:
     needs: build
     runs-on: ubuntu-latest
