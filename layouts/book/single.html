@@ -102,32 +102,56 @@
 (function(){
   var article = document.getElementById('ospoReadingListArticle');
   if (!article || article.dataset.layoutApplied) return;
+
+  function isCoverNode(n){
+    if (!n || !n.querySelector) return false;
+    var img = n.querySelector('img');
+    if (!img || n.querySelector('a[href]')) return false;
+    if (img.getAttribute('src') && img.getAttribute('src').indexOf('/media/books/') === -1) return false;
+    return true;
+  }
+
+  function removeEmptyParents(root){
+    root.querySelectorAll('p, div').forEach(function(n){
+      if (n.querySelector('img, figure')) return;
+      if (!n.textContent.trim()) n.remove();
+    });
+  }
+
   var heads = Array.prototype.slice.call(article.querySelectorAll('h3'));
   heads.forEach(function(h3){
-    var next = h3.previousElementSibling;
-    while(next && next.tagName !== 'P') next = next.previousElementSibling;
-    if (!next || !next.querySelector('img') || next.querySelector('a:not(img)')) return;
-    var img = next.querySelector('img');
+    var cover = h3.previousElementSibling;
+    while (cover && !isCoverNode(cover)) cover = cover.previousElementSibling;
+    if (!cover || cover.nextElementSibling !== h3) cover = null;
+    if (!cover && h3.previousElementSibling) {
+      var n = h3.previousElementSibling;
+      while (n && !n.matches('h2, h3, table, blockquote, hr')) {
+        if (isCoverNode(n)) { cover = n; break; }
+        n = n.previousElementSibling;
+      }
+    }
+    if (!cover) return;
+
+    var img = cover.querySelector('img');
     img.classList.add('reading-list-image');
-    var cover = document.createElement('div');
-    cover.className = 'reading-list-cover';
-    cover.appendChild(next.querySelector('figure') || img);
-    var body = document.createElement('div');
-    body.className = 'reading-list-body';
     var wrap = document.createElement('div');
     wrap.className = 'reading-list-figure';
-    wrap.appendChild(cover);
+    var coverWrap = document.createElement('div');
+    coverWrap.className = 'reading-list-cover';
+    coverWrap.appendChild(cover);
+    wrap.appendChild(coverWrap);
+    var body = document.createElement('div');
+    body.className = 'reading-list-body';
     body.appendChild(h3);
     var cur = h3.nextElementSibling;
-    while(cur){
-      if(cur.nodeType !== 1) break;
-      if(cur.tagName === 'H2' || cur.tagName === 'H3') break;
-      if(cur.classList && cur.classList.contains('reading-list-figure')) break;
+    while (cur && !cur.matches('h2, h3, table, blockquote, hr')) {
       body.appendChild(cur);
       cur = cur.nextElementSibling;
     }
     wrap.appendChild(body);
-    next.parentNode.replaceChild(wrap, next);
+    cover.parentNode.replaceChild(wrap, cover);
+    if (cur) cur.parentNode.replaceChild(wrap, cur);
+    removeEmptyParents(wrap);
   });
   article.dataset.layoutApplied = 'true';
 })();
