@@ -92,9 +92,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">1. 《开放式创新：创造与盈利的力量》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：Henry Chesbrough</li>
-      <li>**原书名**：*Open Innovation: The New Imperative for Creating and Profiting from Technology*</li>
-      <li>**出版社 / 时间**：Harvard Business School Press, 2003</li>
+      <li><strong>作者</strong>：Henry Chesbrough</li>
+      <li><strong>原书名</strong>：<em>Open Innovation: The New Imperative for Creating and Profiting from Technology</em></li>
+      <li><strong>出版社 / 时间</strong>：Harvard Business School Press, 2003</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>这篇文章把 OSPO 的第一重职能解释得很清楚：企业不是只在内部做研发，也不需要把所有技术都收进边界以内。当知识流入、流出、外购、外包、开源和回馈成为创新常态时，企业必须有流程、组织与人来管理这些边界。</p>
@@ -111,9 +111,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">2. 《企业的性质：起源、演化与发展》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者 / 编者**：Oliver E. Williamson & Sidney G. Winter（eds.），收录 Ronald H. Coase</li>
-      <li>**原书名**：*The Nature of the Firm: Origins, Evolution, and Development*</li>
-      <li>**出版社 / 时间**：Oxford University Press, 1991 / 1993</li>
+      <li><strong>作者 / 编者</strong>：Oliver E. Williamson & Sidney G. Winter（eds.），收录 Ronald H. Coase</li>
+      <li><strong>原书名</strong>：<em>The Nature of the Firm: Origins, Evolution, and Development</em></li>
+      <li><strong>出版社 / 时间</strong>：Oxford University Press, 1991 / 1993</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>Coase 的经典问题“企业为什么存在”，在 OSPO 语境里可以被重新表述：企业为什么需要把一部分开源事务内部化？</p>
@@ -129,9 +129,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">3. 《市场与层级：分析与反托拉斯含义》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：Oliver E. Williamson</li>
-      <li>**原书名**：*Markets and Hierarchies: Analysis and Antitrust Implications*</li>
-      <li>**出版社 / 时间**：The Free Press, 1975</li>
+      <li><strong>作者</strong>：Oliver E. Williamson</li>
+      <li><strong>原书名</strong>：<em>Markets and Hierarchies: Analysis and Antitrust Implications</em></li>
+      <li><strong>出版社 / 时间</strong>：The Free Press, 1975</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>Williamson 把交易成本经济学推向组织分析：什么活动适合放在市场里，什么活动适合放进层级制度里，什么活动需要混合治理？</p>
@@ -148,9 +148,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">4. 《组织新制度主义》</h3>
     <ul class="ospo-book-meta">
-      <li>**编者**：Paul J. DiMaggio & Walter W. Powell</li>
-      <li>**原书名**：*The New Institutionalism in Organizational Analysis*</li>
-      <li>**出版社 / 时间**：University of Chicago Press, 1991</li>
+      <li><strong>编者</strong>：Paul J. DiMaggio & Walter W. Powell</li>
+      <li><strong>原书名</strong>：<em>The New Institutionalism in Organizational Analysis</em></li>
+      <li><strong>出版社 / 时间</strong>：University of Chicago Press, 1991</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>文章说 OSPO 需要合法性：响应国家开源政策，是对强制性压力的回应；对标头部公司设立集团级组织，是对模仿性压力的回应。制度理论正是解释这些现象的基本工具。</p>
@@ -166,9 +166,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">5. 《组织与组织行为：理性、自然和开放系统视角》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：W. Richard Scott & Gerald F. Davis</li>
-      <li>**原书名**：*Organizations: Rational, Natural, and Open Systems Perspectives*</li>
-      <li>**站内已有**：[组织理论：理性、自然与开放系统的视角](/books/organizations-rational-natural-open-systems/)</li>
+      <li><strong>作者</strong>：W. Richard Scott & Gerald F. Davis</li>
+      <li><strong>原书名</strong>：<em>Organizations: Rational, Natural, and Open Systems Perspectives</em></li>
+      <li><strong>站内已有</strong>：[组织理论：理性、自然与开放系统的视角](/books/organizations-rational-natural-open-systems/)</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>这篇文章本身已经推荐过 Scott & Davis 的《组织理论》。对 OSPO 来说，这本书尤其重要：开源项目办公室不是单纯理性效率装置，也不是自然系统里的兴趣小组，而是嵌入政策、产业、社区和合法性环境的开放系统组织。</p>
@@ -184,9 +184,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">6. 《边界组织：让意外的盟友协作》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：Siobhan O'Mahony & Beth A. Bechky</li>
-      <li>**原书名**：*Boundary Organizations: Enabling Collaboration among Unexpected Allies*</li>
-      <li>**出版信息**：Administrative Science Quarterly, 53(3), 2008</li>
+      <li><strong>作者</strong>：Siobhan O'Mahony & Beth A. Bechky</li>
+      <li><strong>原书名</strong>：<em>Boundary Organizations: Enabling Collaboration among Unexpected Allies</em></li>
+      <li><strong>出版信息</strong>：Administrative Science Quarterly, 53(3), 2008</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>开源社区、基金会、标准组织、企业与内部研发团队，往往不是天然盟友。OSPO 要做的关键工作，正是让不同目标、不同规范、不同权力关系的群体能够协作。</p>
@@ -202,9 +202,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">7. 《边界之外的知识整合》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者 / 编者**：Christian Tell, Christian Berggren, Stefano Brusoni, Axel C. H. Van de Ven（eds.）</li>
-      <li>**原书名**：*Managing Knowledge Integration Across Boundaries*</li>
-      <li>**出版社 / 时间**：Oxford University Press, 2009</li>
+      <li><strong>作者 / 编者</strong>：Christian Tell, Christian Berggren, Stefano Brusoni, Axel C. H. Van de Ven（eds.）</li>
+      <li><strong>原书名</strong>：<em>Managing Knowledge Integration Across Boundaries</em></li>
+      <li><strong>出版社 / 时间</strong>：Oxford University Press, 2009</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>OSPO 面对的不只是“社区”这个抽象对象，还有大量具体知识边界：许可证、贡献者动机、架构路线、安全响应、供应链、标准、基金会治理。这些知识分散在不同群体里，必须通过边界对象和边界实践被整合。</p>
@@ -220,9 +220,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">8. 《组织设计：战略、结构与流程》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：Jay R. Galbraith</li>
-      <li>**原书名**：*Designing Organizations: Strategy, Structure, and Process at the Business Unit and Enterprise Levels*</li>
-      <li>**出版社 / 时间**：Jossey-Bass / Wiley, 3rd ed., 2014</li>
+      <li><strong>作者</strong>：Jay R. Galbraith</li>
+      <li><strong>原书名</strong>：<em>Designing Organizations: Strategy, Structure, and Process at the Business Unit and Enterprise Levels</em></li>
+      <li><strong>出版社 / 时间</strong>：Jossey-Bass / Wiley, 3rd ed., 2014</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>文章提到“横向信息流靠纵向科层处理不了”，这正是 Galbraith 的信息处理观。复杂、不确定、跨部门的事务不能只靠汇报线解决，需要横向整合机制：接口人、委员会、例会、工作组、流程和技术平台。</p>
@@ -238,9 +238,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">9. 《设计真正有效的矩阵组织》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：Jay R. Galbraith</li>
-      <li>**原书名**：*Designing Matrix Organizations That Actually Work*</li>
-      <li>**出版社 / 时间**：Wharton Digital Press, 2014</li>
+      <li><strong>作者</strong>：Jay R. Galbraith</li>
+      <li><strong>原书名</strong>：<em>Designing Matrix Organizations That Actually Work</em></li>
+      <li><strong>出版社 / 时间</strong>：Wharton Digital Press, 2014</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>OSPO 常常处在矩阵结构中：研发负责人管项目，法务管合规，安全管风险，基金会和社区关系可能横跨多个事业部。读这本书，可以理解为什么 OSPO 需要矩阵式授权、冲突处理机制和清晰的责任边界。</p>
@@ -256,14 +256,14 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">10. 《探索与利用的组织学习》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：James G. March</li>
-      <li>**原论文**：*Exploration and Exploitation in Organizational Learning*</li>
-      <li>**出版信息**：Organization Science, 2(1), 1991</li>
+      <li><strong>作者</strong>：James G. March</li>
+      <li><strong>原论文</strong>：<em>Exploration and Exploitation in Organizational Learning</em></li>
+      <li><strong>出版信息</strong>：Organization Science, 2(1), 1991</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>March 的探索 / 利用二分法，是理解 OSPO 双组设计的基础。文章里提到的 TOC（定规则）与 TEC（建生态）双组，实质上是在同一组织内同时养两种活动：</p>
-<p>**利用（exploitation）**：合规、审查、许可证、风险控制、标准化、执行效率。</p>
-<p>**探索（exploration）**：上游关系、社区策略、新标准、实验性治理、生态培育。</p>
+<p><strong>利用（exploitation）</strong>：合规、审查、许可证、风险控制、标准化、执行效率。</p>
+<p><strong>探索（exploration）</strong>：上游关系、社区策略、新标准、实验性治理、生态培育。</p>
 <p>如果只用一套流程处理它们，OSPO 要么变保守，要么变得散漫。</p>
     </div>
     <div class="ospo-k-note"><span class="ospo-k-label">适兕评注</span>
@@ -276,9 +276,9 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">11. 《引领与颠覆：解决创新者窘境》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：Charles A. O'Reilly III & Michael L. Tushman</li>
-      <li>**原书名**：*Lead and Disrupt: How to Solve the Innovator's Dilemma*</li>
-      <li>**出版社 / 时间**：Stanford Business Books, 2013 / 2nd ed. 2021</li>
+      <li><strong>作者</strong>：Charles A. O'Reilly III & Michael L. Tushman</li>
+      <li><strong>原书名</strong>：<em>Lead and Disrupt: How to Solve the Innovator's Dilemma</em></li>
+      <li><strong>出版社 / 时间</strong>：Stanford Business Books, 2013 / 2nd ed. 2021</li>
     </ul>
     <div class="ospo-section-label">为什么读</div>
     <div class="ospo-why"><p>O'Reilly 与 Tushman 把 March 的双元思想推进到组织设计层面：成熟组织要同时竞争成熟市场，也要进入新技术、新社区、新生态。</p>
@@ -299,8 +299,8 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">12. 《组织理论：理性、自然与开放系统的视角》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：W. Richard Scott & Gerald F. Davis</li>
-      <li>**站内已有**：[organizations-rational-natural-open-systems](/books/organizations-rational-natural-open-systems/)</li>
+      <li><strong>作者</strong>：W. Richard Scott & Gerald F. Davis</li>
+      <li><strong>站内已有</strong>：[organizations-rational-natural-open-systems](/books/organizations-rational-natural-open-systems/)</li>
     </ul>
   </div>
 </article>
@@ -309,8 +309,8 @@ editable: true
   <div class="ospo-book-body">
     <h3 class="ospo-book-title">13. 《公共事物的治理之道：集体行动制度的演进》</h3>
     <ul class="ospo-book-meta">
-      <li>**作者**：Elinor Ostrom</li>
-      <li>**站内已有**：[governing-the-commons-the-evolution-of-institutions-for-collective-action](/books/governing-the-commons-the-evolution-of-institutions-for-collective-action/)</li>
+      <li><strong>作者</strong>：Elinor Ostrom</li>
+      <li><strong>站内已有</strong>：[governing-the-commons-the-evolution-of-institutions-for-collective-action](/books/governing-the-commons-the-evolution-of-institutions-for-collective-action/)</li>
     </ul>
   </div>
 </article>
