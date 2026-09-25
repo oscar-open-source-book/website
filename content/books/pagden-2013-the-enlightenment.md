@@ -1,17 +1,27 @@
 ---
-title: "The Enlightenment"
+title: "启蒙运动：为什么依然重要"
 date: 2026-09-25T04:33:00+08:00
 originalTitle: "The Enlightenment"
-author: "Anthony Pagden（安东尼·佩吉登），牛津大学沃尔特·克劳奇历史学讲席教授"
+author: "Anthony Pagden（安东尼·帕戈登），牛津大学沃尔特·克劳奇历史学讲席教授"
 image:
   filename: "books/pagden-2013-the-enlightenment.png"
-  caption: "pagden-2013-the-enlightenment"
+  caption: "上海科学技术出版社·《科学文丛》中文版封面"
 category: "思想史"
 type: book
 weight: 100
 recommender: "[适兕](https://opensourceway.community/all_about_kuosi)，作者，「开源之道」主创。"
 editable: true
 ---
+
+## 中文版信息
+
+- **中文书名**：《启蒙运动：为什么依然重要》
+- **丛书**：科学文丛（王春法 主编）
+- **出版社 / 时间**：上海科学技术出版社，2019
+- **译者**：王丽慧、郑杰、杨福真
+- **校勘**：孙小淳
+- **豆瓣条目**：[https://book.douban.com/subject/26988949/](https://book.douban.com/subject/26988949/)
+- **原书名**：*The Enlightenment*（Anthony Pagden，Scribner, 2013 / Penguin, 2015）
 
 ## 推荐理由
 
@@ -77,8 +87,12 @@ Pagden 全书最锋利的一个判断是：启蒙运动的公共理性传统不�
 
 ## 作者简介
 
-Anthony Pagden（安东尼·佩吉登），牛津大学沃尔特·克劳奇历史学讲席教授（Walter H. and Joyce F.ci Crouthamel Professor of History）。英国历史学家，专长 18-19 世纪启蒙运动思想史。主要著作包括《The Enlightenment》（2013）、《A World in Decline》（2017）、《Unreasonable Mankind》（2021）。
+Anthony Pagden（安东尼·帕戈登），牛津大学沃尔特·克劳奇历史学讲席教授（Walter H. and Joyce F. Crouthamel Professor of History）。英国历史学家，专长 18-19 世纪启蒙运动思想史。主要著作包括《The Enlightenment》（2013）、《A World in Decline》（2017）、《Unreasonable Mankind》（2021）。
 
 ## 推荐人
 
 「开源之道」·适兕 · 2026-09-25
+
+---
+
+*图片来源：豆瓣 [https://book.douban.com/subject/26988949/](https://book.douban.com/subject/26988949/) · 上海科学技术出版社《科学文丛》*
