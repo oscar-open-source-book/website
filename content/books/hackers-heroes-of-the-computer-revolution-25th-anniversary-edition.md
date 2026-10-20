@@ -25,5 +25,20 @@ editable: true
 ## 作者简介
 Steven Levy，《连线》杂志的特约撰稿人和资深作者。以前是《新闻周刊》（Newsweek）的首席技术作者和高级编辑。被誉为“数字时代最顶尖的史学家”之一。
 
+## 在「观念演进史」中的位置
+
+《黑客》记录的不是技术史，是**一种伦理的形成史**。MIT 铁路模型技术俱乐部的年轻人并没有发明任何制度，他们发明的是一个判断标准：**一段代码好不好，看它是否优雅、是否被公开、是否让别人能继续做下去，而不是看它归谁所有**。
+
+Levy 总结的"黑客伦理"里，最要紧的两条是：**对计算机的访问应当不受限制**；**评价一个人应当凭其技术，而不是凭学历、职位、年龄或种族**。这两条合在一起，就是"平权协作"在计算机领域最早的具体表述——它不是从政治哲学推导来的，是从一群人的日常实践中长出来的。
+
+这就是「开源之道」看重这本书的理由：**平等的观念不是被宣讲进来的，是在具体的协作习惯里被反复实践出来的**。黑客伦理后来之所以能撑起自由软件运动，不是因为它的宣言写得好，是因为它已经先在一代人的工作方式里成立了。反过来看，一个地方若只引进开源的技术流程而不具备这种评价标准——凭技术而非凭位置——流程就会空转。
+
+## 关联阅读
+
+- [大教堂与集市](https://osbook.opensourceway.blog/books/the-cathedral-and-the-bazaar/) — 从黑客伦理到开源方法论的转折
+- [若为自由故](https://osbook.opensourceway.blog/books/free-as-in-freedom-richard-stallman-s-crusade-for-free-software/) — 伦理如何被推向政治行动
+- [两个比特](https://osbook.opensourceway.blog/books/two-bits/) — 自由软件文化的民族志研究
+- [人类的发明](https://osbook.opensourceway.blog/books/the-invention-of-humanity/) — 平等观念的世界史背景
+
 ## 推荐人
 [适兕](https://opensourceway.community/all_about_kuosi)，作者，「开源之道」主创。「OSCAR·开源之书·共读」发起者和记录者。
