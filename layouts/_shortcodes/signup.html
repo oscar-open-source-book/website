@@ -5,7 +5,7 @@
     {{< signup event="2026-10-31" >}}
 
   功能：
-    - 报名表单（称呼 / 联系方式 / 参与方式 / 聚餐 / 想讲的话题）
+    - 报名表单（称呼 / 联系方式 / 聚餐 / 想讲的话题）
     - 实时报名统计（轮询 signup-api）
     - 场地动态提示（≤5 人咖啡厅，>5 人智源大厦）
 
@@ -16,7 +16,7 @@
 
 <div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}">
   <div class="signup-header">
-    <h2>📝 报名参加</h2>
+    <h2>📝 <span class="hl">报名参加</span></h2>
     <p class="signup-sub">报名信息是公开的，如需修改请发 <a href="https://github.com/oscar-open-source-book/website/issues" target="_blank" rel="noopener">Issue</a> 告知我们。</p>
   </div>
 
@@ -27,16 +27,12 @@
       <div class="stat-label">已报名</div>
     </div>
     <div class="stat-card">
-      <div class="stat-num" id="stat-offline">—</div>
-      <div class="stat-label">线下</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="stat-online">—</div>
-      <div class="stat-label">线上</div>
-    </div>
-    <div class="stat-card">
       <div class="stat-num" id="stat-dinner">—</div>
-      <div class="stat-label">聚餐</div>
+      <div class="stat-label">参加聚餐</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-venue">—</div>
+      <div class="stat-label">当前场地</div>
     </div>
   </div>
 
@@ -56,14 +52,6 @@
     <div class="form-row">
       <label for="sf-contact">联系方式 <span class="req">*</span></label>
       <input type="text" id="sf-contact" name="contact" required maxlength="120" placeholder="微信 / 邮箱，用于场地变更通知">
-    </div>
-
-    <div class="form-row">
-      <label>参与方式 <span class="req">*</span></label>
-      <div class="radio-group">
-        <label class="radio"><input type="radio" name="mode" value="offline" checked> 线下</label>
-        <label class="radio"><input type="radio" name="mode" value="online"> 线上</label>
-      </div>
     </div>
 
     <div class="form-row">
@@ -93,13 +81,29 @@
 <style>
 .oscar-signup {
   margin: 2.5rem 0;
-  padding: 1.75rem;
+  padding: 2rem 1.75rem;
   border: 1px solid #E8E2D4;
   border-radius: 12px;
   background: #FAF8F3;
 }
-.signup-header h2 { margin: 0 0 .4rem; font-size: 1.35rem; color: #8B6914; }
-.signup-sub { margin: 0 0 1.5rem; font-size: .85rem; color: #6B6B6B; }
+.signup-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #E8E2D4;
+}
+.signup-header h2 {
+  margin: 0 0 .5rem;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: #8B6914;
+  line-height: 1.3;
+}
+.signup-header h2 .hl {
+  background: linear-gradient(transparent 62%, rgba(180,160,120,.35) 62%);
+}
+.signup-sub { margin: 0; font-size: .85rem; color: #6B6B6B; }
 .signup-sub a { color: #8B6914; text-decoration: underline; }
 
 .signup-stats {
@@ -206,11 +210,22 @@
 
   function setStats(s) {
     if (!s) return;
-    $('stat-total').textContent = s.total ?? 0;
-    $('stat-offline').textContent = s.offline ?? 0;
-    $('stat-online').textContent = s.online ?? 0;
+    const total = s.total ?? 0;
+    $('stat-total').textContent = total;
     $('stat-dinner').textContent = s.dinner ?? 0;
-    updateVenue(s.total ?? 0);
+    // 当前场地卡片：用文字代替数字，字号小一些
+    const vEl = $('stat-venue');
+    if (total > 5) {
+      vEl.textContent = '智源大厦';
+      vEl.style.fontSize = '1.1rem';
+    } else if (total >= 1) {
+      vEl.textContent = '咖啡厅?';
+      vEl.style.fontSize = '1.1rem';
+    } else {
+      vEl.textContent = '待定';
+      vEl.style.fontSize = '1.1rem';
+    }
+    updateVenue(total);
   }
 
   function updateVenue(total) {
@@ -235,8 +250,7 @@
     wrap.hidden = false;
     ul.innerHTML = rows.map(r => {
       const tags = [];
-      if (r.mode === 'online') tags.push('线上');
-      if (r.dinner === 'yes') tags.push('聚餐');
+      if (r.dinner === 'yes' || r.dinner === true) tags.push('聚餐');
       const t = tags.length ? `<span class="tag">${tags.join(' · ')}</span>` : '';
       return `<li>${escapeHtml(r.name)}${t}</li>`;
     }).join('');
@@ -269,7 +283,7 @@
       event: EVENT,
       name: (fd.get('name') || '').trim(),
       contact: (fd.get('contact') || '').trim(),
-      mode: fd.get('mode') || 'offline',
+      mode: 'offline',
       dinner: fd.get('dinner') || 'no',
       reason: (fd.get('reason') || '').trim()
     };
