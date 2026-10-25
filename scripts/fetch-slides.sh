@@ -33,11 +33,16 @@ if [[ "${SKIP_SLIDES:-0}" == "1" ]]; then
 fi
 
 # 已存在且非空 → 跳过（本地开发常见）
-if [[ $FORCE -eq 0 && -d "$TARGET" ]] && [[ -n "$(ls -A "$TARGET" 2>/dev/null)" ]]; then
+# 注意：必须检查「有内容的子目录数」，不能用 -n "$(ls -A)"，
+# 空的 static/slides（git 残留 / 上次中断）也会被 -A 视为非空
+if [[ $FORCE -eq 0 && -d "$TARGET" ]]; then
   COUNT=$(find "$TARGET" -maxdepth 1 -mindepth 1 -type d | wc -l)
-  echo "✅ static/slides 已存在（${COUNT} 个 deck），跳过下载"
-  echo "   如需强制刷新：bash scripts/fetch-slides.sh --force"
-  exit 0
+  if [[ "$COUNT" -ge 50 ]]; then
+    echo "✅ static/slides 已存在（${COUNT} 个 deck），跳过下载"
+    echo "   如需强制刷新：bash scripts/fetch-slides.sh --force"
+    exit 0
+  fi
+  echo "⚠️  static/slides 存在但仅有 ${COUNT} 个 deck（预期 ≥50），重新拉取"
 fi
 
 echo "📦 从 $REPO@$BRANCH 拉取幻灯片资源..."
