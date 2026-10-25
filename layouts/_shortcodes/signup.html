@@ -13,11 +13,19 @@
 */}}
 {{ $event := .Get "event" | default "2026-10-31" }}
 {{ $api := .Get "api" | default "https://signup-api.osbook.opensourceway.blog/api/signup" }}
+{{ $deadline := .Get "deadline" | default "" }}
 
-<div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}">
+<div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}" data-deadline="{{ $deadline }}">
   <div class="signup-header">
     <h2>📝 <span class="hl">报名参加</span></h2>
     <p class="signup-sub">页面公开显示称呼与参与情况；<b>联系方式单独加密存放，不在网页公开</b>。如需修改请发 <a href="https://github.com/oscar-open-source-book/website/issues" target="_blank" rel="noopener">Issue</a>。</p>
+  </div>
+
+  <!-- 活动已结束横幅（默认隐藏，由 JS 按截止时间切换） -->
+  <div class="signup-closed" id="signup-closed" hidden>
+    <div class="closed-icon">🏁</div>
+    <div class="closed-title">活动已开始，报名截止</div>
+    <div class="closed-sub" id="closed-sub">本场报名已关闭，感谢各位书友的关注。</div>
   </div>
 
   <!-- 实时统计 -->
@@ -197,6 +205,30 @@
   color: #2C2A26;
 }
 .signup-list li .tag { color: #6B6B6B; font-size: .78rem; margin-left: .3rem; }
+
+/* 活动已结束 */
+.signup-closed {
+  text-align: center;
+  padding: 2rem 1.25rem;
+  margin-bottom: 1.5rem;
+  background: #F2EFE8;
+  border: 1px dashed #C9BFA8;
+  border-radius: 10px;
+}
+.closed-icon { font-size: 2rem; line-height: 1; margin-bottom: .6rem; }
+.closed-title {
+  font-size: 1.15rem; font-weight: 700; color: #6B5A3E;
+  letter-spacing: .04em; margin-bottom: .4rem;
+}
+.closed-sub { font-size: .88rem; color: #8A8272; line-height: 1.6; }
+.signup-form.is-closed { display: none; }
+
+/* 输入框禁用态 */
+.oscar-signup.is-closed .form-row input[type=text],
+.oscar-signup.is-closed .form-row textarea {
+  background: #F0EDE6; color: #9A9488; cursor: not-allowed;
+}
+.oscar-signup.is-closed .radio { opacity: .55; cursor: not-allowed; }
 </style>
 
 <script>
@@ -205,8 +237,44 @@
   if (!root) return;
   const EVENT = root.dataset.event;
   const API = root.dataset.api;
+  const DEADLINE = root.dataset.deadline || '';
+  // 数据源：与 website 解耦的独立仓库（避免每次报名触发 Pages 构建）
+  const DATA_URL = 'https://raw.githubusercontent.com/oscar-open-source-book/signups-data/main/' + EVENT + '.json';
 
   const $ = (id) => document.getElementById(id);
+
+  // ── 截止时间判定 ──
+  function isExpired() {
+    if (!DEADLINE) return false;
+    const t = Date.parse(DEADLINE);
+    return !isNaN(t) && Date.now() >= t;
+  }
+
+  function applyClosedState(expired) {
+    const box = $('signup-closed');
+    const form = $('signup-form');
+    if (!box) return;
+    if (!expired) {
+      box.hidden = true;
+      root.classList.remove('is-closed');
+      if (form) form.classList.remove('is-closed');
+      return;
+    }
+    box.hidden = false;
+    root.classList.add('is-closed');
+    if (form) {
+      form.classList.add('is-closed');
+      // 双保险：即使表单可见也禁掉所有控件
+      form.querySelectorAll('input, textarea, button').forEach(el => { el.disabled = true; });
+    }
+    const sub = $('closed-sub');
+    if (sub && DEADLINE) {
+      const d = new Date(DEADLINE);
+      const pad = (n) => String(n).padStart(2, '0');
+      sub.textContent = '本场报名已于 ' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' +
+        pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' 截止。';
+    }
+  }
 
   function setStats(s) {
     if (!s) return;
@@ -262,11 +330,36 @@
   }
 
   async function refresh() {
+    // 数据源优先级：
+    //  ① 独立仓库 raw（不触发 website 构建，最快）
+    //  ② API（raw 被墙/超时时的回退）
+    try {
+      const r = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      if (r.ok) {
+        const d = await r.json();
+        if (d && Array.isArray(d.signups)) {
+          setStats(computeStats(d.signups));
+          renderList(d.signups);
+          return;
+        }
+      }
+    } catch (_) { /* 落到 API 回退 */ }
+
     try {
       const r = await fetch(API + '?event=' + encodeURIComponent(EVENT), { cache: 'no-store' });
       const d = await r.json();
-      if (d.ok) { setStats(d.stats); renderList(d.signups); }
+      if (d.ok) {
+        setStats(d.stats);
+        renderList(d.signups);
+        if (typeof d.expired === 'boolean' && d.expired) applyClosedState(true);
+      }
     } catch (e) { /* 静默：网络抖动不影响阅读 */ }
+  }
+
+  function computeStats(rows) {
+    let dinner = 0;
+    rows.forEach(r => { if (r.dinner === 'yes' || r.dinner === true) dinner++; });
+    return { total: rows.length, dinner: dinner };
   }
 
   $('signup-form').addEventListener('submit', async (ev) => {
@@ -329,6 +422,10 @@
         }
         if (d.stats) setStats(d.stats);
         refresh();
+      } else if (d.expired) {
+        // 服务端判定已截止：同步关闭 UI
+        applyClosedState(true);
+        showMsg('err', '活动已开始，报名截止。');
       } else {
         showMsg('err', '提交失败：' + (d.error || r.status));
       }
@@ -339,6 +436,9 @@
       btn.textContent = '提交报名';
     }
   });
+
+  // 初始化：先按截止时间切换 UI（不等网络）
+  applyClosedState(isExpired());
 
   // 加载时恢复提示（企微/微信提交后可能整页重载）
   (function restoreMsg() {
