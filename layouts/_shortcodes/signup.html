@@ -271,6 +271,7 @@
 
   $('signup-form').addEventListener('submit', async (ev) => {
     ev.preventDefault();
+    const form = ev.currentTarget;
     const btn = $('sf-submit');
     const msg = $('sf-msg');
     btn.disabled = true;
@@ -278,7 +279,19 @@
     msg.className = 'form-msg';
     msg.textContent = '';
 
-    const fd = new FormData(ev.target);
+    // 统一提示入口：写入后滚动到可见位置
+    // （详情页很长，提示框可能在视口外，用户会以为"没反应"）
+    function showMsg(kind, html) {
+      msg.className = 'form-msg ' + kind;
+      msg.innerHTML = html;
+      try {
+        msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (_) {
+        msg.scrollIntoView();
+      }
+    }
+
+    const fd = new FormData(form);
     const payload = {
       event: EVENT,
       name: (fd.get('name') || '').trim(),
@@ -296,22 +309,19 @@
       });
       const d = await r.json();
       if (d.ok) {
-        msg.className = 'form-msg ok';
         if (d.duplicate) {
-          msg.innerHTML = `该联系方式已报名过，编号 <code>${escapeHtml(d.signup_no)}</code>。`;
+          showMsg('ok', `该联系方式已报名过，编号 <code>${escapeHtml(d.signup_no)}</code>。`);
         } else {
-          msg.innerHTML = `✓ 报名成功！你的报名编号：<code>${escapeHtml(d.signup_no)}</code><br><span style="font-size:.85em;color:#6B6B6B">请保存此编号，如需修改凭它联系。</span>`;
-          ev.target.reset();
+          showMsg('ok', `✓ 报名成功！你的报名编号：<code>${escapeHtml(d.signup_no)}</code><br><span style="font-size:.85em;color:#6B6B6B">请保存此编号，如需修改凭它联系。</span>`);
+          form.reset();
         }
         if (d.stats) setStats(d.stats);
         refresh();
       } else {
-        msg.className = 'form-msg err';
-        msg.textContent = '提交失败：' + (d.error || r.status);
+        showMsg('err', '提交失败：' + (d.error || r.status));
       }
     } catch (e) {
-      msg.className = 'form-msg err';
-      msg.textContent = '网络错误：' + e.message;
+      showMsg('err', '网络错误：' + (e.message || e));
     } finally {
       btn.disabled = false;
       btn.textContent = '提交报名';
