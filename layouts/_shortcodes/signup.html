@@ -1,0 +1,310 @@
+{{/*
+  signup.html — OSCAR 读书会报名组件
+
+  用法（在活动页 Markdown 中）：
+    {{< signup event="2026-10-31" >}}
+
+  功能：
+    - 报名表单（称呼 / 联系方式 / 参与方式 / 聚餐 / 想讲的话题）
+    - 实时报名统计（轮询 signup-api）
+    - 场地动态提示（≤5 人咖啡厅，>5 人智源大厦）
+
+  后端：https://signup-api.osbook.opensourceway.blog/api/signup
+*/}}
+{{ $event := .Get "event" | default "2026-10-31" }}
+{{ $api := .Get "api" | default "https://signup-api.osbook.opensourceway.blog/api/signup" }}
+
+<div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}">
+  <div class="signup-header">
+    <h2>📝 报名参加</h2>
+    <p class="signup-sub">报名信息是公开的，如需修改请发 <a href="https://github.com/oscar-open-source-book/website/issues" target="_blank" rel="noopener">Issue</a> 告知我们。</p>
+  </div>
+
+  <!-- 实时统计 -->
+  <div class="signup-stats" id="signup-stats">
+    <div class="stat-card">
+      <div class="stat-num" id="stat-total">—</div>
+      <div class="stat-label">已报名</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-offline">—</div>
+      <div class="stat-label">线下</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-online">—</div>
+      <div class="stat-label">线上</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-dinner">—</div>
+      <div class="stat-label">聚餐</div>
+    </div>
+  </div>
+
+  <!-- 场地动态提示 -->
+  <div class="venue-hint" id="venue-hint">
+    <span class="venue-icon">📍</span>
+    <span class="venue-text" id="venue-text">正在获取报名人数…</span>
+  </div>
+
+  <!-- 报名表单 -->
+  <form id="signup-form" class="signup-form">
+    <div class="form-row">
+      <label for="sf-name">称呼 <span class="req">*</span></label>
+      <input type="text" id="sf-name" name="name" required maxlength="40" placeholder="怎么称呼你">
+    </div>
+
+    <div class="form-row">
+      <label for="sf-contact">联系方式 <span class="req">*</span></label>
+      <input type="text" id="sf-contact" name="contact" required maxlength="120" placeholder="微信 / 邮箱，用于场地变更通知">
+    </div>
+
+    <div class="form-row">
+      <label>参与方式 <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="radio"><input type="radio" name="mode" value="offline" checked> 线下</label>
+        <label class="radio"><input type="radio" name="mode" value="online"> 线上</label>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>是否参加晚间聚餐</label>
+      <div class="radio-group">
+        <label class="radio"><input type="radio" name="dinner" value="yes"> 参加</label>
+        <label class="radio"><input type="radio" name="dinner" value="no" checked> 不参加</label>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label for="sf-reason">想说的话 / 想讲的话题</label>
+      <textarea id="sf-reason" name="reason" rows="3" maxlength="500" placeholder="选填。手上有一本书想讲、一个判断想被反驳、一个还没答案的困惑——都欢迎写在这里"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn" id="sf-submit">提交报名</button>
+    <div class="form-msg" id="sf-msg"></div>
+  </form>
+
+  <!-- 报名名单 -->
+  <div class="signup-list" id="signup-list" hidden>
+    <h3>已报名书友</h3>
+    <ul id="signup-names"></ul>
+  </div>
+</div>
+
+<style>
+.oscar-signup {
+  margin: 2.5rem 0;
+  padding: 1.75rem;
+  border: 1px solid #E8E2D4;
+  border-radius: 12px;
+  background: #FAF8F3;
+}
+.signup-header h2 { margin: 0 0 .4rem; font-size: 1.35rem; color: #8B6914; }
+.signup-sub { margin: 0 0 1.5rem; font-size: .85rem; color: #6B6B6B; }
+.signup-sub a { color: #8B6914; text-decoration: underline; }
+
+.signup-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+}
+.stat-card {
+  text-align: center;
+  padding: .9rem .5rem;
+  background: #fff;
+  border: 1px solid #E8E2D4;
+  border-radius: 8px;
+}
+.stat-num { font-size: 1.6rem; font-weight: 700; color: #8B6914; line-height: 1.1; }
+.stat-label { font-size: .75rem; color: #6B6B6B; margin-top: .25rem; }
+
+.venue-hint {
+  display: flex;
+  gap: .6rem;
+  align-items: flex-start;
+  padding: .9rem 1rem;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  border-left: 3px solid #B4A078;
+  border-radius: 6px;
+  font-size: .9rem;
+  line-height: 1.6;
+}
+.venue-hint.is-confirmed { border-left-color: #2D6A4F; }
+.venue-hint.is-coffee { border-left-color: #8B6914; }
+.venue-icon { flex-shrink: 0; }
+
+.signup-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-row { display: flex; flex-direction: column; gap: .4rem; }
+.form-row > label { font-size: .9rem; font-weight: 600; color: #2C2A26; }
+.req { color: #B83232; }
+.form-row input[type=text],
+.form-row textarea {
+  width: 100%;
+  padding: .6rem .75rem;
+  border: 1px solid #D8D2C4;
+  border-radius: 6px;
+  font-size: .95rem;
+  font-family: inherit;
+  background: #fff;
+  color: #2C2A26;
+}
+.form-row input[type=text]:focus,
+.form-row textarea:focus {
+  outline: none;
+  border-color: #B4A078;
+  box-shadow: 0 0 0 3px rgba(180,160,120,.15);
+}
+.form-row textarea { resize: vertical; }
+
+.radio-group { display: flex; gap: 1.25rem; }
+.radio { display: inline-flex; align-items: center; gap: .4rem; font-size: .92rem; cursor: pointer; }
+.radio input { accent-color: #8B6914; }
+
+.submit-btn {
+  align-self: flex-start;
+  padding: .7rem 2rem;
+  background: #8B6914;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.submit-btn:hover:not(:disabled) { background: #6E530F; }
+.submit-btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.form-msg { font-size: .9rem; line-height: 1.6; }
+.form-msg.ok { color: #2D6A4F; }
+.form-msg.err { color: #B83232; }
+.form-msg code { background: #EFEBE0; padding: .1rem .35rem; border-radius: 3px; font-size: .88em; }
+
+.signup-list { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #E8E2D4; }
+.signup-list h3 { margin: 0 0 .75rem; font-size: 1.05rem; color: #2C2A26; }
+.signup-list ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.signup-list li {
+  padding: .3rem .7rem;
+  background: #fff;
+  border: 1px solid #E8E2D4;
+  border-radius: 100px;
+  font-size: .85rem;
+  color: #2C2A26;
+}
+.signup-list li .tag { color: #6B6B6B; font-size: .78rem; margin-left: .3rem; }
+</style>
+
+<script>
+(function () {
+  const root = document.getElementById('oscar-signup');
+  if (!root) return;
+  const EVENT = root.dataset.event;
+  const API = root.dataset.api;
+
+  const $ = (id) => document.getElementById(id);
+
+  function setStats(s) {
+    if (!s) return;
+    $('stat-total').textContent = s.total ?? 0;
+    $('stat-offline').textContent = s.offline ?? 0;
+    $('stat-online').textContent = s.online ?? 0;
+    $('stat-dinner').textContent = s.dinner ?? 0;
+    updateVenue(s.total ?? 0);
+  }
+
+  function updateVenue(total) {
+    const hint = $('venue-hint');
+    const text = $('venue-text');
+    hint.className = 'venue-hint';
+    if (total > 5) {
+      hint.classList.add('is-confirmed');
+      text.innerHTML = `<strong>场地：智源大厦（海淀）</strong><br>已报名 ${total} 人，超过 5 人，场地确定为智源大厦。具体楼层与集合方式将在活动前单独通知。`;
+    } else if (total >= 1) {
+      hint.classList.add('is-coffee');
+      text.innerHTML = `当前 ${total} 人报名。<br>若最终 ≤5 人，将约一间咖啡厅（具体地点报名后通知）；超过 5 人则改为智源大厦（海淀）。`;
+    } else {
+      text.innerHTML = '尚无人报名。若最终 ≤5 人，将约一间咖啡厅；超过 5 人则改为智源大厦（海淀）。';
+    }
+  }
+
+  function renderList(rows) {
+    const wrap = $('signup-list');
+    const ul = $('signup-names');
+    if (!rows || !rows.length) { wrap.hidden = true; return; }
+    wrap.hidden = false;
+    ul.innerHTML = rows.map(r => {
+      const tags = [];
+      if (r.mode === 'online') tags.push('线上');
+      if (r.dinner === 'yes') tags.push('聚餐');
+      const t = tags.length ? `<span class="tag">${tags.join(' · ')}</span>` : '';
+      return `<li>${escapeHtml(r.name)}${t}</li>`;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  async function refresh() {
+    try {
+      const r = await fetch(API + '?event=' + encodeURIComponent(EVENT), { cache: 'no-store' });
+      const d = await r.json();
+      if (d.ok) { setStats(d.stats); renderList(d.signups); }
+    } catch (e) { /* 静默：网络抖动不影响阅读 */ }
+  }
+
+  $('signup-form').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const btn = $('sf-submit');
+    const msg = $('sf-msg');
+    btn.disabled = true;
+    btn.textContent = '提交中…';
+    msg.className = 'form-msg';
+    msg.textContent = '';
+
+    const fd = new FormData(ev.target);
+    const payload = {
+      event: EVENT,
+      name: (fd.get('name') || '').trim(),
+      contact: (fd.get('contact') || '').trim(),
+      mode: fd.get('mode') || 'offline',
+      dinner: fd.get('dinner') || 'no',
+      reason: (fd.get('reason') || '').trim()
+    };
+
+    try {
+      const r = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const d = await r.json();
+      if (d.ok) {
+        msg.className = 'form-msg ok';
+        if (d.duplicate) {
+          msg.innerHTML = `该联系方式已报名过，编号 <code>${escapeHtml(d.signup_no)}</code>。`;
+        } else {
+          msg.innerHTML = `✓ 报名成功！你的报名编号：<code>${escapeHtml(d.signup_no)}</code><br><span style="font-size:.85em;color:#6B6B6B">请保存此编号，如需修改凭它联系。</span>`;
+          ev.target.reset();
+        }
+        if (d.stats) setStats(d.stats);
+        refresh();
+      } else {
+        msg.className = 'form-msg err';
+        msg.textContent = '提交失败：' + (d.error || r.status);
+      }
+    } catch (e) {
+      msg.className = 'form-msg err';
+      msg.textContent = '网络错误：' + e.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '提交报名';
+    }
+  });
+
+  refresh();
+  setInterval(refresh, 30000);
+})();
+</script>
