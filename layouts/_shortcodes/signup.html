@@ -276,8 +276,10 @@
     const msg = $('sf-msg');
     btn.disabled = true;
     btn.textContent = '提交中…';
+    // 不要立即清空提示：请求失败或内核中断时用户会完全失去反馈。
+    // 提交中先显示状态，成功/失败再覆盖。
     msg.className = 'form-msg';
-    msg.textContent = '';
+    msg.textContent = '提交中…';
 
     // 统一提示入口：写入后滚动到可见位置
     // （详情页很长，提示框可能在视口外，用户会以为"没反应"）
@@ -289,7 +291,16 @@
       } catch (_) {
         msg.scrollIntoView();
       }
+      // 持久化：30 秒内刷新/跳转回来仍能看到（企微/微信有时会重载页面）
+      try {
+        sessionStorage.setItem('oscar_signup_msg', JSON.stringify({
+          kind: kind, html: html, ts: Date.now()
+        }));
+      } catch (_) {}
     }
+
+    // 页面加载时恢复未过期的提示见文件末尾（IIFE 顶层，
+    // 因为企微/微信提交后可能整页重载，提示需在加载时恢复）
 
     const fd = new FormData(form);
     const payload = {
@@ -313,7 +324,8 @@
           showMsg('ok', `该联系方式已报名过，编号 <code>${escapeHtml(d.signup_no)}</code>。`);
         } else {
           showMsg('ok', `✓ 报名成功！你的报名编号：<code>${escapeHtml(d.signup_no)}</code><br><span style="font-size:.85em;color:#6B6B6B">请保存此编号，如需修改凭它联系。</span>`);
-          form.reset();
+          // 延迟重置：立即 reset 会让部分内核把提示一起清掉
+          setTimeout(() => { try { form.reset(); } catch (_) {} }, 300);
         }
         if (d.stats) setStats(d.stats);
         refresh();
@@ -327,6 +339,24 @@
       btn.textContent = '提交报名';
     }
   });
+
+  // 加载时恢复提示（企微/微信提交后可能整页重载）
+  (function restoreMsg() {
+    const m = $('sf-msg');
+    if (!m) return;
+    try {
+      const raw = sessionStorage.getItem('oscar_signup_msg');
+      if (!raw) return;
+      const o = JSON.parse(raw);
+      if (!o || !o.html) return;
+      if (Date.now() - (o.ts || 0) > 60000) { sessionStorage.removeItem('oscar_signup_msg'); return; }
+      m.className = 'form-msg ' + (o.kind || 'ok');
+      m.innerHTML = o.html;
+      setTimeout(() => {
+        try { m.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (_) { m.scrollIntoView(); }
+      }, 300);
+    } catch (_) {}
+  })();
 
   refresh();
   setInterval(refresh, 30000);
