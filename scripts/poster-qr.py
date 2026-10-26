@@ -193,7 +193,12 @@ def compose(im, qr_img, size, margin, anchor, radius, quiet, frame=None):
     return base, (x, y, size, size)
 
 
-def decode_check(path, expect):
+def decode_check(path, expect, scales=(0.5,)):
+    """解码自检。
+
+    不只测原图 —— 海报在手机上会整屏缩放显示，
+    实际扫码时相当于缩小后的图。按 scales 逐个缩放再解码。
+    """
     try:
         import cv2
     except ImportError:
@@ -201,11 +206,21 @@ def decode_check(path, expect):
     img = cv2.imread(str(path))
     if img is None:
         return False, "读图失败"
-    data, _, _ = cv2.QRCodeDetector().detectAndDecode(img)
+
+    det = cv2.QRCodeDetector()
+    data, _, _ = det.detectAndDecode(img)
     if not data:
-        return False, "未识别到二维码"
+        return False, "原图未识别到二维码"
     if data.strip() != expect.strip():
         return False, f"内容不符：{data[:60]}"
+
+    h, w = img.shape[:2]
+    for sc in scales:
+        small = cv2.resize(img, (max(1, int(w * sc)), max(1, int(h * sc))),
+                           interpolation=cv2.INTER_AREA)
+        d, _, _ = det.detectAndDecode(small)
+        if d.strip() != expect.strip():
+            return False, f"缩放到 {int(sc*100)}% 后扫不出（手机整屏显示时会失败）"
     return True, data
 
 
@@ -219,7 +234,8 @@ def main():
                     help="模块颜色 #RRGGBB；不填则从海报深色端自动取")
     ap.add_argument("--light", default=None,
                     help="底色 #RRGGBB；不填则从海报浅色端自动取")
-    ap.add_argument("--size", type=int, default=300, help="二维码边长像素（默认 300）")
+    ap.add_argument("--size", type=int, default=320,
+                    help="二维码边长像素（默认 320；实测 320 在 50%% 缩放下仍可扫）")
     ap.add_argument("--margin", type=int, default=60, help="距海报边缘像素（默认 60）")
     ap.add_argument("--anchor", default="auto", choices=list(ANCHORS) + ["auto"],
                     help="落点；auto 自动挑最平坦的角并逐个试到可扫（默认 auto）")
@@ -227,6 +243,8 @@ def main():
     ap.add_argument("--quiet", type=int, default=16, help="静区宽度（默认 16）")
     ap.add_argument("--frame", nargs="?", const="auto", default="auto",
                     help="面板描边颜色；auto=取海报古铜金，none=不描边")
+    ap.add_argument("--scales", default="0.5",
+                    help="自检时额外验证的缩放比，逗号分隔（默认 0.5；空=只测原图）")
     ap.add_argument("--no-verify", action="store_true", help="跳过解码自检")
     args = ap.parse_args()
 
@@ -279,7 +297,11 @@ def main():
                                args.radius, args.quiet, frame)
         result.save(out, quality=95)
 
-        ok, msg = (None, "已跳过") if args.no_verify else decode_check(out, args.url)
+        if args.no_verify:
+            ok, msg = None, "已跳过"
+        else:
+            sc = tuple(float(v) for v in args.scales.split(",") if v.strip())
+            ok, msg = decode_check(out, args.url, sc)
         dh = f"#{dark[0]:02X}{dark[1]:02X}{dark[2]:02X}"
         lh = f"#{light[0]:02X}{light[1]:02X}{light[2]:02X}"
 
