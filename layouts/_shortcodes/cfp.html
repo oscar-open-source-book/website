@@ -1,7 +1,13 @@
 {{ $api := .Get "api" | default "https://signup-api.osbook.opensourceway.blog/api/cfp" }}
 {{ $data := .Get "data" | default "https://raw.githubusercontent.com/oscar-open-source-book/cfp-data/main/proposals.json" }}
 
-<div id="cfp-block" class="cfp-block" data-api="{{ $api }}" data-data="{{ $data }}" data-links="/data/cfp_links.json">
+<script>
+  /* 议题 → 已分享活动 的映射，构建时由 data/cfp_links.json 内联。
+     不放运行时 fetch：Hugo 的 data/ 不发布为静态文件。 */
+  window.__cfpLanded = {{ site.Data.cfp_links.cfp_to_events | default dict | jsonify | safeJS }};
+</script>
+
+<div id="cfp-block" class="cfp-block" data-api="{{ $api }}" data-data="{{ $data }}">
 
   <div class="cfp-form-wrap">
     <h2>提议一个议题</h2>
@@ -238,18 +244,8 @@
   window.__cfpSeen = '';
   window.__cfpLanded = window.__cfpLanded || {};
 
-  // 议题→活动落地映射。独立于主 IIFE，主逻辑坏了也能显示链接。
-  (function () {
-    var root = document.getElementById('cfp-block');
-    if (!root || !root.dataset.links) { return; }
-    fetch(root.dataset.links).then(function (r) {
-      return r.ok ? r.json() : null;
-    }).then(function (d) {
-      if (!d || !d.cfp_to_events) { return; }
-      window.__cfpLanded = d.cfp_to_events;
-      if (typeof window.__cfpApply === 'function') { window.__cfpApply(); }
-    })['catch'](function () {});
-  })();
+  // 议题→活动落地映射由 Hugo 构建时内联注入（见文件末尾），
+  // 不走运行时 fetch：data/ 目录不发布为静态文件，线上取不到。
 
   window.setInterval(function () {
     var el = document.getElementById('cfp-search');
