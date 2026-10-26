@@ -82,10 +82,14 @@
   const API = root.dataset.api;
   const DATA = root.dataset.data;
 
-  const $ = (id) => document.getElementById(id);
-  const form = $('cfp-form');
-  const btn = $('cfp-submit');
-  const msg = $('cfp-msg');
+  // 注意：不要用 `const $ = (id) => ...` 形式。
+  // Hugo --minify 会把参数 id 重命名成 e，与本作用域其它 e 变量（元素引用）
+  // 撞名，产生 `const e=e=>document.getElementById(e)` 自引用，
+  // 导致所有 getElementById 调用返回 null、整个脚本静默失效。
+  function byId(elId) { return document.getElementById(elId); }
+  const form = byId('cfp-form');
+  const btn = byId('cfp-submit');
+  const msg = byId('cfp-msg');
 
   let ALL = [];
 
@@ -96,8 +100,8 @@
   }
 
   function render(list) {
-    const box = $('cfp-list');
-    const empty = $('cfp-empty');
+    const box = byId('cfp-list');
+    const empty = byId('cfp-empty');
     if (!box) return;
     if (!list.length) {
       box.innerHTML = '';
@@ -127,12 +131,12 @@
     const years = Array.from(new Set(ALL.map(p => (p.submitted_at || '').slice(0, 4))
       .filter(Boolean))).sort().reverse();
 
-    const cbox = $('cfp-city-chips');
+    const cbox = byId('cfp-city-chips');
     if (cbox) {
       cbox.innerHTML = '<button class="cfp-chip active" data-kind="city" data-val="">全部城市</button>' +
         cities.map(c => '<button class="cfp-chip" data-kind="city" data-val="' + esc(c) + '">' + esc(c) + '</button>').join('');
     }
-    const ybox = $('cfp-year-chips');
+    const ybox = byId('cfp-year-chips');
     if (ybox) {
       ybox.innerHTML = '<button class="cfp-chip active" data-kind="year" data-val="">全部年份</button>' +
         years.map(y => '<button class="cfp-chip" data-kind="year" data-val="' + y + '">' + y + '</button>').join('');
@@ -152,7 +156,7 @@
         (p.bio || '').toLowerCase().includes(q));
     }
     render(list);
-    const total = $('cfp-total');
+    const total = byId('cfp-total');
     if (total) total.textContent = ALL.length;
   }
 
@@ -166,7 +170,7 @@
       buildChips();
       apply();
     } catch (e) {
-      const box = $('cfp-list');
+      const box = byId('cfp-list');
       if (box) {
         box.innerHTML = '<p class="cfp-loading">议题档案暂时读取失败（' +
           esc(e.message) + '）。可稍后刷新重试。</p>';
@@ -186,7 +190,7 @@
     apply();
   });
 
-  const search = $('cfp-search');
+  const search = byId('cfp-search');
   if (search) {
     let t = null;
     search.addEventListener('input', function () {
