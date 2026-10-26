@@ -79,6 +79,23 @@
 (function () {
   const root = document.getElementById('cfp-block');
   if (!root) return;
+
+  window.__cfpFilter = { city: '', year: '', q: '' };
+
+  // ── 搜索框轮询（放在最前面，不等其它初始化）──
+  // minify 会把局部变量压成 t/h/e 等单字母并在同一作用域重复出现，
+  // 导致 oninput/闭包/函数名互相覆盖。这里只用 window 属性，
+  // 且不引用任何后续才定义的变量，保证一定能注册上。
+  window.__cfpSeen = '';
+  window.setInterval(function () {
+    var box = document.getElementById('cfp-search');
+    if (!box) return;
+    var cur = String(box.value || '');
+    if (cur === window.__cfpSeen) return;
+    window.__cfpSeen = cur;
+    window.__cfpFilter.q = cur.replace(/^\s+|\s+$/g, '');
+    if (typeof window.__cfpApply === 'function') window.__cfpApply();
+  }, 250);
   const API = root.dataset.api;
   const DATA = root.dataset.data;
 
@@ -123,11 +140,6 @@
     }).join('');
   }
 
-  // 挂在 window 上而不是局部 const：
-  // Hugo --minify 会把局部变量压成 t/s/e 这类单字母，
-  // 与箭头函数参数撞名（例如 n.filter(t=>(t.title...)) 里的 t 遮蔽了 filterState），
-  // 导致 t.q 读到的是议题对象而不是筛选条件。
-  window.__cfpFilter = { city: '', year: '', q: '' };
 
   function buildChips() {
     const cities = Array.from(new Set(ALL.map(p => p.city).filter(Boolean))).sort();
@@ -202,22 +214,6 @@
     window.__cfpApply();
   });
 
-  const search = document.getElementById('cfp-search');
-  if (search) {
-    // 不用 oninput / addEventListener：minify 下的闭包与事件参数
-    // 已连续多次把赋值压坏。改用轮询监听值变化——
-    // 不依赖任何事件绑定、任何闭包变量，重命名完全无所谓。
-    window.__cfpSeen = '';
-    window.setInterval(function () {
-      var box = document.getElementById('cfp-search');
-      if (!box) return;
-      var cur = String(box.value || '');
-      if (cur === window.__cfpSeen) return;
-      window.__cfpSeen = cur;
-      window.__cfpFilter.q = cur.replace(/^\s+|\s+$/g, '');
-      window.__cfpApply();
-    }, 250);
-  }
 
   function showMsg(kind, text) {
     if (!msg) return;
