@@ -7,16 +7,13 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read   # deploy job 查 run API 取 head_sha 需要
 concurrency:
   group: pages
   cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
-    # deploy job 没有 checkout，github.sha 在那里取不到值（实测为空），
-    # 必须显式通过 outputs 传给下游。
-    outputs:
-      sha: ${{ steps.sentinel.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
         with: {submodules: true, fetch-depth: 1}
@@ -54,12 +51,10 @@ jobs:
       # 但若 upload-pages-artifact 被 skip 或上传空目录，CI 仍可能显示绿色、
       # 线上继续跑旧内容——这种静默降级比构建失败更危险。
       - name: Write build sentinel
-        id: sentinel
         run: |
           test -f public/index.html || { echo "::error::public/index.html 缺失"; exit 1; }
           test -d public/events || { echo "::error::public/events 缺失"; exit 1; }
           echo "${{ github.sha }}" > public/build-sha.txt
-          echo "sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
           echo "sentinel = ${{ github.sha }}"
       - uses: actions/upload-pages-artifact@v3
         with: {path: ./public}  
@@ -73,7 +68,18 @@ jobs:
       # Pages 有 CDN 传播延迟，最多重试 8 次（约 2 分钟）。
       - name: Verify deployed build (sentinel check)
         run: |
-          EXPECT="${{ needs.build.outputs.sha }}"
+          # 这里的 github.sha 为空、build job 的 outputs 也没传过来（都实测过），
+          # 所以直接查 API 拿本次 run 的 head_sha —— 最可靠。
+          EXPECT=$(curl -fsS --max-time 20 \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            | python3 -c "import sys,json; print(json.load(sys.stdin)['head_sha'])" || true)
+          if [ -z "$EXPECT" ]; then
+            echo "::error::无法取得本次 run 的 head_sha，哨兵校验中止"
+            exit 1
+          fi
+          echo "expect = $EXPECT"
           BASE="https://osbook.opensourceway.blog"
           for i in $(seq 1 8); do
             GOT=$(curl -fsS --max-time 15 "$BASE/build-sha.txt?cb=$RANDOM$i" || true)
