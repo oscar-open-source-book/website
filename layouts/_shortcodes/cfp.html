@@ -1,7 +1,7 @@
 {{ $api := .Get "api" | default "https://signup-api.osbook.opensourceway.blog/api/cfp" }}
 {{ $data := .Get "data" | default "https://raw.githubusercontent.com/oscar-open-source-book/cfp-data/main/proposals.json" }}
 
-<div id="cfp-block" class="cfp-block" data-api="{{ $api }}" data-data="{{ $data }}">
+<div id="cfp-block" class="cfp-block" data-api="{{ $api }}" data-data="{{ $data }}" data-links="/data/cfp_links.json">
 
   <div class="cfp-form-wrap">
     <h2>提议一个议题</h2>
@@ -115,6 +115,18 @@
     box.innerHTML = list.map(function (p) {
       const meta = [p.submitted_at, p.city, p.duration].filter(Boolean).join(' · ');
       const bio = p.bio ? '<p class="cfp-item-bio">' + esc(p.bio) + '</p>' : '';
+      // 落地链接：这份议题后来在哪一站讲了。数据来自 data/cfp_links.json，
+      // 由 scripts/build-cfp-links.py 从活动页正文反推，不手写。
+      var done = '';
+      var landed = (window.__cfpLanded || {})[p.id];
+      if (landed && landed.length) {
+        var parts = [];
+        for (var li = 0; li < landed.length; li++) {
+          var ev = landed[li];
+          parts.push('<a href="/events/' + ev.slug + '/">' + esc(ev.date) + '</a>');
+        }
+        done = '<p class="cfp-item-landed">✓ 已分享 · ' + parts.join('、') + '</p>';
+      }
       return '<article class="cfp-item">' +
         '<div class="cfp-item-head">' +
           '<span class="cfp-item-speaker">' + esc(p.speaker || '匿名') + '</span>' +
@@ -123,6 +135,7 @@
         '<h3 class="cfp-item-title">' + esc(p.title) + '</h3>' +
         '<p class="cfp-item-summary">' + esc(p.summary) + '</p>' +
         bio +
+        done +
       '</article>';
     }).join('');
   }
@@ -208,53 +221,7 @@
     msg.textContent = text;
   }
 
-  if (form) {
-    form.addEventListener('submit', async function (ev) {
-      ev.preventDefault();
-      btn.disabled = true;
-      btn.textContent = '提交中…';
-      showMsg('', '提交中…');
-
-      const fd = new FormData(form);
-      const payload = {
-        speaker: (fd.get('speaker') || '').trim(),
-        title: (fd.get('title') || '').trim(),
-        summary: (fd.get('summary') || '').trim(),
-        city: (fd.get('city') || '').trim(),
-        duration: (fd.get('duration') || '').trim(),
-        bio: (fd.get('bio') || '').trim(),
-        contact: (fd.get('contact') || '').trim(),
-      };
-
-      if (!payload.speaker || !payload.title || !payload.summary || !payload.contact) {
-        showMsg('err', '请填写称呼、标题、概要和联系方式。');
-        btn.disabled = false; btn.textContent = '提交议题';
-        return;
-      }
-
-      try {
-        const r = await fetch(API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const d = await r.json();
-        if (d.ok) {
-          showMsg('ok', '✓ 已收到，编号 ' + d.id + '。议题稍后就会出现在下方档案里。');
-          setTimeout(function () { try { form.reset(); } catch (_) {} }, 400);
-          loadArchive();
-        } else {
-          showMsg('err', '提交失败：' + (d.error || r.status));
-        }
-      } catch (e) {
-        showMsg('err', '提交失败：' + e.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '提交议题';
-      }
-    });
-  }
-
+  window.__cfpReload = loadArchive;
   loadArchive();
 })();
 </script>
@@ -269,6 +236,21 @@
 (function () {
   window.__cfpFilter = window.__cfpFilter || { city: '', year: '', q: '' };
   window.__cfpSeen = '';
+  window.__cfpLanded = window.__cfpLanded || {};
+
+  // 议题→活动落地映射。独立于主 IIFE，主逻辑坏了也能显示链接。
+  (function () {
+    var root = document.getElementById('cfp-block');
+    if (!root || !root.dataset.links) { return; }
+    fetch(root.dataset.links).then(function (r) {
+      return r.ok ? r.json() : null;
+    }).then(function (d) {
+      if (!d || !d.cfp_to_events) { return; }
+      window.__cfpLanded = d.cfp_to_events;
+      if (typeof window.__cfpApply === 'function') { window.__cfpApply(); }
+    })['catch'](function () {});
+  })();
+
   window.setInterval(function () {
     var el = document.getElementById('cfp-search');
     if (!el) { return; }
@@ -280,6 +262,78 @@
       window.__cfpApply();
     }
   }, 250);
+})();
+</script>
+
+<!--
+  表单提交独立脚本：同样不进主 IIFE。
+  主 IIFE 一旦被 minify 打断，提交按钮就会永久卡在「提交中…」
+  ——preventDefault 已生效但后续 fetch 从未发生，用户以为在等，其实什么都没发。
+  这里只用 DOM + window，与主逻辑零共享。
+-->
+<script>
+(function () {
+  var form = document.getElementById('cfp-form');
+  var btn = document.getElementById('cfp-submit');
+  var msg = document.getElementById('cfp-msg');
+  var root = document.getElementById('cfp-block');
+  if (!form || !btn || !root) { return; }
+  var API = root.dataset.api;
+
+  function show(kind, text) {
+    if (!msg) { return; }
+    msg.className = 'cfp-msg ' + kind;
+    msg.textContent = text;
+  }
+
+  function restore() {
+    btn.disabled = false;
+    btn.textContent = '提交议题';
+  }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    btn.disabled = true;
+    btn.textContent = '提交中…';
+    show('', '提交中…');
+
+    var fd = new FormData(form);
+    function val(k) { return String(fd.get(k) || '').replace(/^\s+|\s+$/g, ''); }
+    var payload = {
+      speaker: val('speaker'), title: val('title'), summary: val('summary'),
+      city: val('city'), duration: val('duration'),
+      bio: val('bio'), contact: val('contact')
+    };
+
+    if (!payload.speaker || !payload.title || !payload.summary || !payload.contact) {
+      show('err', '请填写称呼、标题、概要和联系方式。');
+      restore();
+      return;
+    }
+
+    fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json().then(function (d) { return { ok: r.ok, status: r.status, d: d }; });
+    }).then(function (res) {
+      var d = res.d || {};
+      if (d.ok) {
+        if (d.duplicate) {
+          show('ok', '✓ 这条议题已经提交过了，编号 ' + d.id + '。');
+        } else {
+          show('ok', '✓ 已收到，编号 ' + d.id + '。议题稍后就会出现在下方档案里。');
+        }
+        window.setTimeout(function () { try { form.reset(); } catch (e) {} }, 400);
+        if (typeof window.__cfpReload === 'function') { window.__cfpReload(); }
+      } else {
+        show('err', '提交失败：' + (d.error || res.status));
+      }
+    })['catch'](function (e) {
+      show('err', '提交失败：' + (e && e.message ? e.message : '网络错误'));
+    }).then(restore, restore);
+  });
 })();
 </script>
 
@@ -359,6 +413,16 @@
 }
 .cfp-item-speaker { font-weight: 700; color: #3A362B; font-size: .92rem; letter-spacing: .02em; }
 .cfp-item-meta { color: #8A8778; font-size: .8rem; font-variant-numeric: tabular-nums; }
+.cfp-item-landed {
+  margin: .55rem 0 0; font-size: .8rem; color: #8A7443;
+  letter-spacing: .02em;
+}
+.cfp-item-landed a {
+  color: #8A7443; text-decoration: none;
+  border-bottom: 1px solid rgba(180,160,120,.5);
+  font-variant-numeric: tabular-nums;
+}
+.cfp-item-landed a:hover { color: #6B5A32; border-bottom-color: #8A7443; }
 .cfp-item-title {
   margin: 0 0 .5rem; font-size: 1.12rem; line-height: 1.45;
   color: #26231D; font-weight: 650;
