@@ -192,10 +192,12 @@
 
   const search = byId('cfp-search');
   if (search) {
-    let t = null;
+    // 用 window.setTimeout 并避开通用短变量名：
+    // Hugo --minify 会把 timer 变量重命名成 e，与 input 回调参数 e 撞名。
+    let searchTimer = null;
     search.addEventListener('input', function () {
-      clearTimeout(t);
-      t = setTimeout(function () {
+      window.clearTimeout(searchTimer);
+      searchTimer = window.setTimeout(function () {
         filterState.q = search.value.trim();
         apply();
       }, 180);
