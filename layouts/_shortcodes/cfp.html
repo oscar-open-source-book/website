@@ -201,16 +201,17 @@
 
   const search = document.getElementById('cfp-search');
   if (search) {
-    // 用 window.setTimeout 并避开通用短变量名：
-    // Hugo --minify 会把 timer 变量重命名成 e，与 input 回调参数 e 撞名。
-    let searchTimer = null;
-    search.addEventListener('input', function () {
-      window.clearTimeout(searchTimer);
-      searchTimer = window.setTimeout(function () {
-        window.__cfpFilter.q = search.value.trim();
+    // 不用 addEventListener + 局部 timer 变量：
+    // Hugo --minify 会把 timer 与回调参数都压成 e，互相遮蔽，
+    // 导致 window.__cfpFilter.q 永远写不进去（点了也没反应）。
+    // 用元素自身属性存 timer，彻底避开闭包变量重命名。
+    search.oninput = function () {
+      window.clearTimeout(search.__t);
+      search.__t = window.setTimeout(function () {
+        window.__cfpFilter.q = search.value.replace(/^\s+|\s+$/g, '');
         apply();
       }, 180);
-    });
+    };
   }
 
   function showMsg(kind, text) {
