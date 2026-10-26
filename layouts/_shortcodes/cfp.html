@@ -168,6 +168,9 @@
     const total = document.getElementById('cfp-total');
     if (total) total.textContent = ALL.length;
   }
+  // 挂到 window：回调里一律用 window.__cfpApply()，
+  // 避免 minify 把局部函数名与外层变量压成同一个短字母。
+  window.__cfpApply = apply;
 
   async function loadArchive() {
     try {
@@ -177,7 +180,7 @@
       ALL = (d.proposals || []).slice();
       ALL.sort((a, b) => String(b.submitted_at).localeCompare(String(a.submitted_at)));
       buildChips();
-      apply();
+      window.__cfpApply();
     } catch (e) {
       const box = document.getElementById('cfp-list');
       if (box) {
@@ -196,20 +199,20 @@
     const kind = chip.dataset.kind;
     window.__cfpFilter[kind] = chip.dataset.val;
     chip.parentElement.querySelectorAll('.cfp-chip').forEach(c => c.classList.toggle('active', c === chip));
-    apply();
+    window.__cfpApply();
   });
 
   const search = document.getElementById('cfp-search');
   if (search) {
-    // 不用 addEventListener + 局部 timer 变量：
-    // Hugo --minify 会把 timer 与回调参数都压成 e，互相遮蔽，
-    // 导致 window.__cfpFilter.q 永远写不进去（点了也没反应）。
-    // 用元素自身属性存 timer，彻底避开闭包变量重命名。
+    // 不引用外层 const 变量，也不依赖闭包 timer：
+    // --minify 会把局部变量与回调参数压成同名短字母互相遮蔽。
+    // 用 this + 元素属性，任何重命名都不影响。
     search.oninput = function () {
-      window.clearTimeout(search.__t);
-      search.__t = window.setTimeout(function () {
-        window.__cfpFilter.q = search.value.replace(/^\s+|\s+$/g, '');
-        apply();
+      var el = this;
+      window.clearTimeout(el.__cfpTimer);
+      el.__cfpTimer = window.setTimeout(function () {
+        window.__cfpFilter.q = String(el.value || '').replace(/^\s+|\s+$/g, '');
+        window.__cfpApply();
       }, 180);
     };
   }
