@@ -45,6 +45,16 @@ jobs:
         run: python3 scripts/slim_publish_assets.py
       - name: Publish size report
         run: du -sh public || true  
+      # 产物哨兵：把本次提交 sha 写进 public/，deploy 后由线上回读比对。
+      # 目的：Hugo Blox 的 public/media 重复发布是已知 bug，上面用容错分支放行；
+      # 但若 upload-pages-artifact 被 skip 或上传空目录，CI 仍可能显示绿色、
+      # 线上继续跑旧内容——这种静默降级比构建失败更危险。
+      - name: Write build sentinel
+        run: |
+          test -f public/index.html || { echo "::error::public/index.html 缺失"; exit 1; }
+          test -d public/events || { echo "::error::public/events 缺失"; exit 1; }
+          echo "${{ github.sha }}" > public/build-sha.txt
+          echo "sentinel = ${{ github.sha }}"
       - uses: actions/upload-pages-artifact@v3
         with: {path: ./public}  
   deploy:
@@ -53,3 +63,20 @@ jobs:
     environment: {name: github-pages}
     steps:
       - uses: actions/deploy-pages@v4
+      # 部署后回读线上哨兵，确认线上跑的确实是本次提交的产物。
+      # Pages 有 CDN 传播延迟，最多重试 8 次（约 2 分钟）。
+      - name: Verify deployed build (sentinel check)
+        run: |
+          EXPECT="${{ github.sha }}"
+          BASE="https://osbook.opensourceway.blog"
+          for i in $(seq 1 8); do
+            GOT=$(curl -fsS --max-time 15 "$BASE/build-sha.txt?cb=$RANDOM$i" || true)
+            if [ "$GOT" = "$EXP" ]; then
+              echo "✅ 线上产物就是本次提交 $EXP"
+              exit 0
+            fi
+            echo "attempt $i: got '${GOT:-<empty>}' expected '$EXP' — retry in 15s"
+            sleep 15
+          done
+          echo "::error::线上哨兵与本次提交不一致（got '${GOT:-<empty>}' expected '$EXP'）——artifact 可能被 skip 或上传了旧目录"
+          exit 1
