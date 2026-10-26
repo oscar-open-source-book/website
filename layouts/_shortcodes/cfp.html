@@ -197,21 +197,58 @@
   // 避免 minify 把局部函数名与外层变量压成同一个短字母。
   window.__cfpApply = apply;
 
+  // 带超时的 fetch：API 在境外/弱网下可能迟迟不回，不能让页面一直空白。
+  function fetchJSON(url, ms) {
+    return new Promise(function (resolve, reject) {
+      var done = false;
+      var timer = window.setTimeout(function () {
+        if (done) return;
+        done = true;
+        reject(new Error('timeout'));
+      }, ms);
+      fetch(url, { cache: 'no-store' }).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function (d) {
+        if (done) return;
+        done = true;
+        window.clearTimeout(timer);
+        resolve(d);
+      })['catch'](function (e) {
+        if (done) return;
+        done = true;
+        window.clearTimeout(timer);
+        reject(e);
+      });
+    });
+  }
+
+  // 数据源顺序：先自建 API，再退回 GitHub raw。
+  // 原因：raw.githubusercontent.com 有 CDN 缓存，新投稿要等缓存过期才看得到；
+  // 自建 API 直读仓库文件，提交后立即就是最新。
+  // 两个源都带时间戳绕开浏览器缓存。
   async function loadArchive() {
-    try {
-      const r = await fetch(DATA + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      const d = await r.json();
-      ALL = (d.proposals || []).slice();
-      ALL.sort((a, b) => String(b.submitted_at).localeCompare(String(a.submitted_at)));
-      buildChips();
-      window.__cfpApply();
-    } catch (e) {
-      const box = document.getElementById('cfp-list');
-      if (box) {
-        box.innerHTML = '<p class="cfp-loading">议题档案暂时读取失败（' +
-          esc(e.message) + '）。可稍后刷新重试。</p>';
+    var sources = [API + '?t=' + Date.now(), DATA + '?t=' + Date.now()];
+    var lastErr = null;
+    for (var i = 0; i < sources.length; i++) {
+      try {
+        var d = await fetchJSON(sources[i], i === 0 ? 6000 : 12000);
+        ALL = (d.proposals || []).slice();
+        ALL.sort(function (a, b) {
+          return String(b.submitted_at).localeCompare(String(a.submitted_at));
+        });
+        buildChips();
+        window.__cfpApply();
+        return;
+      } catch (e) {
+        lastErr = e;
       }
+    }
+    var box = document.getElementById('cfp-list');
+    if (box) {
+      box.innerHTML = '<p class="cfp-loading">议题档案暂时读取失败（' +
+        esc(lastErr && lastErr.message ? lastErr.message : '未知错误') +
+        '）。可稍后刷新重试。</p>';
     }
   }
 
