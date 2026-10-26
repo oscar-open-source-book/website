@@ -83,12 +83,12 @@ jobs:
           BASE="https://osbook.opensourceway.blog"
           for i in $(seq 1 8); do
             GOT=$(curl -fsS --max-time 15 "$BASE/build-sha.txt?cb=$RANDOM$i" || true)
-            if [ "$GOT" = "$EXP" ]; then
-              echo "✅ 线上产物就是本次提交 $EXP"
+            if [ "$GOT" = "$EXPECT" ]; then
+              echo "✅ 线上产物就是本次提交 $EXPECT"
               exit 0
             fi
-            echo "attempt $i: got '${GOT:-<empty>}' expected '$EXP' — retry in 15s"
+            echo "attempt $i: got '${GOT:-<empty>}' expected '$EXPECT' — retry in 15s"
             sleep 15
           done
-          echo "::error::线上哨兵与本次提交不一致（got '${GOT:-<empty>}' expected '$EXP'）——artifact 可能被 skip 或上传了旧目录"
+          echo "::error::线上哨兵与本次提交不一致（got '${GOT:-<empty>}' expected '$EXPECT'）——artifact 可能被 skip 或上传了旧目录"
           exit 1
