@@ -1,0 +1,350 @@
+{{ $api := .Get "api" | default "https://signup-api.osbook.opensourceway.blog/api/cfp" }}
+{{ $data := .Get "data" | default "https://raw.githubusercontent.com/oscar-open-source-book/cfp-data/main/proposals.json" }}
+
+<div id="cfp-block" class="cfp-block" data-api="{{ $api }}" data-data="{{ $data }}">
+
+  <div class="cfp-form-wrap">
+    <h2>提议一个议题</h2>
+    <p class="cfp-form-sub">
+      议题常年有效，不必等到有活动。填完会立刻出现在下面的档案里。
+      <strong>联系方式不公开</strong>，只有组委会能看到。
+    </p>
+
+    <form id="cfp-form" class="cfp-form" novalidate>
+      <div class="cfp-row">
+        <label for="cfp-speaker">你的称呼 <span class="req">*</span></label>
+        <input type="text" id="cfp-speaker" name="speaker" maxlength="40"
+               placeholder="希望别人怎么称呼你" required />
+      </div>
+
+      <div class="cfp-row">
+        <label for="cfp-title">议题标题 <span class="req">*</span></label>
+        <input type="text" id="cfp-title" name="title" maxlength="90"
+               placeholder="演讲、对话、圆桌、话题讨论均可" required />
+      </div>
+
+      <div class="cfp-row">
+        <label for="cfp-summary">议题概要 <span class="req">*</span></label>
+        <textarea id="cfp-summary" name="summary" rows="6" maxlength="2000"
+                  placeholder="想讲什么？为什么值得讲？和大家读过的哪本书有关？" required></textarea>
+      </div>
+
+      <div class="cfp-row cfp-row-split">
+        <div>
+          <label for="cfp-city">城市 / 线上</label>
+          <select id="cfp-city" name="city">
+            <option value="">不限</option>
+            <option value="北京">北京</option>
+            <option value="上海">上海</option>
+            <option value="深圳">深圳</option>
+            <option value="杭州">杭州</option>
+            <option value="南京">南京</option>
+            <option value="Online">线上</option>
+          </select>
+        </div>
+        <div>
+          <label for="cfp-duration">预计时长</label>
+          <select id="cfp-duration" name="duration">
+            <option value="">未定</option>
+            <option value="30 分钟">30 分钟</option>
+            <option value="1 小时">1 小时</option>
+            <option value="1.5 小时">1.5 小时</option>
+            <option value="2 小时">2 小时</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cfp-row">
+        <label for="cfp-bio">简单介绍一下自己</label>
+        <textarea id="cfp-bio" name="bio" rows="3" maxlength="500"
+                  placeholder="可选。这段会公开显示——是让大家认识你的好机会。"></textarea>
+      </div>
+
+      <div class="cfp-row">
+        <label for="cfp-contact">联系方式（邮箱或微信）<span class="req">*</span></label>
+        <input type="text" id="cfp-contact" name="contact" maxlength="120"
+               placeholder="仅组委会可见，不会公开" required />
+      </div>
+
+      <div class="cfp-actions">
+        <button type="submit" id="cfp-submit">提交议题</button>
+        <span class="cfp-msg" id="cfp-msg" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  const root = document.getElementById('cfp-block');
+  if (!root) return;
+  const API = root.dataset.api;
+  const DATA = root.dataset.data;
+
+  const $ = (id) => document.getElementById(id);
+  const form = $('cfp-form');
+  const btn = $('cfp-submit');
+  const msg = $('cfp-msg');
+
+  let ALL = [];
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function render(list) {
+    const box = $('cfp-list');
+    const empty = $('cfp-empty');
+    if (!box) return;
+    if (!list.length) {
+      box.innerHTML = '';
+      if (empty) empty.hidden = false;
+      return;
+    }
+    if (empty) empty.hidden = true;
+    box.innerHTML = list.map(function (p) {
+      const meta = [p.submitted_at, p.city, p.duration].filter(Boolean).join(' · ');
+      const bio = p.bio ? '<p class="cfp-item-bio">' + esc(p.bio) + '</p>' : '';
+      return '<article class="cfp-item">' +
+        '<div class="cfp-item-head">' +
+          '<span class="cfp-item-speaker">' + esc(p.speaker || '匿名') + '</span>' +
+          '<span class="cfp-item-meta">' + esc(meta) + '</span>' +
+        '</div>' +
+        '<h3 class="cfp-item-title">' + esc(p.title) + '</h3>' +
+        '<p class="cfp-item-summary">' + esc(p.summary) + '</p>' +
+        bio +
+      '</article>';
+    }).join('');
+  }
+
+  const filterState = { city: '', year: '', q: '' };
+
+  function buildChips() {
+    const cities = Array.from(new Set(ALL.map(p => p.city).filter(Boolean))).sort();
+    const years = Array.from(new Set(ALL.map(p => (p.submitted_at || '').slice(0, 4))
+      .filter(Boolean))).sort().reverse();
+
+    const cbox = $('cfp-city-chips');
+    if (cbox) {
+      cbox.innerHTML = '<button class="cfp-chip active" data-kind="city" data-val="">全部城市</button>' +
+        cities.map(c => '<button class="cfp-chip" data-kind="city" data-val="' + esc(c) + '">' + esc(c) + '</button>').join('');
+    }
+    const ybox = $('cfp-year-chips');
+    if (ybox) {
+      ybox.innerHTML = '<button class="cfp-chip active" data-kind="year" data-val="">全部年份</button>' +
+        years.map(y => '<button class="cfp-chip" data-kind="year" data-val="' + y + '">' + y + '</button>').join('');
+    }
+  }
+
+  function apply() {
+    let list = ALL;
+    if (filterState.city) list = list.filter(p => p.city === filterState.city);
+    if (filterState.year) list = list.filter(p => (p.submitted_at || '').slice(0, 4) === filterState.year);
+    if (filterState.q) {
+      const q = filterState.q.toLowerCase();
+      list = list.filter(p =>
+        (p.title || '').toLowerCase().includes(q) ||
+        (p.summary || '').toLowerCase().includes(q) ||
+        (p.speaker || '').toLowerCase().includes(q) ||
+        (p.bio || '').toLowerCase().includes(q));
+    }
+    render(list);
+    const total = $('cfp-total');
+    if (total) total.textContent = ALL.length;
+  }
+
+  async function loadArchive() {
+    try {
+      const r = await fetch(DATA + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const d = await r.json();
+      ALL = (d.proposals || []).slice();
+      ALL.sort((a, b) => String(b.submitted_at).localeCompare(String(a.submitted_at)));
+      buildChips();
+      apply();
+    } catch (e) {
+      const box = $('cfp-list');
+      if (box) {
+        box.innerHTML = '<p class="cfp-loading">议题档案暂时读取失败（' +
+          esc(e.message) + '）。可稍后刷新重试。</p>';
+      }
+    }
+  }
+
+  root.addEventListener('click', function (ev) {
+    const chip = ev.target.closest('.cfp-chip');
+    if (!chip) return;
+    const kind = chip.dataset.kind;
+    filterState[kind] = chip.dataset.val;
+    chip.parentElement.querySelectorAll('.cfp-chip').forEach(c => c.classList.toggle('active', c === chip));
+    apply();
+  });
+
+  const search = $('cfp-search');
+  if (search) {
+    let t = null;
+    search.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        filterState.q = search.value.trim();
+        apply();
+      }, 180);
+    });
+  }
+
+  function showMsg(kind, text) {
+    if (!msg) return;
+    msg.className = 'cfp-msg ' + kind;
+    msg.textContent = text;
+  }
+
+  if (form) {
+    form.addEventListener('submit', async function (ev) {
+      ev.preventDefault();
+      btn.disabled = true;
+      btn.textContent = '提交中…';
+      showMsg('', '提交中…');
+
+      const fd = new FormData(form);
+      const payload = {
+        speaker: (fd.get('speaker') || '').trim(),
+        title: (fd.get('title') || '').trim(),
+        summary: (fd.get('summary') || '').trim(),
+        city: (fd.get('city') || '').trim(),
+        duration: (fd.get('duration') || '').trim(),
+        bio: (fd.get('bio') || '').trim(),
+        contact: (fd.get('contact') || '').trim(),
+      };
+
+      if (!payload.speaker || !payload.title || !payload.summary || !payload.contact) {
+        showMsg('err', '请填写称呼、标题、概要和联系方式。');
+        btn.disabled = false; btn.textContent = '提交议题';
+        return;
+      }
+
+      try {
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const d = await r.json();
+        if (d.ok) {
+          showMsg('ok', '✓ 已收到，编号 ' + d.id + '。议题稍后就会出现在下方档案里。');
+          setTimeout(function () { try { form.reset(); } catch (_) {} }, 400);
+          loadArchive();
+        } else {
+          showMsg('err', '提交失败：' + (d.error || r.status));
+        }
+      } catch (e) {
+        showMsg('err', '提交失败：' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '提交议题';
+      }
+    });
+  }
+
+  loadArchive();
+})();
+</script>
+
+<style>
+.cfp-block { margin: 2.5rem 0; }
+.cfp-form-wrap {
+  background: #FBF9F4;
+  border: 1px solid #E6DFD0;
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+}
+.cfp-form-wrap h2 {
+  margin: 0 0 .4rem;
+  font-size: 1.45rem;
+  letter-spacing: .03em;
+  color: #2B2B2B;
+}
+.cfp-form-sub { color: #6B6B6B; font-size: .92rem; margin: 0 0 1.5rem; line-height: 1.65; }
+.cfp-row { margin-bottom: 1.15rem; }
+.cfp-row label {
+  display: block; font-size: .88rem; font-weight: 600;
+  color: #4A4A4A; margin-bottom: .4rem; letter-spacing: .02em;
+}
+.req { color: #B4553C; }
+.cfp-row input[type=text], .cfp-row textarea, .cfp-row select {
+  width: 100%; padding: .62rem .78rem;
+  border: 1px solid #D9D2C2; border-radius: 7px;
+  background: #fff; font-size: .95rem; font-family: inherit;
+  color: #2B2B2B; transition: border-color .15s;
+}
+.cfp-row input[type=text]:focus, .cfp-row textarea:focus, .cfp-row select:focus {
+  outline: none; border-color: #B4A078;
+  box-shadow: 0 0 0 3px rgba(180,160,120,.14);
+}
+.cfp-row textarea { resize: vertical; line-height: 1.6; }
+.cfp-row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.cfp-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 1.4rem; }
+#cfp-submit {
+  background: #4A4438; color: #F7F3EA; border: none;
+  padding: .72rem 1.9rem; border-radius: 7px;
+  font-size: .95rem; font-weight: 600; letter-spacing: .06em;
+  cursor: pointer; transition: background .15s;
+}
+#cfp-submit:hover:not(:disabled) { background: #2F2B23; }
+#cfp-submit:disabled { opacity: .55; cursor: default; }
+.cfp-msg { font-size: .9rem; line-height: 1.5; }
+.cfp-msg.ok { color: #3C6B4A; }
+.cfp-msg.err { color: #A6402A; }
+
+.cfp-filters { margin: 1.75rem 0 1.25rem; }
+#cfp-search {
+  width: 100%; padding: .68rem .9rem; margin-bottom: .9rem;
+  border: 1px solid #DED7C7; border-radius: 8px;
+  background: #FDFCF9; font-size: .95rem; font-family: inherit;
+}
+#cfp-search:focus { outline: none; border-color: #B4A078; box-shadow: 0 0 0 3px rgba(180,160,120,.13); }
+.cfp-chips { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: .55rem; }
+.cfp-chip {
+  background: #F4F1E9; border: 1px solid #E2DBCB; color: #5A5445;
+  padding: .3rem .78rem; border-radius: 999px;
+  font-size: .82rem; cursor: pointer; transition: all .13s;
+  font-family: inherit;
+}
+.cfp-chip:hover { border-color: #B4A078; }
+.cfp-chip.active { background: #4A4438; border-color: #4A4438; color: #F7F3EA; }
+
+.cfp-list { margin-top: 1.5rem; }
+.cfp-loading { color: #8A8778; font-size: .92rem; }
+.cfp-item {
+  border-left: 3px solid #DED5C0;
+  padding: .15rem 0 .15rem 1.15rem;
+  margin-bottom: 1.9rem;
+}
+.cfp-item-head {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: .7rem; margin-bottom: .35rem;
+}
+.cfp-item-speaker { font-weight: 700; color: #3A362B; font-size: .92rem; letter-spacing: .02em; }
+.cfp-item-meta { color: #8A8778; font-size: .8rem; font-variant-numeric: tabular-nums; }
+.cfp-item-title {
+  margin: 0 0 .5rem; font-size: 1.12rem; line-height: 1.45;
+  color: #26231D; font-weight: 650;
+}
+.cfp-item-summary {
+  margin: 0; color: #4E4A40; font-size: .93rem; line-height: 1.78;
+  white-space: pre-wrap;
+}
+.cfp-item-bio {
+  margin: .65rem 0 0; padding-top: .55rem;
+  border-top: 1px dashed #E6DFD0;
+  color: #7A7567; font-size: .86rem; line-height: 1.65;
+}
+.cfp-empty { text-align: center; color: #8A8778; padding: 2rem 0; }
+
+@media (max-width: 640px) {
+  .cfp-row-split { grid-template-columns: 1fr; gap: 0; }
+  .cfp-form-wrap { padding: 1.4rem 1.1rem; }
+}
+</style>
