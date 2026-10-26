@@ -13,9 +13,8 @@
 */}}
 {{ $event := .Get "event" | default "2026-10-31" }}
 {{ $api := .Get "api" | default "https://signup-api.osbook.opensourceway.blog/api/signup" }}
-{{ $deadline := .Get "deadline" | default "" }}
 
-<div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}" data-deadline="{{ $deadline }}">
+<div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}">
   <div class="signup-header">
     <h2>📝 <span class="hl">报名参加</span></h2>
     <p class="signup-sub">页面公开显示称呼与参与情况；<b>联系方式单独加密存放，不在网页公开</b>。如需修改请发 <a href="https://github.com/oscar-open-source-book/website/issues" target="_blank" rel="noopener">Issue</a>。</p>
@@ -237,16 +236,23 @@
   if (!root) return;
   const EVENT = root.dataset.event;
   const API = root.dataset.api;
-  const DEADLINE = root.dataset.deadline || '';
   // 数据源：与 website 解耦的独立仓库（避免每次报名触发 Pages 构建）
   const DATA_URL = 'https://raw.githubusercontent.com/oscar-open-source-book/signups-data/main/' + EVENT + '.json';
 
   const $ = (id) => document.getElementById(id);
 
   // ── 截止时间判定 ──
+  // deadline 唯一来源：signups-data 的 JSON 字段。页面配置不再持有副本。
+  let _deadline = '';
+  function setDeadline(v) {
+    if (!v) return;
+    _deadline = v;
+    applyClosedState(isExpired());
+  }
+
   function isExpired() {
-    if (!DEADLINE) return false;
-    const t = Date.parse(DEADLINE);
+    if (!_deadline) return false;
+    const t = Date.parse(_deadline);
     return !isNaN(t) && Date.now() >= t;
   }
 
@@ -268,8 +274,8 @@
       form.querySelectorAll('input, textarea, button').forEach(el => { el.disabled = true; });
     }
     const sub = $('closed-sub');
-    if (sub && DEADLINE) {
-      const d = new Date(DEADLINE);
+    if (sub && _deadline) {
+      const d = new Date(_deadline);
       const pad = (n) => String(n).padStart(2, '0');
       sub.textContent = '本场报名已于 ' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' +
         pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' 截止。';
@@ -338,6 +344,7 @@
       if (r.ok) {
         const d = await r.json();
         if (d && Array.isArray(d.signups)) {
+          if (d.deadline) setDeadline(d.deadline);
           setStats(computeStats(d.signups));
           renderList(d.signups);
           return;
@@ -349,6 +356,7 @@
       const r = await fetch(API + '?event=' + encodeURIComponent(EVENT), { cache: 'no-store' });
       const d = await r.json();
       if (d.ok) {
+        if (d.deadline) setDeadline(d.deadline);
         setStats(d.stats);
         renderList(d.signups);
         if (typeof d.expired === 'boolean' && d.expired) applyClosedState(true);
