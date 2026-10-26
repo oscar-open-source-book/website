@@ -45,6 +45,19 @@ layout: single
   background: #F4F1E9; padding: .9rem 1.1rem; border-radius: 7px;
   font-size: .93rem !important; color: #5A5445 !important;
 }
+.cfp-why-links {
+  margin-top: .9rem !important;
+  padding-top: .8rem;
+  border-top: 1px dashed #DFD6C2;
+  font-size: .9rem !important;
+  color: #6B6558 !important;
+}
+.cfp-why-links a {
+  color: #8A7443; text-decoration: none;
+  border-bottom: 1px solid rgba(180,160,120,.55);
+  padding-bottom: 1px;
+}
+.cfp-why-links a:hover { color: #6B5A32; border-bottom-color: #8A7443; }
 .cfp-archive-intro {
   color: #4E4A40; font-size: .97rem; line-height: 1.8;
   margin: 2.6rem 0 0;
@@ -80,6 +93,11 @@ layout: single
   <p>
     所以这份征集不是表格，是<strong>邀请</strong>。
     你不必先成为一个「专家」再来讲，讲的过程本身就是学习。
+  </p>
+  <p class="cfp-why-links">
+    看看它们后来变成了什么：<a href="/notices/">策展与通知</a> ·
+    <a href="/events/">历次活动</a> ·
+    <a href="#archive">议题档案</a>
   </p>
 </div>
 

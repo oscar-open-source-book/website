@@ -16,6 +16,9 @@ tags:
 editable: true
 ---
 
+{{< cfp-origin >}}
+
+
 
 # 特别感谢赞助（个人或组织）：
 

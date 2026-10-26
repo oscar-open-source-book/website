@@ -16,6 +16,9 @@ tags:
 editable: true
 ---
 
+{{< cfp-origin >}}
+
+
 
 # 本次活动和 LFAPAC 译道师 共同举办
 

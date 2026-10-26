@@ -1,0 +1,80 @@
+{{/*
+  cfp-origin：在活动页显示「本场议题的征集来源」。
+
+  用法（放在活动页正文里，通常紧跟「活动概要」）：
+      {{< cfp-origin >}}
+
+  数据来自 data/cfp_links.json 的 event_to_cfp，
+  由 scripts/build-cfp-links.py 从活动页正文与 CFP 标题反推生成。
+  匹配不上就整块不渲染，不会出现空壳。
+*/}}
+{{ $slug := .Page.File.BaseFileName }}
+{{ $links := site.Data.cfp_links }}
+{{ $entry := false }}
+{{ with $links }}{{ with .event_to_cfp }}{{ $entry = index . $slug }}{{ end }}{{ end }}
+
+{{ with $entry }}
+  {{ $proposals := site.Data.cfp_links }}{{/* 占位，避免未使用告警 */}}
+  <div class="cfp-origin">
+    <div class="cfp-origin-head">
+      <span class="cfp-origin-mark">议题来源</span>
+      <span class="cfp-origin-count">本场 {{ len .ids }} 个议题曾在<a href="/cfp/">议题征集</a>中提出</span>
+    </div>
+    <ul class="cfp-origin-list" data-ids="{{ delimit .ids "," }}"></ul>
+  </div>
+  <script>
+  (function () {
+    var box = document.currentScript.previousElementSibling;
+    if (!box) { return; }
+    var ul = box.querySelector('.cfp-origin-list');
+    if (!ul) { return; }
+    var ids = (ul.getAttribute('data-ids') || '').split(',').filter(Boolean);
+    if (!ids.length) { return; }
+    fetch('{{ "https://raw.githubusercontent.com/oscar-open-source-book/cfp-data/main/proposals.json" }}')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d) { return; }
+        var all = d.proposals || d;
+        var byId = {};
+        for (var i = 0; i < all.length; i++) { byId[all[i].id] = all[i]; }
+        var html = '';
+        for (var k = 0; k < ids.length; k++) {
+          var p = byId[ids[k]];
+          if (!p) { continue; }
+          html += '<li><span class="cfp-origin-speaker">' + esc(p.speaker || '匿名') + '</span>' +
+                  '<span class="cfp-origin-title">' + esc(p.title) + '</span></li>';
+        }
+        ul.innerHTML = html;
+        if (!html) { box.style.display = 'none'; }
+      })['catch'](function () { box.style.display = 'none'; });
+
+    function esc(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+  })();
+  </script>
+  <style>
+  .cfp-origin {
+    margin: 1.8rem 0 2rem; padding: 1.1rem 1.3rem;
+    background: #FBF9F4; border-left: 3px solid #B4A078;
+    border-radius: 0 8px 8px 0;
+  }
+  .cfp-origin-head { margin-bottom: .7rem; }
+  .cfp-origin-mark {
+    display: inline-block; font-size: .7rem; letter-spacing: .18em;
+    text-transform: uppercase; color: #B4A078; font-weight: 600;
+    margin-right: .7rem;
+  }
+  .cfp-origin-count { font-size: .85rem; color: #6B6558; }
+  .cfp-origin-count a {
+    color: #8A7443; text-decoration: none;
+    border-bottom: 1px solid rgba(180,160,120,.55);
+  }
+  .cfp-origin-list { margin: 0; padding-left: 1.1rem; }
+  .cfp-origin-list li { margin: .38rem 0; font-size: .92rem; line-height: 1.65; }
+  .cfp-origin-speaker { color: #8A8778; margin-right: .55rem; font-size: .85rem; }
+  .cfp-origin-title { color: #3A362B; }
+  </style>
+{{ end }}
