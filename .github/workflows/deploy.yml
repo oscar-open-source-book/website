@@ -13,6 +13,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # deploy job 没有 checkout，github.sha 在那里取不到值（实测为空），
+    # 必须显式通过 outputs 传给下游。
+    outputs:
+      sha: ${{ steps.sentinel.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
         with: {submodules: true, fetch-depth: 1}
@@ -50,10 +54,12 @@ jobs:
       # 但若 upload-pages-artifact 被 skip 或上传空目录，CI 仍可能显示绿色、
       # 线上继续跑旧内容——这种静默降级比构建失败更危险。
       - name: Write build sentinel
+        id: sentinel
         run: |
           test -f public/index.html || { echo "::error::public/index.html 缺失"; exit 1; }
           test -d public/events || { echo "::error::public/events 缺失"; exit 1; }
           echo "${{ github.sha }}" > public/build-sha.txt
+          echo "sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
           echo "sentinel = ${{ github.sha }}"
       - uses: actions/upload-pages-artifact@v3
         with: {path: ./public}  
@@ -67,7 +73,7 @@ jobs:
       # Pages 有 CDN 传播延迟，最多重试 8 次（约 2 分钟）。
       - name: Verify deployed build (sentinel check)
         run: |
-          EXPECT="${{ github.sha }}"
+          EXPECT="${{ needs.build.outputs.sha }}"
           BASE="https://osbook.opensourceway.blog"
           for i in $(seq 1 8); do
             GOT=$(curl -fsS --max-time 15 "$BASE/build-sha.txt?cb=$RANDOM$i" || true)
