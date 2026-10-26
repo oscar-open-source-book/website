@@ -82,14 +82,13 @@
   const API = root.dataset.api;
   const DATA = root.dataset.data;
 
-  // 注意：不要用 `const $ = (id) => ...` 形式。
-  // Hugo --minify 会把参数 id 重命名成 e，与本作用域其它 e 变量（元素引用）
-  // 撞名，产生 `const e=e=>document.getElementById(e)` 自引用，
-  // 导致所有 getElementById 调用返回 null、整个脚本静默失效。
-  function byId(elId) { return document.getElementById(elId); }
-  const form = byId('cfp-form');
-  const btn = byId('cfp-submit');
-  const msg = byId('cfp-msg');
+  // 直接内联 document.getElementById，不做任何包装函数。
+  // Hugo --minify 会把包装函数的参数和函数名都压成单字母 e，
+  // 产生 `function e(e){return document.getElementById(e)}` —— 函数名自引用，
+  // 调用即抛异常，整个 IIFE 静默死掉（控制台也没有报错）。
+  const form = document.getElementById('cfp-form');
+  const btn = document.getElementById('cfp-submit');
+  const msg = document.getElementById('cfp-msg');
 
   let ALL = [];
 
@@ -100,8 +99,8 @@
   }
 
   function render(list) {
-    const box = byId('cfp-list');
-    const empty = byId('cfp-empty');
+    const box = document.getElementById('cfp-list');
+    const empty = document.getElementById('cfp-empty');
     if (!box) return;
     if (!list.length) {
       box.innerHTML = '';
@@ -135,12 +134,12 @@
     const years = Array.from(new Set(ALL.map(p => (p.submitted_at || '').slice(0, 4))
       .filter(Boolean))).sort().reverse();
 
-    const cbox = byId('cfp-city-chips');
+    const cbox = document.getElementById('cfp-city-chips');
     if (cbox) {
       cbox.innerHTML = '<button class="cfp-chip active" data-kind="city" data-val="">全部城市</button>' +
         cities.map(c => '<button class="cfp-chip" data-kind="city" data-val="' + esc(c) + '">' + esc(c) + '</button>').join('');
     }
-    const ybox = byId('cfp-year-chips');
+    const ybox = document.getElementById('cfp-year-chips');
     if (ybox) {
       ybox.innerHTML = '<button class="cfp-chip active" data-kind="year" data-val="">全部年份</button>' +
         years.map(y => '<button class="cfp-chip" data-kind="year" data-val="' + y + '">' + y + '</button>').join('');
@@ -166,7 +165,7 @@
       out.push(item);
     }
     render(out);
-    const total = byId('cfp-total');
+    const total = document.getElementById('cfp-total');
     if (total) total.textContent = ALL.length;
   }
 
@@ -180,7 +179,7 @@
       buildChips();
       apply();
     } catch (e) {
-      const box = byId('cfp-list');
+      const box = document.getElementById('cfp-list');
       if (box) {
         box.innerHTML = '<p class="cfp-loading">议题档案暂时读取失败（' +
           esc(e.message) + '）。可稍后刷新重试。</p>';
@@ -200,7 +199,7 @@
     apply();
   });
 
-  const search = byId('cfp-search');
+  const search = document.getElementById('cfp-search');
   if (search) {
     // 用 window.setTimeout 并避开通用短变量名：
     // Hugo --minify 会把 timer 变量重命名成 e，与 input 回调参数 e 撞名。
