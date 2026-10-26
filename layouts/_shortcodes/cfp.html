@@ -4,7 +4,14 @@
 <script>
   /* 议题 → 已分享活动 的映射，构建时由 data/cfp_links.json 内联。
      不放运行时 fetch：Hugo 的 data/ 不发布为静态文件。 */
-  window.__cfpLanded = {{ site.Data.cfp_links.cfp_to_events | default dict | jsonify | safeJS }};
+  /* 注意：不能直接 jsonify 成 JS 对象字面量。
+     Hugo --minify 会把 {"date":"..."} 压成 {date:"..."}（键名去引号），
+     导致这段 <script> 语法错误——而它排在页面所有脚本之前，
+     一炸就把后面的筛选/搜索/表单提交全部带死。
+     所以包成字符串字面量，再由 JSON.parse 解析，压缩器不会碰字符串内容。 */
+  window.__cfpLanded = JSON.parse(
+    '{{ site.Data.cfp_links.cfp_to_events | default dict | jsonify | replaceRE "'" "\\u0027" }}'
+  );
 </script>
 
 <div id="cfp-block" class="cfp-block" data-api="{{ $api }}" data-data="{{ $data }}">
