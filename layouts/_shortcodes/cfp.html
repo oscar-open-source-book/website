@@ -124,7 +124,11 @@
     }).join('');
   }
 
-  const filterState = { city: '', year: '', q: '' };
+  // 挂在 window 上而不是局部 const：
+  // Hugo --minify 会把局部变量压成 t/s/e 这类单字母，
+  // 与箭头函数参数撞名（例如 n.filter(t=>(t.title...)) 里的 t 遮蔽了 filterState），
+  // 导致 t.q 读到的是议题对象而不是筛选条件。
+  window.__cfpFilter = { city: '', year: '', q: '' };
 
   function buildChips() {
     const cities = Array.from(new Set(ALL.map(p => p.city).filter(Boolean))).sort();
@@ -143,19 +147,25 @@
     }
   }
 
+  // 用 for 循环而非 filter+箭头：Hugo --minify 会把局部变量与箭头参数
+  // 统统压成 t/s/e，二者撞名后 filterState.q 会被议题对象遮蔽，
+  // 搜索静默失效。for 循环没有闭包参数，不会被遮蔽。
   function apply() {
-    let list = ALL;
-    if (filterState.city) list = list.filter(p => p.city === filterState.city);
-    if (filterState.year) list = list.filter(p => (p.submitted_at || '').slice(0, 4) === filterState.year);
-    if (filterState.q) {
-      const q = filterState.q.toLowerCase();
-      list = list.filter(p =>
-        (p.title || '').toLowerCase().includes(q) ||
-        (p.summary || '').toLowerCase().includes(q) ||
-        (p.speaker || '').toLowerCase().includes(q) ||
-        (p.bio || '').toLowerCase().includes(q));
+    const filter = window.__cfpFilter;
+    const q = (filter.q || '').toLowerCase();
+    const out = [];
+    for (let i = 0; i < ALL.length; i++) {
+      const item = ALL[i];
+      if (filter.city && item.city !== filter.city) continue;
+      if (filter.year && (item.submitted_at || '').slice(0, 4) !== filter.year) continue;
+      if (q) {
+        const hay = ((item.title || '') + ' ' + (item.summary || '') +
+                     ' ' + (item.speaker || '') + ' ' + (item.bio || '')).toLowerCase();
+        if (hay.indexOf(q) === -1) continue;
+      }
+      out.push(item);
     }
-    render(list);
+    render(out);
     const total = byId('cfp-total');
     if (total) total.textContent = ALL.length;
   }
@@ -185,7 +195,7 @@
     const chip = ev.target.closest('.cfp-chip');
     if (!chip) return;
     const kind = chip.dataset.kind;
-    filterState[kind] = chip.dataset.val;
+    window.__cfpFilter[kind] = chip.dataset.val;
     chip.parentElement.querySelectorAll('.cfp-chip').forEach(c => c.classList.toggle('active', c === chip));
     apply();
   });
@@ -198,7 +208,7 @@
     search.addEventListener('input', function () {
       window.clearTimeout(searchTimer);
       searchTimer = window.setTimeout(function () {
-        filterState.q = search.value.trim();
+        window.__cfpFilter.q = search.value.trim();
         apply();
       }, 180);
     });
