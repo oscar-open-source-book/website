@@ -204,17 +204,19 @@
 
   const search = document.getElementById('cfp-search');
   if (search) {
-    // 不引用外层 const 变量，也不依赖闭包 timer：
-    // --minify 会把局部变量与回调参数压成同名短字母互相遮蔽。
-    // 用 this + 元素属性，任何重命名都不影响。
-    search.oninput = function () {
-      var el = this;
-      window.clearTimeout(el.__cfpTimer);
-      el.__cfpTimer = window.setTimeout(function () {
-        window.__cfpFilter.q = String(el.value || '').replace(/^\s+|\s+$/g, '');
-        window.__cfpApply();
-      }, 180);
-    };
+    // 不用 oninput / addEventListener：minify 下的闭包与事件参数
+    // 已连续多次把赋值压坏。改用轮询监听值变化——
+    // 不依赖任何事件绑定、任何闭包变量，重命名完全无所谓。
+    window.__cfpSeen = '';
+    window.setInterval(function () {
+      var box = document.getElementById('cfp-search');
+      if (!box) return;
+      var cur = String(box.value || '');
+      if (cur === window.__cfpSeen) return;
+      window.__cfpSeen = cur;
+      window.__cfpFilter.q = cur.replace(/^\s+|\s+$/g, '');
+      window.__cfpApply();
+    }, 250);
   }
 
   function showMsg(kind, text) {
