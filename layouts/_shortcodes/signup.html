@@ -17,7 +17,7 @@
 <div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}">
   <div class="signup-header">
     <h2>📝 <span class="hl">报名参加</span></h2>
-    <p class="signup-sub">页面公开显示称呼与参与情况；<b>联系方式单独加密存放，不在网页公开</b>。报名后若需修改聚餐或想说的话，可在下方凭编号与联系方式自助修改。</p>
+    <p class="signup-sub">页面公开显示称呼与参与情况；<b>联系方式单独加密存放，不在网页公开</b>。报名后可在下方凭编号与联系方式自助修改或取消报名。</p>
   </div>
 
   <!-- 活动已结束横幅（默认隐藏，由 JS 按截止时间切换） -->
@@ -120,9 +120,22 @@
         </div>
         <div class="edit-actions">
           <button type="submit" class="submit-btn" id="ef-save-btn">保存修改</button>
-          <button type="button" class="cancel-btn" id="ef-cancel-btn">取消</button>
+          <button type="button" class="cancel-btn" id="ef-cancel-btn">返回</button>
         </div>
         <div class="form-msg" id="ef-msg2"></div>
+
+        <!-- 取消报名：二次确认后隐藏到名单外，数据不删除 -->
+        <div class="cancel-zone">
+          <button type="button" class="danger-link" id="ef-cancel-signup-btn">取消报名</button>
+          <div class="cancel-confirm" id="ef-cancel-confirm" hidden>
+            <p class="cancel-warn">确定要取消报名吗？你的名字会从「已报名书友」名单中移除，<b>之后仍可重新报名</b>。</p>
+            <div class="edit-actions">
+              <button type="button" class="danger-btn" id="ef-cancel-yes">确定取消报名</button>
+              <button type="button" class="cancel-btn" id="ef-cancel-no">再想想</button>
+            </div>
+          </div>
+          <div class="form-msg" id="ef-msg3"></div>
+        </div>
       </form>
     </div>
   </div>
@@ -323,6 +336,49 @@
 .cancel-btn:hover { background: #F4F0E6; }
 .oscar-signup.is-closed .edit-toggle { display: none; }
 
+/* 取消报名 */
+.cancel-zone {
+  margin-top: .4rem;
+  padding-top: .9rem;
+  border-top: 1px solid #EFEBE0;
+}
+.danger-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #A03A2E;
+  font-size: .88rem;
+  font-family: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.danger-link:hover { color: #7E2A20; }
+.cancel-confirm {
+  margin-top: .75rem;
+  padding: .9rem 1rem;
+  background: #FCF4F2;
+  border: 1px solid #E8C9C2;
+  border-radius: 6px;
+}
+.cancel-warn {
+  margin: 0 0 .75rem;
+  font-size: .88rem;
+  color: #6B3A32;
+  line-height: 1.6;
+}
+.danger-btn {
+  padding: .6rem 1.2rem;
+  background: #A03A2E;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: .92rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+.danger-btn:hover:not(:disabled) { background: #7E2A20; }
+.danger-btn:disabled { opacity: .55; cursor: not-allowed; }
+
 /* 输入框禁用态 */
 .oscar-signup.is-closed .form-row input[type=text],
 .oscar-signup.is-closed .form-row textarea {
@@ -388,13 +444,10 @@
     const total = s.total ?? 0;
     $('stat-total').textContent = total;
     $('stat-dinner').textContent = s.dinner ?? 0;
-    // 当前场地卡片：用文字代替数字，字号小一些
+    // 当前场地卡片：场地确定为智源大厦后不再回退（有人取消也不翻回咖啡厅）
     const vEl = $('stat-venue');
-    if (total > 5) {
+    if (total >= 1) {
       vEl.textContent = '智源大厦';
-      vEl.style.fontSize = '1.1rem';
-    } else if (total >= 1) {
-      vEl.textContent = '咖啡厅?';
       vEl.style.fontSize = '1.1rem';
     } else {
       vEl.textContent = '待定';
@@ -406,13 +459,12 @@
   function updateVenue(total) {
     const hint = $('venue-hint');
     const text = $('venue-text');
-    hint.className = 'venue-hint';
-    if (total > 5) {
-      hint.classList.add('is-confirmed');
-      text.innerHTML = `<strong>场地：智源大厦（海淀）</strong><br>已报名 ${total} 人，超过 5 人，场地确定为智源大厦。具体楼层与集合方式将在活动前单独通知。`;
-    } else if (total >= 1) {
-      hint.classList.add('is-coffee');
-      text.innerHTML = `当前 ${total} 人报名。<br>若最终 ≤5 人，将约一间咖啡厅（具体地点报名后通知）；超过 5 人则改为智源大厦（海淀）。`;
+    hint.className = 'venue-hint is-confirmed';
+    // 场地一旦确定为智源大厦就不再回退（适兕 2026-10-27 决定）：
+    // 场地可能已订、已通知，页面不该因为有人取消就把场地翻回咖啡厅。
+    // 所以只要有人报名，就按智源大厦显示；若因此要改场地，由组织者线下通知。
+    if (total >= 1) {
+      text.innerHTML = `<strong>场地：智源大厦（海淀）</strong><br>已报名 ${total} 人。具体楼层与集合方式将在活动前单独通知。`;
     } else {
       text.innerHTML = '尚无人报名。若最终 ≤5 人，将约一间咖啡厅；超过 5 人则改为智源大厦（海淀）。';
     }
@@ -421,7 +473,9 @@
   function renderList(rows) {
     const wrap = $('signup-list');
     const ul = $('signup-names');
-    if (!rows || !rows.length) { wrap.hidden = true; return; }
+    // 已取消的不显示（缺字段 = 未取消，故用 !r.cancelled 而非 === false）
+    rows = (rows || []).filter(function (row) { return !row.cancelled; });
+    if (!rows.length) { wrap.hidden = true; return; }
     wrap.hidden = false;
     // 只渲染称呼 + 聚餐标记。
     // reason 现在是公开字段（适兕 2026-10-27 决定），但**不在此列表展示**——
@@ -449,8 +503,11 @@
         const d = await r.json();
         if (d && Array.isArray(d.signups)) {
           if (d.deadline) setDeadline(d.deadline);
-          setStats(computeStats(d.signups));
-          renderList(d.signups);
+          // 已取消的报名在公开 JSON 里仍保留（不删除原则），
+          // 前端必须过滤掉，否则会出现「名单看不到但人数还算他」。
+          const live = d.signups.filter(function (row) { return !row.cancelled; });
+          setStats(computeStats(live));
+          renderList(live);
           return;
         }
       }
@@ -469,9 +526,10 @@
   }
 
   function computeStats(rows) {
+    const live = (rows || []).filter(function (r) { return !r.cancelled; });
     let dinner = 0;
-    rows.forEach(r => { if (r.dinner === 'yes' || r.dinner === true) dinner++; });
-    return { total: rows.length, dinner: dinner };
+    live.forEach(r => { if (r.dinner === 'yes' || r.dinner === true) dinner++; });
+    return { total: live.length, dinner: dinner };
   }
 
   $('signup-form').addEventListener('submit', async (ev) => {
@@ -760,6 +818,86 @@
       CFG.state.verified = false;
       showBox('ef-msg', '', '');
       showBox('ef-msg2', '', '');
+      var cc = byId('ef-cancel-confirm');
+      if (cc) cc.hidden = true;
+      showBox('ef-msg3', '', '');
+    });
+  }
+
+  // ── 取消报名 ──
+  // 数据不删除：公开 JSON 只置 cancelled=true，前端过滤后名字从名单消失。
+  var cancelLink = byId('ef-cancel-signup-btn');
+  if (cancelLink) {
+    cancelLink.addEventListener('click', function () {
+      var box = byId('ef-cancel-confirm');
+      if (box) box.hidden = false;
+      cancelLink.hidden = true;
+    });
+  }
+  var cancelNo = byId('ef-cancel-no');
+  if (cancelNo) {
+    cancelNo.addEventListener('click', function () {
+      var box = byId('ef-cancel-confirm');
+      if (box) box.hidden = true;
+      if (cancelLink) cancelLink.hidden = false;
+    });
+  }
+  var cancelYes = byId('ef-cancel-yes');
+  if (cancelYes) {
+    cancelYes.addEventListener('click', function () {
+      if (!CFG.state.verified) {
+        showBox('ef-msg3', '请先验证身份。', 'err');
+        return;
+      }
+      if (expired()) {
+        showBox('ef-msg3', '报名已截止，无法取消。', 'err');
+        return;
+      }
+      cancelYes.disabled = true;
+      cancelYes.textContent = '取消中…';
+      showBox('ef-msg3', '正在处理…', '');
+
+      fetch(CFG.api + '/cancel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: CFG.event,
+          signup_no: CFG.state.no,
+          contact: CFG.state.contact
+        })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d && d.ok) {
+            showBox('ef-msg3', d.already ? '你的报名已经取消过了。'
+                                         : '✓ 已取消报名，名字已从名单移除。如需再来，可重新报名。', 'ok');
+            var cc = byId('ef-cancel-confirm');
+            if (cc) cc.hidden = true;
+            // 收起整个面板并刷新名单
+            setTimeout(function () {
+              var panel = byId('edit-panel');
+              var tg = byId('edit-toggle');
+              if (panel) panel.hidden = true;
+              if (tg) tg.setAttribute('aria-expanded', 'false');
+              byId('edit-form').hidden = true;
+              byId('edit-verify').hidden = false;
+              if (cancelLink) cancelLink.hidden = false;
+              CFG.state.verified = false;
+            }, 1200);
+            refresh();
+          } else if (d && d.expired) {
+            showBox('ef-msg3', '报名已截止，无法取消。', 'err');
+          } else {
+            showBox('ef-msg3', (d && d.error) || '取消失败', 'err');
+          }
+        })
+        .catch(function (e) {
+          showBox('ef-msg3', '网络错误：' + (e && e.message ? e.message : e), 'err');
+        })
+        .finally(function () {
+          cancelYes.disabled = false;
+          cancelYes.textContent = '确定取消报名';
+        });
     });
   }
 })();
