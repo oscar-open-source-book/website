@@ -1,0 +1,57 @@
+{{/*
+  agenda.html — 从活动页自动提取议程表，供其他页面复用
+
+  用法：
+    {{< agenda event="2026-10-31-beijing-reading-meetup" >}}
+
+  为什么这样做：
+    报名页原先自己硬编码了一份议程，与活动页是两份独立数据。
+    改了活动页的议程，报名页不会跟着变，只会在用户眼里"主页更新了、
+    报名页没更新"。议程这类会持续变动的数据不能有两份。
+
+  实现：通过 site.GetPage 拿到活动页原始 markdown（.RawContent），
+  解析其中的「## 议程」小节下的表格行。样式由调用方通过 .Get "class" 指定。
+
+  解析失败时不输出空壳——宁可什么都不显示，也不显示一份过期的议程。
+*/}}
+{{- $slug := .Get "event" -}}
+{{- $boxClass := .Get "class" | default "sp-agenda" -}}
+{{- $title := .Get "title" | default "本期议程" -}}
+
+{{- with site.GetPage (printf "/events/%s" $slug) -}}
+  {{- $raw := .RawContent -}}
+
+  {{- /* 取出「## 议程」到下一个二级标题之间的内容 */ -}}
+  {{- $section := "" -}}
+  {{- if in $raw "## 议程" -}}
+    {{- $after := index (split $raw "## 议程") 1 -}}
+    {{- $section = index (split $after "\n## ") 0 -}}
+  {{- end -}}
+
+  {{- /* 收集表格数据行：以 | 开头，且不是表头分隔行 |---| */ -}}
+  {{- $rows := slice -}}
+  {{- range (split $section "\n") -}}
+    {{- $line := trim . " " -}}
+    {{- if and (hasPrefix $line "|") (not (findRE `^\|[\s\-:|]+\|$` $line)) -}}
+      {{- $cells := split (trim $line "|") "|" -}}
+      {{- if ge (len $cells) 2 -}}
+        {{- $first := trim (index $cells 0) " " -}}
+        {{- /* 跳过表头行：第一列是「时段」 */ -}}
+        {{- if ne $first "时段" -}}
+          {{- $rows = $rows | append (trim (index $cells 1) " ") -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if gt (len $rows) 0 -}}
+<div class="{{ $boxClass }}">
+  <h2>{{ $title }}</h2>
+  <ol>
+    {{- range $rows }}
+    <li>{{ . | markdownify }}</li>
+    {{- end }}
+  </ol>
+</div>
+  {{- end -}}
+{{- end -}}
