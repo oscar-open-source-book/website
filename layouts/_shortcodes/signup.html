@@ -873,18 +873,16 @@
                                          : '✓ 已取消报名，名字已从名单移除。如需再来，可重新报名。', 'ok');
             var cc = byId('ef-cancel-confirm');
             if (cc) cc.hidden = true;
-            // 收起整个面板并刷新名单
+            // 收起整个面板。注意：refresh() 定义在上一个 <script> 块里，
+            // 与本块不共享作用域，直接调用会报 "refresh is not defined"。
+            // 这里用整页重载代替，既刷新名单又不依赖跨块变量。
             setTimeout(function () {
-              var panel = byId('edit-panel');
-              var tg = byId('edit-toggle');
-              if (panel) panel.hidden = true;
-              if (tg) tg.setAttribute('aria-expanded', 'false');
-              byId('edit-form').hidden = true;
-              byId('edit-verify').hidden = false;
-              if (cancelLink) cancelLink.hidden = false;
-              CFG.state.verified = false;
+              try {
+                location.reload();
+              } catch (_) {
+                location.href = location.href;
+              }
             }, 1200);
-            refresh();
           } else if (d && d.expired) {
             showBox('ef-msg3', '报名已截止，无法取消。', 'err');
           } else {
