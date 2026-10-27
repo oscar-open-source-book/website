@@ -87,7 +87,7 @@
     <div class="edit-panel" id="edit-panel" hidden>
       <!-- 第一步：验证身份 -->
       <div class="edit-step" id="edit-verify">
-        <p class="edit-tip">填写报名时拿到的<b>报名编号</b>与<b>联系方式</b>，验证后可修改聚餐与想说的话。称呼不可改。</p>
+        <p class="edit-tip">填写报名时拿到的<b>报名编号</b>与<b>联系方式</b>，验证后可修改称呼、聚餐与想说的话。</p>
         <div class="form-row">
           <label for="ef-no">报名编号 <span class="req">*</span></label>
           <input type="text" id="ef-no" maxlength="20" placeholder="形如 OSCAR-45D636" autocomplete="off">
@@ -103,6 +103,10 @@
       <!-- 第二步：修改内容 -->
       <form class="edit-step edit-form" id="edit-form" hidden>
         <div class="edit-who">正在修改：<b id="ef-name">—</b>（<span id="ef-no-show">—</span>）</div>
+        <div class="form-row">
+          <label for="ef-name-input">称呼 <span class="req">*</span></label>
+          <input type="text" id="ef-name-input" maxlength="40" placeholder="怎么称呼你" autocomplete="off">
+        </div>
         <div class="form-row">
           <label>是否参加晚间聚餐</label>
           <div class="radio-group">
@@ -419,6 +423,9 @@
     const ul = $('signup-names');
     if (!rows || !rows.length) { wrap.hidden = true; return; }
     wrap.hidden = false;
+    // 只渲染称呼 + 聚餐标记。
+    // reason 现在是公开字段（适兕 2026-10-27 决定），但**不在此列表展示**——
+    // 想说的话属于分享意愿的表达，放在名单里会刷屏，也压低阅读意愿。
     ul.innerHTML = rows.map(r => {
       const tags = [];
       if (r.dinner === 'yes' || r.dinner === true) tags.push('聚餐');
@@ -649,6 +656,8 @@
           CFG.state.contact = ctVal;
           byId('ef-name').textContent = d.name || '—';
           byId('ef-no-show').textContent = d.signup_no || noVal;
+          var nameInput = byId('ef-name-input');
+          if (nameInput) nameInput.value = d.name || '';
           var reasonEl = byId('ef-reason');
           if (reasonEl) reasonEl.value = d.reason || '';
           var radios = document.querySelectorAll('input[name="ef-dinner"]');
@@ -687,10 +696,18 @@
       showBox('ef-msg2', '保存中…', '');
 
       var picked = document.querySelector('input[name="ef-dinner"]:checked');
+      var newName = ((byId('ef-name-input') || {}).value || '').trim();
+      if (!newName) {
+        showBox('ef-msg2', '称呼不能为空。', 'err');
+        saveBtn.disabled = false;
+        saveBtn.textContent = '保存修改';
+        return;
+      }
       var payload = {
         event: CFG.event,
         signup_no: CFG.state.no,
         contact: CFG.state.contact,
+        name: newName,
         dinner: picked ? picked.value : 'no',
         reason: ((byId('ef-reason') || {}).value || '').trim()
       };
