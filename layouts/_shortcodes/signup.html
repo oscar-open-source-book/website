@@ -17,7 +17,7 @@
 <div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}">
   <div class="signup-header">
     <h2>📝 <span class="hl">报名参加</span></h2>
-    <p class="signup-sub">页面公开显示称呼与参与情况；<b>联系方式单独加密存放，不在网页公开</b>。如需修改请发 <a href="https://github.com/oscar-open-source-book/website/issues" target="_blank" rel="noopener">Issue</a>。</p>
+    <p class="signup-sub">页面公开显示称呼与参与情况；<b>联系方式单独加密存放，不在网页公开</b>。报名后若需修改聚餐或想说的话，可在下方凭编号与联系方式自助修改。</p>
   </div>
 
   <!-- 活动已结束横幅（默认隐藏，由 JS 按截止时间切换） -->
@@ -77,6 +77,51 @@
     <button type="submit" class="submit-btn" id="sf-submit">提交报名</button>
     <div class="form-msg" id="sf-msg"></div>
   </form>
+
+  <!-- 修改报名：凭编号 + 联系方式进入（与提交报名同为截止后禁用） -->
+  <div class="signup-edit" id="signup-edit">
+    <button type="button" class="edit-toggle" id="edit-toggle" aria-expanded="false">
+      <span class="edit-arrow">▸</span> 已报名？想修改聚餐或想说的话
+    </button>
+
+    <div class="edit-panel" id="edit-panel" hidden>
+      <!-- 第一步：验证身份 -->
+      <div class="edit-step" id="edit-verify">
+        <p class="edit-tip">填写报名时拿到的<b>报名编号</b>与<b>联系方式</b>，验证后可修改聚餐与想说的话。称呼不可改。</p>
+        <div class="form-row">
+          <label for="ef-no">报名编号 <span class="req">*</span></label>
+          <input type="text" id="ef-no" maxlength="20" placeholder="形如 OSCAR-45D636" autocomplete="off">
+        </div>
+        <div class="form-row">
+          <label for="ef-contact">联系方式 <span class="req">*</span></label>
+          <input type="text" id="ef-contact" maxlength="120" placeholder="报名时填的微信 / 邮箱" autocomplete="off">
+        </div>
+        <button type="button" class="submit-btn" id="ef-verify-btn">验证并载入</button>
+        <div class="form-msg" id="ef-msg"></div>
+      </div>
+
+      <!-- 第二步：修改内容 -->
+      <form class="edit-step edit-form" id="edit-form" hidden>
+        <div class="edit-who">正在修改：<b id="ef-name">—</b>（<span id="ef-no-show">—</span>）</div>
+        <div class="form-row">
+          <label>是否参加晚间聚餐</label>
+          <div class="radio-group">
+            <label class="radio"><input type="radio" name="ef-dinner" value="yes"> 参加</label>
+            <label class="radio"><input type="radio" name="ef-dinner" value="no" checked> 不参加</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="ef-reason">想说的话 / 想讲的话题</label>
+          <textarea id="ef-reason" rows="3" maxlength="500" placeholder="选填，500 字以内"></textarea>
+        </div>
+        <div class="edit-actions">
+          <button type="submit" class="submit-btn" id="ef-save-btn">保存修改</button>
+          <button type="button" class="cancel-btn" id="ef-cancel-btn">取消</button>
+        </div>
+        <div class="form-msg" id="ef-msg2"></div>
+      </form>
+    </div>
+  </div>
 
   <!-- 报名名单 -->
   <div class="signup-list" id="signup-list" hidden>
@@ -221,6 +266,58 @@
 }
 .closed-sub { font-size: .88rem; color: #8A8272; line-height: 1.6; }
 .signup-form.is-closed { display: none; }
+
+/* 修改报名 */
+.signup-edit {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed #E0D9C8;
+}
+.edit-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .45rem .9rem;
+  background: transparent;
+  border: 1px solid #D8D2C4;
+  border-radius: 6px;
+  color: #8B6914;
+  font-size: .88rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s;
+}
+.edit-toggle:hover:not(:disabled) { background: #F4F0E6; }
+.edit-toggle:disabled { opacity: .5; cursor: not-allowed; }
+.edit-arrow { transition: transform .15s; display: inline-block; }
+.edit-toggle[aria-expanded="true"] .edit-arrow { transform: rotate(90deg); }
+
+.edit-panel {
+  margin-top: 1rem;
+  padding: 1.1rem 1.15rem;
+  background: #fff;
+  border: 1px solid #E8E2D4;
+  border-radius: 8px;
+}
+.edit-step { display: flex; flex-direction: column; gap: .85rem; }
+.edit-tip { margin: 0; font-size: .85rem; color: #6B6B6B; line-height: 1.6; }
+.edit-who {
+  font-size: .88rem; color: #2C2A26;
+  padding-bottom: .5rem; border-bottom: 1px solid #EFEBE0;
+}
+.edit-actions { display: flex; gap: .7rem; align-items: center; }
+.cancel-btn {
+  padding: .7rem 1.4rem;
+  background: #fff;
+  color: #6B6B6B;
+  border: 1px solid #D8D2C4;
+  border-radius: 6px;
+  font-size: .95rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+.cancel-btn:hover { background: #F4F0E6; }
+.oscar-signup.is-closed .edit-toggle { display: none; }
 
 /* 输入框禁用态 */
 .oscar-signup.is-closed .form-row input[type=text],
@@ -468,5 +565,185 @@
 
   refresh();
   setInterval(refresh, 30000);
+})();
+</script>
+
+{{/* 修改报名：单独一个 script 块。
+     Hugo --minify 会把同作用域内的局部变量压成同名单字母互相覆盖，
+     历史上已因此炸过 5 次（见 skill oscar-meetup-page）。
+     故：状态挂 window、不定义短名工具函数、不与上方脚本共享任何变量。 */}}
+<script>
+(function () {
+  var boot = document.getElementById('oscar-signup');
+  if (!boot) return;
+  var CFG = {
+    event: boot.dataset.event,
+    api: boot.dataset.api,
+    state: { verified: false, no: '', contact: '' }
+  };
+  window.__oscarEditCfg = CFG;
+
+  function byId(elId) {
+    return document.getElementById(elId);
+  }
+
+  function showBox(elId, text, kind) {
+    var el = byId(elId);
+    if (!el) return;
+    el.className = 'form-msg ' + (kind || '');
+    el.textContent = text || '';
+  }
+
+  function expired() {
+    var box = byId('signup-closed');
+    if (box && !box.hidden) return true;
+    return false;
+  }
+
+  // 展开 / 收起
+  var toggle = byId('edit-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      if (toggle.disabled || expired()) return;
+      var panel = byId('edit-panel');
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+      if (panel) panel.hidden = open;
+    });
+  }
+
+  // 第一步：验证身份并载入
+  var verifyBtn = byId('ef-verify-btn');
+  if (verifyBtn) {
+    verifyBtn.addEventListener('click', function () {
+      if (expired()) {
+        showBox('ef-msg', '报名已截止，无法修改。', 'err');
+        return;
+      }
+      var noVal = (byId('ef-no') || {}).value || '';
+      var ctVal = (byId('ef-contact') || {}).value || '';
+      noVal = noVal.trim().toUpperCase();
+      ctVal = ctVal.trim();
+      if (!noVal || !ctVal) {
+        showBox('ef-msg', '请填写报名编号和联系方式。', 'err');
+        return;
+      }
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = '验证中…';
+      var url = CFG.api + '/edit?event=' + encodeURIComponent(CFG.event) +
+                '&signup_no=' + encodeURIComponent(noVal) +
+                '&contact=' + encodeURIComponent(ctVal);
+      fetch(url, { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (!d || !d.ok) {
+            if (d && d.expired) {
+              showBox('ef-msg', '报名已截止，无法修改。', 'err');
+              return;
+            }
+            showBox('ef-msg', (d && d.error) || '验证失败', 'err');
+            return;
+          }
+          CFG.state.verified = true;
+          CFG.state.no = noVal;
+          CFG.state.contact = ctVal;
+          byId('ef-name').textContent = d.name || '—';
+          byId('ef-no-show').textContent = d.signup_no || noVal;
+          var reasonEl = byId('ef-reason');
+          if (reasonEl) reasonEl.value = d.reason || '';
+          var radios = document.querySelectorAll('input[name="ef-dinner"]');
+          for (var i = 0; i < radios.length; i++) {
+            radios[i].checked = (radios[i].value === (d.dinner || 'no'));
+          }
+          byId('edit-verify').hidden = true;
+          byId('edit-form').hidden = false;
+        })
+        .catch(function (e) {
+          showBox('ef-msg', '网络错误：' + (e && e.message ? e.message : e), 'err');
+        })
+        .finally(function () {
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = '验证并载入';
+        });
+    });
+  }
+
+  // 第二步：保存修改
+  var editForm = byId('edit-form');
+  if (editForm) {
+    editForm.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      if (!CFG.state.verified) {
+        showBox('ef-msg2', '请先验证身份。', 'err');
+        return;
+      }
+      if (expired()) {
+        showBox('ef-msg2', '报名已截止，无法修改。', 'err');
+        return;
+      }
+      var saveBtn = byId('ef-save-btn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = '保存中…';
+      showBox('ef-msg2', '保存中…', '');
+
+      var picked = document.querySelector('input[name="ef-dinner"]:checked');
+      var payload = {
+        event: CFG.event,
+        signup_no: CFG.state.no,
+        contact: CFG.state.contact,
+        dinner: picked ? picked.value : 'no',
+        reason: ((byId('ef-reason') || {}).value || '').trim()
+      };
+
+      fetch(CFG.api + '/edit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d && d.ok) {
+            showBox('ef-msg2', '✓ 已保存。公开名单上的聚餐标记已同步更新。', 'ok');
+            // 收起面板，回填验证区，避免重复提交
+            setTimeout(function () {
+              var panel = byId('edit-panel');
+              var tg = byId('edit-toggle');
+              if (panel) panel.hidden = true;
+              if (tg) tg.setAttribute('aria-expanded', 'false');
+              byId('edit-form').hidden = true;
+              byId('edit-verify').hidden = false;
+              showBox('ef-msg', '修改已保存。', 'ok');
+            }, 900);
+          } else if (d && d.expired) {
+            showBox('ef-msg2', '报名已截止，无法修改。', 'err');
+          } else {
+            showBox('ef-msg2', (d && d.error) || '保存失败', 'err');
+          }
+        })
+        .catch(function (e) {
+          showBox('ef-msg2', '网络错误：' + (e && e.message ? e.message : e), 'err');
+        })
+        .finally(function () {
+          saveBtn.disabled = false;
+          saveBtn.textContent = '保存修改';
+        });
+    });
+  }
+
+  // 取消：回到验证态
+  var cancelBtn = byId('ef-cancel-btn');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', function () {
+      var panel = byId('edit-panel');
+      var tg = byId('edit-toggle');
+      if (panel) panel.hidden = true;
+      if (tg) tg.setAttribute('aria-expanded', 'false');
+      byId('edit-form').hidden = true;
+      byId('edit-verify').hidden = false;
+      CFG.state.verified = false;
+      showBox('ef-msg', '', '');
+      showBox('ef-msg2', '', '');
+    });
+  }
 })();
 </script>
