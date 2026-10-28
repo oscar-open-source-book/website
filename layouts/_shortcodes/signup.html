@@ -7,7 +7,7 @@
   功能：
     - 报名表单（称呼 / 联系方式 / 聚餐 / 想讲的话题）
     - 实时报名统计（轮询 signup-api）
-    - 场地动态提示（≤5 人咖啡厅，>5 人智源大厦）
+    - 场地提示（已确定为智源大厦，成府路 150 号楼）
 
   后端：https://signup-api.osbook.opensourceway.blog/api/signup
 */}}
@@ -444,15 +444,10 @@
     const total = s.total ?? 0;
     $('stat-total').textContent = total;
     $('stat-dinner').textContent = s.dinner ?? 0;
-    // 当前场地卡片：场地确定为智源大厦后不再回退（有人取消也不翻回咖啡厅）
+    // 当前场地卡片：场地已确定为智源大厦（2026-10-28 确认详细地址），不随人数变化
     const vEl = $('stat-venue');
-    if (total >= 1) {
-      vEl.textContent = '智源大厦';
-      vEl.style.fontSize = '1.1rem';
-    } else {
-      vEl.textContent = '待定';
-      vEl.style.fontSize = '1.1rem';
-    }
+    vEl.textContent = '智源大厦';
+    vEl.style.fontSize = '1.1rem';
     updateVenue(total);
   }
 
@@ -460,13 +455,12 @@
     const hint = $('venue-hint');
     const text = $('venue-text');
     hint.className = 'venue-hint is-confirmed';
-    // 场地一旦确定为智源大厦就不再回退（适兕 2026-10-27 决定）：
-    // 场地可能已订、已通知，页面不该因为有人取消就把场地翻回咖啡厅。
-    // 所以只要有人报名，就按智源大厦显示；若因此要改场地，由组织者线下通知。
+    // 场地已确定为智源大厦（2026-10-28 朱其罡提供详细地址后确认），
+    // 不再随人数变化而改口，也不再提咖啡厅备选。
     if (total >= 1) {
-      text.innerHTML = `<strong>场地：智源大厦（海淀）</strong><br>已报名 ${total} 人。具体楼层与集合方式将在活动前单独通知。`;
+      text.innerHTML = `<strong>场地：智源大厦（海淀区成府路 150 号楼）</strong><br>已报名 ${total} 人。具体楼层与集合方式将在活动前单独通知。`;
     } else {
-      text.innerHTML = '尚无人报名。若最终 ≤5 人，将约一间咖啡厅；超过 5 人则改为智源大厦（海淀）。';
+      text.innerHTML = '<strong>场地：智源大厦（海淀区成府路 150 号楼）</strong>';
     }
   }
 
