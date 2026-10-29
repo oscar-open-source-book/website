@@ -17,7 +17,7 @@
 <div id="oscar-signup" class="oscar-signup" data-event="{{ $event }}" data-api="{{ $api }}">
   <div class="signup-header">
     <h2>📝 <span class="hl">报名参加</span></h2>
-    <p class="signup-sub">页面公开显示称呼与参与情况；<b>联系方式单独加密存放，不在网页公开</b>。报名后可在下方凭编号与联系方式自助修改或取消报名。</p>
+    <p class="signup-sub">页面公开显示称呼与参与情况；<b>联系方式单独加密存放，不在网页公开</b>。报名后可在下方凭姓名与联系方式自助修改或取消报名。</p>
   </div>
 
   <!-- 活动已结束横幅（默认隐藏，由 JS 按截止时间切换） -->
@@ -87,10 +87,10 @@
     <div class="edit-panel" id="edit-panel" hidden>
       <!-- 第一步：验证身份 -->
       <div class="edit-step" id="edit-verify">
-        <p class="edit-tip">填写报名时拿到的<b>报名编号</b>与<b>联系方式</b>，验证后可修改称呼、聚餐与想说的话。</p>
+        <p class="edit-tip">填写报名时的<b>姓名</b>与<b>联系方式</b>，验证后可修改称呼、聚餐与想说的话。</p>
         <div class="form-row">
-          <label for="ef-no">报名编号 <span class="req">*</span></label>
-          <input type="text" id="ef-no" maxlength="20" placeholder="形如 OSCAR-45D636" autocomplete="off">
+          <label for="ef-no">姓名 <span class="req">*</span></label>
+          <input type="text" id="ef-no" maxlength="40" placeholder="报名时填的称呼" autocomplete="off">
         </div>
         <div class="form-row">
           <label for="ef-contact">联系方式 <span class="req">*</span></label>
@@ -580,7 +580,7 @@
         if (d.duplicate) {
           showMsg('ok', `该联系方式已报名过，编号 <code>${escapeHtml(d.signup_no)}</code>。`);
         } else {
-          showMsg('ok', `✓ 报名成功！你的报名编号：<code>${escapeHtml(d.signup_no)}</code><br><span style="font-size:.85em;color:#6B6B6B">请保存此编号，如需修改凭它联系。</span>`);
+          showMsg('ok', `✓ 报名成功！你的报名编号：<code>${escapeHtml(d.signup_no)}</code><br><span style="font-size:.85em;color:#6B6B6B">如需修改或取消，可在页面下方凭姓名与联系方式自助操作。</span>`);
           // 延迟重置：立即 reset 会让部分内核把提示一起清掉
           setTimeout(() => { try { form.reset(); } catch (_) {} }, 300);
         }
@@ -681,10 +681,11 @@
       }
       var noVal = (byId('ef-no') || {}).value || '';
       var ctVal = (byId('ef-contact') || {}).value || '';
-      noVal = noVal.trim().toUpperCase();
+      // 输入框现在是姓名：不要 toUpperCase，后端已做归一化（含全半角）
+      noVal = noVal.trim();
       ctVal = ctVal.trim();
       if (!noVal || !ctVal) {
-        showBox('ef-msg', '请填写报名编号和联系方式。', 'err');
+        showBox('ef-msg', '请填写姓名和联系方式。', 'err');
         return;
       }
       verifyBtn.disabled = true;
