@@ -578,7 +578,16 @@
       const d = await r.json();
       if (d.ok) {
         if (d.duplicate) {
-          showMsg('ok', `该联系方式已报名过，编号 <code>${escapeHtml(d.signup_no)}</code>。`);
+          if (d.name_conflict) {
+            showMsg('err', '该称呼已有报名记录。'
+              + '<br><span style="font-size:.9em">'
+              + '· 若是您本人要改信息 → 用页面下方「修改报名」<br>'
+              + '· 若您与已报名者同名但并非同一人 → 请在称呼后加括号区分，'
+              + '如「张三（另一位）」，或直接联系组织者'
+              + '</span>');
+          } else {
+            showMsg('ok', `该联系方式已报名过，编号 <code>${escapeHtml(d.signup_no)}</code>。`);
+          }
         } else {
           showMsg('ok', `✓ 报名成功！你的报名编号：<code>${escapeHtml(d.signup_no)}</code><br><span style="font-size:.85em;color:#6B6B6B">如需修改或取消，可在页面下方凭姓名与联系方式自助操作。</span>`);
           // 延迟重置：立即 reset 会让部分内核把提示一起清掉
