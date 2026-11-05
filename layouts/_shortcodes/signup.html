@@ -444,24 +444,61 @@
     const total = s.total ?? 0;
     $('stat-total').textContent = total;
     $('stat-dinner').textContent = s.dinner ?? 0;
-    // 当前场地卡片：场地已确定为智源大厦（2026-10-28 确认详细地址），不随人数变化
-    const vEl = $('stat-venue');
-    vEl.textContent = '智源大厦';
-    vEl.style.fontSize = '1.1rem';
     updateVenue(total);
   }
+
+  // 场地规则按活动区分——不同场次的场地状态不一致，不能写死同一句话。
+  //   2026-10-31：智源大厦，2026-10-28 确认后固定，不随人数变化
+  //   2026-11-21：未定档。不足 5 人约咖啡厅，5 人及以上启动场地赞助征集
+  const VENUES = {
+    '2026-10-31': { type: 'confirmed', name: '智源大厦', detail: '海淀区成府路 150 号楼' },
+    '2026-11-21': { type: 'tiered' }
+  };
 
   function updateVenue(total) {
     const hint = $('venue-hint');
     const text = $('venue-text');
-    hint.className = 'venue-hint is-confirmed';
-    // 场地已确定为智源大厦（2026-10-28 朱其罡提供详细地址后确认），
-    // 不再随人数变化而改口，也不再提咖啡厅备选。
-    if (total >= 1) {
-      text.innerHTML = `<strong>场地：智源大厦（海淀区成府路 150 号楼）</strong><br>已报名 ${total} 人。具体楼层与集合方式将在活动前单独通知。`;
-    } else {
-      text.innerHTML = '<strong>场地：智源大厦（海淀区成府路 150 号楼）</strong>';
+    const vEl = $('stat-venue');
+    const cfg = VENUES[EVENT] || { type: 'tbd' };
+
+    if (cfg.type === 'confirmed') {
+      hint.className = 'venue-hint is-confirmed';
+      vEl.textContent = cfg.name;
+      vEl.style.fontSize = '1.1rem';
+      if (total >= 1) {
+        text.innerHTML = `<strong>场地：${cfg.name}（${cfg.detail}）</strong><br>已报名 ${total} 人。具体楼层与集合方式将在活动前单独通知。`;
+      } else {
+        text.innerHTML = `<strong>场地：${cfg.name}（${cfg.detail}）</strong>`;
+      }
+      return;
     }
+
+    if (cfg.type === 'tiered') {
+      // 分档：不虚报「已确定」，把规则本身告诉报名者，人数决定走向
+      const reached = total >= 5;
+      hint.className = reached ? 'venue-hint is-confirmed' : 'venue-hint is-coffee';
+      vEl.textContent = reached ? '征集赞助中' : '待定';
+      vEl.style.fontSize = '1.05rem';
+
+      if (reached) {
+        text.innerHTML =
+          `<strong>场地：待定 · 已满 5 人，进入场地赞助征集</strong><br>` +
+          `已报名 ${total} 人，达到 5 人门槛，组织者将联系场地赞助方。` +
+          `地点确定后在此更新，并单独通知每位报名者。`;
+      } else {
+        const need = 5 - total;
+        text.innerHTML =
+          `<strong>场地：待定 · 不足 5 人，在咖啡厅进行</strong><br>` +
+          (total === 0
+            ? `目前 0 人报名。<b>再报满 5 人</b>即启动场地赞助征集，否则在咖啡厅围坐一圈。`
+            : `已报名 ${total} 人，<b>还差 ${need} 人</b>即可启动场地赞助征集。`);
+      }
+      return;
+    }
+
+    hint.className = 'venue-hint';
+    vEl.textContent = '待定';
+    text.innerHTML = '<strong>场地：待定</strong>';
   }
 
   function renderList(rows) {
