@@ -1,4 +1,7 @@
 ---
+image:
+  filename: "events/2026-12-19-annual-celebration-2026.jpg"
+  caption: "「开源之书·共读」2026 年度 · 读书还值得吗？"
 date: 2026-12-19
 title: "「OSCAR·开源之书·共读」2026 年度分享交流活动"
 subtitle: "读书还值得吗？——当变化成为常态"
