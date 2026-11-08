@@ -1,4 +1,7 @@
 ---
+image:
+  filename: "events/2025-12-20-beijing-reading-meetup.jpg"
+  caption: "「开源之书·共读」2025-12-20 · 三本书，三种开源协作的解释"
 date: 2025-12-20
 title: "「OSCAR·开源之书·共读」线下分享交流·北京站·2025-12-20"
 subtitle: "三本书，三种开源协作的解释"

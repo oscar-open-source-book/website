@@ -1,4 +1,7 @@
 ---
+image:
+  filename: "events/2025-11-15-beijing-reading-meetup.jpg"
+  caption: "「开源之书·共读」2025.11.15 · Give and Take"
 date: 2025-11-15
 title: "「OSCAR·开源之书·共读」线下分享交流·北京站·2025.11.15"
 subtitle: "Give and Take"

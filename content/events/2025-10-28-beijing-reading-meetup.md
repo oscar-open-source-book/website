@@ -1,4 +1,7 @@
 ---
+image:
+  filename: "events/2025-10-28-beijing-reading-meetup.jpg"
+  caption: "「开源之书·共读」2025.10.28 · 开源 + 创新"
 date: 2025-10-28
 title: "「OSCAR·开源之书·共读」线下分享交流·北京站·2025.10.28"
 subtitle: "开源 + 创新（OSCAR 开源产业大会同期）"
