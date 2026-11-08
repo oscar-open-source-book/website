@@ -524,6 +524,31 @@
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
+  // 最近一次成功渲染所依据的数据时间。raw 走 GitHub CDN，刚写入后
+  // 最长可能缓存 5 分钟；若 raw 比已渲染的数据更旧，必须丢弃，
+  // 否则「刚报名成功 → refresh() 拉到旧 raw → 人数被打回原值」。
+  //
+  // 注意 signups-data 的 raw 里 updated 可能为 null，此时无法比对时间，
+  // 改用「本页刚写入成功」的本地时间戳（_localFreshAt）压制 raw 若干分钟。
+  let _dataStamp = 0;
+  let _localFreshAt = 0;
+  const LOCAL_FRESH_MS = 5 * 60 * 1000;
+
+  function stampOf(d) {
+    const s = (d && (d.updated || d.server_time)) || '';
+    const t = Date.parse(s);
+    return isNaN(t) ? 0 : t;
+  }
+
+  function isStale(d) {
+    const t = stampOf(d);
+    // 有可比时间戳时按时间判新旧
+    if (t > 0 && _dataStamp > 0) return t < _dataStamp;
+    // 无时间戳：本页刚写入过，则 raw 在冷却期内一律视为陈旧
+    if (_localFreshAt > 0 && Date.now() - _localFreshAt < LOCAL_FRESH_MS) return true;
+    return false;
+  }
+
   async function refresh() {
     // 数据源优先级：
     //  ① 独立仓库 raw（不触发 website 构建，最快）
@@ -532,13 +557,14 @@
       const r = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
       if (r.ok) {
         const d = await r.json();
-        if (d && Array.isArray(d.signups)) {
+        if (d && Array.isArray(d.signups) && !isStale(d)) {
           if (d.deadline) setDeadline(d.deadline);
           // 已取消的报名在公开 JSON 里仍保留（不删除原则），
           // 前端必须过滤掉，否则会出现「名单看不到但人数还算他」。
           const live = d.signups.filter(function (row) { return !row.cancelled; });
           setStats(computeStats(live));
           renderList(live);
+          _dataStamp = Math.max(_dataStamp, stampOf(d) || 0);
           return;
         }
       }
@@ -551,10 +577,16 @@
         if (d.deadline) setDeadline(d.deadline);
         setStats(d.stats);
         renderList(d.signups);
+        _dataStamp = Math.max(_dataStamp, stampOf(d) || 0);
         if (typeof d.expired === 'boolean' && d.expired) applyClosedState(true);
       }
     } catch (e) { /* 静默：网络抖动不影响阅读 */ }
   }
+
+  // 跨 <script> 块给「修改报名」用：编辑逻辑在另一个 IIFE 里，
+  // 无法直接访问本块的 refresh，必须显式挂到 window。
+  window.__oscarRefresh = refresh;
+  window.__oscarMarkFresh = function () { _localFreshAt = Date.now(); };
 
   function computeStats(rows) {
     const live = (rows || []).filter(function (r) { return !r.cancelled; });
@@ -631,6 +663,8 @@
           setTimeout(() => { try { form.reset(); } catch (_) {} }, 300);
         }
         if (d.stats) setStats(d.stats);
+        // 本页刚写入成功：在 raw 的 CDN 冷却期内不用旧数据覆盖它
+        _localFreshAt = Date.now();
         refresh();
       } else if (d.expired) {
         // 服务端判定已截止：同步关闭 UI
@@ -820,6 +854,11 @@
         .then(function (d) {
           if (d && d.ok) {
             showBox('ef-msg2', '✓ 已保存。公开名单上的聚餐标记已同步更新。', 'ok');
+            // 与报名同源问题：raw 有 CDN 缓存，写入后要用本地时间压制，
+            // 否则刷新拉回旧 raw，聚餐标记会「看起来没改成功」。
+            // refresh 在另一个 <script> 块，必须走 window 暴露的引用。
+            if (window.__oscarMarkFresh) window.__oscarMarkFresh();
+            if (window.__oscarRefresh) window.__oscarRefresh();
             // 收起面板，回填验证区，避免重复提交
             setTimeout(function () {
               var panel = byId('edit-panel');
