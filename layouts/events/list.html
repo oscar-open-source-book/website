@@ -1,0 +1,61 @@
+{{ define "main" }}
+
+{{/*
+  /events/ 列表页
+  ------------------------------------------------------------
+  与 Blox 默认 layouts/list.html 一致，唯一差异是在列表上方插入
+  「接下来」横幅（layouts/_partials/events/next-up.html）。
+
+  只覆盖 events 这一个 section：其他 section 仍走模块默认模板。
+  分页保留；横幅只在第一页出现（.Paginator.PageNumber == 1）。
+*/}}
+
+<div class="max-w-prose mx-auto flex justify-center">
+  <article class="prose prose-slate lg:prose-xl dark:prose-invert">
+    <h1 class="lg:text-6xl">{{ .Title }}</h1>
+    {{ .Content }}
+  </article>
+</div>
+
+{{ $paginator := .Paginate .Pages.ByDate.Reverse }}
+
+{{/* 只在第一页显示「接下来」横幅 */}}
+{{ if eq $paginator.PageNumber 1 }}
+  {{ partial "events/next-up" . }}
+{{ end }}
+
+{{ $view := .Params.view | default "card" }}
+{{ $block := . }}
+
+{{ $config := dict
+  "columns" (.Params.columns | default 2)
+  "len" (len $paginator.Pages)
+  "fill_image" (.Params.fill_image | default true)
+  "show_date" (.Params.show_date | default true)
+  "show_read_time" (.Params.show_read_time | default true)
+  "show_read_more" (.Params.show_read_more | default true)
+}}
+
+{{/* Check if any pages have author_notes to enable Alpine.js */}}
+{{ range .Pages }}
+  {{ if isset .Params "author_notes" }}
+    {{ $.Store.Set "has_alpine" true }}
+    {{ break }}
+  {{ end }}
+{{ end }}
+
+<div class="flex flex-col items-center">
+
+  {{ partial "functions/render_view" (dict "fragment" "start" "page" $block "item" . "view" $view "config" $config) }}
+
+  {{ range $index, $item := $paginator.Pages }}
+  {{ partial "functions/render_view" (dict "page" . "item" . "view" $view "index" $index "config" $config) }}
+  {{end}}
+
+  {{ partial "functions/render_view" (dict "fragment" "end" "page" $block "item" . "view" $view) }}
+
+  {{ partial "components/paginator" . }}
+
+</div>
+
+{{ end }}
