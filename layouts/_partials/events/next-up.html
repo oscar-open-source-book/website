@@ -1,0 +1,177 @@
+{{/*
+  /events/ 顶部「接下来」横幅
+  ------------------------------------------------------------
+  - 动态：只取 date >= 今天 的活动，按日期升序，最多 4 场
+  - 合并 data/external_events.json 里手动维护的关联开源活动
+  - 过期条目自动隐藏（不报错、不留空位）
+  - 没有任何未来活动时，整块不输出（宁可空白，不显示过期内容）
+
+  用法：仅在列表第一页调用，见 layouts/events/list.html
+*/}}
+
+{{- $now := now -}}
+{{- $limit := 6 -}}
+
+{{- /* 站内未来活动 */ -}}
+{{- $items := slice -}}
+{{- range where site.RegularPages "Section" "events" -}}
+  {{- if ge .Date.Unix $now.Unix -}}
+    {{- $items = $items | append (dict
+        "date" .Date
+        "title" .Title
+        "subtitle" (.Params.subtitle | default "")
+        "location" (.Params.location | default "")
+        "permalink" .RelPermalink
+        "image" (cond (isset .Params "image") (index .Params.image "filename") "")
+        "internal" true
+      ) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* 外部关联活动 */ -}}
+{{- range site.Data.external_events.external_events | default slice -}}
+  {{- $d := time .date -}}
+  {{- if ge $d.Unix $now.Unix -}}
+    {{- $items = $items | append (dict
+        "date" $d
+        "title" .title
+        "subtitle" (.host | default "")
+        "location" (.location | default "")
+        "permalink" (.url | default "")
+        "image" ""
+        "internal" (.internal | default false)
+        "note" (.note | default "")
+      ) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $items = sort $items "date" "asc" | first $limit -}}
+
+{{- if gt (len $items) 0 -}}
+<section class="next-up">
+  <div class="next-up__head">
+    <h2 class="next-up__title">接下来</h2>
+    <p class="next-up__sub">近期活动与关联的开源会议</p>
+  </div>
+
+  <div class="next-up__grid">
+    {{- range $items -}}
+      {{- $days := int (div (sub .date.Unix $now.Unix) 86400) -}}
+      {{- $when := cond (lt $days 1) "今天" (cond (eq $days 1) "明天" (printf "%d 天后" $days)) -}}
+      <a class="next-up__card{{ if not .internal }} next-up__card--ext{{ end }}" href="{{ .permalink }}"{{ if not .internal }} target="_blank" rel="noopener"{{ end }}>
+        <div class="next-up__top">
+          <span class="next-up__date">{{ .date.Format "2006.01.02" }}</span>
+          <span class="next-up__badge">{{ $when }}</span>
+          {{- if not .internal }}<span class="next-up__tag">关联</span>{{ end -}}
+        </div>
+        <h3 class="next-up__name">{{ .title }}</h3>
+        {{- with .subtitle }}<p class="next-up__meta">{{ . }}</p>{{ end -}}
+        {{- with .location }}<p class="next-up__meta">{{ . }}</p>{{ end -}}
+        {{- with .note }}<p class="next-up__note">{{ . }}</p>{{ end -}}
+      </a>
+    {{- end -}}
+  </div>
+</section>
+
+<style>
+.next-up {
+  max-width: 72rem;
+  margin: 0.5rem auto 2.5rem;
+  padding: 0 1rem;
+}
+.next-up__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 1.1rem;
+  flex-wrap: wrap;
+}
+.next-up__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #1B3B6B;
+  margin: 0;
+}
+.next-up__sub {
+  font-size: 0.85rem;
+  color: #8A8578;
+  margin: 0;
+}
+.next-up__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.9rem;
+}
+.next-up__card {
+  display: block;
+  padding: 1rem 1.1rem;
+  border: 1px solid #E8E2D4;
+  border-left: 3px solid #B4A078;
+  border-radius: 10px;
+  background: #fff;
+  text-decoration: none;
+  transition: box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+}
+.next-up__card:hover {
+  box-shadow: 0 8px 24px rgba(27,59,107,.10);
+  transform: translateY(-2px);
+}
+.next-up__card--ext {
+  border-left-color: #9AA7B8;
+  background: #FAFAF8;
+}
+.next-up__top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+  flex-wrap: wrap;
+}
+.next-up__date {
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: #8B6914;
+  letter-spacing: 0.04em;
+}
+.next-up__badge {
+  font-size: 0.72rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: #F5EFE0;
+  color: #6B5A2E;
+}
+.next-up__tag {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid #C9D2DE;
+  color: #6B7A8D;
+}
+.next-up__name {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #2C2A26;
+  margin: 0 0 0.4rem;
+}
+.next-up__meta {
+  font-size: 0.8rem;
+  color: #6B6B6B;
+  margin: 0.15rem 0;
+  line-height: 1.5;
+}
+.next-up__note {
+  font-size: 0.78rem;
+  color: #8B6914;
+  margin: 0.45rem 0 0;
+}
+@media (prefers-color-scheme: dark) {
+  .next-up__title { color: #C9D6E8; }
+  .next-up__card { background: #1C1E22; border-color: #31343A; }
+  .next-up__card--ext { background: #191B1F; }
+  .next-up__name { color: #E8E4DC; }
+  .next-up__badge { background: #2A2A24; color: #D6C9A8; }
+}
+</style>
+{{- end -}}
