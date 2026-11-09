@@ -49,35 +49,40 @@
 
 {{- if gt (len $items) 0 -}}
 <section class="next-up">
-  <div class="next-up__head">
-    <h2 class="next-up__title">接下来</h2>
-    <p class="next-up__sub">近期活动与关联的开源会议</p>
-  </div>
+  <div class="next-up__wrap">
+    <div class="next-up__head">
+      <h2 class="next-up__title">接下来</h2>
+      <p class="next-up__sub">近期活动与关联的开源会议</p>
+    </div>
 
-  <div class="next-up__grid">
-    {{- range $items -}}
-      {{- $days := int (div (sub .date.Unix $now.Unix) 86400) -}}
-      {{- $when := cond (lt $days 1) "今天" (cond (eq $days 1) "明天" (printf "%d 天后" $days)) -}}
-      <a class="next-up__card{{ if not .internal }} next-up__card--ext{{ end }}" href="{{ .permalink }}"{{ if not .internal }} target="_blank" rel="noopener"{{ end }}>
-        <div class="next-up__top">
-          <span class="next-up__date">{{ .date.Format "2006.01.02" }}</span>
-          <span class="next-up__badge">{{ $when }}</span>
-          {{- if not .internal }}<span class="next-up__tag">关联</span>{{ end -}}
-        </div>
-        <h3 class="next-up__name">{{ .title }}</h3>
-        {{- with .subtitle }}<p class="next-up__meta">{{ . }}</p>{{ end -}}
-        {{- with .location }}<p class="next-up__meta">{{ . }}</p>{{ end -}}
-        {{- with .note }}<p class="next-up__note">{{ . }}</p>{{ end -}}
-      </a>
-    {{- end -}}
+    <div class="next-up__grid">
+      {{- range $items -}}
+        {{- $days := int (div (sub .date.Unix $now.Unix) 86400) -}}
+        {{- $when := cond (lt $days 1) "今天" (cond (eq $days 1) "明天" (printf "%d 天后" $days)) -}}
+        <a class="next-up__card{{ if not .internal }} next-up__card--ext{{ end }}" href="{{ .permalink }}"{{ if not .internal }} target="_blank" rel="noopener"{{ end }}>
+          <div class="next-up__top">
+            <span class="next-up__date">{{ .date.Format "2006.01.02" }}</span>
+            <span class="next-up__badge">{{ $when }}</span>
+            {{- if not .internal }}<span class="next-up__tag">关联</span>{{ end -}}
+          </div>
+          <h3 class="next-up__name">{{ .title }}</h3>
+          {{- with .subtitle }}<p class="next-up__meta">{{ . }}</p>{{ end -}}
+          {{- with .location }}<p class="next-up__meta">{{ . }}</p>{{ end -}}
+          {{- with .note }}<p class="next-up__note">{{ . }}</p>{{ end -}}
+        </a>
+      {{- end -}}
+    </div>
   </div>
 </section>
 
 <style>
 .next-up {
-  /* 与上方 h1 的 max-w-prose 同宽，视觉上左缘对齐 */
-  max-width: 56rem;
-  margin: 1.5rem auto 2.5rem;
+  margin: 1.5rem 0 2.5rem;
+}
+.next-up__wrap {
+  /* 与页面主内容栏（max-w-prose ≈ 65ch）对齐，两边留 1rem */
+  max-width: 48rem;
+  margin: 0 auto;
   padding: 0 1rem;
 }
 .next-up__head {
