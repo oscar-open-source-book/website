@@ -70,7 +70,8 @@
       <p class="next-up__sub">近期活动与关联的开源会议</p>
     </div>
 
-    <ol class="tl" id="next-up-timeline">
+    <div class="next-up__scroller">
+      <ol class="tl" id="next-up-timeline">
       {{- range $items -}}
         {{- $isPast := lt .date.Unix $now.Unix -}}
         <li class="tl__item{{ if not .internal }} tl__item--ext{{ end }}{{ if $isPast }} tl__item--past{{ end }}"
@@ -94,7 +95,8 @@
           </a>
         </li>
       {{- end -}}
-    </ol>
+      </ol>
+    </div>
     <div class="tl__hint" aria-hidden="true">← 向左滑动回看已结束的活动</div>
   </div>
 </section>
@@ -142,6 +144,8 @@
   scrollbar-width: thin;
   scrollbar-color: #D5CDB8 transparent;
   -webkit-overflow-scrolling: touch;
+  /* 右缘留一点空隙，让最后可见的卡片不贴边，暗示右侧还有内容 */
+  scroll-padding-right: 1rem;
 }
 .tl::-webkit-scrollbar { height: 6px; }
 .tl::-webkit-scrollbar-track { background: transparent; }
@@ -397,6 +401,31 @@
 @media (max-width: 34rem) {
   .tl__hint { display: none; }   /* 手机端纵排，不需要滑动提示 */
 }
+
+/* 右缘渐隐：明确告诉访客「右边还有卡片」，而不是靠卡片被切一半去猜 */
+.next-up__scroller {
+  position: relative;
+}
+.next-up__scroller::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: calc(100% - 0.5rem);
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(255,255,255,0), #fff 85%);
+  transition: opacity .2s ease;
+}
+.next-up__scroller.is-at-end::after { opacity: 0; }
+@media (prefers-color-scheme: dark) {
+  .next-up__scroller::after {
+    background: linear-gradient(to right, rgba(22,24,27,0), #16181B 85%);
+  }
+}
+@media (max-width: 34rem) {
+  .next-up__scroller::after { display: none; }
+}
 </style>
 
 <script>
@@ -463,9 +492,20 @@
   refresh();
   scrollToToday();
 
+  // 右缘渐隐：滚到最右时淡出，否则保留「右边还有」的提示
+  var scroller = list.closest('.next-up__scroller');
+  function syncEdge() {
+    if (!scroller) return;
+    var atEnd = list.scrollLeft + list.clientWidth >= list.scrollWidth - 4;
+    scroller.classList.toggle('is-at-end', atEnd);
+  }
+  list.addEventListener('scroll', syncEdge, { passive: true });
+  window.addEventListener('resize', syncEdge);
+  syncEdge();
+
   // 从 bfcache 恢复、或页面重新可见时重算（跨天不刷新也不会显示错天数）
   window.addEventListener('pageshow', function (e) {
-    if (e.persisted) { refresh(); scrollToToday(); }
+    if (e.persisted) { refresh(); scrollToToday(); syncEdge(); }
   });
   document.addEventListener('visibilitychange', function () {
     if (!document.hidden) { refresh(); }
