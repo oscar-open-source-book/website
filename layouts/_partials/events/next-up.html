@@ -12,42 +12,55 @@
 */}}
 
 {{- $now := now -}}
-{{- $limit := 6 -}}
 
-{{- /* 站内未来活动 */ -}}
+{{- /* 站内活动：不再过滤已过去——已过去的可以向左滑回看，只做状态标记 */ -}}
 {{- $items := slice -}}
 {{- range where site.RegularPages "Section" "events" -}}
-  {{- if ge .Date.Unix $now.Unix -}}
-    {{- $items = $items | append (dict
-        "date" .Date
-        "title" .Title
-        "subtitle" (.Params.subtitle | default "")
-        "location" (.Params.location | default "")
-        "permalink" .RelPermalink
-        "image" (cond (isset .Params "image") (index .Params.image "filename") "")
-        "internal" true
-      ) -}}
-  {{- end -}}
+  {{- $items = $items | append (dict
+      "date" .Date
+      "title" .Title
+      "subtitle" (.Params.subtitle | default "")
+      "location" (.Params.location | default "")
+      "permalink" .RelPermalink
+      "image" (cond (isset .Params "image") (index .Params.image "filename") "")
+      "internal" true
+    ) -}}
 {{- end -}}
 
-{{- /* 外部关联活动 */ -}}
+{{- /* 外部关联活动（保留全部，同样只做状态标记） */ -}}
 {{- range hugo.Data.external_events.external_events | default slice -}}
-  {{- $d := time .date -}}
-  {{- if ge $d.Unix $now.Unix -}}
-    {{- $items = $items | append (dict
-        "date" $d
-        "title" .title
-        "subtitle" (.host | default "")
-        "location" (.location | default "")
-        "permalink" (.url | default "")
-        "image" ""
-        "internal" (.internal | default false)
-        "note" (.note | default "")
-      ) -}}
+  {{- $items = $items | append (dict
+      "date" (time .date)
+      "title" .title
+      "subtitle" (.host | default "")
+      "location" (.location | default "")
+      "permalink" (.url | default "")
+      "image" ""
+      "internal" (.internal | default false)
+      "note" (.note | default "")
+    ) -}}
+{{- end -}}
+
+{{- /* 拆分：未来活动全要；已过去的只留最近 $pastLimit 场（供向左滑回看） */ -}}
+{{- $future := slice -}}
+{{- $past := slice -}}
+{{- range $items -}}
+  {{- if ge .date.Unix $now.Unix -}}
+    {{- $future = $future | append . -}}
+  {{- else -}}
+    {{- $past = $past | append . -}}
   {{- end -}}
 {{- end -}}
 
-{{- $items = sort $items "date" "asc" | first $limit -}}
+{{- /* 已过去的取最近 6 场（按日期降序取前 6，再翻回升序） */ -}}
+{{- $pastLimit := 6 -}}
+{{- $past = sort $past "date" "desc" | first $pastLimit -}}
+{{- $past = sort $past "date" "asc" -}}
+
+{{- /* 未来活动需要单独升序（append 不会自动排序） */ -}}
+{{- $future = sort $future "date" "asc" -}}
+{{- /* 合并：已过去的在前（左），未来的在后（右） */ -}}
+{{- $items = $past | append $future -}}
 
 {{- if gt (len $items) 0 -}}
 <section class="next-up">
@@ -57,18 +70,18 @@
       <p class="next-up__sub">近期活动与关联的开源会议</p>
     </div>
 
-    <ol class="tl">
+    <ol class="tl" id="next-up-timeline">
       {{- range $items -}}
-        {{- $days := int (div (sub .date.Unix $now.Unix) 86400) -}}
-        {{- $when := cond (lt $days 1) "今天" (cond (eq $days 1) "明天" (printf "%d 天后" $days)) -}}
-        <li class="tl__item{{ if not .internal }} tl__item--ext{{ end }}">
+        {{- $isPast := lt .date.Unix $now.Unix -}}
+        <li class="tl__item{{ if not .internal }} tl__item--ext{{ end }}{{ if $isPast }} tl__item--past{{ end }}"
+            data-date="{{ .date.Format "2006-01-02" }}">
           <a class="tl__link" href="{{ .permalink }}"{{ if not .internal }} target="_blank" rel="noopener"{{ end }}>
             <span class="tl__stamp">
               <span class="tl__date">
                 <span class="tl__y">{{ .date.Format "2006" }}</span>
                 <span class="tl__md">{{ .date.Format "01.02" }}</span>
               </span>
-              <span class="tl__when">{{ $when }}</span>
+              <span class="tl__when" data-when>{{ if $isPast }}已结束{{ end }}</span>
               {{- if not .internal }}<span class="tl__tag">关联</span>{{ end -}}
             </span>
             <span class="tl__dot" aria-hidden="true"></span>
@@ -82,6 +95,7 @@
         </li>
       {{- end -}}
     </ol>
+    <div class="tl__hint" aria-hidden="true">← 向左滑动回看已结束的活动</div>
   </div>
 </section>
 
@@ -114,31 +128,55 @@
   margin: 0;
 }
 
-/* ===== 时间轴：桌面横向 ===== */
+/* ===== 时间轴：桌面横向，可左右滚动 ===== */
 .tl {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  align-items: stretch;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.25rem 0 0.5rem;
   position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #D5CDB8 transparent;
+  -webkit-overflow-scrolling: touch;
 }
-/* 轴线：贯穿整行，落在日期与内容之间 */
-.tl::before {
-  content: "";
-  position: absolute;
-  left: 0.5rem;
-  right: 0.5rem;
-  top: 5.15rem;
-  height: 1px;
-  background: linear-gradient(to right, #E4DECD, #C9BFA6 50%, #E4DECD);
-  z-index: 0;
+.tl::-webkit-scrollbar { height: 6px; }
+.tl::-webkit-scrollbar-track { background: transparent; }
+.tl::-webkit-scrollbar-thumb {
+  background: #D5CDB8;
+  border-radius: 3px;
 }
+.tl::-webkit-scrollbar-thumb:hover { background: #B4A078; }
+
+/* 轴线：跟着内容一起滚（用伪元素会被裁切，改为每个条目的线段拼接） */
+.tl::before { display: none; }
 .tl__item {
   position: relative;
   z-index: 1;
+  flex: 0 0 15.5rem;      /* 固定宽度，横向排开 */
   min-width: 0;
 }
+/* 线段：从条目左缘到右缘，接成一条连续轴线 */
+.tl__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5.15rem;
+  height: 1px;
+  background: #E4DECD;
+  z-index: 0;
+}
+.tl__item:first-child::before { left: 50%; }
+.tl__item:last-child::before { right: 50%; }
+
+/* 已结束的条目：淡出，暗示可以向左滑过去看 */
+.tl__item--past { opacity: 0.5; }
+.tl__item--past:hover { opacity: 1; }
+.tl__item--past .tl__when { background: #EDEAE2; color: #8A8578; }
 .tl__link {
   display: grid;
   grid-template-rows: 5.15rem 0 auto;
@@ -244,24 +282,10 @@
   margin: 0.4rem 0 0;
 }
 
-/* ===== 平板：两列，轴线收掉 ===== */
+/* ===== 平板：仍是横向滚动，只是卡片变窄 ===== */
 @media (max-width: 60rem) {
-  .tl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .tl::before { display: none; }
-  .tl__item { padding-bottom: 1.4rem; }
-  .tl__link { display: block; padding: 0; }
-  .tl__link:hover { background: transparent; }
-  .tl__stamp {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    padding-bottom: 0.55rem;
-    text-align: left;
-  }
-  .tl__dot { display: none; }
-  .tl__body { padding-top: 0; }
+  .tl__item { flex: 0 0 13.5rem; }
+  .tl__link { padding: 0 0.6rem; }
 }
 
 /* ===== 手机：竖向时间轴 ===== */
@@ -277,6 +301,7 @@
     margin-left: 0.3rem;
     border-left: none;
     position: relative;
+    overflow: visible;       /* 手机端改纵向，不再横向滚动 */
   }
   /* 竖线只画到最后一个节点，不在末条目右侧留一截尾巴 */
   .tl::after {
@@ -301,9 +326,13 @@
   }
   .tl::before { display: none; }
   .tl__item {
+    flex: none;            /* 重置桌面的固定宽度 */
+    width: auto;
     padding-bottom: 1.35rem;
     position: relative;   /* 让末条目遮罩的绝对定位以条目为基准 */
   }
+  /* 桌面版每条的横向线段在竖排下要收掉 */
+  .tl__item::before { display: none; }
   .tl__item:last-child { padding-bottom: 0; }
   .tl__link {
     display: block;
@@ -340,7 +369,7 @@
 /* ===== 深色 ===== */
 @media (prefers-color-scheme: dark) {
   .next-up__title { color: #C9D6E8; }
-  .tl::before { background: linear-gradient(to right, #3A3D42, #4A4D52 50%, #3A3D42); }
+  .tl__item::before { background: #3A3D42; }
   .tl__link:hover { background: #1E2024; }
   .tl__dot { background: #16181B; box-shadow: 0 0 0 4px #16181B; }
   .tl__name { color: #E8E4DC; }
@@ -348,10 +377,99 @@
   .tl__md { color: #C9A227; }
   .tl__meta { color: #9A9A9A; }
   .tl__note { color: #C9A227; }
+  .tl__item--past .tl__when { background: #24262A; color: #7A7A7A; }
+  .tl__hint { color: #6B6B6B; }
+  .tl::-webkit-scrollbar-thumb { background: #3A3D42; }
 }
 @media (prefers-color-scheme: dark) and (max-width: 34rem) {
   .tl::after { background: #3A3D42; }
   .tl__item:last-child::after { background: #16181B; }
 }
+
+/* ===== 滑动提示 ===== */
+.tl__hint {
+  font-size: 0.72rem;
+  color: #A8A08C;
+  text-align: right;
+  margin-top: 0.45rem;
+  padding-right: 0.2rem;
+}
+@media (max-width: 34rem) {
+  .tl__hint { display: none; }   /* 手机端纵排，不需要滑动提示 */
+}
 </style>
+
+<script>
+(function () {
+  var list = document.getElementById('next-up-timeline');
+  if (!list) return;
+
+  var ONE_DAY = 86400000;
+
+  function startOfToday() {
+    var d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  function labelFor(days) {
+    if (days < 0) return '已结束';
+    if (days === 0) return '今天';
+    if (days === 1) return '明天';
+    if (days === 2) return '后天';
+    return days + ' 天后';
+  }
+
+  // 每次载入都按「浏览器当前日期」重算，不依赖构建时间
+  function refresh() {
+    var today = startOfToday();
+    var items = list.querySelectorAll('[data-date]');
+
+    Array.prototype.forEach.call(items, function (li) {
+      var parts = (li.getAttribute('data-date') || '').split('-');
+      if (parts.length !== 3) return;
+      var when = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+      var days = Math.round((when - today) / ONE_DAY);
+
+      var el = li.querySelector('[data-when]');
+      if (el) el.textContent = labelFor(days);
+
+      if (days < 0) {
+        li.classList.add('tl__item--past');
+      } else {
+        li.classList.remove('tl__item--past');
+      }
+    });
+  }
+
+  // 让第一个「未过去」的条目靠近左侧，已结束的自然滚到左边可回看
+  function scrollToToday() {
+    var items = list.querySelectorAll('.tl__item');
+    if (!items.length) return;
+    if (list.scrollWidth <= list.clientWidth) return;   // 不需要滚动
+
+    var target = null;
+    for (var i = 0; i < items.length; i++) {
+      if (!items[i].classList.contains('tl__item--past')) { target = items[i]; break; }
+    }
+    var anchor = target || items[items.length - 1];
+    // 露一格前一个（已结束的）作为「可往回滑」的提示
+    if (target && target.previousElementSibling) {
+      anchor = target.previousElementSibling;
+    }
+    list.scrollLeft = Math.min(anchor.offsetLeft, list.scrollWidth - list.clientWidth);
+  }
+
+  refresh();
+  scrollToToday();
+
+  // 从 bfcache 恢复、或页面重新可见时重算（跨天不刷新也不会显示错天数）
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) { refresh(); scrollToToday(); }
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) { refresh(); }
+  });
+})();
+</script>
 {{- end -}}
