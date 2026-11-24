@@ -144,7 +144,7 @@ Do not put any text in the upper two thirds of the poster.
 
 ---
 
-## 六、弱模型改写（u1.5-lite 这类）
+## 六、弱模型改写（u1.6-lite 这类）
 
 模型弱在「语义落地」不在中文——它会把抽象描述画成通用场景。改法是把隐喻换成**可画的形状**：
 

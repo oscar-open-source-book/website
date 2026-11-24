@@ -80,7 +80,7 @@ stage 化设计对存量迁移的意义是**可插拔、可重试、可跳过**�
 
 **SenseNova Skills 是流程约束。** `sn-ppt-standard` 把工作拆成 `preflight → style → outline → asset-plan → gen-image → page-html → export`。每个 stage 有明确输入、输出、JSON artifact 和可跳过条件。Skill 约束了模型的自由度：模型不是每次从零创作整套 PPT，而是在确定的中间态上继续生成。这样，Agent 的错误可以被定位到某个 stage，而不是淹没在“生成结果不好”这个黑盒里。
 
-**SenseNova 模型提供具体生产能力。** `sensenova-6.8-flash-lite` 负责文本理解、大纲、HTML 结构和页面修复；`sensenova-u1.5-lite` 负责实时配图，承担文生图能力。它们不是同一件事：文本模型负责结构与叙事，图像模型负责视觉表达；Agent 负责让它们在同一条流水线里协作。
+**SenseNova 模型提供具体生产能力。** `sensenova-6.8-flash-lite` 负责文本理解、大纲、HTML 结构和页面修复；`sensenova-u1.6-lite` 负责实时配图，承担文生图能力。它们不是同一件事：文本模型负责结构与叙事，图像模型负责视觉表达；Agent 负责让它们在同一条流水线里协作。
 
 这就是这条 pipeline 的核心：不是“让大模型做 PPT”，而是让 **Agent 调度 Skill，Skill 调用 Model，Model 产出可审计 artifact，Agent 再根据 artifact 继续推进**。
 
